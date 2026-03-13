@@ -1,0 +1,115 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://www.twilio.com/docs/schemas/twilio/recording.json",
+  "title": "Twilio Recording",
+  "description": "Represents a call or conference recording captured through the Twilio platform, including duration, status, and storage details.",
+  "type": "object",
+  "properties": {
+    "sid": {
+      "type": "string",
+      "pattern": "^RE[0-9a-fA-F]{32}$",
+      "description": "Unique 34-character identifier for the recording"
+    },
+    "account_sid": {
+      "type": "string",
+      "pattern": "^AC[0-9a-fA-F]{32}$",
+      "description": "SID of the Twilio account that created the recording"
+    },
+    "call_sid": {
+      "type": "string",
+      "pattern": "^CA[0-9a-fA-F]{32}$",
+      "description": "SID of the call that was recorded"
+    },
+    "conference_sid": {
+      "type": ["string", "null"],
+      "pattern": "^CF[0-9a-fA-F]{32}$",
+      "description": "SID of the conference if this is a conference recording"
+    },
+    "status": {
+      "type": "string",
+      "enum": ["processing", "completed", "absent", "deleted", "failed"],
+      "description": "Current processing status of the recording"
+    },
+    "channels": {
+      "type": "integer",
+      "enum": [1, 2],
+      "description": "Number of audio channels (1 for mono, 2 for dual)"
+    },
+    "source": {
+      "type": "string",
+      "enum": [
+        "DialVerb",
+        "Conference",
+        "OutboundAPI",
+        "Trunking",
+        "RecordVerb",
+        "StartCallRecordingAPI",
+        "StartConferenceRecordingAPI"
+      ],
+      "description": "How the recording was initiated"
+    },
+    "duration": {
+      "type": ["string", "null"],
+      "description": "Duration of the recording in seconds"
+    },
+    "price": {
+      "type": ["string", "null"],
+      "description": "Price of the recording"
+    },
+    "price_unit": {
+      "type": "string",
+      "description": "ISO 4217 currency code"
+    },
+    "encryption_details": {
+      "type": ["object", "null"],
+      "description": "Encryption details if recording encryption is enabled",
+      "properties": {
+        "encryption_public_key_sid": {
+          "type": "string"
+        },
+        "type": {
+          "type": "string"
+        }
+      }
+    },
+    "error_code": {
+      "type": ["integer", "null"],
+      "description": "Error code if the recording failed"
+    },
+    "start_time": {
+      "type": ["string", "null"],
+      "format": "date-time",
+      "description": "When the recording started"
+    },
+    "date_created": {
+      "type": "string",
+      "format": "date-time",
+      "description": "ISO 8601 timestamp when the recording was created"
+    },
+    "date_updated": {
+      "type": "string",
+      "format": "date-time",
+      "description": "ISO 8601 timestamp when the recording was last updated"
+    },
+    "api_version": {
+      "type": "string",
+      "description": "Twilio API version used"
+    },
+    "uri": {
+      "type": "string",
+      "description": "Relative URI for this recording resource"
+    },
+    "subresource_uris": {
+      "type": "object",
+      "properties": {
+        "transcriptions": {
+          "type": "string"
+        },
+        "add_on_results": {
+          "type": "string"
+        }
+      }
+    }
+  },
+  "required": ["sid", "account_sid", "call_sid", "status"]
+}

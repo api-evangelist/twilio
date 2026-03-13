@@ -1,0 +1,644 @@
+openapi: 3.1.0
+info:
+  title: Twilio Accounts API
+  description: >-
+    Manage Twilio accounts and subaccounts programmatically. Create and configure
+    subaccounts, manage API credentials, promote auth tokens, and control
+    account-level settings for identity and access management.
+  version: '2.0'
+  contact:
+    name: Twilio Support
+    url: https://support.twilio.com
+    email: support@twilio.com
+  license:
+    name: Apache 2.0
+    url: https://www.apache.org/licenses/LICENSE-2.0.html
+  termsOfService: https://www.twilio.com/legal/tos
+externalDocs:
+  description: Twilio Accounts API Documentation
+  url: https://www.twilio.com/docs/iam/api/account
+servers:
+  - url: https://api.twilio.com/2010-04-01
+    description: Twilio REST API v1
+  - url: https://accounts.twilio.com/v1
+    description: Twilio Accounts API v1
+tags:
+  - name: Accounts
+    description: Manage Twilio accounts and subaccounts
+  - name: Keys
+    description: Manage API keys for authentication
+  - name: Credentials
+    description: Manage AWS and public key credentials
+  - name: Auth Tokens
+    description: Manage primary and secondary auth tokens
+  - name: Safelist
+    description: Manage the verified caller ID safelist
+security:
+  - accountSid_authToken: []
+paths:
+  /Accounts.json:
+    get:
+      operationId: listAccounts
+      summary: List accounts
+      description: >-
+        Retrieve a list of subaccounts belonging to the main account.
+      tags:
+        - Accounts
+      parameters:
+        - name: FriendlyName
+          in: query
+          description: Filter by friendly name
+          schema:
+            type: string
+        - name: Status
+          in: query
+          description: Filter by account status
+          schema:
+            type: string
+            enum:
+              - active
+              - suspended
+              - closed
+        - name: PageSize
+          in: query
+          schema:
+            type: integer
+            minimum: 1
+            maximum: 1000
+      responses:
+        '200':
+          description: List of accounts
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AccountList'
+        '401':
+          description: Unauthorized
+    post:
+      operationId: createAccount
+      summary: Create a subaccount
+      description: >-
+        Create a new subaccount under the main account.
+      tags:
+        - Accounts
+      requestBody:
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              type: object
+              properties:
+                FriendlyName:
+                  type: string
+                  description: Human-readable name for the subaccount
+      responses:
+        '201':
+          description: Subaccount created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Account'
+        '400':
+          description: Invalid request
+        '401':
+          description: Unauthorized
+  /Accounts/{AccountSid}.json:
+    get:
+      operationId: fetchAccount
+      summary: Fetch an account
+      description: >-
+        Retrieve details for a specific account or subaccount.
+      tags:
+        - Accounts
+      parameters:
+        - $ref: '#/components/parameters/AccountSid'
+      responses:
+        '200':
+          description: Account details
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Account'
+        '401':
+          description: Unauthorized
+        '404':
+          description: Account not found
+    post:
+      operationId: updateAccount
+      summary: Update an account
+      description: >-
+        Update account properties such as friendly name or status.
+      tags:
+        - Accounts
+      parameters:
+        - $ref: '#/components/parameters/AccountSid'
+      requestBody:
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              type: object
+              properties:
+                FriendlyName:
+                  type: string
+                Status:
+                  type: string
+                  enum:
+                    - active
+                    - suspended
+                    - closed
+      responses:
+        '200':
+          description: Account updated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Account'
+        '401':
+          description: Unauthorized
+        '404':
+          description: Account not found
+  /Accounts/{AccountSid}/Keys.json:
+    get:
+      operationId: listKeys
+      summary: List API keys
+      description: >-
+        Retrieve a list of API keys for the account.
+      tags:
+        - Keys
+      parameters:
+        - $ref: '#/components/parameters/AccountSid'
+      responses:
+        '200':
+          description: List of API keys
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/KeyList'
+        '401':
+          description: Unauthorized
+    post:
+      operationId: createKey
+      summary: Create an API key
+      description: >-
+        Create a new API key for authentication. The secret is only returned
+        once upon creation.
+      tags:
+        - Keys
+      parameters:
+        - $ref: '#/components/parameters/AccountSid'
+      requestBody:
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              type: object
+              properties:
+                FriendlyName:
+                  type: string
+                  description: Descriptive name for the API key
+                AccountSid:
+                  type: string
+                  description: Account SID to scope the key to
+      responses:
+        '201':
+          description: API key created (secret returned only once)
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NewKey'
+        '401':
+          description: Unauthorized
+  /Accounts/{AccountSid}/Keys/{KeySid}.json:
+    get:
+      operationId: fetchKey
+      summary: Fetch an API key
+      tags:
+        - Keys
+      parameters:
+        - $ref: '#/components/parameters/AccountSid'
+        - name: KeySid
+          in: path
+          required: true
+          schema:
+            type: string
+            pattern: ^SK[0-9a-fA-F]{32}$
+      responses:
+        '200':
+          description: API key details
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Key'
+        '404':
+          description: Key not found
+    post:
+      operationId: updateKey
+      summary: Update an API key
+      tags:
+        - Keys
+      parameters:
+        - $ref: '#/components/parameters/AccountSid'
+        - name: KeySid
+          in: path
+          required: true
+          schema:
+            type: string
+            pattern: ^SK[0-9a-fA-F]{32}$
+      requestBody:
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              type: object
+              properties:
+                FriendlyName:
+                  type: string
+      responses:
+        '200':
+          description: Key updated
+    delete:
+      operationId: deleteKey
+      summary: Delete an API key
+      tags:
+        - Keys
+      parameters:
+        - $ref: '#/components/parameters/AccountSid'
+        - name: KeySid
+          in: path
+          required: true
+          schema:
+            type: string
+            pattern: ^SK[0-9a-fA-F]{32}$
+      responses:
+        '204':
+          description: Key deleted
+  /Credentials/AWS:
+    get:
+      operationId: listAwsCredentials
+      summary: List AWS credentials
+      tags:
+        - Credentials
+      responses:
+        '200':
+          description: List of AWS credentials
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AwsCredentialList'
+    post:
+      operationId: createAwsCredential
+      summary: Create an AWS credential
+      tags:
+        - Credentials
+      requestBody:
+        required: true
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              type: object
+              required:
+                - Credentials
+              properties:
+                Credentials:
+                  type: string
+                  description: AWS access key ID and secret access key
+                FriendlyName:
+                  type: string
+                AccountSid:
+                  type: string
+      responses:
+        '201':
+          description: AWS credential created
+  /Credentials/PublicKeys:
+    get:
+      operationId: listPublicKeys
+      summary: List public key credentials
+      tags:
+        - Credentials
+      responses:
+        '200':
+          description: List of public key credentials
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PublicKeyList'
+    post:
+      operationId: createPublicKey
+      summary: Create a public key credential
+      tags:
+        - Credentials
+      requestBody:
+        required: true
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              type: object
+              required:
+                - PublicKey
+              properties:
+                PublicKey:
+                  type: string
+                  description: DER-encoded public key
+                FriendlyName:
+                  type: string
+                AccountSid:
+                  type: string
+      responses:
+        '201':
+          description: Public key created
+  /AuthTokens/Promote:
+    post:
+      operationId: promoteAuthToken
+      summary: Promote secondary auth token
+      description: >-
+        Promote the secondary auth token to primary. The old primary token
+        will be invalidated immediately.
+      tags:
+        - Auth Tokens
+      responses:
+        '200':
+          description: Auth token promoted
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AuthTokenPromotion'
+  /AuthTokens/Secondary:
+    post:
+      operationId: createSecondaryAuthToken
+      summary: Create a secondary auth token
+      description: >-
+        Create a secondary auth token for the account. Use this to rotate
+        auth tokens without downtime.
+      tags:
+        - Auth Tokens
+      responses:
+        '201':
+          description: Secondary auth token created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SecondaryAuthToken'
+    delete:
+      operationId: deleteSecondaryAuthToken
+      summary: Delete the secondary auth token
+      tags:
+        - Auth Tokens
+      responses:
+        '204':
+          description: Secondary auth token deleted
+  /SafeList/Numbers:
+    post:
+      operationId: createSafelistNumber
+      summary: Add a number to the safelist
+      description: >-
+        Add a phone number to the account safelist for verified caller IDs.
+      tags:
+        - Safelist
+      requestBody:
+        required: true
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              type: object
+              required:
+                - PhoneNumber
+              properties:
+                PhoneNumber:
+                  type: string
+                  description: Phone number in E.164 format
+      responses:
+        '201':
+          description: Number added to safelist
+  /SafeList/Numbers/{PhoneNumber}:
+    get:
+      operationId: fetchSafelistNumber
+      summary: Check if a number is safelisted
+      tags:
+        - Safelist
+      parameters:
+        - name: PhoneNumber
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Number is safelisted
+        '404':
+          description: Number not found in safelist
+    delete:
+      operationId: deleteSafelistNumber
+      summary: Remove a number from the safelist
+      tags:
+        - Safelist
+      parameters:
+        - name: PhoneNumber
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '204':
+          description: Number removed from safelist
+components:
+  securitySchemes:
+    accountSid_authToken:
+      type: http
+      scheme: basic
+      description: >-
+        Use your Twilio Account SID as the username and Auth Token as the
+        password for HTTP Basic authentication.
+  parameters:
+    AccountSid:
+      name: AccountSid
+      in: path
+      required: true
+      description: The unique identifier of the Twilio account
+      schema:
+        type: string
+        pattern: ^AC[0-9a-fA-F]{32}$
+  schemas:
+    Account:
+      type: object
+      properties:
+        sid:
+          type: string
+          pattern: ^AC[0-9a-fA-F]{32}$
+          description: Unique identifier for the account
+        friendly_name:
+          type: string
+          description: Human-readable account name
+        status:
+          type: string
+          enum:
+            - active
+            - suspended
+            - closed
+          description: Current account status
+        type:
+          type: string
+          enum:
+            - Trial
+            - Full
+          description: Account type
+        auth_token:
+          type: string
+          description: Primary authentication token
+        owner_account_sid:
+          type: string
+          description: SID of the parent account
+        date_created:
+          type: string
+          format: date-time
+        date_updated:
+          type: string
+          format: date-time
+        uri:
+          type: string
+        subresource_uris:
+          type: object
+          properties:
+            calls:
+              type: string
+            messages:
+              type: string
+            recordings:
+              type: string
+            keys:
+              type: string
+    AccountList:
+      type: object
+      properties:
+        accounts:
+          type: array
+          items:
+            $ref: '#/components/schemas/Account'
+        first_page_uri:
+          type: string
+        next_page_uri:
+          type: string
+        page:
+          type: integer
+        page_size:
+          type: integer
+    Key:
+      type: object
+      properties:
+        sid:
+          type: string
+          pattern: ^SK[0-9a-fA-F]{32}$
+          description: Unique identifier for the API key
+        friendly_name:
+          type: string
+        date_created:
+          type: string
+          format: date-time
+        date_updated:
+          type: string
+          format: date-time
+    NewKey:
+      type: object
+      properties:
+        sid:
+          type: string
+          pattern: ^SK[0-9a-fA-F]{32}$
+        friendly_name:
+          type: string
+        secret:
+          type: string
+          description: API key secret (returned only at creation)
+        date_created:
+          type: string
+          format: date-time
+    KeyList:
+      type: object
+      properties:
+        keys:
+          type: array
+          items:
+            $ref: '#/components/schemas/Key'
+        first_page_uri:
+          type: string
+        next_page_uri:
+          type: string
+        page:
+          type: integer
+        page_size:
+          type: integer
+    AwsCredentialList:
+      type: object
+      properties:
+        credentials:
+          type: array
+          items:
+            type: object
+            properties:
+              sid:
+                type: string
+                pattern: ^CR[0-9a-fA-F]{32}$
+              friendly_name:
+                type: string
+              date_created:
+                type: string
+                format: date-time
+              date_updated:
+                type: string
+                format: date-time
+              url:
+                type: string
+                format: uri
+    PublicKeyList:
+      type: object
+      properties:
+        credentials:
+          type: array
+          items:
+            type: object
+            properties:
+              sid:
+                type: string
+                pattern: ^CR[0-9a-fA-F]{32}$
+              friendly_name:
+                type: string
+              date_created:
+                type: string
+                format: date-time
+              date_updated:
+                type: string
+                format: date-time
+              url:
+                type: string
+                format: uri
+    AuthTokenPromotion:
+      type: object
+      properties:
+        account_sid:
+          type: string
+          pattern: ^AC[0-9a-fA-F]{32}$
+        auth_token:
+          type: string
+          description: The new primary auth token
+        date_created:
+          type: string
+          format: date-time
+        date_updated:
+          type: string
+          format: date-time
+        url:
+          type: string
+          format: uri
+    SecondaryAuthToken:
+      type: object
+      properties:
+        account_sid:
+          type: string
+          pattern: ^AC[0-9a-fA-F]{32}$
+        secondary_auth_token:
+          type: string
+          description: The secondary auth token
+        date_created:
+          type: string
+          format: date-time
+        date_updated:
+          type: string
+          format: date-time
+        url:
+          type: string
+          format: uri

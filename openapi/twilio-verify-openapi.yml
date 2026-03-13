@@ -1,0 +1,969 @@
+openapi: 3.1.0
+info:
+  title: Twilio Verify API
+  description: >-
+    User verification and two-factor authentication API. Send verification
+    codes via SMS, voice, email, WhatsApp, or push notifications. Supports
+    TOTP, push authentication, and silent network authentication for
+    fraud prevention and user identity verification.
+  version: '2.0'
+  contact:
+    name: Twilio Support
+    url: https://support.twilio.com
+    email: support@twilio.com
+  license:
+    name: Apache 2.0
+    url: https://www.apache.org/licenses/LICENSE-2.0.html
+  termsOfService: https://www.twilio.com/legal/tos
+externalDocs:
+  description: Twilio Verify API Documentation
+  url: https://www.twilio.com/docs/verify/api
+servers:
+  - url: https://verify.twilio.com/v2
+    description: Twilio Verify API v2
+tags:
+  - name: Services
+    description: Manage Verify services
+  - name: Verifications
+    description: Send and manage verification codes
+  - name: Verification Checks
+    description: Check verification codes
+  - name: Rate Limits
+    description: Configure rate limiting for verification requests
+  - name: Entities
+    description: Manage end-user entities for TOTP and push
+  - name: Factors
+    description: Manage authentication factors (TOTP, push)
+  - name: Challenges
+    description: Manage push authentication challenges
+  - name: Access Tokens
+    description: Generate access tokens for SDKs
+  - name: Webhooks
+    description: Configure event webhooks
+security:
+  - accountSid_authToken: []
+paths:
+  /Services:
+    get:
+      operationId: listServices
+      summary: List Verify services
+      description: >-
+        Retrieve a list of all Verify services in your account.
+      tags:
+        - Services
+      parameters:
+        - name: PageSize
+          in: query
+          schema:
+            type: integer
+            minimum: 1
+            maximum: 100
+      responses:
+        '200':
+          description: List of services
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ServiceList'
+        '401':
+          description: Unauthorized
+    post:
+      operationId: createService
+      summary: Create a Verify service
+      description: >-
+        Create a new Verify service to configure verification behavior
+        including code length, channels, and branding.
+      tags:
+        - Services
+      requestBody:
+        required: true
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/CreateServiceRequest'
+      responses:
+        '201':
+          description: Service created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/VerifyService'
+        '400':
+          description: Invalid request
+  /Services/{ServiceSid}:
+    get:
+      operationId: fetchService
+      summary: Fetch a Verify service
+      tags:
+        - Services
+      parameters:
+        - $ref: '#/components/parameters/ServiceSid'
+      responses:
+        '200':
+          description: Service details
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/VerifyService'
+        '404':
+          description: Service not found
+    post:
+      operationId: updateService
+      summary: Update a Verify service
+      tags:
+        - Services
+      parameters:
+        - $ref: '#/components/parameters/ServiceSid'
+      requestBody:
+        required: true
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/CreateServiceRequest'
+      responses:
+        '200':
+          description: Service updated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/VerifyService'
+    delete:
+      operationId: deleteService
+      summary: Delete a Verify service
+      tags:
+        - Services
+      parameters:
+        - $ref: '#/components/parameters/ServiceSid'
+      responses:
+        '204':
+          description: Service deleted
+  /Services/{ServiceSid}/Verifications:
+    post:
+      operationId: createVerification
+      summary: Start a verification
+      description: >-
+        Send a verification code to a user via SMS, voice call, email,
+        WhatsApp, or SNA. The code is automatically generated and sent.
+      tags:
+        - Verifications
+      parameters:
+        - $ref: '#/components/parameters/ServiceSid'
+      requestBody:
+        required: true
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/CreateVerificationRequest'
+      responses:
+        '201':
+          description: Verification created and code sent
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Verification'
+        '400':
+          description: Invalid request
+        '429':
+          description: Rate limit exceeded
+  /Services/{ServiceSid}/Verifications/{VerificationSid}:
+    get:
+      operationId: fetchVerification
+      summary: Fetch a verification
+      tags:
+        - Verifications
+      parameters:
+        - $ref: '#/components/parameters/ServiceSid'
+        - name: VerificationSid
+          in: path
+          required: true
+          schema:
+            type: string
+            pattern: ^VE[0-9a-fA-F]{32}$
+      responses:
+        '200':
+          description: Verification details
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Verification'
+    post:
+      operationId: updateVerification
+      summary: Update a verification
+      description: >-
+        Cancel a pending verification or mark it as approved.
+      tags:
+        - Verifications
+      parameters:
+        - $ref: '#/components/parameters/ServiceSid'
+        - name: VerificationSid
+          in: path
+          required: true
+          schema:
+            type: string
+            pattern: ^VE[0-9a-fA-F]{32}$
+      requestBody:
+        required: true
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              type: object
+              required:
+                - Status
+              properties:
+                Status:
+                  type: string
+                  enum:
+                    - canceled
+                    - approved
+      responses:
+        '200':
+          description: Verification updated
+  /Services/{ServiceSid}/VerificationCheck:
+    post:
+      operationId: createVerificationCheck
+      summary: Check a verification code
+      description: >-
+        Check whether a user-provided code matches the verification code
+        that was sent. Returns approved if the code is correct.
+      tags:
+        - Verification Checks
+      parameters:
+        - $ref: '#/components/parameters/ServiceSid'
+      requestBody:
+        required: true
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/CreateVerificationCheckRequest'
+      responses:
+        '200':
+          description: Verification check result
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/VerificationCheck'
+        '404':
+          description: Verification not found or expired
+  /Services/{ServiceSid}/RateLimits:
+    get:
+      operationId: listRateLimits
+      summary: List rate limits
+      tags:
+        - Rate Limits
+      parameters:
+        - $ref: '#/components/parameters/ServiceSid'
+      responses:
+        '200':
+          description: List of rate limits
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RateLimitList'
+    post:
+      operationId: createRateLimit
+      summary: Create a rate limit
+      tags:
+        - Rate Limits
+      parameters:
+        - $ref: '#/components/parameters/ServiceSid'
+      requestBody:
+        required: true
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              type: object
+              required:
+                - UniqueName
+              properties:
+                UniqueName:
+                  type: string
+                  description: Unique name for the rate limit
+                Description:
+                  type: string
+      responses:
+        '201':
+          description: Rate limit created
+  /Services/{ServiceSid}/RateLimits/{RateLimitSid}/Buckets:
+    get:
+      operationId: listBuckets
+      summary: List rate limit buckets
+      tags:
+        - Rate Limits
+      parameters:
+        - $ref: '#/components/parameters/ServiceSid'
+        - name: RateLimitSid
+          in: path
+          required: true
+          schema:
+            type: string
+            pattern: ^RK[0-9a-fA-F]{32}$
+      responses:
+        '200':
+          description: List of buckets
+    post:
+      operationId: createBucket
+      summary: Create a rate limit bucket
+      tags:
+        - Rate Limits
+      parameters:
+        - $ref: '#/components/parameters/ServiceSid'
+        - name: RateLimitSid
+          in: path
+          required: true
+          schema:
+            type: string
+            pattern: ^RK[0-9a-fA-F]{32}$
+      requestBody:
+        required: true
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              type: object
+              required:
+                - Max
+                - Interval
+              properties:
+                Max:
+                  type: integer
+                  description: Maximum number of requests
+                Interval:
+                  type: integer
+                  description: Time window in seconds
+      responses:
+        '201':
+          description: Bucket created
+  /Services/{ServiceSid}/Entities:
+    get:
+      operationId: listEntities
+      summary: List entities
+      tags:
+        - Entities
+      parameters:
+        - $ref: '#/components/parameters/ServiceSid'
+      responses:
+        '200':
+          description: List of entities
+    post:
+      operationId: createEntity
+      summary: Create an entity
+      description: >-
+        Create a new entity representing an end user for TOTP or push
+        authentication.
+      tags:
+        - Entities
+      parameters:
+        - $ref: '#/components/parameters/ServiceSid'
+      requestBody:
+        required: true
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              type: object
+              required:
+                - Identity
+              properties:
+                Identity:
+                  type: string
+                  description: Unique identity of the end user
+      responses:
+        '201':
+          description: Entity created
+  /Services/{ServiceSid}/Entities/{Identity}/Factors:
+    get:
+      operationId: listFactors
+      summary: List factors for an entity
+      tags:
+        - Factors
+      parameters:
+        - $ref: '#/components/parameters/ServiceSid'
+        - name: Identity
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: List of factors
+    post:
+      operationId: createFactor
+      summary: Create a factor
+      description: >-
+        Create a new authentication factor (TOTP or push) for an entity.
+      tags:
+        - Factors
+      parameters:
+        - $ref: '#/components/parameters/ServiceSid'
+        - name: Identity
+          in: path
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              type: object
+              required:
+                - FriendlyName
+                - FactorType
+              properties:
+                FriendlyName:
+                  type: string
+                FactorType:
+                  type: string
+                  enum:
+                    - totp
+                    - push
+                Binding.Alg:
+                  type: string
+                  enum: [sha1, sha256, sha512]
+                Binding.CodeLength:
+                  type: integer
+                  enum: [6, 8]
+                Binding.TimeStep:
+                  type: integer
+                Config.NotificationPlatform:
+                  type: string
+                  enum: [fcm, apn, none]
+      responses:
+        '201':
+          description: Factor created
+  /Services/{ServiceSid}/Entities/{Identity}/Challenges:
+    get:
+      operationId: listChallenges
+      summary: List challenges for an entity
+      tags:
+        - Challenges
+      parameters:
+        - $ref: '#/components/parameters/ServiceSid'
+        - name: Identity
+          in: path
+          required: true
+          schema:
+            type: string
+        - name: FactorSid
+          in: query
+          schema:
+            type: string
+            pattern: ^YF[0-9a-fA-F]{32}$
+        - name: Status
+          in: query
+          schema:
+            type: string
+            enum:
+              - pending
+              - expired
+              - approved
+              - denied
+      responses:
+        '200':
+          description: List of challenges
+    post:
+      operationId: createChallenge
+      summary: Create a challenge
+      description: >-
+        Create a new push authentication challenge for an entity.
+      tags:
+        - Challenges
+      parameters:
+        - $ref: '#/components/parameters/ServiceSid'
+        - name: Identity
+          in: path
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              type: object
+              required:
+                - FactorSid
+              properties:
+                FactorSid:
+                  type: string
+                  pattern: ^YF[0-9a-fA-F]{32}$
+                ExpirationDate:
+                  type: string
+                  format: date-time
+                Details.Message:
+                  type: string
+                  description: Message to display in the push notification
+                Details.Fields:
+                  type: string
+                  description: JSON array of label/value pairs for context
+                HiddenDetails:
+                  type: string
+                  description: JSON object with hidden challenge details
+      responses:
+        '201':
+          description: Challenge created
+  /Services/{ServiceSid}/AccessTokens:
+    post:
+      operationId: createAccessToken
+      summary: Create an access token
+      description: >-
+        Generate an access token for use with Verify Push or TOTP SDKs.
+      tags:
+        - Access Tokens
+      parameters:
+        - $ref: '#/components/parameters/ServiceSid'
+      requestBody:
+        required: true
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              type: object
+              required:
+                - Identity
+                - FactorType
+              properties:
+                Identity:
+                  type: string
+                FactorType:
+                  type: string
+                  enum:
+                    - push
+                    - totp
+                FactorFriendlyName:
+                  type: string
+                Ttl:
+                  type: integer
+                  description: Token time to live in seconds
+                  default: 60
+      responses:
+        '201':
+          description: Access token created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AccessToken'
+  /Services/{ServiceSid}/Webhooks:
+    get:
+      operationId: listWebhooks
+      summary: List webhooks
+      tags:
+        - Webhooks
+      parameters:
+        - $ref: '#/components/parameters/ServiceSid'
+      responses:
+        '200':
+          description: List of webhooks
+    post:
+      operationId: createWebhook
+      summary: Create a webhook
+      tags:
+        - Webhooks
+      parameters:
+        - $ref: '#/components/parameters/ServiceSid'
+      requestBody:
+        required: true
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              type: object
+              required:
+                - FriendlyName
+                - EventTypes
+                - WebhookUrl
+              properties:
+                FriendlyName:
+                  type: string
+                EventTypes:
+                  type: array
+                  items:
+                    type: string
+                WebhookUrl:
+                  type: string
+                  format: uri
+                Status:
+                  type: string
+                  enum: [enabled, disabled]
+      responses:
+        '201':
+          description: Webhook created
+components:
+  securitySchemes:
+    accountSid_authToken:
+      type: http
+      scheme: basic
+      description: >-
+        Use your Twilio Account SID as the username and Auth Token as the
+        password for HTTP Basic authentication.
+  parameters:
+    ServiceSid:
+      name: ServiceSid
+      in: path
+      required: true
+      description: The SID of the Verify service
+      schema:
+        type: string
+        pattern: ^VA[0-9a-fA-F]{32}$
+  schemas:
+    VerifyService:
+      type: object
+      properties:
+        sid:
+          type: string
+          pattern: ^VA[0-9a-fA-F]{32}$
+          description: Unique identifier for the service
+        account_sid:
+          type: string
+          pattern: ^AC[0-9a-fA-F]{32}$
+        friendly_name:
+          type: string
+          description: Friendly name of the service
+        code_length:
+          type: integer
+          description: Length of verification codes (4-10)
+        lookup_enabled:
+          type: boolean
+          description: Whether to perform a Lookup before sending
+        skip_sms_to_landlines:
+          type: boolean
+        dtmf_input_required:
+          type: boolean
+        tts_name:
+          type: string
+          description: Text-to-speech voice name
+        do_not_share_warning_enabled:
+          type: boolean
+        custom_code_enabled:
+          type: boolean
+        push:
+          type: object
+          properties:
+            include_date:
+              type: boolean
+            apn_credential_sid:
+              type: string
+            fcm_credential_sid:
+              type: string
+        totp:
+          type: object
+          properties:
+            issuer:
+              type: string
+            time_step:
+              type: integer
+            code_length:
+              type: integer
+            skew:
+              type: integer
+        default_template_sid:
+          type: string
+        date_created:
+          type: string
+          format: date-time
+        date_updated:
+          type: string
+          format: date-time
+        url:
+          type: string
+          format: uri
+        links:
+          type: object
+    ServiceList:
+      type: object
+      properties:
+        services:
+          type: array
+          items:
+            $ref: '#/components/schemas/VerifyService'
+        meta:
+          $ref: '#/components/schemas/PaginationMeta'
+    CreateServiceRequest:
+      type: object
+      required:
+        - FriendlyName
+      properties:
+        FriendlyName:
+          type: string
+          description: Human-readable service name (shown in verification messages)
+        CodeLength:
+          type: integer
+          minimum: 4
+          maximum: 10
+          default: 6
+          description: Length of the verification code
+        LookupEnabled:
+          type: boolean
+          default: false
+        SkipSmsToLandlines:
+          type: boolean
+          default: false
+        DtmfInputRequired:
+          type: boolean
+          default: true
+        TtsName:
+          type: string
+        DoNotShareWarningEnabled:
+          type: boolean
+          default: false
+        CustomCodeEnabled:
+          type: boolean
+          default: false
+        Push.IncludeDate:
+          type: boolean
+        Push.ApnCredentialSid:
+          type: string
+        Push.FcmCredentialSid:
+          type: string
+        Totp.Issuer:
+          type: string
+        Totp.TimeStep:
+          type: integer
+        Totp.CodeLength:
+          type: integer
+        Totp.Skew:
+          type: integer
+        DefaultTemplateSid:
+          type: string
+    Verification:
+      type: object
+      properties:
+        sid:
+          type: string
+          pattern: ^VE[0-9a-fA-F]{32}$
+          description: Unique identifier for the verification
+        service_sid:
+          type: string
+          pattern: ^VA[0-9a-fA-F]{32}$
+        account_sid:
+          type: string
+          pattern: ^AC[0-9a-fA-F]{32}$
+        to:
+          type: string
+          description: Phone number or email being verified
+        channel:
+          type: string
+          enum:
+            - sms
+            - call
+            - email
+            - whatsapp
+            - sna
+          description: Verification channel used
+        status:
+          type: string
+          enum:
+            - pending
+            - approved
+            - canceled
+            - max_attempts_reached
+            - deleted
+            - failed
+            - expired
+          description: Current verification status
+        valid:
+          type: boolean
+          description: Whether the verification was successful
+        lookup:
+          type: object
+          description: Lookup information for the phone number
+          properties:
+            carrier:
+              type: object
+        send_code_attempts:
+          type: array
+          items:
+            type: object
+            properties:
+              attempt_sid:
+                type: string
+              channel:
+                type: string
+              time:
+                type: string
+                format: date-time
+        date_created:
+          type: string
+          format: date-time
+        date_updated:
+          type: string
+          format: date-time
+        url:
+          type: string
+          format: uri
+    CreateVerificationRequest:
+      type: object
+      required:
+        - To
+        - Channel
+      properties:
+        To:
+          type: string
+          description: Phone number (E.164) or email address to verify
+        Channel:
+          type: string
+          enum:
+            - sms
+            - call
+            - email
+            - whatsapp
+            - sna
+          description: Channel to use for delivery
+        CustomFriendlyName:
+          type: string
+          description: Custom name shown in the verification message
+        CustomMessage:
+          type: string
+          description: Custom message for SMS verification
+        SendDigits:
+          type: string
+          description: DTMF digits to play before the code (call channel)
+        Locale:
+          type: string
+          description: Locale for the verification message (e.g., en)
+        CustomCode:
+          type: string
+          description: Custom verification code (requires custom code enabled)
+        Amount:
+          type: string
+          description: Amount for PSD2 verification
+        Payee:
+          type: string
+          description: Payee for PSD2 verification
+        RateLimits:
+          type: string
+          description: JSON object of rate limit key-value pairs
+        TemplateSid:
+          type: string
+          description: SID of a custom template
+        TemplateCustomSubstitutions:
+          type: string
+          description: JSON object of template substitution variables
+    CreateVerificationCheckRequest:
+      type: object
+      properties:
+        Code:
+          type: string
+          description: The verification code entered by the user
+        To:
+          type: string
+          description: Phone number or email being verified
+        VerificationSid:
+          type: string
+          description: SID of the verification (alternative to To)
+          pattern: ^VE[0-9a-fA-F]{32}$
+        Amount:
+          type: string
+          description: Amount for PSD2 verification check
+        Payee:
+          type: string
+          description: Payee for PSD2 verification check
+    VerificationCheck:
+      type: object
+      properties:
+        sid:
+          type: string
+          pattern: ^VE[0-9a-fA-F]{32}$
+        service_sid:
+          type: string
+          pattern: ^VA[0-9a-fA-F]{32}$
+        account_sid:
+          type: string
+          pattern: ^AC[0-9a-fA-F]{32}$
+        to:
+          type: string
+        channel:
+          type: string
+          enum: [sms, call, email, whatsapp, sna]
+        status:
+          type: string
+          enum: [pending, approved, canceled, max_attempts_reached, deleted, failed, expired]
+        valid:
+          type: boolean
+          description: Whether the provided code was correct
+        amount:
+          type: string
+        payee:
+          type: string
+        date_created:
+          type: string
+          format: date-time
+        date_updated:
+          type: string
+          format: date-time
+    AccessToken:
+      type: object
+      properties:
+        sid:
+          type: string
+        account_sid:
+          type: string
+          pattern: ^AC[0-9a-fA-F]{32}$
+        service_sid:
+          type: string
+          pattern: ^VA[0-9a-fA-F]{32}$
+        entity_identity:
+          type: string
+        factor_type:
+          type: string
+          enum: [push, totp]
+        factor_friendly_name:
+          type: string
+        token:
+          type: string
+          description: The access token string
+        ttl:
+          type: integer
+        date_created:
+          type: string
+          format: date-time
+        url:
+          type: string
+          format: uri
+    RateLimitList:
+      type: object
+      properties:
+        rate_limits:
+          type: array
+          items:
+            type: object
+            properties:
+              sid:
+                type: string
+                pattern: ^RK[0-9a-fA-F]{32}$
+              service_sid:
+                type: string
+              unique_name:
+                type: string
+              description:
+                type: string
+              date_created:
+                type: string
+                format: date-time
+              date_updated:
+                type: string
+                format: date-time
+              url:
+                type: string
+                format: uri
+              links:
+                type: object
+        meta:
+          $ref: '#/components/schemas/PaginationMeta'
+    PaginationMeta:
+      type: object
+      properties:
+        page:
+          type: integer
+        page_size:
+          type: integer
+        first_page_url:
+          type: string
+          format: uri
+        previous_page_url:
+          type: string
+          format: uri
+        next_page_url:
+          type: string
+          format: uri
+        url:
+          type: string
+          format: uri
+        key:
+          type: string

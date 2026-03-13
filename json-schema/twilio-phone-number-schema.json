@@ -1,0 +1,157 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://www.twilio.com/docs/schemas/twilio/phone-number.json",
+  "title": "Twilio Phone Number",
+  "description": "Represents a phone number provisioned on the Twilio platform, including capabilities, configuration, and routing settings.",
+  "type": "object",
+  "properties": {
+    "sid": {
+      "type": "string",
+      "pattern": "^PN[0-9a-fA-F]{32}$",
+      "description": "Unique 34-character identifier for the phone number"
+    },
+    "account_sid": {
+      "type": "string",
+      "pattern": "^AC[0-9a-fA-F]{32}$",
+      "description": "SID of the Twilio account that owns the number"
+    },
+    "friendly_name": {
+      "type": "string",
+      "description": "Human-readable name for the phone number"
+    },
+    "phone_number": {
+      "type": "string",
+      "description": "Phone number in E.164 format"
+    },
+    "origin": {
+      "type": "string",
+      "enum": ["twilio", "hosted"],
+      "description": "Origin of the phone number"
+    },
+    "capabilities": {
+      "type": "object",
+      "description": "Communication capabilities of the number",
+      "properties": {
+        "voice": {
+          "type": "boolean",
+          "description": "Whether the number supports voice calls"
+        },
+        "sms": {
+          "type": "boolean",
+          "description": "Whether the number supports SMS"
+        },
+        "mms": {
+          "type": "boolean",
+          "description": "Whether the number supports MMS"
+        },
+        "fax": {
+          "type": "boolean",
+          "description": "Whether the number supports fax"
+        }
+      }
+    },
+    "voice_url": {
+      "type": ["string", "null"],
+      "format": "uri",
+      "description": "URL for TwiML instructions when a call is received"
+    },
+    "voice_method": {
+      "type": "string",
+      "enum": ["GET", "POST"],
+      "description": "HTTP method for the voice URL"
+    },
+    "voice_fallback_url": {
+      "type": ["string", "null"],
+      "format": "uri",
+      "description": "Fallback URL if the voice URL fails"
+    },
+    "voice_fallback_method": {
+      "type": "string",
+      "enum": ["GET", "POST"]
+    },
+    "voice_caller_id_lookup": {
+      "type": "boolean",
+      "description": "Whether to look up caller ID for incoming calls"
+    },
+    "sms_url": {
+      "type": ["string", "null"],
+      "format": "uri",
+      "description": "URL for handling incoming SMS messages"
+    },
+    "sms_method": {
+      "type": "string",
+      "enum": ["GET", "POST"]
+    },
+    "sms_fallback_url": {
+      "type": ["string", "null"],
+      "format": "uri"
+    },
+    "sms_fallback_method": {
+      "type": "string",
+      "enum": ["GET", "POST"]
+    },
+    "status_callback": {
+      "type": ["string", "null"],
+      "format": "uri",
+      "description": "URL for call status change webhooks"
+    },
+    "status_callback_method": {
+      "type": "string",
+      "enum": ["GET", "POST"]
+    },
+    "voice_application_sid": {
+      "type": ["string", "null"],
+      "pattern": "^AP[0-9a-fA-F]{32}$",
+      "description": "SID of the TwiML application for voice calls"
+    },
+    "sms_application_sid": {
+      "type": ["string", "null"],
+      "pattern": "^AP[0-9a-fA-F]{32}$",
+      "description": "SID of the TwiML application for SMS"
+    },
+    "trunk_sid": {
+      "type": ["string", "null"],
+      "description": "SID of the SIP trunk associated with this number"
+    },
+    "emergency_status": {
+      "type": "string",
+      "enum": ["Active", "Inactive"],
+      "description": "Emergency calling status"
+    },
+    "emergency_address_sid": {
+      "type": ["string", "null"],
+      "description": "SID of the emergency address"
+    },
+    "address_sid": {
+      "type": ["string", "null"],
+      "description": "SID of the address associated with the number"
+    },
+    "identity_sid": {
+      "type": ["string", "null"],
+      "description": "SID of the identity resource associated with the number"
+    },
+    "bundle_sid": {
+      "type": ["string", "null"],
+      "description": "SID of the regulatory compliance bundle"
+    },
+    "beta": {
+      "type": "boolean",
+      "description": "Whether the number is a beta (new) number"
+    },
+    "date_created": {
+      "type": "string",
+      "format": "date-time",
+      "description": "ISO 8601 timestamp when the number was provisioned"
+    },
+    "date_updated": {
+      "type": "string",
+      "format": "date-time",
+      "description": "ISO 8601 timestamp when the number was last updated"
+    },
+    "uri": {
+      "type": "string",
+      "description": "Relative URI for this phone number resource"
+    }
+  },
+  "required": ["sid", "account_sid", "phone_number", "capabilities"]
+}

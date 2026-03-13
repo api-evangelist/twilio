@@ -1,0 +1,357 @@
+openapi: 3.1.0
+info:
+  title: Twilio Lookup API
+  description: >-
+    Query phone number information for validation, carrier details, line type
+    intelligence, caller identity, SIM swap detection, and fraud risk
+    assessment. Lookup v2 provides comprehensive phone number intelligence
+    for trusted customer interactions.
+  version: '2.0'
+  contact:
+    name: Twilio Support
+    url: https://support.twilio.com
+    email: support@twilio.com
+  license:
+    name: Apache 2.0
+    url: https://www.apache.org/licenses/LICENSE-2.0.html
+  termsOfService: https://www.twilio.com/legal/tos
+externalDocs:
+  description: Twilio Lookup API Documentation
+  url: https://www.twilio.com/docs/lookup
+servers:
+  - url: https://lookups.twilio.com/v2
+    description: Twilio Lookup API v2
+tags:
+  - name: Phone Numbers
+    description: Query phone number data and intelligence
+security:
+  - accountSid_authToken: []
+paths:
+  /PhoneNumbers/{PhoneNumber}:
+    get:
+      operationId: fetchPhoneNumber
+      summary: Look up a phone number
+      description: >-
+        Query information about a phone number. Specify which data packages
+        to include using the Fields parameter. Available packages include
+        validation, line type intelligence, caller name, SIM swap, identity
+        match, SMS pumping risk, and more.
+      tags:
+        - Phone Numbers
+      parameters:
+        - name: PhoneNumber
+          in: path
+          required: true
+          description: Phone number to look up in E.164 format
+          schema:
+            type: string
+        - name: Fields
+          in: query
+          required: false
+          description: >-
+            Comma-separated list of data packages to return. Available
+            fields include validation, line_type_intelligence,
+            caller_name, sim_swap, identity_match, sms_pumping_risk,
+            phone_number_quality_score, reassigned_number, line_status
+          schema:
+            type: string
+          examples:
+            validation:
+              value: validation
+            multiple:
+              value: line_type_intelligence,caller_name,sim_swap
+        - name: CountryCode
+          in: query
+          description: >-
+            ISO 3166-1 alpha-2 country code for national format numbers
+          schema:
+            type: string
+            minLength: 2
+            maxLength: 2
+        - name: FirstName
+          in: query
+          description: First name for identity match
+          schema:
+            type: string
+        - name: LastName
+          in: query
+          description: Last name for identity match
+          schema:
+            type: string
+        - name: AddressLine1
+          in: query
+          description: Address line 1 for identity match
+          schema:
+            type: string
+        - name: AddressLine2
+          in: query
+          description: Address line 2 for identity match
+          schema:
+            type: string
+        - name: City
+          in: query
+          description: City for identity match
+          schema:
+            type: string
+        - name: State
+          in: query
+          description: State or province for identity match
+          schema:
+            type: string
+        - name: PostalCode
+          in: query
+          description: Postal code for identity match
+          schema:
+            type: string
+        - name: AddressCountryCode
+          in: query
+          description: ISO country code for identity match address
+          schema:
+            type: string
+        - name: NationalId
+          in: query
+          description: National ID for identity match
+          schema:
+            type: string
+        - name: DateOfBirth
+          in: query
+          description: Date of birth for identity match (YYYYMMDD)
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Phone number lookup results
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PhoneNumberLookup'
+        '400':
+          description: Invalid phone number format
+        '401':
+          description: Unauthorized
+        '404':
+          description: Phone number not found
+        '429':
+          description: Rate limit exceeded
+components:
+  securitySchemes:
+    accountSid_authToken:
+      type: http
+      scheme: basic
+      description: >-
+        Use your Twilio Account SID as the username and Auth Token as the
+        password for HTTP Basic authentication.
+  schemas:
+    PhoneNumberLookup:
+      type: object
+      properties:
+        phone_number:
+          type: string
+          description: Phone number in E.164 format
+        country_code:
+          type: string
+          description: ISO 3166-1 alpha-2 country code
+        national_format:
+          type: string
+          description: Phone number in national format
+        calling_country_code:
+          type: string
+          description: International dialing country code
+        valid:
+          type: boolean
+          description: Whether the phone number is valid
+        validation_errors:
+          type: array
+          items:
+            type: string
+            enum:
+              - TOO_SHORT
+              - TOO_LONG
+              - INVALID_BUT_POSSIBLE
+              - INVALID_COUNTRY_CODE
+              - INVALID_LENGTH
+              - NOT_A_NUMBER
+          description: Validation error codes if the number is invalid
+        caller_name:
+          type: object
+          description: Caller name (CNAM) information
+          properties:
+            caller_name:
+              type: string
+              description: Registered caller name
+            caller_type:
+              type: string
+              enum:
+                - CONSUMER
+                - BUSINESS
+              description: Type of caller
+            error_code:
+              type: integer
+        line_type_intelligence:
+          type: object
+          description: Line type and carrier information
+          properties:
+            type:
+              type: string
+              enum:
+                - landline
+                - mobile
+                - fixedVoip
+                - nonFixedVoip
+                - personal
+                - tollFree
+                - premium
+                - sharedCost
+                - uan
+                - voicemail
+                - pager
+                - unknown
+              description: Type of phone line
+            carrier_name:
+              type: string
+              description: Name of the carrier
+            mobile_country_code:
+              type: string
+              description: Mobile country code (MCC)
+            mobile_network_code:
+              type: string
+              description: Mobile network code (MNC)
+            error_code:
+              type: integer
+        sim_swap:
+          type: object
+          description: SIM swap detection results
+          properties:
+            last_sim_swap:
+              type: object
+              properties:
+                last_sim_swap_date:
+                  type: string
+                  format: date-time
+                  description: Date of the last SIM swap
+                swapped_period:
+                  type: string
+                  description: Time period classification of the swap
+                swapped_in_period:
+                  type: boolean
+                  description: Whether a swap occurred in the check period
+            carrier_name:
+              type: string
+            mobile_country_code:
+              type: string
+            mobile_network_code:
+              type: string
+            error_code:
+              type: integer
+        identity_match:
+          type: object
+          description: Identity match verification results
+          properties:
+            first_name_match:
+              type: string
+              enum:
+                - exact_match
+                - high_partial_match
+                - partial_match
+                - no_match
+                - no_data_available
+              description: How well the first name matches
+            last_name_match:
+              type: string
+              enum:
+                - exact_match
+                - high_partial_match
+                - partial_match
+                - no_match
+                - no_data_available
+            address_lines_match:
+              type: string
+              enum:
+                - exact_match
+                - high_partial_match
+                - partial_match
+                - no_match
+                - no_data_available
+            city_match:
+              type: string
+            state_match:
+              type: string
+            postal_code_match:
+              type: string
+            country_code_match:
+              type: string
+            national_id_match:
+              type: string
+            date_of_birth_match:
+              type: string
+            summary_score:
+              type: integer
+              description: Overall identity match score (0-100)
+            error_code:
+              type: integer
+        sms_pumping_risk:
+          type: object
+          description: SMS pumping fraud risk assessment
+          properties:
+            carrier_risk_category:
+              type: string
+              enum:
+                - low
+                - medium
+                - high
+              description: Risk category based on carrier
+            carrier_risk_score:
+              type: integer
+              description: Numeric risk score (0-100)
+            number_blocked:
+              type: boolean
+              description: Whether the number is blocked
+            number_blocked_date:
+              type: string
+              format: date-time
+            sms_pumping_risk_score:
+              type: integer
+              description: Overall SMS pumping risk score (0-100)
+            error_code:
+              type: integer
+        phone_number_quality_score:
+          type: object
+          description: Phone number quality assessment
+          properties:
+            quality_score:
+              type: integer
+              description: Quality score (0-100)
+            error_code:
+              type: integer
+        reassigned_number:
+          type: object
+          description: Number reassignment detection
+          properties:
+            last_verified_date:
+              type: string
+              format: date
+            is_reassigned:
+              type: string
+              enum:
+                - 'yes'
+                - 'no'
+                - cannot_determine
+                - no_data_available
+            error_code:
+              type: integer
+        line_status:
+          type: object
+          description: Current line status
+          properties:
+            status:
+              type: string
+              enum:
+                - active
+                - inactive
+                - no_data_available
+            error_code:
+              type: integer
+        url:
+          type: string
+          format: uri
+          description: URL of this resource

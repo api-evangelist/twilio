@@ -1,0 +1,128 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://www.twilio.com/docs/schemas/twilio/message.json",
+  "title": "Twilio Message",
+  "description": "Represents an SMS or MMS message sent or received through the Twilio Messaging API, including delivery status, pricing, and metadata.",
+  "type": "object",
+  "properties": {
+    "sid": {
+      "type": "string",
+      "pattern": "^(SM|MM)[0-9a-fA-F]{32}$",
+      "description": "Unique 34-character identifier for the message (SM for SMS, MM for MMS)"
+    },
+    "account_sid": {
+      "type": "string",
+      "pattern": "^AC[0-9a-fA-F]{32}$",
+      "description": "SID of the Twilio account that created the message"
+    },
+    "messaging_service_sid": {
+      "type": ["string", "null"],
+      "pattern": "^MG[0-9a-fA-F]{32}$",
+      "description": "SID of the messaging service used to send the message"
+    },
+    "to": {
+      "type": "string",
+      "description": "Recipient phone number in E.164 format"
+    },
+    "from": {
+      "type": "string",
+      "description": "Sender phone number, short code, or alphanumeric sender ID"
+    },
+    "body": {
+      "type": ["string", "null"],
+      "maxLength": 1600,
+      "description": "Text content of the message (up to 1600 characters)"
+    },
+    "status": {
+      "type": "string",
+      "enum": [
+        "queued",
+        "sending",
+        "sent",
+        "delivered",
+        "undelivered",
+        "failed",
+        "receiving",
+        "received",
+        "accepted",
+        "scheduled",
+        "read",
+        "partially_delivered",
+        "canceled"
+      ],
+      "description": "Current delivery status of the message"
+    },
+    "direction": {
+      "type": "string",
+      "enum": [
+        "inbound",
+        "outbound-api",
+        "outbound-call",
+        "outbound-reply"
+      ],
+      "description": "Direction of the message relative to your Twilio account"
+    },
+    "num_segments": {
+      "type": "string",
+      "description": "Number of segments the message body was split into"
+    },
+    "num_media": {
+      "type": "string",
+      "description": "Number of media files associated with the message"
+    },
+    "price": {
+      "type": ["string", "null"],
+      "description": "Price of the message in the account currency"
+    },
+    "price_unit": {
+      "type": "string",
+      "description": "ISO 4217 currency code for the price"
+    },
+    "error_code": {
+      "type": ["integer", "null"],
+      "description": "Twilio error code if the message failed"
+    },
+    "error_message": {
+      "type": ["string", "null"],
+      "description": "Human-readable description of the error"
+    },
+    "date_created": {
+      "type": "string",
+      "format": "date-time",
+      "description": "ISO 8601 timestamp when the message resource was created"
+    },
+    "date_updated": {
+      "type": "string",
+      "format": "date-time",
+      "description": "ISO 8601 timestamp when the message was last updated"
+    },
+    "date_sent": {
+      "type": ["string", "null"],
+      "format": "date-time",
+      "description": "ISO 8601 timestamp when the message was sent"
+    },
+    "api_version": {
+      "type": "string",
+      "description": "Twilio API version used to process the message"
+    },
+    "uri": {
+      "type": "string",
+      "description": "Relative URI for this message resource"
+    },
+    "subresource_uris": {
+      "type": "object",
+      "description": "URIs of related subresources",
+      "properties": {
+        "media": {
+          "type": "string",
+          "description": "URI for associated media resources"
+        },
+        "feedback": {
+          "type": "string",
+          "description": "URI for message feedback"
+        }
+      }
+    }
+  },
+  "required": ["sid", "account_sid", "to", "from", "status", "direction"]
+}

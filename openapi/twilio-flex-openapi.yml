@@ -1,0 +1,883 @@
+openapi: 3.1.0
+info:
+  title: Twilio Flex API
+  description: >-
+    Programmable digital engagement center API for building customized
+    omnichannel contact center solutions. Manage Flex configuration,
+    channels, flows, interactions, plugins, and worker insights for
+    customer communication across voice, SMS, chat, WhatsApp, and more.
+  version: '2.0'
+  contact:
+    name: Twilio Support
+    url: https://support.twilio.com
+    email: support@twilio.com
+  license:
+    name: Apache 2.0
+    url: https://www.apache.org/licenses/LICENSE-2.0.html
+  termsOfService: https://www.twilio.com/legal/tos
+externalDocs:
+  description: Twilio Flex API Documentation
+  url: https://www.twilio.com/docs/flex
+servers:
+  - url: https://flex-api.twilio.com/v1
+    description: Twilio Flex API v1
+  - url: https://flex-api.twilio.com/v2
+    description: Twilio Flex API v2
+tags:
+  - name: Configuration
+    description: Manage Flex instance configuration
+  - name: Channels
+    description: Manage Flex communication channels
+  - name: Flex Flows
+    description: Manage Flex Flow routing
+  - name: Interactions
+    description: Manage customer interactions
+  - name: Web Channels
+    description: Manage web chat channels
+  - name: Plugins
+    description: Manage Flex plugins
+  - name: Insights
+    description: Access Flex Insights questionnaires and assessments
+security:
+  - accountSid_authToken: []
+paths:
+  /Configuration:
+    get:
+      operationId: fetchConfiguration
+      summary: Fetch Flex configuration
+      description: >-
+        Retrieve the current Flex configuration including UI attributes,
+        enabled channels, and runtime settings.
+      tags:
+        - Configuration
+      parameters:
+        - name: UiVersion
+          in: query
+          description: The Flex UI version to fetch configuration for
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Flex configuration
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/FlexConfiguration'
+        '401':
+          description: Unauthorized
+    post:
+      operationId: updateConfiguration
+      summary: Update Flex configuration
+      description: >-
+        Update the Flex configuration settings.
+      tags:
+        - Configuration
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateFlexConfigurationRequest'
+      responses:
+        '200':
+          description: Configuration updated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/FlexConfiguration'
+        '400':
+          description: Invalid request
+  /Channels:
+    get:
+      operationId: listChannels
+      summary: List Flex channels
+      description: >-
+        Retrieve a list of Flex channels.
+      tags:
+        - Channels
+      parameters:
+        - name: PageSize
+          in: query
+          schema:
+            type: integer
+            minimum: 1
+            maximum: 100
+      responses:
+        '200':
+          description: List of channels
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ChannelList'
+    post:
+      operationId: createChannel
+      summary: Create a Flex channel
+      description: >-
+        Create a new Flex channel for handling a customer interaction.
+      tags:
+        - Channels
+      requestBody:
+        required: true
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/CreateChannelRequest'
+      responses:
+        '201':
+          description: Channel created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/FlexChannel'
+        '400':
+          description: Invalid request
+  /Channels/{ChannelSid}:
+    get:
+      operationId: fetchChannel
+      summary: Fetch a Flex channel
+      tags:
+        - Channels
+      parameters:
+        - name: ChannelSid
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Channel details
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/FlexChannel'
+        '404':
+          description: Channel not found
+    delete:
+      operationId: deleteChannel
+      summary: Delete a Flex channel
+      tags:
+        - Channels
+      parameters:
+        - name: ChannelSid
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '204':
+          description: Channel deleted
+  /FlexFlows:
+    get:
+      operationId: listFlexFlows
+      summary: List Flex flows
+      description: >-
+        Retrieve a list of Flex flows that define how inbound contacts
+        are routed.
+      tags:
+        - Flex Flows
+      parameters:
+        - name: FriendlyName
+          in: query
+          schema:
+            type: string
+        - name: PageSize
+          in: query
+          schema:
+            type: integer
+            minimum: 1
+            maximum: 100
+      responses:
+        '200':
+          description: List of Flex flows
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/FlexFlowList'
+    post:
+      operationId: createFlexFlow
+      summary: Create a Flex flow
+      tags:
+        - Flex Flows
+      requestBody:
+        required: true
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/CreateFlexFlowRequest'
+      responses:
+        '201':
+          description: Flex flow created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/FlexFlow'
+        '400':
+          description: Invalid request
+  /FlexFlows/{FlexFlowSid}:
+    get:
+      operationId: fetchFlexFlow
+      summary: Fetch a Flex flow
+      tags:
+        - Flex Flows
+      parameters:
+        - name: FlexFlowSid
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Flex flow details
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/FlexFlow'
+    post:
+      operationId: updateFlexFlow
+      summary: Update a Flex flow
+      tags:
+        - Flex Flows
+      parameters:
+        - name: FlexFlowSid
+          in: path
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/CreateFlexFlowRequest'
+      responses:
+        '200':
+          description: Flex flow updated
+    delete:
+      operationId: deleteFlexFlow
+      summary: Delete a Flex flow
+      tags:
+        - Flex Flows
+      parameters:
+        - name: FlexFlowSid
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '204':
+          description: Flex flow deleted
+  /Interactions:
+    post:
+      operationId: createInteraction
+      summary: Create an interaction
+      description: >-
+        Create a new customer interaction. An interaction represents
+        a complete customer engagement that may span multiple channels.
+      tags:
+        - Interactions
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateInteractionRequest'
+      responses:
+        '201':
+          description: Interaction created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Interaction'
+  /Interactions/{InteractionSid}:
+    get:
+      operationId: fetchInteraction
+      summary: Fetch an interaction
+      tags:
+        - Interactions
+      parameters:
+        - name: InteractionSid
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Interaction details
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Interaction'
+  /Interactions/{InteractionSid}/Channels:
+    get:
+      operationId: listInteractionChannels
+      summary: List interaction channels
+      tags:
+        - Interactions
+      parameters:
+        - name: InteractionSid
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: List of interaction channels
+  /Interactions/{InteractionSid}/Channels/{ChannelSid}:
+    get:
+      operationId: fetchInteractionChannel
+      summary: Fetch an interaction channel
+      tags:
+        - Interactions
+      parameters:
+        - name: InteractionSid
+          in: path
+          required: true
+          schema:
+            type: string
+        - name: ChannelSid
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Interaction channel details
+    post:
+      operationId: updateInteractionChannel
+      summary: Update an interaction channel
+      description: >-
+        Update the status or routing of an interaction channel.
+      tags:
+        - Interactions
+      parameters:
+        - name: InteractionSid
+          in: path
+          required: true
+          schema:
+            type: string
+        - name: ChannelSid
+          in: path
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                status:
+                  type: string
+                  enum:
+                    - closed
+                    - wrapup
+                routing:
+                  type: object
+      responses:
+        '200':
+          description: Interaction channel updated
+  /WebChannels:
+    post:
+      operationId: createWebChannel
+      summary: Create a web channel
+      description: >-
+        Create a new web chat channel for customer interaction.
+      tags:
+        - Web Channels
+      requestBody:
+        required: true
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              type: object
+              required:
+                - FlexFlowSid
+                - Identity
+                - CustomerFriendlyName
+                - ChatFriendlyName
+              properties:
+                FlexFlowSid:
+                  type: string
+                Identity:
+                  type: string
+                CustomerFriendlyName:
+                  type: string
+                ChatFriendlyName:
+                  type: string
+                ChatUniqueName:
+                  type: string
+                PreEngagementData:
+                  type: string
+                  description: JSON string with pre-engagement form data
+      responses:
+        '201':
+          description: Web channel created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/WebChannel'
+  /WebChannels/{ChannelSid}:
+    get:
+      operationId: fetchWebChannel
+      summary: Fetch a web channel
+      tags:
+        - Web Channels
+      parameters:
+        - name: ChannelSid
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Web channel details
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/WebChannel'
+    post:
+      operationId: updateWebChannel
+      summary: Update a web channel
+      tags:
+        - Web Channels
+      parameters:
+        - name: ChannelSid
+          in: path
+          required: true
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              type: object
+              properties:
+                ChatStatus:
+                  type: string
+                  enum:
+                    - inactive
+                PostEngagementData:
+                  type: string
+      responses:
+        '200':
+          description: Web channel updated
+    delete:
+      operationId: deleteWebChannel
+      summary: Delete a web channel
+      tags:
+        - Web Channels
+      parameters:
+        - name: ChannelSid
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '204':
+          description: Web channel deleted
+  /PluginService/Plugins:
+    get:
+      operationId: listPlugins
+      summary: List Flex plugins
+      tags:
+        - Plugins
+      parameters:
+        - name: FlexMetadata
+          in: header
+          schema:
+            type: string
+        - name: PageSize
+          in: query
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: List of plugins
+    post:
+      operationId: createPlugin
+      summary: Create a Flex plugin
+      tags:
+        - Plugins
+      requestBody:
+        required: true
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              type: object
+              required:
+                - UniqueName
+              properties:
+                UniqueName:
+                  type: string
+                FriendlyName:
+                  type: string
+                Description:
+                  type: string
+      responses:
+        '201':
+          description: Plugin created
+  /Insights/QualityManagement/Questionnaires:
+    get:
+      operationId: listQuestionnaires
+      summary: List questionnaires
+      tags:
+        - Insights
+      parameters:
+        - name: Token
+          in: header
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: List of questionnaires
+    post:
+      operationId: createQuestionnaire
+      summary: Create a questionnaire
+      tags:
+        - Insights
+      requestBody:
+        required: true
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              type: object
+              required:
+                - Name
+              properties:
+                Name:
+                  type: string
+                Description:
+                  type: string
+                Active:
+                  type: boolean
+      responses:
+        '201':
+          description: Questionnaire created
+components:
+  securitySchemes:
+    accountSid_authToken:
+      type: http
+      scheme: basic
+      description: >-
+        Use your Twilio Account SID as the username and Auth Token as the
+        password for HTTP Basic authentication.
+  schemas:
+    FlexConfiguration:
+      type: object
+      properties:
+        account_sid:
+          type: string
+          pattern: ^AC[0-9a-fA-F]{32}$
+        status:
+          type: string
+          enum:
+            - ok
+            - inDeployment
+            - notDeployed
+        task_router_workspace_sid:
+          type: string
+        chat_service_instance_sid:
+          type: string
+        flex_service_instance_sid:
+          type: string
+        ui_language:
+          type: string
+        ui_attributes:
+          type: object
+          description: Custom UI configuration attributes
+        ui_dependencies:
+          type: object
+        ui_version:
+          type: string
+        flex_url:
+          type: string
+          format: uri
+        flex_insights_hr:
+          type: object
+        flex_insights_drilldown:
+          type: boolean
+        channel_configs:
+          type: array
+          items:
+            type: object
+        runtime_domain:
+          type: string
+        messaging_service_instance_sid:
+          type: string
+        serverless_service_sids:
+          type: array
+          items:
+            type: string
+        date_created:
+          type: string
+          format: date-time
+        date_updated:
+          type: string
+          format: date-time
+        url:
+          type: string
+          format: uri
+    UpdateFlexConfigurationRequest:
+      type: object
+      properties:
+        ui_attributes:
+          type: object
+        ui_language:
+          type: string
+        ui_version:
+          type: string
+        runtime_domain:
+          type: string
+    FlexChannel:
+      type: object
+      properties:
+        sid:
+          type: string
+        account_sid:
+          type: string
+          pattern: ^AC[0-9a-fA-F]{32}$
+        flex_flow_sid:
+          type: string
+        user_sid:
+          type: string
+        task_sid:
+          type: string
+        date_created:
+          type: string
+          format: date-time
+        date_updated:
+          type: string
+          format: date-time
+        url:
+          type: string
+          format: uri
+    ChannelList:
+      type: object
+      properties:
+        flex_chat_channels:
+          type: array
+          items:
+            $ref: '#/components/schemas/FlexChannel'
+        meta:
+          $ref: '#/components/schemas/PaginationMeta'
+    CreateChannelRequest:
+      type: object
+      required:
+        - FlexFlowSid
+        - Identity
+        - ChatUserFriendlyName
+        - ChatFriendlyName
+      properties:
+        FlexFlowSid:
+          type: string
+        Identity:
+          type: string
+        ChatUserFriendlyName:
+          type: string
+        ChatFriendlyName:
+          type: string
+        Target:
+          type: string
+        ChatUniqueName:
+          type: string
+        PreEngagementData:
+          type: string
+        TaskSid:
+          type: string
+        TaskAttributes:
+          type: string
+        LongLived:
+          type: boolean
+    FlexFlow:
+      type: object
+      properties:
+        sid:
+          type: string
+        account_sid:
+          type: string
+          pattern: ^AC[0-9a-fA-F]{32}$
+        friendly_name:
+          type: string
+        chat_service_sid:
+          type: string
+        channel_type:
+          type: string
+          enum:
+            - web
+            - sms
+            - facebook
+            - whatsapp
+            - line
+            - custom
+        contact_identity:
+          type: string
+        enabled:
+          type: boolean
+        integration_type:
+          type: string
+          enum:
+            - studio
+            - external
+            - task
+        integration:
+          type: object
+        long_lived:
+          type: boolean
+        janitor_enabled:
+          type: boolean
+        date_created:
+          type: string
+          format: date-time
+        date_updated:
+          type: string
+          format: date-time
+        url:
+          type: string
+          format: uri
+    FlexFlowList:
+      type: object
+      properties:
+        flex_flows:
+          type: array
+          items:
+            $ref: '#/components/schemas/FlexFlow'
+        meta:
+          $ref: '#/components/schemas/PaginationMeta'
+    CreateFlexFlowRequest:
+      type: object
+      required:
+        - FriendlyName
+        - ChatServiceSid
+        - ChannelType
+      properties:
+        FriendlyName:
+          type: string
+        ChatServiceSid:
+          type: string
+        ChannelType:
+          type: string
+          enum: [web, sms, facebook, whatsapp, line, custom]
+        ContactIdentity:
+          type: string
+        Enabled:
+          type: boolean
+        IntegrationType:
+          type: string
+          enum: [studio, external, task]
+        Integration.FlowSid:
+          type: string
+        Integration.Url:
+          type: string
+          format: uri
+        Integration.WorkspaceSid:
+          type: string
+        Integration.WorkflowSid:
+          type: string
+        Integration.Channel:
+          type: string
+        LongLived:
+          type: boolean
+        JanitorEnabled:
+          type: boolean
+    Interaction:
+      type: object
+      properties:
+        sid:
+          type: string
+        account_sid:
+          type: string
+          pattern: ^AC[0-9a-fA-F]{32}$
+        channel:
+          type: object
+        routing:
+          type: object
+        date_created:
+          type: string
+          format: date-time
+        date_updated:
+          type: string
+          format: date-time
+        url:
+          type: string
+          format: uri
+        links:
+          type: object
+    CreateInteractionRequest:
+      type: object
+      required:
+        - channel
+        - routing
+      properties:
+        channel:
+          type: object
+          required:
+            - type
+            - initiated_by
+            - properties
+          properties:
+            type:
+              type: string
+              enum: [sms, voice, email, chat, whatsapp, facebook, gbm]
+            initiated_by:
+              type: string
+              enum: [agent, customer]
+            properties:
+              type: object
+        routing:
+          type: object
+          required:
+            - properties
+          properties:
+            properties:
+              type: object
+              properties:
+                workspace_sid:
+                  type: string
+                workflow_sid:
+                  type: string
+                task_channel_unique_name:
+                  type: string
+                attributes:
+                  type: object
+    WebChannel:
+      type: object
+      properties:
+        sid:
+          type: string
+        account_sid:
+          type: string
+          pattern: ^AC[0-9a-fA-F]{32}$
+        flex_flow_sid:
+          type: string
+        url:
+          type: string
+          format: uri
+        date_created:
+          type: string
+          format: date-time
+        date_updated:
+          type: string
+          format: date-time
+    PaginationMeta:
+      type: object
+      properties:
+        page:
+          type: integer
+        page_size:
+          type: integer
+        first_page_url:
+          type: string
+          format: uri
+        previous_page_url:
+          type: string
+          format: uri
+        next_page_url:
+          type: string
+          format: uri
+        url:
+          type: string
+          format: uri
+        key:
+          type: string

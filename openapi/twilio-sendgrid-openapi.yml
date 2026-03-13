@@ -1,0 +1,1141 @@
+openapi: 3.1.0
+info:
+  title: Twilio SendGrid Email API
+  description: >-
+    Send, manage, and analyze emails at scale using the Twilio SendGrid Email
+    API. Supports transactional and marketing email, dynamic templates,
+    email validation, sender authentication, suppressions management, and
+    real-time analytics.
+  version: '3.0'
+  contact:
+    name: Twilio SendGrid Support
+    url: https://support.sendgrid.com
+    email: support@sendgrid.com
+  license:
+    name: MIT
+    url: https://opensource.org/licenses/MIT
+  termsOfService: https://www.twilio.com/legal/tos
+externalDocs:
+  description: Twilio SendGrid API Documentation
+  url: https://www.twilio.com/docs/sendgrid
+servers:
+  - url: https://api.sendgrid.com/v3
+    description: SendGrid API v3
+tags:
+  - name: Mail Send
+    description: Send email messages
+  - name: Templates
+    description: Manage dynamic email templates
+  - name: Contacts
+    description: Manage marketing contacts
+  - name: Lists
+    description: Manage contact lists
+  - name: Senders
+    description: Manage verified sender identities
+  - name: Suppressions
+    description: Manage email suppressions and bounces
+  - name: Stats
+    description: Retrieve email analytics and statistics
+  - name: Email Validation
+    description: Validate email addresses
+security:
+  - bearerAuth: []
+paths:
+  /mail/send:
+    post:
+      operationId: sendEmail
+      summary: Send an email
+      description: >-
+        Send an email message to one or more recipients. Supports
+        personalizations, dynamic templates, attachments, categories,
+        and scheduling.
+      tags:
+        - Mail Send
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SendEmailRequest'
+      responses:
+        '202':
+          description: Email accepted for delivery
+        '400':
+          description: Invalid request
+        '401':
+          description: Unauthorized
+        '413':
+          description: Payload too large
+        '429':
+          description: Rate limit exceeded
+  /templates:
+    get:
+      operationId: listTemplates
+      summary: List email templates
+      description: >-
+        Retrieve all transactional or dynamic templates.
+      tags:
+        - Templates
+      parameters:
+        - name: generations
+          in: query
+          description: Filter by template generation
+          schema:
+            type: string
+            enum:
+              - legacy
+              - dynamic
+        - name: page_size
+          in: query
+          schema:
+            type: integer
+            minimum: 1
+            maximum: 200
+      responses:
+        '200':
+          description: List of templates
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TemplateList'
+    post:
+      operationId: createTemplate
+      summary: Create an email template
+      tags:
+        - Templates
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - name
+              properties:
+                name:
+                  type: string
+                  description: Template name (max 100 characters)
+                  maxLength: 100
+                generation:
+                  type: string
+                  enum: [legacy, dynamic]
+                  default: dynamic
+      responses:
+        '201':
+          description: Template created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Template'
+  /templates/{template_id}:
+    get:
+      operationId: fetchTemplate
+      summary: Fetch a template
+      tags:
+        - Templates
+      parameters:
+        - name: template_id
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '200':
+          description: Template details
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Template'
+        '404':
+          description: Template not found
+    patch:
+      operationId: updateTemplate
+      summary: Update a template
+      tags:
+        - Templates
+      parameters:
+        - name: template_id
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                  maxLength: 100
+      responses:
+        '200':
+          description: Template updated
+    delete:
+      operationId: deleteTemplate
+      summary: Delete a template
+      tags:
+        - Templates
+      parameters:
+        - name: template_id
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '204':
+          description: Template deleted
+  /templates/{template_id}/versions:
+    post:
+      operationId: createTemplateVersion
+      summary: Create a template version
+      tags:
+        - Templates
+      parameters:
+        - name: template_id
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateTemplateVersionRequest'
+      responses:
+        '201':
+          description: Template version created
+  /marketing/contacts:
+    get:
+      operationId: listContacts
+      summary: List marketing contacts
+      description: >-
+        Retrieve a paginated list of marketing contacts.
+      tags:
+        - Contacts
+      responses:
+        '200':
+          description: List of contacts
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ContactList'
+    put:
+      operationId: upsertContacts
+      summary: Add or update contacts
+      description: >-
+        Add new contacts or update existing ones. Contacts are matched
+        by email address.
+      tags:
+        - Contacts
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                list_ids:
+                  type: array
+                  items:
+                    type: string
+                    format: uuid
+                  description: List IDs to add contacts to
+                contacts:
+                  type: array
+                  items:
+                    $ref: '#/components/schemas/ContactRequest'
+                  maxItems: 30000
+      responses:
+        '202':
+          description: Contacts accepted for processing
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  job_id:
+                    type: string
+    delete:
+      operationId: deleteContacts
+      summary: Delete contacts
+      tags:
+        - Contacts
+      parameters:
+        - name: ids
+          in: query
+          required: true
+          description: Comma-separated contact IDs
+          schema:
+            type: string
+      responses:
+        '202':
+          description: Contacts deletion accepted
+  /marketing/contacts/search:
+    post:
+      operationId: searchContacts
+      summary: Search contacts
+      description: >-
+        Search contacts using SGQL (SendGrid Query Language).
+      tags:
+        - Contacts
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - query
+              properties:
+                query:
+                  type: string
+                  description: SGQL query string
+      responses:
+        '200':
+          description: Search results
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ContactList'
+  /marketing/lists:
+    get:
+      operationId: listContactLists
+      summary: List contact lists
+      tags:
+        - Lists
+      parameters:
+        - name: page_size
+          in: query
+          schema:
+            type: integer
+            minimum: 1
+            maximum: 1000
+      responses:
+        '200':
+          description: List of contact lists
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ContactListCollection'
+    post:
+      operationId: createContactList
+      summary: Create a contact list
+      tags:
+        - Lists
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - name
+              properties:
+                name:
+                  type: string
+      responses:
+        '201':
+          description: List created
+  /marketing/lists/{list_id}:
+    get:
+      operationId: fetchContactList
+      summary: Fetch a contact list
+      tags:
+        - Lists
+      parameters:
+        - name: list_id
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '200':
+          description: Contact list details
+    patch:
+      operationId: updateContactList
+      summary: Update a contact list
+      tags:
+        - Lists
+      parameters:
+        - name: list_id
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+      responses:
+        '200':
+          description: List updated
+    delete:
+      operationId: deleteContactList
+      summary: Delete a contact list
+      tags:
+        - Lists
+      parameters:
+        - name: list_id
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+        - name: delete_contacts
+          in: query
+          description: Whether to delete contacts in the list
+          schema:
+            type: boolean
+            default: false
+      responses:
+        '200':
+          description: List deleted
+  /verified_senders:
+    get:
+      operationId: listVerifiedSenders
+      summary: List verified senders
+      tags:
+        - Senders
+      responses:
+        '200':
+          description: List of verified senders
+    post:
+      operationId: createVerifiedSender
+      summary: Create a verified sender
+      tags:
+        - Senders
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateVerifiedSenderRequest'
+      responses:
+        '201':
+          description: Verified sender created
+        '400':
+          description: Invalid request
+  /suppression/bounces:
+    get:
+      operationId: listBounces
+      summary: List bounced emails
+      tags:
+        - Suppressions
+      parameters:
+        - name: start_time
+          in: query
+          schema:
+            type: integer
+            description: Start of date range (Unix timestamp)
+        - name: end_time
+          in: query
+          schema:
+            type: integer
+        - name: limit
+          in: query
+          schema:
+            type: integer
+            default: 500
+        - name: offset
+          in: query
+          schema:
+            type: integer
+            default: 0
+      responses:
+        '200':
+          description: List of bounces
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Bounce'
+    delete:
+      operationId: deleteBounces
+      summary: Delete bounces
+      tags:
+        - Suppressions
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                delete_all:
+                  type: boolean
+                emails:
+                  type: array
+                  items:
+                    type: string
+                    format: email
+      responses:
+        '204':
+          description: Bounces deleted
+  /suppression/blocks:
+    get:
+      operationId: listBlocks
+      summary: List blocked emails
+      tags:
+        - Suppressions
+      parameters:
+        - name: start_time
+          in: query
+          schema:
+            type: integer
+        - name: end_time
+          in: query
+          schema:
+            type: integer
+        - name: limit
+          in: query
+          schema:
+            type: integer
+            default: 500
+      responses:
+        '200':
+          description: List of blocks
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Block'
+  /suppression/unsubscribes:
+    get:
+      operationId: listGlobalUnsubscribes
+      summary: List global unsubscribes
+      tags:
+        - Suppressions
+      parameters:
+        - name: start_time
+          in: query
+          schema:
+            type: integer
+        - name: end_time
+          in: query
+          schema:
+            type: integer
+        - name: limit
+          in: query
+          schema:
+            type: integer
+            default: 500
+      responses:
+        '200':
+          description: List of global unsubscribes
+  /stats:
+    get:
+      operationId: fetchGlobalStats
+      summary: Fetch global email stats
+      description: >-
+        Retrieve aggregate email statistics including requests, deliveries,
+        opens, clicks, bounces, and more.
+      tags:
+        - Stats
+      parameters:
+        - name: start_date
+          in: query
+          required: true
+          description: Start date (YYYY-MM-DD)
+          schema:
+            type: string
+            format: date
+        - name: end_date
+          in: query
+          description: End date (YYYY-MM-DD)
+          schema:
+            type: string
+            format: date
+        - name: aggregated_by
+          in: query
+          schema:
+            type: string
+            enum:
+              - day
+              - week
+              - month
+      responses:
+        '200':
+          description: Email statistics
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/StatEntry'
+  /validations/email:
+    post:
+      operationId: validateEmail
+      summary: Validate an email address
+      description: >-
+        Check if an email address is valid and deliverable.
+      tags:
+        - Email Validation
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - email
+              properties:
+                email:
+                  type: string
+                  format: email
+                source:
+                  type: string
+                  description: Source identifier for validation tracking
+      responses:
+        '200':
+          description: Validation result
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EmailValidation'
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      description: >-
+        Use a SendGrid API key as the bearer token for authentication.
+  schemas:
+    SendEmailRequest:
+      type: object
+      required:
+        - personalizations
+        - from
+      properties:
+        personalizations:
+          type: array
+          items:
+            $ref: '#/components/schemas/Personalization'
+          minItems: 1
+          maxItems: 1000
+          description: Recipients and per-recipient settings
+        from:
+          $ref: '#/components/schemas/EmailAddress'
+        reply_to:
+          $ref: '#/components/schemas/EmailAddress'
+        reply_to_list:
+          type: array
+          items:
+            $ref: '#/components/schemas/EmailAddress'
+          maxItems: 1000
+        subject:
+          type: string
+          description: Global subject line
+        content:
+          type: array
+          items:
+            type: object
+            required:
+              - type
+              - value
+            properties:
+              type:
+                type: string
+                description: MIME type (text/plain or text/html)
+              value:
+                type: string
+                description: Content body
+        attachments:
+          type: array
+          items:
+            $ref: '#/components/schemas/Attachment'
+        template_id:
+          type: string
+          description: ID of a dynamic template to use
+        headers:
+          type: object
+          additionalProperties:
+            type: string
+        categories:
+          type: array
+          items:
+            type: string
+          maxItems: 10
+          description: Categories for tracking (max 10)
+        send_at:
+          type: integer
+          description: Unix timestamp for scheduled send (up to 72 hours)
+        batch_id:
+          type: string
+          description: Batch ID for grouping scheduled sends
+        asm:
+          type: object
+          properties:
+            group_id:
+              type: integer
+              description: Unsubscribe group ID
+            groups_to_display:
+              type: array
+              items:
+                type: integer
+              maxItems: 25
+        ip_pool_name:
+          type: string
+          description: Name of the IP pool for sending
+        tracking_settings:
+          type: object
+          properties:
+            click_tracking:
+              type: object
+              properties:
+                enable:
+                  type: boolean
+                enable_text:
+                  type: boolean
+            open_tracking:
+              type: object
+              properties:
+                enable:
+                  type: boolean
+                substitution_tag:
+                  type: string
+            subscription_tracking:
+              type: object
+              properties:
+                enable:
+                  type: boolean
+    Personalization:
+      type: object
+      required:
+        - to
+      properties:
+        to:
+          type: array
+          items:
+            $ref: '#/components/schemas/EmailAddress'
+          minItems: 1
+        cc:
+          type: array
+          items:
+            $ref: '#/components/schemas/EmailAddress'
+        bcc:
+          type: array
+          items:
+            $ref: '#/components/schemas/EmailAddress'
+        subject:
+          type: string
+        headers:
+          type: object
+          additionalProperties:
+            type: string
+        substitutions:
+          type: object
+          additionalProperties:
+            type: string
+        dynamic_template_data:
+          type: object
+          description: Dynamic template handlebars data
+        custom_args:
+          type: object
+          additionalProperties:
+            type: string
+        send_at:
+          type: integer
+    EmailAddress:
+      type: object
+      required:
+        - email
+      properties:
+        email:
+          type: string
+          format: email
+        name:
+          type: string
+    Attachment:
+      type: object
+      required:
+        - content
+        - filename
+      properties:
+        content:
+          type: string
+          description: Base64 encoded attachment content
+        filename:
+          type: string
+        type:
+          type: string
+          description: MIME type of the attachment
+        disposition:
+          type: string
+          enum: [inline, attachment]
+          default: attachment
+        content_id:
+          type: string
+          description: Content ID for inline attachments
+    Template:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        name:
+          type: string
+        generation:
+          type: string
+          enum: [legacy, dynamic]
+        updated_at:
+          type: string
+          format: date-time
+        versions:
+          type: array
+          items:
+            $ref: '#/components/schemas/TemplateVersion'
+    TemplateVersion:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        template_id:
+          type: string
+          format: uuid
+        name:
+          type: string
+        subject:
+          type: string
+        html_content:
+          type: string
+        plain_content:
+          type: string
+        active:
+          type: integer
+          enum: [0, 1]
+        editor:
+          type: string
+          enum: [code, design]
+        generate_plain_content:
+          type: boolean
+        updated_at:
+          type: string
+          format: date-time
+    TemplateList:
+      type: object
+      properties:
+        result:
+          type: array
+          items:
+            $ref: '#/components/schemas/Template'
+        _metadata:
+          type: object
+          properties:
+            count:
+              type: integer
+    CreateTemplateVersionRequest:
+      type: object
+      required:
+        - name
+        - subject
+      properties:
+        name:
+          type: string
+          maxLength: 100
+        subject:
+          type: string
+        html_content:
+          type: string
+        plain_content:
+          type: string
+        active:
+          type: integer
+          enum: [0, 1]
+        editor:
+          type: string
+          enum: [code, design]
+        generate_plain_content:
+          type: boolean
+          default: true
+        test_data:
+          type: string
+          description: JSON test data for template preview
+    ContactRequest:
+      type: object
+      required:
+        - email
+      properties:
+        email:
+          type: string
+          format: email
+        first_name:
+          type: string
+        last_name:
+          type: string
+        address_line_1:
+          type: string
+        address_line_2:
+          type: string
+        city:
+          type: string
+        state_province_region:
+          type: string
+        postal_code:
+          type: string
+        country:
+          type: string
+        phone_number:
+          type: string
+        alternate_emails:
+          type: array
+          items:
+            type: string
+            format: email
+          maxItems: 5
+        custom_fields:
+          type: object
+          additionalProperties: true
+    Contact:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        email:
+          type: string
+          format: email
+        first_name:
+          type: string
+        last_name:
+          type: string
+        phone_number:
+          type: string
+        address_line_1:
+          type: string
+        address_line_2:
+          type: string
+        city:
+          type: string
+        state_province_region:
+          type: string
+        postal_code:
+          type: string
+        country:
+          type: string
+        alternate_emails:
+          type: array
+          items:
+            type: string
+        list_ids:
+          type: array
+          items:
+            type: string
+        custom_fields:
+          type: object
+        created_at:
+          type: string
+          format: date-time
+        updated_at:
+          type: string
+          format: date-time
+    ContactList:
+      type: object
+      properties:
+        result:
+          type: array
+          items:
+            $ref: '#/components/schemas/Contact'
+        contact_count:
+          type: integer
+        _metadata:
+          type: object
+    ContactListCollection:
+      type: object
+      properties:
+        result:
+          type: array
+          items:
+            type: object
+            properties:
+              id:
+                type: string
+                format: uuid
+              name:
+                type: string
+              contact_count:
+                type: integer
+              _metadata:
+                type: object
+    CreateVerifiedSenderRequest:
+      type: object
+      required:
+        - nickname
+        - from_email
+        - from_name
+        - reply_to
+        - reply_to_name
+        - address
+        - city
+        - country
+      properties:
+        nickname:
+          type: string
+        from_email:
+          type: string
+          format: email
+        from_name:
+          type: string
+        reply_to:
+          type: string
+          format: email
+        reply_to_name:
+          type: string
+        address:
+          type: string
+        address2:
+          type: string
+        city:
+          type: string
+        state:
+          type: string
+        zip:
+          type: string
+        country:
+          type: string
+    Bounce:
+      type: object
+      properties:
+        email:
+          type: string
+          format: email
+        status:
+          type: string
+          description: SMTP status code
+        reason:
+          type: string
+          description: Bounce reason from the receiving server
+        created:
+          type: integer
+          description: Unix timestamp when the bounce occurred
+    Block:
+      type: object
+      properties:
+        email:
+          type: string
+          format: email
+        status:
+          type: string
+        reason:
+          type: string
+        created:
+          type: integer
+    StatEntry:
+      type: object
+      properties:
+        date:
+          type: string
+          format: date
+        stats:
+          type: array
+          items:
+            type: object
+            properties:
+              metrics:
+                type: object
+                properties:
+                  requests:
+                    type: integer
+                  delivered:
+                    type: integer
+                  opens:
+                    type: integer
+                  unique_opens:
+                    type: integer
+                  clicks:
+                    type: integer
+                  unique_clicks:
+                    type: integer
+                  bounces:
+                    type: integer
+                  bounce_drops:
+                    type: integer
+                  spam_reports:
+                    type: integer
+                  spam_report_drops:
+                    type: integer
+                  unsubscribes:
+                    type: integer
+                  unsubscribe_drops:
+                    type: integer
+                  invalid_emails:
+                    type: integer
+                  blocks:
+                    type: integer
+                  deferred:
+                    type: integer
+                  processed:
+                    type: integer
+    EmailValidation:
+      type: object
+      properties:
+        result:
+          type: object
+          properties:
+            email:
+              type: string
+              format: email
+            verdict:
+              type: string
+              enum:
+                - Valid
+                - Risky
+                - Invalid
+            score:
+              type: number
+              minimum: 0
+              maximum: 1
+              description: Confidence score (0 to 1)
+            local:
+              type: string
+              description: Local part of the email
+            host:
+              type: string
+              description: Domain part of the email
+            suggestion:
+              type: string
+              description: Suggested correction if applicable
+            has_mx_or_a_record:
+              type: boolean
+            checks:
+              type: object
+              properties:
+                domain:
+                  type: object
+                  properties:
+                    has_valid_address_syntax:
+                      type: boolean
+                    has_mx_or_a_record:
+                      type: boolean
+                    is_suspected_disposable_address:
+                      type: boolean
+                local_part:
+                  type: object
+                  properties:
+                    is_suspected_role_address:
+                      type: boolean
+                additional:
+                  type: object
+                  properties:
+                    has_known_bounces:
+                      type: boolean
+                    has_suspected_bounces:
+                      type: boolean
+            ip_address:
+              type: string
+              description: IP address used for validation

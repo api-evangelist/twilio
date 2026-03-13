@@ -1,0 +1,286 @@
+{
+  "@context": {
+    "@version": 1.1,
+    "twilio": "https://www.twilio.com/docs/schemas/",
+    "schema": "https://schema.org/",
+    "xsd": "http://www.w3.org/2001/XMLSchema#",
+    "dcterms": "http://purl.org/dc/terms/",
+
+    "Account": {
+      "@id": "twilio:Account",
+      "@context": {
+        "sid": "twilio:sid",
+        "friendlyName": "schema:name",
+        "status": "twilio:accountStatus",
+        "type": "twilio:accountType",
+        "ownerAccountSid": "twilio:ownerAccountSid",
+        "dateCreated": {
+          "@id": "dcterms:created",
+          "@type": "xsd:dateTime"
+        },
+        "dateUpdated": {
+          "@id": "dcterms:modified",
+          "@type": "xsd:dateTime"
+        }
+      }
+    },
+
+    "Message": {
+      "@id": "twilio:Message",
+      "@context": {
+        "sid": "twilio:sid",
+        "accountSid": "twilio:accountSid",
+        "to": "twilio:recipientNumber",
+        "from": "twilio:senderNumber",
+        "body": "schema:text",
+        "status": "twilio:messageStatus",
+        "direction": "twilio:messageDirection",
+        "numSegments": {
+          "@id": "twilio:numSegments",
+          "@type": "xsd:integer"
+        },
+        "numMedia": {
+          "@id": "twilio:numMedia",
+          "@type": "xsd:integer"
+        },
+        "price": "schema:price",
+        "priceUnit": "schema:priceCurrency",
+        "errorCode": {
+          "@id": "twilio:errorCode",
+          "@type": "xsd:integer"
+        },
+        "errorMessage": "twilio:errorMessage",
+        "dateCreated": {
+          "@id": "dcterms:created",
+          "@type": "xsd:dateTime"
+        },
+        "dateSent": {
+          "@id": "twilio:dateSent",
+          "@type": "xsd:dateTime"
+        }
+      }
+    },
+
+    "Call": {
+      "@id": "twilio:Call",
+      "@context": {
+        "sid": "twilio:sid",
+        "accountSid": "twilio:accountSid",
+        "to": "twilio:recipientNumber",
+        "from": "twilio:senderNumber",
+        "status": "twilio:callStatus",
+        "direction": "twilio:callDirection",
+        "duration": {
+          "@id": "schema:duration",
+          "@type": "xsd:integer"
+        },
+        "price": "schema:price",
+        "priceUnit": "schema:priceCurrency",
+        "answeredBy": "twilio:answeredBy",
+        "callerName": "twilio:callerName",
+        "startTime": {
+          "@id": "twilio:startTime",
+          "@type": "xsd:dateTime"
+        },
+        "endTime": {
+          "@id": "twilio:endTime",
+          "@type": "xsd:dateTime"
+        },
+        "dateCreated": {
+          "@id": "dcterms:created",
+          "@type": "xsd:dateTime"
+        }
+      }
+    },
+
+    "Recording": {
+      "@id": "twilio:Recording",
+      "@context": {
+        "sid": "twilio:sid",
+        "accountSid": "twilio:accountSid",
+        "callSid": "twilio:callSid",
+        "conferenceSid": "twilio:conferenceSid",
+        "status": "twilio:recordingStatus",
+        "channels": {
+          "@id": "twilio:channels",
+          "@type": "xsd:integer"
+        },
+        "source": "twilio:recordingSource",
+        "duration": {
+          "@id": "schema:duration",
+          "@type": "xsd:integer"
+        },
+        "price": "schema:price",
+        "priceUnit": "schema:priceCurrency",
+        "dateCreated": {
+          "@id": "dcterms:created",
+          "@type": "xsd:dateTime"
+        }
+      }
+    },
+
+    "Conference": {
+      "@id": "twilio:Conference",
+      "@context": {
+        "sid": "twilio:sid",
+        "accountSid": "twilio:accountSid",
+        "friendlyName": "schema:name",
+        "status": "twilio:conferenceStatus",
+        "region": "twilio:mediaRegion",
+        "dateCreated": {
+          "@id": "dcterms:created",
+          "@type": "xsd:dateTime"
+        }
+      }
+    },
+
+    "PhoneNumber": {
+      "@id": "twilio:PhoneNumber",
+      "@context": {
+        "sid": "twilio:sid",
+        "phoneNumber": "schema:telephone",
+        "friendlyName": "schema:name",
+        "capabilities": "twilio:capabilities",
+        "voiceUrl": {
+          "@id": "twilio:voiceUrl",
+          "@type": "@id"
+        },
+        "smsUrl": {
+          "@id": "twilio:smsUrl",
+          "@type": "@id"
+        },
+        "dateCreated": {
+          "@id": "dcterms:created",
+          "@type": "xsd:dateTime"
+        }
+      }
+    },
+
+    "Verification": {
+      "@id": "twilio:Verification",
+      "@context": {
+        "sid": "twilio:sid",
+        "serviceSid": "twilio:serviceSid",
+        "accountSid": "twilio:accountSid",
+        "to": "twilio:recipientNumber",
+        "channel": "twilio:verificationChannel",
+        "status": "twilio:verificationStatus",
+        "valid": {
+          "@id": "twilio:valid",
+          "@type": "xsd:boolean"
+        },
+        "dateCreated": {
+          "@id": "dcterms:created",
+          "@type": "xsd:dateTime"
+        }
+      }
+    },
+
+    "VideoRoom": {
+      "@id": "twilio:VideoRoom",
+      "@context": {
+        "sid": "twilio:sid",
+        "uniqueName": "schema:name",
+        "status": "twilio:roomStatus",
+        "type": "twilio:roomType",
+        "maxParticipants": {
+          "@id": "twilio:maxParticipants",
+          "@type": "xsd:integer"
+        },
+        "duration": {
+          "@id": "schema:duration",
+          "@type": "xsd:integer"
+        },
+        "mediaRegion": "twilio:mediaRegion",
+        "recordParticipantsOnConnect": {
+          "@id": "twilio:recordParticipantsOnConnect",
+          "@type": "xsd:boolean"
+        },
+        "dateCreated": {
+          "@id": "dcterms:created",
+          "@type": "xsd:dateTime"
+        },
+        "endTime": {
+          "@id": "twilio:endTime",
+          "@type": "xsd:dateTime"
+        }
+      }
+    },
+
+    "MessagingService": {
+      "@id": "twilio:MessagingService",
+      "@context": {
+        "sid": "twilio:sid",
+        "friendlyName": "schema:name",
+        "stickySender": {
+          "@id": "twilio:stickySender",
+          "@type": "xsd:boolean"
+        },
+        "smartEncoding": {
+          "@id": "twilio:smartEncoding",
+          "@type": "xsd:boolean"
+        },
+        "areaCodeGeomatch": {
+          "@id": "twilio:areaCodeGeomatch",
+          "@type": "xsd:boolean"
+        },
+        "dateCreated": {
+          "@id": "dcterms:created",
+          "@type": "xsd:dateTime"
+        }
+      }
+    },
+
+    "VerifyService": {
+      "@id": "twilio:VerifyService",
+      "@context": {
+        "sid": "twilio:sid",
+        "friendlyName": "schema:name",
+        "codeLength": {
+          "@id": "twilio:codeLength",
+          "@type": "xsd:integer"
+        },
+        "lookupEnabled": {
+          "@id": "twilio:lookupEnabled",
+          "@type": "xsd:boolean"
+        },
+        "dateCreated": {
+          "@id": "dcterms:created",
+          "@type": "xsd:dateTime"
+        }
+      }
+    },
+
+    "FlexConfiguration": {
+      "@id": "twilio:FlexConfiguration",
+      "@context": {
+        "accountSid": "twilio:accountSid",
+        "status": "twilio:flexStatus",
+        "uiVersion": "twilio:uiVersion",
+        "uiLanguage": "twilio:uiLanguage",
+        "dateCreated": {
+          "@id": "dcterms:created",
+          "@type": "xsd:dateTime"
+        }
+      }
+    },
+
+    "SendGridContact": {
+      "@id": "twilio:SendGridContact",
+      "@context": {
+        "email": "schema:email",
+        "firstName": "schema:givenName",
+        "lastName": "schema:familyName",
+        "phoneNumber": "schema:telephone",
+        "city": "schema:addressLocality",
+        "stateProvinceRegion": "schema:addressRegion",
+        "postalCode": "schema:postalCode",
+        "country": "schema:addressCountry",
+        "createdAt": {
+          "@id": "dcterms:created",
+          "@type": "xsd:dateTime"
+        }
+      }
+    }
+  }
+}

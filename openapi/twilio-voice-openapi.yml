@@ -1,0 +1,1047 @@
+openapi: 3.1.0
+info:
+  title: Twilio Voice API
+  description: >-
+    Build and manage voice call experiences with Twilio's Voice API. Make
+    outbound calls, receive inbound calls, control calls in progress with
+    TwiML, record calls, set up conferencing, and manage SIP trunking.
+  version: '2.0'
+  contact:
+    name: Twilio Support
+    url: https://support.twilio.com
+    email: support@twilio.com
+  license:
+    name: Apache 2.0
+    url: https://www.apache.org/licenses/LICENSE-2.0.html
+  termsOfService: https://www.twilio.com/legal/tos
+externalDocs:
+  description: Twilio Voice API Documentation
+  url: https://www.twilio.com/docs/voice
+servers:
+  - url: https://api.twilio.com/2010-04-01
+    description: Twilio REST API v1
+tags:
+  - name: Calls
+    description: Initiate, manage, and monitor voice calls
+  - name: Recordings
+    description: Manage call recordings
+  - name: Conferences
+    description: Manage conference calls and participants
+  - name: Queues
+    description: Manage call queues
+  - name: Transcriptions
+    description: Access call transcriptions
+security:
+  - accountSid_authToken: []
+paths:
+  /Accounts/{AccountSid}/Calls.json:
+    get:
+      operationId: listCalls
+      summary: List calls
+      description: >-
+        Retrieve a list of calls made to and from your account. Results are
+        sorted by DateUpdated descending.
+      tags:
+        - Calls
+      parameters:
+        - $ref: '#/components/parameters/AccountSid'
+        - name: To
+          in: query
+          description: Filter by the phone number that received the call
+          schema:
+            type: string
+        - name: From
+          in: query
+          description: Filter by the phone number that initiated the call
+          schema:
+            type: string
+        - name: Status
+          in: query
+          description: Filter by call status
+          schema:
+            type: string
+            enum:
+              - queued
+              - ringing
+              - in-progress
+              - canceled
+              - completed
+              - failed
+              - busy
+              - no-answer
+        - name: StartTime
+          in: query
+          description: Filter by start time (YYYY-MM-DD)
+          schema:
+            type: string
+            format: date
+        - name: EndTime
+          in: query
+          description: Filter by end time (YYYY-MM-DD)
+          schema:
+            type: string
+            format: date
+        - name: PageSize
+          in: query
+          schema:
+            type: integer
+            minimum: 1
+            maximum: 1000
+            default: 50
+      responses:
+        '200':
+          description: List of calls
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CallList'
+        '401':
+          description: Unauthorized
+    post:
+      operationId: createCall
+      summary: Make a call
+      description: >-
+        Initiate a new outbound phone call. Provide a TwiML URL or
+        ApplicationSid to control the call flow, along with the To and
+        From phone numbers.
+      tags:
+        - Calls
+      parameters:
+        - $ref: '#/components/parameters/AccountSid'
+      requestBody:
+        required: true
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/CreateCallRequest'
+      responses:
+        '201':
+          description: Call initiated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Call'
+        '400':
+          description: Invalid request parameters
+        '401':
+          description: Unauthorized
+  /Accounts/{AccountSid}/Calls/{CallSid}.json:
+    get:
+      operationId: fetchCall
+      summary: Fetch a call
+      description: >-
+        Retrieve details of a specific call by its SID.
+      tags:
+        - Calls
+      parameters:
+        - $ref: '#/components/parameters/AccountSid'
+        - $ref: '#/components/parameters/CallSid'
+      responses:
+        '200':
+          description: Call details
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Call'
+        '401':
+          description: Unauthorized
+        '404':
+          description: Call not found
+    post:
+      operationId: updateCall
+      summary: Modify a live call
+      description: >-
+        Modify an in-progress call. Redirect to a new TwiML URL, end the
+        call, or put the caller on hold.
+      tags:
+        - Calls
+      parameters:
+        - $ref: '#/components/parameters/AccountSid'
+        - $ref: '#/components/parameters/CallSid'
+      requestBody:
+        required: true
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/UpdateCallRequest'
+      responses:
+        '200':
+          description: Call updated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Call'
+        '401':
+          description: Unauthorized
+        '404':
+          description: Call not found
+    delete:
+      operationId: deleteCall
+      summary: Delete a call record
+      description: >-
+        Delete a call record from your account.
+      tags:
+        - Calls
+      parameters:
+        - $ref: '#/components/parameters/AccountSid'
+        - $ref: '#/components/parameters/CallSid'
+      responses:
+        '204':
+          description: Call record deleted
+        '401':
+          description: Unauthorized
+        '404':
+          description: Call not found
+  /Accounts/{AccountSid}/Calls/{CallSid}/Recordings.json:
+    get:
+      operationId: listCallRecordings
+      summary: List recordings for a call
+      description: >-
+        Retrieve a list of recordings associated with a specific call.
+      tags:
+        - Recordings
+      parameters:
+        - $ref: '#/components/parameters/AccountSid'
+        - $ref: '#/components/parameters/CallSid'
+      responses:
+        '200':
+          description: List of recordings
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RecordingList'
+        '401':
+          description: Unauthorized
+    post:
+      operationId: createCallRecording
+      summary: Start recording a call
+      description: >-
+        Start recording an in-progress call.
+      tags:
+        - Recordings
+      parameters:
+        - $ref: '#/components/parameters/AccountSid'
+        - $ref: '#/components/parameters/CallSid'
+      requestBody:
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              type: object
+              properties:
+                RecordingStatusCallback:
+                  type: string
+                  format: uri
+                  description: URL for recording status webhooks
+                RecordingStatusCallbackMethod:
+                  type: string
+                  enum: [GET, POST]
+                RecordingChannels:
+                  type: string
+                  enum: [mono, dual]
+                  description: Number of recording channels
+                Trim:
+                  type: string
+                  enum: [trim-silence, do-not-trim]
+      responses:
+        '201':
+          description: Recording started
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Recording'
+        '401':
+          description: Unauthorized
+  /Accounts/{AccountSid}/Recordings.json:
+    get:
+      operationId: listRecordings
+      summary: List all recordings
+      description: >-
+        Retrieve a list of all recordings associated with your account.
+      tags:
+        - Recordings
+      parameters:
+        - $ref: '#/components/parameters/AccountSid'
+        - name: DateCreated
+          in: query
+          schema:
+            type: string
+            format: date
+        - name: CallSid
+          in: query
+          schema:
+            type: string
+            pattern: ^CA[0-9a-fA-F]{32}$
+        - name: PageSize
+          in: query
+          schema:
+            type: integer
+            minimum: 1
+            maximum: 1000
+      responses:
+        '200':
+          description: List of recordings
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RecordingList'
+        '401':
+          description: Unauthorized
+  /Accounts/{AccountSid}/Recordings/{RecordingSid}.json:
+    get:
+      operationId: fetchRecording
+      summary: Fetch a recording
+      tags:
+        - Recordings
+      parameters:
+        - $ref: '#/components/parameters/AccountSid'
+        - $ref: '#/components/parameters/RecordingSid'
+      responses:
+        '200':
+          description: Recording details
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Recording'
+        '404':
+          description: Recording not found
+    delete:
+      operationId: deleteRecording
+      summary: Delete a recording
+      tags:
+        - Recordings
+      parameters:
+        - $ref: '#/components/parameters/AccountSid'
+        - $ref: '#/components/parameters/RecordingSid'
+      responses:
+        '204':
+          description: Recording deleted
+        '404':
+          description: Recording not found
+  /Accounts/{AccountSid}/Conferences.json:
+    get:
+      operationId: listConferences
+      summary: List conferences
+      description: >-
+        Retrieve a list of conferences within your account.
+      tags:
+        - Conferences
+      parameters:
+        - $ref: '#/components/parameters/AccountSid'
+        - name: Status
+          in: query
+          schema:
+            type: string
+            enum:
+              - init
+              - in-progress
+              - completed
+        - name: FriendlyName
+          in: query
+          schema:
+            type: string
+        - name: DateCreated
+          in: query
+          schema:
+            type: string
+            format: date
+        - name: PageSize
+          in: query
+          schema:
+            type: integer
+            minimum: 1
+            maximum: 1000
+      responses:
+        '200':
+          description: List of conferences
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ConferenceList'
+        '401':
+          description: Unauthorized
+  /Accounts/{AccountSid}/Conferences/{ConferenceSid}.json:
+    get:
+      operationId: fetchConference
+      summary: Fetch a conference
+      tags:
+        - Conferences
+      parameters:
+        - $ref: '#/components/parameters/AccountSid'
+        - name: ConferenceSid
+          in: path
+          required: true
+          schema:
+            type: string
+            pattern: ^CF[0-9a-fA-F]{32}$
+      responses:
+        '200':
+          description: Conference details
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Conference'
+        '404':
+          description: Conference not found
+    post:
+      operationId: updateConference
+      summary: Update a conference
+      description: >-
+        End a conference or announce a message to participants.
+      tags:
+        - Conferences
+      parameters:
+        - $ref: '#/components/parameters/AccountSid'
+        - name: ConferenceSid
+          in: path
+          required: true
+          schema:
+            type: string
+            pattern: ^CF[0-9a-fA-F]{32}$
+      requestBody:
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              type: object
+              properties:
+                Status:
+                  type: string
+                  enum: [completed]
+                  description: Set to completed to end the conference
+                AnnounceUrl:
+                  type: string
+                  format: uri
+                  description: URL for TwiML to play to all participants
+                AnnounceMethod:
+                  type: string
+                  enum: [GET, POST]
+      responses:
+        '200':
+          description: Conference updated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Conference'
+  /Accounts/{AccountSid}/Conferences/{ConferenceSid}/Participants.json:
+    get:
+      operationId: listParticipants
+      summary: List conference participants
+      tags:
+        - Conferences
+      parameters:
+        - $ref: '#/components/parameters/AccountSid'
+        - name: ConferenceSid
+          in: path
+          required: true
+          schema:
+            type: string
+            pattern: ^CF[0-9a-fA-F]{32}$
+      responses:
+        '200':
+          description: List of participants
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ParticipantList'
+    post:
+      operationId: createParticipant
+      summary: Add a participant to a conference
+      tags:
+        - Conferences
+      parameters:
+        - $ref: '#/components/parameters/AccountSid'
+        - name: ConferenceSid
+          in: path
+          required: true
+          schema:
+            type: string
+            pattern: ^CF[0-9a-fA-F]{32}$
+      requestBody:
+        required: true
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              type: object
+              required:
+                - From
+                - To
+              properties:
+                From:
+                  type: string
+                  description: Twilio phone number to use as caller ID
+                To:
+                  type: string
+                  description: Phone number to call and add to conference
+                Muted:
+                  type: boolean
+                Hold:
+                  type: boolean
+                Record:
+                  type: boolean
+                StatusCallback:
+                  type: string
+                  format: uri
+      responses:
+        '201':
+          description: Participant added
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Participant'
+  /Accounts/{AccountSid}/Queues.json:
+    get:
+      operationId: listQueues
+      summary: List call queues
+      tags:
+        - Queues
+      parameters:
+        - $ref: '#/components/parameters/AccountSid'
+      responses:
+        '200':
+          description: List of queues
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/QueueList'
+    post:
+      operationId: createQueue
+      summary: Create a call queue
+      tags:
+        - Queues
+      parameters:
+        - $ref: '#/components/parameters/AccountSid'
+      requestBody:
+        required: true
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              type: object
+              required:
+                - FriendlyName
+              properties:
+                FriendlyName:
+                  type: string
+                  description: Descriptive name for the queue
+                MaxSize:
+                  type: integer
+                  description: Maximum number of calls in the queue
+                  default: 1000
+      responses:
+        '201':
+          description: Queue created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Queue'
+  /Accounts/{AccountSid}/Queues/{QueueSid}.json:
+    get:
+      operationId: fetchQueue
+      summary: Fetch a queue
+      tags:
+        - Queues
+      parameters:
+        - $ref: '#/components/parameters/AccountSid'
+        - name: QueueSid
+          in: path
+          required: true
+          schema:
+            type: string
+            pattern: ^QU[0-9a-fA-F]{32}$
+      responses:
+        '200':
+          description: Queue details
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Queue'
+    post:
+      operationId: updateQueue
+      summary: Update a queue
+      tags:
+        - Queues
+      parameters:
+        - $ref: '#/components/parameters/AccountSid'
+        - name: QueueSid
+          in: path
+          required: true
+          schema:
+            type: string
+            pattern: ^QU[0-9a-fA-F]{32}$
+      requestBody:
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              type: object
+              properties:
+                FriendlyName:
+                  type: string
+                MaxSize:
+                  type: integer
+      responses:
+        '200':
+          description: Queue updated
+    delete:
+      operationId: deleteQueue
+      summary: Delete a queue
+      tags:
+        - Queues
+      parameters:
+        - $ref: '#/components/parameters/AccountSid'
+        - name: QueueSid
+          in: path
+          required: true
+          schema:
+            type: string
+            pattern: ^QU[0-9a-fA-F]{32}$
+      responses:
+        '204':
+          description: Queue deleted
+components:
+  securitySchemes:
+    accountSid_authToken:
+      type: http
+      scheme: basic
+      description: >-
+        Use your Twilio Account SID as the username and Auth Token as the
+        password for HTTP Basic authentication.
+  parameters:
+    AccountSid:
+      name: AccountSid
+      in: path
+      required: true
+      description: The unique identifier of the Twilio account
+      schema:
+        type: string
+        pattern: ^AC[0-9a-fA-F]{32}$
+    CallSid:
+      name: CallSid
+      in: path
+      required: true
+      description: The unique identifier of the call
+      schema:
+        type: string
+        pattern: ^CA[0-9a-fA-F]{32}$
+    RecordingSid:
+      name: RecordingSid
+      in: path
+      required: true
+      description: The unique identifier of the recording
+      schema:
+        type: string
+        pattern: ^RE[0-9a-fA-F]{32}$
+  schemas:
+    Call:
+      type: object
+      properties:
+        sid:
+          type: string
+          pattern: ^CA[0-9a-fA-F]{32}$
+          description: Unique identifier for the call
+        account_sid:
+          type: string
+          pattern: ^AC[0-9a-fA-F]{32}$
+        parent_call_sid:
+          type: string
+          description: SID of the parent call (for child legs)
+        to:
+          type: string
+          description: Phone number or SIP URI that received the call
+        to_formatted:
+          type: string
+          description: Formatted version of the To number
+        from:
+          type: string
+          description: Phone number or client ID that made the call
+        from_formatted:
+          type: string
+          description: Formatted version of the From number
+        phone_number_sid:
+          type: string
+          description: SID of the incoming phone number
+        status:
+          type: string
+          enum:
+            - queued
+            - ringing
+            - in-progress
+            - canceled
+            - completed
+            - failed
+            - busy
+            - no-answer
+          description: Current status of the call
+        direction:
+          type: string
+          enum:
+            - inbound
+            - outbound-api
+            - outbound-dial
+          description: Direction of the call
+        price:
+          type: string
+          description: Price of the call
+        price_unit:
+          type: string
+          description: Currency unit for the price
+        duration:
+          type: string
+          description: Duration of the call in seconds
+        start_time:
+          type: string
+          format: date-time
+          description: When the call started
+        end_time:
+          type: string
+          format: date-time
+          description: When the call ended
+        date_created:
+          type: string
+          format: date-time
+        date_updated:
+          type: string
+          format: date-time
+        answered_by:
+          type: string
+          enum: [human, machine]
+          description: Whether the call was answered by a human or machine
+        caller_name:
+          type: string
+          description: Caller name if available via CNAM lookup
+        forwarded_from:
+          type: string
+          description: Number that forwarded the call
+        group_sid:
+          type: string
+          description: SID that identifies the call group
+        uri:
+          type: string
+        api_version:
+          type: string
+        subresource_uris:
+          type: object
+          properties:
+            recordings:
+              type: string
+            notifications:
+              type: string
+    CallList:
+      type: object
+      properties:
+        calls:
+          type: array
+          items:
+            $ref: '#/components/schemas/Call'
+        first_page_uri:
+          type: string
+        next_page_uri:
+          type: string
+        previous_page_uri:
+          type: string
+        page:
+          type: integer
+        page_size:
+          type: integer
+        uri:
+          type: string
+    CreateCallRequest:
+      type: object
+      required:
+        - To
+        - From
+      properties:
+        To:
+          type: string
+          description: Phone number, SIP URI, or client identifier to call
+        From:
+          type: string
+          description: Twilio phone number or verified caller ID
+        Url:
+          type: string
+          format: uri
+          description: TwiML URL for call instructions
+        ApplicationSid:
+          type: string
+          description: SID of the TwiML application to handle the call
+          pattern: ^AP[0-9a-fA-F]{32}$
+        Method:
+          type: string
+          enum: [GET, POST]
+          default: POST
+        StatusCallback:
+          type: string
+          format: uri
+          description: URL for call status webhooks
+        StatusCallbackMethod:
+          type: string
+          enum: [GET, POST]
+        StatusCallbackEvent:
+          type: array
+          items:
+            type: string
+            enum:
+              - initiated
+              - ringing
+              - answered
+              - completed
+        Timeout:
+          type: integer
+          description: Ring timeout in seconds
+          default: 60
+        Record:
+          type: boolean
+          description: Whether to record the call
+          default: false
+        RecordingChannels:
+          type: string
+          enum: [mono, dual]
+        RecordingStatusCallback:
+          type: string
+          format: uri
+        MachineDetection:
+          type: string
+          enum: [Enable, DetectMessageEnd]
+          description: Enable answering machine detection
+        Twiml:
+          type: string
+          description: Inline TwiML instructions for the call
+        CallerId:
+          type: string
+          description: Caller ID to display on outbound call
+    UpdateCallRequest:
+      type: object
+      properties:
+        Url:
+          type: string
+          format: uri
+          description: Redirect the call to a new TwiML URL
+        Method:
+          type: string
+          enum: [GET, POST]
+        Status:
+          type: string
+          enum: [canceled, completed]
+          description: Set to completed to end the call
+        Twiml:
+          type: string
+          description: Inline TwiML to redirect the call
+    Recording:
+      type: object
+      properties:
+        sid:
+          type: string
+          pattern: ^RE[0-9a-fA-F]{32}$
+          description: Unique identifier for the recording
+        account_sid:
+          type: string
+          pattern: ^AC[0-9a-fA-F]{32}$
+        call_sid:
+          type: string
+          pattern: ^CA[0-9a-fA-F]{32}$
+        conference_sid:
+          type: string
+          description: SID of the conference if applicable
+        channels:
+          type: integer
+          description: Number of channels in the recording
+        status:
+          type: string
+          enum:
+            - processing
+            - completed
+            - absent
+          description: Status of the recording
+        duration:
+          type: string
+          description: Duration of the recording in seconds
+        price:
+          type: string
+        price_unit:
+          type: string
+        source:
+          type: string
+          enum:
+            - DialVerb
+            - Conference
+            - OutboundAPI
+            - Trunking
+            - RecordVerb
+            - StartCallRecordingAPI
+            - StartConferenceRecordingAPI
+        date_created:
+          type: string
+          format: date-time
+        date_updated:
+          type: string
+          format: date-time
+        uri:
+          type: string
+    RecordingList:
+      type: object
+      properties:
+        recordings:
+          type: array
+          items:
+            $ref: '#/components/schemas/Recording'
+        first_page_uri:
+          type: string
+        next_page_uri:
+          type: string
+        page:
+          type: integer
+        page_size:
+          type: integer
+        uri:
+          type: string
+    Conference:
+      type: object
+      properties:
+        sid:
+          type: string
+          pattern: ^CF[0-9a-fA-F]{32}$
+        account_sid:
+          type: string
+          pattern: ^AC[0-9a-fA-F]{32}$
+        friendly_name:
+          type: string
+          description: Friendly name used to identify the conference
+        status:
+          type: string
+          enum:
+            - init
+            - in-progress
+            - completed
+        region:
+          type: string
+          description: Region where the conference is mixed
+        reason_conference_ended:
+          type: string
+          description: Reason the conference ended
+        call_sid_ending_conference:
+          type: string
+          description: SID of the call that ended the conference
+        date_created:
+          type: string
+          format: date-time
+        date_updated:
+          type: string
+          format: date-time
+        uri:
+          type: string
+        subresource_uris:
+          type: object
+          properties:
+            participants:
+              type: string
+            recordings:
+              type: string
+    ConferenceList:
+      type: object
+      properties:
+        conferences:
+          type: array
+          items:
+            $ref: '#/components/schemas/Conference'
+        first_page_uri:
+          type: string
+        next_page_uri:
+          type: string
+        page:
+          type: integer
+        page_size:
+          type: integer
+    Participant:
+      type: object
+      properties:
+        call_sid:
+          type: string
+          pattern: ^CA[0-9a-fA-F]{32}$
+        conference_sid:
+          type: string
+          pattern: ^CF[0-9a-fA-F]{32}$
+        account_sid:
+          type: string
+          pattern: ^AC[0-9a-fA-F]{32}$
+        muted:
+          type: boolean
+        hold:
+          type: boolean
+        coaching:
+          type: boolean
+        status:
+          type: string
+          enum:
+            - queued
+            - connecting
+            - ringing
+            - connected
+            - complete
+            - failed
+        start_conference_on_enter:
+          type: boolean
+        end_conference_on_exit:
+          type: boolean
+        date_created:
+          type: string
+          format: date-time
+        date_updated:
+          type: string
+          format: date-time
+        uri:
+          type: string
+    ParticipantList:
+      type: object
+      properties:
+        participants:
+          type: array
+          items:
+            $ref: '#/components/schemas/Participant'
+        first_page_uri:
+          type: string
+        next_page_uri:
+          type: string
+        page:
+          type: integer
+        page_size:
+          type: integer
+    Queue:
+      type: object
+      properties:
+        sid:
+          type: string
+          pattern: ^QU[0-9a-fA-F]{32}$
+        account_sid:
+          type: string
+          pattern: ^AC[0-9a-fA-F]{32}$
+        friendly_name:
+          type: string
+        current_size:
+          type: integer
+          description: Number of calls currently in the queue
+        max_size:
+          type: integer
+          description: Maximum number of calls in the queue
+        average_wait_time:
+          type: integer
+          description: Average wait time in seconds
+        date_created:
+          type: string
+          format: date-time
+        date_updated:
+          type: string
+          format: date-time
+        uri:
+          type: string
+    QueueList:
+      type: object
+      properties:
+        queues:
+          type: array
+          items:
+            $ref: '#/components/schemas/Queue'
+        first_page_uri:
+          type: string
+        next_page_uri:
+          type: string
+        page:
+          type: integer
+        page_size:
+          type: integer
