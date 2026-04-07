@@ -39,7 +39,7 @@ paths:
   /Rooms:
     get:
       operationId: listRooms
-      summary: List rooms
+      summary: Twilio List rooms
       description: >-
         Retrieve a list of video rooms in your account.
       tags:
@@ -85,7 +85,7 @@ paths:
           description: Unauthorized
     post:
       operationId: createRoom
-      summary: Create a room
+      summary: Twilio Create a room
       description: >-
         Create a new video room. Rooms can be configured as group rooms
         (up to 50 participants), small group rooms (up to 4), or peer-to-peer
@@ -112,7 +112,7 @@ paths:
   /Rooms/{RoomSid}:
     get:
       operationId: fetchRoom
-      summary: Fetch a room
+      summary: Twilio Fetch a room
       description: >-
         Retrieve details of a specific video room.
       tags:
@@ -130,7 +130,7 @@ paths:
           description: Room not found
     post:
       operationId: updateRoom
-      summary: Update a room
+      summary: Twilio Update a room
       description: >-
         End an in-progress room by setting its status to completed.
       tags:
@@ -163,7 +163,7 @@ paths:
   /Rooms/{RoomSid}/Participants:
     get:
       operationId: listParticipants
-      summary: List room participants
+      summary: Twilio List room participants
       description: >-
         Retrieve a list of participants who have connected to a room.
       tags:
@@ -199,7 +199,7 @@ paths:
   /Rooms/{RoomSid}/Participants/{ParticipantSid}:
     get:
       operationId: fetchParticipant
-      summary: Fetch a participant
+      summary: Twilio Fetch a participant
       tags:
         - Participants
       parameters:
@@ -216,7 +216,7 @@ paths:
           description: Participant not found
     post:
       operationId: updateParticipant
-      summary: Disconnect a participant
+      summary: Twilio Disconnect a participant
       description: >-
         Remove a participant from a room by setting their status to disconnected.
       tags:
@@ -247,7 +247,7 @@ paths:
   /Rooms/{RoomSid}/Participants/{ParticipantSid}/PublishedTracks:
     get:
       operationId: listPublishedTracks
-      summary: List published tracks
+      summary: Twilio List published tracks
       description: >-
         List the tracks a participant has published to a room.
       tags:
@@ -265,7 +265,7 @@ paths:
   /Rooms/{RoomSid}/Participants/{ParticipantSid}/SubscribeRules:
     get:
       operationId: fetchSubscribeRules
-      summary: Fetch subscribe rules
+      summary: Twilio Fetch subscribe rules
       tags:
         - Participants
       parameters:
@@ -280,7 +280,7 @@ paths:
                 $ref: '#/components/schemas/SubscribeRules'
     post:
       operationId: updateSubscribeRules
-      summary: Update subscribe rules
+      summary: Twilio Update subscribe rules
       description: >-
         Update the subscribe rules for a participant to control which tracks
         they receive.
@@ -305,7 +305,7 @@ paths:
   /Rooms/{RoomSid}/Recordings:
     get:
       operationId: listRoomRecordings
-      summary: List room recordings
+      summary: Twilio List room recordings
       tags:
         - Recordings
       parameters:
@@ -335,7 +335,7 @@ paths:
   /Rooms/{RoomSid}/RecordingRules:
     get:
       operationId: fetchRecordingRules
-      summary: Fetch recording rules
+      summary: Twilio Fetch recording rules
       tags:
         - Recording Rules
       parameters:
@@ -349,7 +349,7 @@ paths:
                 $ref: '#/components/schemas/RecordingRules'
     post:
       operationId: updateRecordingRules
-      summary: Update recording rules
+      summary: Twilio Update recording rules
       description: >-
         Update the recording rules for a room to control which tracks are
         recorded.
@@ -373,7 +373,7 @@ paths:
   /Recordings/{RecordingSid}:
     get:
       operationId: fetchRecording
-      summary: Fetch a recording
+      summary: Twilio Fetch a recording
       tags:
         - Recordings
       parameters:
@@ -394,7 +394,7 @@ paths:
           description: Recording not found
     delete:
       operationId: deleteRecording
-      summary: Delete a recording
+      summary: Twilio Delete a recording
       tags:
         - Recordings
       parameters:
@@ -412,7 +412,7 @@ paths:
   /Compositions:
     get:
       operationId: listCompositions
-      summary: List compositions
+      summary: Twilio List compositions
       description: >-
         Retrieve a list of compositions. Compositions combine multiple
         recordings into a single media file.
@@ -449,7 +449,7 @@ paths:
                 $ref: '#/components/schemas/CompositionList'
     post:
       operationId: createComposition
-      summary: Create a composition
+      summary: Twilio Create a composition
       description: >-
         Create a new composition from room recordings. Define the layout,
         resolution, and which audio and video tracks to include.
@@ -473,7 +473,7 @@ paths:
   /Compositions/{CompositionSid}:
     get:
       operationId: fetchComposition
-      summary: Fetch a composition
+      summary: Twilio Fetch a composition
       tags:
         - Compositions
       parameters:
@@ -494,7 +494,7 @@ paths:
           description: Composition not found
     delete:
       operationId: deleteComposition
-      summary: Delete a composition
+      summary: Twilio Delete a composition
       tags:
         - Compositions
       parameters:
@@ -512,7 +512,7 @@ paths:
   /CompositionHooks:
     get:
       operationId: listCompositionHooks
-      summary: List composition hooks
+      summary: Twilio List composition hooks
       tags:
         - Composition Hooks
       parameters:
@@ -535,7 +535,7 @@ paths:
                 $ref: '#/components/schemas/CompositionHookList'
     post:
       operationId: createCompositionHook
-      summary: Create a composition hook
+      summary: Twilio Create a composition hook
       description: >-
         Create a composition hook that automatically generates compositions
         when rooms complete.
@@ -557,7 +557,7 @@ paths:
   /CompositionHooks/{CompositionHookSid}:
     get:
       operationId: fetchCompositionHook
-      summary: Fetch a composition hook
+      summary: Twilio Fetch a composition hook
       tags:
         - Composition Hooks
       parameters:
@@ -576,7 +576,7 @@ paths:
                 $ref: '#/components/schemas/CompositionHook'
     post:
       operationId: updateCompositionHook
-      summary: Update a composition hook
+      summary: Twilio Update a composition hook
       tags:
         - Composition Hooks
       parameters:
@@ -597,7 +597,7 @@ paths:
           description: Composition hook updated
     delete:
       operationId: deleteCompositionHook
-      summary: Delete a composition hook
+      summary: Twilio Delete a composition hook
       tags:
         - Composition Hooks
       parameters:
@@ -613,7 +613,7 @@ paths:
   /CompositionSettings/Default:
     get:
       operationId: fetchCompositionSettings
-      summary: Fetch composition settings
+      summary: Twilio Fetch composition settings
       tags:
         - Compositions
       responses:
@@ -625,7 +625,7 @@ paths:
                 $ref: '#/components/schemas/CompositionSettings'
     post:
       operationId: createCompositionSettings
-      summary: Create or update composition settings
+      summary: Twilio Create or update composition settings
       description: >-
         Configure the AWS credentials and S3 bucket for storing compositions.
       tags:
@@ -658,7 +658,7 @@ paths:
   /RecordingSettings/Default:
     get:
       operationId: fetchRecordingSettings
-      summary: Fetch recording settings
+      summary: Twilio Fetch recording settings
       tags:
         - Recordings
       responses:
@@ -670,7 +670,7 @@ paths:
                 $ref: '#/components/schemas/RecordingSettings'
     post:
       operationId: createRecordingSettings
-      summary: Create or update recording settings
+      summary: Twilio Create or update recording settings
       description: >-
         Configure the AWS credentials and S3 bucket for storing recordings.
       tags:

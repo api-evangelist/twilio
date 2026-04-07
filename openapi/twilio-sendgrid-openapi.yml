@@ -44,7 +44,7 @@ paths:
   /mail/send:
     post:
       operationId: sendEmail
-      summary: Send an email
+      summary: Twilio Send an email
       description: >-
         Send an email message to one or more recipients. Supports
         personalizations, dynamic templates, attachments, categories,
@@ -71,7 +71,7 @@ paths:
   /templates:
     get:
       operationId: listTemplates
-      summary: List email templates
+      summary: Twilio List email templates
       description: >-
         Retrieve all transactional or dynamic templates.
       tags:
@@ -100,7 +100,7 @@ paths:
                 $ref: '#/components/schemas/TemplateList'
     post:
       operationId: createTemplate
-      summary: Create an email template
+      summary: Twilio Create an email template
       tags:
         - Templates
       requestBody:
@@ -130,7 +130,7 @@ paths:
   /templates/{template_id}:
     get:
       operationId: fetchTemplate
-      summary: Fetch a template
+      summary: Twilio Fetch a template
       tags:
         - Templates
       parameters:
@@ -151,7 +151,7 @@ paths:
           description: Template not found
     patch:
       operationId: updateTemplate
-      summary: Update a template
+      summary: Twilio Update a template
       tags:
         - Templates
       parameters:
@@ -176,7 +176,7 @@ paths:
           description: Template updated
     delete:
       operationId: deleteTemplate
-      summary: Delete a template
+      summary: Twilio Delete a template
       tags:
         - Templates
       parameters:
@@ -192,7 +192,7 @@ paths:
   /templates/{template_id}/versions:
     post:
       operationId: createTemplateVersion
-      summary: Create a template version
+      summary: Twilio Create a template version
       tags:
         - Templates
       parameters:
@@ -214,7 +214,7 @@ paths:
   /marketing/contacts:
     get:
       operationId: listContacts
-      summary: List marketing contacts
+      summary: Twilio List marketing contacts
       description: >-
         Retrieve a paginated list of marketing contacts.
       tags:
@@ -228,7 +228,7 @@ paths:
                 $ref: '#/components/schemas/ContactList'
     put:
       operationId: upsertContacts
-      summary: Add or update contacts
+      summary: Twilio Add or update contacts
       description: >-
         Add new contacts or update existing ones. Contacts are matched
         by email address.
@@ -264,7 +264,7 @@ paths:
                     type: string
     delete:
       operationId: deleteContacts
-      summary: Delete contacts
+      summary: Twilio Delete contacts
       tags:
         - Contacts
       parameters:
@@ -280,7 +280,7 @@ paths:
   /marketing/contacts/search:
     post:
       operationId: searchContacts
-      summary: Search contacts
+      summary: Twilio Search contacts
       description: >-
         Search contacts using SGQL (SendGrid Query Language).
       tags:
@@ -307,7 +307,7 @@ paths:
   /marketing/lists:
     get:
       operationId: listContactLists
-      summary: List contact lists
+      summary: Twilio List contact lists
       tags:
         - Lists
       parameters:
@@ -326,7 +326,7 @@ paths:
                 $ref: '#/components/schemas/ContactListCollection'
     post:
       operationId: createContactList
-      summary: Create a contact list
+      summary: Twilio Create a contact list
       tags:
         - Lists
       requestBody:
@@ -346,7 +346,7 @@ paths:
   /marketing/lists/{list_id}:
     get:
       operationId: fetchContactList
-      summary: Fetch a contact list
+      summary: Twilio Fetch a contact list
       tags:
         - Lists
       parameters:
@@ -361,7 +361,7 @@ paths:
           description: Contact list details
     patch:
       operationId: updateContactList
-      summary: Update a contact list
+      summary: Twilio Update a contact list
       tags:
         - Lists
       parameters:
@@ -385,7 +385,7 @@ paths:
           description: List updated
     delete:
       operationId: deleteContactList
-      summary: Delete a contact list
+      summary: Twilio Delete a contact list
       tags:
         - Lists
       parameters:
@@ -407,7 +407,7 @@ paths:
   /verified_senders:
     get:
       operationId: listVerifiedSenders
-      summary: List verified senders
+      summary: Twilio List verified senders
       tags:
         - Senders
       responses:
@@ -415,7 +415,7 @@ paths:
           description: List of verified senders
     post:
       operationId: createVerifiedSender
-      summary: Create a verified sender
+      summary: Twilio Create a verified sender
       tags:
         - Senders
       requestBody:
@@ -432,7 +432,7 @@ paths:
   /suppression/bounces:
     get:
       operationId: listBounces
-      summary: List bounced emails
+      summary: Twilio List bounced emails
       tags:
         - Suppressions
       parameters:
@@ -466,7 +466,7 @@ paths:
                   $ref: '#/components/schemas/Bounce'
     delete:
       operationId: deleteBounces
-      summary: Delete bounces
+      summary: Twilio Delete bounces
       tags:
         - Suppressions
       requestBody:
@@ -488,7 +488,7 @@ paths:
   /suppression/blocks:
     get:
       operationId: listBlocks
-      summary: List blocked emails
+      summary: Twilio List blocked emails
       tags:
         - Suppressions
       parameters:
@@ -517,7 +517,7 @@ paths:
   /suppression/unsubscribes:
     get:
       operationId: listGlobalUnsubscribes
-      summary: List global unsubscribes
+      summary: Twilio List global unsubscribes
       tags:
         - Suppressions
       parameters:
@@ -540,7 +540,7 @@ paths:
   /stats:
     get:
       operationId: fetchGlobalStats
-      summary: Fetch global email stats
+      summary: Twilio Fetch global email stats
       description: >-
         Retrieve aggregate email statistics including requests, deliveries,
         opens, clicks, bounces, and more.
@@ -580,7 +580,7 @@ paths:
   /validations/email:
     post:
       operationId: validateEmail
-      summary: Validate an email address
+      summary: Twilio Validate an email address
       description: >-
         Check if an email address is valid and deliverable.
       tags:
