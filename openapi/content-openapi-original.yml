@@ -235,8 +235,7 @@ components:
           nullable: true
           description: >-
             The string name of the legacy content template associated with this
-            Content resource, unique across all template names for its account. 
-            Only lowercase letters, numbers and underscores are allowed
+            Content resource, unique across all template names for its account.  Only lowercase letters, numbers and underscores are allowed
         legacy_body:
           type: string
           nullable: true
@@ -373,7 +372,7 @@ paths:
     get:
       description: Fetch a Content resource's approval status by its unique Content Sid
       tags:
-        - - - - ContentV1ApprovalFetch
+        - Content
       parameters:
         - name: Sid
           in: path
@@ -426,7 +425,7 @@ paths:
     get:
       description: Fetch a Content resource by its unique Content Sid
       tags:
-        - - - - ContentV1Content
+        - Content
       parameters:
         - name: Sid
           in: path
@@ -454,7 +453,7 @@ paths:
     delete:
       description: Deletes a Content resource
       tags:
-        - - - - ContentV1Content
+        - Content
       parameters:
         - name: Sid
           in: path
@@ -505,7 +504,7 @@ paths:
         Retrieve a list of Contents belonging to the account used to make the
         request
       tags:
-        - - - - ContentV1Content
+        - Content
       parameters:
         - name: PageSize
           in: query
@@ -563,7 +562,7 @@ paths:
         Retrieve a list of Contents with approval statuses belonging to the
         account used to make the request
       tags:
-        - - - - ContentV1ContentAndApprovals
+        - ContentAndApprovals
       parameters:
         - name: PageSize
           in: query
@@ -620,7 +619,7 @@ paths:
         Retrieve a list of Legacy Contents belonging to the account used to make
         the request
       tags:
-        - - - - ContentV1LegacyContent
+        - LegacyContent
       parameters:
         - name: PageSize
           in: query
@@ -657,10 +656,9 @@ paths:
 servers:
   - url: https://content.twilio.com
 tags:
-  - name: ContentV1ApprovalFetch
-  - name: ContentV1Content
-  - name: ContentV1ContentAndApprovals
-  - name: ContentV1LegacyContent
+  - name: Content
+  - name: ContentAndApprovals
+  - name: LegacyContent
 x-maturity:
   - name: Preview
     description: >-

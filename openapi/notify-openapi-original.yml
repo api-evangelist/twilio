@@ -841,10 +841,8 @@ components:
             The SMS-specific payload that overrides corresponding attributes in
             the generic payload for SMS Bindings.  Each attribute in this value
             maps to the corresponding `form` parameter of the Twilio
-            [Message](https://www.twilio.com/docs/sms/quickstart) resource. 
-            These parameters of the Message resource are supported in snake case
-            format: `body`, `media_urls`, `status_callback`, and `max_price`. 
-            The `status_callback` parameter overrides the corresponding
+            [Message](https://www.twilio.com/docs/sms/quickstart) resource.  These parameters of the Message resource are supported in snake case
+            format: `body`, `media_urls`, `status_callback`, and `max_price`.  The `status_callback` parameter overrides the corresponding
             parameter in the messaging service, if configured. The `media_urls`
             property expects a JSON array.
         FacebookMessenger:
@@ -1145,7 +1143,7 @@ paths:
     get:
       description: ''
       tags:
-        - - - - NotifyV1Binding
+        - Services
       parameters:
         - name: ServiceSid
           in: path
@@ -1185,7 +1183,7 @@ paths:
     delete:
       description: ''
       tags:
-        - - - - NotifyV1Binding
+        - Services
       parameters:
         - name: ServiceSid
           in: path
@@ -1234,7 +1232,7 @@ paths:
     post:
       description: ''
       tags:
-        - - - - NotifyV1Binding
+        - Services
       parameters:
         - name: ServiceSid
           in: path
@@ -1268,7 +1266,7 @@ paths:
     get:
       description: ''
       tags:
-        - - - - NotifyV1Binding
+        - Services
       parameters:
         - name: ServiceSid
           in: path
@@ -1366,7 +1364,7 @@ paths:
     get:
       description: ''
       tags:
-        - - - - NotifyV1Credential
+        - Credentials
       parameters:
         - name: PageSize
           in: query
@@ -1403,7 +1401,7 @@ paths:
     post:
       description: ''
       tags:
-        - - - - NotifyV1Credential
+        - Credentials
       responses:
         '201':
           content:
@@ -1434,7 +1432,7 @@ paths:
     get:
       description: ''
       tags:
-        - - - - NotifyV1Credential
+        - Credentials
       parameters:
         - name: Sid
           in: path
@@ -1462,7 +1460,7 @@ paths:
     post:
       description: ''
       tags:
-        - - - - NotifyV1Credential
+        - Credentials
       parameters:
         - name: Sid
           in: path
@@ -1495,7 +1493,7 @@ paths:
     delete:
       description: ''
       tags:
-        - - - - NotifyV1Credential
+        - Credentials
       parameters:
         - name: Sid
           in: path
@@ -1530,7 +1528,7 @@ paths:
     post:
       description: ''
       tags:
-        - - - - NotifyV1Notification
+        - Services
       parameters:
         - name: ServiceSid
           in: path
@@ -1563,8 +1561,8 @@ paths:
               $ref: '#/components/schemas/CreateNotificationRequest'
       x-twilio:
         conditional:
-          - - identity
-            - tag
+          -   - identity
+              - tag
   /v1/Services:
     servers:
       - url: https://notify.twilio.com
@@ -1595,7 +1593,7 @@ paths:
     post:
       description: ''
       tags:
-        - - - - NotifyV1Service
+        - Services
       responses:
         '201':
           content:
@@ -1616,7 +1614,7 @@ paths:
     get:
       description: ''
       tags:
-        - - - - NotifyV1Service
+        - Services
       parameters:
         - name: FriendlyName
           in: query
@@ -1685,7 +1683,7 @@ paths:
     delete:
       description: ''
       tags:
-        - - - - NotifyV1Service
+        - Services
       parameters:
         - name: Sid
           in: path
@@ -1709,7 +1707,7 @@ paths:
     get:
       description: ''
       tags:
-        - - - - NotifyV1Service
+        - Services
       parameters:
         - name: Sid
           in: path
@@ -1737,7 +1735,7 @@ paths:
     post:
       description: ''
       tags:
-        - - - - NotifyV1Service
+        - Services
       parameters:
         - name: Sid
           in: path
@@ -1770,10 +1768,8 @@ paths:
 servers:
   - url: https://notify.twilio.com
 tags:
-  - name: NotifyV1Binding
-  - name: NotifyV1Credential
-  - name: NotifyV1Notification
-  - name: NotifyV1Service
+  - name: Credentials
+  - name: Services
 x-maturity:
   - name: Beta
     description: >-

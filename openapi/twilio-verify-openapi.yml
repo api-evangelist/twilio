@@ -22,22 +22,20 @@ servers:
   - url: https://verify.twilio.com/v2
     description: Twilio Verify API v2
 tags:
-  - name: Services
-    description: Manage Verify services
-  - name: Verifications
-    description: Send and manage verification codes
-  - name: Verification Checks
-    description: Check verification codes
-  - name: Rate Limits
-    description: Configure rate limiting for verification requests
+  - name: Access Tokens
+    description: Generate access tokens for SDKs
+  - name: Challenges
+    description: Manage push authentication challenges
   - name: Entities
     description: Manage end-user entities for TOTP and push
   - name: Factors
     description: Manage authentication factors (TOTP, push)
-  - name: Challenges
-    description: Manage push authentication challenges
-  - name: Access Tokens
-    description: Generate access tokens for SDKs
+  - name: Rate Limits
+    description: Configure rate limiting for verification requests
+  - name: Verification Checks
+    description: Check verification codes
+  - name: Verifications
+    description: Send and manage verification codes
   - name: Webhooks
     description: Configure event webhooks
 security:
@@ -49,8 +47,7 @@ paths:
       summary: Twilio List Verify services
       description: >-
         Retrieve a list of all Verify services in your account.
-      tags:
-        - Services
+      tags: []
       parameters:
         - name: PageSize
           in: query
@@ -73,8 +70,7 @@ paths:
       description: >-
         Create a new Verify service to configure verification behavior
         including code length, channels, and branding.
-      tags:
-        - Services
+      tags: []
       requestBody:
         required: true
         content:
@@ -94,8 +90,7 @@ paths:
     get:
       operationId: fetchService
       summary: Twilio Fetch a Verify service
-      tags:
-        - Services
+      tags: []
       parameters:
         - $ref: '#/components/parameters/ServiceSid'
       responses:
@@ -110,8 +105,7 @@ paths:
     post:
       operationId: updateService
       summary: Twilio Update a Verify service
-      tags:
-        - Services
+      tags: []
       parameters:
         - $ref: '#/components/parameters/ServiceSid'
       requestBody:
@@ -130,8 +124,7 @@ paths:
     delete:
       operationId: deleteService
       summary: Twilio Delete a Verify service
-      tags:
-        - Services
+      tags: []
       parameters:
         - $ref: '#/components/parameters/ServiceSid'
       responses:
