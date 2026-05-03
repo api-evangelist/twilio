@@ -1,0 +1,160 @@
+naftiko: "1.0.0-alpha1"
+
+info:
+  label: "Twilio Accounts API"
+  description: "Manage Twilio accounts and subaccounts, API keys, credentials, and access safelist."
+  tags:
+    - Twilio
+    - Accounts
+    - Authentication
+    - API Keys
+  created: "2026-05-03"
+  modified: "2026-05-03"
+
+binds:
+  - namespace: env
+    keys:
+      TWILIO_ACCOUNT_SID: TWILIO_ACCOUNT_SID
+      TWILIO_AUTH_TOKEN: TWILIO_AUTH_TOKEN
+
+capability:
+  consumes:
+    - type: http
+      namespace: twilio-accounts
+      baseUri: https://accounts.twilio.com/v1
+      description: "Twilio Accounts API"
+      authentication:
+        type: basic
+        username: "{{TWILIO_ACCOUNT_SID}}"
+        password: "{{TWILIO_AUTH_TOKEN}}"
+      resources:
+        - name: accounts
+          path: /Accounts.json
+          description: "Manage Twilio accounts and subaccounts"
+          operations:
+            - name: list-accounts
+              method: GET
+              description: "Retrieve list of subaccounts"
+              inputParameters:
+                - name: FriendlyName
+                  in: query
+                  type: string
+                  required: false
+                  description: "Filter by friendly name"
+                - name: Status
+                  in: query
+                  type: string
+                  required: false
+                  description: "Filter by status"
+              outputRawFormat: json
+              outputParameters:
+                - name: result
+                  type: object
+                  value: "$."
+            - name: create-account
+              method: POST
+              description: "Create a new subaccount"
+              inputParameters: []
+              outputRawFormat: json
+              outputParameters:
+                - name: result
+                  type: object
+                  value: "$."
+              body:
+                type: form
+                data:
+                  FriendlyName: "{{tools.friendly_name}}"
+        - name: keys
+          path: /Accounts/{AccountSid}/Keys.json
+          description: "Manage API keys"
+          operations:
+            - name: list-keys
+              method: GET
+              description: "List API keys for an account"
+              inputParameters:
+                - name: AccountSid
+                  in: path
+                  type: string
+                  required: true
+                  description: "Twilio Account SID"
+              outputRawFormat: json
+              outputParameters:
+                - name: result
+                  type: object
+                  value: "$."
+            - name: create-key
+              method: POST
+              description: "Create a new API key"
+              inputParameters:
+                - name: AccountSid
+                  in: path
+                  type: string
+                  required: true
+                  description: "Twilio Account SID"
+              outputRawFormat: json
+              outputParameters:
+                - name: result
+                  type: object
+                  value: "$."
+              body:
+                type: form
+                data:
+                  FriendlyName: "{{tools.friendly_name}}"
+
+  exposes:
+    - type: rest
+      port: 8106
+      namespace: twilio-accounts-api
+      resources:
+        - path: /v1/accounts
+          name: accounts
+          description: "Manage Twilio accounts"
+          operations:
+            - method: GET
+              name: list-accounts
+              description: "List accounts"
+              call: "twilio-accounts.list-accounts"
+              outputParameters:
+                - type: object
+                  mapping: "$."
+            - method: POST
+              name: create-account
+              description: "Create a subaccount"
+              call: "twilio-accounts.create-account"
+              outputParameters:
+                - type: object
+                  mapping: "$."
+
+    - type: mcp
+      port: 9106
+      namespace: twilio-accounts-mcp
+      transport: http
+      tools:
+        - name: list-accounts
+          description: "List Twilio accounts and subaccounts"
+          hints:
+            readOnly: true
+            openWorld: false
+          call: "twilio-accounts.list-accounts"
+          outputParameters:
+            - type: object
+              mapping: "$."
+        - name: create-account
+          description: "Create a new subaccount"
+          hints:
+            readOnly: false
+            destructive: false
+            idempotent: false
+          call: "twilio-accounts.create-account"
+          outputParameters:
+            - type: object
+              mapping: "$."
+        - name: list-keys
+          description: "List API keys for account management"
+          hints:
+            readOnly: true
+            openWorld: false
+          call: "twilio-accounts.list-keys"
+          outputParameters:
+            - type: object
+              mapping: "$."

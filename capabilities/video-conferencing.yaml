@@ -1,0 +1,115 @@
+naftiko: "1.0.0-alpha1"
+
+info:
+  label: "Twilio Video Conferencing"
+  description: >-
+    Real-time video communication capability combining Twilio Video for room management
+    and Twilio Accounts for credential management. Used by developers building
+    telehealth, remote collaboration, education, and live event platforms that require
+    video calls, recordings, and multi-participant conferencing.
+  tags:
+    - Twilio
+    - Video
+    - Conferencing
+    - Real Time
+    - Collaboration
+  created: "2026-05-03"
+  modified: "2026-05-03"
+
+binds:
+  - namespace: env
+    keys:
+      TWILIO_ACCOUNT_SID: TWILIO_ACCOUNT_SID
+      TWILIO_AUTH_TOKEN: TWILIO_AUTH_TOKEN
+
+capability:
+  consumes:
+    - import: twilio-video
+      location: ./shared/video.yaml
+    - import: twilio-accounts
+      location: ./shared/accounts.yaml
+
+  exposes:
+    - type: rest
+      port: 8082
+      namespace: twilio-video-conference-api
+      description: "Unified REST API for Twilio video conferencing."
+      resources:
+        - path: /v1/rooms
+          name: rooms
+          description: "Manage video rooms"
+          operations:
+            - method: GET
+              name: list-rooms
+              description: "List video rooms"
+              call: "twilio-video.list-rooms"
+              outputParameters:
+                - type: object
+                  mapping: "$."
+            - method: POST
+              name: create-room
+              description: "Create a video room"
+              call: "twilio-video.create-room"
+              outputParameters:
+                - type: object
+                  mapping: "$."
+
+        - path: /v1/accounts
+          name: accounts
+          description: "Manage accounts for credential administration"
+          operations:
+            - method: GET
+              name: list-accounts
+              description: "List accounts"
+              call: "twilio-accounts.list-accounts"
+              outputParameters:
+                - type: object
+                  mapping: "$."
+
+    - type: mcp
+      port: 9092
+      namespace: twilio-video-conference-mcp
+      transport: http
+      description: "MCP server for AI-assisted Twilio video conferencing."
+      tools:
+        - name: list-rooms
+          description: "List active and completed video rooms"
+          hints:
+            readOnly: true
+            openWorld: true
+          call: "twilio-video.list-rooms"
+          outputParameters:
+            - type: object
+              mapping: "$."
+
+        - name: create-room
+          description: "Create a new video room for real-time communication"
+          hints:
+            readOnly: false
+            destructive: false
+            idempotent: false
+          call: "twilio-video.create-room"
+          outputParameters:
+            - type: object
+              mapping: "$."
+
+        - name: list-accounts
+          description: "List Twilio subaccounts for credential management"
+          hints:
+            readOnly: true
+            openWorld: false
+          call: "twilio-accounts.list-accounts"
+          outputParameters:
+            - type: object
+              mapping: "$."
+
+        - name: create-subaccount
+          description: "Create a new subaccount to isolate resources for a video application"
+          hints:
+            readOnly: false
+            destructive: false
+            idempotent: false
+          call: "twilio-accounts.create-account"
+          outputParameters:
+            - type: object
+              mapping: "$."

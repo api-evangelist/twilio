@@ -1,0 +1,125 @@
+naftiko: "1.0.0-alpha1"
+
+info:
+  label: "Twilio Identity and Fraud Prevention"
+  description: >-
+    Capability combining Twilio Lookup for phone intelligence and Twilio Verify
+    for identity verification. Used by security engineers, fraud prevention teams,
+    and platform architects to validate users, detect fraud, and enforce
+    multi-factor authentication workflows.
+  tags:
+    - Twilio
+    - Identity
+    - Fraud Prevention
+    - Phone Verification
+    - Security
+    - Two Factor Authentication
+  created: "2026-05-03"
+  modified: "2026-05-03"
+
+binds:
+  - namespace: env
+    keys:
+      TWILIO_ACCOUNT_SID: TWILIO_ACCOUNT_SID
+      TWILIO_AUTH_TOKEN: TWILIO_AUTH_TOKEN
+
+capability:
+  consumes:
+    - import: twilio-lookup
+      location: ./shared/lookup.yaml
+    - import: twilio-verify
+      location: ./shared/verify.yaml
+
+  exposes:
+    - type: rest
+      port: 8081
+      namespace: twilio-identity-api
+      description: "Unified REST API for identity verification and fraud prevention."
+      resources:
+        - path: /v1/phone-numbers/{phone_number}
+          name: phone-number-lookup
+          description: "Look up phone number intelligence for fraud detection"
+          operations:
+            - method: GET
+              name: lookup-phone-number
+              description: "Get phone number intelligence including carrier, line type, and fraud risk"
+              call: "twilio-lookup.fetch-phone-number"
+              with:
+                PhoneNumber: "rest.phone_number"
+              outputParameters:
+                - type: object
+                  mapping: "$."
+
+        - path: /v1/verifications
+          name: verifications
+          description: "Send verification codes for identity confirmation"
+          operations:
+            - method: POST
+              name: start-verification
+              description: "Start a verification workflow"
+              call: "twilio-verify.start-verification"
+              outputParameters:
+                - type: object
+                  mapping: "$."
+
+        - path: /v1/verification-checks
+          name: verification-checks
+          description: "Check submitted verification codes"
+          operations:
+            - method: POST
+              name: check-verification
+              description: "Verify a code to confirm user identity"
+              call: "twilio-verify.check-verification"
+              outputParameters:
+                - type: object
+                  mapping: "$."
+
+    - type: mcp
+      port: 9091
+      namespace: twilio-identity-mcp
+      transport: http
+      description: "MCP server for AI-assisted identity verification and fraud prevention."
+      tools:
+        - name: lookup-phone-number
+          description: "Look up phone number intelligence including validation, carrier, line type, SIM swap status, and fraud risk score"
+          hints:
+            readOnly: true
+            openWorld: true
+          call: "twilio-lookup.fetch-phone-number"
+          with:
+            PhoneNumber: "tools.phone_number"
+          outputParameters:
+            - type: object
+              mapping: "$."
+
+        - name: verify-send-code
+          description: "Send a verification code to a user via SMS, voice, WhatsApp, or email to confirm their identity"
+          hints:
+            readOnly: false
+            destructive: false
+            idempotent: false
+          call: "twilio-verify.start-verification"
+          outputParameters:
+            - type: object
+              mapping: "$."
+
+        - name: verify-check-code
+          description: "Check a verification code submitted by a user to complete identity confirmation"
+          hints:
+            readOnly: false
+            destructive: false
+            idempotent: false
+          call: "twilio-verify.check-verification"
+          outputParameters:
+            - type: object
+              mapping: "$."
+
+        - name: fetch-verification-status
+          description: "Fetch the current status of a verification attempt"
+          hints:
+            readOnly: true
+            openWorld: false
+          call: "twilio-verify.fetch-verification"
+          outputParameters:
+            - type: object
+              mapping: "$."

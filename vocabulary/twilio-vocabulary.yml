@@ -1,0 +1,171 @@
+vocabulary:
+  name: Twilio
+  description: >-
+    Vocabulary and taxonomy for the Twilio communications platform covering
+    APIs for messaging, voice, video, verification, and contact center solutions.
+  version: '1.0'
+  created: '2026-05-03'
+  modified: '2026-05-03'
+
+domains:
+  - name: Messaging
+    description: SMS, MMS, and channel messaging concepts
+    terms:
+      - name: Message
+        definition: >-
+          A discrete unit of communication sent between a sender and recipient,
+          delivered over SMS, MMS, or messaging channel.
+      - name: Message SID
+        definition: Unique identifier for a Twilio message, prefixed with SM (SMS) or MM (MMS).
+      - name: Messaging Service
+        definition: >-
+          A configurable pool of senders (phone numbers, short codes, alpha sender IDs)
+          managed as a unit for sending messages at scale.
+      - name: Alpha Sender ID
+        definition: >-
+          A string of up to 11 alphanumeric characters used as the sender ID for
+          messages in countries that support it instead of a phone number.
+      - name: Short Code
+        definition: A 5-6 digit phone number used for high-volume application-to-person (A2P) messaging.
+      - name: A2P 10DLC
+        definition: >-
+          Application-to-Person 10-digit long code, a US carrier standard for SMS
+          messaging that requires brand and campaign registration to reduce spam.
+      - name: Toll-Free Verification
+        definition: >-
+          Process to verify toll-free phone numbers for A2P messaging to avoid carrier
+          filtering and ensure high delivery rates.
+
+  - name: Voice
+    description: Voice call and telephony concepts
+    terms:
+      - name: Call
+        definition: A voice communication session between two or more parties, managed via the Voice API.
+      - name: Call SID
+        definition: Unique identifier for a Twilio call, prefixed with CA.
+      - name: TwiML
+        definition: >-
+          Twilio Markup Language, an XML-based instruction set for controlling call
+          behavior in response to inbound or outbound calls.
+      - name: Conference
+        definition: A multi-party voice call where multiple participants join a named room.
+      - name: Queue
+        definition: A holding area for calls waiting to be answered, with configurable hold music and timeout.
+      - name: Recording
+        definition: An audio file capturing the content of a voice call or conference.
+      - name: SIP Trunking
+        definition: >-
+          Connectivity service that links a customer's existing PBX or VoIP system
+          to the Twilio network using the Session Initiation Protocol.
+
+  - name: Video
+    description: Real-time video communication concepts
+    terms:
+      - name: Room
+        definition: A virtual space where participants connect for real-time video communication.
+      - name: Room Type
+        definition: >-
+          Determines the topology and pricing: P2P (peer-to-peer), Go (small group),
+          Group (large group), or Group Small.
+      - name: Participant
+        definition: A user connected to a video room who can publish and subscribe to tracks.
+      - name: Track
+        definition: A stream of audio or video data published by a participant.
+      - name: Composition
+        definition: A server-side recording that merges multiple participant recordings into a single output file.
+      - name: Recording Rules
+        definition: Configuration that defines which participants and tracks are recorded automatically.
+
+  - name: Verification
+    description: Identity verification and 2FA concepts
+    terms:
+      - name: Verify Service
+        definition: >-
+          A configurable Twilio Verify instance that defines verification settings
+          like code length, delivery channels, and rate limits.
+      - name: Verification
+        definition: An active verification attempt where a code has been sent to the end user.
+      - name: Verification Check
+        definition: The API call that validates a code submitted by the user.
+      - name: Verification Channel
+        definition: The delivery method for the verification code (SMS, voice, email, WhatsApp, push).
+      - name: TOTP
+        definition: Time-Based One-Time Password, a TOTP factor registered via authenticator apps.
+      - name: Silent Network Authentication
+        definition: >-
+          Frictionless verification that authenticates users in the background by
+          confirming they control the SIM card associated with their phone number.
+
+  - name: Phone Numbers
+    description: Phone number management and intelligence concepts
+    terms:
+      - name: E.164 Format
+        definition: >-
+          International phone number format with country code prefix and no separators
+          (e.g., +15017122661).
+      - name: Line Type Intelligence
+        definition: >-
+          Data about whether a phone number is a mobile, landline, VoIP, or toll-free
+          number, useful for routing decisions.
+      - name: SIM Swap
+        definition: Detection of whether a phone number's SIM card was recently changed, indicating possible fraud.
+      - name: SMS Pumping Risk
+        definition: Assessment score indicating likelihood a phone number is being used for SMS pumping fraud.
+      - name: Caller Name
+        definition: CNAM (Calling Name) information associated with an inbound phone number.
+      - name: Account SID
+        definition: >-
+          The primary identifier for a Twilio account (prefixed with AC), used as
+          the username for HTTP Basic Auth.
+      - name: Auth Token
+        definition: Secret credential paired with the Account SID for authenticating API requests.
+
+  - name: Contact Center
+    description: Flex contact center concepts
+    terms:
+      - name: Flex
+        definition: >-
+          Twilio Flex is a fully programmable cloud contact center platform that
+          supports voice, SMS, chat, email, and social messaging channels.
+      - name: Flex Flow
+        definition: Configuration that routes inbound contacts to appropriate channels and agents.
+      - name: Interaction
+        definition: A customer engagement session in Flex, combining a channel contact with agent handling.
+      - name: Plugin
+        definition: A React-based extension to the Flex UI that adds custom functionality.
+      - name: Task Router
+        definition: Intelligent routing engine that matches tasks (customer contacts) to the best available worker.
+      - name: Workspace
+        definition: Top-level TaskRouter container that holds workers, queues, and workflows.
+      - name: Worker
+        definition: An agent or resource in TaskRouter that receives and handles tasks.
+      - name: Workflow
+        definition: A TaskRouter ruleset defining how tasks are evaluated and assigned to queues.
+
+  - name: Authentication
+    description: API security and credential management concepts
+    terms:
+      - name: Account SID
+        definition: Primary account identifier used as username for HTTP Basic Auth.
+      - name: Auth Token
+        definition: Secret credential used as password for HTTP Basic Auth alongside the Account SID.
+      - name: API Key
+        definition: Alternative credential pair (SID + secret) for authenticating without exposing the master Auth Token.
+      - name: Subaccount
+        definition: >-
+          A child account under the main account, useful for isolating resources
+          per customer, project, or environment.
+
+tags:
+  - Communications
+  - Messaging
+  - SMS
+  - MMS
+  - Voice
+  - Video
+  - Verification
+  - Authentication
+  - Phone Numbers
+  - Contact Center
+  - IoT
+  - Email

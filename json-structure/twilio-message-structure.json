@@ -1,0 +1,40 @@
+{
+  "name": "TwilioMessage",
+  "description": "Structure documentation for the Twilio Message resource returned by the Messaging API",
+  "type": "object",
+  "fields": [
+    {"name": "sid", "type": "string", "required": true, "description": "Unique message identifier with SM (SMS) or MM (MMS) prefix"},
+    {"name": "account_sid", "type": "string", "required": true, "description": "Account SID that owns this message"},
+    {"name": "messaging_service_sid", "type": "string|null", "required": false, "description": "Messaging Service SID if sent via a service"},
+    {"name": "to", "type": "string", "required": true, "description": "Recipient phone number in E.164 format"},
+    {"name": "from", "type": "string", "required": true, "description": "Sender phone number, short code, or alphanumeric sender ID"},
+    {"name": "body", "type": "string|null", "required": false, "description": "Message text content, up to 1600 characters"},
+    {"name": "status", "type": "string", "required": true, "description": "Delivery status: queued, sending, sent, delivered, failed, etc."},
+    {"name": "direction", "type": "string", "required": true, "description": "inbound, outbound-api, outbound-call, or outbound-reply"},
+    {"name": "num_segments", "type": "string", "required": false, "description": "Number of SMS segments"},
+    {"name": "num_media", "type": "string", "required": false, "description": "Number of media attachments"},
+    {"name": "price", "type": "string|null", "required": false, "description": "Cost of the message"},
+    {"name": "price_unit", "type": "string", "required": false, "description": "ISO 4217 currency code"},
+    {"name": "error_code", "type": "integer|null", "required": false, "description": "Twilio error code on failure"},
+    {"name": "error_message", "type": "string|null", "required": false, "description": "Human-readable error description"},
+    {"name": "date_created", "type": "string (datetime)", "required": false, "description": "RFC 2822 timestamp of resource creation"},
+    {"name": "date_updated", "type": "string (datetime)", "required": false, "description": "RFC 2822 timestamp of last update"},
+    {"name": "date_sent", "type": "string|null (datetime)", "required": false, "description": "RFC 2822 timestamp when sent"},
+    {"name": "api_version", "type": "string", "required": false, "description": "Twilio API version used"},
+    {"name": "uri", "type": "string", "required": false, "description": "Relative URI for this resource"},
+    {"name": "subresource_uris", "type": "object", "required": false, "description": "URIs for related sub-resources like media and feedback"}
+  ],
+  "example": {
+    "sid": "SM87105d09dfd4049dc7e135166d4bec59",
+    "account_sid": "ACXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX",
+    "to": "+15558675310",
+    "from": "+15017122661",
+    "body": "Hello from Twilio!",
+    "status": "delivered",
+    "direction": "outbound-api",
+    "num_segments": "1",
+    "num_media": "0",
+    "date_created": "Thu, 30 Jul 2015 20:12:31 +0000",
+    "date_sent": "Thu, 30 Jul 2015 20:12:33 +0000"
+  }
+}

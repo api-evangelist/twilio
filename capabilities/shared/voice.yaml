@@ -1,0 +1,160 @@
+naftiko: "1.0.0-alpha1"
+
+info:
+  label: "Twilio Voice API"
+  description: "Make and receive voice calls, manage call recordings, conferences, and call queues."
+  tags:
+    - Twilio
+    - Voice
+    - Calls
+    - Conferencing
+  created: "2026-05-03"
+  modified: "2026-05-03"
+
+binds:
+  - namespace: env
+    keys:
+      TWILIO_ACCOUNT_SID: TWILIO_ACCOUNT_SID
+      TWILIO_AUTH_TOKEN: TWILIO_AUTH_TOKEN
+
+capability:
+  consumes:
+    - type: http
+      namespace: twilio-voice
+      baseUri: https://api.twilio.com/2010-04-01
+      description: "Twilio Voice API"
+      authentication:
+        type: basic
+        username: "{{TWILIO_ACCOUNT_SID}}"
+        password: "{{TWILIO_AUTH_TOKEN}}"
+      resources:
+        - name: calls
+          path: /Accounts/{AccountSid}/Calls.json
+          description: "Initiate and manage voice calls"
+          operations:
+            - name: list-calls
+              method: GET
+              description: "Retrieve a list of calls"
+              inputParameters:
+                - name: AccountSid
+                  in: path
+                  type: string
+                  required: true
+                  description: "Twilio Account SID"
+                - name: To
+                  in: query
+                  type: string
+                  required: false
+                  description: "Filter by destination number"
+                - name: From
+                  in: query
+                  type: string
+                  required: false
+                  description: "Filter by source number"
+                - name: Status
+                  in: query
+                  type: string
+                  required: false
+                  description: "Filter by call status"
+              outputRawFormat: json
+              outputParameters:
+                - name: result
+                  type: object
+                  value: "$."
+            - name: make-call
+              method: POST
+              description: "Initiate an outbound voice call"
+              inputParameters:
+                - name: AccountSid
+                  in: path
+                  type: string
+                  required: true
+                  description: "Twilio Account SID"
+              outputRawFormat: json
+              outputParameters:
+                - name: result
+                  type: object
+                  value: "$."
+              body:
+                type: form
+                data:
+                  To: "{{tools.to}}"
+                  From: "{{tools.from}}"
+                  Url: "{{tools.url}}"
+            - name: fetch-call
+              method: GET
+              description: "Retrieve details for a specific call"
+              inputParameters:
+                - name: AccountSid
+                  in: path
+                  type: string
+                  required: true
+                  description: "Twilio Account SID"
+                - name: CallSid
+                  in: path
+                  type: string
+                  required: true
+                  description: "Call SID"
+              outputRawFormat: json
+              outputParameters:
+                - name: result
+                  type: object
+                  value: "$."
+
+  exposes:
+    - type: rest
+      port: 8102
+      namespace: twilio-voice-api
+      resources:
+        - path: /v1/calls
+          name: calls
+          description: "Manage voice calls"
+          operations:
+            - method: GET
+              name: list-calls
+              description: "List calls"
+              call: "twilio-voice.list-calls"
+              outputParameters:
+                - type: object
+                  mapping: "$."
+            - method: POST
+              name: make-call
+              description: "Make a call"
+              call: "twilio-voice.make-call"
+              outputParameters:
+                - type: object
+                  mapping: "$."
+
+    - type: mcp
+      port: 9102
+      namespace: twilio-voice-mcp
+      transport: http
+      tools:
+        - name: list-calls
+          description: "List voice calls"
+          hints:
+            readOnly: true
+            openWorld: true
+          call: "twilio-voice.list-calls"
+          outputParameters:
+            - type: object
+              mapping: "$."
+        - name: make-call
+          description: "Initiate an outbound voice call"
+          hints:
+            readOnly: false
+            destructive: false
+            idempotent: false
+          call: "twilio-voice.make-call"
+          outputParameters:
+            - type: object
+              mapping: "$."
+        - name: fetch-call
+          description: "Fetch details of a specific call"
+          hints:
+            readOnly: true
+            openWorld: false
+          call: "twilio-voice.fetch-call"
+          outputParameters:
+            - type: object
+              mapping: "$."

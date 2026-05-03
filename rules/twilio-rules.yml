@@ -1,0 +1,122 @@
+extends:
+  - spectral:oas
+
+rules:
+  # Twilio uses "Twilio " prefix in all operation summaries
+  twilio-summary-prefix:
+    description: All operation summaries must start with "Twilio "
+    message: "Summary '{{value}}' must begin with 'Twilio '"
+    severity: warn
+    given: "$.paths[*][get,post,put,patch,delete].summary"
+    then:
+      function: pattern
+      functionOptions:
+        match: "^Twilio "
+
+  # Twilio uses Title Case for summaries
+  twilio-summary-title-case:
+    description: Operation summaries must use Title Case
+    message: "Summary '{{value}}' should use Title Case"
+    severity: warn
+    given: "$.paths[*][get,post,put,patch,delete].summary"
+    then:
+      function: pattern
+      functionOptions:
+        match: "^[A-Z]"
+
+  # Twilio always uses Basic auth with AccountSid:AuthToken
+  twilio-security-scheme:
+    description: Operations must reference an accountSid_authToken security scheme
+    severity: warn
+    given: "$.security"
+    then:
+      field: accountSid_authToken
+      function: defined
+
+  # Twilio uses .json suffix on resource paths for REST API
+  twilio-json-suffix-paths:
+    description: Twilio REST API paths should end with .json for list and single resources
+    message: "Path '{{path}}' should end with .json"
+    severity: hint
+    given: "$.paths[?(!@property.match(/\\.json$/) && !@property.match(/\\{[^}]+\\}$/))]"
+    then:
+      function: truthy
+
+  # All tags must use Title Case
+  twilio-tags-title-case:
+    description: All tags must use Title Case
+    message: "Tag '{{value}}' must use Title Case"
+    severity: warn
+    given: "$.tags[*].name"
+    then:
+      function: pattern
+      functionOptions:
+        match: "^[A-Z]"
+
+  # All operationIds must be camelCase
+  twilio-operation-id-camel-case:
+    description: Operation IDs must use camelCase
+    message: "OperationId '{{value}}' must use camelCase"
+    severity: warn
+    given: "$.paths[*][get,post,put,patch,delete].operationId"
+    then:
+      function: pattern
+      functionOptions:
+        match: "^[a-z][a-zA-Z0-9]*$"
+
+  # Require operationId on all operations
+  twilio-operation-id-required:
+    description: All operations must have an operationId
+    message: "Operation at {{path}} must have an operationId"
+    severity: error
+    given: "$.paths[*][get,post,put,patch,delete]"
+    then:
+      field: operationId
+      function: defined
+
+  # Require description on all operations
+  twilio-operation-description-required:
+    description: All operations must have a description
+    message: "Operation at {{path}} must have a description"
+    severity: warn
+    given: "$.paths[*][get,post,put,patch,delete]"
+    then:
+      field: description
+      function: defined
+
+  # Require tags on all operations
+  twilio-operation-tags-required:
+    description: All operations must have at least one tag
+    message: "Operation at {{path}} must specify at least one tag"
+    severity: warn
+    given: "$.paths[*][get,post,put,patch,delete]"
+    then:
+      field: tags
+      function: defined
+
+  # Twilio uses form-encoded bodies for POST/PUT
+  twilio-form-encoded-bodies:
+    description: POST/PUT request bodies should prefer application/x-www-form-urlencoded
+    severity: hint
+    given: "$.paths[*][post,put].requestBody.content"
+    then:
+      field: "application/x-www-form-urlencoded"
+      function: defined
+
+  # Require contact info
+  twilio-contact-info:
+    description: API info must include contact information
+    severity: warn
+    given: "$.info"
+    then:
+      field: contact
+      function: defined
+
+  # Require servers
+  twilio-servers-defined:
+    description: At least one server must be defined
+    severity: error
+    given: "$"
+    then:
+      field: servers
+      function: defined

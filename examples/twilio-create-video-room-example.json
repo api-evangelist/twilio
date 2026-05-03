@@ -1,0 +1,45 @@
+{
+  "operation": "createRoom",
+  "api": "Twilio Video API",
+  "request": {
+    "method": "POST",
+    "url": "https://video.twilio.com/v1/Rooms",
+    "headers": {
+      "Authorization": "Basic {Base64(AccountSid:AuthToken)}",
+      "Content-Type": "application/x-www-form-urlencoded"
+    },
+    "body": {
+      "UniqueName": "my-video-room",
+      "Type": "group",
+      "MaxParticipants": "10",
+      "RecordParticipantsOnConnect": "false",
+      "StatusCallback": "https://myapp.example.com/rooms/status"
+    }
+  },
+  "response": {
+    "status": 201,
+    "headers": {
+      "Content-Type": "application/json"
+    },
+    "body": {
+      "sid": "RMca86eeac00a04e28a40e99ed26e7d406",
+      "status": "in-progress",
+      "date_created": "2015-07-30T20:00:00Z",
+      "date_updated": "2015-07-30T20:01:33Z",
+      "account_sid": "ACXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX",
+      "enable_turn": true,
+      "unique_name": "my-video-room",
+      "max_participants": 10,
+      "max_concurrent_published_tracks": 16,
+      "record_participants_on_connect": false,
+      "video_codecs": ["VP8", "H264"],
+      "media_region": "us1",
+      "type": "group",
+      "url": "https://video.twilio.com/v1/Rooms/RMca86eeac00a04e28a40e99ed26e7d406",
+      "links": {
+        "participants": "https://video.twilio.com/v1/Rooms/RMca86eeac00a04e28a40e99ed26e7d406/Participants",
+        "recordings": "https://video.twilio.com/v1/Rooms/RMca86eeac00a04e28a40e99ed26e7d406/Recordings"
+      }
+    }
+  }
+}
