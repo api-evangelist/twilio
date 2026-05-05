@@ -1,0 +1,130 @@
+specification: API Commons Plans
+specificationVersion: '0.1'
+schema: https://raw.githubusercontent.com/api-evangelist/interface-research/main/schema/api-commons.yml#/$defs/Plans
+provider: Twilio
+providerId: twilio
+created: '2026-05-04'
+modified: '2026-05-04'
+reconciled: true
+tags:
+  - Communications
+  - SMS
+  - Voice
+  - Email
+  - CPaaS
+description: Twilio is pay-as-you-go per message/minute; volume committed-use discounts available via
+  sales. Pricing varies significantly by destination country and carrier surcharges. US-only rates shown.
+sources:
+  - https://www.twilio.com/en-us/sms/pricing/us
+  - https://www.twilio.com/en-us/voice/pricing/us
+  - https://www.twilio.com/docs/usage/api/rate-limits
+plans:
+  - id: twilio-payg
+    name: Pay As You Go
+    type: usage-based
+    description: 'Default Twilio billing: per-message and per-minute, no monthly minimum beyond phone
+      number rentals.'
+    entries:
+      - label: SMS outbound (US Long Code)
+        name: sms_out_us
+        type: metered
+        metric: segment
+        limit: -1
+        timeFrame: usage
+        geo: US
+        unit: 1
+        price: '0.0083'
+        userMultiplied: false
+      - label: SMS inbound (US Long Code)
+        name: sms_in_us
+        type: metered
+        metric: segment
+        limit: -1
+        timeFrame: usage
+        geo: US
+        unit: 1
+        price: '0.0083'
+        userMultiplied: false
+      - label: MMS outbound (US Long Code)
+        name: mms_out_us
+        type: metered
+        metric: message
+        limit: -1
+        timeFrame: usage
+        geo: US
+        unit: 1
+        price: '0.0220'
+        userMultiplied: false
+      - label: MMS inbound (US Long Code)
+        name: mms_in_us
+        type: metered
+        metric: message
+        limit: -1
+        timeFrame: usage
+        geo: US
+        unit: 1
+        price: '0.0165'
+        userMultiplied: false
+      - label: Voice outbound (US local)
+        name: voice_out_us
+        type: metered
+        metric: minute
+        limit: -1
+        timeFrame: usage
+        geo: US
+        unit: 1
+        price: '0.0140'
+        userMultiplied: false
+      - label: Voice inbound (US local)
+        name: voice_in_us
+        type: metered
+        metric: minute
+        limit: -1
+        timeFrame: usage
+        geo: US
+        unit: 1
+        price: '0.0085'
+        userMultiplied: false
+      - label: Phone number rental (US local)
+        name: phone_local
+        type: subscription
+        metric: number
+        limit: -1
+        timeFrame: month
+        geo: US
+        unit: 1
+        price: '1.15'
+        userMultiplied: false
+      - label: Phone number rental (US toll-free)
+        name: phone_tollfree
+        type: subscription
+        metric: number
+        limit: -1
+        timeFrame: month
+        geo: US
+        unit: 1
+        price: '2.15'
+        userMultiplied: false
+    elements:
+      - name: All API products on demand
+      - name: Carrier surcharges apply per destination
+      - name: International rates vary by country
+  - id: twilio-committed-use
+    name: Committed Use
+    type: enterprise
+    description: Negotiated discounts for high-volume usage. Contact Twilio sales for pricing.
+    entries:
+      - label: Volume commitment
+        name: commitment
+        type: subscription
+        metric: USD
+        limit: -1
+        timeFrame: month
+        geo: global
+        unit: 1
+        price: custom
+        userMultiplied: false
+    elements:
+      - name: Tiered volume discounts
+      - name: Dedicated support
+      - name: Service-level commitments

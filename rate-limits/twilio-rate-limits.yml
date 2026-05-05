@@ -1,0 +1,57 @@
+specification: API Commons Rate Limits
+specificationVersion: '0.1'
+schema: https://raw.githubusercontent.com/api-evangelist/interface-research/main/schema/api-commons.yml#/$defs/RateLimits
+provider: Twilio
+providerId: twilio
+created: '2026-05-04'
+modified: '2026-05-04'
+reconciled: true
+tags:
+  - Rate Limiting
+  - Communications
+description: Twilio API rate limits enforce per-account concurrency on the REST API and carrier-imposed
+  throughput limits on messaging products (e.g., A2P 10DLC TPS).
+sources:
+  - https://www.twilio.com/en-us/sms/pricing/us
+  - https://www.twilio.com/en-us/voice/pricing/us
+  - https://www.twilio.com/docs/usage/api/rate-limits
+headers:
+  retryAfter: Retry-After
+responseCodes:
+  throttled: 429
+  concurrencyExceeded: 429
+  messagingThroughputExceeded: '20429'
+limits:
+  - name: REST API concurrent requests
+    scope: account
+    metric: concurrent
+    limit: 100
+    notes: Default per-account concurrency; raise via support.
+  - name: Messaging A2P 10DLC throughput (T-Mobile)
+    scope: campaign
+    metric: messages_per_second
+    limit: 75
+    notes: Varies by brand vetting score and campaign trust score.
+  - name: Messaging Toll-Free
+    scope: number
+    metric: messages_per_second
+    limit: 3
+    notes: Verified Toll-Free Numbers can request higher TPS.
+  - name: Messaging Short Code
+    scope: short_code
+    metric: messages_per_second
+    limit: 100
+    notes: Default; can be increased via carrier vetting.
+  - name: Voice concurrent calls
+    scope: account
+    metric: concurrent_calls
+    limit: 1
+    notes: Trial accounts; production accounts default to higher limits.
+policies:
+  - name: Carrier Filtering
+    description: Beyond Twilio rate limits, destination carriers enforce their own throttling and content
+      filtering.
+  - name: Queue and Retry
+    description: Twilio queues outbound messages exceeding TPS for up to 4 hours by default.
+  - name: Geographic Permissions
+    description: Voice and SMS to specific countries must be enabled on the account before sending.

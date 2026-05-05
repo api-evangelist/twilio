@@ -1,0 +1,93 @@
+specification: FinOps Framework
+specificationVersion: '1.0'
+schema: https://www.finops.org/framework/
+provider: Twilio
+providerId: twilio
+created: '2026-05-04'
+modified: '2026-05-04'
+reconciled: true
+tags:
+  - FinOps
+  - Cost Management
+  - FOCUS
+  - Communications
+description: FOCUS-aligned FinOps for Twilio communications spend.
+sources:
+  - https://www.twilio.com/en-us/sms/pricing/us
+  - https://www.twilio.com/en-us/voice/pricing/us
+  - https://www.twilio.com/docs/usage/api/rate-limits
+alignedWith:
+  framework: FinOps Foundation Framework
+  frameworkUrl: https://www.finops.org/framework/
+  dataSpec: FOCUS
+  dataSpecVersion: '1.3'
+  dataSpecUrl: https://focus.finops.org/focus-specification/v1-3/
+publisherName: Twilio Inc.
+serviceCategory: Communications
+billingModel:
+  pricingCategory: Usage-Based
+  billingFrequency: Monthly
+  billingCurrency: USD
+  chargeCategories:
+    - Usage
+    - Purchase
+    - Tax
+    - Credit
+    - Adjustment
+focusColumns:
+  ServiceName: Twilio
+  ServiceCategory: Communications
+  ProviderName: Twilio
+  PublisherName: Twilio Inc.
+  InvoiceIssuerName: Twilio Inc.
+  BillingCurrency: USD
+meters:
+  - name: sms_segments
+    unit: segment
+    aggregation: sum
+    dimensions:
+      - direction
+      - country
+      - carrier
+      - number_type
+  - name: mms_messages
+    unit: message
+    aggregation: sum
+    dimensions:
+      - direction
+      - country
+      - carrier
+  - name: voice_minutes
+    unit: minute
+    aggregation: sum
+    dimensions:
+      - direction
+      - country
+      - destination_type
+  - name: phone_numbers
+    unit: number-month
+    aggregation: max
+    dimensions:
+      - country
+      - type
+  - name: verify_attempts
+    unit: attempt
+    aggregation: sum
+    dimensions:
+      - channel
+      - country
+  - name: email_messages
+    unit: message
+    aggregation: sum
+    dimensions:
+      - category
+principles:
+  - name: Visibility
+    description: Use Usage Records API and triggers to alert on per-product spend daily.
+  - name: Allocation
+    description: Tag messages with subaccount and metadata so cost can be allocated to internal teams/products.
+  - name: Optimization
+    description: Concatenate SMS to fewer segments, use carrier-recommended number types, and prefer Toll-Free
+      verified numbers for higher throughput at lower per-message cost.
+  - name: Accountability
+    description: Set monthly trigger thresholds; auto-pause subaccounts beyond budget.
