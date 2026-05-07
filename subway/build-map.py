@@ -1,11 +1,9 @@
 #!/usr/bin/env python3
 """Build the Twilio API tube-style map.
 
-35 APIs grouped into 9 product lines mirroring Twilio's product nav:
-Voice, Messaging & Email, Video & Media, Verify & Lookup, Numbers &
-Routing, Engagement Apps, IoT, Platform, Ops & Insights. No interchange
-hubs — Twilio's product domains are largely separate so the map renders
-as a clean set of color-coded islands.
+35 APIs grouped into 9 product lines mirroring Twilio's product nav.
+Lines use varied shapes — arcs, L-bends, sine waves, and small islands —
+so the map reads as a real underground network rather than parallel rules.
 
 The shared rendering engine lives at .claude/skills/_subway_engine.py.
 """
@@ -23,94 +21,100 @@ ABBREV = {
 LINES = [
     {
         "name": "Voice",
-        "color": "#E0245E",  # central-line red
+        "color": "#E0245E",
+        # Convex-down arc: dips in the middle then rises again.
         "stations": [
-            ("Voice",         (290, 170)),
-            ("Trunking",      (450, 170)),
-            ("Conversations", (610, 170)),
+            ("Voice",         (290, 200)),
+            ("Trunking",      (450, 150)),
+            ("Conversations", (620, 200)),
         ],
     },
     {
         "name": "Video & Media",
-        "color": "#7B3FE4",  # purple
-        # small arc tucked in the top-right
+        "color": "#7B3FE4",
+        # Diagonal sweep up-right.
         "stations": [
-            ("Video", (790, 175)),
-            ("Media", (940, 205)),
+            ("Video", (760, 190)),
+            ("Media", (940, 155)),
         ],
     },
     {
         "name": "Messaging & Email",
-        "color": "#E68B1F",  # orange
+        "color": "#E68B1F",
+        # Sine wave across the top-middle band.
         "stations": [
-            ("Messaging",      (290, 280)),
-            ("SendGrid Email", (410, 280)),
-            ("IP Messaging",   (550, 280)),
-            ("Notify",         (680, 280)),
-            ("Content",        (820, 280)),
+            ("Messaging",      (270, 295)),
+            ("SendGrid Email", (400, 265)),
+            ("IP Messaging",   (540, 300)),
+            ("Notify",         (680, 265)),
+            ("Content",        (820, 295)),
         ],
     },
     {
         "name": "Verify & Lookup",
-        "color": "#C5318B",  # magenta
-        # vertical strip on the right
+        "color": "#C5318B",
+        # Vertical with a subtle inward bow.
         "stations": [
-            ("Verify",    (1020, 250)),
-            ("Lookup",    (1020, 320)),
-            ("Trust Hub", (1020, 390)),
+            ("Verify",    (1000, 250)),
+            ("Lookup",    (1025, 320)),
+            ("Trust Hub", (1000, 390)),
         ],
     },
     {
         "name": "Numbers & Routing",
-        "color": "#0E9D6E",  # forest green
-        # vertical strip on the left
+        "color": "#0E9D6E",
+        # L-shape: vertical drop, then bends 45° to the right at the bottom.
         "stations": [
-            ("Numbers", (260, 360)),
-            ("Routes",  (260, 430)),
-            ("Proxy",   (260, 500)),
+            ("Numbers", (260, 370)),
+            ("Routes",  (260, 440)),
+            ("Proxy",   (320, 510)),
         ],
     },
     {
         "name": "Engagement Apps",
-        "color": "#0B7956",  # deeper green
+        "color": "#0B7956",
+        # Concave-up arc — middle stations sit higher than the endpoints.
         "stations": [
-            ("Studio",    (380, 450)),
-            ("Autopilot", (510, 450)),
-            ("Assistant", (640, 450)),
-            ("Flex",      (770, 450)),
-            ("Frontline", (900, 450)),
+            ("Studio",    (370, 480)),
+            ("Autopilot", (495, 445)),
+            ("Assistant", (625, 430)),
+            ("Flex",      (760, 445)),
+            ("Frontline", (905, 480)),
         ],
     },
     {
         "name": "IoT",
-        "color": "#1E5BD0",  # royal blue
+        "color": "#1E5BD0",
+        # Short curve dipping up in the middle.
         "stations": [
-            ("Super Sim",  (380, 570)),
-            ("Wireless",   (560, 570)),
-            ("Microvisor", (740, 570)),
+            ("Super Sim",  (380, 590)),
+            ("Wireless",   (560, 555)),
+            ("Microvisor", (740, 590)),
         ],
     },
     {
         "name": "Platform",
-        "color": "#5A6275",  # slate
+        "color": "#5A6275",
+        # Sine wave — alternating up and down.
         "stations": [
-            ("Accounts",     (260, 680)),
-            ("Pricing",      (370, 680)),
-            ("Serverless",   (480, 680)),
-            ("Sync",         (585, 680)),
-            ("Task Router",  (700, 680)),
-            ("Bulk Exports", (815, 680)),
-            ("Marketplace",  (925, 680)),
+            ("Accounts",     (260, 705)),
+            ("Pricing",      (365, 670)),
+            ("Serverless",   (475, 705)),
+            ("Sync",         (585, 670)),
+            ("Task Router",  (695, 705)),
+            ("Bulk Exports", (810, 670)),
+            ("Marketplace",  (925, 705)),
         ],
     },
     {
         "name": "Ops & Insights",
-        "color": "#B89719",  # mustard
+        "color": "#B89719",
+        # Inverse wave (offset half-phase from Platform above) for visual rhythm.
         "stations": [
-            ("Insights",     (380, 800)),
-            ("Intelligence", (555, 800)),
-            ("Monitor",      (725, 800)),
-            ("Events",       (900, 800)),
+            ("Insights",     (380, 790)),
+            ("Intelligence", (555, 815)),
+            ("Monitor",      (730, 790)),
+            ("Events",       (905, 815)),
         ],
     },
 ]
