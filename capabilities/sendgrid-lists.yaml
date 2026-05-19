@@ -1,0 +1,235 @@
+naftiko: 1.0.0-alpha2
+info:
+  label: Twilio SendGrid Email API — Lists
+  description: 'Twilio SendGrid Email API — Lists. 5 operations. Lead operation: Twilio List Contact Lists. Self-contained
+    Naftiko capability covering one Twilio business surface.'
+  tags:
+  - Twilio
+  - Lists
+  created: '2026-05-19'
+  modified: '2026-05-19'
+binds:
+- namespace: env
+  keys:
+    TWILIO_API_KEY: TWILIO_API_KEY
+capability:
+  consumes:
+  - type: http
+    namespace: sendgrid-lists
+    baseUri: https://api.sendgrid.com/v3
+    description: Twilio SendGrid Email API — Lists business capability. Self-contained, no shared references.
+    resources:
+    - name: marketing-lists
+      path: /marketing/lists
+      operations:
+      - name: listcontactlists
+        method: GET
+        description: Twilio List Contact Lists
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: page_size
+          in: query
+          type: integer
+      - name: createcontactlist
+        method: POST
+        description: Twilio Create a Contact List
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: true
+    - name: marketing-lists-list_id
+      path: /marketing/lists/{list_id}
+      operations:
+      - name: fetchcontactlist
+        method: GET
+        description: Twilio Fetch a Contact List
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: list_id
+          in: path
+          type: string
+          required: true
+      - name: updatecontactlist
+        method: PATCH
+        description: Twilio Update a Contact List
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: list_id
+          in: path
+          type: string
+          required: true
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: true
+      - name: deletecontactlist
+        method: DELETE
+        description: Twilio Delete a Contact List
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: list_id
+          in: path
+          type: string
+          required: true
+        - name: delete_contacts
+          in: query
+          type: boolean
+          description: Whether to delete contacts in the list
+    authentication:
+      type: bearer
+      token: '{{env.TWILIO_API_KEY}}'
+  exposes:
+  - type: rest
+    namespace: sendgrid-lists-rest
+    port: 8080
+    description: REST adapter for Twilio SendGrid Email API — Lists. One Spectral-compliant resource per consumed operation,
+      prefixed with /v1.
+    resources:
+    - path: /v1/marketing/lists
+      name: marketing-lists
+      description: REST surface for marketing-lists.
+      operations:
+      - method: GET
+        name: listcontactlists
+        description: Twilio List Contact Lists
+        call: sendgrid-lists.listcontactlists
+        with:
+          page_size: rest.page_size
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: POST
+        name: createcontactlist
+        description: Twilio Create a Contact List
+        call: sendgrid-lists.createcontactlist
+        with:
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/marketing/lists/{list-id}
+      name: marketing-lists-list-id
+      description: REST surface for marketing-lists-list_id.
+      operations:
+      - method: GET
+        name: fetchcontactlist
+        description: Twilio Fetch a Contact List
+        call: sendgrid-lists.fetchcontactlist
+        with:
+          list_id: rest.list_id
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: PATCH
+        name: updatecontactlist
+        description: Twilio Update a Contact List
+        call: sendgrid-lists.updatecontactlist
+        with:
+          list_id: rest.list_id
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: DELETE
+        name: deletecontactlist
+        description: Twilio Delete a Contact List
+        call: sendgrid-lists.deletecontactlist
+        with:
+          list_id: rest.list_id
+          delete_contacts: rest.delete_contacts
+        outputParameters:
+        - type: object
+          mapping: $.
+  - type: mcp
+    namespace: sendgrid-lists-mcp
+    port: 9090
+    transport: http
+    description: MCP adapter for Twilio SendGrid Email API — Lists. One tool per consumed operation, routed inline through
+      this capability's consumes block.
+    tools:
+    - name: twilio-list-contact-lists
+      description: Twilio List Contact Lists
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: sendgrid-lists.listcontactlists
+      with:
+        page_size: tools.page_size
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: twilio-create-contact-list
+      description: Twilio Create a Contact List
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: sendgrid-lists.createcontactlist
+      with:
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: twilio-fetch-contact-list
+      description: Twilio Fetch a Contact List
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: sendgrid-lists.fetchcontactlist
+      with:
+        list_id: tools.list_id
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: twilio-update-contact-list
+      description: Twilio Update a Contact List
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: true
+      call: sendgrid-lists.updatecontactlist
+      with:
+        list_id: tools.list_id
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: twilio-delete-contact-list
+      description: Twilio Delete a Contact List
+      hints:
+        readOnly: false
+        destructive: true
+        idempotent: true
+      call: sendgrid-lists.deletecontactlist
+      with:
+        list_id: tools.list_id
+        delete_contacts: tools.delete_contacts
+      outputParameters:
+      - type: object
+        mapping: $.

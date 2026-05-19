@@ -1,0 +1,222 @@
+naftiko: 1.0.0-alpha2
+info:
+  label: Twilio Voice API — Queues
+  description: 'Twilio Voice API — Queues. 5 operations. Lead operation: Twilio List Call Queues. Self-contained Naftiko capability
+    covering one Twilio business surface.'
+  tags:
+  - Twilio
+  - Queues
+  created: '2026-05-19'
+  modified: '2026-05-19'
+binds:
+- namespace: env
+  keys:
+    TWILIO_API_KEY: TWILIO_API_KEY
+capability:
+  consumes:
+  - type: http
+    namespace: voice-queues
+    baseUri: https://api.twilio.com/2010-04-01
+    description: Twilio Voice API — Queues business capability. Self-contained, no shared references.
+    resources:
+    - name: Accounts-AccountSid-Queues.json
+      path: /Accounts/{AccountSid}/Queues.json
+      operations:
+      - name: listqueues
+        method: GET
+        description: Twilio List Call Queues
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+      - name: createqueue
+        method: POST
+        description: Twilio Create a Call Queue
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: true
+    - name: Accounts-AccountSid-Queues-QueueSid}.json
+      path: /Accounts/{AccountSid}/Queues/{QueueSid}.json
+      operations:
+      - name: fetchqueue
+        method: GET
+        description: Twilio Fetch a Queue
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: QueueSid
+          in: path
+          type: string
+          required: true
+      - name: updatequeue
+        method: POST
+        description: Twilio Update a Queue
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: QueueSid
+          in: path
+          type: string
+          required: true
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: false
+      - name: deletequeue
+        method: DELETE
+        description: Twilio Delete a Queue
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: QueueSid
+          in: path
+          type: string
+          required: true
+    authentication:
+      type: basic
+      username: '{{env.TWILIO_USER}}'
+      password: '{{env.TWILIO_PASS}}'
+  exposes:
+  - type: rest
+    namespace: voice-queues-rest
+    port: 8080
+    description: REST adapter for Twilio Voice API — Queues. One Spectral-compliant resource per consumed operation, prefixed
+      with /v1.
+    resources:
+    - path: /v1/accounts/{accountsid}/queues-json
+      name: accounts-accountsid-queues-json
+      description: REST surface for Accounts-AccountSid-Queues.json.
+      operations:
+      - method: GET
+        name: listqueues
+        description: Twilio List Call Queues
+        call: voice-queues.listqueues
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: POST
+        name: createqueue
+        description: Twilio Create a Call Queue
+        call: voice-queues.createqueue
+        with:
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/accounts/{accountsid}/queues/queuesid-json
+      name: accounts-accountsid-queues-queuesid-json
+      description: REST surface for Accounts-AccountSid-Queues-QueueSid}.json.
+      operations:
+      - method: GET
+        name: fetchqueue
+        description: Twilio Fetch a Queue
+        call: voice-queues.fetchqueue
+        with:
+          QueueSid: rest.QueueSid
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: POST
+        name: updatequeue
+        description: Twilio Update a Queue
+        call: voice-queues.updatequeue
+        with:
+          QueueSid: rest.QueueSid
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: DELETE
+        name: deletequeue
+        description: Twilio Delete a Queue
+        call: voice-queues.deletequeue
+        with:
+          QueueSid: rest.QueueSid
+        outputParameters:
+        - type: object
+          mapping: $.
+  - type: mcp
+    namespace: voice-queues-mcp
+    port: 9090
+    transport: http
+    description: MCP adapter for Twilio Voice API — Queues. One tool per consumed operation, routed inline through this capability's
+      consumes block.
+    tools:
+    - name: twilio-list-call-queues
+      description: Twilio List Call Queues
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: voice-queues.listqueues
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: twilio-create-call-queue
+      description: Twilio Create a Call Queue
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: voice-queues.createqueue
+      with:
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: twilio-fetch-queue
+      description: Twilio Fetch a Queue
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: voice-queues.fetchqueue
+      with:
+        QueueSid: tools.QueueSid
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: twilio-update-queue
+      description: Twilio Update a Queue
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: voice-queues.updatequeue
+      with:
+        QueueSid: tools.QueueSid
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: twilio-delete-queue
+      description: Twilio Delete a Queue
+      hints:
+        readOnly: false
+        destructive: true
+        idempotent: true
+      call: voice-queues.deletequeue
+      with:
+        QueueSid: tools.QueueSid
+      outputParameters:
+      - type: object
+        mapping: $.

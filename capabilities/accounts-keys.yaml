@@ -1,0 +1,222 @@
+naftiko: 1.0.0-alpha2
+info:
+  label: Twilio Accounts API — Keys
+  description: 'Twilio Accounts API — Keys. 5 operations. Lead operation: Twilio List Api Keys. Self-contained Naftiko capability
+    covering one Twilio business surface.'
+  tags:
+  - Twilio
+  - Keys
+  created: '2026-05-19'
+  modified: '2026-05-19'
+binds:
+- namespace: env
+  keys:
+    TWILIO_API_KEY: TWILIO_API_KEY
+capability:
+  consumes:
+  - type: http
+    namespace: accounts-keys
+    baseUri: https://api.twilio.com/2010-04-01
+    description: Twilio Accounts API — Keys business capability. Self-contained, no shared references.
+    resources:
+    - name: Accounts-AccountSid-Keys.json
+      path: /Accounts/{AccountSid}/Keys.json
+      operations:
+      - name: listkeys
+        method: GET
+        description: Twilio List Api Keys
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+      - name: createkey
+        method: POST
+        description: Twilio Create an Api Key
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: false
+    - name: Accounts-AccountSid-Keys-KeySid}.json
+      path: /Accounts/{AccountSid}/Keys/{KeySid}.json
+      operations:
+      - name: fetchkey
+        method: GET
+        description: Twilio Fetch an Api Key
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: KeySid
+          in: path
+          type: string
+          required: true
+      - name: updatekey
+        method: POST
+        description: Twilio Update an Api Key
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: KeySid
+          in: path
+          type: string
+          required: true
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: false
+      - name: deletekey
+        method: DELETE
+        description: Twilio Delete an Api Key
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: KeySid
+          in: path
+          type: string
+          required: true
+    authentication:
+      type: basic
+      username: '{{env.TWILIO_USER}}'
+      password: '{{env.TWILIO_PASS}}'
+  exposes:
+  - type: rest
+    namespace: accounts-keys-rest
+    port: 8080
+    description: REST adapter for Twilio Accounts API — Keys. One Spectral-compliant resource per consumed operation, prefixed
+      with /v1.
+    resources:
+    - path: /v1/accounts/{accountsid}/keys-json
+      name: accounts-accountsid-keys-json
+      description: REST surface for Accounts-AccountSid-Keys.json.
+      operations:
+      - method: GET
+        name: listkeys
+        description: Twilio List Api Keys
+        call: accounts-keys.listkeys
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: POST
+        name: createkey
+        description: Twilio Create an Api Key
+        call: accounts-keys.createkey
+        with:
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/accounts/{accountsid}/keys/keysid-json
+      name: accounts-accountsid-keys-keysid-json
+      description: REST surface for Accounts-AccountSid-Keys-KeySid}.json.
+      operations:
+      - method: GET
+        name: fetchkey
+        description: Twilio Fetch an Api Key
+        call: accounts-keys.fetchkey
+        with:
+          KeySid: rest.KeySid
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: POST
+        name: updatekey
+        description: Twilio Update an Api Key
+        call: accounts-keys.updatekey
+        with:
+          KeySid: rest.KeySid
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: DELETE
+        name: deletekey
+        description: Twilio Delete an Api Key
+        call: accounts-keys.deletekey
+        with:
+          KeySid: rest.KeySid
+        outputParameters:
+        - type: object
+          mapping: $.
+  - type: mcp
+    namespace: accounts-keys-mcp
+    port: 9090
+    transport: http
+    description: MCP adapter for Twilio Accounts API — Keys. One tool per consumed operation, routed inline through this capability's
+      consumes block.
+    tools:
+    - name: twilio-list-api-keys
+      description: Twilio List Api Keys
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: accounts-keys.listkeys
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: twilio-create-api-key
+      description: Twilio Create an Api Key
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: accounts-keys.createkey
+      with:
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: twilio-fetch-api-key
+      description: Twilio Fetch an Api Key
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: accounts-keys.fetchkey
+      with:
+        KeySid: tools.KeySid
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: twilio-update-api-key
+      description: Twilio Update an Api Key
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: accounts-keys.updatekey
+      with:
+        KeySid: tools.KeySid
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: twilio-delete-api-key
+      description: Twilio Delete an Api Key
+      hints:
+        readOnly: false
+        destructive: true
+        idempotent: true
+      call: accounts-keys.deletekey
+      with:
+        KeySid: tools.KeySid
+      outputParameters:
+      - type: object
+        mapping: $.

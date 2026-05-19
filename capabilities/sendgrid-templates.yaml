@@ -1,0 +1,283 @@
+naftiko: 1.0.0-alpha2
+info:
+  label: Twilio SendGrid Email API — Templates
+  description: 'Twilio SendGrid Email API — Templates. 6 operations. Lead operation: Twilio List Email Templates. Self-contained
+    Naftiko capability covering one Twilio business surface.'
+  tags:
+  - Twilio
+  - Templates
+  created: '2026-05-19'
+  modified: '2026-05-19'
+binds:
+- namespace: env
+  keys:
+    TWILIO_API_KEY: TWILIO_API_KEY
+capability:
+  consumes:
+  - type: http
+    namespace: sendgrid-templates
+    baseUri: https://api.sendgrid.com/v3
+    description: Twilio SendGrid Email API — Templates business capability. Self-contained, no shared references.
+    resources:
+    - name: templates
+      path: /templates
+      operations:
+      - name: listtemplates
+        method: GET
+        description: Twilio List Email Templates
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: generations
+          in: query
+          type: string
+          description: Filter by template generation
+        - name: page_size
+          in: query
+          type: integer
+      - name: createtemplate
+        method: POST
+        description: Twilio Create an Email Template
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: true
+    - name: templates-template_id
+      path: /templates/{template_id}
+      operations:
+      - name: fetchtemplate
+        method: GET
+        description: Twilio Fetch a Template
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: template_id
+          in: path
+          type: string
+          required: true
+      - name: updatetemplate
+        method: PATCH
+        description: Twilio Update a Template
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: template_id
+          in: path
+          type: string
+          required: true
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: true
+      - name: deletetemplate
+        method: DELETE
+        description: Twilio Delete a Template
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: template_id
+          in: path
+          type: string
+          required: true
+    - name: templates-template_id-versions
+      path: /templates/{template_id}/versions
+      operations:
+      - name: createtemplateversion
+        method: POST
+        description: Twilio Create a Template Version
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: template_id
+          in: path
+          type: string
+          required: true
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: true
+    authentication:
+      type: bearer
+      token: '{{env.TWILIO_API_KEY}}'
+  exposes:
+  - type: rest
+    namespace: sendgrid-templates-rest
+    port: 8080
+    description: REST adapter for Twilio SendGrid Email API — Templates. One Spectral-compliant resource per consumed operation,
+      prefixed with /v1.
+    resources:
+    - path: /v1/templates
+      name: templates
+      description: REST surface for templates.
+      operations:
+      - method: GET
+        name: listtemplates
+        description: Twilio List Email Templates
+        call: sendgrid-templates.listtemplates
+        with:
+          generations: rest.generations
+          page_size: rest.page_size
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: POST
+        name: createtemplate
+        description: Twilio Create an Email Template
+        call: sendgrid-templates.createtemplate
+        with:
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/templates/{template-id}
+      name: templates-template-id
+      description: REST surface for templates-template_id.
+      operations:
+      - method: GET
+        name: fetchtemplate
+        description: Twilio Fetch a Template
+        call: sendgrid-templates.fetchtemplate
+        with:
+          template_id: rest.template_id
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: PATCH
+        name: updatetemplate
+        description: Twilio Update a Template
+        call: sendgrid-templates.updatetemplate
+        with:
+          template_id: rest.template_id
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: DELETE
+        name: deletetemplate
+        description: Twilio Delete a Template
+        call: sendgrid-templates.deletetemplate
+        with:
+          template_id: rest.template_id
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/templates/{template-id}/versions
+      name: templates-template-id-versions
+      description: REST surface for templates-template_id-versions.
+      operations:
+      - method: POST
+        name: createtemplateversion
+        description: Twilio Create a Template Version
+        call: sendgrid-templates.createtemplateversion
+        with:
+          template_id: rest.template_id
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+  - type: mcp
+    namespace: sendgrid-templates-mcp
+    port: 9090
+    transport: http
+    description: MCP adapter for Twilio SendGrid Email API — Templates. One tool per consumed operation, routed inline through
+      this capability's consumes block.
+    tools:
+    - name: twilio-list-email-templates
+      description: Twilio List Email Templates
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: sendgrid-templates.listtemplates
+      with:
+        generations: tools.generations
+        page_size: tools.page_size
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: twilio-create-email-template
+      description: Twilio Create an Email Template
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: sendgrid-templates.createtemplate
+      with:
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: twilio-fetch-template
+      description: Twilio Fetch a Template
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: sendgrid-templates.fetchtemplate
+      with:
+        template_id: tools.template_id
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: twilio-update-template
+      description: Twilio Update a Template
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: true
+      call: sendgrid-templates.updatetemplate
+      with:
+        template_id: tools.template_id
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: twilio-delete-template
+      description: Twilio Delete a Template
+      hints:
+        readOnly: false
+        destructive: true
+        idempotent: true
+      call: sendgrid-templates.deletetemplate
+      with:
+        template_id: tools.template_id
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: twilio-create-template-version
+      description: Twilio Create a Template Version
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: sendgrid-templates.createtemplateversion
+      with:
+        template_id: tools.template_id
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.

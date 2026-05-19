@@ -1,0 +1,154 @@
+naftiko: 1.0.0-alpha2
+info:
+  label: Twilio Lookup API — Phone Numbers
+  description: 'Twilio Lookup API — Phone Numbers. 1 operations. Lead operation: Twilio Look up a Phone Number. Self-contained
+    Naftiko capability covering one Twilio business surface.'
+  tags:
+  - Twilio
+  - Phone Numbers
+  created: '2026-05-19'
+  modified: '2026-05-19'
+binds:
+- namespace: env
+  keys:
+    TWILIO_API_KEY: TWILIO_API_KEY
+capability:
+  consumes:
+  - type: http
+    namespace: lookup-phone-numbers
+    baseUri: https://lookups.twilio.com/v2
+    description: Twilio Lookup API — Phone Numbers business capability. Self-contained, no shared references.
+    resources:
+    - name: PhoneNumbers-PhoneNumber
+      path: /PhoneNumbers/{PhoneNumber}
+      operations:
+      - name: fetchphonenumber
+        method: GET
+        description: Twilio Look up a Phone Number
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: PhoneNumber
+          in: path
+          type: string
+          description: Phone number to look up in E.164 format
+          required: true
+        - name: Fields
+          in: query
+          type: string
+          description: Comma-separated list of data packages to return. Available fields include validation, line_type_intelligence,
+            caller_name, sim_swap, identity_match, sms_pumping
+        - name: CountryCode
+          in: query
+          type: string
+          description: ISO 3166-1 alpha-2 country code for national format numbers
+        - name: FirstName
+          in: query
+          type: string
+          description: First name for identity match
+        - name: LastName
+          in: query
+          type: string
+          description: Last name for identity match
+        - name: AddressLine1
+          in: query
+          type: string
+          description: Address line 1 for identity match
+        - name: AddressLine2
+          in: query
+          type: string
+          description: Address line 2 for identity match
+        - name: City
+          in: query
+          type: string
+          description: City for identity match
+        - name: State
+          in: query
+          type: string
+          description: State or province for identity match
+        - name: PostalCode
+          in: query
+          type: string
+          description: Postal code for identity match
+        - name: AddressCountryCode
+          in: query
+          type: string
+          description: ISO country code for identity match address
+        - name: NationalId
+          in: query
+          type: string
+          description: National ID for identity match
+        - name: DateOfBirth
+          in: query
+          type: string
+          description: Date of birth for identity match (YYYYMMDD)
+    authentication:
+      type: basic
+      username: '{{env.TWILIO_USER}}'
+      password: '{{env.TWILIO_PASS}}'
+  exposes:
+  - type: rest
+    namespace: lookup-phone-numbers-rest
+    port: 8080
+    description: REST adapter for Twilio Lookup API — Phone Numbers. One Spectral-compliant resource per consumed operation,
+      prefixed with /v1.
+    resources:
+    - path: /v1/phonenumbers/{phonenumber}
+      name: phonenumbers-phonenumber
+      description: REST surface for PhoneNumbers-PhoneNumber.
+      operations:
+      - method: GET
+        name: fetchphonenumber
+        description: Twilio Look up a Phone Number
+        call: lookup-phone-numbers.fetchphonenumber
+        with:
+          PhoneNumber: rest.PhoneNumber
+          Fields: rest.Fields
+          CountryCode: rest.CountryCode
+          FirstName: rest.FirstName
+          LastName: rest.LastName
+          AddressLine1: rest.AddressLine1
+          AddressLine2: rest.AddressLine2
+          City: rest.City
+          State: rest.State
+          PostalCode: rest.PostalCode
+          AddressCountryCode: rest.AddressCountryCode
+          NationalId: rest.NationalId
+          DateOfBirth: rest.DateOfBirth
+        outputParameters:
+        - type: object
+          mapping: $.
+  - type: mcp
+    namespace: lookup-phone-numbers-mcp
+    port: 9090
+    transport: http
+    description: MCP adapter for Twilio Lookup API — Phone Numbers. One tool per consumed operation, routed inline through
+      this capability's consumes block.
+    tools:
+    - name: twilio-look-up-phone-number
+      description: Twilio Look up a Phone Number
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: lookup-phone-numbers.fetchphonenumber
+      with:
+        PhoneNumber: tools.PhoneNumber
+        Fields: tools.Fields
+        CountryCode: tools.CountryCode
+        FirstName: tools.FirstName
+        LastName: tools.LastName
+        AddressLine1: tools.AddressLine1
+        AddressLine2: tools.AddressLine2
+        City: tools.City
+        State: tools.State
+        PostalCode: tools.PostalCode
+        AddressCountryCode: tools.AddressCountryCode
+        NationalId: tools.NationalId
+        DateOfBirth: tools.DateOfBirth
+      outputParameters:
+      - type: object
+        mapping: $.

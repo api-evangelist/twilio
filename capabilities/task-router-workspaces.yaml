@@ -1,0 +1,3674 @@
+naftiko: 1.0.0-alpha2
+info:
+  label: Twilio - Taskrouter — Workspaces
+  description: 'Twilio - Taskrouter — Workspaces. 60 operations. Lead operation: Workspaces. Self-contained Naftiko capability
+    covering one Twilio business surface.'
+  tags:
+  - Twilio
+  - Workspaces
+  created: '2026-05-19'
+  modified: '2026-05-19'
+binds:
+- namespace: env
+  keys:
+    TWILIO_API_KEY: TWILIO_API_KEY
+capability:
+  consumes:
+  - type: http
+    namespace: task-router-workspaces
+    baseUri: https://taskrouter.twilio.com
+    description: Twilio - Taskrouter — Workspaces business capability. Self-contained, no shared references.
+    resources:
+    - name: v1-Workspaces
+      path: /v1/Workspaces
+      operations:
+      - name: listworkspace
+        method: GET
+        description: ''
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: FriendlyName
+          in: query
+          type: string
+          description: The `friendly_name` of the Workspace resources to read. For example `Customer Support` or `2014 Election
+            Campaign`.
+        - name: PageSize
+          in: query
+          type: integer
+          description: How many resources to return in each list page. The default is 50, and the maximum is 1000.
+        - name: Page
+          in: query
+          type: integer
+          description: The page index. This value is simply for client state.
+        - name: PageToken
+          in: query
+          type: string
+          description: The page token. This is provided by the API.
+      - name: createworkspace
+        method: POST
+        description: ''
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: false
+    - name: v1-Workspaces-Sid
+      path: /v1/Workspaces/{Sid}
+      operations:
+      - name: fetchworkspace
+        method: GET
+        description: ''
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: Sid
+          in: path
+          type: string
+          description: The SID of the Workspace resource to fetch.
+          required: true
+      - name: updateworkspace
+        method: POST
+        description: ''
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: Sid
+          in: path
+          type: string
+          description: The SID of the Workspace resource to update.
+          required: true
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: false
+      - name: deleteworkspace
+        method: DELETE
+        description: ''
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: Sid
+          in: path
+          type: string
+          description: The SID of the Workspace resource to delete.
+          required: true
+    - name: v1-Workspaces-WorkspaceSid-Activities
+      path: /v1/Workspaces/{WorkspaceSid}/Activities
+      operations:
+      - name: listactivity
+        method: GET
+        description: ''
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: WorkspaceSid
+          in: path
+          type: string
+          description: The SID of the Workspace with the Activity resources to read.
+          required: true
+        - name: FriendlyName
+          in: query
+          type: string
+          description: The `friendly_name` of the Activity resources to read.
+        - name: Available
+          in: query
+          type: string
+          description: Whether return only Activity resources that are available or unavailable. A value of `true` returns
+            only available activities. Values of '1' or `yes` also indic
+        - name: PageSize
+          in: query
+          type: integer
+          description: How many resources to return in each list page. The default is 50, and the maximum is 1000.
+        - name: Page
+          in: query
+          type: integer
+          description: The page index. This value is simply for client state.
+        - name: PageToken
+          in: query
+          type: string
+          description: The page token. This is provided by the API.
+      - name: createactivity
+        method: POST
+        description: ''
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: WorkspaceSid
+          in: path
+          type: string
+          description: The SID of the Workspace that the new Activity belongs to.
+          required: true
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: false
+    - name: v1-Workspaces-WorkspaceSid-Activities-Sid
+      path: /v1/Workspaces/{WorkspaceSid}/Activities/{Sid}
+      operations:
+      - name: fetchactivity
+        method: GET
+        description: ''
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: WorkspaceSid
+          in: path
+          type: string
+          description: The SID of the Workspace with the Activity resources to fetch.
+          required: true
+        - name: Sid
+          in: path
+          type: string
+          description: The SID of the Activity resource to fetch.
+          required: true
+      - name: updateactivity
+        method: POST
+        description: ''
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: WorkspaceSid
+          in: path
+          type: string
+          description: The SID of the Workspace with the Activity resources to update.
+          required: true
+        - name: Sid
+          in: path
+          type: string
+          description: The SID of the Activity resource to update.
+          required: true
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: false
+      - name: deleteactivity
+        method: DELETE
+        description: ''
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: WorkspaceSid
+          in: path
+          type: string
+          description: The SID of the Workspace with the Activity resources to delete.
+          required: true
+        - name: Sid
+          in: path
+          type: string
+          description: The SID of the Activity resource to delete.
+          required: true
+    - name: v1-Workspaces-WorkspaceSid-CumulativeStatistics
+      path: /v1/Workspaces/{WorkspaceSid}/CumulativeStatistics
+      operations:
+      - name: fetchworkspacecumulativestatistics
+        method: GET
+        description: ''
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: WorkspaceSid
+          in: path
+          type: string
+          description: The SID of the Workspace to fetch.
+          required: true
+        - name: EndDate
+          in: query
+          type: string
+          description: Only include usage that occurred on or before this date, specified in GMT as an [ISO 8601](https://en.wikipedia.org/wiki/ISO_8601)
+            date-time.
+        - name: Minutes
+          in: query
+          type: integer
+          description: Only calculate statistics since this many minutes in the past. The default 15 minutes. This is helpful
+            for displaying statistics for the last 15 minutes, 240 mi
+        - name: StartDate
+          in: query
+          type: string
+          description: Only calculate statistics from this date and time and later, specified in [ISO 8601](https://en.wikipedia.org/wiki/ISO_8601)
+            format.
+        - name: TaskChannel
+          in: query
+          type: string
+          description: Only calculate cumulative statistics on this TaskChannel. Can be the TaskChannel's SID or its `unique_name`,
+            such as `voice`, `sms`, or `default`.
+        - name: SplitByWaitTime
+          in: query
+          type: string
+          description: A comma separated list of values that describes the thresholds, in seconds, to calculate statistics
+            on. For each threshold specified, the number of Tasks cancel
+    - name: v1-Workspaces-WorkspaceSid-Events
+      path: /v1/Workspaces/{WorkspaceSid}/Events
+      operations:
+      - name: listevent
+        method: GET
+        description: ''
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: WorkspaceSid
+          in: path
+          type: string
+          description: The SID of the Workspace with the Events to read. Returns only the Events that pertain to the specified
+            Workspace.
+          required: true
+        - name: EndDate
+          in: query
+          type: string
+          description: Only include Events that occurred on or before this date, specified in GMT as an [ISO 8601](https://en.wikipedia.org/wiki/ISO_8601)
+            date-time.
+        - name: EventType
+          in: query
+          type: string
+          description: The type of Events to read. Returns only Events of the type specified.
+        - name: Minutes
+          in: query
+          type: integer
+          description: The period of events to read in minutes. Returns only Events that occurred since this many minutes
+            in the past. The default is `15` minutes. Task Attributes for
+        - name: ReservationSid
+          in: query
+          type: string
+          description: The SID of the Reservation with the Events to read. Returns only Events that pertain to the specified
+            Reservation.
+        - name: StartDate
+          in: query
+          type: string
+          description: Only include Events from on or after this date and time, specified in [ISO 8601](https://en.wikipedia.org/wiki/ISO_8601)
+            format. Task Attributes for Events olde
+        - name: TaskQueueSid
+          in: query
+          type: string
+          description: The SID of the TaskQueue with the Events to read. Returns only the Events that pertain to the specified
+            TaskQueue.
+        - name: TaskSid
+          in: query
+          type: string
+          description: The SID of the Task with the Events to read. Returns only the Events that pertain to the specified
+            Task.
+        - name: WorkerSid
+          in: query
+          type: string
+          description: The SID of the Worker with the Events to read. Returns only the Events that pertain to the specified
+            Worker.
+        - name: WorkflowSid
+          in: query
+          type: string
+          description: The SID of the Workflow with the Events to read. Returns only the Events that pertain to the specified
+            Workflow.
+        - name: TaskChannel
+          in: query
+          type: string
+          description: The TaskChannel with the Events to read. Returns only the Events that pertain to the specified TaskChannel.
+        - name: Sid
+          in: query
+          type: string
+          description: The SID of the Event resource to read.
+        - name: PageSize
+          in: query
+          type: integer
+          description: How many resources to return in each list page. The default is 50, and the maximum is 1000.
+        - name: Page
+          in: query
+          type: integer
+          description: The page index. This value is simply for client state.
+        - name: PageToken
+          in: query
+          type: string
+          description: The page token. This is provided by the API.
+    - name: v1-Workspaces-WorkspaceSid-Events-Sid
+      path: /v1/Workspaces/{WorkspaceSid}/Events/{Sid}
+      operations:
+      - name: fetchevent
+        method: GET
+        description: ''
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: WorkspaceSid
+          in: path
+          type: string
+          description: The SID of the Workspace with the Event to fetch.
+          required: true
+        - name: Sid
+          in: path
+          type: string
+          description: The SID of the Event resource to fetch.
+          required: true
+    - name: v1-Workspaces-WorkspaceSid-RealTimeStatistics
+      path: /v1/Workspaces/{WorkspaceSid}/RealTimeStatistics
+      operations:
+      - name: fetchworkspacerealtimestatistics
+        method: GET
+        description: ''
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: WorkspaceSid
+          in: path
+          type: string
+          description: The SID of the Workspace to fetch.
+          required: true
+        - name: TaskChannel
+          in: query
+          type: string
+          description: Only calculate real-time statistics on this TaskChannel. Can be the TaskChannel's SID or its `unique_name`,
+            such as `voice`, `sms`, or `default`.
+    - name: v1-Workspaces-WorkspaceSid-Statistics
+      path: /v1/Workspaces/{WorkspaceSid}/Statistics
+      operations:
+      - name: fetchworkspacestatistics
+        method: GET
+        description: ''
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: WorkspaceSid
+          in: path
+          type: string
+          description: The SID of the Workspace to fetch.
+          required: true
+        - name: Minutes
+          in: query
+          type: integer
+          description: Only calculate statistics since this many minutes in the past. The default 15 minutes. This is helpful
+            for displaying statistics for the last 15 minutes, 240 mi
+        - name: StartDate
+          in: query
+          type: string
+          description: Only calculate statistics from this date and time and later, specified in [ISO 8601](https://en.wikipedia.org/wiki/ISO_8601)
+            format.
+        - name: EndDate
+          in: query
+          type: string
+          description: Only calculate statistics from this date and time and earlier, specified in GMT as an [ISO 8601](https://en.wikipedia.org/wiki/ISO_8601)
+            date-time.
+        - name: TaskChannel
+          in: query
+          type: string
+          description: Only calculate statistics on this TaskChannel. Can be the TaskChannel's SID or its `unique_name`, such
+            as `voice`, `sms`, or `default`.
+        - name: SplitByWaitTime
+          in: query
+          type: string
+          description: A comma separated list of values that describes the thresholds, in seconds, to calculate statistics
+            on. For each threshold specified, the number of Tasks cancel
+    - name: v1-Workspaces-WorkspaceSid-TaskChannels
+      path: /v1/Workspaces/{WorkspaceSid}/TaskChannels
+      operations:
+      - name: listtaskchannel
+        method: GET
+        description: ''
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: WorkspaceSid
+          in: path
+          type: string
+          description: The SID of the Workspace with the Task Channel to read.
+          required: true
+        - name: PageSize
+          in: query
+          type: integer
+          description: How many resources to return in each list page. The default is 50, and the maximum is 1000.
+        - name: Page
+          in: query
+          type: integer
+          description: The page index. This value is simply for client state.
+        - name: PageToken
+          in: query
+          type: string
+          description: The page token. This is provided by the API.
+      - name: createtaskchannel
+        method: POST
+        description: ''
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: WorkspaceSid
+          in: path
+          type: string
+          description: The SID of the Workspace that the new Task Channel belongs to.
+          required: true
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: false
+    - name: v1-Workspaces-WorkspaceSid-TaskChannels-Sid
+      path: /v1/Workspaces/{WorkspaceSid}/TaskChannels/{Sid}
+      operations:
+      - name: fetchtaskchannel
+        method: GET
+        description: ''
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: WorkspaceSid
+          in: path
+          type: string
+          description: The SID of the Workspace with the Task Channel to fetch.
+          required: true
+        - name: Sid
+          in: path
+          type: string
+          description: The SID of the Task Channel resource to fetch.
+          required: true
+      - name: updatetaskchannel
+        method: POST
+        description: ''
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: WorkspaceSid
+          in: path
+          type: string
+          description: The SID of the Workspace with the Task Channel to update.
+          required: true
+        - name: Sid
+          in: path
+          type: string
+          description: The SID of the Task Channel resource to update.
+          required: true
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: false
+      - name: deletetaskchannel
+        method: DELETE
+        description: ''
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: WorkspaceSid
+          in: path
+          type: string
+          description: The SID of the Workspace with the Task Channel to delete.
+          required: true
+        - name: Sid
+          in: path
+          type: string
+          description: The SID of the Task Channel resource to delete.
+          required: true
+    - name: v1-Workspaces-WorkspaceSid-TaskQueues
+      path: /v1/Workspaces/{WorkspaceSid}/TaskQueues
+      operations:
+      - name: listtaskqueue
+        method: GET
+        description: ''
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: WorkspaceSid
+          in: path
+          type: string
+          description: The SID of the Workspace with the TaskQueue to read.
+          required: true
+        - name: FriendlyName
+          in: query
+          type: string
+          description: The `friendly_name` of the TaskQueue resources to read.
+        - name: EvaluateWorkerAttributes
+          in: query
+          type: string
+          description: The attributes of the Workers to read. Returns the TaskQueues with Workers that match the attributes
+            specified in this parameter.
+        - name: WorkerSid
+          in: query
+          type: string
+          description: The SID of the Worker with the TaskQueue resources to read.
+        - name: Ordering
+          in: query
+          type: string
+          description: Sorting parameter for TaskQueues
+        - name: PageSize
+          in: query
+          type: integer
+          description: How many resources to return in each list page. The default is 50, and the maximum is 1000.
+        - name: Page
+          in: query
+          type: integer
+          description: The page index. This value is simply for client state.
+        - name: PageToken
+          in: query
+          type: string
+          description: The page token. This is provided by the API.
+      - name: createtaskqueue
+        method: POST
+        description: ''
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: WorkspaceSid
+          in: path
+          type: string
+          description: The SID of the Workspace that the new TaskQueue belongs to.
+          required: true
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: false
+    - name: v1-Workspaces-WorkspaceSid-TaskQueues-Statistics
+      path: /v1/Workspaces/{WorkspaceSid}/TaskQueues/Statistics
+      operations:
+      - name: listtaskqueuesstatistics
+        method: GET
+        description: ''
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: WorkspaceSid
+          in: path
+          type: string
+          description: The SID of the Workspace with the TaskQueues to read.
+          required: true
+        - name: EndDate
+          in: query
+          type: string
+          description: Only calculate statistics from this date and time and earlier, specified in GMT as an [ISO 8601](https://en.wikipedia.org/wiki/ISO_8601)
+            date-time.
+        - name: FriendlyName
+          in: query
+          type: string
+          description: The `friendly_name` of the TaskQueue statistics to read.
+        - name: Minutes
+          in: query
+          type: integer
+          description: Only calculate statistics since this many minutes in the past. The default is 15 minutes.
+        - name: StartDate
+          in: query
+          type: string
+          description: Only calculate statistics from this date and time and later, specified in [ISO 8601](https://en.wikipedia.org/wiki/ISO_8601)
+            format.
+        - name: TaskChannel
+          in: query
+          type: string
+          description: Only calculate statistics on this TaskChannel. Can be the TaskChannel's SID or its `unique_name`, such
+            as `voice`, `sms`, or `default`.
+        - name: SplitByWaitTime
+          in: query
+          type: string
+          description: A comma separated list of values that describes the thresholds, in seconds, to calculate statistics
+            on. For each threshold specified, the number of Tasks cancel
+        - name: PageSize
+          in: query
+          type: integer
+          description: How many resources to return in each list page. The default is 50, and the maximum is 1000.
+        - name: Page
+          in: query
+          type: integer
+          description: The page index. This value is simply for client state.
+        - name: PageToken
+          in: query
+          type: string
+          description: The page token. This is provided by the API.
+    - name: v1-Workspaces-WorkspaceSid-TaskQueues-Sid
+      path: /v1/Workspaces/{WorkspaceSid}/TaskQueues/{Sid}
+      operations:
+      - name: fetchtaskqueue
+        method: GET
+        description: ''
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: WorkspaceSid
+          in: path
+          type: string
+          description: The SID of the Workspace with the TaskQueue to fetch.
+          required: true
+        - name: Sid
+          in: path
+          type: string
+          description: The SID of the TaskQueue resource to fetch.
+          required: true
+      - name: updatetaskqueue
+        method: POST
+        description: ''
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: WorkspaceSid
+          in: path
+          type: string
+          description: The SID of the Workspace with the TaskQueue to update.
+          required: true
+        - name: Sid
+          in: path
+          type: string
+          description: The SID of the TaskQueue resource to update.
+          required: true
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: false
+      - name: deletetaskqueue
+        method: DELETE
+        description: ''
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: WorkspaceSid
+          in: path
+          type: string
+          description: The SID of the Workspace with the TaskQueue to delete.
+          required: true
+        - name: Sid
+          in: path
+          type: string
+          description: The SID of the TaskQueue resource to delete.
+          required: true
+    - name: v1-Workspaces-WorkspaceSid-TaskQueues-TaskQueueSid-CumulativeStatistics
+      path: /v1/Workspaces/{WorkspaceSid}/TaskQueues/{TaskQueueSid}/CumulativeStatistics
+      operations:
+      - name: fetchtaskqueuecumulativestatistics
+        method: GET
+        description: ''
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: WorkspaceSid
+          in: path
+          type: string
+          description: The SID of the Workspace with the TaskQueue to fetch.
+          required: true
+        - name: TaskQueueSid
+          in: path
+          type: string
+          description: The SID of the TaskQueue for which to fetch statistics.
+          required: true
+        - name: EndDate
+          in: query
+          type: string
+          description: Only calculate statistics from this date and time and earlier, specified in GMT as an [ISO 8601](https://en.wikipedia.org/wiki/ISO_8601)
+            date-time.
+        - name: Minutes
+          in: query
+          type: integer
+          description: Only calculate statistics since this many minutes in the past. The default is 15 minutes.
+        - name: StartDate
+          in: query
+          type: string
+          description: Only calculate statistics from this date and time and later, specified in [ISO 8601](https://en.wikipedia.org/wiki/ISO_8601)
+            format.
+        - name: TaskChannel
+          in: query
+          type: string
+          description: Only calculate cumulative statistics on this TaskChannel. Can be the TaskChannel's SID or its `unique_name`,
+            such as `voice`, `sms`, or `default`.
+        - name: SplitByWaitTime
+          in: query
+          type: string
+          description: A comma separated list of values that describes the thresholds, in seconds, to calculate statistics
+            on. For each threshold specified, the number of Tasks cancel
+    - name: v1-Workspaces-WorkspaceSid-TaskQueues-TaskQueueSid-RealTimeStatistics
+      path: /v1/Workspaces/{WorkspaceSid}/TaskQueues/{TaskQueueSid}/RealTimeStatistics
+      operations:
+      - name: fetchtaskqueuerealtimestatistics
+        method: GET
+        description: ''
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: WorkspaceSid
+          in: path
+          type: string
+          description: The SID of the Workspace with the TaskQueue to fetch.
+          required: true
+        - name: TaskQueueSid
+          in: path
+          type: string
+          description: The SID of the TaskQueue for which to fetch statistics.
+          required: true
+        - name: TaskChannel
+          in: query
+          type: string
+          description: The TaskChannel for which to fetch statistics. Can be the TaskChannel's SID or its `unique_name`, such
+            as `voice`, `sms`, or `default`.
+    - name: v1-Workspaces-WorkspaceSid-TaskQueues-TaskQueueSid-Statistics
+      path: /v1/Workspaces/{WorkspaceSid}/TaskQueues/{TaskQueueSid}/Statistics
+      operations:
+      - name: fetchtaskqueuestatistics
+        method: GET
+        description: ''
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: WorkspaceSid
+          in: path
+          type: string
+          description: The SID of the Workspace with the TaskQueue to fetch.
+          required: true
+        - name: TaskQueueSid
+          in: path
+          type: string
+          description: The SID of the TaskQueue for which to fetch statistics.
+          required: true
+        - name: EndDate
+          in: query
+          type: string
+          description: Only calculate statistics from this date and time and earlier, specified in GMT as an [ISO 8601](https://en.wikipedia.org/wiki/ISO_8601)
+            date-time.
+        - name: Minutes
+          in: query
+          type: integer
+          description: Only calculate statistics since this many minutes in the past. The default is 15 minutes.
+        - name: StartDate
+          in: query
+          type: string
+          description: Only calculate statistics from this date and time and later, specified in [ISO 8601](https://en.wikipedia.org/wiki/ISO_8601)
+            format.
+        - name: TaskChannel
+          in: query
+          type: string
+          description: 'Only calculate real-time and cumulative statistics for the specified TaskChannel. Can be the TaskChannel''s
+            SID or its `unique_name`, such as `voice`, `sms`, or '
+        - name: SplitByWaitTime
+          in: query
+          type: string
+          description: A comma separated list of values that describes the thresholds, in seconds, to calculate statistics
+            on. For each threshold specified, the number of Tasks cancel
+    - name: v1-Workspaces-WorkspaceSid-Tasks
+      path: /v1/Workspaces/{WorkspaceSid}/Tasks
+      operations:
+      - name: listtask
+        method: GET
+        description: ''
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: WorkspaceSid
+          in: path
+          type: string
+          description: The SID of the Workspace with the Tasks to read.
+          required: true
+        - name: Priority
+          in: query
+          type: integer
+          description: The priority value of the Tasks to read. Returns the list of all Tasks in the Workspace with the specified
+            priority.
+        - name: AssignmentStatus
+          in: query
+          type: array
+          description: 'The `assignment_status` of the Tasks you want to read. Can be: `pending`, `reserved`, `assigned`,
+            `canceled`, `wrapping`, or `completed`. Returns all Tasks in t'
+        - name: WorkflowSid
+          in: query
+          type: string
+          description: The SID of the Workflow with the Tasks to read. Returns the Tasks controlled by the Workflow identified
+            by this SID.
+        - name: WorkflowName
+          in: query
+          type: string
+          description: The friendly name of the Workflow with the Tasks to read. Returns the Tasks controlled by the Workflow
+            identified by this friendly name.
+        - name: TaskQueueSid
+          in: query
+          type: string
+          description: The SID of the TaskQueue with the Tasks to read. Returns the Tasks waiting in the TaskQueue identified
+            by this SID.
+        - name: TaskQueueName
+          in: query
+          type: string
+          description: The `friendly_name` of the TaskQueue with the Tasks to read. Returns the Tasks waiting in the TaskQueue
+            identified by this friendly name.
+        - name: EvaluateTaskAttributes
+          in: query
+          type: string
+          description: The attributes of the Tasks to read. Returns the Tasks that match the attributes specified in this
+            parameter.
+        - name: Ordering
+          in: query
+          type: string
+          description: 'How to order the returned Task resources. By default, Tasks are sorted by ascending DateCreated. This
+            value is specified as: `Attribute:Order`, where `Attribute'
+        - name: HasAddons
+          in: query
+          type: boolean
+          description: Whether to read Tasks with Add-ons. If `true`, returns only Tasks with Add-ons. If `false`, returns
+            only Tasks without Add-ons.
+        - name: PageSize
+          in: query
+          type: integer
+          description: How many resources to return in each list page. The default is 50, and the maximum is 1000.
+        - name: Page
+          in: query
+          type: integer
+          description: The page index. This value is simply for client state.
+        - name: PageToken
+          in: query
+          type: string
+          description: The page token. This is provided by the API.
+      - name: createtask
+        method: POST
+        description: ''
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: WorkspaceSid
+          in: path
+          type: string
+          description: The SID of the Workspace that the new Task belongs to.
+          required: true
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: false
+    - name: v1-Workspaces-WorkspaceSid-Tasks-Sid
+      path: /v1/Workspaces/{WorkspaceSid}/Tasks/{Sid}
+      operations:
+      - name: fetchtask
+        method: GET
+        description: ''
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: WorkspaceSid
+          in: path
+          type: string
+          description: The SID of the Workspace with the Task to fetch.
+          required: true
+        - name: Sid
+          in: path
+          type: string
+          description: The SID of the Task resource to fetch.
+          required: true
+      - name: updatetask
+        method: POST
+        description: ''
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: WorkspaceSid
+          in: path
+          type: string
+          description: The SID of the Workspace with the Task to update.
+          required: true
+        - name: Sid
+          in: path
+          type: string
+          description: The SID of the Task resource to update.
+          required: true
+        - name: If-Match
+          in: header
+          type: string
+          description: If provided, applies this mutation if (and only if) the [ETag](https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/ETag)
+            header of the Task matches the pr
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: false
+      - name: deletetask
+        method: DELETE
+        description: ''
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: WorkspaceSid
+          in: path
+          type: string
+          description: The SID of the Workspace with the Task to delete.
+          required: true
+        - name: Sid
+          in: path
+          type: string
+          description: The SID of the Task resource to delete.
+          required: true
+        - name: If-Match
+          in: header
+          type: string
+          description: If provided, deletes this Task if (and only if) the [ETag](https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/ETag)
+            header of the Task matches the provid
+    - name: v1-Workspaces-WorkspaceSid-Tasks-TaskSid-Reservations
+      path: /v1/Workspaces/{WorkspaceSid}/Tasks/{TaskSid}/Reservations
+      operations:
+      - name: listtaskreservation
+        method: GET
+        description: ''
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: WorkspaceSid
+          in: path
+          type: string
+          description: The SID of the Workspace with the TaskReservation resources to read.
+          required: true
+        - name: TaskSid
+          in: path
+          type: string
+          description: The SID of the reserved Task resource with the TaskReservation resources to read.
+          required: true
+        - name: ReservationStatus
+          in: query
+          type: string
+          description: 'Returns the list of reservations for a task with a specified ReservationStatus.  Can be: `pending`,
+            `accepted`, `rejected`, or `timeout`.'
+        - name: WorkerSid
+          in: query
+          type: string
+          description: The SID of the reserved Worker resource to read.
+        - name: PageSize
+          in: query
+          type: integer
+          description: How many resources to return in each list page. The default is 50, and the maximum is 1000.
+        - name: Page
+          in: query
+          type: integer
+          description: The page index. This value is simply for client state.
+        - name: PageToken
+          in: query
+          type: string
+          description: The page token. This is provided by the API.
+    - name: v1-Workspaces-WorkspaceSid-Tasks-TaskSid-Reservations-Sid
+      path: /v1/Workspaces/{WorkspaceSid}/Tasks/{TaskSid}/Reservations/{Sid}
+      operations:
+      - name: fetchtaskreservation
+        method: GET
+        description: ''
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: WorkspaceSid
+          in: path
+          type: string
+          description: The SID of the Workspace with the TaskReservation resource to fetch.
+          required: true
+        - name: TaskSid
+          in: path
+          type: string
+          description: The SID of the reserved Task resource with the TaskReservation resource to fetch.
+          required: true
+        - name: Sid
+          in: path
+          type: string
+          description: The SID of the TaskReservation resource to fetch.
+          required: true
+      - name: updatetaskreservation
+        method: POST
+        description: ''
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: WorkspaceSid
+          in: path
+          type: string
+          description: The SID of the Workspace with the TaskReservation resources to update.
+          required: true
+        - name: TaskSid
+          in: path
+          type: string
+          description: The SID of the reserved Task resource with the TaskReservation resources to update.
+          required: true
+        - name: Sid
+          in: path
+          type: string
+          description: The SID of the TaskReservation resource to update.
+          required: true
+        - name: If-Match
+          in: header
+          type: string
+          description: The If-Match HTTP request header
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: false
+    - name: v1-Workspaces-WorkspaceSid-Workers
+      path: /v1/Workspaces/{WorkspaceSid}/Workers
+      operations:
+      - name: listworker
+        method: GET
+        description: ''
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: WorkspaceSid
+          in: path
+          type: string
+          description: The SID of the Workspace with the Workers to read.
+          required: true
+        - name: ActivityName
+          in: query
+          type: string
+          description: The `activity_name` of the Worker resources to read.
+        - name: ActivitySid
+          in: query
+          type: string
+          description: The `activity_sid` of the Worker resources to read.
+        - name: Available
+          in: query
+          type: string
+          description: Whether to return only Worker resources that are available or unavailable. Can be `true`, `1`, or `yes`
+            to return Worker resources that are available, and `fals
+        - name: FriendlyName
+          in: query
+          type: string
+          description: The `friendly_name` of the Worker resources to read.
+        - name: TargetWorkersExpression
+          in: query
+          type: string
+          description: 'Filter by Workers that would match an expression. In addition to fields in the workers'' attributes,
+            the expression can include the following worker fields: `sid'
+        - name: TaskQueueName
+          in: query
+          type: string
+          description: The `friendly_name` of the TaskQueue that the Workers to read are eligible for.
+        - name: TaskQueueSid
+          in: query
+          type: string
+          description: The SID of the TaskQueue that the Workers to read are eligible for.
+        - name: Ordering
+          in: query
+          type: string
+          description: Sorting parameter for Workers
+        - name: PageSize
+          in: query
+          type: integer
+          description: How many resources to return in each list page. The default is 50, and the maximum is 1000.
+        - name: Page
+          in: query
+          type: integer
+          description: The page index. This value is simply for client state.
+        - name: PageToken
+          in: query
+          type: string
+          description: The page token. This is provided by the API.
+      - name: createworker
+        method: POST
+        description: ''
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: WorkspaceSid
+          in: path
+          type: string
+          description: The SID of the Workspace that the new Worker belongs to.
+          required: true
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: false
+    - name: v1-Workspaces-WorkspaceSid-Workers-CumulativeStatistics
+      path: /v1/Workspaces/{WorkspaceSid}/Workers/CumulativeStatistics
+      operations:
+      - name: fetchworkerscumulativestatistics
+        method: GET
+        description: ''
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: WorkspaceSid
+          in: path
+          type: string
+          description: The SID of the Workspace with the resource to fetch.
+          required: true
+        - name: EndDate
+          in: query
+          type: string
+          description: Only calculate statistics from this date and time and earlier, specified in [ISO 8601](https://en.wikipedia.org/wiki/ISO_8601)
+            format.
+        - name: Minutes
+          in: query
+          type: integer
+          description: Only calculate statistics since this many minutes in the past. The default 15 minutes. This is helpful
+            for displaying statistics for the last 15 minutes, 240 mi
+        - name: StartDate
+          in: query
+          type: string
+          description: Only calculate statistics from this date and time and later, specified in [ISO 8601](https://en.wikipedia.org/wiki/ISO_8601)
+            format.
+        - name: TaskChannel
+          in: query
+          type: string
+          description: Only calculate cumulative statistics on this TaskChannel. Can be the TaskChannel's SID or its `unique_name`,
+            such as `voice`, `sms`, or `default`.
+    - name: v1-Workspaces-WorkspaceSid-Workers-RealTimeStatistics
+      path: /v1/Workspaces/{WorkspaceSid}/Workers/RealTimeStatistics
+      operations:
+      - name: fetchworkersrealtimestatistics
+        method: GET
+        description: ''
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: WorkspaceSid
+          in: path
+          type: string
+          description: The SID of the Workspace with the resource to fetch.
+          required: true
+        - name: TaskChannel
+          in: query
+          type: string
+          description: Only calculate real-time statistics on this TaskChannel. Can be the TaskChannel's SID or its `unique_name`,
+            such as `voice`, `sms`, or `default`.
+    - name: v1-Workspaces-WorkspaceSid-Workers-Statistics
+      path: /v1/Workspaces/{WorkspaceSid}/Workers/Statistics
+      operations:
+      - name: fetchworkerstatistics
+        method: GET
+        description: ''
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: WorkspaceSid
+          in: path
+          type: string
+          description: The SID of the Workspace with the Worker to fetch.
+          required: true
+        - name: Minutes
+          in: query
+          type: integer
+          description: Only calculate statistics since this many minutes in the past. The default 15 minutes. This is helpful
+            for displaying statistics for the last 15 minutes, 240 mi
+        - name: StartDate
+          in: query
+          type: string
+          description: Only calculate statistics from this date and time and later, specified in [ISO 8601](https://en.wikipedia.org/wiki/ISO_8601)
+            format.
+        - name: EndDate
+          in: query
+          type: string
+          description: Only calculate statistics from this date and time and earlier, specified in GMT as an [ISO 8601](https://en.wikipedia.org/wiki/ISO_8601)
+            date-time.
+        - name: TaskQueueSid
+          in: query
+          type: string
+          description: The SID of the TaskQueue for which to fetch Worker statistics.
+        - name: TaskQueueName
+          in: query
+          type: string
+          description: The `friendly_name` of the TaskQueue for which to fetch Worker statistics.
+        - name: FriendlyName
+          in: query
+          type: string
+          description: Only include Workers with `friendly_name` values that match this parameter.
+        - name: TaskChannel
+          in: query
+          type: string
+          description: Only calculate statistics on this TaskChannel. Can be the TaskChannel's SID or its `unique_name`, such
+            as `voice`, `sms`, or `default`.
+    - name: v1-Workspaces-WorkspaceSid-Workers-Sid
+      path: /v1/Workspaces/{WorkspaceSid}/Workers/{Sid}
+      operations:
+      - name: fetchworker
+        method: GET
+        description: ''
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: WorkspaceSid
+          in: path
+          type: string
+          description: The SID of the Workspace with the Worker to fetch.
+          required: true
+        - name: Sid
+          in: path
+          type: string
+          description: The SID of the Worker resource to fetch.
+          required: true
+      - name: updateworker
+        method: POST
+        description: ''
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: WorkspaceSid
+          in: path
+          type: string
+          description: The SID of the Workspace with the Worker to update.
+          required: true
+        - name: Sid
+          in: path
+          type: string
+          description: The SID of the Worker resource to update.
+          required: true
+        - name: If-Match
+          in: header
+          type: string
+          description: The If-Match HTTP request header
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: false
+      - name: deleteworker
+        method: DELETE
+        description: ''
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: WorkspaceSid
+          in: path
+          type: string
+          description: The SID of the Workspace with the Worker to delete.
+          required: true
+        - name: Sid
+          in: path
+          type: string
+          description: The SID of the Worker resource to delete.
+          required: true
+        - name: If-Match
+          in: header
+          type: string
+          description: The If-Match HTTP request header
+    - name: v1-Workspaces-WorkspaceSid-Workers-WorkerSid-Channels
+      path: /v1/Workspaces/{WorkspaceSid}/Workers/{WorkerSid}/Channels
+      operations:
+      - name: listworkerchannel
+        method: GET
+        description: ''
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: WorkspaceSid
+          in: path
+          type: string
+          description: The SID of the Workspace with the WorkerChannels to read.
+          required: true
+        - name: WorkerSid
+          in: path
+          type: string
+          description: The SID of the Worker with the WorkerChannels to read.
+          required: true
+        - name: PageSize
+          in: query
+          type: integer
+          description: How many resources to return in each list page. The default is 50, and the maximum is 1000.
+        - name: Page
+          in: query
+          type: integer
+          description: The page index. This value is simply for client state.
+        - name: PageToken
+          in: query
+          type: string
+          description: The page token. This is provided by the API.
+    - name: v1-Workspaces-WorkspaceSid-Workers-WorkerSid-Channels-Sid
+      path: /v1/Workspaces/{WorkspaceSid}/Workers/{WorkerSid}/Channels/{Sid}
+      operations:
+      - name: fetchworkerchannel
+        method: GET
+        description: ''
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: WorkspaceSid
+          in: path
+          type: string
+          description: The SID of the Workspace with the WorkerChannel to fetch.
+          required: true
+        - name: WorkerSid
+          in: path
+          type: string
+          description: The SID of the Worker with the WorkerChannel to fetch.
+          required: true
+        - name: Sid
+          in: path
+          type: string
+          description: The SID of the WorkerChannel to fetch.
+          required: true
+      - name: updateworkerchannel
+        method: POST
+        description: ''
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: WorkspaceSid
+          in: path
+          type: string
+          description: The SID of the Workspace with the WorkerChannel to update.
+          required: true
+        - name: WorkerSid
+          in: path
+          type: string
+          description: The SID of the Worker with the WorkerChannel to update.
+          required: true
+        - name: Sid
+          in: path
+          type: string
+          description: The SID of the WorkerChannel to update.
+          required: true
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: false
+    - name: v1-Workspaces-WorkspaceSid-Workers-WorkerSid-Reservations
+      path: /v1/Workspaces/{WorkspaceSid}/Workers/{WorkerSid}/Reservations
+      operations:
+      - name: listworkerreservation
+        method: GET
+        description: ''
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: WorkspaceSid
+          in: path
+          type: string
+          description: The SID of the Workspace with the WorkerReservation resources to read.
+          required: true
+        - name: WorkerSid
+          in: path
+          type: string
+          description: The SID of the reserved Worker resource with the WorkerReservation resources to read.
+          required: true
+        - name: ReservationStatus
+          in: query
+          type: string
+          description: 'Returns the list of reservations for a worker with a specified ReservationStatus. Can be: `pending`,
+            `accepted`, `rejected`, `timeout`, `canceled`, or `rescinde'
+        - name: PageSize
+          in: query
+          type: integer
+          description: How many resources to return in each list page. The default is 50, and the maximum is 1000.
+        - name: Page
+          in: query
+          type: integer
+          description: The page index. This value is simply for client state.
+        - name: PageToken
+          in: query
+          type: string
+          description: The page token. This is provided by the API.
+    - name: v1-Workspaces-WorkspaceSid-Workers-WorkerSid-Reservations-Sid
+      path: /v1/Workspaces/{WorkspaceSid}/Workers/{WorkerSid}/Reservations/{Sid}
+      operations:
+      - name: fetchworkerreservation
+        method: GET
+        description: ''
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: WorkspaceSid
+          in: path
+          type: string
+          description: The SID of the Workspace with the WorkerReservation resource to fetch.
+          required: true
+        - name: WorkerSid
+          in: path
+          type: string
+          description: The SID of the reserved Worker resource with the WorkerReservation resource to fetch.
+          required: true
+        - name: Sid
+          in: path
+          type: string
+          description: The SID of the WorkerReservation resource to fetch.
+          required: true
+      - name: updateworkerreservation
+        method: POST
+        description: ''
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: WorkspaceSid
+          in: path
+          type: string
+          description: The SID of the Workspace with the WorkerReservation resources to update.
+          required: true
+        - name: WorkerSid
+          in: path
+          type: string
+          description: The SID of the reserved Worker resource with the WorkerReservation resources to update.
+          required: true
+        - name: Sid
+          in: path
+          type: string
+          description: The SID of the WorkerReservation resource to update.
+          required: true
+        - name: If-Match
+          in: header
+          type: string
+          description: The If-Match HTTP request header
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: false
+    - name: v1-Workspaces-WorkspaceSid-Workers-WorkerSid-Statistics
+      path: /v1/Workspaces/{WorkspaceSid}/Workers/{WorkerSid}/Statistics
+      operations:
+      - name: fetchworkerinstancestatistics
+        method: GET
+        description: ''
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: WorkspaceSid
+          in: path
+          type: string
+          description: The SID of the Workspace with the WorkerChannel to fetch.
+          required: true
+        - name: WorkerSid
+          in: path
+          type: string
+          description: The SID of the Worker with the WorkerChannel to fetch.
+          required: true
+        - name: Minutes
+          in: query
+          type: integer
+          description: Only calculate statistics since this many minutes in the past. The default 15 minutes. This is helpful
+            for displaying statistics for the last 15 minutes, 240 mi
+        - name: StartDate
+          in: query
+          type: string
+          description: Only calculate statistics from this date and time and later, specified in [ISO 8601](https://en.wikipedia.org/wiki/ISO_8601)
+            format.
+        - name: EndDate
+          in: query
+          type: string
+          description: Only include usage that occurred on or before this date, specified in GMT as an [ISO 8601](https://en.wikipedia.org/wiki/ISO_8601)
+            date-time.
+        - name: TaskChannel
+          in: query
+          type: string
+          description: Only calculate statistics on this TaskChannel. Can be the TaskChannel's SID or its `unique_name`, such
+            as `voice`, `sms`, or `default`.
+    - name: v1-Workspaces-WorkspaceSid-Workflows
+      path: /v1/Workspaces/{WorkspaceSid}/Workflows
+      operations:
+      - name: listworkflow
+        method: GET
+        description: ''
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: WorkspaceSid
+          in: path
+          type: string
+          description: The SID of the Workspace with the Workflow to read.
+          required: true
+        - name: FriendlyName
+          in: query
+          type: string
+          description: The `friendly_name` of the Workflow resources to read.
+        - name: PageSize
+          in: query
+          type: integer
+          description: How many resources to return in each list page. The default is 50, and the maximum is 1000.
+        - name: Page
+          in: query
+          type: integer
+          description: The page index. This value is simply for client state.
+        - name: PageToken
+          in: query
+          type: string
+          description: The page token. This is provided by the API.
+      - name: createworkflow
+        method: POST
+        description: ''
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: WorkspaceSid
+          in: path
+          type: string
+          description: The SID of the Workspace that the new Workflow to create belongs to.
+          required: true
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: false
+    - name: v1-Workspaces-WorkspaceSid-Workflows-Sid
+      path: /v1/Workspaces/{WorkspaceSid}/Workflows/{Sid}
+      operations:
+      - name: fetchworkflow
+        method: GET
+        description: ''
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: WorkspaceSid
+          in: path
+          type: string
+          description: The SID of the Workspace with the Workflow to fetch.
+          required: true
+        - name: Sid
+          in: path
+          type: string
+          description: The SID of the Workflow resource to fetch.
+          required: true
+      - name: updateworkflow
+        method: POST
+        description: ''
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: WorkspaceSid
+          in: path
+          type: string
+          description: The SID of the Workspace with the Workflow to update.
+          required: true
+        - name: Sid
+          in: path
+          type: string
+          description: The SID of the Workflow resource to update.
+          required: true
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: false
+      - name: deleteworkflow
+        method: DELETE
+        description: ''
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: WorkspaceSid
+          in: path
+          type: string
+          description: The SID of the Workspace with the Workflow to delete.
+          required: true
+        - name: Sid
+          in: path
+          type: string
+          description: The SID of the Workflow resource to delete.
+          required: true
+    - name: v1-Workspaces-WorkspaceSid-Workflows-WorkflowSid-CumulativeStatistics
+      path: /v1/Workspaces/{WorkspaceSid}/Workflows/{WorkflowSid}/CumulativeStatistics
+      operations:
+      - name: fetchworkflowcumulativestatistics
+        method: GET
+        description: ''
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: WorkspaceSid
+          in: path
+          type: string
+          description: The SID of the Workspace with the resource to fetch.
+          required: true
+        - name: WorkflowSid
+          in: path
+          type: string
+          description: Returns the list of Tasks that are being controlled by the Workflow with the specified Sid value.
+          required: true
+        - name: EndDate
+          in: query
+          type: string
+          description: Only include usage that occurred on or before this date, specified in GMT as an [ISO 8601](https://en.wikipedia.org/wiki/ISO_8601)
+            date-time.
+        - name: Minutes
+          in: query
+          type: integer
+          description: Only calculate statistics since this many minutes in the past. The default 15 minutes. This is helpful
+            for displaying statistics for the last 15 minutes, 240 mi
+        - name: StartDate
+          in: query
+          type: string
+          description: Only calculate statistics from this date and time and later, specified in [ISO 8601](https://en.wikipedia.org/wiki/ISO_8601)
+            format.
+        - name: TaskChannel
+          in: query
+          type: string
+          description: Only calculate cumulative statistics on this TaskChannel. Can be the TaskChannel's SID or its `unique_name`,
+            such as `voice`, `sms`, or `default`.
+        - name: SplitByWaitTime
+          in: query
+          type: string
+          description: A comma separated list of values that describes the thresholds, in seconds, to calculate statistics
+            on. For each threshold specified, the number of Tasks cancel
+    - name: v1-Workspaces-WorkspaceSid-Workflows-WorkflowSid-RealTimeStatistics
+      path: /v1/Workspaces/{WorkspaceSid}/Workflows/{WorkflowSid}/RealTimeStatistics
+      operations:
+      - name: fetchworkflowrealtimestatistics
+        method: GET
+        description: ''
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: WorkspaceSid
+          in: path
+          type: string
+          description: The SID of the Workspace with the Workflow to fetch.
+          required: true
+        - name: WorkflowSid
+          in: path
+          type: string
+          description: Returns the list of Tasks that are being controlled by the Workflow with the specified SID value.
+          required: true
+        - name: TaskChannel
+          in: query
+          type: string
+          description: Only calculate real-time statistics on this TaskChannel. Can be the TaskChannel's SID or its `unique_name`,
+            such as `voice`, `sms`, or `default`.
+    - name: v1-Workspaces-WorkspaceSid-Workflows-WorkflowSid-Statistics
+      path: /v1/Workspaces/{WorkspaceSid}/Workflows/{WorkflowSid}/Statistics
+      operations:
+      - name: fetchworkflowstatistics
+        method: GET
+        description: ''
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: WorkspaceSid
+          in: path
+          type: string
+          description: The SID of the Workspace with the Workflow to fetch.
+          required: true
+        - name: WorkflowSid
+          in: path
+          type: string
+          description: Returns the list of Tasks that are being controlled by the Workflow with the specified SID value.
+          required: true
+        - name: Minutes
+          in: query
+          type: integer
+          description: Only calculate statistics since this many minutes in the past. The default 15 minutes. This is helpful
+            for displaying statistics for the last 15 minutes, 240 mi
+        - name: StartDate
+          in: query
+          type: string
+          description: Only calculate statistics from this date and time and later, specified in [ISO 8601](https://en.wikipedia.org/wiki/ISO_8601)
+            format.
+        - name: EndDate
+          in: query
+          type: string
+          description: Only calculate statistics from this date and time and earlier, specified in GMT as an [ISO 8601](https://en.wikipedia.org/wiki/ISO_8601)
+            date-time.
+        - name: TaskChannel
+          in: query
+          type: string
+          description: Only calculate real-time statistics on this TaskChannel. Can be the TaskChannel's SID or its `unique_name`,
+            such as `voice`, `sms`, or `default`.
+        - name: SplitByWaitTime
+          in: query
+          type: string
+          description: A comma separated list of values that describes the thresholds, in seconds, to calculate statistics
+            on. For each threshold specified, the number of Tasks cancel
+    authentication:
+      type: basic
+      username: '{{env.TWILIO_USER}}'
+      password: '{{env.TWILIO_PASS}}'
+  exposes:
+  - type: rest
+    namespace: task-router-workspaces-rest
+    port: 8080
+    description: REST adapter for Twilio - Taskrouter — Workspaces. One Spectral-compliant resource per consumed operation,
+      prefixed with /v1.
+    resources:
+    - path: /v1/v1/workspaces
+      name: v1-workspaces
+      description: REST surface for v1-Workspaces.
+      operations:
+      - method: GET
+        name: listworkspace
+        description: listworkspace
+        call: task-router-workspaces.listworkspace
+        with:
+          FriendlyName: rest.FriendlyName
+          PageSize: rest.PageSize
+          Page: rest.Page
+          PageToken: rest.PageToken
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: POST
+        name: createworkspace
+        description: createworkspace
+        call: task-router-workspaces.createworkspace
+        with:
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/v1/workspaces/{sid}
+      name: v1-workspaces-sid
+      description: REST surface for v1-Workspaces-Sid.
+      operations:
+      - method: GET
+        name: fetchworkspace
+        description: fetchworkspace
+        call: task-router-workspaces.fetchworkspace
+        with:
+          Sid: rest.Sid
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: POST
+        name: updateworkspace
+        description: updateworkspace
+        call: task-router-workspaces.updateworkspace
+        with:
+          Sid: rest.Sid
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: DELETE
+        name: deleteworkspace
+        description: deleteworkspace
+        call: task-router-workspaces.deleteworkspace
+        with:
+          Sid: rest.Sid
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/v1/workspaces/{workspacesid}/activities
+      name: v1-workspaces-workspacesid-activities
+      description: REST surface for v1-Workspaces-WorkspaceSid-Activities.
+      operations:
+      - method: GET
+        name: listactivity
+        description: listactivity
+        call: task-router-workspaces.listactivity
+        with:
+          WorkspaceSid: rest.WorkspaceSid
+          FriendlyName: rest.FriendlyName
+          Available: rest.Available
+          PageSize: rest.PageSize
+          Page: rest.Page
+          PageToken: rest.PageToken
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: POST
+        name: createactivity
+        description: createactivity
+        call: task-router-workspaces.createactivity
+        with:
+          WorkspaceSid: rest.WorkspaceSid
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/v1/workspaces/{workspacesid}/activities/{sid}
+      name: v1-workspaces-workspacesid-activities-sid
+      description: REST surface for v1-Workspaces-WorkspaceSid-Activities-Sid.
+      operations:
+      - method: GET
+        name: fetchactivity
+        description: fetchactivity
+        call: task-router-workspaces.fetchactivity
+        with:
+          WorkspaceSid: rest.WorkspaceSid
+          Sid: rest.Sid
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: POST
+        name: updateactivity
+        description: updateactivity
+        call: task-router-workspaces.updateactivity
+        with:
+          WorkspaceSid: rest.WorkspaceSid
+          Sid: rest.Sid
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: DELETE
+        name: deleteactivity
+        description: deleteactivity
+        call: task-router-workspaces.deleteactivity
+        with:
+          WorkspaceSid: rest.WorkspaceSid
+          Sid: rest.Sid
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/v1/workspaces/{workspacesid}/cumulativestatistics
+      name: v1-workspaces-workspacesid-cumulativestatistics
+      description: REST surface for v1-Workspaces-WorkspaceSid-CumulativeStatistics.
+      operations:
+      - method: GET
+        name: fetchworkspacecumulativestatistics
+        description: fetchworkspacecumulativestatistics
+        call: task-router-workspaces.fetchworkspacecumulativestatistics
+        with:
+          WorkspaceSid: rest.WorkspaceSid
+          EndDate: rest.EndDate
+          Minutes: rest.Minutes
+          StartDate: rest.StartDate
+          TaskChannel: rest.TaskChannel
+          SplitByWaitTime: rest.SplitByWaitTime
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/v1/workspaces/{workspacesid}/events
+      name: v1-workspaces-workspacesid-events
+      description: REST surface for v1-Workspaces-WorkspaceSid-Events.
+      operations:
+      - method: GET
+        name: listevent
+        description: listevent
+        call: task-router-workspaces.listevent
+        with:
+          WorkspaceSid: rest.WorkspaceSid
+          EndDate: rest.EndDate
+          EventType: rest.EventType
+          Minutes: rest.Minutes
+          ReservationSid: rest.ReservationSid
+          StartDate: rest.StartDate
+          TaskQueueSid: rest.TaskQueueSid
+          TaskSid: rest.TaskSid
+          WorkerSid: rest.WorkerSid
+          WorkflowSid: rest.WorkflowSid
+          TaskChannel: rest.TaskChannel
+          Sid: rest.Sid
+          PageSize: rest.PageSize
+          Page: rest.Page
+          PageToken: rest.PageToken
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/v1/workspaces/{workspacesid}/events/{sid}
+      name: v1-workspaces-workspacesid-events-sid
+      description: REST surface for v1-Workspaces-WorkspaceSid-Events-Sid.
+      operations:
+      - method: GET
+        name: fetchevent
+        description: fetchevent
+        call: task-router-workspaces.fetchevent
+        with:
+          WorkspaceSid: rest.WorkspaceSid
+          Sid: rest.Sid
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/v1/workspaces/{workspacesid}/realtimestatistics
+      name: v1-workspaces-workspacesid-realtimestatistics
+      description: REST surface for v1-Workspaces-WorkspaceSid-RealTimeStatistics.
+      operations:
+      - method: GET
+        name: fetchworkspacerealtimestatistics
+        description: fetchworkspacerealtimestatistics
+        call: task-router-workspaces.fetchworkspacerealtimestatistics
+        with:
+          WorkspaceSid: rest.WorkspaceSid
+          TaskChannel: rest.TaskChannel
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/v1/workspaces/{workspacesid}/statistics
+      name: v1-workspaces-workspacesid-statistics
+      description: REST surface for v1-Workspaces-WorkspaceSid-Statistics.
+      operations:
+      - method: GET
+        name: fetchworkspacestatistics
+        description: fetchworkspacestatistics
+        call: task-router-workspaces.fetchworkspacestatistics
+        with:
+          WorkspaceSid: rest.WorkspaceSid
+          Minutes: rest.Minutes
+          StartDate: rest.StartDate
+          EndDate: rest.EndDate
+          TaskChannel: rest.TaskChannel
+          SplitByWaitTime: rest.SplitByWaitTime
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/v1/workspaces/{workspacesid}/taskchannels
+      name: v1-workspaces-workspacesid-taskchannels
+      description: REST surface for v1-Workspaces-WorkspaceSid-TaskChannels.
+      operations:
+      - method: GET
+        name: listtaskchannel
+        description: listtaskchannel
+        call: task-router-workspaces.listtaskchannel
+        with:
+          WorkspaceSid: rest.WorkspaceSid
+          PageSize: rest.PageSize
+          Page: rest.Page
+          PageToken: rest.PageToken
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: POST
+        name: createtaskchannel
+        description: createtaskchannel
+        call: task-router-workspaces.createtaskchannel
+        with:
+          WorkspaceSid: rest.WorkspaceSid
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/v1/workspaces/{workspacesid}/taskchannels/{sid}
+      name: v1-workspaces-workspacesid-taskchannels-sid
+      description: REST surface for v1-Workspaces-WorkspaceSid-TaskChannels-Sid.
+      operations:
+      - method: GET
+        name: fetchtaskchannel
+        description: fetchtaskchannel
+        call: task-router-workspaces.fetchtaskchannel
+        with:
+          WorkspaceSid: rest.WorkspaceSid
+          Sid: rest.Sid
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: POST
+        name: updatetaskchannel
+        description: updatetaskchannel
+        call: task-router-workspaces.updatetaskchannel
+        with:
+          WorkspaceSid: rest.WorkspaceSid
+          Sid: rest.Sid
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: DELETE
+        name: deletetaskchannel
+        description: deletetaskchannel
+        call: task-router-workspaces.deletetaskchannel
+        with:
+          WorkspaceSid: rest.WorkspaceSid
+          Sid: rest.Sid
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/v1/workspaces/{workspacesid}/taskqueues
+      name: v1-workspaces-workspacesid-taskqueues
+      description: REST surface for v1-Workspaces-WorkspaceSid-TaskQueues.
+      operations:
+      - method: GET
+        name: listtaskqueue
+        description: listtaskqueue
+        call: task-router-workspaces.listtaskqueue
+        with:
+          WorkspaceSid: rest.WorkspaceSid
+          FriendlyName: rest.FriendlyName
+          EvaluateWorkerAttributes: rest.EvaluateWorkerAttributes
+          WorkerSid: rest.WorkerSid
+          Ordering: rest.Ordering
+          PageSize: rest.PageSize
+          Page: rest.Page
+          PageToken: rest.PageToken
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: POST
+        name: createtaskqueue
+        description: createtaskqueue
+        call: task-router-workspaces.createtaskqueue
+        with:
+          WorkspaceSid: rest.WorkspaceSid
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/v1/workspaces/{workspacesid}/taskqueues/statistics
+      name: v1-workspaces-workspacesid-taskqueues-statistics
+      description: REST surface for v1-Workspaces-WorkspaceSid-TaskQueues-Statistics.
+      operations:
+      - method: GET
+        name: listtaskqueuesstatistics
+        description: listtaskqueuesstatistics
+        call: task-router-workspaces.listtaskqueuesstatistics
+        with:
+          WorkspaceSid: rest.WorkspaceSid
+          EndDate: rest.EndDate
+          FriendlyName: rest.FriendlyName
+          Minutes: rest.Minutes
+          StartDate: rest.StartDate
+          TaskChannel: rest.TaskChannel
+          SplitByWaitTime: rest.SplitByWaitTime
+          PageSize: rest.PageSize
+          Page: rest.Page
+          PageToken: rest.PageToken
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/v1/workspaces/{workspacesid}/taskqueues/{sid}
+      name: v1-workspaces-workspacesid-taskqueues-sid
+      description: REST surface for v1-Workspaces-WorkspaceSid-TaskQueues-Sid.
+      operations:
+      - method: GET
+        name: fetchtaskqueue
+        description: fetchtaskqueue
+        call: task-router-workspaces.fetchtaskqueue
+        with:
+          WorkspaceSid: rest.WorkspaceSid
+          Sid: rest.Sid
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: POST
+        name: updatetaskqueue
+        description: updatetaskqueue
+        call: task-router-workspaces.updatetaskqueue
+        with:
+          WorkspaceSid: rest.WorkspaceSid
+          Sid: rest.Sid
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: DELETE
+        name: deletetaskqueue
+        description: deletetaskqueue
+        call: task-router-workspaces.deletetaskqueue
+        with:
+          WorkspaceSid: rest.WorkspaceSid
+          Sid: rest.Sid
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/v1/workspaces/{workspacesid}/taskqueues/{taskqueuesid}/cumulativestatistics
+      name: v1-workspaces-workspacesid-taskqueues-taskqueuesid-cumulativestatistics
+      description: REST surface for v1-Workspaces-WorkspaceSid-TaskQueues-TaskQueueSid-CumulativeStatistics.
+      operations:
+      - method: GET
+        name: fetchtaskqueuecumulativestatistics
+        description: fetchtaskqueuecumulativestatistics
+        call: task-router-workspaces.fetchtaskqueuecumulativestatistics
+        with:
+          WorkspaceSid: rest.WorkspaceSid
+          TaskQueueSid: rest.TaskQueueSid
+          EndDate: rest.EndDate
+          Minutes: rest.Minutes
+          StartDate: rest.StartDate
+          TaskChannel: rest.TaskChannel
+          SplitByWaitTime: rest.SplitByWaitTime
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/v1/workspaces/{workspacesid}/taskqueues/{taskqueuesid}/realtimestatistics
+      name: v1-workspaces-workspacesid-taskqueues-taskqueuesid-realtimestatistics
+      description: REST surface for v1-Workspaces-WorkspaceSid-TaskQueues-TaskQueueSid-RealTimeStatistics.
+      operations:
+      - method: GET
+        name: fetchtaskqueuerealtimestatistics
+        description: fetchtaskqueuerealtimestatistics
+        call: task-router-workspaces.fetchtaskqueuerealtimestatistics
+        with:
+          WorkspaceSid: rest.WorkspaceSid
+          TaskQueueSid: rest.TaskQueueSid
+          TaskChannel: rest.TaskChannel
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/v1/workspaces/{workspacesid}/taskqueues/{taskqueuesid}/statistics
+      name: v1-workspaces-workspacesid-taskqueues-taskqueuesid-statistics
+      description: REST surface for v1-Workspaces-WorkspaceSid-TaskQueues-TaskQueueSid-Statistics.
+      operations:
+      - method: GET
+        name: fetchtaskqueuestatistics
+        description: fetchtaskqueuestatistics
+        call: task-router-workspaces.fetchtaskqueuestatistics
+        with:
+          WorkspaceSid: rest.WorkspaceSid
+          TaskQueueSid: rest.TaskQueueSid
+          EndDate: rest.EndDate
+          Minutes: rest.Minutes
+          StartDate: rest.StartDate
+          TaskChannel: rest.TaskChannel
+          SplitByWaitTime: rest.SplitByWaitTime
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/v1/workspaces/{workspacesid}/tasks
+      name: v1-workspaces-workspacesid-tasks
+      description: REST surface for v1-Workspaces-WorkspaceSid-Tasks.
+      operations:
+      - method: GET
+        name: listtask
+        description: listtask
+        call: task-router-workspaces.listtask
+        with:
+          WorkspaceSid: rest.WorkspaceSid
+          Priority: rest.Priority
+          AssignmentStatus: rest.AssignmentStatus
+          WorkflowSid: rest.WorkflowSid
+          WorkflowName: rest.WorkflowName
+          TaskQueueSid: rest.TaskQueueSid
+          TaskQueueName: rest.TaskQueueName
+          EvaluateTaskAttributes: rest.EvaluateTaskAttributes
+          Ordering: rest.Ordering
+          HasAddons: rest.HasAddons
+          PageSize: rest.PageSize
+          Page: rest.Page
+          PageToken: rest.PageToken
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: POST
+        name: createtask
+        description: createtask
+        call: task-router-workspaces.createtask
+        with:
+          WorkspaceSid: rest.WorkspaceSid
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/v1/workspaces/{workspacesid}/tasks/{sid}
+      name: v1-workspaces-workspacesid-tasks-sid
+      description: REST surface for v1-Workspaces-WorkspaceSid-Tasks-Sid.
+      operations:
+      - method: GET
+        name: fetchtask
+        description: fetchtask
+        call: task-router-workspaces.fetchtask
+        with:
+          WorkspaceSid: rest.WorkspaceSid
+          Sid: rest.Sid
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: POST
+        name: updatetask
+        description: updatetask
+        call: task-router-workspaces.updatetask
+        with:
+          WorkspaceSid: rest.WorkspaceSid
+          Sid: rest.Sid
+          If-Match: rest.If-Match
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: DELETE
+        name: deletetask
+        description: deletetask
+        call: task-router-workspaces.deletetask
+        with:
+          WorkspaceSid: rest.WorkspaceSid
+          Sid: rest.Sid
+          If-Match: rest.If-Match
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/v1/workspaces/{workspacesid}/tasks/{tasksid}/reservations
+      name: v1-workspaces-workspacesid-tasks-tasksid-reservations
+      description: REST surface for v1-Workspaces-WorkspaceSid-Tasks-TaskSid-Reservations.
+      operations:
+      - method: GET
+        name: listtaskreservation
+        description: listtaskreservation
+        call: task-router-workspaces.listtaskreservation
+        with:
+          WorkspaceSid: rest.WorkspaceSid
+          TaskSid: rest.TaskSid
+          ReservationStatus: rest.ReservationStatus
+          WorkerSid: rest.WorkerSid
+          PageSize: rest.PageSize
+          Page: rest.Page
+          PageToken: rest.PageToken
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/v1/workspaces/{workspacesid}/tasks/{tasksid}/reservations/{sid}
+      name: v1-workspaces-workspacesid-tasks-tasksid-reservations-sid
+      description: REST surface for v1-Workspaces-WorkspaceSid-Tasks-TaskSid-Reservations-Sid.
+      operations:
+      - method: GET
+        name: fetchtaskreservation
+        description: fetchtaskreservation
+        call: task-router-workspaces.fetchtaskreservation
+        with:
+          WorkspaceSid: rest.WorkspaceSid
+          TaskSid: rest.TaskSid
+          Sid: rest.Sid
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: POST
+        name: updatetaskreservation
+        description: updatetaskreservation
+        call: task-router-workspaces.updatetaskreservation
+        with:
+          WorkspaceSid: rest.WorkspaceSid
+          TaskSid: rest.TaskSid
+          Sid: rest.Sid
+          If-Match: rest.If-Match
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/v1/workspaces/{workspacesid}/workers
+      name: v1-workspaces-workspacesid-workers
+      description: REST surface for v1-Workspaces-WorkspaceSid-Workers.
+      operations:
+      - method: GET
+        name: listworker
+        description: listworker
+        call: task-router-workspaces.listworker
+        with:
+          WorkspaceSid: rest.WorkspaceSid
+          ActivityName: rest.ActivityName
+          ActivitySid: rest.ActivitySid
+          Available: rest.Available
+          FriendlyName: rest.FriendlyName
+          TargetWorkersExpression: rest.TargetWorkersExpression
+          TaskQueueName: rest.TaskQueueName
+          TaskQueueSid: rest.TaskQueueSid
+          Ordering: rest.Ordering
+          PageSize: rest.PageSize
+          Page: rest.Page
+          PageToken: rest.PageToken
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: POST
+        name: createworker
+        description: createworker
+        call: task-router-workspaces.createworker
+        with:
+          WorkspaceSid: rest.WorkspaceSid
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/v1/workspaces/{workspacesid}/workers/cumulativestatistics
+      name: v1-workspaces-workspacesid-workers-cumulativestatistics
+      description: REST surface for v1-Workspaces-WorkspaceSid-Workers-CumulativeStatistics.
+      operations:
+      - method: GET
+        name: fetchworkerscumulativestatistics
+        description: fetchworkerscumulativestatistics
+        call: task-router-workspaces.fetchworkerscumulativestatistics
+        with:
+          WorkspaceSid: rest.WorkspaceSid
+          EndDate: rest.EndDate
+          Minutes: rest.Minutes
+          StartDate: rest.StartDate
+          TaskChannel: rest.TaskChannel
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/v1/workspaces/{workspacesid}/workers/realtimestatistics
+      name: v1-workspaces-workspacesid-workers-realtimestatistics
+      description: REST surface for v1-Workspaces-WorkspaceSid-Workers-RealTimeStatistics.
+      operations:
+      - method: GET
+        name: fetchworkersrealtimestatistics
+        description: fetchworkersrealtimestatistics
+        call: task-router-workspaces.fetchworkersrealtimestatistics
+        with:
+          WorkspaceSid: rest.WorkspaceSid
+          TaskChannel: rest.TaskChannel
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/v1/workspaces/{workspacesid}/workers/statistics
+      name: v1-workspaces-workspacesid-workers-statistics
+      description: REST surface for v1-Workspaces-WorkspaceSid-Workers-Statistics.
+      operations:
+      - method: GET
+        name: fetchworkerstatistics
+        description: fetchworkerstatistics
+        call: task-router-workspaces.fetchworkerstatistics
+        with:
+          WorkspaceSid: rest.WorkspaceSid
+          Minutes: rest.Minutes
+          StartDate: rest.StartDate
+          EndDate: rest.EndDate
+          TaskQueueSid: rest.TaskQueueSid
+          TaskQueueName: rest.TaskQueueName
+          FriendlyName: rest.FriendlyName
+          TaskChannel: rest.TaskChannel
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/v1/workspaces/{workspacesid}/workers/{sid}
+      name: v1-workspaces-workspacesid-workers-sid
+      description: REST surface for v1-Workspaces-WorkspaceSid-Workers-Sid.
+      operations:
+      - method: GET
+        name: fetchworker
+        description: fetchworker
+        call: task-router-workspaces.fetchworker
+        with:
+          WorkspaceSid: rest.WorkspaceSid
+          Sid: rest.Sid
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: POST
+        name: updateworker
+        description: updateworker
+        call: task-router-workspaces.updateworker
+        with:
+          WorkspaceSid: rest.WorkspaceSid
+          Sid: rest.Sid
+          If-Match: rest.If-Match
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: DELETE
+        name: deleteworker
+        description: deleteworker
+        call: task-router-workspaces.deleteworker
+        with:
+          WorkspaceSid: rest.WorkspaceSid
+          Sid: rest.Sid
+          If-Match: rest.If-Match
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/v1/workspaces/{workspacesid}/workers/{workersid}/channels
+      name: v1-workspaces-workspacesid-workers-workersid-channels
+      description: REST surface for v1-Workspaces-WorkspaceSid-Workers-WorkerSid-Channels.
+      operations:
+      - method: GET
+        name: listworkerchannel
+        description: listworkerchannel
+        call: task-router-workspaces.listworkerchannel
+        with:
+          WorkspaceSid: rest.WorkspaceSid
+          WorkerSid: rest.WorkerSid
+          PageSize: rest.PageSize
+          Page: rest.Page
+          PageToken: rest.PageToken
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/v1/workspaces/{workspacesid}/workers/{workersid}/channels/{sid}
+      name: v1-workspaces-workspacesid-workers-workersid-channels-sid
+      description: REST surface for v1-Workspaces-WorkspaceSid-Workers-WorkerSid-Channels-Sid.
+      operations:
+      - method: GET
+        name: fetchworkerchannel
+        description: fetchworkerchannel
+        call: task-router-workspaces.fetchworkerchannel
+        with:
+          WorkspaceSid: rest.WorkspaceSid
+          WorkerSid: rest.WorkerSid
+          Sid: rest.Sid
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: POST
+        name: updateworkerchannel
+        description: updateworkerchannel
+        call: task-router-workspaces.updateworkerchannel
+        with:
+          WorkspaceSid: rest.WorkspaceSid
+          WorkerSid: rest.WorkerSid
+          Sid: rest.Sid
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/v1/workspaces/{workspacesid}/workers/{workersid}/reservations
+      name: v1-workspaces-workspacesid-workers-workersid-reservations
+      description: REST surface for v1-Workspaces-WorkspaceSid-Workers-WorkerSid-Reservations.
+      operations:
+      - method: GET
+        name: listworkerreservation
+        description: listworkerreservation
+        call: task-router-workspaces.listworkerreservation
+        with:
+          WorkspaceSid: rest.WorkspaceSid
+          WorkerSid: rest.WorkerSid
+          ReservationStatus: rest.ReservationStatus
+          PageSize: rest.PageSize
+          Page: rest.Page
+          PageToken: rest.PageToken
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/v1/workspaces/{workspacesid}/workers/{workersid}/reservations/{sid}
+      name: v1-workspaces-workspacesid-workers-workersid-reservations-sid
+      description: REST surface for v1-Workspaces-WorkspaceSid-Workers-WorkerSid-Reservations-Sid.
+      operations:
+      - method: GET
+        name: fetchworkerreservation
+        description: fetchworkerreservation
+        call: task-router-workspaces.fetchworkerreservation
+        with:
+          WorkspaceSid: rest.WorkspaceSid
+          WorkerSid: rest.WorkerSid
+          Sid: rest.Sid
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: POST
+        name: updateworkerreservation
+        description: updateworkerreservation
+        call: task-router-workspaces.updateworkerreservation
+        with:
+          WorkspaceSid: rest.WorkspaceSid
+          WorkerSid: rest.WorkerSid
+          Sid: rest.Sid
+          If-Match: rest.If-Match
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/v1/workspaces/{workspacesid}/workers/{workersid}/statistics
+      name: v1-workspaces-workspacesid-workers-workersid-statistics
+      description: REST surface for v1-Workspaces-WorkspaceSid-Workers-WorkerSid-Statistics.
+      operations:
+      - method: GET
+        name: fetchworkerinstancestatistics
+        description: fetchworkerinstancestatistics
+        call: task-router-workspaces.fetchworkerinstancestatistics
+        with:
+          WorkspaceSid: rest.WorkspaceSid
+          WorkerSid: rest.WorkerSid
+          Minutes: rest.Minutes
+          StartDate: rest.StartDate
+          EndDate: rest.EndDate
+          TaskChannel: rest.TaskChannel
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/v1/workspaces/{workspacesid}/workflows
+      name: v1-workspaces-workspacesid-workflows
+      description: REST surface for v1-Workspaces-WorkspaceSid-Workflows.
+      operations:
+      - method: GET
+        name: listworkflow
+        description: listworkflow
+        call: task-router-workspaces.listworkflow
+        with:
+          WorkspaceSid: rest.WorkspaceSid
+          FriendlyName: rest.FriendlyName
+          PageSize: rest.PageSize
+          Page: rest.Page
+          PageToken: rest.PageToken
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: POST
+        name: createworkflow
+        description: createworkflow
+        call: task-router-workspaces.createworkflow
+        with:
+          WorkspaceSid: rest.WorkspaceSid
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/v1/workspaces/{workspacesid}/workflows/{sid}
+      name: v1-workspaces-workspacesid-workflows-sid
+      description: REST surface for v1-Workspaces-WorkspaceSid-Workflows-Sid.
+      operations:
+      - method: GET
+        name: fetchworkflow
+        description: fetchworkflow
+        call: task-router-workspaces.fetchworkflow
+        with:
+          WorkspaceSid: rest.WorkspaceSid
+          Sid: rest.Sid
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: POST
+        name: updateworkflow
+        description: updateworkflow
+        call: task-router-workspaces.updateworkflow
+        with:
+          WorkspaceSid: rest.WorkspaceSid
+          Sid: rest.Sid
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: DELETE
+        name: deleteworkflow
+        description: deleteworkflow
+        call: task-router-workspaces.deleteworkflow
+        with:
+          WorkspaceSid: rest.WorkspaceSid
+          Sid: rest.Sid
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/v1/workspaces/{workspacesid}/workflows/{workflowsid}/cumulativestatistics
+      name: v1-workspaces-workspacesid-workflows-workflowsid-cumulativestatistics
+      description: REST surface for v1-Workspaces-WorkspaceSid-Workflows-WorkflowSid-CumulativeStatistics.
+      operations:
+      - method: GET
+        name: fetchworkflowcumulativestatistics
+        description: fetchworkflowcumulativestatistics
+        call: task-router-workspaces.fetchworkflowcumulativestatistics
+        with:
+          WorkspaceSid: rest.WorkspaceSid
+          WorkflowSid: rest.WorkflowSid
+          EndDate: rest.EndDate
+          Minutes: rest.Minutes
+          StartDate: rest.StartDate
+          TaskChannel: rest.TaskChannel
+          SplitByWaitTime: rest.SplitByWaitTime
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/v1/workspaces/{workspacesid}/workflows/{workflowsid}/realtimestatistics
+      name: v1-workspaces-workspacesid-workflows-workflowsid-realtimestatistics
+      description: REST surface for v1-Workspaces-WorkspaceSid-Workflows-WorkflowSid-RealTimeStatistics.
+      operations:
+      - method: GET
+        name: fetchworkflowrealtimestatistics
+        description: fetchworkflowrealtimestatistics
+        call: task-router-workspaces.fetchworkflowrealtimestatistics
+        with:
+          WorkspaceSid: rest.WorkspaceSid
+          WorkflowSid: rest.WorkflowSid
+          TaskChannel: rest.TaskChannel
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/v1/workspaces/{workspacesid}/workflows/{workflowsid}/statistics
+      name: v1-workspaces-workspacesid-workflows-workflowsid-statistics
+      description: REST surface for v1-Workspaces-WorkspaceSid-Workflows-WorkflowSid-Statistics.
+      operations:
+      - method: GET
+        name: fetchworkflowstatistics
+        description: fetchworkflowstatistics
+        call: task-router-workspaces.fetchworkflowstatistics
+        with:
+          WorkspaceSid: rest.WorkspaceSid
+          WorkflowSid: rest.WorkflowSid
+          Minutes: rest.Minutes
+          StartDate: rest.StartDate
+          EndDate: rest.EndDate
+          TaskChannel: rest.TaskChannel
+          SplitByWaitTime: rest.SplitByWaitTime
+        outputParameters:
+        - type: object
+          mapping: $.
+  - type: mcp
+    namespace: task-router-workspaces-mcp
+    port: 9090
+    transport: http
+    description: MCP adapter for Twilio - Taskrouter — Workspaces. One tool per consumed operation, routed inline through
+      this capability's consumes block.
+    tools:
+    - name: listworkspace
+      description: listworkspace
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: task-router-workspaces.listworkspace
+      with:
+        FriendlyName: tools.FriendlyName
+        PageSize: tools.PageSize
+        Page: tools.Page
+        PageToken: tools.PageToken
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: createworkspace
+      description: createworkspace
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: task-router-workspaces.createworkspace
+      with:
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: fetchworkspace
+      description: fetchworkspace
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: task-router-workspaces.fetchworkspace
+      with:
+        Sid: tools.Sid
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: updateworkspace
+      description: updateworkspace
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: task-router-workspaces.updateworkspace
+      with:
+        Sid: tools.Sid
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: deleteworkspace
+      description: deleteworkspace
+      hints:
+        readOnly: false
+        destructive: true
+        idempotent: true
+      call: task-router-workspaces.deleteworkspace
+      with:
+        Sid: tools.Sid
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: listactivity
+      description: listactivity
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: task-router-workspaces.listactivity
+      with:
+        WorkspaceSid: tools.WorkspaceSid
+        FriendlyName: tools.FriendlyName
+        Available: tools.Available
+        PageSize: tools.PageSize
+        Page: tools.Page
+        PageToken: tools.PageToken
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: createactivity
+      description: createactivity
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: task-router-workspaces.createactivity
+      with:
+        WorkspaceSid: tools.WorkspaceSid
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: fetchactivity
+      description: fetchactivity
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: task-router-workspaces.fetchactivity
+      with:
+        WorkspaceSid: tools.WorkspaceSid
+        Sid: tools.Sid
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: updateactivity
+      description: updateactivity
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: task-router-workspaces.updateactivity
+      with:
+        WorkspaceSid: tools.WorkspaceSid
+        Sid: tools.Sid
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: deleteactivity
+      description: deleteactivity
+      hints:
+        readOnly: false
+        destructive: true
+        idempotent: true
+      call: task-router-workspaces.deleteactivity
+      with:
+        WorkspaceSid: tools.WorkspaceSid
+        Sid: tools.Sid
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: fetchworkspacecumulativestatistics
+      description: fetchworkspacecumulativestatistics
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: task-router-workspaces.fetchworkspacecumulativestatistics
+      with:
+        WorkspaceSid: tools.WorkspaceSid
+        EndDate: tools.EndDate
+        Minutes: tools.Minutes
+        StartDate: tools.StartDate
+        TaskChannel: tools.TaskChannel
+        SplitByWaitTime: tools.SplitByWaitTime
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: listevent
+      description: listevent
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: task-router-workspaces.listevent
+      with:
+        WorkspaceSid: tools.WorkspaceSid
+        EndDate: tools.EndDate
+        EventType: tools.EventType
+        Minutes: tools.Minutes
+        ReservationSid: tools.ReservationSid
+        StartDate: tools.StartDate
+        TaskQueueSid: tools.TaskQueueSid
+        TaskSid: tools.TaskSid
+        WorkerSid: tools.WorkerSid
+        WorkflowSid: tools.WorkflowSid
+        TaskChannel: tools.TaskChannel
+        Sid: tools.Sid
+        PageSize: tools.PageSize
+        Page: tools.Page
+        PageToken: tools.PageToken
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: fetchevent
+      description: fetchevent
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: task-router-workspaces.fetchevent
+      with:
+        WorkspaceSid: tools.WorkspaceSid
+        Sid: tools.Sid
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: fetchworkspacerealtimestatistics
+      description: fetchworkspacerealtimestatistics
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: task-router-workspaces.fetchworkspacerealtimestatistics
+      with:
+        WorkspaceSid: tools.WorkspaceSid
+        TaskChannel: tools.TaskChannel
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: fetchworkspacestatistics
+      description: fetchworkspacestatistics
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: task-router-workspaces.fetchworkspacestatistics
+      with:
+        WorkspaceSid: tools.WorkspaceSid
+        Minutes: tools.Minutes
+        StartDate: tools.StartDate
+        EndDate: tools.EndDate
+        TaskChannel: tools.TaskChannel
+        SplitByWaitTime: tools.SplitByWaitTime
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: listtaskchannel
+      description: listtaskchannel
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: task-router-workspaces.listtaskchannel
+      with:
+        WorkspaceSid: tools.WorkspaceSid
+        PageSize: tools.PageSize
+        Page: tools.Page
+        PageToken: tools.PageToken
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: createtaskchannel
+      description: createtaskchannel
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: task-router-workspaces.createtaskchannel
+      with:
+        WorkspaceSid: tools.WorkspaceSid
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: fetchtaskchannel
+      description: fetchtaskchannel
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: task-router-workspaces.fetchtaskchannel
+      with:
+        WorkspaceSid: tools.WorkspaceSid
+        Sid: tools.Sid
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: updatetaskchannel
+      description: updatetaskchannel
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: task-router-workspaces.updatetaskchannel
+      with:
+        WorkspaceSid: tools.WorkspaceSid
+        Sid: tools.Sid
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: deletetaskchannel
+      description: deletetaskchannel
+      hints:
+        readOnly: false
+        destructive: true
+        idempotent: true
+      call: task-router-workspaces.deletetaskchannel
+      with:
+        WorkspaceSid: tools.WorkspaceSid
+        Sid: tools.Sid
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: listtaskqueue
+      description: listtaskqueue
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: task-router-workspaces.listtaskqueue
+      with:
+        WorkspaceSid: tools.WorkspaceSid
+        FriendlyName: tools.FriendlyName
+        EvaluateWorkerAttributes: tools.EvaluateWorkerAttributes
+        WorkerSid: tools.WorkerSid
+        Ordering: tools.Ordering
+        PageSize: tools.PageSize
+        Page: tools.Page
+        PageToken: tools.PageToken
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: createtaskqueue
+      description: createtaskqueue
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: task-router-workspaces.createtaskqueue
+      with:
+        WorkspaceSid: tools.WorkspaceSid
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: listtaskqueuesstatistics
+      description: listtaskqueuesstatistics
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: task-router-workspaces.listtaskqueuesstatistics
+      with:
+        WorkspaceSid: tools.WorkspaceSid
+        EndDate: tools.EndDate
+        FriendlyName: tools.FriendlyName
+        Minutes: tools.Minutes
+        StartDate: tools.StartDate
+        TaskChannel: tools.TaskChannel
+        SplitByWaitTime: tools.SplitByWaitTime
+        PageSize: tools.PageSize
+        Page: tools.Page
+        PageToken: tools.PageToken
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: fetchtaskqueue
+      description: fetchtaskqueue
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: task-router-workspaces.fetchtaskqueue
+      with:
+        WorkspaceSid: tools.WorkspaceSid
+        Sid: tools.Sid
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: updatetaskqueue
+      description: updatetaskqueue
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: task-router-workspaces.updatetaskqueue
+      with:
+        WorkspaceSid: tools.WorkspaceSid
+        Sid: tools.Sid
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: deletetaskqueue
+      description: deletetaskqueue
+      hints:
+        readOnly: false
+        destructive: true
+        idempotent: true
+      call: task-router-workspaces.deletetaskqueue
+      with:
+        WorkspaceSid: tools.WorkspaceSid
+        Sid: tools.Sid
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: fetchtaskqueuecumulativestatistics
+      description: fetchtaskqueuecumulativestatistics
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: task-router-workspaces.fetchtaskqueuecumulativestatistics
+      with:
+        WorkspaceSid: tools.WorkspaceSid
+        TaskQueueSid: tools.TaskQueueSid
+        EndDate: tools.EndDate
+        Minutes: tools.Minutes
+        StartDate: tools.StartDate
+        TaskChannel: tools.TaskChannel
+        SplitByWaitTime: tools.SplitByWaitTime
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: fetchtaskqueuerealtimestatistics
+      description: fetchtaskqueuerealtimestatistics
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: task-router-workspaces.fetchtaskqueuerealtimestatistics
+      with:
+        WorkspaceSid: tools.WorkspaceSid
+        TaskQueueSid: tools.TaskQueueSid
+        TaskChannel: tools.TaskChannel
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: fetchtaskqueuestatistics
+      description: fetchtaskqueuestatistics
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: task-router-workspaces.fetchtaskqueuestatistics
+      with:
+        WorkspaceSid: tools.WorkspaceSid
+        TaskQueueSid: tools.TaskQueueSid
+        EndDate: tools.EndDate
+        Minutes: tools.Minutes
+        StartDate: tools.StartDate
+        TaskChannel: tools.TaskChannel
+        SplitByWaitTime: tools.SplitByWaitTime
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: listtask
+      description: listtask
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: task-router-workspaces.listtask
+      with:
+        WorkspaceSid: tools.WorkspaceSid
+        Priority: tools.Priority
+        AssignmentStatus: tools.AssignmentStatus
+        WorkflowSid: tools.WorkflowSid
+        WorkflowName: tools.WorkflowName
+        TaskQueueSid: tools.TaskQueueSid
+        TaskQueueName: tools.TaskQueueName
+        EvaluateTaskAttributes: tools.EvaluateTaskAttributes
+        Ordering: tools.Ordering
+        HasAddons: tools.HasAddons
+        PageSize: tools.PageSize
+        Page: tools.Page
+        PageToken: tools.PageToken
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: createtask
+      description: createtask
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: task-router-workspaces.createtask
+      with:
+        WorkspaceSid: tools.WorkspaceSid
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: fetchtask
+      description: fetchtask
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: task-router-workspaces.fetchtask
+      with:
+        WorkspaceSid: tools.WorkspaceSid
+        Sid: tools.Sid
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: updatetask
+      description: updatetask
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: task-router-workspaces.updatetask
+      with:
+        WorkspaceSid: tools.WorkspaceSid
+        Sid: tools.Sid
+        If-Match: tools.If-Match
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: deletetask
+      description: deletetask
+      hints:
+        readOnly: false
+        destructive: true
+        idempotent: true
+      call: task-router-workspaces.deletetask
+      with:
+        WorkspaceSid: tools.WorkspaceSid
+        Sid: tools.Sid
+        If-Match: tools.If-Match
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: listtaskreservation
+      description: listtaskreservation
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: task-router-workspaces.listtaskreservation
+      with:
+        WorkspaceSid: tools.WorkspaceSid
+        TaskSid: tools.TaskSid
+        ReservationStatus: tools.ReservationStatus
+        WorkerSid: tools.WorkerSid
+        PageSize: tools.PageSize
+        Page: tools.Page
+        PageToken: tools.PageToken
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: fetchtaskreservation
+      description: fetchtaskreservation
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: task-router-workspaces.fetchtaskreservation
+      with:
+        WorkspaceSid: tools.WorkspaceSid
+        TaskSid: tools.TaskSid
+        Sid: tools.Sid
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: updatetaskreservation
+      description: updatetaskreservation
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: task-router-workspaces.updatetaskreservation
+      with:
+        WorkspaceSid: tools.WorkspaceSid
+        TaskSid: tools.TaskSid
+        Sid: tools.Sid
+        If-Match: tools.If-Match
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: listworker
+      description: listworker
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: task-router-workspaces.listworker
+      with:
+        WorkspaceSid: tools.WorkspaceSid
+        ActivityName: tools.ActivityName
+        ActivitySid: tools.ActivitySid
+        Available: tools.Available
+        FriendlyName: tools.FriendlyName
+        TargetWorkersExpression: tools.TargetWorkersExpression
+        TaskQueueName: tools.TaskQueueName
+        TaskQueueSid: tools.TaskQueueSid
+        Ordering: tools.Ordering
+        PageSize: tools.PageSize
+        Page: tools.Page
+        PageToken: tools.PageToken
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: createworker
+      description: createworker
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: task-router-workspaces.createworker
+      with:
+        WorkspaceSid: tools.WorkspaceSid
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: fetchworkerscumulativestatistics
+      description: fetchworkerscumulativestatistics
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: task-router-workspaces.fetchworkerscumulativestatistics
+      with:
+        WorkspaceSid: tools.WorkspaceSid
+        EndDate: tools.EndDate
+        Minutes: tools.Minutes
+        StartDate: tools.StartDate
+        TaskChannel: tools.TaskChannel
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: fetchworkersrealtimestatistics
+      description: fetchworkersrealtimestatistics
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: task-router-workspaces.fetchworkersrealtimestatistics
+      with:
+        WorkspaceSid: tools.WorkspaceSid
+        TaskChannel: tools.TaskChannel
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: fetchworkerstatistics
+      description: fetchworkerstatistics
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: task-router-workspaces.fetchworkerstatistics
+      with:
+        WorkspaceSid: tools.WorkspaceSid
+        Minutes: tools.Minutes
+        StartDate: tools.StartDate
+        EndDate: tools.EndDate
+        TaskQueueSid: tools.TaskQueueSid
+        TaskQueueName: tools.TaskQueueName
+        FriendlyName: tools.FriendlyName
+        TaskChannel: tools.TaskChannel
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: fetchworker
+      description: fetchworker
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: task-router-workspaces.fetchworker
+      with:
+        WorkspaceSid: tools.WorkspaceSid
+        Sid: tools.Sid
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: updateworker
+      description: updateworker
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: task-router-workspaces.updateworker
+      with:
+        WorkspaceSid: tools.WorkspaceSid
+        Sid: tools.Sid
+        If-Match: tools.If-Match
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: deleteworker
+      description: deleteworker
+      hints:
+        readOnly: false
+        destructive: true
+        idempotent: true
+      call: task-router-workspaces.deleteworker
+      with:
+        WorkspaceSid: tools.WorkspaceSid
+        Sid: tools.Sid
+        If-Match: tools.If-Match
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: listworkerchannel
+      description: listworkerchannel
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: task-router-workspaces.listworkerchannel
+      with:
+        WorkspaceSid: tools.WorkspaceSid
+        WorkerSid: tools.WorkerSid
+        PageSize: tools.PageSize
+        Page: tools.Page
+        PageToken: tools.PageToken
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: fetchworkerchannel
+      description: fetchworkerchannel
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: task-router-workspaces.fetchworkerchannel
+      with:
+        WorkspaceSid: tools.WorkspaceSid
+        WorkerSid: tools.WorkerSid
+        Sid: tools.Sid
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: updateworkerchannel
+      description: updateworkerchannel
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: task-router-workspaces.updateworkerchannel
+      with:
+        WorkspaceSid: tools.WorkspaceSid
+        WorkerSid: tools.WorkerSid
+        Sid: tools.Sid
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: listworkerreservation
+      description: listworkerreservation
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: task-router-workspaces.listworkerreservation
+      with:
+        WorkspaceSid: tools.WorkspaceSid
+        WorkerSid: tools.WorkerSid
+        ReservationStatus: tools.ReservationStatus
+        PageSize: tools.PageSize
+        Page: tools.Page
+        PageToken: tools.PageToken
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: fetchworkerreservation
+      description: fetchworkerreservation
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: task-router-workspaces.fetchworkerreservation
+      with:
+        WorkspaceSid: tools.WorkspaceSid
+        WorkerSid: tools.WorkerSid
+        Sid: tools.Sid
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: updateworkerreservation
+      description: updateworkerreservation
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: task-router-workspaces.updateworkerreservation
+      with:
+        WorkspaceSid: tools.WorkspaceSid
+        WorkerSid: tools.WorkerSid
+        Sid: tools.Sid
+        If-Match: tools.If-Match
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: fetchworkerinstancestatistics
+      description: fetchworkerinstancestatistics
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: task-router-workspaces.fetchworkerinstancestatistics
+      with:
+        WorkspaceSid: tools.WorkspaceSid
+        WorkerSid: tools.WorkerSid
+        Minutes: tools.Minutes
+        StartDate: tools.StartDate
+        EndDate: tools.EndDate
+        TaskChannel: tools.TaskChannel
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: listworkflow
+      description: listworkflow
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: task-router-workspaces.listworkflow
+      with:
+        WorkspaceSid: tools.WorkspaceSid
+        FriendlyName: tools.FriendlyName
+        PageSize: tools.PageSize
+        Page: tools.Page
+        PageToken: tools.PageToken
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: createworkflow
+      description: createworkflow
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: task-router-workspaces.createworkflow
+      with:
+        WorkspaceSid: tools.WorkspaceSid
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: fetchworkflow
+      description: fetchworkflow
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: task-router-workspaces.fetchworkflow
+      with:
+        WorkspaceSid: tools.WorkspaceSid
+        Sid: tools.Sid
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: updateworkflow
+      description: updateworkflow
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: task-router-workspaces.updateworkflow
+      with:
+        WorkspaceSid: tools.WorkspaceSid
+        Sid: tools.Sid
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: deleteworkflow
+      description: deleteworkflow
+      hints:
+        readOnly: false
+        destructive: true
+        idempotent: true
+      call: task-router-workspaces.deleteworkflow
+      with:
+        WorkspaceSid: tools.WorkspaceSid
+        Sid: tools.Sid
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: fetchworkflowcumulativestatistics
+      description: fetchworkflowcumulativestatistics
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: task-router-workspaces.fetchworkflowcumulativestatistics
+      with:
+        WorkspaceSid: tools.WorkspaceSid
+        WorkflowSid: tools.WorkflowSid
+        EndDate: tools.EndDate
+        Minutes: tools.Minutes
+        StartDate: tools.StartDate
+        TaskChannel: tools.TaskChannel
+        SplitByWaitTime: tools.SplitByWaitTime
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: fetchworkflowrealtimestatistics
+      description: fetchworkflowrealtimestatistics
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: task-router-workspaces.fetchworkflowrealtimestatistics
+      with:
+        WorkspaceSid: tools.WorkspaceSid
+        WorkflowSid: tools.WorkflowSid
+        TaskChannel: tools.TaskChannel
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: fetchworkflowstatistics
+      description: fetchworkflowstatistics
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: task-router-workspaces.fetchworkflowstatistics
+      with:
+        WorkspaceSid: tools.WorkspaceSid
+        WorkflowSid: tools.WorkflowSid
+        Minutes: tools.Minutes
+        StartDate: tools.StartDate
+        EndDate: tools.EndDate
+        TaskChannel: tools.TaskChannel
+        SplitByWaitTime: tools.SplitByWaitTime
+      outputParameters:
+      - type: object
+        mapping: $.

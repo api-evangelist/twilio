@@ -1,0 +1,494 @@
+naftiko: 1.0.0-alpha2
+info:
+  label: Twilio - Events — Subscriptions
+  description: 'Twilio - Events — Subscriptions. 10 operations. Lead operation: Subscriptions. Self-contained Naftiko capability
+    covering one Twilio business surface.'
+  tags:
+  - Twilio
+  - Subscriptions
+  created: '2026-05-19'
+  modified: '2026-05-19'
+binds:
+- namespace: env
+  keys:
+    TWILIO_API_KEY: TWILIO_API_KEY
+capability:
+  consumes:
+  - type: http
+    namespace: events-subscriptions
+    baseUri: https://events.twilio.com
+    description: Twilio - Events — Subscriptions business capability. Self-contained, no shared references.
+    resources:
+    - name: v1-Subscriptions
+      path: /v1/Subscriptions
+      operations:
+      - name: listsubscription
+        method: GET
+        description: Retrieve a paginated list of Subscriptions belonging to the account used to make the request.
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: SinkSid
+          in: query
+          type: string
+          description: The SID of the sink that the list of Subscriptions should be filtered by.
+        - name: PageSize
+          in: query
+          type: integer
+          description: How many resources to return in each list page. The default is 50, and the maximum is 1000.
+        - name: Page
+          in: query
+          type: integer
+          description: The page index. This value is simply for client state.
+        - name: PageToken
+          in: query
+          type: string
+          description: The page token. This is provided by the API.
+      - name: createsubscription
+        method: POST
+        description: Create a new Subscription.
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: false
+    - name: v1-Subscriptions-Sid
+      path: /v1/Subscriptions/{Sid}
+      operations:
+      - name: fetchsubscription
+        method: GET
+        description: Fetch a specific Subscription.
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: Sid
+          in: path
+          type: string
+          description: A 34 character string that uniquely identifies this Subscription.
+          required: true
+      - name: updatesubscription
+        method: POST
+        description: Update a Subscription.
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: Sid
+          in: path
+          type: string
+          description: A 34 character string that uniquely identifies this Subscription.
+          required: true
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: false
+      - name: deletesubscription
+        method: DELETE
+        description: Delete a specific Subscription.
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: Sid
+          in: path
+          type: string
+          description: A 34 character string that uniquely identifies this Subscription.
+          required: true
+    - name: v1-Subscriptions-SubscriptionSid-SubscribedEvents
+      path: /v1/Subscriptions/{SubscriptionSid}/SubscribedEvents
+      operations:
+      - name: listsubscribedevent
+        method: GET
+        description: Retrieve a list of all Subscribed Event types for a Subscription.
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: SubscriptionSid
+          in: path
+          type: string
+          description: The unique SID identifier of the Subscription.
+          required: true
+        - name: PageSize
+          in: query
+          type: integer
+          description: How many resources to return in each list page. The default is 50, and the maximum is 1000.
+        - name: Page
+          in: query
+          type: integer
+          description: The page index. This value is simply for client state.
+        - name: PageToken
+          in: query
+          type: string
+          description: The page token. This is provided by the API.
+      - name: createsubscribedevent
+        method: POST
+        description: Add an event type to a Subscription.
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: SubscriptionSid
+          in: path
+          type: string
+          description: The unique SID identifier of the Subscription.
+          required: true
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: false
+    - name: v1-Subscriptions-SubscriptionSid-SubscribedEvents-Type
+      path: /v1/Subscriptions/{SubscriptionSid}/SubscribedEvents/{Type}
+      operations:
+      - name: fetchsubscribedevent
+        method: GET
+        description: Read an Event for a Subscription.
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: SubscriptionSid
+          in: path
+          type: string
+          description: The unique SID identifier of the Subscription.
+          required: true
+        - name: Type
+          in: path
+          type: string
+          description: Type of event being subscribed to.
+          required: true
+      - name: updatesubscribedevent
+        method: POST
+        description: Update an Event for a Subscription.
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: SubscriptionSid
+          in: path
+          type: string
+          description: The unique SID identifier of the Subscription.
+          required: true
+        - name: Type
+          in: path
+          type: string
+          description: Type of event being subscribed to.
+          required: true
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: false
+      - name: deletesubscribedevent
+        method: DELETE
+        description: Remove an event type from a Subscription.
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: SubscriptionSid
+          in: path
+          type: string
+          description: The unique SID identifier of the Subscription.
+          required: true
+        - name: Type
+          in: path
+          type: string
+          description: Type of event being subscribed to.
+          required: true
+    authentication:
+      type: basic
+      username: '{{env.TWILIO_USER}}'
+      password: '{{env.TWILIO_PASS}}'
+  exposes:
+  - type: rest
+    namespace: events-subscriptions-rest
+    port: 8080
+    description: REST adapter for Twilio - Events — Subscriptions. One Spectral-compliant resource per consumed operation,
+      prefixed with /v1.
+    resources:
+    - path: /v1/v1/subscriptions
+      name: v1-subscriptions
+      description: REST surface for v1-Subscriptions.
+      operations:
+      - method: GET
+        name: listsubscription
+        description: Retrieve a paginated list of Subscriptions belonging to the account used to make the request.
+        call: events-subscriptions.listsubscription
+        with:
+          SinkSid: rest.SinkSid
+          PageSize: rest.PageSize
+          Page: rest.Page
+          PageToken: rest.PageToken
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: POST
+        name: createsubscription
+        description: Create a new Subscription.
+        call: events-subscriptions.createsubscription
+        with:
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/v1/subscriptions/{sid}
+      name: v1-subscriptions-sid
+      description: REST surface for v1-Subscriptions-Sid.
+      operations:
+      - method: GET
+        name: fetchsubscription
+        description: Fetch a specific Subscription.
+        call: events-subscriptions.fetchsubscription
+        with:
+          Sid: rest.Sid
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: POST
+        name: updatesubscription
+        description: Update a Subscription.
+        call: events-subscriptions.updatesubscription
+        with:
+          Sid: rest.Sid
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: DELETE
+        name: deletesubscription
+        description: Delete a specific Subscription.
+        call: events-subscriptions.deletesubscription
+        with:
+          Sid: rest.Sid
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/v1/subscriptions/{subscriptionsid}/subscribedevents
+      name: v1-subscriptions-subscriptionsid-subscribedevents
+      description: REST surface for v1-Subscriptions-SubscriptionSid-SubscribedEvents.
+      operations:
+      - method: GET
+        name: listsubscribedevent
+        description: Retrieve a list of all Subscribed Event types for a Subscription.
+        call: events-subscriptions.listsubscribedevent
+        with:
+          SubscriptionSid: rest.SubscriptionSid
+          PageSize: rest.PageSize
+          Page: rest.Page
+          PageToken: rest.PageToken
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: POST
+        name: createsubscribedevent
+        description: Add an event type to a Subscription.
+        call: events-subscriptions.createsubscribedevent
+        with:
+          SubscriptionSid: rest.SubscriptionSid
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/v1/subscriptions/{subscriptionsid}/subscribedevents/{type}
+      name: v1-subscriptions-subscriptionsid-subscribedevents-type
+      description: REST surface for v1-Subscriptions-SubscriptionSid-SubscribedEvents-Type.
+      operations:
+      - method: GET
+        name: fetchsubscribedevent
+        description: Read an Event for a Subscription.
+        call: events-subscriptions.fetchsubscribedevent
+        with:
+          SubscriptionSid: rest.SubscriptionSid
+          Type: rest.Type
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: POST
+        name: updatesubscribedevent
+        description: Update an Event for a Subscription.
+        call: events-subscriptions.updatesubscribedevent
+        with:
+          SubscriptionSid: rest.SubscriptionSid
+          Type: rest.Type
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: DELETE
+        name: deletesubscribedevent
+        description: Remove an event type from a Subscription.
+        call: events-subscriptions.deletesubscribedevent
+        with:
+          SubscriptionSid: rest.SubscriptionSid
+          Type: rest.Type
+        outputParameters:
+        - type: object
+          mapping: $.
+  - type: mcp
+    namespace: events-subscriptions-mcp
+    port: 9090
+    transport: http
+    description: MCP adapter for Twilio - Events — Subscriptions. One tool per consumed operation, routed inline through this
+      capability's consumes block.
+    tools:
+    - name: retrieve-paginated-list-subscriptions-belonging
+      description: Retrieve a paginated list of Subscriptions belonging to the account used to make the request.
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: events-subscriptions.listsubscription
+      with:
+        SinkSid: tools.SinkSid
+        PageSize: tools.PageSize
+        Page: tools.Page
+        PageToken: tools.PageToken
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: create-new-subscription
+      description: Create a new Subscription.
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: events-subscriptions.createsubscription
+      with:
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: fetch-specific-subscription
+      description: Fetch a specific Subscription.
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: events-subscriptions.fetchsubscription
+      with:
+        Sid: tools.Sid
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: update-subscription
+      description: Update a Subscription.
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: events-subscriptions.updatesubscription
+      with:
+        Sid: tools.Sid
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: delete-specific-subscription
+      description: Delete a specific Subscription.
+      hints:
+        readOnly: false
+        destructive: true
+        idempotent: true
+      call: events-subscriptions.deletesubscription
+      with:
+        Sid: tools.Sid
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: retrieve-list-all-subscribed-event
+      description: Retrieve a list of all Subscribed Event types for a Subscription.
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: events-subscriptions.listsubscribedevent
+      with:
+        SubscriptionSid: tools.SubscriptionSid
+        PageSize: tools.PageSize
+        Page: tools.Page
+        PageToken: tools.PageToken
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: add-event-type-subscription
+      description: Add an event type to a Subscription.
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: events-subscriptions.createsubscribedevent
+      with:
+        SubscriptionSid: tools.SubscriptionSid
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: read-event-subscription
+      description: Read an Event for a Subscription.
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: events-subscriptions.fetchsubscribedevent
+      with:
+        SubscriptionSid: tools.SubscriptionSid
+        Type: tools.Type
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: update-event-subscription
+      description: Update an Event for a Subscription.
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: events-subscriptions.updatesubscribedevent
+      with:
+        SubscriptionSid: tools.SubscriptionSid
+        Type: tools.Type
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: remove-event-type-subscription
+      description: Remove an event type from a Subscription.
+      hints:
+        readOnly: false
+        destructive: true
+        idempotent: true
+      call: events-subscriptions.deletesubscribedevent
+      with:
+        SubscriptionSid: tools.SubscriptionSid
+        Type: tools.Type
+      outputParameters:
+      - type: object
+        mapping: $.

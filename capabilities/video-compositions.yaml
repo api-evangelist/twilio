@@ -1,0 +1,266 @@
+naftiko: 1.0.0-alpha2
+info:
+  label: Twilio Video API — Compositions
+  description: 'Twilio Video API — Compositions. 6 operations. Lead operation: Twilio Fetch Composition Settings. Self-contained
+    Naftiko capability covering one Twilio business surface.'
+  tags:
+  - Twilio
+  - Compositions
+  created: '2026-05-19'
+  modified: '2026-05-19'
+binds:
+- namespace: env
+  keys:
+    TWILIO_API_KEY: TWILIO_API_KEY
+capability:
+  consumes:
+  - type: http
+    namespace: video-compositions
+    baseUri: https://video.twilio.com/v1
+    description: Twilio Video API — Compositions business capability. Self-contained, no shared references.
+    resources:
+    - name: CompositionSettings-Default
+      path: /CompositionSettings/Default
+      operations:
+      - name: fetchcompositionsettings
+        method: GET
+        description: Twilio Fetch Composition Settings
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+      - name: createcompositionsettings
+        method: POST
+        description: Twilio Create or Update Composition Settings
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: true
+    - name: Compositions
+      path: /Compositions
+      operations:
+      - name: listcompositions
+        method: GET
+        description: Twilio List Compositions
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: Status
+          in: query
+          type: string
+        - name: RoomSid
+          in: query
+          type: string
+        - name: PageSize
+          in: query
+          type: integer
+      - name: createcomposition
+        method: POST
+        description: Twilio Create a Composition
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: true
+    - name: Compositions-CompositionSid
+      path: /Compositions/{CompositionSid}
+      operations:
+      - name: fetchcomposition
+        method: GET
+        description: Twilio Fetch a Composition
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: CompositionSid
+          in: path
+          type: string
+          required: true
+      - name: deletecomposition
+        method: DELETE
+        description: Twilio Delete a Composition
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: CompositionSid
+          in: path
+          type: string
+          required: true
+    authentication:
+      type: basic
+      username: '{{env.TWILIO_USER}}'
+      password: '{{env.TWILIO_PASS}}'
+  exposes:
+  - type: rest
+    namespace: video-compositions-rest
+    port: 8080
+    description: REST adapter for Twilio Video API — Compositions. One Spectral-compliant resource per consumed operation,
+      prefixed with /v1.
+    resources:
+    - path: /v1/compositionsettings/default
+      name: compositionsettings-default
+      description: REST surface for CompositionSettings-Default.
+      operations:
+      - method: GET
+        name: fetchcompositionsettings
+        description: Twilio Fetch Composition Settings
+        call: video-compositions.fetchcompositionsettings
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: POST
+        name: createcompositionsettings
+        description: Twilio Create or Update Composition Settings
+        call: video-compositions.createcompositionsettings
+        with:
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/compositions
+      name: compositions
+      description: REST surface for Compositions.
+      operations:
+      - method: GET
+        name: listcompositions
+        description: Twilio List Compositions
+        call: video-compositions.listcompositions
+        with:
+          Status: rest.Status
+          RoomSid: rest.RoomSid
+          PageSize: rest.PageSize
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: POST
+        name: createcomposition
+        description: Twilio Create a Composition
+        call: video-compositions.createcomposition
+        with:
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/compositions/{compositionsid}
+      name: compositions-compositionsid
+      description: REST surface for Compositions-CompositionSid.
+      operations:
+      - method: GET
+        name: fetchcomposition
+        description: Twilio Fetch a Composition
+        call: video-compositions.fetchcomposition
+        with:
+          CompositionSid: rest.CompositionSid
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: DELETE
+        name: deletecomposition
+        description: Twilio Delete a Composition
+        call: video-compositions.deletecomposition
+        with:
+          CompositionSid: rest.CompositionSid
+        outputParameters:
+        - type: object
+          mapping: $.
+  - type: mcp
+    namespace: video-compositions-mcp
+    port: 9090
+    transport: http
+    description: MCP adapter for Twilio Video API — Compositions. One tool per consumed operation, routed inline through this
+      capability's consumes block.
+    tools:
+    - name: twilio-fetch-composition-settings
+      description: Twilio Fetch Composition Settings
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: video-compositions.fetchcompositionsettings
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: twilio-create-update-composition-settings
+      description: Twilio Create or Update Composition Settings
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: video-compositions.createcompositionsettings
+      with:
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: twilio-list-compositions
+      description: Twilio List Compositions
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: video-compositions.listcompositions
+      with:
+        Status: tools.Status
+        RoomSid: tools.RoomSid
+        PageSize: tools.PageSize
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: twilio-create-composition
+      description: Twilio Create a Composition
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: video-compositions.createcomposition
+      with:
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: twilio-fetch-composition
+      description: Twilio Fetch a Composition
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: video-compositions.fetchcomposition
+      with:
+        CompositionSid: tools.CompositionSid
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: twilio-delete-composition
+      description: Twilio Delete a Composition
+      hints:
+        readOnly: false
+        destructive: true
+        idempotent: true
+      call: video-compositions.deletecomposition
+      with:
+        CompositionSid: tools.CompositionSid
+      outputParameters:
+      - type: object
+        mapping: $.

@@ -1,0 +1,134 @@
+naftiko: 1.0.0-alpha2
+info:
+  label: Twilio - Trusthub — EndUserTypes
+  description: 'Twilio - Trusthub — EndUserTypes. 2 operations. Lead operation: EndUserTypes. Self-contained Naftiko capability
+    covering one Twilio business surface.'
+  tags:
+  - Twilio
+  - EndUserTypes
+  created: '2026-05-19'
+  modified: '2026-05-19'
+binds:
+- namespace: env
+  keys:
+    TWILIO_API_KEY: TWILIO_API_KEY
+capability:
+  consumes:
+  - type: http
+    namespace: trust-hub-endusertypes
+    baseUri: https://trusthub.twilio.com
+    description: Twilio - Trusthub — EndUserTypes business capability. Self-contained, no shared references.
+    resources:
+    - name: v1-EndUserTypes
+      path: /v1/EndUserTypes
+      operations:
+      - name: listendusertype
+        method: GET
+        description: Retrieve a list of all End-User Types.
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: PageSize
+          in: query
+          type: integer
+          description: How many resources to return in each list page. The default is 50, and the maximum is 1000.
+        - name: Page
+          in: query
+          type: integer
+          description: The page index. This value is simply for client state.
+        - name: PageToken
+          in: query
+          type: string
+          description: The page token. This is provided by the API.
+    - name: v1-EndUserTypes-Sid
+      path: /v1/EndUserTypes/{Sid}
+      operations:
+      - name: fetchendusertype
+        method: GET
+        description: Fetch a specific End-User Type Instance.
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: Sid
+          in: path
+          type: string
+          description: The unique string that identifies the End-User Type resource.
+          required: true
+    authentication:
+      type: basic
+      username: '{{env.TWILIO_USER}}'
+      password: '{{env.TWILIO_PASS}}'
+  exposes:
+  - type: rest
+    namespace: trust-hub-endusertypes-rest
+    port: 8080
+    description: REST adapter for Twilio - Trusthub — EndUserTypes. One Spectral-compliant resource per consumed operation,
+      prefixed with /v1.
+    resources:
+    - path: /v1/v1/endusertypes
+      name: v1-endusertypes
+      description: REST surface for v1-EndUserTypes.
+      operations:
+      - method: GET
+        name: listendusertype
+        description: Retrieve a list of all End-User Types.
+        call: trust-hub-endusertypes.listendusertype
+        with:
+          PageSize: rest.PageSize
+          Page: rest.Page
+          PageToken: rest.PageToken
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/v1/endusertypes/{sid}
+      name: v1-endusertypes-sid
+      description: REST surface for v1-EndUserTypes-Sid.
+      operations:
+      - method: GET
+        name: fetchendusertype
+        description: Fetch a specific End-User Type Instance.
+        call: trust-hub-endusertypes.fetchendusertype
+        with:
+          Sid: rest.Sid
+        outputParameters:
+        - type: object
+          mapping: $.
+  - type: mcp
+    namespace: trust-hub-endusertypes-mcp
+    port: 9090
+    transport: http
+    description: MCP adapter for Twilio - Trusthub — EndUserTypes. One tool per consumed operation, routed inline through
+      this capability's consumes block.
+    tools:
+    - name: retrieve-list-all-end-user
+      description: Retrieve a list of all End-User Types.
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: trust-hub-endusertypes.listendusertype
+      with:
+        PageSize: tools.PageSize
+        Page: tools.Page
+        PageToken: tools.PageToken
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: fetch-specific-end-user-type
+      description: Fetch a specific End-User Type Instance.
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: trust-hub-endusertypes.fetchendusertype
+      with:
+        Sid: tools.Sid
+      outputParameters:
+      - type: object
+        mapping: $.

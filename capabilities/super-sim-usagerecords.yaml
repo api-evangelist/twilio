@@ -1,0 +1,146 @@
+naftiko: 1.0.0-alpha2
+info:
+  label: Twilio - Supersim — UsageRecords
+  description: 'Twilio - Supersim — UsageRecords. 1 operations. Lead operation: UsageRecords. Self-contained Naftiko capability
+    covering one Twilio business surface.'
+  tags:
+  - Twilio
+  - UsageRecords
+  created: '2026-05-19'
+  modified: '2026-05-19'
+binds:
+- namespace: env
+  keys:
+    TWILIO_API_KEY: TWILIO_API_KEY
+capability:
+  consumes:
+  - type: http
+    namespace: super-sim-usagerecords
+    baseUri: https://supersim.twilio.com
+    description: Twilio - Supersim — UsageRecords business capability. Self-contained, no shared references.
+    resources:
+    - name: v1-UsageRecords
+      path: /v1/UsageRecords
+      operations:
+      - name: listusagerecord
+        method: GET
+        description: List UsageRecords
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: Sim
+          in: query
+          type: string
+          description: SID or unique name of a Sim resource. Only show UsageRecords representing usage incurred by this Super
+            SIM.
+        - name: Fleet
+          in: query
+          type: string
+          description: SID or unique name of a Fleet resource. Only show UsageRecords representing usage for Super SIMs belonging
+            to this Fleet resource at the time the usage occurred
+        - name: Network
+          in: query
+          type: string
+          description: SID of a Network resource. Only show UsageRecords representing usage on this network.
+        - name: IsoCountry
+          in: query
+          type: string
+          description: Alpha-2 ISO Country Code. Only show UsageRecords representing usage in this country.
+        - name: Group
+          in: query
+          type: string
+          description: 'Dimension over which to aggregate usage records. Can be: `sim`, `fleet`, `network`, `isoCountry`.
+            Default is to not aggregate across any of these dimensions, Us'
+        - name: Granularity
+          in: query
+          type: string
+          description: 'Time-based grouping that UsageRecords should be aggregated by. Can be: `hour`, `day`, or `all`. Default
+            is `all`. `all` returns one UsageRecord that describes t'
+        - name: StartTime
+          in: query
+          type: string
+          description: 'Only include usage that occurred at or after this time, specified in [ISO 8601](https://en.wikipedia.org/wiki/ISO_8601)
+            format. Default is one month before the '
+        - name: EndTime
+          in: query
+          type: string
+          description: Only include usage that occurred before this time (exclusive), specified in [ISO 8601](https://en.wikipedia.org/wiki/ISO_8601)
+            format. Default is the current ti
+        - name: PageSize
+          in: query
+          type: integer
+          description: How many resources to return in each list page. The default is 50, and the maximum is 1000.
+        - name: Page
+          in: query
+          type: integer
+          description: The page index. This value is simply for client state.
+        - name: PageToken
+          in: query
+          type: string
+          description: The page token. This is provided by the API.
+    authentication:
+      type: basic
+      username: '{{env.TWILIO_USER}}'
+      password: '{{env.TWILIO_PASS}}'
+  exposes:
+  - type: rest
+    namespace: super-sim-usagerecords-rest
+    port: 8080
+    description: REST adapter for Twilio - Supersim — UsageRecords. One Spectral-compliant resource per consumed operation,
+      prefixed with /v1.
+    resources:
+    - path: /v1/v1/usagerecords
+      name: v1-usagerecords
+      description: REST surface for v1-UsageRecords.
+      operations:
+      - method: GET
+        name: listusagerecord
+        description: List UsageRecords
+        call: super-sim-usagerecords.listusagerecord
+        with:
+          Sim: rest.Sim
+          Fleet: rest.Fleet
+          Network: rest.Network
+          IsoCountry: rest.IsoCountry
+          Group: rest.Group
+          Granularity: rest.Granularity
+          StartTime: rest.StartTime
+          EndTime: rest.EndTime
+          PageSize: rest.PageSize
+          Page: rest.Page
+          PageToken: rest.PageToken
+        outputParameters:
+        - type: object
+          mapping: $.
+  - type: mcp
+    namespace: super-sim-usagerecords-mcp
+    port: 9090
+    transport: http
+    description: MCP adapter for Twilio - Supersim — UsageRecords. One tool per consumed operation, routed inline through
+      this capability's consumes block.
+    tools:
+    - name: list-usagerecords
+      description: List UsageRecords
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: super-sim-usagerecords.listusagerecord
+      with:
+        Sim: tools.Sim
+        Fleet: tools.Fleet
+        Network: tools.Network
+        IsoCountry: tools.IsoCountry
+        Group: tools.Group
+        Granularity: tools.Granularity
+        StartTime: tools.StartTime
+        EndTime: tools.EndTime
+        PageSize: tools.PageSize
+        Page: tools.Page
+        PageToken: tools.PageToken
+      outputParameters:
+      - type: object
+        mapping: $.

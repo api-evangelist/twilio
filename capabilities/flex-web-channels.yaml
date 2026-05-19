@@ -1,0 +1,197 @@
+naftiko: 1.0.0-alpha2
+info:
+  label: Twilio Flex API — Web Channels
+  description: 'Twilio Flex API — Web Channels. 4 operations. Lead operation: Twilio Create a Web Channel. Self-contained
+    Naftiko capability covering one Twilio business surface.'
+  tags:
+  - Twilio
+  - Web Channels
+  created: '2026-05-19'
+  modified: '2026-05-19'
+binds:
+- namespace: env
+  keys:
+    TWILIO_API_KEY: TWILIO_API_KEY
+capability:
+  consumes:
+  - type: http
+    namespace: flex-web-channels
+    baseUri: https://flex-api.twilio.com/v1
+    description: Twilio Flex API — Web Channels business capability. Self-contained, no shared references.
+    resources:
+    - name: WebChannels
+      path: /WebChannels
+      operations:
+      - name: createwebchannel
+        method: POST
+        description: Twilio Create a Web Channel
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: true
+    - name: WebChannels-ChannelSid
+      path: /WebChannels/{ChannelSid}
+      operations:
+      - name: fetchwebchannel
+        method: GET
+        description: Twilio Fetch a Web Channel
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: ChannelSid
+          in: path
+          type: string
+          required: true
+      - name: updatewebchannel
+        method: POST
+        description: Twilio Update a Web Channel
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: ChannelSid
+          in: path
+          type: string
+          required: true
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: false
+      - name: deletewebchannel
+        method: DELETE
+        description: Twilio Delete a Web Channel
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: ChannelSid
+          in: path
+          type: string
+          required: true
+    authentication:
+      type: basic
+      username: '{{env.TWILIO_USER}}'
+      password: '{{env.TWILIO_PASS}}'
+  exposes:
+  - type: rest
+    namespace: flex-web-channels-rest
+    port: 8080
+    description: REST adapter for Twilio Flex API — Web Channels. One Spectral-compliant resource per consumed operation,
+      prefixed with /v1.
+    resources:
+    - path: /v1/webchannels
+      name: webchannels
+      description: REST surface for WebChannels.
+      operations:
+      - method: POST
+        name: createwebchannel
+        description: Twilio Create a Web Channel
+        call: flex-web-channels.createwebchannel
+        with:
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/webchannels/{channelsid}
+      name: webchannels-channelsid
+      description: REST surface for WebChannels-ChannelSid.
+      operations:
+      - method: GET
+        name: fetchwebchannel
+        description: Twilio Fetch a Web Channel
+        call: flex-web-channels.fetchwebchannel
+        with:
+          ChannelSid: rest.ChannelSid
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: POST
+        name: updatewebchannel
+        description: Twilio Update a Web Channel
+        call: flex-web-channels.updatewebchannel
+        with:
+          ChannelSid: rest.ChannelSid
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: DELETE
+        name: deletewebchannel
+        description: Twilio Delete a Web Channel
+        call: flex-web-channels.deletewebchannel
+        with:
+          ChannelSid: rest.ChannelSid
+        outputParameters:
+        - type: object
+          mapping: $.
+  - type: mcp
+    namespace: flex-web-channels-mcp
+    port: 9090
+    transport: http
+    description: MCP adapter for Twilio Flex API — Web Channels. One tool per consumed operation, routed inline through this
+      capability's consumes block.
+    tools:
+    - name: twilio-create-web-channel
+      description: Twilio Create a Web Channel
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: flex-web-channels.createwebchannel
+      with:
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: twilio-fetch-web-channel
+      description: Twilio Fetch a Web Channel
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: flex-web-channels.fetchwebchannel
+      with:
+        ChannelSid: tools.ChannelSid
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: twilio-update-web-channel
+      description: Twilio Update a Web Channel
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: flex-web-channels.updatewebchannel
+      with:
+        ChannelSid: tools.ChannelSid
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: twilio-delete-web-channel
+      description: Twilio Delete a Web Channel
+      hints:
+        readOnly: false
+        destructive: true
+        idempotent: true
+      call: flex-web-channels.deletewebchannel
+      with:
+        ChannelSid: tools.ChannelSid
+      outputParameters:
+      - type: object
+        mapping: $.

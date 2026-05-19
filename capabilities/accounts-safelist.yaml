@@ -1,0 +1,156 @@
+naftiko: 1.0.0-alpha2
+info:
+  label: Twilio Accounts API — Safelist
+  description: 'Twilio Accounts API — Safelist. 3 operations. Lead operation: Twilio Add a Number to the Safelist. Self-contained
+    Naftiko capability covering one Twilio business surface.'
+  tags:
+  - Twilio
+  - Safelist
+  created: '2026-05-19'
+  modified: '2026-05-19'
+binds:
+- namespace: env
+  keys:
+    TWILIO_API_KEY: TWILIO_API_KEY
+capability:
+  consumes:
+  - type: http
+    namespace: accounts-safelist
+    baseUri: https://api.twilio.com/2010-04-01
+    description: Twilio Accounts API — Safelist business capability. Self-contained, no shared references.
+    resources:
+    - name: SafeList-Numbers
+      path: /SafeList/Numbers
+      operations:
+      - name: createsafelistnumber
+        method: POST
+        description: Twilio Add a Number to the Safelist
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: true
+    - name: SafeList-Numbers-PhoneNumber
+      path: /SafeList/Numbers/{PhoneNumber}
+      operations:
+      - name: fetchsafelistnumber
+        method: GET
+        description: Twilio Check if a Number is Safelisted
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: PhoneNumber
+          in: path
+          type: string
+          required: true
+      - name: deletesafelistnumber
+        method: DELETE
+        description: Twilio Remove a Number from the Safelist
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: PhoneNumber
+          in: path
+          type: string
+          required: true
+    authentication:
+      type: basic
+      username: '{{env.TWILIO_USER}}'
+      password: '{{env.TWILIO_PASS}}'
+  exposes:
+  - type: rest
+    namespace: accounts-safelist-rest
+    port: 8080
+    description: REST adapter for Twilio Accounts API — Safelist. One Spectral-compliant resource per consumed operation,
+      prefixed with /v1.
+    resources:
+    - path: /v1/safelist/numbers
+      name: safelist-numbers
+      description: REST surface for SafeList-Numbers.
+      operations:
+      - method: POST
+        name: createsafelistnumber
+        description: Twilio Add a Number to the Safelist
+        call: accounts-safelist.createsafelistnumber
+        with:
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/safelist/numbers/{phonenumber}
+      name: safelist-numbers-phonenumber
+      description: REST surface for SafeList-Numbers-PhoneNumber.
+      operations:
+      - method: GET
+        name: fetchsafelistnumber
+        description: Twilio Check if a Number is Safelisted
+        call: accounts-safelist.fetchsafelistnumber
+        with:
+          PhoneNumber: rest.PhoneNumber
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: DELETE
+        name: deletesafelistnumber
+        description: Twilio Remove a Number from the Safelist
+        call: accounts-safelist.deletesafelistnumber
+        with:
+          PhoneNumber: rest.PhoneNumber
+        outputParameters:
+        - type: object
+          mapping: $.
+  - type: mcp
+    namespace: accounts-safelist-mcp
+    port: 9090
+    transport: http
+    description: MCP adapter for Twilio Accounts API — Safelist. One tool per consumed operation, routed inline through this
+      capability's consumes block.
+    tools:
+    - name: twilio-add-number-safelist
+      description: Twilio Add a Number to the Safelist
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: accounts-safelist.createsafelistnumber
+      with:
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: twilio-check-if-number-is
+      description: Twilio Check if a Number is Safelisted
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: accounts-safelist.fetchsafelistnumber
+      with:
+        PhoneNumber: tools.PhoneNumber
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: twilio-remove-number-safelist
+      description: Twilio Remove a Number from the Safelist
+      hints:
+        readOnly: false
+        destructive: true
+        idempotent: true
+      call: accounts-safelist.deletesafelistnumber
+      with:
+        PhoneNumber: tools.PhoneNumber
+      outputParameters:
+      - type: object
+        mapping: $.

@@ -1,0 +1,189 @@
+naftiko: 1.0.0-alpha2
+info:
+  label: Twilio Flex API — Channels
+  description: 'Twilio Flex API — Channels. 4 operations. Lead operation: Twilio List Flex Channels. Self-contained Naftiko
+    capability covering one Twilio business surface.'
+  tags:
+  - Twilio
+  - Channels
+  created: '2026-05-19'
+  modified: '2026-05-19'
+binds:
+- namespace: env
+  keys:
+    TWILIO_API_KEY: TWILIO_API_KEY
+capability:
+  consumes:
+  - type: http
+    namespace: flex-channels
+    baseUri: https://flex-api.twilio.com/v1
+    description: Twilio Flex API — Channels business capability. Self-contained, no shared references.
+    resources:
+    - name: Channels
+      path: /Channels
+      operations:
+      - name: listchannels
+        method: GET
+        description: Twilio List Flex Channels
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: PageSize
+          in: query
+          type: integer
+      - name: createchannel
+        method: POST
+        description: Twilio Create a Flex Channel
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: true
+    - name: Channels-ChannelSid
+      path: /Channels/{ChannelSid}
+      operations:
+      - name: fetchchannel
+        method: GET
+        description: Twilio Fetch a Flex Channel
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: ChannelSid
+          in: path
+          type: string
+          required: true
+      - name: deletechannel
+        method: DELETE
+        description: Twilio Delete a Flex Channel
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: ChannelSid
+          in: path
+          type: string
+          required: true
+    authentication:
+      type: basic
+      username: '{{env.TWILIO_USER}}'
+      password: '{{env.TWILIO_PASS}}'
+  exposes:
+  - type: rest
+    namespace: flex-channels-rest
+    port: 8080
+    description: REST adapter for Twilio Flex API — Channels. One Spectral-compliant resource per consumed operation, prefixed
+      with /v1.
+    resources:
+    - path: /v1/channels
+      name: channels
+      description: REST surface for Channels.
+      operations:
+      - method: GET
+        name: listchannels
+        description: Twilio List Flex Channels
+        call: flex-channels.listchannels
+        with:
+          PageSize: rest.PageSize
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: POST
+        name: createchannel
+        description: Twilio Create a Flex Channel
+        call: flex-channels.createchannel
+        with:
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/channels/{channelsid}
+      name: channels-channelsid
+      description: REST surface for Channels-ChannelSid.
+      operations:
+      - method: GET
+        name: fetchchannel
+        description: Twilio Fetch a Flex Channel
+        call: flex-channels.fetchchannel
+        with:
+          ChannelSid: rest.ChannelSid
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: DELETE
+        name: deletechannel
+        description: Twilio Delete a Flex Channel
+        call: flex-channels.deletechannel
+        with:
+          ChannelSid: rest.ChannelSid
+        outputParameters:
+        - type: object
+          mapping: $.
+  - type: mcp
+    namespace: flex-channels-mcp
+    port: 9090
+    transport: http
+    description: MCP adapter for Twilio Flex API — Channels. One tool per consumed operation, routed inline through this capability's
+      consumes block.
+    tools:
+    - name: twilio-list-flex-channels
+      description: Twilio List Flex Channels
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: flex-channels.listchannels
+      with:
+        PageSize: tools.PageSize
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: twilio-create-flex-channel
+      description: Twilio Create a Flex Channel
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: flex-channels.createchannel
+      with:
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: twilio-fetch-flex-channel
+      description: Twilio Fetch a Flex Channel
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: flex-channels.fetchchannel
+      with:
+        ChannelSid: tools.ChannelSid
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: twilio-delete-flex-channel
+      description: Twilio Delete a Flex Channel
+      hints:
+        readOnly: false
+        destructive: true
+        idempotent: true
+      call: flex-channels.deletechannel
+      with:
+        ChannelSid: tools.ChannelSid
+      outputParameters:
+      - type: object
+        mapping: $.

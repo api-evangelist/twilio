@@ -1,0 +1,193 @@
+naftiko: 1.0.0-alpha2
+info:
+  label: Twilio Accounts API — Accounts
+  description: 'Twilio Accounts API — Accounts. 4 operations. Lead operation: Twilio List Accounts. Self-contained Naftiko
+    capability covering one Twilio business surface.'
+  tags:
+  - Twilio
+  - Accounts
+  created: '2026-05-19'
+  modified: '2026-05-19'
+binds:
+- namespace: env
+  keys:
+    TWILIO_API_KEY: TWILIO_API_KEY
+capability:
+  consumes:
+  - type: http
+    namespace: accounts-accounts
+    baseUri: https://api.twilio.com/2010-04-01
+    description: Twilio Accounts API — Accounts business capability. Self-contained, no shared references.
+    resources:
+    - name: Accounts.json
+      path: /Accounts.json
+      operations:
+      - name: listaccounts
+        method: GET
+        description: Twilio List Accounts
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: FriendlyName
+          in: query
+          type: string
+          description: Filter by friendly name
+        - name: Status
+          in: query
+          type: string
+          description: Filter by account status
+        - name: PageSize
+          in: query
+          type: integer
+      - name: createaccount
+        method: POST
+        description: Twilio Create a Subaccount
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: false
+    - name: Accounts-AccountSid}.json
+      path: /Accounts/{AccountSid}.json
+      operations:
+      - name: fetchaccount
+        method: GET
+        description: Twilio Fetch an Account
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+      - name: updateaccount
+        method: POST
+        description: Twilio Update an Account
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: false
+    authentication:
+      type: basic
+      username: '{{env.TWILIO_USER}}'
+      password: '{{env.TWILIO_PASS}}'
+  exposes:
+  - type: rest
+    namespace: accounts-accounts-rest
+    port: 8080
+    description: REST adapter for Twilio Accounts API — Accounts. One Spectral-compliant resource per consumed operation,
+      prefixed with /v1.
+    resources:
+    - path: /v1/accounts-json
+      name: accounts-json
+      description: REST surface for Accounts.json.
+      operations:
+      - method: GET
+        name: listaccounts
+        description: Twilio List Accounts
+        call: accounts-accounts.listaccounts
+        with:
+          FriendlyName: rest.FriendlyName
+          Status: rest.Status
+          PageSize: rest.PageSize
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: POST
+        name: createaccount
+        description: Twilio Create a Subaccount
+        call: accounts-accounts.createaccount
+        with:
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/accounts/accountsid-json
+      name: accounts-accountsid-json
+      description: REST surface for Accounts-AccountSid}.json.
+      operations:
+      - method: GET
+        name: fetchaccount
+        description: Twilio Fetch an Account
+        call: accounts-accounts.fetchaccount
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: POST
+        name: updateaccount
+        description: Twilio Update an Account
+        call: accounts-accounts.updateaccount
+        with:
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+  - type: mcp
+    namespace: accounts-accounts-mcp
+    port: 9090
+    transport: http
+    description: MCP adapter for Twilio Accounts API — Accounts. One tool per consumed operation, routed inline through this
+      capability's consumes block.
+    tools:
+    - name: twilio-list-accounts
+      description: Twilio List Accounts
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: accounts-accounts.listaccounts
+      with:
+        FriendlyName: tools.FriendlyName
+        Status: tools.Status
+        PageSize: tools.PageSize
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: twilio-create-subaccount
+      description: Twilio Create a Subaccount
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: accounts-accounts.createaccount
+      with:
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: twilio-fetch-account
+      description: Twilio Fetch an Account
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: accounts-accounts.fetchaccount
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: twilio-update-account
+      description: Twilio Update an Account
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: accounts-accounts.updateaccount
+      with:
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.

@@ -1,0 +1,1199 @@
+naftiko: 1.0.0-alpha2
+info:
+  label: Twilio - Conversations — Conversations
+  description: 'Twilio - Conversations — Conversations. 22 operations. Lead operation: Conversations. Self-contained Naftiko
+    capability covering one Twilio business surface.'
+  tags:
+  - Twilio
+  - Conversations
+  created: '2026-05-19'
+  modified: '2026-05-19'
+binds:
+- namespace: env
+  keys:
+    TWILIO_API_KEY: TWILIO_API_KEY
+capability:
+  consumes:
+  - type: http
+    namespace: conversations-conversations
+    baseUri: https://conversations.twilio.com
+    description: Twilio - Conversations — Conversations business capability. Self-contained, no shared references.
+    resources:
+    - name: v1-Conversations
+      path: /v1/Conversations
+      operations:
+      - name: createconversation
+        method: POST
+        description: Create a new conversation in your account's default service
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: X-Twilio-Webhook-Enabled
+          in: header
+          type: string
+          description: The X-Twilio-Webhook-Enabled HTTP request header
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: false
+      - name: listconversation
+        method: GET
+        description: Retrieve a list of conversations in your account's default service
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: StartDate
+          in: query
+          type: string
+          description: 'Start date or time in ISO8601 format for filtering list of Conversations. If a date is provided, the
+            start time of the date is used (YYYY-MM-DDT00:00:00Z). Can '
+        - name: EndDate
+          in: query
+          type: string
+          description: End date or time in ISO8601 format for filtering list of Conversations. If a date is provided, the
+            end time of the date is used (YYYY-MM-DDT23:59:59Z). Can be c
+        - name: State
+          in: query
+          type: string
+          description: State for sorting and filtering list of Conversations. Can be `active`, `inactive` or `closed`
+        - name: PageSize
+          in: query
+          type: integer
+          description: How many resources to return in each list page. The default is 50, and the maximum is 1000.
+        - name: Page
+          in: query
+          type: integer
+          description: The page index. This value is simply for client state.
+        - name: PageToken
+          in: query
+          type: string
+          description: The page token. This is provided by the API.
+    - name: v1-Conversations-ConversationSid-Messages
+      path: /v1/Conversations/{ConversationSid}/Messages
+      operations:
+      - name: createconversationmessage
+        method: POST
+        description: Add a new message to the conversation
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: ConversationSid
+          in: path
+          type: string
+          description: The unique ID of the [Conversation](https://www.twilio.com/docs/conversations/api/conversation-resource)
+            for this message.
+          required: true
+        - name: X-Twilio-Webhook-Enabled
+          in: header
+          type: string
+          description: The X-Twilio-Webhook-Enabled HTTP request header
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: false
+      - name: listconversationmessage
+        method: GET
+        description: Retrieve a list of all messages in the conversation
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: ConversationSid
+          in: path
+          type: string
+          description: The unique ID of the [Conversation](https://www.twilio.com/docs/conversations/api/conversation-resource)
+            for messages.
+          required: true
+        - name: Order
+          in: query
+          type: string
+          description: 'The sort order of the returned messages. Can be: `asc` (ascending) or `desc` (descending), with `asc`
+            as the default.'
+        - name: PageSize
+          in: query
+          type: integer
+          description: How many resources to return in each list page. The default is 50, and the maximum is 1000.
+        - name: Page
+          in: query
+          type: integer
+          description: The page index. This value is simply for client state.
+        - name: PageToken
+          in: query
+          type: string
+          description: The page token. This is provided by the API.
+    - name: v1-Conversations-ConversationSid-Messages-MessageSid-Receipts
+      path: /v1/Conversations/{ConversationSid}/Messages/{MessageSid}/Receipts
+      operations:
+      - name: listconversationmessagereceipt
+        method: GET
+        description: Retrieve a list of all delivery and read receipts of the conversation message
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: ConversationSid
+          in: path
+          type: string
+          description: The unique ID of the [Conversation](https://www.twilio.com/docs/conversations/api/conversation-resource)
+            for this message.
+          required: true
+        - name: MessageSid
+          in: path
+          type: string
+          description: The SID of the message within a [Conversation](https://www.twilio.com/docs/conversations/api/conversation-resource)
+            the delivery receipt belongs to.
+          required: true
+        - name: PageSize
+          in: query
+          type: integer
+          description: How many resources to return in each list page. The default is 50, and the maximum is 1000.
+        - name: Page
+          in: query
+          type: integer
+          description: The page index. This value is simply for client state.
+        - name: PageToken
+          in: query
+          type: string
+          description: The page token. This is provided by the API.
+    - name: v1-Conversations-ConversationSid-Messages-MessageSid-Receipts-Sid
+      path: /v1/Conversations/{ConversationSid}/Messages/{MessageSid}/Receipts/{Sid}
+      operations:
+      - name: fetchconversationmessagereceipt
+        method: GET
+        description: Fetch the delivery and read receipts of the conversation message
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: ConversationSid
+          in: path
+          type: string
+          description: The unique ID of the [Conversation](https://www.twilio.com/docs/conversations/api/conversation-resource)
+            for this message.
+          required: true
+        - name: MessageSid
+          in: path
+          type: string
+          description: The SID of the message within a [Conversation](https://www.twilio.com/docs/conversations/api/conversation-resource)
+            the delivery receipt belongs to.
+          required: true
+        - name: Sid
+          in: path
+          type: string
+          description: A 34 character string that uniquely identifies this resource.
+          required: true
+    - name: v1-Conversations-ConversationSid-Messages-Sid
+      path: /v1/Conversations/{ConversationSid}/Messages/{Sid}
+      operations:
+      - name: updateconversationmessage
+        method: POST
+        description: Update an existing message in the conversation
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: ConversationSid
+          in: path
+          type: string
+          description: The unique ID of the [Conversation](https://www.twilio.com/docs/conversations/api/conversation-resource)
+            for this message.
+          required: true
+        - name: Sid
+          in: path
+          type: string
+          description: A 34 character string that uniquely identifies this resource.
+          required: true
+        - name: X-Twilio-Webhook-Enabled
+          in: header
+          type: string
+          description: The X-Twilio-Webhook-Enabled HTTP request header
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: false
+      - name: deleteconversationmessage
+        method: DELETE
+        description: Remove a message from the conversation
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: ConversationSid
+          in: path
+          type: string
+          description: The unique ID of the [Conversation](https://www.twilio.com/docs/conversations/api/conversation-resource)
+            for this message.
+          required: true
+        - name: Sid
+          in: path
+          type: string
+          description: A 34 character string that uniquely identifies this resource.
+          required: true
+        - name: X-Twilio-Webhook-Enabled
+          in: header
+          type: string
+          description: The X-Twilio-Webhook-Enabled HTTP request header
+      - name: fetchconversationmessage
+        method: GET
+        description: Fetch a message from the conversation
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: ConversationSid
+          in: path
+          type: string
+          description: The unique ID of the [Conversation](https://www.twilio.com/docs/conversations/api/conversation-resource)
+            for this message.
+          required: true
+        - name: Sid
+          in: path
+          type: string
+          description: A 34 character string that uniquely identifies this resource.
+          required: true
+    - name: v1-Conversations-ConversationSid-Participants
+      path: /v1/Conversations/{ConversationSid}/Participants
+      operations:
+      - name: createconversationparticipant
+        method: POST
+        description: Add a new participant to the conversation
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: ConversationSid
+          in: path
+          type: string
+          description: The unique ID of the [Conversation](https://www.twilio.com/docs/conversations/api/conversation-resource)
+            for this participant.
+          required: true
+        - name: X-Twilio-Webhook-Enabled
+          in: header
+          type: string
+          description: The X-Twilio-Webhook-Enabled HTTP request header
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: false
+      - name: listconversationparticipant
+        method: GET
+        description: Retrieve a list of all participants of the conversation
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: ConversationSid
+          in: path
+          type: string
+          description: The unique ID of the [Conversation](https://www.twilio.com/docs/conversations/api/conversation-resource)
+            for participants.
+          required: true
+        - name: PageSize
+          in: query
+          type: integer
+          description: How many resources to return in each list page. The default is 50, and the maximum is 1000.
+        - name: Page
+          in: query
+          type: integer
+          description: The page index. This value is simply for client state.
+        - name: PageToken
+          in: query
+          type: string
+          description: The page token. This is provided by the API.
+    - name: v1-Conversations-ConversationSid-Participants-Sid
+      path: /v1/Conversations/{ConversationSid}/Participants/{Sid}
+      operations:
+      - name: updateconversationparticipant
+        method: POST
+        description: Update an existing participant in the conversation
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: ConversationSid
+          in: path
+          type: string
+          description: The unique ID of the [Conversation](https://www.twilio.com/docs/conversations/api/conversation-resource)
+            for this participant.
+          required: true
+        - name: Sid
+          in: path
+          type: string
+          description: A 34 character string that uniquely identifies this resource.
+          required: true
+        - name: X-Twilio-Webhook-Enabled
+          in: header
+          type: string
+          description: The X-Twilio-Webhook-Enabled HTTP request header
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: false
+      - name: deleteconversationparticipant
+        method: DELETE
+        description: Remove a participant from the conversation
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: ConversationSid
+          in: path
+          type: string
+          description: The unique ID of the [Conversation](https://www.twilio.com/docs/conversations/api/conversation-resource)
+            for this participant.
+          required: true
+        - name: Sid
+          in: path
+          type: string
+          description: A 34 character string that uniquely identifies this resource.
+          required: true
+        - name: X-Twilio-Webhook-Enabled
+          in: header
+          type: string
+          description: The X-Twilio-Webhook-Enabled HTTP request header
+      - name: fetchconversationparticipant
+        method: GET
+        description: Fetch a participant of the conversation
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: ConversationSid
+          in: path
+          type: string
+          description: The unique ID of the [Conversation](https://www.twilio.com/docs/conversations/api/conversation-resource)
+            for this participant.
+          required: true
+        - name: Sid
+          in: path
+          type: string
+          description: A 34 character string that uniquely identifies this resource. Alternatively, you can pass a Participant's
+            `identity` rather than the SID.
+          required: true
+    - name: v1-Conversations-ConversationSid-Webhooks
+      path: /v1/Conversations/{ConversationSid}/Webhooks
+      operations:
+      - name: listconversationscopedwebhook
+        method: GET
+        description: Retrieve a list of all webhooks scoped to the conversation
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: ConversationSid
+          in: path
+          type: string
+          description: The unique ID of the [Conversation](https://www.twilio.com/docs/conversations/api/conversation-resource)
+            for this webhook.
+          required: true
+        - name: PageSize
+          in: query
+          type: integer
+          description: How many resources to return in each list page. The default is 50, and the maximum is 1000.
+        - name: Page
+          in: query
+          type: integer
+          description: The page index. This value is simply for client state.
+        - name: PageToken
+          in: query
+          type: string
+          description: The page token. This is provided by the API.
+      - name: createconversationscopedwebhook
+        method: POST
+        description: Create a new webhook scoped to the conversation
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: ConversationSid
+          in: path
+          type: string
+          description: The unique ID of the [Conversation](https://www.twilio.com/docs/conversations/api/conversation-resource)
+            for this webhook.
+          required: true
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: false
+    - name: v1-Conversations-ConversationSid-Webhooks-Sid
+      path: /v1/Conversations/{ConversationSid}/Webhooks/{Sid}
+      operations:
+      - name: fetchconversationscopedwebhook
+        method: GET
+        description: Fetch the configuration of a conversation-scoped webhook
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: ConversationSid
+          in: path
+          type: string
+          description: The unique ID of the [Conversation](https://www.twilio.com/docs/conversations/api/conversation-resource)
+            for this webhook.
+          required: true
+        - name: Sid
+          in: path
+          type: string
+          description: A 34 character string that uniquely identifies this resource.
+          required: true
+      - name: updateconversationscopedwebhook
+        method: POST
+        description: Update an existing conversation-scoped webhook
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: ConversationSid
+          in: path
+          type: string
+          description: The unique ID of the [Conversation](https://www.twilio.com/docs/conversations/api/conversation-resource)
+            for this webhook.
+          required: true
+        - name: Sid
+          in: path
+          type: string
+          description: A 34 character string that uniquely identifies this resource.
+          required: true
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: false
+      - name: deleteconversationscopedwebhook
+        method: DELETE
+        description: Remove an existing webhook scoped to the conversation
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: ConversationSid
+          in: path
+          type: string
+          description: The unique ID of the [Conversation](https://www.twilio.com/docs/conversations/api/conversation-resource)
+            for this webhook.
+          required: true
+        - name: Sid
+          in: path
+          type: string
+          description: A 34 character string that uniquely identifies this resource.
+          required: true
+    - name: v1-Conversations-Sid
+      path: /v1/Conversations/{Sid}
+      operations:
+      - name: updateconversation
+        method: POST
+        description: Update an existing conversation in your account's default service
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: Sid
+          in: path
+          type: string
+          description: A 34 character string that uniquely identifies this resource. Can also be the `unique_name` of the
+            Conversation.
+          required: true
+        - name: X-Twilio-Webhook-Enabled
+          in: header
+          type: string
+          description: The X-Twilio-Webhook-Enabled HTTP request header
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: false
+      - name: deleteconversation
+        method: DELETE
+        description: Remove a conversation from your account's default service
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: Sid
+          in: path
+          type: string
+          description: A 34 character string that uniquely identifies this resource. Can also be the `unique_name` of the
+            Conversation.
+          required: true
+        - name: X-Twilio-Webhook-Enabled
+          in: header
+          type: string
+          description: The X-Twilio-Webhook-Enabled HTTP request header
+      - name: fetchconversation
+        method: GET
+        description: Fetch a conversation from your account's default service
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: Sid
+          in: path
+          type: string
+          description: A 34 character string that uniquely identifies this resource. Can also be the `unique_name` of the
+            Conversation.
+          required: true
+    authentication:
+      type: basic
+      username: '{{env.TWILIO_USER}}'
+      password: '{{env.TWILIO_PASS}}'
+  exposes:
+  - type: rest
+    namespace: conversations-conversations-rest
+    port: 8080
+    description: REST adapter for Twilio - Conversations — Conversations. One Spectral-compliant resource per consumed operation,
+      prefixed with /v1.
+    resources:
+    - path: /v1/v1/conversations
+      name: v1-conversations
+      description: REST surface for v1-Conversations.
+      operations:
+      - method: POST
+        name: createconversation
+        description: Create a new conversation in your account's default service
+        call: conversations-conversations.createconversation
+        with:
+          X-Twilio-Webhook-Enabled: rest.X-Twilio-Webhook-Enabled
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: GET
+        name: listconversation
+        description: Retrieve a list of conversations in your account's default service
+        call: conversations-conversations.listconversation
+        with:
+          StartDate: rest.StartDate
+          EndDate: rest.EndDate
+          State: rest.State
+          PageSize: rest.PageSize
+          Page: rest.Page
+          PageToken: rest.PageToken
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/v1/conversations/{conversationsid}/messages
+      name: v1-conversations-conversationsid-messages
+      description: REST surface for v1-Conversations-ConversationSid-Messages.
+      operations:
+      - method: POST
+        name: createconversationmessage
+        description: Add a new message to the conversation
+        call: conversations-conversations.createconversationmessage
+        with:
+          ConversationSid: rest.ConversationSid
+          X-Twilio-Webhook-Enabled: rest.X-Twilio-Webhook-Enabled
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: GET
+        name: listconversationmessage
+        description: Retrieve a list of all messages in the conversation
+        call: conversations-conversations.listconversationmessage
+        with:
+          ConversationSid: rest.ConversationSid
+          Order: rest.Order
+          PageSize: rest.PageSize
+          Page: rest.Page
+          PageToken: rest.PageToken
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/v1/conversations/{conversationsid}/messages/{messagesid}/receipts
+      name: v1-conversations-conversationsid-messages-messagesid-receipts
+      description: REST surface for v1-Conversations-ConversationSid-Messages-MessageSid-Receipts.
+      operations:
+      - method: GET
+        name: listconversationmessagereceipt
+        description: Retrieve a list of all delivery and read receipts of the conversation message
+        call: conversations-conversations.listconversationmessagereceipt
+        with:
+          ConversationSid: rest.ConversationSid
+          MessageSid: rest.MessageSid
+          PageSize: rest.PageSize
+          Page: rest.Page
+          PageToken: rest.PageToken
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/v1/conversations/{conversationsid}/messages/{messagesid}/receipts/{sid}
+      name: v1-conversations-conversationsid-messages-messagesid-receipts-sid
+      description: REST surface for v1-Conversations-ConversationSid-Messages-MessageSid-Receipts-Sid.
+      operations:
+      - method: GET
+        name: fetchconversationmessagereceipt
+        description: Fetch the delivery and read receipts of the conversation message
+        call: conversations-conversations.fetchconversationmessagereceipt
+        with:
+          ConversationSid: rest.ConversationSid
+          MessageSid: rest.MessageSid
+          Sid: rest.Sid
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/v1/conversations/{conversationsid}/messages/{sid}
+      name: v1-conversations-conversationsid-messages-sid
+      description: REST surface for v1-Conversations-ConversationSid-Messages-Sid.
+      operations:
+      - method: POST
+        name: updateconversationmessage
+        description: Update an existing message in the conversation
+        call: conversations-conversations.updateconversationmessage
+        with:
+          ConversationSid: rest.ConversationSid
+          Sid: rest.Sid
+          X-Twilio-Webhook-Enabled: rest.X-Twilio-Webhook-Enabled
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: DELETE
+        name: deleteconversationmessage
+        description: Remove a message from the conversation
+        call: conversations-conversations.deleteconversationmessage
+        with:
+          ConversationSid: rest.ConversationSid
+          Sid: rest.Sid
+          X-Twilio-Webhook-Enabled: rest.X-Twilio-Webhook-Enabled
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: GET
+        name: fetchconversationmessage
+        description: Fetch a message from the conversation
+        call: conversations-conversations.fetchconversationmessage
+        with:
+          ConversationSid: rest.ConversationSid
+          Sid: rest.Sid
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/v1/conversations/{conversationsid}/participants
+      name: v1-conversations-conversationsid-participants
+      description: REST surface for v1-Conversations-ConversationSid-Participants.
+      operations:
+      - method: POST
+        name: createconversationparticipant
+        description: Add a new participant to the conversation
+        call: conversations-conversations.createconversationparticipant
+        with:
+          ConversationSid: rest.ConversationSid
+          X-Twilio-Webhook-Enabled: rest.X-Twilio-Webhook-Enabled
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: GET
+        name: listconversationparticipant
+        description: Retrieve a list of all participants of the conversation
+        call: conversations-conversations.listconversationparticipant
+        with:
+          ConversationSid: rest.ConversationSid
+          PageSize: rest.PageSize
+          Page: rest.Page
+          PageToken: rest.PageToken
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/v1/conversations/{conversationsid}/participants/{sid}
+      name: v1-conversations-conversationsid-participants-sid
+      description: REST surface for v1-Conversations-ConversationSid-Participants-Sid.
+      operations:
+      - method: POST
+        name: updateconversationparticipant
+        description: Update an existing participant in the conversation
+        call: conversations-conversations.updateconversationparticipant
+        with:
+          ConversationSid: rest.ConversationSid
+          Sid: rest.Sid
+          X-Twilio-Webhook-Enabled: rest.X-Twilio-Webhook-Enabled
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: DELETE
+        name: deleteconversationparticipant
+        description: Remove a participant from the conversation
+        call: conversations-conversations.deleteconversationparticipant
+        with:
+          ConversationSid: rest.ConversationSid
+          Sid: rest.Sid
+          X-Twilio-Webhook-Enabled: rest.X-Twilio-Webhook-Enabled
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: GET
+        name: fetchconversationparticipant
+        description: Fetch a participant of the conversation
+        call: conversations-conversations.fetchconversationparticipant
+        with:
+          ConversationSid: rest.ConversationSid
+          Sid: rest.Sid
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/v1/conversations/{conversationsid}/webhooks
+      name: v1-conversations-conversationsid-webhooks
+      description: REST surface for v1-Conversations-ConversationSid-Webhooks.
+      operations:
+      - method: GET
+        name: listconversationscopedwebhook
+        description: Retrieve a list of all webhooks scoped to the conversation
+        call: conversations-conversations.listconversationscopedwebhook
+        with:
+          ConversationSid: rest.ConversationSid
+          PageSize: rest.PageSize
+          Page: rest.Page
+          PageToken: rest.PageToken
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: POST
+        name: createconversationscopedwebhook
+        description: Create a new webhook scoped to the conversation
+        call: conversations-conversations.createconversationscopedwebhook
+        with:
+          ConversationSid: rest.ConversationSid
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/v1/conversations/{conversationsid}/webhooks/{sid}
+      name: v1-conversations-conversationsid-webhooks-sid
+      description: REST surface for v1-Conversations-ConversationSid-Webhooks-Sid.
+      operations:
+      - method: GET
+        name: fetchconversationscopedwebhook
+        description: Fetch the configuration of a conversation-scoped webhook
+        call: conversations-conversations.fetchconversationscopedwebhook
+        with:
+          ConversationSid: rest.ConversationSid
+          Sid: rest.Sid
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: POST
+        name: updateconversationscopedwebhook
+        description: Update an existing conversation-scoped webhook
+        call: conversations-conversations.updateconversationscopedwebhook
+        with:
+          ConversationSid: rest.ConversationSid
+          Sid: rest.Sid
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: DELETE
+        name: deleteconversationscopedwebhook
+        description: Remove an existing webhook scoped to the conversation
+        call: conversations-conversations.deleteconversationscopedwebhook
+        with:
+          ConversationSid: rest.ConversationSid
+          Sid: rest.Sid
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/v1/conversations/{sid}
+      name: v1-conversations-sid
+      description: REST surface for v1-Conversations-Sid.
+      operations:
+      - method: POST
+        name: updateconversation
+        description: Update an existing conversation in your account's default service
+        call: conversations-conversations.updateconversation
+        with:
+          Sid: rest.Sid
+          X-Twilio-Webhook-Enabled: rest.X-Twilio-Webhook-Enabled
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: DELETE
+        name: deleteconversation
+        description: Remove a conversation from your account's default service
+        call: conversations-conversations.deleteconversation
+        with:
+          Sid: rest.Sid
+          X-Twilio-Webhook-Enabled: rest.X-Twilio-Webhook-Enabled
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: GET
+        name: fetchconversation
+        description: Fetch a conversation from your account's default service
+        call: conversations-conversations.fetchconversation
+        with:
+          Sid: rest.Sid
+        outputParameters:
+        - type: object
+          mapping: $.
+  - type: mcp
+    namespace: conversations-conversations-mcp
+    port: 9090
+    transport: http
+    description: MCP adapter for Twilio - Conversations — Conversations. One tool per consumed operation, routed inline through
+      this capability's consumes block.
+    tools:
+    - name: create-new-conversation-your-account-s
+      description: Create a new conversation in your account's default service
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: conversations-conversations.createconversation
+      with:
+        X-Twilio-Webhook-Enabled: tools.X-Twilio-Webhook-Enabled
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: retrieve-list-conversations-your-account-s
+      description: Retrieve a list of conversations in your account's default service
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: conversations-conversations.listconversation
+      with:
+        StartDate: tools.StartDate
+        EndDate: tools.EndDate
+        State: tools.State
+        PageSize: tools.PageSize
+        Page: tools.Page
+        PageToken: tools.PageToken
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: add-new-message-conversation
+      description: Add a new message to the conversation
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: conversations-conversations.createconversationmessage
+      with:
+        ConversationSid: tools.ConversationSid
+        X-Twilio-Webhook-Enabled: tools.X-Twilio-Webhook-Enabled
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: retrieve-list-all-messages-conversation
+      description: Retrieve a list of all messages in the conversation
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: conversations-conversations.listconversationmessage
+      with:
+        ConversationSid: tools.ConversationSid
+        Order: tools.Order
+        PageSize: tools.PageSize
+        Page: tools.Page
+        PageToken: tools.PageToken
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: retrieve-list-all-delivery-and
+      description: Retrieve a list of all delivery and read receipts of the conversation message
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: conversations-conversations.listconversationmessagereceipt
+      with:
+        ConversationSid: tools.ConversationSid
+        MessageSid: tools.MessageSid
+        PageSize: tools.PageSize
+        Page: tools.Page
+        PageToken: tools.PageToken
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: fetch-delivery-and-read-receipts
+      description: Fetch the delivery and read receipts of the conversation message
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: conversations-conversations.fetchconversationmessagereceipt
+      with:
+        ConversationSid: tools.ConversationSid
+        MessageSid: tools.MessageSid
+        Sid: tools.Sid
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: update-existing-message-conversation
+      description: Update an existing message in the conversation
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: conversations-conversations.updateconversationmessage
+      with:
+        ConversationSid: tools.ConversationSid
+        Sid: tools.Sid
+        X-Twilio-Webhook-Enabled: tools.X-Twilio-Webhook-Enabled
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: remove-message-conversation
+      description: Remove a message from the conversation
+      hints:
+        readOnly: false
+        destructive: true
+        idempotent: true
+      call: conversations-conversations.deleteconversationmessage
+      with:
+        ConversationSid: tools.ConversationSid
+        Sid: tools.Sid
+        X-Twilio-Webhook-Enabled: tools.X-Twilio-Webhook-Enabled
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: fetch-message-conversation
+      description: Fetch a message from the conversation
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: conversations-conversations.fetchconversationmessage
+      with:
+        ConversationSid: tools.ConversationSid
+        Sid: tools.Sid
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: add-new-participant-conversation
+      description: Add a new participant to the conversation
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: conversations-conversations.createconversationparticipant
+      with:
+        ConversationSid: tools.ConversationSid
+        X-Twilio-Webhook-Enabled: tools.X-Twilio-Webhook-Enabled
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: retrieve-list-all-participants-conversation
+      description: Retrieve a list of all participants of the conversation
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: conversations-conversations.listconversationparticipant
+      with:
+        ConversationSid: tools.ConversationSid
+        PageSize: tools.PageSize
+        Page: tools.Page
+        PageToken: tools.PageToken
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: update-existing-participant-conversation
+      description: Update an existing participant in the conversation
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: conversations-conversations.updateconversationparticipant
+      with:
+        ConversationSid: tools.ConversationSid
+        Sid: tools.Sid
+        X-Twilio-Webhook-Enabled: tools.X-Twilio-Webhook-Enabled
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: remove-participant-conversation
+      description: Remove a participant from the conversation
+      hints:
+        readOnly: false
+        destructive: true
+        idempotent: true
+      call: conversations-conversations.deleteconversationparticipant
+      with:
+        ConversationSid: tools.ConversationSid
+        Sid: tools.Sid
+        X-Twilio-Webhook-Enabled: tools.X-Twilio-Webhook-Enabled
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: fetch-participant-conversation
+      description: Fetch a participant of the conversation
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: conversations-conversations.fetchconversationparticipant
+      with:
+        ConversationSid: tools.ConversationSid
+        Sid: tools.Sid
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: retrieve-list-all-webhooks-scoped
+      description: Retrieve a list of all webhooks scoped to the conversation
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: conversations-conversations.listconversationscopedwebhook
+      with:
+        ConversationSid: tools.ConversationSid
+        PageSize: tools.PageSize
+        Page: tools.Page
+        PageToken: tools.PageToken
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: create-new-webhook-scoped-conversation
+      description: Create a new webhook scoped to the conversation
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: conversations-conversations.createconversationscopedwebhook
+      with:
+        ConversationSid: tools.ConversationSid
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: fetch-configuration-conversation-scoped-webhook
+      description: Fetch the configuration of a conversation-scoped webhook
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: conversations-conversations.fetchconversationscopedwebhook
+      with:
+        ConversationSid: tools.ConversationSid
+        Sid: tools.Sid
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: update-existing-conversation-scoped-webhook
+      description: Update an existing conversation-scoped webhook
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: conversations-conversations.updateconversationscopedwebhook
+      with:
+        ConversationSid: tools.ConversationSid
+        Sid: tools.Sid
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: remove-existing-webhook-scoped-conversation
+      description: Remove an existing webhook scoped to the conversation
+      hints:
+        readOnly: false
+        destructive: true
+        idempotent: true
+      call: conversations-conversations.deleteconversationscopedwebhook
+      with:
+        ConversationSid: tools.ConversationSid
+        Sid: tools.Sid
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: update-existing-conversation-your-account-s
+      description: Update an existing conversation in your account's default service
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: conversations-conversations.updateconversation
+      with:
+        Sid: tools.Sid
+        X-Twilio-Webhook-Enabled: tools.X-Twilio-Webhook-Enabled
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: remove-conversation-your-account-s-default
+      description: Remove a conversation from your account's default service
+      hints:
+        readOnly: false
+        destructive: true
+        idempotent: true
+      call: conversations-conversations.deleteconversation
+      with:
+        Sid: tools.Sid
+        X-Twilio-Webhook-Enabled: tools.X-Twilio-Webhook-Enabled
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: fetch-conversation-your-account-s-default
+      description: Fetch a conversation from your account's default service
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: conversations-conversations.fetchconversation
+      with:
+        Sid: tools.Sid
+      outputParameters:
+      - type: object
+        mapping: $.

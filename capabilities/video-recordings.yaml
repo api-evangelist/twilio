@@ -1,0 +1,226 @@
+naftiko: 1.0.0-alpha2
+info:
+  label: Twilio Video API — Recordings
+  description: 'Twilio Video API — Recordings. 5 operations. Lead operation: Twilio Fetch Recording Settings. Self-contained
+    Naftiko capability covering one Twilio business surface.'
+  tags:
+  - Twilio
+  - Recordings
+  created: '2026-05-19'
+  modified: '2026-05-19'
+binds:
+- namespace: env
+  keys:
+    TWILIO_API_KEY: TWILIO_API_KEY
+capability:
+  consumes:
+  - type: http
+    namespace: video-recordings
+    baseUri: https://video.twilio.com/v1
+    description: Twilio Video API — Recordings business capability. Self-contained, no shared references.
+    resources:
+    - name: RecordingSettings-Default
+      path: /RecordingSettings/Default
+      operations:
+      - name: fetchrecordingsettings
+        method: GET
+        description: Twilio Fetch Recording Settings
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+      - name: createrecordingsettings
+        method: POST
+        description: Twilio Create or Update Recording Settings
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: true
+    - name: Recordings-RecordingSid
+      path: /Recordings/{RecordingSid}
+      operations:
+      - name: fetchrecording
+        method: GET
+        description: Twilio Fetch a Recording
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: RecordingSid
+          in: path
+          type: string
+          required: true
+      - name: deleterecording
+        method: DELETE
+        description: Twilio Delete a Recording
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: RecordingSid
+          in: path
+          type: string
+          required: true
+    - name: Rooms-RoomSid-Recordings
+      path: /Rooms/{RoomSid}/Recordings
+      operations:
+      - name: listroomrecordings
+        method: GET
+        description: Twilio List Room Recordings
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: Status
+          in: query
+          type: string
+        - name: PageSize
+          in: query
+          type: integer
+    authentication:
+      type: basic
+      username: '{{env.TWILIO_USER}}'
+      password: '{{env.TWILIO_PASS}}'
+  exposes:
+  - type: rest
+    namespace: video-recordings-rest
+    port: 8080
+    description: REST adapter for Twilio Video API — Recordings. One Spectral-compliant resource per consumed operation, prefixed
+      with /v1.
+    resources:
+    - path: /v1/recordingsettings/default
+      name: recordingsettings-default
+      description: REST surface for RecordingSettings-Default.
+      operations:
+      - method: GET
+        name: fetchrecordingsettings
+        description: Twilio Fetch Recording Settings
+        call: video-recordings.fetchrecordingsettings
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: POST
+        name: createrecordingsettings
+        description: Twilio Create or Update Recording Settings
+        call: video-recordings.createrecordingsettings
+        with:
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/recordings/{recordingsid}
+      name: recordings-recordingsid
+      description: REST surface for Recordings-RecordingSid.
+      operations:
+      - method: GET
+        name: fetchrecording
+        description: Twilio Fetch a Recording
+        call: video-recordings.fetchrecording
+        with:
+          RecordingSid: rest.RecordingSid
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: DELETE
+        name: deleterecording
+        description: Twilio Delete a Recording
+        call: video-recordings.deleterecording
+        with:
+          RecordingSid: rest.RecordingSid
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/rooms/{roomsid}/recordings
+      name: rooms-roomsid-recordings
+      description: REST surface for Rooms-RoomSid-Recordings.
+      operations:
+      - method: GET
+        name: listroomrecordings
+        description: Twilio List Room Recordings
+        call: video-recordings.listroomrecordings
+        with:
+          Status: rest.Status
+          PageSize: rest.PageSize
+        outputParameters:
+        - type: object
+          mapping: $.
+  - type: mcp
+    namespace: video-recordings-mcp
+    port: 9090
+    transport: http
+    description: MCP adapter for Twilio Video API — Recordings. One tool per consumed operation, routed inline through this
+      capability's consumes block.
+    tools:
+    - name: twilio-fetch-recording-settings
+      description: Twilio Fetch Recording Settings
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: video-recordings.fetchrecordingsettings
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: twilio-create-update-recording-settings
+      description: Twilio Create or Update Recording Settings
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: video-recordings.createrecordingsettings
+      with:
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: twilio-fetch-recording
+      description: Twilio Fetch a Recording
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: video-recordings.fetchrecording
+      with:
+        RecordingSid: tools.RecordingSid
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: twilio-delete-recording
+      description: Twilio Delete a Recording
+      hints:
+        readOnly: false
+        destructive: true
+        idempotent: true
+      call: video-recordings.deleterecording
+      with:
+        RecordingSid: tools.RecordingSid
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: twilio-list-room-recordings
+      description: Twilio List Room Recordings
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: video-recordings.listroomrecordings
+      with:
+        Status: tools.Status
+        PageSize: tools.PageSize
+      outputParameters:
+      - type: object
+        mapping: $.

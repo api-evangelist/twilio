@@ -1,0 +1,163 @@
+naftiko: 1.0.0-alpha2
+info:
+  label: Twilio Verify API — Verifications
+  description: 'Twilio Verify API — Verifications. 3 operations. Lead operation: Twilio Start a Verification. Self-contained
+    Naftiko capability covering one Twilio business surface.'
+  tags:
+  - Twilio
+  - Verifications
+  created: '2026-05-19'
+  modified: '2026-05-19'
+binds:
+- namespace: env
+  keys:
+    TWILIO_API_KEY: TWILIO_API_KEY
+capability:
+  consumes:
+  - type: http
+    namespace: verify-verifications
+    baseUri: https://verify.twilio.com/v2
+    description: Twilio Verify API — Verifications business capability. Self-contained, no shared references.
+    resources:
+    - name: Services-ServiceSid-Verifications
+      path: /Services/{ServiceSid}/Verifications
+      operations:
+      - name: createverification
+        method: POST
+        description: Twilio Start a Verification
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: true
+    - name: Services-ServiceSid-Verifications-VerificationSid
+      path: /Services/{ServiceSid}/Verifications/{VerificationSid}
+      operations:
+      - name: fetchverification
+        method: GET
+        description: Twilio Fetch a Verification
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: VerificationSid
+          in: path
+          type: string
+          required: true
+      - name: updateverification
+        method: POST
+        description: Twilio Update a Verification
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: VerificationSid
+          in: path
+          type: string
+          required: true
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: true
+    authentication:
+      type: basic
+      username: '{{env.TWILIO_USER}}'
+      password: '{{env.TWILIO_PASS}}'
+  exposes:
+  - type: rest
+    namespace: verify-verifications-rest
+    port: 8080
+    description: REST adapter for Twilio Verify API — Verifications. One Spectral-compliant resource per consumed operation,
+      prefixed with /v1.
+    resources:
+    - path: /v1/services/{servicesid}/verifications
+      name: services-servicesid-verifications
+      description: REST surface for Services-ServiceSid-Verifications.
+      operations:
+      - method: POST
+        name: createverification
+        description: Twilio Start a Verification
+        call: verify-verifications.createverification
+        with:
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/services/{servicesid}/verifications/{verificationsid}
+      name: services-servicesid-verifications-verificationsid
+      description: REST surface for Services-ServiceSid-Verifications-VerificationSid.
+      operations:
+      - method: GET
+        name: fetchverification
+        description: Twilio Fetch a Verification
+        call: verify-verifications.fetchverification
+        with:
+          VerificationSid: rest.VerificationSid
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: POST
+        name: updateverification
+        description: Twilio Update a Verification
+        call: verify-verifications.updateverification
+        with:
+          VerificationSid: rest.VerificationSid
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+  - type: mcp
+    namespace: verify-verifications-mcp
+    port: 9090
+    transport: http
+    description: MCP adapter for Twilio Verify API — Verifications. One tool per consumed operation, routed inline through
+      this capability's consumes block.
+    tools:
+    - name: twilio-start-verification
+      description: Twilio Start a Verification
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: verify-verifications.createverification
+      with:
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: twilio-fetch-verification
+      description: Twilio Fetch a Verification
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: verify-verifications.fetchverification
+      with:
+        VerificationSid: tools.VerificationSid
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: twilio-update-verification
+      description: Twilio Update a Verification
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: verify-verifications.updateverification
+      with:
+        VerificationSid: tools.VerificationSid
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.

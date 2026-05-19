@@ -1,0 +1,115 @@
+naftiko: 1.0.0-alpha2
+info:
+  label: Twilio Flex API — Insights
+  description: 'Twilio Flex API — Insights. 2 operations. Lead operation: Twilio List Questionnaires. Self-contained Naftiko
+    capability covering one Twilio business surface.'
+  tags:
+  - Twilio
+  - Insights
+  created: '2026-05-19'
+  modified: '2026-05-19'
+binds:
+- namespace: env
+  keys:
+    TWILIO_API_KEY: TWILIO_API_KEY
+capability:
+  consumes:
+  - type: http
+    namespace: flex-insights
+    baseUri: https://flex-api.twilio.com/v1
+    description: Twilio Flex API — Insights business capability. Self-contained, no shared references.
+    resources:
+    - name: Insights-QualityManagement-Questionnaires
+      path: /Insights/QualityManagement/Questionnaires
+      operations:
+      - name: listquestionnaires
+        method: GET
+        description: Twilio List Questionnaires
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: Token
+          in: header
+          type: string
+          required: true
+      - name: createquestionnaire
+        method: POST
+        description: Twilio Create a Questionnaire
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: true
+    authentication:
+      type: basic
+      username: '{{env.TWILIO_USER}}'
+      password: '{{env.TWILIO_PASS}}'
+  exposes:
+  - type: rest
+    namespace: flex-insights-rest
+    port: 8080
+    description: REST adapter for Twilio Flex API — Insights. One Spectral-compliant resource per consumed operation, prefixed
+      with /v1.
+    resources:
+    - path: /v1/insights/qualitymanagement/questionnaires
+      name: insights-qualitymanagement-questionnaires
+      description: REST surface for Insights-QualityManagement-Questionnaires.
+      operations:
+      - method: GET
+        name: listquestionnaires
+        description: Twilio List Questionnaires
+        call: flex-insights.listquestionnaires
+        with:
+          Token: rest.Token
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: POST
+        name: createquestionnaire
+        description: Twilio Create a Questionnaire
+        call: flex-insights.createquestionnaire
+        with:
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+  - type: mcp
+    namespace: flex-insights-mcp
+    port: 9090
+    transport: http
+    description: MCP adapter for Twilio Flex API — Insights. One tool per consumed operation, routed inline through this capability's
+      consumes block.
+    tools:
+    - name: twilio-list-questionnaires
+      description: Twilio List Questionnaires
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: flex-insights.listquestionnaires
+      with:
+        Token: tools.Token
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: twilio-create-questionnaire
+      description: Twilio Create a Questionnaire
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: flex-insights.createquestionnaire
+      with:
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.

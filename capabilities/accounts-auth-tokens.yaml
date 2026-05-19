@@ -1,0 +1,128 @@
+naftiko: 1.0.0-alpha2
+info:
+  label: Twilio Accounts API — Auth Tokens
+  description: 'Twilio Accounts API — Auth Tokens. 3 operations. Lead operation: Twilio Promote Secondary Auth Token. Self-contained
+    Naftiko capability covering one Twilio business surface.'
+  tags:
+  - Twilio
+  - Auth Tokens
+  created: '2026-05-19'
+  modified: '2026-05-19'
+binds:
+- namespace: env
+  keys:
+    TWILIO_API_KEY: TWILIO_API_KEY
+capability:
+  consumes:
+  - type: http
+    namespace: accounts-auth-tokens
+    baseUri: https://api.twilio.com/2010-04-01
+    description: Twilio Accounts API — Auth Tokens business capability. Self-contained, no shared references.
+    resources:
+    - name: AuthTokens-Promote
+      path: /AuthTokens/Promote
+      operations:
+      - name: promoteauthtoken
+        method: POST
+        description: Twilio Promote Secondary Auth Token
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+    - name: AuthTokens-Secondary
+      path: /AuthTokens/Secondary
+      operations:
+      - name: createsecondaryauthtoken
+        method: POST
+        description: Twilio Create a Secondary Auth Token
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+      - name: deletesecondaryauthtoken
+        method: DELETE
+        description: Twilio Delete the Secondary Auth Token
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+    authentication:
+      type: basic
+      username: '{{env.TWILIO_USER}}'
+      password: '{{env.TWILIO_PASS}}'
+  exposes:
+  - type: rest
+    namespace: accounts-auth-tokens-rest
+    port: 8080
+    description: REST adapter for Twilio Accounts API — Auth Tokens. One Spectral-compliant resource per consumed operation,
+      prefixed with /v1.
+    resources:
+    - path: /v1/authtokens/promote
+      name: authtokens-promote
+      description: REST surface for AuthTokens-Promote.
+      operations:
+      - method: POST
+        name: promoteauthtoken
+        description: Twilio Promote Secondary Auth Token
+        call: accounts-auth-tokens.promoteauthtoken
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/authtokens/secondary
+      name: authtokens-secondary
+      description: REST surface for AuthTokens-Secondary.
+      operations:
+      - method: POST
+        name: createsecondaryauthtoken
+        description: Twilio Create a Secondary Auth Token
+        call: accounts-auth-tokens.createsecondaryauthtoken
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: DELETE
+        name: deletesecondaryauthtoken
+        description: Twilio Delete the Secondary Auth Token
+        call: accounts-auth-tokens.deletesecondaryauthtoken
+        outputParameters:
+        - type: object
+          mapping: $.
+  - type: mcp
+    namespace: accounts-auth-tokens-mcp
+    port: 9090
+    transport: http
+    description: MCP adapter for Twilio Accounts API — Auth Tokens. One tool per consumed operation, routed inline through
+      this capability's consumes block.
+    tools:
+    - name: twilio-promote-secondary-auth-token
+      description: Twilio Promote Secondary Auth Token
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: accounts-auth-tokens.promoteauthtoken
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: twilio-create-secondary-auth-token
+      description: Twilio Create a Secondary Auth Token
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: accounts-auth-tokens.createsecondaryauthtoken
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: twilio-delete-secondary-auth-token
+      description: Twilio Delete the Secondary Auth Token
+      hints:
+        readOnly: false
+        destructive: true
+        idempotent: true
+      call: accounts-auth-tokens.deletesecondaryauthtoken
+      outputParameters:
+      - type: object
+        mapping: $.

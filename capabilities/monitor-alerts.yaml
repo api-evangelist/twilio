@@ -1,0 +1,154 @@
+naftiko: 1.0.0-alpha2
+info:
+  label: Twilio - Monitor — Alerts
+  description: 'Twilio - Monitor — Alerts. 2 operations. Lead operation: Alerts. Self-contained Naftiko capability covering
+    one Twilio business surface.'
+  tags:
+  - Twilio
+  - Alerts
+  created: '2026-05-19'
+  modified: '2026-05-19'
+binds:
+- namespace: env
+  keys:
+    TWILIO_API_KEY: TWILIO_API_KEY
+capability:
+  consumes:
+  - type: http
+    namespace: monitor-alerts
+    baseUri: https://monitor.twilio.com
+    description: Twilio - Monitor — Alerts business capability. Self-contained, no shared references.
+    resources:
+    - name: v1-Alerts
+      path: /v1/Alerts
+      operations:
+      - name: listalert
+        method: GET
+        description: ''
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: LogLevel
+          in: query
+          type: string
+          description: 'Only show alerts for this log-level.  Can be: `error`, `warning`, `notice`, or `debug`.'
+        - name: StartDate
+          in: query
+          type: string
+          description: Only include alerts that occurred on or after this date and time. Specify the date and time in GMT
+            and format as `YYYY-MM-DD` or `YYYY-MM-DDThh:mm:ssZ`. Queries
+        - name: EndDate
+          in: query
+          type: string
+          description: Only include alerts that occurred on or before this date and time. Specify the date and time in GMT
+            and format as `YYYY-MM-DD` or `YYYY-MM-DDThh:mm:ssZ`. Querie
+        - name: PageSize
+          in: query
+          type: integer
+          description: How many resources to return in each list page. The default is 50, and the maximum is 1000.
+        - name: Page
+          in: query
+          type: integer
+          description: The page index. This value is simply for client state.
+        - name: PageToken
+          in: query
+          type: string
+          description: The page token. This is provided by the API.
+    - name: v1-Alerts-Sid
+      path: /v1/Alerts/{Sid}
+      operations:
+      - name: fetchalert
+        method: GET
+        description: ''
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: Sid
+          in: path
+          type: string
+          description: The SID of the Alert resource to fetch.
+          required: true
+    authentication:
+      type: basic
+      username: '{{env.TWILIO_USER}}'
+      password: '{{env.TWILIO_PASS}}'
+  exposes:
+  - type: rest
+    namespace: monitor-alerts-rest
+    port: 8080
+    description: REST adapter for Twilio - Monitor — Alerts. One Spectral-compliant resource per consumed operation, prefixed
+      with /v1.
+    resources:
+    - path: /v1/v1/alerts
+      name: v1-alerts
+      description: REST surface for v1-Alerts.
+      operations:
+      - method: GET
+        name: listalert
+        description: listalert
+        call: monitor-alerts.listalert
+        with:
+          LogLevel: rest.LogLevel
+          StartDate: rest.StartDate
+          EndDate: rest.EndDate
+          PageSize: rest.PageSize
+          Page: rest.Page
+          PageToken: rest.PageToken
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/v1/alerts/{sid}
+      name: v1-alerts-sid
+      description: REST surface for v1-Alerts-Sid.
+      operations:
+      - method: GET
+        name: fetchalert
+        description: fetchalert
+        call: monitor-alerts.fetchalert
+        with:
+          Sid: rest.Sid
+        outputParameters:
+        - type: object
+          mapping: $.
+  - type: mcp
+    namespace: monitor-alerts-mcp
+    port: 9090
+    transport: http
+    description: MCP adapter for Twilio - Monitor — Alerts. One tool per consumed operation, routed inline through this capability's
+      consumes block.
+    tools:
+    - name: listalert
+      description: listalert
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: monitor-alerts.listalert
+      with:
+        LogLevel: tools.LogLevel
+        StartDate: tools.StartDate
+        EndDate: tools.EndDate
+        PageSize: tools.PageSize
+        Page: tools.Page
+        PageToken: tools.PageToken
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: fetchalert
+      description: fetchalert
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: monitor-alerts.fetchalert
+      with:
+        Sid: tools.Sid
+      outputParameters:
+      - type: object
+        mapping: $.

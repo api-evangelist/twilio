@@ -1,0 +1,246 @@
+naftiko: 1.0.0-alpha2
+info:
+  label: Twilio - Microvisor — Configs
+  description: 'Twilio - Microvisor — Configs. 5 operations. Lead operation: Configs. Self-contained Naftiko capability covering
+    one Twilio business surface.'
+  tags:
+  - Twilio
+  - Configs
+  created: '2026-05-19'
+  modified: '2026-05-19'
+binds:
+- namespace: env
+  keys:
+    TWILIO_API_KEY: TWILIO_API_KEY
+capability:
+  consumes:
+  - type: http
+    namespace: microvisor-configs
+    baseUri: https://microvisor.twilio.com
+    description: Twilio - Microvisor — Configs business capability. Self-contained, no shared references.
+    resources:
+    - name: v1-Configs
+      path: /v1/Configs
+      operations:
+      - name: listaccountconfig
+        method: GET
+        description: Retrieve a list of all Configs for an Account.
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: PageSize
+          in: query
+          type: integer
+          description: How many resources to return in each list page. The default is 50, and the maximum is 1000.
+        - name: Page
+          in: query
+          type: integer
+          description: The page index. This value is simply for client state.
+        - name: PageToken
+          in: query
+          type: string
+          description: The page token. This is provided by the API.
+      - name: createaccountconfig
+        method: POST
+        description: Create a config for an Account.
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: false
+    - name: v1-Configs-Key
+      path: /v1/Configs/{Key}
+      operations:
+      - name: fetchaccountconfig
+        method: GET
+        description: Retrieve a Config for an Account.
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: Key
+          in: path
+          type: string
+          description: The config key; up to 100 characters.
+          required: true
+      - name: updateaccountconfig
+        method: POST
+        description: Update a config for an Account.
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: Key
+          in: path
+          type: string
+          description: The config key; up to 100 characters.
+          required: true
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: false
+      - name: deleteaccountconfig
+        method: DELETE
+        description: Delete a config for an Account.
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: Key
+          in: path
+          type: string
+          description: The config key; up to 100 characters.
+          required: true
+    authentication:
+      type: basic
+      username: '{{env.TWILIO_USER}}'
+      password: '{{env.TWILIO_PASS}}'
+  exposes:
+  - type: rest
+    namespace: microvisor-configs-rest
+    port: 8080
+    description: REST adapter for Twilio - Microvisor — Configs. One Spectral-compliant resource per consumed operation, prefixed
+      with /v1.
+    resources:
+    - path: /v1/v1/configs
+      name: v1-configs
+      description: REST surface for v1-Configs.
+      operations:
+      - method: GET
+        name: listaccountconfig
+        description: Retrieve a list of all Configs for an Account.
+        call: microvisor-configs.listaccountconfig
+        with:
+          PageSize: rest.PageSize
+          Page: rest.Page
+          PageToken: rest.PageToken
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: POST
+        name: createaccountconfig
+        description: Create a config for an Account.
+        call: microvisor-configs.createaccountconfig
+        with:
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/v1/configs/{key}
+      name: v1-configs-key
+      description: REST surface for v1-Configs-Key.
+      operations:
+      - method: GET
+        name: fetchaccountconfig
+        description: Retrieve a Config for an Account.
+        call: microvisor-configs.fetchaccountconfig
+        with:
+          Key: rest.Key
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: POST
+        name: updateaccountconfig
+        description: Update a config for an Account.
+        call: microvisor-configs.updateaccountconfig
+        with:
+          Key: rest.Key
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: DELETE
+        name: deleteaccountconfig
+        description: Delete a config for an Account.
+        call: microvisor-configs.deleteaccountconfig
+        with:
+          Key: rest.Key
+        outputParameters:
+        - type: object
+          mapping: $.
+  - type: mcp
+    namespace: microvisor-configs-mcp
+    port: 9090
+    transport: http
+    description: MCP adapter for Twilio - Microvisor — Configs. One tool per consumed operation, routed inline through this
+      capability's consumes block.
+    tools:
+    - name: retrieve-list-all-configs-account
+      description: Retrieve a list of all Configs for an Account.
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: microvisor-configs.listaccountconfig
+      with:
+        PageSize: tools.PageSize
+        Page: tools.Page
+        PageToken: tools.PageToken
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: create-config-account
+      description: Create a config for an Account.
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: microvisor-configs.createaccountconfig
+      with:
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: retrieve-config-account
+      description: Retrieve a Config for an Account.
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: microvisor-configs.fetchaccountconfig
+      with:
+        Key: tools.Key
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: update-config-account
+      description: Update a config for an Account.
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: microvisor-configs.updateaccountconfig
+      with:
+        Key: tools.Key
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: delete-config-account
+      description: Delete a config for an Account.
+      hints:
+        readOnly: false
+        destructive: true
+        idempotent: true
+      call: microvisor-configs.deleteaccountconfig
+      with:
+        Key: tools.Key
+      outputParameters:
+      - type: object
+        mapping: $.

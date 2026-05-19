@@ -1,0 +1,121 @@
+naftiko: 1.0.0-alpha2
+info:
+  label: Twilio Verify API — Factors
+  description: 'Twilio Verify API — Factors. 2 operations. Lead operation: Twilio List Factors for an Entity. Self-contained
+    Naftiko capability covering one Twilio business surface.'
+  tags:
+  - Twilio
+  - Factors
+  created: '2026-05-19'
+  modified: '2026-05-19'
+binds:
+- namespace: env
+  keys:
+    TWILIO_API_KEY: TWILIO_API_KEY
+capability:
+  consumes:
+  - type: http
+    namespace: verify-factors
+    baseUri: https://verify.twilio.com/v2
+    description: Twilio Verify API — Factors business capability. Self-contained, no shared references.
+    resources:
+    - name: Services-ServiceSid-Entities-Identity-Factors
+      path: /Services/{ServiceSid}/Entities/{Identity}/Factors
+      operations:
+      - name: listfactors
+        method: GET
+        description: Twilio List Factors for an Entity
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: Identity
+          in: path
+          type: string
+          required: true
+      - name: createfactor
+        method: POST
+        description: Twilio Create a Factor
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: Identity
+          in: path
+          type: string
+          required: true
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: true
+    authentication:
+      type: basic
+      username: '{{env.TWILIO_USER}}'
+      password: '{{env.TWILIO_PASS}}'
+  exposes:
+  - type: rest
+    namespace: verify-factors-rest
+    port: 8080
+    description: REST adapter for Twilio Verify API — Factors. One Spectral-compliant resource per consumed operation, prefixed
+      with /v1.
+    resources:
+    - path: /v1/services/{servicesid}/entities/{identity}/factors
+      name: services-servicesid-entities-identity-factors
+      description: REST surface for Services-ServiceSid-Entities-Identity-Factors.
+      operations:
+      - method: GET
+        name: listfactors
+        description: Twilio List Factors for an Entity
+        call: verify-factors.listfactors
+        with:
+          Identity: rest.Identity
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: POST
+        name: createfactor
+        description: Twilio Create a Factor
+        call: verify-factors.createfactor
+        with:
+          Identity: rest.Identity
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+  - type: mcp
+    namespace: verify-factors-mcp
+    port: 9090
+    transport: http
+    description: MCP adapter for Twilio Verify API — Factors. One tool per consumed operation, routed inline through this
+      capability's consumes block.
+    tools:
+    - name: twilio-list-factors-entity
+      description: Twilio List Factors for an Entity
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: verify-factors.listfactors
+      with:
+        Identity: tools.Identity
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: twilio-create-factor
+      description: Twilio Create a Factor
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: verify-factors.createfactor
+      with:
+        Identity: tools.Identity
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.

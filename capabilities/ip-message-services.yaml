@@ -1,0 +1,2576 @@
+naftiko: 1.0.0-alpha2
+info:
+  label: Twilio - Ip_messaging — Services
+  description: 'Twilio - Ip_messaging — Services. 49 operations. Lead operation: Services. Self-contained Naftiko capability
+    covering one Twilio business surface.'
+  tags:
+  - Twilio
+  - Services
+  created: '2026-05-19'
+  modified: '2026-05-19'
+binds:
+- namespace: env
+  keys:
+    TWILIO_API_KEY: TWILIO_API_KEY
+capability:
+  consumes:
+  - type: http
+    namespace: ip-message-services
+    baseUri: https://ip-messaging.twilio.com
+    description: Twilio - Ip_messaging — Services business capability. Self-contained, no shared references.
+    resources:
+    - name: v2-Services
+      path: /v2/Services
+      operations:
+      - name: createservice
+        method: POST
+        description: ''
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: false
+      - name: listservice
+        method: GET
+        description: ''
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: PageSize
+          in: query
+          type: integer
+          description: How many resources to return in each list page. The default is 50, and the maximum is 1000.
+        - name: Page
+          in: query
+          type: integer
+          description: The page index. This value is simply for client state.
+        - name: PageToken
+          in: query
+          type: string
+          description: The page token. This is provided by the API.
+    - name: v2-Services-ServiceSid-Bindings
+      path: /v2/Services/{ServiceSid}/Bindings
+      operations:
+      - name: listbinding
+        method: GET
+        description: ''
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: ServiceSid
+          in: path
+          type: string
+          required: true
+        - name: BindingType
+          in: query
+          type: array
+        - name: Identity
+          in: query
+          type: array
+        - name: PageSize
+          in: query
+          type: integer
+          description: How many resources to return in each list page. The default is 50, and the maximum is 1000.
+        - name: Page
+          in: query
+          type: integer
+          description: The page index. This value is simply for client state.
+        - name: PageToken
+          in: query
+          type: string
+          description: The page token. This is provided by the API.
+    - name: v2-Services-ServiceSid-Bindings-Sid
+      path: /v2/Services/{ServiceSid}/Bindings/{Sid}
+      operations:
+      - name: fetchbinding
+        method: GET
+        description: ''
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: ServiceSid
+          in: path
+          type: string
+          required: true
+        - name: Sid
+          in: path
+          type: string
+          required: true
+      - name: deletebinding
+        method: DELETE
+        description: ''
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: ServiceSid
+          in: path
+          type: string
+          required: true
+        - name: Sid
+          in: path
+          type: string
+          required: true
+    - name: v2-Services-ServiceSid-Channels
+      path: /v2/Services/{ServiceSid}/Channels
+      operations:
+      - name: createchannel
+        method: POST
+        description: ''
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: ServiceSid
+          in: path
+          type: string
+          required: true
+        - name: X-Twilio-Webhook-Enabled
+          in: header
+          type: string
+          description: The X-Twilio-Webhook-Enabled HTTP request header
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: false
+      - name: listchannel
+        method: GET
+        description: ''
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: ServiceSid
+          in: path
+          type: string
+          required: true
+        - name: Type
+          in: query
+          type: array
+        - name: PageSize
+          in: query
+          type: integer
+          description: How many resources to return in each list page. The default is 50, and the maximum is 1000.
+        - name: Page
+          in: query
+          type: integer
+          description: The page index. This value is simply for client state.
+        - name: PageToken
+          in: query
+          type: string
+          description: The page token. This is provided by the API.
+    - name: v2-Services-ServiceSid-Channels-ChannelSid-Invites
+      path: /v2/Services/{ServiceSid}/Channels/{ChannelSid}/Invites
+      operations:
+      - name: createinvite
+        method: POST
+        description: ''
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: ServiceSid
+          in: path
+          type: string
+          required: true
+        - name: ChannelSid
+          in: path
+          type: string
+          required: true
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: false
+      - name: listinvite
+        method: GET
+        description: ''
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: ServiceSid
+          in: path
+          type: string
+          required: true
+        - name: ChannelSid
+          in: path
+          type: string
+          required: true
+        - name: Identity
+          in: query
+          type: array
+        - name: PageSize
+          in: query
+          type: integer
+          description: How many resources to return in each list page. The default is 50, and the maximum is 1000.
+        - name: Page
+          in: query
+          type: integer
+          description: The page index. This value is simply for client state.
+        - name: PageToken
+          in: query
+          type: string
+          description: The page token. This is provided by the API.
+    - name: v2-Services-ServiceSid-Channels-ChannelSid-Invites-Sid
+      path: /v2/Services/{ServiceSid}/Channels/{ChannelSid}/Invites/{Sid}
+      operations:
+      - name: fetchinvite
+        method: GET
+        description: ''
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: ServiceSid
+          in: path
+          type: string
+          required: true
+        - name: ChannelSid
+          in: path
+          type: string
+          required: true
+        - name: Sid
+          in: path
+          type: string
+          required: true
+      - name: deleteinvite
+        method: DELETE
+        description: ''
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: ServiceSid
+          in: path
+          type: string
+          required: true
+        - name: ChannelSid
+          in: path
+          type: string
+          required: true
+        - name: Sid
+          in: path
+          type: string
+          required: true
+    - name: v2-Services-ServiceSid-Channels-ChannelSid-Members
+      path: /v2/Services/{ServiceSid}/Channels/{ChannelSid}/Members
+      operations:
+      - name: createmember
+        method: POST
+        description: ''
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: ServiceSid
+          in: path
+          type: string
+          required: true
+        - name: ChannelSid
+          in: path
+          type: string
+          required: true
+        - name: X-Twilio-Webhook-Enabled
+          in: header
+          type: string
+          description: The X-Twilio-Webhook-Enabled HTTP request header
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: false
+      - name: listmember
+        method: GET
+        description: ''
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: ServiceSid
+          in: path
+          type: string
+          required: true
+        - name: ChannelSid
+          in: path
+          type: string
+          required: true
+        - name: Identity
+          in: query
+          type: array
+        - name: PageSize
+          in: query
+          type: integer
+          description: How many resources to return in each list page. The default is 50, and the maximum is 1000.
+        - name: Page
+          in: query
+          type: integer
+          description: The page index. This value is simply for client state.
+        - name: PageToken
+          in: query
+          type: string
+          description: The page token. This is provided by the API.
+    - name: v2-Services-ServiceSid-Channels-ChannelSid-Members-Sid
+      path: /v2/Services/{ServiceSid}/Channels/{ChannelSid}/Members/{Sid}
+      operations:
+      - name: fetchmember
+        method: GET
+        description: ''
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: ServiceSid
+          in: path
+          type: string
+          required: true
+        - name: ChannelSid
+          in: path
+          type: string
+          required: true
+        - name: Sid
+          in: path
+          type: string
+          required: true
+      - name: deletemember
+        method: DELETE
+        description: ''
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: ServiceSid
+          in: path
+          type: string
+          required: true
+        - name: ChannelSid
+          in: path
+          type: string
+          required: true
+        - name: Sid
+          in: path
+          type: string
+          required: true
+        - name: X-Twilio-Webhook-Enabled
+          in: header
+          type: string
+          description: The X-Twilio-Webhook-Enabled HTTP request header
+      - name: updatemember
+        method: POST
+        description: ''
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: ServiceSid
+          in: path
+          type: string
+          required: true
+        - name: ChannelSid
+          in: path
+          type: string
+          required: true
+        - name: Sid
+          in: path
+          type: string
+          required: true
+        - name: X-Twilio-Webhook-Enabled
+          in: header
+          type: string
+          description: The X-Twilio-Webhook-Enabled HTTP request header
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: false
+    - name: v2-Services-ServiceSid-Channels-ChannelSid-Messages
+      path: /v2/Services/{ServiceSid}/Channels/{ChannelSid}/Messages
+      operations:
+      - name: createmessage
+        method: POST
+        description: ''
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: ServiceSid
+          in: path
+          type: string
+          required: true
+        - name: ChannelSid
+          in: path
+          type: string
+          required: true
+        - name: X-Twilio-Webhook-Enabled
+          in: header
+          type: string
+          description: The X-Twilio-Webhook-Enabled HTTP request header
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: false
+      - name: listmessage
+        method: GET
+        description: ''
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: ServiceSid
+          in: path
+          type: string
+          required: true
+        - name: ChannelSid
+          in: path
+          type: string
+          required: true
+        - name: Order
+          in: query
+          type: string
+        - name: PageSize
+          in: query
+          type: integer
+          description: How many resources to return in each list page. The default is 50, and the maximum is 1000.
+        - name: Page
+          in: query
+          type: integer
+          description: The page index. This value is simply for client state.
+        - name: PageToken
+          in: query
+          type: string
+          description: The page token. This is provided by the API.
+    - name: v2-Services-ServiceSid-Channels-ChannelSid-Messages-Sid
+      path: /v2/Services/{ServiceSid}/Channels/{ChannelSid}/Messages/{Sid}
+      operations:
+      - name: fetchmessage
+        method: GET
+        description: ''
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: ServiceSid
+          in: path
+          type: string
+          required: true
+        - name: ChannelSid
+          in: path
+          type: string
+          required: true
+        - name: Sid
+          in: path
+          type: string
+          required: true
+      - name: deletemessage
+        method: DELETE
+        description: ''
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: ServiceSid
+          in: path
+          type: string
+          required: true
+        - name: ChannelSid
+          in: path
+          type: string
+          required: true
+        - name: Sid
+          in: path
+          type: string
+          required: true
+        - name: X-Twilio-Webhook-Enabled
+          in: header
+          type: string
+          description: The X-Twilio-Webhook-Enabled HTTP request header
+      - name: updatemessage
+        method: POST
+        description: ''
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: ServiceSid
+          in: path
+          type: string
+          required: true
+        - name: ChannelSid
+          in: path
+          type: string
+          required: true
+        - name: Sid
+          in: path
+          type: string
+          required: true
+        - name: X-Twilio-Webhook-Enabled
+          in: header
+          type: string
+          description: The X-Twilio-Webhook-Enabled HTTP request header
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: false
+    - name: v2-Services-ServiceSid-Channels-ChannelSid-Webhooks
+      path: /v2/Services/{ServiceSid}/Channels/{ChannelSid}/Webhooks
+      operations:
+      - name: listchannelwebhook
+        method: GET
+        description: ''
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: ServiceSid
+          in: path
+          type: string
+          required: true
+        - name: ChannelSid
+          in: path
+          type: string
+          required: true
+        - name: PageSize
+          in: query
+          type: integer
+          description: How many resources to return in each list page. The default is 50, and the maximum is 1000.
+        - name: Page
+          in: query
+          type: integer
+          description: The page index. This value is simply for client state.
+        - name: PageToken
+          in: query
+          type: string
+          description: The page token. This is provided by the API.
+      - name: createchannelwebhook
+        method: POST
+        description: ''
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: ServiceSid
+          in: path
+          type: string
+          required: true
+        - name: ChannelSid
+          in: path
+          type: string
+          required: true
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: false
+    - name: v2-Services-ServiceSid-Channels-ChannelSid-Webhooks-Sid
+      path: /v2/Services/{ServiceSid}/Channels/{ChannelSid}/Webhooks/{Sid}
+      operations:
+      - name: fetchchannelwebhook
+        method: GET
+        description: ''
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: ServiceSid
+          in: path
+          type: string
+          required: true
+        - name: ChannelSid
+          in: path
+          type: string
+          required: true
+        - name: Sid
+          in: path
+          type: string
+          required: true
+      - name: updatechannelwebhook
+        method: POST
+        description: ''
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: ServiceSid
+          in: path
+          type: string
+          required: true
+        - name: ChannelSid
+          in: path
+          type: string
+          required: true
+        - name: Sid
+          in: path
+          type: string
+          required: true
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: false
+      - name: deletechannelwebhook
+        method: DELETE
+        description: ''
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: ServiceSid
+          in: path
+          type: string
+          required: true
+        - name: ChannelSid
+          in: path
+          type: string
+          required: true
+        - name: Sid
+          in: path
+          type: string
+          required: true
+    - name: v2-Services-ServiceSid-Channels-Sid
+      path: /v2/Services/{ServiceSid}/Channels/{Sid}
+      operations:
+      - name: fetchchannel
+        method: GET
+        description: ''
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: ServiceSid
+          in: path
+          type: string
+          required: true
+        - name: Sid
+          in: path
+          type: string
+          required: true
+      - name: deletechannel
+        method: DELETE
+        description: ''
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: ServiceSid
+          in: path
+          type: string
+          required: true
+        - name: Sid
+          in: path
+          type: string
+          required: true
+        - name: X-Twilio-Webhook-Enabled
+          in: header
+          type: string
+          description: The X-Twilio-Webhook-Enabled HTTP request header
+      - name: updatechannel
+        method: POST
+        description: ''
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: ServiceSid
+          in: path
+          type: string
+          required: true
+        - name: Sid
+          in: path
+          type: string
+          required: true
+        - name: X-Twilio-Webhook-Enabled
+          in: header
+          type: string
+          description: The X-Twilio-Webhook-Enabled HTTP request header
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: false
+    - name: v2-Services-ServiceSid-Roles
+      path: /v2/Services/{ServiceSid}/Roles
+      operations:
+      - name: createrole
+        method: POST
+        description: ''
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: ServiceSid
+          in: path
+          type: string
+          required: true
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: false
+      - name: listrole
+        method: GET
+        description: ''
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: ServiceSid
+          in: path
+          type: string
+          required: true
+        - name: PageSize
+          in: query
+          type: integer
+          description: How many resources to return in each list page. The default is 50, and the maximum is 1000.
+        - name: Page
+          in: query
+          type: integer
+          description: The page index. This value is simply for client state.
+        - name: PageToken
+          in: query
+          type: string
+          description: The page token. This is provided by the API.
+    - name: v2-Services-ServiceSid-Roles-Sid
+      path: /v2/Services/{ServiceSid}/Roles/{Sid}
+      operations:
+      - name: fetchrole
+        method: GET
+        description: ''
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: ServiceSid
+          in: path
+          type: string
+          required: true
+        - name: Sid
+          in: path
+          type: string
+          required: true
+      - name: deleterole
+        method: DELETE
+        description: ''
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: ServiceSid
+          in: path
+          type: string
+          required: true
+        - name: Sid
+          in: path
+          type: string
+          required: true
+      - name: updaterole
+        method: POST
+        description: ''
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: ServiceSid
+          in: path
+          type: string
+          required: true
+        - name: Sid
+          in: path
+          type: string
+          required: true
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: false
+    - name: v2-Services-ServiceSid-Users
+      path: /v2/Services/{ServiceSid}/Users
+      operations:
+      - name: createuser
+        method: POST
+        description: ''
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: ServiceSid
+          in: path
+          type: string
+          required: true
+        - name: X-Twilio-Webhook-Enabled
+          in: header
+          type: string
+          description: The X-Twilio-Webhook-Enabled HTTP request header
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: false
+      - name: listuser
+        method: GET
+        description: ''
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: ServiceSid
+          in: path
+          type: string
+          required: true
+        - name: PageSize
+          in: query
+          type: integer
+          description: How many resources to return in each list page. The default is 50, and the maximum is 1000.
+        - name: Page
+          in: query
+          type: integer
+          description: The page index. This value is simply for client state.
+        - name: PageToken
+          in: query
+          type: string
+          description: The page token. This is provided by the API.
+    - name: v2-Services-ServiceSid-Users-Sid
+      path: /v2/Services/{ServiceSid}/Users/{Sid}
+      operations:
+      - name: fetchuser
+        method: GET
+        description: ''
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: ServiceSid
+          in: path
+          type: string
+          required: true
+        - name: Sid
+          in: path
+          type: string
+          required: true
+      - name: deleteuser
+        method: DELETE
+        description: ''
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: ServiceSid
+          in: path
+          type: string
+          required: true
+        - name: Sid
+          in: path
+          type: string
+          required: true
+      - name: updateuser
+        method: POST
+        description: ''
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: ServiceSid
+          in: path
+          type: string
+          required: true
+        - name: Sid
+          in: path
+          type: string
+          required: true
+        - name: X-Twilio-Webhook-Enabled
+          in: header
+          type: string
+          description: The X-Twilio-Webhook-Enabled HTTP request header
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: false
+    - name: v2-Services-ServiceSid-Users-UserSid-Bindings
+      path: /v2/Services/{ServiceSid}/Users/{UserSid}/Bindings
+      operations:
+      - name: listuserbinding
+        method: GET
+        description: ''
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: ServiceSid
+          in: path
+          type: string
+          required: true
+        - name: UserSid
+          in: path
+          type: string
+          required: true
+        - name: BindingType
+          in: query
+          type: array
+        - name: PageSize
+          in: query
+          type: integer
+          description: How many resources to return in each list page. The default is 50, and the maximum is 1000.
+        - name: Page
+          in: query
+          type: integer
+          description: The page index. This value is simply for client state.
+        - name: PageToken
+          in: query
+          type: string
+          description: The page token. This is provided by the API.
+    - name: v2-Services-ServiceSid-Users-UserSid-Bindings-Sid
+      path: /v2/Services/{ServiceSid}/Users/{UserSid}/Bindings/{Sid}
+      operations:
+      - name: fetchuserbinding
+        method: GET
+        description: ''
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: ServiceSid
+          in: path
+          type: string
+          required: true
+        - name: UserSid
+          in: path
+          type: string
+          required: true
+        - name: Sid
+          in: path
+          type: string
+          required: true
+      - name: deleteuserbinding
+        method: DELETE
+        description: ''
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: ServiceSid
+          in: path
+          type: string
+          required: true
+        - name: UserSid
+          in: path
+          type: string
+          required: true
+        - name: Sid
+          in: path
+          type: string
+          required: true
+    - name: v2-Services-ServiceSid-Users-UserSid-Channels
+      path: /v2/Services/{ServiceSid}/Users/{UserSid}/Channels
+      operations:
+      - name: listuserchannel
+        method: GET
+        description: ''
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: ServiceSid
+          in: path
+          type: string
+          required: true
+        - name: UserSid
+          in: path
+          type: string
+          required: true
+        - name: PageSize
+          in: query
+          type: integer
+          description: How many resources to return in each list page. The default is 50, and the maximum is 1000.
+        - name: Page
+          in: query
+          type: integer
+          description: The page index. This value is simply for client state.
+        - name: PageToken
+          in: query
+          type: string
+          description: The page token. This is provided by the API.
+    - name: v2-Services-ServiceSid-Users-UserSid-Channels-ChannelSid
+      path: /v2/Services/{ServiceSid}/Users/{UserSid}/Channels/{ChannelSid}
+      operations:
+      - name: fetchuserchannel
+        method: GET
+        description: ''
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: ServiceSid
+          in: path
+          type: string
+          required: true
+        - name: UserSid
+          in: path
+          type: string
+          required: true
+        - name: ChannelSid
+          in: path
+          type: string
+          required: true
+      - name: deleteuserchannel
+        method: DELETE
+        description: ''
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: ServiceSid
+          in: path
+          type: string
+          required: true
+        - name: UserSid
+          in: path
+          type: string
+          required: true
+        - name: ChannelSid
+          in: path
+          type: string
+          required: true
+      - name: updateuserchannel
+        method: POST
+        description: ''
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: ServiceSid
+          in: path
+          type: string
+          required: true
+        - name: UserSid
+          in: path
+          type: string
+          required: true
+        - name: ChannelSid
+          in: path
+          type: string
+          required: true
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: false
+    - name: v2-Services-Sid
+      path: /v2/Services/{Sid}
+      operations:
+      - name: fetchservice
+        method: GET
+        description: ''
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: Sid
+          in: path
+          type: string
+          required: true
+      - name: deleteservice
+        method: DELETE
+        description: ''
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: Sid
+          in: path
+          type: string
+          required: true
+      - name: updateservice
+        method: POST
+        description: ''
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: Sid
+          in: path
+          type: string
+          required: true
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: false
+    authentication:
+      type: basic
+      username: '{{env.TWILIO_USER}}'
+      password: '{{env.TWILIO_PASS}}'
+  exposes:
+  - type: rest
+    namespace: ip-message-services-rest
+    port: 8080
+    description: REST adapter for Twilio - Ip_messaging — Services. One Spectral-compliant resource per consumed operation,
+      prefixed with /v1.
+    resources:
+    - path: /v1/v2/services
+      name: v2-services
+      description: REST surface for v2-Services.
+      operations:
+      - method: POST
+        name: createservice
+        description: createservice
+        call: ip-message-services.createservice
+        with:
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: GET
+        name: listservice
+        description: listservice
+        call: ip-message-services.listservice
+        with:
+          PageSize: rest.PageSize
+          Page: rest.Page
+          PageToken: rest.PageToken
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/v2/services/{servicesid}/bindings
+      name: v2-services-servicesid-bindings
+      description: REST surface for v2-Services-ServiceSid-Bindings.
+      operations:
+      - method: GET
+        name: listbinding
+        description: listbinding
+        call: ip-message-services.listbinding
+        with:
+          ServiceSid: rest.ServiceSid
+          BindingType: rest.BindingType
+          Identity: rest.Identity
+          PageSize: rest.PageSize
+          Page: rest.Page
+          PageToken: rest.PageToken
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/v2/services/{servicesid}/bindings/{sid}
+      name: v2-services-servicesid-bindings-sid
+      description: REST surface for v2-Services-ServiceSid-Bindings-Sid.
+      operations:
+      - method: GET
+        name: fetchbinding
+        description: fetchbinding
+        call: ip-message-services.fetchbinding
+        with:
+          ServiceSid: rest.ServiceSid
+          Sid: rest.Sid
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: DELETE
+        name: deletebinding
+        description: deletebinding
+        call: ip-message-services.deletebinding
+        with:
+          ServiceSid: rest.ServiceSid
+          Sid: rest.Sid
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/v2/services/{servicesid}/channels
+      name: v2-services-servicesid-channels
+      description: REST surface for v2-Services-ServiceSid-Channels.
+      operations:
+      - method: POST
+        name: createchannel
+        description: createchannel
+        call: ip-message-services.createchannel
+        with:
+          ServiceSid: rest.ServiceSid
+          X-Twilio-Webhook-Enabled: rest.X-Twilio-Webhook-Enabled
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: GET
+        name: listchannel
+        description: listchannel
+        call: ip-message-services.listchannel
+        with:
+          ServiceSid: rest.ServiceSid
+          Type: rest.Type
+          PageSize: rest.PageSize
+          Page: rest.Page
+          PageToken: rest.PageToken
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/v2/services/{servicesid}/channels/{channelsid}/invites
+      name: v2-services-servicesid-channels-channelsid-invites
+      description: REST surface for v2-Services-ServiceSid-Channels-ChannelSid-Invites.
+      operations:
+      - method: POST
+        name: createinvite
+        description: createinvite
+        call: ip-message-services.createinvite
+        with:
+          ServiceSid: rest.ServiceSid
+          ChannelSid: rest.ChannelSid
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: GET
+        name: listinvite
+        description: listinvite
+        call: ip-message-services.listinvite
+        with:
+          ServiceSid: rest.ServiceSid
+          ChannelSid: rest.ChannelSid
+          Identity: rest.Identity
+          PageSize: rest.PageSize
+          Page: rest.Page
+          PageToken: rest.PageToken
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/v2/services/{servicesid}/channels/{channelsid}/invites/{sid}
+      name: v2-services-servicesid-channels-channelsid-invites-sid
+      description: REST surface for v2-Services-ServiceSid-Channels-ChannelSid-Invites-Sid.
+      operations:
+      - method: GET
+        name: fetchinvite
+        description: fetchinvite
+        call: ip-message-services.fetchinvite
+        with:
+          ServiceSid: rest.ServiceSid
+          ChannelSid: rest.ChannelSid
+          Sid: rest.Sid
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: DELETE
+        name: deleteinvite
+        description: deleteinvite
+        call: ip-message-services.deleteinvite
+        with:
+          ServiceSid: rest.ServiceSid
+          ChannelSid: rest.ChannelSid
+          Sid: rest.Sid
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/v2/services/{servicesid}/channels/{channelsid}/members
+      name: v2-services-servicesid-channels-channelsid-members
+      description: REST surface for v2-Services-ServiceSid-Channels-ChannelSid-Members.
+      operations:
+      - method: POST
+        name: createmember
+        description: createmember
+        call: ip-message-services.createmember
+        with:
+          ServiceSid: rest.ServiceSid
+          ChannelSid: rest.ChannelSid
+          X-Twilio-Webhook-Enabled: rest.X-Twilio-Webhook-Enabled
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: GET
+        name: listmember
+        description: listmember
+        call: ip-message-services.listmember
+        with:
+          ServiceSid: rest.ServiceSid
+          ChannelSid: rest.ChannelSid
+          Identity: rest.Identity
+          PageSize: rest.PageSize
+          Page: rest.Page
+          PageToken: rest.PageToken
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/v2/services/{servicesid}/channels/{channelsid}/members/{sid}
+      name: v2-services-servicesid-channels-channelsid-members-sid
+      description: REST surface for v2-Services-ServiceSid-Channels-ChannelSid-Members-Sid.
+      operations:
+      - method: GET
+        name: fetchmember
+        description: fetchmember
+        call: ip-message-services.fetchmember
+        with:
+          ServiceSid: rest.ServiceSid
+          ChannelSid: rest.ChannelSid
+          Sid: rest.Sid
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: DELETE
+        name: deletemember
+        description: deletemember
+        call: ip-message-services.deletemember
+        with:
+          ServiceSid: rest.ServiceSid
+          ChannelSid: rest.ChannelSid
+          Sid: rest.Sid
+          X-Twilio-Webhook-Enabled: rest.X-Twilio-Webhook-Enabled
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: POST
+        name: updatemember
+        description: updatemember
+        call: ip-message-services.updatemember
+        with:
+          ServiceSid: rest.ServiceSid
+          ChannelSid: rest.ChannelSid
+          Sid: rest.Sid
+          X-Twilio-Webhook-Enabled: rest.X-Twilio-Webhook-Enabled
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/v2/services/{servicesid}/channels/{channelsid}/messages
+      name: v2-services-servicesid-channels-channelsid-messages
+      description: REST surface for v2-Services-ServiceSid-Channels-ChannelSid-Messages.
+      operations:
+      - method: POST
+        name: createmessage
+        description: createmessage
+        call: ip-message-services.createmessage
+        with:
+          ServiceSid: rest.ServiceSid
+          ChannelSid: rest.ChannelSid
+          X-Twilio-Webhook-Enabled: rest.X-Twilio-Webhook-Enabled
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: GET
+        name: listmessage
+        description: listmessage
+        call: ip-message-services.listmessage
+        with:
+          ServiceSid: rest.ServiceSid
+          ChannelSid: rest.ChannelSid
+          Order: rest.Order
+          PageSize: rest.PageSize
+          Page: rest.Page
+          PageToken: rest.PageToken
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/v2/services/{servicesid}/channels/{channelsid}/messages/{sid}
+      name: v2-services-servicesid-channels-channelsid-messages-sid
+      description: REST surface for v2-Services-ServiceSid-Channels-ChannelSid-Messages-Sid.
+      operations:
+      - method: GET
+        name: fetchmessage
+        description: fetchmessage
+        call: ip-message-services.fetchmessage
+        with:
+          ServiceSid: rest.ServiceSid
+          ChannelSid: rest.ChannelSid
+          Sid: rest.Sid
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: DELETE
+        name: deletemessage
+        description: deletemessage
+        call: ip-message-services.deletemessage
+        with:
+          ServiceSid: rest.ServiceSid
+          ChannelSid: rest.ChannelSid
+          Sid: rest.Sid
+          X-Twilio-Webhook-Enabled: rest.X-Twilio-Webhook-Enabled
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: POST
+        name: updatemessage
+        description: updatemessage
+        call: ip-message-services.updatemessage
+        with:
+          ServiceSid: rest.ServiceSid
+          ChannelSid: rest.ChannelSid
+          Sid: rest.Sid
+          X-Twilio-Webhook-Enabled: rest.X-Twilio-Webhook-Enabled
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/v2/services/{servicesid}/channels/{channelsid}/webhooks
+      name: v2-services-servicesid-channels-channelsid-webhooks
+      description: REST surface for v2-Services-ServiceSid-Channels-ChannelSid-Webhooks.
+      operations:
+      - method: GET
+        name: listchannelwebhook
+        description: listchannelwebhook
+        call: ip-message-services.listchannelwebhook
+        with:
+          ServiceSid: rest.ServiceSid
+          ChannelSid: rest.ChannelSid
+          PageSize: rest.PageSize
+          Page: rest.Page
+          PageToken: rest.PageToken
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: POST
+        name: createchannelwebhook
+        description: createchannelwebhook
+        call: ip-message-services.createchannelwebhook
+        with:
+          ServiceSid: rest.ServiceSid
+          ChannelSid: rest.ChannelSid
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/v2/services/{servicesid}/channels/{channelsid}/webhooks/{sid}
+      name: v2-services-servicesid-channels-channelsid-webhooks-sid
+      description: REST surface for v2-Services-ServiceSid-Channels-ChannelSid-Webhooks-Sid.
+      operations:
+      - method: GET
+        name: fetchchannelwebhook
+        description: fetchchannelwebhook
+        call: ip-message-services.fetchchannelwebhook
+        with:
+          ServiceSid: rest.ServiceSid
+          ChannelSid: rest.ChannelSid
+          Sid: rest.Sid
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: POST
+        name: updatechannelwebhook
+        description: updatechannelwebhook
+        call: ip-message-services.updatechannelwebhook
+        with:
+          ServiceSid: rest.ServiceSid
+          ChannelSid: rest.ChannelSid
+          Sid: rest.Sid
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: DELETE
+        name: deletechannelwebhook
+        description: deletechannelwebhook
+        call: ip-message-services.deletechannelwebhook
+        with:
+          ServiceSid: rest.ServiceSid
+          ChannelSid: rest.ChannelSid
+          Sid: rest.Sid
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/v2/services/{servicesid}/channels/{sid}
+      name: v2-services-servicesid-channels-sid
+      description: REST surface for v2-Services-ServiceSid-Channels-Sid.
+      operations:
+      - method: GET
+        name: fetchchannel
+        description: fetchchannel
+        call: ip-message-services.fetchchannel
+        with:
+          ServiceSid: rest.ServiceSid
+          Sid: rest.Sid
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: DELETE
+        name: deletechannel
+        description: deletechannel
+        call: ip-message-services.deletechannel
+        with:
+          ServiceSid: rest.ServiceSid
+          Sid: rest.Sid
+          X-Twilio-Webhook-Enabled: rest.X-Twilio-Webhook-Enabled
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: POST
+        name: updatechannel
+        description: updatechannel
+        call: ip-message-services.updatechannel
+        with:
+          ServiceSid: rest.ServiceSid
+          Sid: rest.Sid
+          X-Twilio-Webhook-Enabled: rest.X-Twilio-Webhook-Enabled
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/v2/services/{servicesid}/roles
+      name: v2-services-servicesid-roles
+      description: REST surface for v2-Services-ServiceSid-Roles.
+      operations:
+      - method: POST
+        name: createrole
+        description: createrole
+        call: ip-message-services.createrole
+        with:
+          ServiceSid: rest.ServiceSid
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: GET
+        name: listrole
+        description: listrole
+        call: ip-message-services.listrole
+        with:
+          ServiceSid: rest.ServiceSid
+          PageSize: rest.PageSize
+          Page: rest.Page
+          PageToken: rest.PageToken
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/v2/services/{servicesid}/roles/{sid}
+      name: v2-services-servicesid-roles-sid
+      description: REST surface for v2-Services-ServiceSid-Roles-Sid.
+      operations:
+      - method: GET
+        name: fetchrole
+        description: fetchrole
+        call: ip-message-services.fetchrole
+        with:
+          ServiceSid: rest.ServiceSid
+          Sid: rest.Sid
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: DELETE
+        name: deleterole
+        description: deleterole
+        call: ip-message-services.deleterole
+        with:
+          ServiceSid: rest.ServiceSid
+          Sid: rest.Sid
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: POST
+        name: updaterole
+        description: updaterole
+        call: ip-message-services.updaterole
+        with:
+          ServiceSid: rest.ServiceSid
+          Sid: rest.Sid
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/v2/services/{servicesid}/users
+      name: v2-services-servicesid-users
+      description: REST surface for v2-Services-ServiceSid-Users.
+      operations:
+      - method: POST
+        name: createuser
+        description: createuser
+        call: ip-message-services.createuser
+        with:
+          ServiceSid: rest.ServiceSid
+          X-Twilio-Webhook-Enabled: rest.X-Twilio-Webhook-Enabled
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: GET
+        name: listuser
+        description: listuser
+        call: ip-message-services.listuser
+        with:
+          ServiceSid: rest.ServiceSid
+          PageSize: rest.PageSize
+          Page: rest.Page
+          PageToken: rest.PageToken
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/v2/services/{servicesid}/users/{sid}
+      name: v2-services-servicesid-users-sid
+      description: REST surface for v2-Services-ServiceSid-Users-Sid.
+      operations:
+      - method: GET
+        name: fetchuser
+        description: fetchuser
+        call: ip-message-services.fetchuser
+        with:
+          ServiceSid: rest.ServiceSid
+          Sid: rest.Sid
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: DELETE
+        name: deleteuser
+        description: deleteuser
+        call: ip-message-services.deleteuser
+        with:
+          ServiceSid: rest.ServiceSid
+          Sid: rest.Sid
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: POST
+        name: updateuser
+        description: updateuser
+        call: ip-message-services.updateuser
+        with:
+          ServiceSid: rest.ServiceSid
+          Sid: rest.Sid
+          X-Twilio-Webhook-Enabled: rest.X-Twilio-Webhook-Enabled
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/v2/services/{servicesid}/users/{usersid}/bindings
+      name: v2-services-servicesid-users-usersid-bindings
+      description: REST surface for v2-Services-ServiceSid-Users-UserSid-Bindings.
+      operations:
+      - method: GET
+        name: listuserbinding
+        description: listuserbinding
+        call: ip-message-services.listuserbinding
+        with:
+          ServiceSid: rest.ServiceSid
+          UserSid: rest.UserSid
+          BindingType: rest.BindingType
+          PageSize: rest.PageSize
+          Page: rest.Page
+          PageToken: rest.PageToken
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/v2/services/{servicesid}/users/{usersid}/bindings/{sid}
+      name: v2-services-servicesid-users-usersid-bindings-sid
+      description: REST surface for v2-Services-ServiceSid-Users-UserSid-Bindings-Sid.
+      operations:
+      - method: GET
+        name: fetchuserbinding
+        description: fetchuserbinding
+        call: ip-message-services.fetchuserbinding
+        with:
+          ServiceSid: rest.ServiceSid
+          UserSid: rest.UserSid
+          Sid: rest.Sid
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: DELETE
+        name: deleteuserbinding
+        description: deleteuserbinding
+        call: ip-message-services.deleteuserbinding
+        with:
+          ServiceSid: rest.ServiceSid
+          UserSid: rest.UserSid
+          Sid: rest.Sid
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/v2/services/{servicesid}/users/{usersid}/channels
+      name: v2-services-servicesid-users-usersid-channels
+      description: REST surface for v2-Services-ServiceSid-Users-UserSid-Channels.
+      operations:
+      - method: GET
+        name: listuserchannel
+        description: listuserchannel
+        call: ip-message-services.listuserchannel
+        with:
+          ServiceSid: rest.ServiceSid
+          UserSid: rest.UserSid
+          PageSize: rest.PageSize
+          Page: rest.Page
+          PageToken: rest.PageToken
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/v2/services/{servicesid}/users/{usersid}/channels/{channelsid}
+      name: v2-services-servicesid-users-usersid-channels-channelsid
+      description: REST surface for v2-Services-ServiceSid-Users-UserSid-Channels-ChannelSid.
+      operations:
+      - method: GET
+        name: fetchuserchannel
+        description: fetchuserchannel
+        call: ip-message-services.fetchuserchannel
+        with:
+          ServiceSid: rest.ServiceSid
+          UserSid: rest.UserSid
+          ChannelSid: rest.ChannelSid
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: DELETE
+        name: deleteuserchannel
+        description: deleteuserchannel
+        call: ip-message-services.deleteuserchannel
+        with:
+          ServiceSid: rest.ServiceSid
+          UserSid: rest.UserSid
+          ChannelSid: rest.ChannelSid
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: POST
+        name: updateuserchannel
+        description: updateuserchannel
+        call: ip-message-services.updateuserchannel
+        with:
+          ServiceSid: rest.ServiceSid
+          UserSid: rest.UserSid
+          ChannelSid: rest.ChannelSid
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/v2/services/{sid}
+      name: v2-services-sid
+      description: REST surface for v2-Services-Sid.
+      operations:
+      - method: GET
+        name: fetchservice
+        description: fetchservice
+        call: ip-message-services.fetchservice
+        with:
+          Sid: rest.Sid
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: DELETE
+        name: deleteservice
+        description: deleteservice
+        call: ip-message-services.deleteservice
+        with:
+          Sid: rest.Sid
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: POST
+        name: updateservice
+        description: updateservice
+        call: ip-message-services.updateservice
+        with:
+          Sid: rest.Sid
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+  - type: mcp
+    namespace: ip-message-services-mcp
+    port: 9090
+    transport: http
+    description: MCP adapter for Twilio - Ip_messaging — Services. One tool per consumed operation, routed inline through
+      this capability's consumes block.
+    tools:
+    - name: createservice
+      description: createservice
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: ip-message-services.createservice
+      with:
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: listservice
+      description: listservice
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: ip-message-services.listservice
+      with:
+        PageSize: tools.PageSize
+        Page: tools.Page
+        PageToken: tools.PageToken
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: listbinding
+      description: listbinding
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: ip-message-services.listbinding
+      with:
+        ServiceSid: tools.ServiceSid
+        BindingType: tools.BindingType
+        Identity: tools.Identity
+        PageSize: tools.PageSize
+        Page: tools.Page
+        PageToken: tools.PageToken
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: fetchbinding
+      description: fetchbinding
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: ip-message-services.fetchbinding
+      with:
+        ServiceSid: tools.ServiceSid
+        Sid: tools.Sid
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: deletebinding
+      description: deletebinding
+      hints:
+        readOnly: false
+        destructive: true
+        idempotent: true
+      call: ip-message-services.deletebinding
+      with:
+        ServiceSid: tools.ServiceSid
+        Sid: tools.Sid
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: createchannel
+      description: createchannel
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: ip-message-services.createchannel
+      with:
+        ServiceSid: tools.ServiceSid
+        X-Twilio-Webhook-Enabled: tools.X-Twilio-Webhook-Enabled
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: listchannel
+      description: listchannel
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: ip-message-services.listchannel
+      with:
+        ServiceSid: tools.ServiceSid
+        Type: tools.Type
+        PageSize: tools.PageSize
+        Page: tools.Page
+        PageToken: tools.PageToken
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: createinvite
+      description: createinvite
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: ip-message-services.createinvite
+      with:
+        ServiceSid: tools.ServiceSid
+        ChannelSid: tools.ChannelSid
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: listinvite
+      description: listinvite
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: ip-message-services.listinvite
+      with:
+        ServiceSid: tools.ServiceSid
+        ChannelSid: tools.ChannelSid
+        Identity: tools.Identity
+        PageSize: tools.PageSize
+        Page: tools.Page
+        PageToken: tools.PageToken
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: fetchinvite
+      description: fetchinvite
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: ip-message-services.fetchinvite
+      with:
+        ServiceSid: tools.ServiceSid
+        ChannelSid: tools.ChannelSid
+        Sid: tools.Sid
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: deleteinvite
+      description: deleteinvite
+      hints:
+        readOnly: false
+        destructive: true
+        idempotent: true
+      call: ip-message-services.deleteinvite
+      with:
+        ServiceSid: tools.ServiceSid
+        ChannelSid: tools.ChannelSid
+        Sid: tools.Sid
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: createmember
+      description: createmember
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: ip-message-services.createmember
+      with:
+        ServiceSid: tools.ServiceSid
+        ChannelSid: tools.ChannelSid
+        X-Twilio-Webhook-Enabled: tools.X-Twilio-Webhook-Enabled
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: listmember
+      description: listmember
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: ip-message-services.listmember
+      with:
+        ServiceSid: tools.ServiceSid
+        ChannelSid: tools.ChannelSid
+        Identity: tools.Identity
+        PageSize: tools.PageSize
+        Page: tools.Page
+        PageToken: tools.PageToken
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: fetchmember
+      description: fetchmember
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: ip-message-services.fetchmember
+      with:
+        ServiceSid: tools.ServiceSid
+        ChannelSid: tools.ChannelSid
+        Sid: tools.Sid
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: deletemember
+      description: deletemember
+      hints:
+        readOnly: false
+        destructive: true
+        idempotent: true
+      call: ip-message-services.deletemember
+      with:
+        ServiceSid: tools.ServiceSid
+        ChannelSid: tools.ChannelSid
+        Sid: tools.Sid
+        X-Twilio-Webhook-Enabled: tools.X-Twilio-Webhook-Enabled
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: updatemember
+      description: updatemember
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: ip-message-services.updatemember
+      with:
+        ServiceSid: tools.ServiceSid
+        ChannelSid: tools.ChannelSid
+        Sid: tools.Sid
+        X-Twilio-Webhook-Enabled: tools.X-Twilio-Webhook-Enabled
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: createmessage
+      description: createmessage
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: ip-message-services.createmessage
+      with:
+        ServiceSid: tools.ServiceSid
+        ChannelSid: tools.ChannelSid
+        X-Twilio-Webhook-Enabled: tools.X-Twilio-Webhook-Enabled
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: listmessage
+      description: listmessage
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: ip-message-services.listmessage
+      with:
+        ServiceSid: tools.ServiceSid
+        ChannelSid: tools.ChannelSid
+        Order: tools.Order
+        PageSize: tools.PageSize
+        Page: tools.Page
+        PageToken: tools.PageToken
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: fetchmessage
+      description: fetchmessage
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: ip-message-services.fetchmessage
+      with:
+        ServiceSid: tools.ServiceSid
+        ChannelSid: tools.ChannelSid
+        Sid: tools.Sid
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: deletemessage
+      description: deletemessage
+      hints:
+        readOnly: false
+        destructive: true
+        idempotent: true
+      call: ip-message-services.deletemessage
+      with:
+        ServiceSid: tools.ServiceSid
+        ChannelSid: tools.ChannelSid
+        Sid: tools.Sid
+        X-Twilio-Webhook-Enabled: tools.X-Twilio-Webhook-Enabled
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: updatemessage
+      description: updatemessage
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: ip-message-services.updatemessage
+      with:
+        ServiceSid: tools.ServiceSid
+        ChannelSid: tools.ChannelSid
+        Sid: tools.Sid
+        X-Twilio-Webhook-Enabled: tools.X-Twilio-Webhook-Enabled
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: listchannelwebhook
+      description: listchannelwebhook
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: ip-message-services.listchannelwebhook
+      with:
+        ServiceSid: tools.ServiceSid
+        ChannelSid: tools.ChannelSid
+        PageSize: tools.PageSize
+        Page: tools.Page
+        PageToken: tools.PageToken
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: createchannelwebhook
+      description: createchannelwebhook
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: ip-message-services.createchannelwebhook
+      with:
+        ServiceSid: tools.ServiceSid
+        ChannelSid: tools.ChannelSid
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: fetchchannelwebhook
+      description: fetchchannelwebhook
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: ip-message-services.fetchchannelwebhook
+      with:
+        ServiceSid: tools.ServiceSid
+        ChannelSid: tools.ChannelSid
+        Sid: tools.Sid
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: updatechannelwebhook
+      description: updatechannelwebhook
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: ip-message-services.updatechannelwebhook
+      with:
+        ServiceSid: tools.ServiceSid
+        ChannelSid: tools.ChannelSid
+        Sid: tools.Sid
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: deletechannelwebhook
+      description: deletechannelwebhook
+      hints:
+        readOnly: false
+        destructive: true
+        idempotent: true
+      call: ip-message-services.deletechannelwebhook
+      with:
+        ServiceSid: tools.ServiceSid
+        ChannelSid: tools.ChannelSid
+        Sid: tools.Sid
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: fetchchannel
+      description: fetchchannel
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: ip-message-services.fetchchannel
+      with:
+        ServiceSid: tools.ServiceSid
+        Sid: tools.Sid
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: deletechannel
+      description: deletechannel
+      hints:
+        readOnly: false
+        destructive: true
+        idempotent: true
+      call: ip-message-services.deletechannel
+      with:
+        ServiceSid: tools.ServiceSid
+        Sid: tools.Sid
+        X-Twilio-Webhook-Enabled: tools.X-Twilio-Webhook-Enabled
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: updatechannel
+      description: updatechannel
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: ip-message-services.updatechannel
+      with:
+        ServiceSid: tools.ServiceSid
+        Sid: tools.Sid
+        X-Twilio-Webhook-Enabled: tools.X-Twilio-Webhook-Enabled
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: createrole
+      description: createrole
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: ip-message-services.createrole
+      with:
+        ServiceSid: tools.ServiceSid
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: listrole
+      description: listrole
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: ip-message-services.listrole
+      with:
+        ServiceSid: tools.ServiceSid
+        PageSize: tools.PageSize
+        Page: tools.Page
+        PageToken: tools.PageToken
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: fetchrole
+      description: fetchrole
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: ip-message-services.fetchrole
+      with:
+        ServiceSid: tools.ServiceSid
+        Sid: tools.Sid
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: deleterole
+      description: deleterole
+      hints:
+        readOnly: false
+        destructive: true
+        idempotent: true
+      call: ip-message-services.deleterole
+      with:
+        ServiceSid: tools.ServiceSid
+        Sid: tools.Sid
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: updaterole
+      description: updaterole
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: ip-message-services.updaterole
+      with:
+        ServiceSid: tools.ServiceSid
+        Sid: tools.Sid
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: createuser
+      description: createuser
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: ip-message-services.createuser
+      with:
+        ServiceSid: tools.ServiceSid
+        X-Twilio-Webhook-Enabled: tools.X-Twilio-Webhook-Enabled
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: listuser
+      description: listuser
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: ip-message-services.listuser
+      with:
+        ServiceSid: tools.ServiceSid
+        PageSize: tools.PageSize
+        Page: tools.Page
+        PageToken: tools.PageToken
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: fetchuser
+      description: fetchuser
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: ip-message-services.fetchuser
+      with:
+        ServiceSid: tools.ServiceSid
+        Sid: tools.Sid
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: deleteuser
+      description: deleteuser
+      hints:
+        readOnly: false
+        destructive: true
+        idempotent: true
+      call: ip-message-services.deleteuser
+      with:
+        ServiceSid: tools.ServiceSid
+        Sid: tools.Sid
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: updateuser
+      description: updateuser
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: ip-message-services.updateuser
+      with:
+        ServiceSid: tools.ServiceSid
+        Sid: tools.Sid
+        X-Twilio-Webhook-Enabled: tools.X-Twilio-Webhook-Enabled
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: listuserbinding
+      description: listuserbinding
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: ip-message-services.listuserbinding
+      with:
+        ServiceSid: tools.ServiceSid
+        UserSid: tools.UserSid
+        BindingType: tools.BindingType
+        PageSize: tools.PageSize
+        Page: tools.Page
+        PageToken: tools.PageToken
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: fetchuserbinding
+      description: fetchuserbinding
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: ip-message-services.fetchuserbinding
+      with:
+        ServiceSid: tools.ServiceSid
+        UserSid: tools.UserSid
+        Sid: tools.Sid
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: deleteuserbinding
+      description: deleteuserbinding
+      hints:
+        readOnly: false
+        destructive: true
+        idempotent: true
+      call: ip-message-services.deleteuserbinding
+      with:
+        ServiceSid: tools.ServiceSid
+        UserSid: tools.UserSid
+        Sid: tools.Sid
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: listuserchannel
+      description: listuserchannel
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: ip-message-services.listuserchannel
+      with:
+        ServiceSid: tools.ServiceSid
+        UserSid: tools.UserSid
+        PageSize: tools.PageSize
+        Page: tools.Page
+        PageToken: tools.PageToken
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: fetchuserchannel
+      description: fetchuserchannel
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: ip-message-services.fetchuserchannel
+      with:
+        ServiceSid: tools.ServiceSid
+        UserSid: tools.UserSid
+        ChannelSid: tools.ChannelSid
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: deleteuserchannel
+      description: deleteuserchannel
+      hints:
+        readOnly: false
+        destructive: true
+        idempotent: true
+      call: ip-message-services.deleteuserchannel
+      with:
+        ServiceSid: tools.ServiceSid
+        UserSid: tools.UserSid
+        ChannelSid: tools.ChannelSid
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: updateuserchannel
+      description: updateuserchannel
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: ip-message-services.updateuserchannel
+      with:
+        ServiceSid: tools.ServiceSid
+        UserSid: tools.UserSid
+        ChannelSid: tools.ChannelSid
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: fetchservice
+      description: fetchservice
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: ip-message-services.fetchservice
+      with:
+        Sid: tools.Sid
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: deleteservice
+      description: deleteservice
+      hints:
+        readOnly: false
+        destructive: true
+        idempotent: true
+      call: ip-message-services.deleteservice
+      with:
+        Sid: tools.Sid
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: updateservice
+      description: updateservice
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: ip-message-services.updateservice
+      with:
+        Sid: tools.Sid
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.

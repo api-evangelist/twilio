@@ -1,0 +1,91 @@
+naftiko: 1.0.0-alpha2
+info:
+  label: Twilio SendGrid Email API — Stats
+  description: 'Twilio SendGrid Email API — Stats. 1 operations. Lead operation: Twilio Fetch Global Email Stats. Self-contained
+    Naftiko capability covering one Twilio business surface.'
+  tags:
+  - Twilio
+  - Stats
+  created: '2026-05-19'
+  modified: '2026-05-19'
+binds:
+- namespace: env
+  keys:
+    TWILIO_API_KEY: TWILIO_API_KEY
+capability:
+  consumes:
+  - type: http
+    namespace: sendgrid-stats
+    baseUri: https://api.sendgrid.com/v3
+    description: Twilio SendGrid Email API — Stats business capability. Self-contained, no shared references.
+    resources:
+    - name: stats
+      path: /stats
+      operations:
+      - name: fetchglobalstats
+        method: GET
+        description: Twilio Fetch Global Email Stats
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: start_date
+          in: query
+          type: string
+          description: Start date (YYYY-MM-DD)
+          required: true
+        - name: end_date
+          in: query
+          type: string
+          description: End date (YYYY-MM-DD)
+        - name: aggregated_by
+          in: query
+          type: string
+    authentication:
+      type: bearer
+      token: '{{env.TWILIO_API_KEY}}'
+  exposes:
+  - type: rest
+    namespace: sendgrid-stats-rest
+    port: 8080
+    description: REST adapter for Twilio SendGrid Email API — Stats. One Spectral-compliant resource per consumed operation,
+      prefixed with /v1.
+    resources:
+    - path: /v1/stats
+      name: stats
+      description: REST surface for stats.
+      operations:
+      - method: GET
+        name: fetchglobalstats
+        description: Twilio Fetch Global Email Stats
+        call: sendgrid-stats.fetchglobalstats
+        with:
+          start_date: rest.start_date
+          end_date: rest.end_date
+          aggregated_by: rest.aggregated_by
+        outputParameters:
+        - type: object
+          mapping: $.
+  - type: mcp
+    namespace: sendgrid-stats-mcp
+    port: 9090
+    transport: http
+    description: MCP adapter for Twilio SendGrid Email API — Stats. One tool per consumed operation, routed inline through
+      this capability's consumes block.
+    tools:
+    - name: twilio-fetch-global-email-stats
+      description: Twilio Fetch Global Email Stats
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: sendgrid-stats.fetchglobalstats
+      with:
+        start_date: tools.start_date
+        end_date: tools.end_date
+        aggregated_by: tools.aggregated_by
+      outputParameters:
+      - type: object
+        mapping: $.

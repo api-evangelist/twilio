@@ -1,0 +1,125 @@
+naftiko: 1.0.0-alpha2
+info:
+  label: Twilio - Frontline — Users
+  description: 'Twilio - Frontline — Users. 2 operations. Lead operation: Users. Self-contained Naftiko capability covering
+    one Twilio business surface.'
+  tags:
+  - Twilio
+  - Users
+  created: '2026-05-19'
+  modified: '2026-05-19'
+binds:
+- namespace: env
+  keys:
+    TWILIO_API_KEY: TWILIO_API_KEY
+capability:
+  consumes:
+  - type: http
+    namespace: frontline-users
+    baseUri: https://frontline-api.twilio.com
+    description: Twilio - Frontline — Users business capability. Self-contained, no shared references.
+    resources:
+    - name: v1-Users-Sid
+      path: /v1/Users/{Sid}
+      operations:
+      - name: fetchuser
+        method: GET
+        description: Fetch a frontline user
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: Sid
+          in: path
+          type: string
+          description: The SID of the User resource to fetch. This value can be either the `sid` or the `identity` of the
+            User resource to fetch.
+          required: true
+      - name: updateuser
+        method: POST
+        description: Update an existing frontline user
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: Sid
+          in: path
+          type: string
+          description: The SID of the User resource to update. This value can be either the `sid` or the `identity` of the
+            User resource to update.
+          required: true
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: false
+    authentication:
+      type: basic
+      username: '{{env.TWILIO_USER}}'
+      password: '{{env.TWILIO_PASS}}'
+  exposes:
+  - type: rest
+    namespace: frontline-users-rest
+    port: 8080
+    description: REST adapter for Twilio - Frontline — Users. One Spectral-compliant resource per consumed operation, prefixed
+      with /v1.
+    resources:
+    - path: /v1/v1/users/{sid}
+      name: v1-users-sid
+      description: REST surface for v1-Users-Sid.
+      operations:
+      - method: GET
+        name: fetchuser
+        description: Fetch a frontline user
+        call: frontline-users.fetchuser
+        with:
+          Sid: rest.Sid
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: POST
+        name: updateuser
+        description: Update an existing frontline user
+        call: frontline-users.updateuser
+        with:
+          Sid: rest.Sid
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+  - type: mcp
+    namespace: frontline-users-mcp
+    port: 9090
+    transport: http
+    description: MCP adapter for Twilio - Frontline — Users. One tool per consumed operation, routed inline through this capability's
+      consumes block.
+    tools:
+    - name: fetch-frontline-user
+      description: Fetch a frontline user
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: frontline-users.fetchuser
+      with:
+        Sid: tools.Sid
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: update-existing-frontline-user
+      description: Update an existing frontline user
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: frontline-users.updateuser
+      with:
+        Sid: tools.Sid
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.

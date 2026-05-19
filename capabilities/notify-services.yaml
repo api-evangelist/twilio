@@ -1,0 +1,525 @@
+naftiko: 1.0.0-alpha2
+info:
+  label: Twilio - Notify — Services
+  description: 'Twilio - Notify — Services. 10 operations. Lead operation: Services. Self-contained Naftiko capability covering
+    one Twilio business surface.'
+  tags:
+  - Twilio
+  - Services
+  created: '2026-05-19'
+  modified: '2026-05-19'
+binds:
+- namespace: env
+  keys:
+    TWILIO_API_KEY: TWILIO_API_KEY
+capability:
+  consumes:
+  - type: http
+    namespace: notify-services
+    baseUri: https://notify.twilio.com
+    description: Twilio - Notify — Services business capability. Self-contained, no shared references.
+    resources:
+    - name: v1-Services
+      path: /v1/Services
+      operations:
+      - name: createservice
+        method: POST
+        description: ''
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: false
+      - name: listservice
+        method: GET
+        description: ''
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: FriendlyName
+          in: query
+          type: string
+          description: The string that identifies the Service resources to read.
+        - name: PageSize
+          in: query
+          type: integer
+          description: How many resources to return in each list page. The default is 50, and the maximum is 1000.
+        - name: Page
+          in: query
+          type: integer
+          description: The page index. This value is simply for client state.
+        - name: PageToken
+          in: query
+          type: string
+          description: The page token. This is provided by the API.
+    - name: v1-Services-ServiceSid-Bindings
+      path: /v1/Services/{ServiceSid}/Bindings
+      operations:
+      - name: createbinding
+        method: POST
+        description: ''
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: ServiceSid
+          in: path
+          type: string
+          description: The SID of the [Service](https://www.twilio.com/docs/notify/api/service-resource) to create the resource
+            under.
+          required: true
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: false
+      - name: listbinding
+        method: GET
+        description: ''
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: ServiceSid
+          in: path
+          type: string
+          description: The SID of the [Service](https://www.twilio.com/docs/notify/api/service-resource) to read the resource
+            from.
+          required: true
+        - name: StartDate
+          in: query
+          type: string
+          description: Only include usage that has occurred on or after this date. Specify the date in GMT and format as `YYYY-MM-DD`.
+        - name: EndDate
+          in: query
+          type: string
+          description: Only include usage that occurred on or before this date. Specify the date in GMT and format as `YYYY-MM-DD`.
+        - name: Identity
+          in: query
+          type: array
+          description: The [User](https://www.twilio.com/docs/chat/rest/user-resource)'s `identity` value of the resources
+            to read.
+        - name: Tag
+          in: query
+          type: array
+          description: 'Only list Bindings that have all of the specified Tags. The following implicit tags are available:
+            `all`, `apn`, `fcm`, `gcm`, `sms`, `facebook-messenger`. Up t'
+        - name: PageSize
+          in: query
+          type: integer
+          description: How many resources to return in each list page. The default is 50, and the maximum is 1000.
+        - name: Page
+          in: query
+          type: integer
+          description: The page index. This value is simply for client state.
+        - name: PageToken
+          in: query
+          type: string
+          description: The page token. This is provided by the API.
+    - name: v1-Services-ServiceSid-Bindings-Sid
+      path: /v1/Services/{ServiceSid}/Bindings/{Sid}
+      operations:
+      - name: fetchbinding
+        method: GET
+        description: ''
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: ServiceSid
+          in: path
+          type: string
+          description: The SID of the [Service](https://www.twilio.com/docs/notify/api/service-resource) to fetch the resource
+            from.
+          required: true
+        - name: Sid
+          in: path
+          type: string
+          description: The Twilio-provided string that uniquely identifies the Binding resource to fetch.
+          required: true
+      - name: deletebinding
+        method: DELETE
+        description: ''
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: ServiceSid
+          in: path
+          type: string
+          description: The SID of the [Service](https://www.twilio.com/docs/notify/api/service-resource) to delete the resource
+            from.
+          required: true
+        - name: Sid
+          in: path
+          type: string
+          description: The Twilio-provided string that uniquely identifies the Binding resource to delete.
+          required: true
+    - name: v1-Services-ServiceSid-Notifications
+      path: /v1/Services/{ServiceSid}/Notifications
+      operations:
+      - name: createnotification
+        method: POST
+        description: ''
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: ServiceSid
+          in: path
+          type: string
+          description: The SID of the [Service](https://www.twilio.com/docs/notify/api/service-resource) to create the resource
+            under.
+          required: true
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: false
+    - name: v1-Services-Sid
+      path: /v1/Services/{Sid}
+      operations:
+      - name: deleteservice
+        method: DELETE
+        description: ''
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: Sid
+          in: path
+          type: string
+          description: The Twilio-provided string that uniquely identifies the Service resource to delete.
+          required: true
+      - name: fetchservice
+        method: GET
+        description: ''
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: Sid
+          in: path
+          type: string
+          description: The Twilio-provided string that uniquely identifies the Service resource to fetch.
+          required: true
+      - name: updateservice
+        method: POST
+        description: ''
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: Sid
+          in: path
+          type: string
+          description: The Twilio-provided string that uniquely identifies the Service resource to update.
+          required: true
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: false
+    authentication:
+      type: basic
+      username: '{{env.TWILIO_USER}}'
+      password: '{{env.TWILIO_PASS}}'
+  exposes:
+  - type: rest
+    namespace: notify-services-rest
+    port: 8080
+    description: REST adapter for Twilio - Notify — Services. One Spectral-compliant resource per consumed operation, prefixed
+      with /v1.
+    resources:
+    - path: /v1/v1/services
+      name: v1-services
+      description: REST surface for v1-Services.
+      operations:
+      - method: POST
+        name: createservice
+        description: createservice
+        call: notify-services.createservice
+        with:
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: GET
+        name: listservice
+        description: listservice
+        call: notify-services.listservice
+        with:
+          FriendlyName: rest.FriendlyName
+          PageSize: rest.PageSize
+          Page: rest.Page
+          PageToken: rest.PageToken
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/v1/services/{servicesid}/bindings
+      name: v1-services-servicesid-bindings
+      description: REST surface for v1-Services-ServiceSid-Bindings.
+      operations:
+      - method: POST
+        name: createbinding
+        description: createbinding
+        call: notify-services.createbinding
+        with:
+          ServiceSid: rest.ServiceSid
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: GET
+        name: listbinding
+        description: listbinding
+        call: notify-services.listbinding
+        with:
+          ServiceSid: rest.ServiceSid
+          StartDate: rest.StartDate
+          EndDate: rest.EndDate
+          Identity: rest.Identity
+          Tag: rest.Tag
+          PageSize: rest.PageSize
+          Page: rest.Page
+          PageToken: rest.PageToken
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/v1/services/{servicesid}/bindings/{sid}
+      name: v1-services-servicesid-bindings-sid
+      description: REST surface for v1-Services-ServiceSid-Bindings-Sid.
+      operations:
+      - method: GET
+        name: fetchbinding
+        description: fetchbinding
+        call: notify-services.fetchbinding
+        with:
+          ServiceSid: rest.ServiceSid
+          Sid: rest.Sid
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: DELETE
+        name: deletebinding
+        description: deletebinding
+        call: notify-services.deletebinding
+        with:
+          ServiceSid: rest.ServiceSid
+          Sid: rest.Sid
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/v1/services/{servicesid}/notifications
+      name: v1-services-servicesid-notifications
+      description: REST surface for v1-Services-ServiceSid-Notifications.
+      operations:
+      - method: POST
+        name: createnotification
+        description: createnotification
+        call: notify-services.createnotification
+        with:
+          ServiceSid: rest.ServiceSid
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/v1/services/{sid}
+      name: v1-services-sid
+      description: REST surface for v1-Services-Sid.
+      operations:
+      - method: DELETE
+        name: deleteservice
+        description: deleteservice
+        call: notify-services.deleteservice
+        with:
+          Sid: rest.Sid
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: GET
+        name: fetchservice
+        description: fetchservice
+        call: notify-services.fetchservice
+        with:
+          Sid: rest.Sid
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: POST
+        name: updateservice
+        description: updateservice
+        call: notify-services.updateservice
+        with:
+          Sid: rest.Sid
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+  - type: mcp
+    namespace: notify-services-mcp
+    port: 9090
+    transport: http
+    description: MCP adapter for Twilio - Notify — Services. One tool per consumed operation, routed inline through this capability's
+      consumes block.
+    tools:
+    - name: createservice
+      description: createservice
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: notify-services.createservice
+      with:
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: listservice
+      description: listservice
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: notify-services.listservice
+      with:
+        FriendlyName: tools.FriendlyName
+        PageSize: tools.PageSize
+        Page: tools.Page
+        PageToken: tools.PageToken
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: createbinding
+      description: createbinding
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: notify-services.createbinding
+      with:
+        ServiceSid: tools.ServiceSid
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: listbinding
+      description: listbinding
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: notify-services.listbinding
+      with:
+        ServiceSid: tools.ServiceSid
+        StartDate: tools.StartDate
+        EndDate: tools.EndDate
+        Identity: tools.Identity
+        Tag: tools.Tag
+        PageSize: tools.PageSize
+        Page: tools.Page
+        PageToken: tools.PageToken
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: fetchbinding
+      description: fetchbinding
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: notify-services.fetchbinding
+      with:
+        ServiceSid: tools.ServiceSid
+        Sid: tools.Sid
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: deletebinding
+      description: deletebinding
+      hints:
+        readOnly: false
+        destructive: true
+        idempotent: true
+      call: notify-services.deletebinding
+      with:
+        ServiceSid: tools.ServiceSid
+        Sid: tools.Sid
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: createnotification
+      description: createnotification
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: notify-services.createnotification
+      with:
+        ServiceSid: tools.ServiceSid
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: deleteservice
+      description: deleteservice
+      hints:
+        readOnly: false
+        destructive: true
+        idempotent: true
+      call: notify-services.deleteservice
+      with:
+        Sid: tools.Sid
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: fetchservice
+      description: fetchservice
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: notify-services.fetchservice
+      with:
+        Sid: tools.Sid
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: updateservice
+      description: updateservice
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: notify-services.updateservice
+      with:
+        Sid: tools.Sid
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.

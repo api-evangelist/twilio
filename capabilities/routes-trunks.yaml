@@ -1,0 +1,123 @@
+naftiko: 1.0.0-alpha2
+info:
+  label: Twilio - Routes — Trunks
+  description: 'Twilio - Routes — Trunks. 2 operations. Lead operation: Trunks. Self-contained Naftiko capability covering
+    one Twilio business surface.'
+  tags:
+  - Twilio
+  - Trunks
+  created: '2026-05-19'
+  modified: '2026-05-19'
+binds:
+- namespace: env
+  keys:
+    TWILIO_API_KEY: TWILIO_API_KEY
+capability:
+  consumes:
+  - type: http
+    namespace: routes-trunks
+    baseUri: https://routes.twilio.com
+    description: Twilio - Routes — Trunks business capability. Self-contained, no shared references.
+    resources:
+    - name: v2-Trunks-SipTrunkDomain
+      path: /v2/Trunks/{SipTrunkDomain}
+      operations:
+      - name: updatetrunks
+        method: POST
+        description: Assign an Inbound Processing Region to a SIP Trunk
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: SipTrunkDomain
+          in: path
+          type: string
+          description: The absolute URL of the SIP Trunk
+          required: true
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: false
+      - name: fetchtrunks
+        method: GET
+        description: Fetch the Inbound Processing Region assigned to a SIP Trunk.
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: SipTrunkDomain
+          in: path
+          type: string
+          description: The absolute URL of the SIP Trunk
+          required: true
+    authentication:
+      type: basic
+      username: '{{env.TWILIO_USER}}'
+      password: '{{env.TWILIO_PASS}}'
+  exposes:
+  - type: rest
+    namespace: routes-trunks-rest
+    port: 8080
+    description: REST adapter for Twilio - Routes — Trunks. One Spectral-compliant resource per consumed operation, prefixed
+      with /v1.
+    resources:
+    - path: /v1/v2/trunks/{siptrunkdomain}
+      name: v2-trunks-siptrunkdomain
+      description: REST surface for v2-Trunks-SipTrunkDomain.
+      operations:
+      - method: POST
+        name: updatetrunks
+        description: Assign an Inbound Processing Region to a SIP Trunk
+        call: routes-trunks.updatetrunks
+        with:
+          SipTrunkDomain: rest.SipTrunkDomain
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: GET
+        name: fetchtrunks
+        description: Fetch the Inbound Processing Region assigned to a SIP Trunk.
+        call: routes-trunks.fetchtrunks
+        with:
+          SipTrunkDomain: rest.SipTrunkDomain
+        outputParameters:
+        - type: object
+          mapping: $.
+  - type: mcp
+    namespace: routes-trunks-mcp
+    port: 9090
+    transport: http
+    description: MCP adapter for Twilio - Routes — Trunks. One tool per consumed operation, routed inline through this capability's
+      consumes block.
+    tools:
+    - name: assign-inbound-processing-region-sip
+      description: Assign an Inbound Processing Region to a SIP Trunk
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: routes-trunks.updatetrunks
+      with:
+        SipTrunkDomain: tools.SipTrunkDomain
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: fetch-inbound-processing-region-assigned
+      description: Fetch the Inbound Processing Region assigned to a SIP Trunk.
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: routes-trunks.fetchtrunks
+      with:
+        SipTrunkDomain: tools.SipTrunkDomain
+      outputParameters:
+      - type: object
+        mapping: $.

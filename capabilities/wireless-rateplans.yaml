@@ -1,0 +1,246 @@
+naftiko: 1.0.0-alpha2
+info:
+  label: Twilio - Wireless — RatePlans
+  description: 'Twilio - Wireless — RatePlans. 5 operations. Lead operation: RatePlans. Self-contained Naftiko capability
+    covering one Twilio business surface.'
+  tags:
+  - Twilio
+  - RatePlans
+  created: '2026-05-19'
+  modified: '2026-05-19'
+binds:
+- namespace: env
+  keys:
+    TWILIO_API_KEY: TWILIO_API_KEY
+capability:
+  consumes:
+  - type: http
+    namespace: wireless-rateplans
+    baseUri: https://wireless.twilio.com
+    description: Twilio - Wireless — RatePlans business capability. Self-contained, no shared references.
+    resources:
+    - name: v1-RatePlans
+      path: /v1/RatePlans
+      operations:
+      - name: listrateplan
+        method: GET
+        description: ''
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: PageSize
+          in: query
+          type: integer
+          description: How many resources to return in each list page. The default is 50, and the maximum is 1000.
+        - name: Page
+          in: query
+          type: integer
+          description: The page index. This value is simply for client state.
+        - name: PageToken
+          in: query
+          type: string
+          description: The page token. This is provided by the API.
+      - name: createrateplan
+        method: POST
+        description: ''
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: false
+    - name: v1-RatePlans-Sid
+      path: /v1/RatePlans/{Sid}
+      operations:
+      - name: fetchrateplan
+        method: GET
+        description: ''
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: Sid
+          in: path
+          type: string
+          description: The SID of the RatePlan resource to fetch.
+          required: true
+      - name: updaterateplan
+        method: POST
+        description: ''
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: Sid
+          in: path
+          type: string
+          description: The SID of the RatePlan resource to update.
+          required: true
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: false
+      - name: deleterateplan
+        method: DELETE
+        description: ''
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: Sid
+          in: path
+          type: string
+          description: The SID of the RatePlan resource to delete.
+          required: true
+    authentication:
+      type: basic
+      username: '{{env.TWILIO_USER}}'
+      password: '{{env.TWILIO_PASS}}'
+  exposes:
+  - type: rest
+    namespace: wireless-rateplans-rest
+    port: 8080
+    description: REST adapter for Twilio - Wireless — RatePlans. One Spectral-compliant resource per consumed operation, prefixed
+      with /v1.
+    resources:
+    - path: /v1/v1/rateplans
+      name: v1-rateplans
+      description: REST surface for v1-RatePlans.
+      operations:
+      - method: GET
+        name: listrateplan
+        description: listrateplan
+        call: wireless-rateplans.listrateplan
+        with:
+          PageSize: rest.PageSize
+          Page: rest.Page
+          PageToken: rest.PageToken
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: POST
+        name: createrateplan
+        description: createrateplan
+        call: wireless-rateplans.createrateplan
+        with:
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/v1/rateplans/{sid}
+      name: v1-rateplans-sid
+      description: REST surface for v1-RatePlans-Sid.
+      operations:
+      - method: GET
+        name: fetchrateplan
+        description: fetchrateplan
+        call: wireless-rateplans.fetchrateplan
+        with:
+          Sid: rest.Sid
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: POST
+        name: updaterateplan
+        description: updaterateplan
+        call: wireless-rateplans.updaterateplan
+        with:
+          Sid: rest.Sid
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: DELETE
+        name: deleterateplan
+        description: deleterateplan
+        call: wireless-rateplans.deleterateplan
+        with:
+          Sid: rest.Sid
+        outputParameters:
+        - type: object
+          mapping: $.
+  - type: mcp
+    namespace: wireless-rateplans-mcp
+    port: 9090
+    transport: http
+    description: MCP adapter for Twilio - Wireless — RatePlans. One tool per consumed operation, routed inline through this
+      capability's consumes block.
+    tools:
+    - name: listrateplan
+      description: listrateplan
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: wireless-rateplans.listrateplan
+      with:
+        PageSize: tools.PageSize
+        Page: tools.Page
+        PageToken: tools.PageToken
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: createrateplan
+      description: createrateplan
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: wireless-rateplans.createrateplan
+      with:
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: fetchrateplan
+      description: fetchrateplan
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: wireless-rateplans.fetchrateplan
+      with:
+        Sid: tools.Sid
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: updaterateplan
+      description: updaterateplan
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: wireless-rateplans.updaterateplan
+      with:
+        Sid: tools.Sid
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: deleterateplan
+      description: deleterateplan
+      hints:
+        readOnly: false
+        destructive: true
+        idempotent: true
+      call: wireless-rateplans.deleterateplan
+      with:
+        Sid: tools.Sid
+      outputParameters:
+      - type: object
+        mapping: $.

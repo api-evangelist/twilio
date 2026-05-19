@@ -1,0 +1,631 @@
+naftiko: 1.0.0-alpha2
+info:
+  label: Twilio - Insights — Voice
+  description: 'Twilio - Insights — Voice. 9 operations. Lead operation: Voice. Self-contained Naftiko capability covering
+    one Twilio business surface.'
+  tags:
+  - Twilio
+  - Voice
+  created: '2026-05-19'
+  modified: '2026-05-19'
+binds:
+- namespace: env
+  keys:
+    TWILIO_API_KEY: TWILIO_API_KEY
+capability:
+  consumes:
+  - type: http
+    namespace: insights-voice
+    baseUri: https://insights.twilio.com
+    description: Twilio - Insights — Voice business capability. Self-contained, no shared references.
+    resources:
+    - name: v1-Voice-Settings
+      path: /v1/Voice/Settings
+      operations:
+      - name: fetchaccountsettings
+        method: GET
+        description: Get the Voice Insights Settings.
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: SubaccountSid
+          in: query
+          type: string
+          description: The unique SID identifier of the Subaccount.
+      - name: updateaccountsettings
+        method: POST
+        description: Update a specific Voice Insights Setting.
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: false
+    - name: v1-Voice-Summaries
+      path: /v1/Voice/Summaries
+      operations:
+      - name: listcallsummaries
+        method: GET
+        description: Get a list of Call Summaries.
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: From
+          in: query
+          type: string
+          description: A calling party. Could be an E.164 number, a SIP URI, or a Twilio Client registered name.
+        - name: To
+          in: query
+          type: string
+          description: A called party. Could be an E.164 number, a SIP URI, or a Twilio Client registered name.
+        - name: FromCarrier
+          in: query
+          type: string
+          description: An origination carrier.
+        - name: ToCarrier
+          in: query
+          type: string
+          description: A destination carrier.
+        - name: FromCountryCode
+          in: query
+          type: string
+          description: A source country code based on phone number in From.
+        - name: ToCountryCode
+          in: query
+          type: string
+          description: A destination country code. Based on phone number in To.
+        - name: Branded
+          in: query
+          type: boolean
+          description: A boolean flag indicating whether or not the calls were branded using Twilio Branded Calls.
+        - name: VerifiedCaller
+          in: query
+          type: boolean
+          description: A boolean flag indicating whether or not the caller was verified using SHAKEN/STIR.
+        - name: HasTag
+          in: query
+          type: boolean
+          description: A boolean flag indicating the presence of one or more [Voice Insights Call Tags](https://www.twilio.com/docs/voice/voice-insights/api/call/details-call-tags).
+        - name: StartTime
+          in: query
+          type: string
+          description: A Start time of the calls. xm (x minutes), xh (x hours), xd (x days), 1w, 30m, 3d, 4w or datetime-ISO.
+            Defaults to 4h.
+        - name: EndTime
+          in: query
+          type: string
+          description: An End Time of the calls. xm (x minutes), xh (x hours), xd (x days), 1w, 30m, 3d, 4w or datetime-ISO.
+            Defaults to 0m.
+        - name: CallType
+          in: query
+          type: string
+          description: A Call Type of the calls. One of `carrier`, `sip`, `trunking` or `client`.
+        - name: CallState
+          in: query
+          type: string
+          description: A Call State of the calls. One of `ringing`, `completed`, `busy`, `fail`, `noanswer`, `canceled`, `answered`,
+            `undialed`.
+        - name: Direction
+          in: query
+          type: string
+          description: A Direction of the calls. One of `outbound_api`, `outbound_dial`, `inbound`, `trunking_originating`,
+            `trunking_terminating`.
+        - name: ProcessingState
+          in: query
+          type: string
+          description: A Processing State of the Call Summaries. One of `completed`, `partial` or `all`.
+        - name: SortBy
+          in: query
+          type: string
+          description: A Sort By criterion for the returned list of Call Summaries. One of `start_time` or `end_time`.
+        - name: Subaccount
+          in: query
+          type: string
+          description: A unique SID identifier of a Subaccount.
+        - name: AbnormalSession
+          in: query
+          type: boolean
+          description: A boolean flag indicating an abnormal session where the last SIP response was not 200 OK.
+        - name: AnsweredBy
+          in: query
+          type: string
+          description: An Answered By value for the calls based on `Answering Machine Detection (AMD)`. One of `unknown`,
+            `machine_start`, `machine_end_beep`, `machine_end_silence`, `
+        - name: AnsweredByAnnotation
+          in: query
+          type: string
+          description: Either machine or human.
+        - name: ConnectivityIssueAnnotation
+          in: query
+          type: string
+          description: A Connectivity Issue with the calls. One of `no_connectivity_issue`, `invalid_number`, `caller_id`,
+            `dropped_call`, or `number_reachability`.
+        - name: QualityIssueAnnotation
+          in: query
+          type: string
+          description: A subjective Quality Issue with the calls. One of `no_quality_issue`, `low_volume`, `choppy_robotic`,
+            `echo`, `dtmf`, `latency`, `owa`, `static_noise`.
+        - name: SpamAnnotation
+          in: query
+          type: boolean
+          description: A boolean flag indicating spam calls.
+        - name: CallScoreAnnotation
+          in: query
+          type: string
+          description: 'A Call Score of the calls. Use a range of 1-5 to indicate the call experience score, with the following
+            mapping as a reference for the rated call [5: Excellent,'
+        - name: PageSize
+          in: query
+          type: integer
+          description: How many resources to return in each list page. The default is 50, and the maximum is 1000.
+        - name: Page
+          in: query
+          type: integer
+          description: The page index. This value is simply for client state.
+        - name: PageToken
+          in: query
+          type: string
+          description: The page token. This is provided by the API.
+    - name: v1-Voice-CallSid-Annotation
+      path: /v1/Voice/{CallSid}/Annotation
+      operations:
+      - name: updateannotation
+        method: POST
+        description: Update an Annotation for a specific Call.
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: CallSid
+          in: path
+          type: string
+          description: The unique string that Twilio created to identify this Call resource. It always starts with a CA.
+          required: true
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: false
+      - name: fetchannotation
+        method: GET
+        description: Get the Annotation for a specific Call.
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: CallSid
+          in: path
+          type: string
+          description: The unique SID identifier of the Call.
+          required: true
+    - name: v1-Voice-CallSid-Events
+      path: /v1/Voice/{CallSid}/Events
+      operations:
+      - name: listevent
+        method: GET
+        description: Get a list of Call Insight Events for a Call.
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: CallSid
+          in: path
+          type: string
+          description: The unique SID identifier of the Call.
+          required: true
+        - name: Edge
+          in: query
+          type: string
+          description: The Edge of this Event. One of `unknown_edge`, `carrier_edge`, `sip_edge`, `sdk_edge` or `client_edge`.
+        - name: PageSize
+          in: query
+          type: integer
+          description: How many resources to return in each list page. The default is 50, and the maximum is 1000.
+        - name: Page
+          in: query
+          type: integer
+          description: The page index. This value is simply for client state.
+        - name: PageToken
+          in: query
+          type: string
+          description: The page token. This is provided by the API.
+    - name: v1-Voice-CallSid-Metrics
+      path: /v1/Voice/{CallSid}/Metrics
+      operations:
+      - name: listmetric
+        method: GET
+        description: Get a list of Call Metrics for a Call.
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: CallSid
+          in: path
+          type: string
+          description: The unique SID identifier of the Call.
+          required: true
+        - name: Edge
+          in: query
+          type: string
+          description: The Edge of this Metric. One of `unknown_edge`, `carrier_edge`, `sip_edge`, `sdk_edge` or `client_edge`.
+        - name: Direction
+          in: query
+          type: string
+          description: The Direction of this Metric. One of `unknown`, `inbound`, `outbound` or `both`.
+        - name: PageSize
+          in: query
+          type: integer
+          description: How many resources to return in each list page. The default is 50, and the maximum is 1000.
+        - name: Page
+          in: query
+          type: integer
+          description: The page index. This value is simply for client state.
+        - name: PageToken
+          in: query
+          type: string
+          description: The page token. This is provided by the API.
+    - name: v1-Voice-CallSid-Summary
+      path: /v1/Voice/{CallSid}/Summary
+      operations:
+      - name: fetchsummary
+        method: GET
+        description: Get a specific Call Summary.
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: CallSid
+          in: path
+          type: string
+          description: The unique SID identifier of the Call.
+          required: true
+        - name: ProcessingState
+          in: query
+          type: string
+          description: The Processing State of this Call Summary. One of `complete`, `partial` or `all`.
+    - name: v1-Voice-Sid
+      path: /v1/Voice/{Sid}
+      operations:
+      - name: fetchcall
+        method: GET
+        description: ''
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: Sid
+          in: path
+          type: string
+          required: true
+    authentication:
+      type: basic
+      username: '{{env.TWILIO_USER}}'
+      password: '{{env.TWILIO_PASS}}'
+  exposes:
+  - type: rest
+    namespace: insights-voice-rest
+    port: 8080
+    description: REST adapter for Twilio - Insights — Voice. One Spectral-compliant resource per consumed operation, prefixed
+      with /v1.
+    resources:
+    - path: /v1/v1/voice/settings
+      name: v1-voice-settings
+      description: REST surface for v1-Voice-Settings.
+      operations:
+      - method: GET
+        name: fetchaccountsettings
+        description: Get the Voice Insights Settings.
+        call: insights-voice.fetchaccountsettings
+        with:
+          SubaccountSid: rest.SubaccountSid
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: POST
+        name: updateaccountsettings
+        description: Update a specific Voice Insights Setting.
+        call: insights-voice.updateaccountsettings
+        with:
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/v1/voice/summaries
+      name: v1-voice-summaries
+      description: REST surface for v1-Voice-Summaries.
+      operations:
+      - method: GET
+        name: listcallsummaries
+        description: Get a list of Call Summaries.
+        call: insights-voice.listcallsummaries
+        with:
+          From: rest.From
+          To: rest.To
+          FromCarrier: rest.FromCarrier
+          ToCarrier: rest.ToCarrier
+          FromCountryCode: rest.FromCountryCode
+          ToCountryCode: rest.ToCountryCode
+          Branded: rest.Branded
+          VerifiedCaller: rest.VerifiedCaller
+          HasTag: rest.HasTag
+          StartTime: rest.StartTime
+          EndTime: rest.EndTime
+          CallType: rest.CallType
+          CallState: rest.CallState
+          Direction: rest.Direction
+          ProcessingState: rest.ProcessingState
+          SortBy: rest.SortBy
+          Subaccount: rest.Subaccount
+          AbnormalSession: rest.AbnormalSession
+          AnsweredBy: rest.AnsweredBy
+          AnsweredByAnnotation: rest.AnsweredByAnnotation
+          ConnectivityIssueAnnotation: rest.ConnectivityIssueAnnotation
+          QualityIssueAnnotation: rest.QualityIssueAnnotation
+          SpamAnnotation: rest.SpamAnnotation
+          CallScoreAnnotation: rest.CallScoreAnnotation
+          PageSize: rest.PageSize
+          Page: rest.Page
+          PageToken: rest.PageToken
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/v1/voice/{callsid}/annotation
+      name: v1-voice-callsid-annotation
+      description: REST surface for v1-Voice-CallSid-Annotation.
+      operations:
+      - method: POST
+        name: updateannotation
+        description: Update an Annotation for a specific Call.
+        call: insights-voice.updateannotation
+        with:
+          CallSid: rest.CallSid
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: GET
+        name: fetchannotation
+        description: Get the Annotation for a specific Call.
+        call: insights-voice.fetchannotation
+        with:
+          CallSid: rest.CallSid
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/v1/voice/{callsid}/events
+      name: v1-voice-callsid-events
+      description: REST surface for v1-Voice-CallSid-Events.
+      operations:
+      - method: GET
+        name: listevent
+        description: Get a list of Call Insight Events for a Call.
+        call: insights-voice.listevent
+        with:
+          CallSid: rest.CallSid
+          Edge: rest.Edge
+          PageSize: rest.PageSize
+          Page: rest.Page
+          PageToken: rest.PageToken
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/v1/voice/{callsid}/metrics
+      name: v1-voice-callsid-metrics
+      description: REST surface for v1-Voice-CallSid-Metrics.
+      operations:
+      - method: GET
+        name: listmetric
+        description: Get a list of Call Metrics for a Call.
+        call: insights-voice.listmetric
+        with:
+          CallSid: rest.CallSid
+          Edge: rest.Edge
+          Direction: rest.Direction
+          PageSize: rest.PageSize
+          Page: rest.Page
+          PageToken: rest.PageToken
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/v1/voice/{callsid}/summary
+      name: v1-voice-callsid-summary
+      description: REST surface for v1-Voice-CallSid-Summary.
+      operations:
+      - method: GET
+        name: fetchsummary
+        description: Get a specific Call Summary.
+        call: insights-voice.fetchsummary
+        with:
+          CallSid: rest.CallSid
+          ProcessingState: rest.ProcessingState
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/v1/voice/{sid}
+      name: v1-voice-sid
+      description: REST surface for v1-Voice-Sid.
+      operations:
+      - method: GET
+        name: fetchcall
+        description: fetchcall
+        call: insights-voice.fetchcall
+        with:
+          Sid: rest.Sid
+        outputParameters:
+        - type: object
+          mapping: $.
+  - type: mcp
+    namespace: insights-voice-mcp
+    port: 9090
+    transport: http
+    description: MCP adapter for Twilio - Insights — Voice. One tool per consumed operation, routed inline through this capability's
+      consumes block.
+    tools:
+    - name: get-voice-insights-settings
+      description: Get the Voice Insights Settings.
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: insights-voice.fetchaccountsettings
+      with:
+        SubaccountSid: tools.SubaccountSid
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: update-specific-voice-insights-setting
+      description: Update a specific Voice Insights Setting.
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: insights-voice.updateaccountsettings
+      with:
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: get-list-call-summaries
+      description: Get a list of Call Summaries.
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: insights-voice.listcallsummaries
+      with:
+        From: tools.From
+        To: tools.To
+        FromCarrier: tools.FromCarrier
+        ToCarrier: tools.ToCarrier
+        FromCountryCode: tools.FromCountryCode
+        ToCountryCode: tools.ToCountryCode
+        Branded: tools.Branded
+        VerifiedCaller: tools.VerifiedCaller
+        HasTag: tools.HasTag
+        StartTime: tools.StartTime
+        EndTime: tools.EndTime
+        CallType: tools.CallType
+        CallState: tools.CallState
+        Direction: tools.Direction
+        ProcessingState: tools.ProcessingState
+        SortBy: tools.SortBy
+        Subaccount: tools.Subaccount
+        AbnormalSession: tools.AbnormalSession
+        AnsweredBy: tools.AnsweredBy
+        AnsweredByAnnotation: tools.AnsweredByAnnotation
+        ConnectivityIssueAnnotation: tools.ConnectivityIssueAnnotation
+        QualityIssueAnnotation: tools.QualityIssueAnnotation
+        SpamAnnotation: tools.SpamAnnotation
+        CallScoreAnnotation: tools.CallScoreAnnotation
+        PageSize: tools.PageSize
+        Page: tools.Page
+        PageToken: tools.PageToken
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: update-annotation-specific-call
+      description: Update an Annotation for a specific Call.
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: insights-voice.updateannotation
+      with:
+        CallSid: tools.CallSid
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: get-annotation-specific-call
+      description: Get the Annotation for a specific Call.
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: insights-voice.fetchannotation
+      with:
+        CallSid: tools.CallSid
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: get-list-call-insight-events
+      description: Get a list of Call Insight Events for a Call.
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: insights-voice.listevent
+      with:
+        CallSid: tools.CallSid
+        Edge: tools.Edge
+        PageSize: tools.PageSize
+        Page: tools.Page
+        PageToken: tools.PageToken
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: get-list-call-metrics-call
+      description: Get a list of Call Metrics for a Call.
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: insights-voice.listmetric
+      with:
+        CallSid: tools.CallSid
+        Edge: tools.Edge
+        Direction: tools.Direction
+        PageSize: tools.PageSize
+        Page: tools.Page
+        PageToken: tools.PageToken
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: get-specific-call-summary
+      description: Get a specific Call Summary.
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: insights-voice.fetchsummary
+      with:
+        CallSid: tools.CallSid
+        ProcessingState: tools.ProcessingState
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: fetchcall
+      description: fetchcall
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: insights-voice.fetchcall
+      with:
+        Sid: tools.Sid
+      outputParameters:
+      - type: object
+        mapping: $.

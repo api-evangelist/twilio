@@ -1,0 +1,119 @@
+naftiko: 1.0.0-alpha2
+info:
+  label: Twilio Flex API — Plugins
+  description: 'Twilio Flex API — Plugins. 2 operations. Lead operation: Twilio List Flex Plugins. Self-contained Naftiko
+    capability covering one Twilio business surface.'
+  tags:
+  - Twilio
+  - Plugins
+  created: '2026-05-19'
+  modified: '2026-05-19'
+binds:
+- namespace: env
+  keys:
+    TWILIO_API_KEY: TWILIO_API_KEY
+capability:
+  consumes:
+  - type: http
+    namespace: flex-plugins
+    baseUri: https://flex-api.twilio.com/v1
+    description: Twilio Flex API — Plugins business capability. Self-contained, no shared references.
+    resources:
+    - name: PluginService-Plugins
+      path: /PluginService/Plugins
+      operations:
+      - name: listplugins
+        method: GET
+        description: Twilio List Flex Plugins
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: FlexMetadata
+          in: header
+          type: string
+        - name: PageSize
+          in: query
+          type: integer
+      - name: createplugin
+        method: POST
+        description: Twilio Create a Flex Plugin
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: true
+    authentication:
+      type: basic
+      username: '{{env.TWILIO_USER}}'
+      password: '{{env.TWILIO_PASS}}'
+  exposes:
+  - type: rest
+    namespace: flex-plugins-rest
+    port: 8080
+    description: REST adapter for Twilio Flex API — Plugins. One Spectral-compliant resource per consumed operation, prefixed
+      with /v1.
+    resources:
+    - path: /v1/pluginservice/plugins
+      name: pluginservice-plugins
+      description: REST surface for PluginService-Plugins.
+      operations:
+      - method: GET
+        name: listplugins
+        description: Twilio List Flex Plugins
+        call: flex-plugins.listplugins
+        with:
+          FlexMetadata: rest.FlexMetadata
+          PageSize: rest.PageSize
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: POST
+        name: createplugin
+        description: Twilio Create a Flex Plugin
+        call: flex-plugins.createplugin
+        with:
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+  - type: mcp
+    namespace: flex-plugins-mcp
+    port: 9090
+    transport: http
+    description: MCP adapter for Twilio Flex API — Plugins. One tool per consumed operation, routed inline through this capability's
+      consumes block.
+    tools:
+    - name: twilio-list-flex-plugins
+      description: Twilio List Flex Plugins
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: flex-plugins.listplugins
+      with:
+        FlexMetadata: tools.FlexMetadata
+        PageSize: tools.PageSize
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: twilio-create-flex-plugin
+      description: Twilio Create a Flex Plugin
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: flex-plugins.createplugin
+      with:
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.

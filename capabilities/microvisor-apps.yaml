@@ -1,0 +1,211 @@
+naftiko: 1.0.0-alpha2
+info:
+  label: Twilio - Microvisor — Apps
+  description: 'Twilio - Microvisor — Apps. 4 operations. Lead operation: Apps. Self-contained Naftiko capability covering
+    one Twilio business surface.'
+  tags:
+  - Twilio
+  - Apps
+  created: '2026-05-19'
+  modified: '2026-05-19'
+binds:
+- namespace: env
+  keys:
+    TWILIO_API_KEY: TWILIO_API_KEY
+capability:
+  consumes:
+  - type: http
+    namespace: microvisor-apps
+    baseUri: https://microvisor.twilio.com
+    description: Twilio - Microvisor — Apps business capability. Self-contained, no shared references.
+    resources:
+    - name: v1-Apps
+      path: /v1/Apps
+      operations:
+      - name: listapp
+        method: GET
+        description: Retrieve a list of all Apps for an Account.
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: PageSize
+          in: query
+          type: integer
+          description: How many resources to return in each list page. The default is 50, and the maximum is 1000.
+        - name: Page
+          in: query
+          type: integer
+          description: The page index. This value is simply for client state.
+        - name: PageToken
+          in: query
+          type: string
+          description: The page token. This is provided by the API.
+    - name: v1-Apps-AppSid-Manifest
+      path: /v1/Apps/{AppSid}/Manifest
+      operations:
+      - name: fetchappmanifest
+        method: GET
+        description: Retrieve the Manifest for an App.
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: AppSid
+          in: path
+          type: string
+          description: A 34-character string that uniquely identifies this App.
+          required: true
+    - name: v1-Apps-Sid
+      path: /v1/Apps/{Sid}
+      operations:
+      - name: fetchapp
+        method: GET
+        description: Fetch a specific App.
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: Sid
+          in: path
+          type: string
+          description: A 34-character string that uniquely identifies this App.
+          required: true
+      - name: deleteapp
+        method: DELETE
+        description: Delete a specific App.
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: Sid
+          in: path
+          type: string
+          description: A 34-character string that uniquely identifies this App.
+          required: true
+    authentication:
+      type: basic
+      username: '{{env.TWILIO_USER}}'
+      password: '{{env.TWILIO_PASS}}'
+  exposes:
+  - type: rest
+    namespace: microvisor-apps-rest
+    port: 8080
+    description: REST adapter for Twilio - Microvisor — Apps. One Spectral-compliant resource per consumed operation, prefixed
+      with /v1.
+    resources:
+    - path: /v1/v1/apps
+      name: v1-apps
+      description: REST surface for v1-Apps.
+      operations:
+      - method: GET
+        name: listapp
+        description: Retrieve a list of all Apps for an Account.
+        call: microvisor-apps.listapp
+        with:
+          PageSize: rest.PageSize
+          Page: rest.Page
+          PageToken: rest.PageToken
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/v1/apps/{appsid}/manifest
+      name: v1-apps-appsid-manifest
+      description: REST surface for v1-Apps-AppSid-Manifest.
+      operations:
+      - method: GET
+        name: fetchappmanifest
+        description: Retrieve the Manifest for an App.
+        call: microvisor-apps.fetchappmanifest
+        with:
+          AppSid: rest.AppSid
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/v1/apps/{sid}
+      name: v1-apps-sid
+      description: REST surface for v1-Apps-Sid.
+      operations:
+      - method: GET
+        name: fetchapp
+        description: Fetch a specific App.
+        call: microvisor-apps.fetchapp
+        with:
+          Sid: rest.Sid
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: DELETE
+        name: deleteapp
+        description: Delete a specific App.
+        call: microvisor-apps.deleteapp
+        with:
+          Sid: rest.Sid
+        outputParameters:
+        - type: object
+          mapping: $.
+  - type: mcp
+    namespace: microvisor-apps-mcp
+    port: 9090
+    transport: http
+    description: MCP adapter for Twilio - Microvisor — Apps. One tool per consumed operation, routed inline through this capability's
+      consumes block.
+    tools:
+    - name: retrieve-list-all-apps-account
+      description: Retrieve a list of all Apps for an Account.
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: microvisor-apps.listapp
+      with:
+        PageSize: tools.PageSize
+        Page: tools.Page
+        PageToken: tools.PageToken
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: retrieve-manifest-app
+      description: Retrieve the Manifest for an App.
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: microvisor-apps.fetchappmanifest
+      with:
+        AppSid: tools.AppSid
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: fetch-specific-app
+      description: Fetch a specific App.
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: microvisor-apps.fetchapp
+      with:
+        Sid: tools.Sid
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: delete-specific-app
+      description: Delete a specific App.
+      hints:
+        readOnly: false
+        destructive: true
+        idempotent: true
+      call: microvisor-apps.deleteapp
+      with:
+        Sid: tools.Sid
+      outputParameters:
+      - type: object
+        mapping: $.

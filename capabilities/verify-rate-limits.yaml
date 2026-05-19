@@ -1,0 +1,188 @@
+naftiko: 1.0.0-alpha2
+info:
+  label: Twilio Verify API — Rate Limits
+  description: 'Twilio Verify API — Rate Limits. 4 operations. Lead operation: Twilio List Rate Limits. Self-contained Naftiko
+    capability covering one Twilio business surface.'
+  tags:
+  - Twilio
+  - Rate Limits
+  created: '2026-05-19'
+  modified: '2026-05-19'
+binds:
+- namespace: env
+  keys:
+    TWILIO_API_KEY: TWILIO_API_KEY
+capability:
+  consumes:
+  - type: http
+    namespace: verify-rate-limits
+    baseUri: https://verify.twilio.com/v2
+    description: Twilio Verify API — Rate Limits business capability. Self-contained, no shared references.
+    resources:
+    - name: Services-ServiceSid-RateLimits
+      path: /Services/{ServiceSid}/RateLimits
+      operations:
+      - name: listratelimits
+        method: GET
+        description: Twilio List Rate Limits
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+      - name: createratelimit
+        method: POST
+        description: Twilio Create a Rate Limit
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: true
+    - name: Services-ServiceSid-RateLimits-RateLimitSid-Buckets
+      path: /Services/{ServiceSid}/RateLimits/{RateLimitSid}/Buckets
+      operations:
+      - name: listbuckets
+        method: GET
+        description: Twilio List Rate Limit Buckets
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: RateLimitSid
+          in: path
+          type: string
+          required: true
+      - name: createbucket
+        method: POST
+        description: Twilio Create a Rate Limit Bucket
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: RateLimitSid
+          in: path
+          type: string
+          required: true
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: true
+    authentication:
+      type: basic
+      username: '{{env.TWILIO_USER}}'
+      password: '{{env.TWILIO_PASS}}'
+  exposes:
+  - type: rest
+    namespace: verify-rate-limits-rest
+    port: 8080
+    description: REST adapter for Twilio Verify API — Rate Limits. One Spectral-compliant resource per consumed operation,
+      prefixed with /v1.
+    resources:
+    - path: /v1/services/{servicesid}/ratelimits
+      name: services-servicesid-ratelimits
+      description: REST surface for Services-ServiceSid-RateLimits.
+      operations:
+      - method: GET
+        name: listratelimits
+        description: Twilio List Rate Limits
+        call: verify-rate-limits.listratelimits
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: POST
+        name: createratelimit
+        description: Twilio Create a Rate Limit
+        call: verify-rate-limits.createratelimit
+        with:
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/services/{servicesid}/ratelimits/{ratelimitsid}/buckets
+      name: services-servicesid-ratelimits-ratelimitsid-buckets
+      description: REST surface for Services-ServiceSid-RateLimits-RateLimitSid-Buckets.
+      operations:
+      - method: GET
+        name: listbuckets
+        description: Twilio List Rate Limit Buckets
+        call: verify-rate-limits.listbuckets
+        with:
+          RateLimitSid: rest.RateLimitSid
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: POST
+        name: createbucket
+        description: Twilio Create a Rate Limit Bucket
+        call: verify-rate-limits.createbucket
+        with:
+          RateLimitSid: rest.RateLimitSid
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+  - type: mcp
+    namespace: verify-rate-limits-mcp
+    port: 9090
+    transport: http
+    description: MCP adapter for Twilio Verify API — Rate Limits. One tool per consumed operation, routed inline through this
+      capability's consumes block.
+    tools:
+    - name: twilio-list-rate-limits
+      description: Twilio List Rate Limits
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: verify-rate-limits.listratelimits
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: twilio-create-rate-limit
+      description: Twilio Create a Rate Limit
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: verify-rate-limits.createratelimit
+      with:
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: twilio-list-rate-limit-buckets
+      description: Twilio List Rate Limit Buckets
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: verify-rate-limits.listbuckets
+      with:
+        RateLimitSid: tools.RateLimitSid
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: twilio-create-rate-limit-bucket
+      description: Twilio Create a Rate Limit Bucket
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: verify-rate-limits.createbucket
+      with:
+        RateLimitSid: tools.RateLimitSid
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.

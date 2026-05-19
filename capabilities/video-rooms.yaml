@@ -1,0 +1,203 @@
+naftiko: 1.0.0-alpha2
+info:
+  label: Twilio Video API — Rooms
+  description: 'Twilio Video API — Rooms. 4 operations. Lead operation: Twilio List Rooms. Self-contained Naftiko capability
+    covering one Twilio business surface.'
+  tags:
+  - Twilio
+  - Rooms
+  created: '2026-05-19'
+  modified: '2026-05-19'
+binds:
+- namespace: env
+  keys:
+    TWILIO_API_KEY: TWILIO_API_KEY
+capability:
+  consumes:
+  - type: http
+    namespace: video-rooms
+    baseUri: https://video.twilio.com/v1
+    description: Twilio Video API — Rooms business capability. Self-contained, no shared references.
+    resources:
+    - name: Rooms
+      path: /Rooms
+      operations:
+      - name: listrooms
+        method: GET
+        description: Twilio List Rooms
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: Status
+          in: query
+          type: string
+          description: Filter by room status
+        - name: UniqueName
+          in: query
+          type: string
+          description: Filter by unique room name
+        - name: DateCreatedAfter
+          in: query
+          type: string
+        - name: DateCreatedBefore
+          in: query
+          type: string
+        - name: PageSize
+          in: query
+          type: integer
+      - name: createroom
+        method: POST
+        description: Twilio Create a Room
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: true
+    - name: Rooms-RoomSid
+      path: /Rooms/{RoomSid}
+      operations:
+      - name: fetchroom
+        method: GET
+        description: Twilio Fetch a Room
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+      - name: updateroom
+        method: POST
+        description: Twilio Update a Room
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: true
+    authentication:
+      type: basic
+      username: '{{env.TWILIO_USER}}'
+      password: '{{env.TWILIO_PASS}}'
+  exposes:
+  - type: rest
+    namespace: video-rooms-rest
+    port: 8080
+    description: REST adapter for Twilio Video API — Rooms. One Spectral-compliant resource per consumed operation, prefixed
+      with /v1.
+    resources:
+    - path: /v1/rooms
+      name: rooms
+      description: REST surface for Rooms.
+      operations:
+      - method: GET
+        name: listrooms
+        description: Twilio List Rooms
+        call: video-rooms.listrooms
+        with:
+          Status: rest.Status
+          UniqueName: rest.UniqueName
+          DateCreatedAfter: rest.DateCreatedAfter
+          DateCreatedBefore: rest.DateCreatedBefore
+          PageSize: rest.PageSize
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: POST
+        name: createroom
+        description: Twilio Create a Room
+        call: video-rooms.createroom
+        with:
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/rooms/{roomsid}
+      name: rooms-roomsid
+      description: REST surface for Rooms-RoomSid.
+      operations:
+      - method: GET
+        name: fetchroom
+        description: Twilio Fetch a Room
+        call: video-rooms.fetchroom
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: POST
+        name: updateroom
+        description: Twilio Update a Room
+        call: video-rooms.updateroom
+        with:
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+  - type: mcp
+    namespace: video-rooms-mcp
+    port: 9090
+    transport: http
+    description: MCP adapter for Twilio Video API — Rooms. One tool per consumed operation, routed inline through this capability's
+      consumes block.
+    tools:
+    - name: twilio-list-rooms
+      description: Twilio List Rooms
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: video-rooms.listrooms
+      with:
+        Status: tools.Status
+        UniqueName: tools.UniqueName
+        DateCreatedAfter: tools.DateCreatedAfter
+        DateCreatedBefore: tools.DateCreatedBefore
+        PageSize: tools.PageSize
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: twilio-create-room
+      description: Twilio Create a Room
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: video-rooms.createroom
+      with:
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: twilio-fetch-room
+      description: Twilio Fetch a Room
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: video-rooms.fetchroom
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: twilio-update-room
+      description: Twilio Update a Room
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: video-rooms.updateroom
+      with:
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.

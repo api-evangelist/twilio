@@ -1,0 +1,205 @@
+naftiko: 1.0.0-alpha2
+info:
+  label: Twilio Verify API
+  description: 'Twilio Verify API. 5 operations. Lead operation: Twilio List Verify Services. Self-contained Naftiko capability
+    covering one Twilio business surface.'
+  tags:
+  - Twilio
+  created: '2026-05-19'
+  modified: '2026-05-19'
+binds:
+- namespace: env
+  keys:
+    TWILIO_API_KEY: TWILIO_API_KEY
+capability:
+  consumes:
+  - type: http
+    namespace: verify-general
+    baseUri: https://verify.twilio.com/v2
+    description: Twilio Verify API business capability. Self-contained, no shared references.
+    resources:
+    - name: Services
+      path: /Services
+      operations:
+      - name: listservices
+        method: GET
+        description: Twilio List Verify Services
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: PageSize
+          in: query
+          type: integer
+      - name: createservice
+        method: POST
+        description: Twilio Create a Verify Service
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: true
+    - name: Services-ServiceSid
+      path: /Services/{ServiceSid}
+      operations:
+      - name: fetchservice
+        method: GET
+        description: Twilio Fetch a Verify Service
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+      - name: updateservice
+        method: POST
+        description: Twilio Update a Verify Service
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: true
+      - name: deleteservice
+        method: DELETE
+        description: Twilio Delete a Verify Service
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+    authentication:
+      type: basic
+      username: '{{env.TWILIO_USER}}'
+      password: '{{env.TWILIO_PASS}}'
+  exposes:
+  - type: rest
+    namespace: verify-general-rest
+    port: 8080
+    description: REST adapter for Twilio Verify API. One Spectral-compliant resource per consumed operation, prefixed with
+      /v1.
+    resources:
+    - path: /v1/services
+      name: services
+      description: REST surface for Services.
+      operations:
+      - method: GET
+        name: listservices
+        description: Twilio List Verify Services
+        call: verify-general.listservices
+        with:
+          PageSize: rest.PageSize
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: POST
+        name: createservice
+        description: Twilio Create a Verify Service
+        call: verify-general.createservice
+        with:
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/services/{servicesid}
+      name: services-servicesid
+      description: REST surface for Services-ServiceSid.
+      operations:
+      - method: GET
+        name: fetchservice
+        description: Twilio Fetch a Verify Service
+        call: verify-general.fetchservice
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: POST
+        name: updateservice
+        description: Twilio Update a Verify Service
+        call: verify-general.updateservice
+        with:
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: DELETE
+        name: deleteservice
+        description: Twilio Delete a Verify Service
+        call: verify-general.deleteservice
+        outputParameters:
+        - type: object
+          mapping: $.
+  - type: mcp
+    namespace: verify-general-mcp
+    port: 9090
+    transport: http
+    description: MCP adapter for Twilio Verify API. One tool per consumed operation, routed inline through this capability's
+      consumes block.
+    tools:
+    - name: twilio-list-verify-services
+      description: Twilio List Verify Services
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: verify-general.listservices
+      with:
+        PageSize: tools.PageSize
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: twilio-create-verify-service
+      description: Twilio Create a Verify Service
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: verify-general.createservice
+      with:
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: twilio-fetch-verify-service
+      description: Twilio Fetch a Verify Service
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: verify-general.fetchservice
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: twilio-update-verify-service
+      description: Twilio Update a Verify Service
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: verify-general.updateservice
+      with:
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: twilio-delete-verify-service
+      description: Twilio Delete a Verify Service
+      hints:
+        readOnly: false
+        destructive: true
+        idempotent: true
+      call: verify-general.deleteservice
+      outputParameters:
+      - type: object
+        mapping: $.

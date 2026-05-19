@@ -1,0 +1,389 @@
+naftiko: 1.0.0-alpha2
+info:
+  label: Twilio - Conversations — Configuration
+  description: 'Twilio - Conversations — Configuration. 9 operations. Lead operation: Configuration. Self-contained Naftiko
+    capability covering one Twilio business surface.'
+  tags:
+  - Twilio
+  - Configuration
+  created: '2026-05-19'
+  modified: '2026-05-19'
+binds:
+- namespace: env
+  keys:
+    TWILIO_API_KEY: TWILIO_API_KEY
+capability:
+  consumes:
+  - type: http
+    namespace: conversations-configuration
+    baseUri: https://conversations.twilio.com
+    description: Twilio - Conversations — Configuration business capability. Self-contained, no shared references.
+    resources:
+    - name: v1-Configuration
+      path: /v1/Configuration
+      operations:
+      - name: fetchconfiguration
+        method: GET
+        description: Fetch the global configuration of conversations on your account
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+      - name: updateconfiguration
+        method: POST
+        description: Update the global configuration of conversations on your account
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: false
+    - name: v1-Configuration-Addresses
+      path: /v1/Configuration/Addresses
+      operations:
+      - name: listconfigurationaddress
+        method: GET
+        description: Retrieve a list of address configurations for an account
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: Type
+          in: query
+          type: string
+          description: 'Filter the address configurations by its type. This value can be one of: `whatsapp`, `sms`.'
+        - name: PageSize
+          in: query
+          type: integer
+          description: How many resources to return in each list page. The default is 50, and the maximum is 1000.
+        - name: Page
+          in: query
+          type: integer
+          description: The page index. This value is simply for client state.
+        - name: PageToken
+          in: query
+          type: string
+          description: The page token. This is provided by the API.
+      - name: createconfigurationaddress
+        method: POST
+        description: Create a new address configuration
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: false
+    - name: v1-Configuration-Addresses-Sid
+      path: /v1/Configuration/Addresses/{Sid}
+      operations:
+      - name: fetchconfigurationaddress
+        method: GET
+        description: Fetch an address configuration
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: Sid
+          in: path
+          type: string
+          description: The SID of the Address Configuration resource. This value can be either the `sid` or the `address`
+            of the configuration
+          required: true
+      - name: updateconfigurationaddress
+        method: POST
+        description: Update an existing address configuration
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: Sid
+          in: path
+          type: string
+          description: The SID of the Address Configuration resource. This value can be either the `sid` or the `address`
+            of the configuration
+          required: true
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: false
+      - name: deleteconfigurationaddress
+        method: DELETE
+        description: Remove an existing address configuration
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: Sid
+          in: path
+          type: string
+          description: The SID of the Address Configuration resource. This value can be either the `sid` or the `address`
+            of the configuration
+          required: true
+    - name: v1-Configuration-Webhooks
+      path: /v1/Configuration/Webhooks
+      operations:
+      - name: fetchconfigurationwebhook
+        method: GET
+        description: ''
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+      - name: updateconfigurationwebhook
+        method: POST
+        description: ''
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: false
+    authentication:
+      type: basic
+      username: '{{env.TWILIO_USER}}'
+      password: '{{env.TWILIO_PASS}}'
+  exposes:
+  - type: rest
+    namespace: conversations-configuration-rest
+    port: 8080
+    description: REST adapter for Twilio - Conversations — Configuration. One Spectral-compliant resource per consumed operation,
+      prefixed with /v1.
+    resources:
+    - path: /v1/v1/configuration
+      name: v1-configuration
+      description: REST surface for v1-Configuration.
+      operations:
+      - method: GET
+        name: fetchconfiguration
+        description: Fetch the global configuration of conversations on your account
+        call: conversations-configuration.fetchconfiguration
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: POST
+        name: updateconfiguration
+        description: Update the global configuration of conversations on your account
+        call: conversations-configuration.updateconfiguration
+        with:
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/v1/configuration/addresses
+      name: v1-configuration-addresses
+      description: REST surface for v1-Configuration-Addresses.
+      operations:
+      - method: GET
+        name: listconfigurationaddress
+        description: Retrieve a list of address configurations for an account
+        call: conversations-configuration.listconfigurationaddress
+        with:
+          Type: rest.Type
+          PageSize: rest.PageSize
+          Page: rest.Page
+          PageToken: rest.PageToken
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: POST
+        name: createconfigurationaddress
+        description: Create a new address configuration
+        call: conversations-configuration.createconfigurationaddress
+        with:
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/v1/configuration/addresses/{sid}
+      name: v1-configuration-addresses-sid
+      description: REST surface for v1-Configuration-Addresses-Sid.
+      operations:
+      - method: GET
+        name: fetchconfigurationaddress
+        description: Fetch an address configuration
+        call: conversations-configuration.fetchconfigurationaddress
+        with:
+          Sid: rest.Sid
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: POST
+        name: updateconfigurationaddress
+        description: Update an existing address configuration
+        call: conversations-configuration.updateconfigurationaddress
+        with:
+          Sid: rest.Sid
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: DELETE
+        name: deleteconfigurationaddress
+        description: Remove an existing address configuration
+        call: conversations-configuration.deleteconfigurationaddress
+        with:
+          Sid: rest.Sid
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/v1/configuration/webhooks
+      name: v1-configuration-webhooks
+      description: REST surface for v1-Configuration-Webhooks.
+      operations:
+      - method: GET
+        name: fetchconfigurationwebhook
+        description: fetchconfigurationwebhook
+        call: conversations-configuration.fetchconfigurationwebhook
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: POST
+        name: updateconfigurationwebhook
+        description: updateconfigurationwebhook
+        call: conversations-configuration.updateconfigurationwebhook
+        with:
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+  - type: mcp
+    namespace: conversations-configuration-mcp
+    port: 9090
+    transport: http
+    description: MCP adapter for Twilio - Conversations — Configuration. One tool per consumed operation, routed inline through
+      this capability's consumes block.
+    tools:
+    - name: fetch-global-configuration-conversations-your
+      description: Fetch the global configuration of conversations on your account
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: conversations-configuration.fetchconfiguration
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: update-global-configuration-conversations-your
+      description: Update the global configuration of conversations on your account
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: conversations-configuration.updateconfiguration
+      with:
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: retrieve-list-address-configurations-account
+      description: Retrieve a list of address configurations for an account
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: conversations-configuration.listconfigurationaddress
+      with:
+        Type: tools.Type
+        PageSize: tools.PageSize
+        Page: tools.Page
+        PageToken: tools.PageToken
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: create-new-address-configuration
+      description: Create a new address configuration
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: conversations-configuration.createconfigurationaddress
+      with:
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: fetch-address-configuration
+      description: Fetch an address configuration
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: conversations-configuration.fetchconfigurationaddress
+      with:
+        Sid: tools.Sid
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: update-existing-address-configuration
+      description: Update an existing address configuration
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: conversations-configuration.updateconfigurationaddress
+      with:
+        Sid: tools.Sid
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: remove-existing-address-configuration
+      description: Remove an existing address configuration
+      hints:
+        readOnly: false
+        destructive: true
+        idempotent: true
+      call: conversations-configuration.deleteconfigurationaddress
+      with:
+        Sid: tools.Sid
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: fetchconfigurationwebhook
+      description: fetchconfigurationwebhook
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: conversations-configuration.fetchconfigurationwebhook
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: updateconfigurationwebhook
+      description: updateconfigurationwebhook
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: conversations-configuration.updateconfigurationwebhook
+      with:
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.

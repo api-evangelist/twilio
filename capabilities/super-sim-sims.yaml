@@ -1,0 +1,350 @@
+naftiko: 1.0.0-alpha2
+info:
+  label: Twilio - Supersim — Sims
+  description: 'Twilio - Supersim — Sims. 6 operations. Lead operation: Sims. Self-contained Naftiko capability covering one
+    Twilio business surface.'
+  tags:
+  - Twilio
+  - Sims
+  created: '2026-05-19'
+  modified: '2026-05-19'
+binds:
+- namespace: env
+  keys:
+    TWILIO_API_KEY: TWILIO_API_KEY
+capability:
+  consumes:
+  - type: http
+    namespace: super-sim-sims
+    baseUri: https://supersim.twilio.com
+    description: Twilio - Supersim — Sims business capability. Self-contained, no shared references.
+    resources:
+    - name: v1-Sims
+      path: /v1/Sims
+      operations:
+      - name: createsim
+        method: POST
+        description: Register a Super SIM to your Account
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: false
+      - name: listsim
+        method: GET
+        description: Retrieve a list of Super SIMs from your account.
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: Status
+          in: query
+          type: string
+          description: The status of the Sim resources to read. Can be `new`, `ready`, `active`, `inactive`, or `scheduled`.
+        - name: Fleet
+          in: query
+          type: string
+          description: The SID or unique name of the Fleet to which a list of Sims are assigned.
+        - name: Iccid
+          in: query
+          type: string
+          description: The [ICCID](https://en.wikipedia.org/wiki/Subscriber_identity_module#ICCID) associated with a Super
+            SIM to filter the list by. Passing this parameter will alway
+        - name: PageSize
+          in: query
+          type: integer
+          description: How many resources to return in each list page. The default is 50, and the maximum is 1000.
+        - name: Page
+          in: query
+          type: integer
+          description: The page index. This value is simply for client state.
+        - name: PageToken
+          in: query
+          type: string
+          description: The page token. This is provided by the API.
+    - name: v1-Sims-Sid
+      path: /v1/Sims/{Sid}
+      operations:
+      - name: fetchsim
+        method: GET
+        description: Fetch a Super SIM instance from your account.
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: Sid
+          in: path
+          type: string
+          description: The SID of the Sim resource to fetch.
+          required: true
+      - name: updatesim
+        method: POST
+        description: Updates the given properties of a Super SIM instance from your account.
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: Sid
+          in: path
+          type: string
+          description: The SID of the Sim resource to update.
+          required: true
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: false
+    - name: v1-Sims-SimSid-BillingPeriods
+      path: /v1/Sims/{SimSid}/BillingPeriods
+      operations:
+      - name: listbillingperiod
+        method: GET
+        description: Retrieve a list of Billing Periods for a Super SIM.
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: SimSid
+          in: path
+          type: string
+          description: The SID of the Super SIM to list Billing Periods for.
+          required: true
+        - name: PageSize
+          in: query
+          type: integer
+          description: How many resources to return in each list page. The default is 50, and the maximum is 1000.
+        - name: Page
+          in: query
+          type: integer
+          description: The page index. This value is simply for client state.
+        - name: PageToken
+          in: query
+          type: string
+          description: The page token. This is provided by the API.
+    - name: v1-Sims-SimSid-IpAddresses
+      path: /v1/Sims/{SimSid}/IpAddresses
+      operations:
+      - name: listsimipaddress
+        method: GET
+        description: Retrieve a list of IP Addresses for the given Super SIM.
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: SimSid
+          in: path
+          type: string
+          description: The SID of the Super SIM to list IP Addresses for.
+          required: true
+        - name: PageSize
+          in: query
+          type: integer
+          description: How many resources to return in each list page. The default is 50, and the maximum is 1000.
+        - name: Page
+          in: query
+          type: integer
+          description: The page index. This value is simply for client state.
+        - name: PageToken
+          in: query
+          type: string
+          description: The page token. This is provided by the API.
+    authentication:
+      type: basic
+      username: '{{env.TWILIO_USER}}'
+      password: '{{env.TWILIO_PASS}}'
+  exposes:
+  - type: rest
+    namespace: super-sim-sims-rest
+    port: 8080
+    description: REST adapter for Twilio - Supersim — Sims. One Spectral-compliant resource per consumed operation, prefixed
+      with /v1.
+    resources:
+    - path: /v1/v1/sims
+      name: v1-sims
+      description: REST surface for v1-Sims.
+      operations:
+      - method: POST
+        name: createsim
+        description: Register a Super SIM to your Account
+        call: super-sim-sims.createsim
+        with:
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: GET
+        name: listsim
+        description: Retrieve a list of Super SIMs from your account.
+        call: super-sim-sims.listsim
+        with:
+          Status: rest.Status
+          Fleet: rest.Fleet
+          Iccid: rest.Iccid
+          PageSize: rest.PageSize
+          Page: rest.Page
+          PageToken: rest.PageToken
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/v1/sims/{sid}
+      name: v1-sims-sid
+      description: REST surface for v1-Sims-Sid.
+      operations:
+      - method: GET
+        name: fetchsim
+        description: Fetch a Super SIM instance from your account.
+        call: super-sim-sims.fetchsim
+        with:
+          Sid: rest.Sid
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: POST
+        name: updatesim
+        description: Updates the given properties of a Super SIM instance from your account.
+        call: super-sim-sims.updatesim
+        with:
+          Sid: rest.Sid
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/v1/sims/{simsid}/billingperiods
+      name: v1-sims-simsid-billingperiods
+      description: REST surface for v1-Sims-SimSid-BillingPeriods.
+      operations:
+      - method: GET
+        name: listbillingperiod
+        description: Retrieve a list of Billing Periods for a Super SIM.
+        call: super-sim-sims.listbillingperiod
+        with:
+          SimSid: rest.SimSid
+          PageSize: rest.PageSize
+          Page: rest.Page
+          PageToken: rest.PageToken
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/v1/sims/{simsid}/ipaddresses
+      name: v1-sims-simsid-ipaddresses
+      description: REST surface for v1-Sims-SimSid-IpAddresses.
+      operations:
+      - method: GET
+        name: listsimipaddress
+        description: Retrieve a list of IP Addresses for the given Super SIM.
+        call: super-sim-sims.listsimipaddress
+        with:
+          SimSid: rest.SimSid
+          PageSize: rest.PageSize
+          Page: rest.Page
+          PageToken: rest.PageToken
+        outputParameters:
+        - type: object
+          mapping: $.
+  - type: mcp
+    namespace: super-sim-sims-mcp
+    port: 9090
+    transport: http
+    description: MCP adapter for Twilio - Supersim — Sims. One tool per consumed operation, routed inline through this capability's
+      consumes block.
+    tools:
+    - name: register-super-sim-your-account
+      description: Register a Super SIM to your Account
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: super-sim-sims.createsim
+      with:
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: retrieve-list-super-sims-your
+      description: Retrieve a list of Super SIMs from your account.
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: super-sim-sims.listsim
+      with:
+        Status: tools.Status
+        Fleet: tools.Fleet
+        Iccid: tools.Iccid
+        PageSize: tools.PageSize
+        Page: tools.Page
+        PageToken: tools.PageToken
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: fetch-super-sim-instance-your
+      description: Fetch a Super SIM instance from your account.
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: super-sim-sims.fetchsim
+      with:
+        Sid: tools.Sid
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: updates-given-properties-super-sim
+      description: Updates the given properties of a Super SIM instance from your account.
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: super-sim-sims.updatesim
+      with:
+        Sid: tools.Sid
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: retrieve-list-billing-periods-super
+      description: Retrieve a list of Billing Periods for a Super SIM.
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: super-sim-sims.listbillingperiod
+      with:
+        SimSid: tools.SimSid
+        PageSize: tools.PageSize
+        Page: tools.Page
+        PageToken: tools.PageToken
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: retrieve-list-ip-addresses-given
+      description: Retrieve a list of IP Addresses for the given Super SIM.
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: super-sim-sims.listsimipaddress
+      with:
+        SimSid: tools.SimSid
+        PageSize: tools.PageSize
+        Page: tools.Page
+        PageToken: tools.PageToken
+      outputParameters:
+      - type: object
+        mapping: $.

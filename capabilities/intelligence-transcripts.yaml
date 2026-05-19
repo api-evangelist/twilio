@@ -1,0 +1,491 @@
+naftiko: 1.0.0-alpha2
+info:
+  label: Twilio - Intelligence — Transcripts
+  description: 'Twilio - Intelligence — Transcripts. 8 operations. Lead operation: Transcripts. Self-contained Naftiko capability
+    covering one Twilio business surface.'
+  tags:
+  - Twilio
+  - Transcripts
+  created: '2026-05-19'
+  modified: '2026-05-19'
+binds:
+- namespace: env
+  keys:
+    TWILIO_API_KEY: TWILIO_API_KEY
+capability:
+  consumes:
+  - type: http
+    namespace: intelligence-transcripts
+    baseUri: https://intelligence.twilio.com
+    description: Twilio - Intelligence — Transcripts business capability. Self-contained, no shared references.
+    resources:
+    - name: v2-Transcripts
+      path: /v2/Transcripts
+      operations:
+      - name: createtranscript
+        method: POST
+        description: Create a new Transcript for the service
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: false
+      - name: listtranscript
+        method: GET
+        description: Retrieve a list of Transcripts for a given service.
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: ServiceSid
+          in: query
+          type: string
+          description: The unique SID identifier of the Service.
+        - name: BeforeStartTime
+          in: query
+          type: string
+          description: Filter by before StartTime.
+        - name: AfterStartTime
+          in: query
+          type: string
+          description: Filter by after StartTime.
+        - name: BeforeDateCreated
+          in: query
+          type: string
+          description: Filter by before DateCreated.
+        - name: AfterDateCreated
+          in: query
+          type: string
+          description: Filter by after DateCreated.
+        - name: Status
+          in: query
+          type: string
+          description: Filter by status.
+        - name: LanguageCode
+          in: query
+          type: string
+          description: Filter by Language Code.
+        - name: SourceSid
+          in: query
+          type: string
+          description: Filter by SourceSid.
+        - name: PageSize
+          in: query
+          type: integer
+          description: How many resources to return in each list page. The default is 50, and the maximum is 1000.
+        - name: Page
+          in: query
+          type: integer
+          description: The page index. This value is simply for client state.
+        - name: PageToken
+          in: query
+          type: string
+          description: The page token. This is provided by the API.
+    - name: v2-Transcripts-Sid
+      path: /v2/Transcripts/{Sid}
+      operations:
+      - name: fetchtranscript
+        method: GET
+        description: Fetch a specific Transcript.
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: Sid
+          in: path
+          type: string
+          description: A 34 character string that uniquely identifies this Transcript.
+          required: true
+      - name: deletetranscript
+        method: DELETE
+        description: Delete a specific Transcript.
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: Sid
+          in: path
+          type: string
+          description: A 34 character string that uniquely identifies this Transcript.
+          required: true
+    - name: v2-Transcripts-Sid-Media
+      path: /v2/Transcripts/{Sid}/Media
+      operations:
+      - name: fetchmedia
+        method: GET
+        description: Get download URLs for media if possible
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: Sid
+          in: path
+          type: string
+          description: The unique SID identifier of the Transcript.
+          required: true
+        - name: Redacted
+          in: query
+          type: boolean
+          description: Grant access to PII Redacted/Unredacted Media. If redaction is enabled, the default is `true` to access
+            redacted media.
+    - name: v2-Transcripts-TranscriptSid-OperatorResults
+      path: /v2/Transcripts/{TranscriptSid}/OperatorResults
+      operations:
+      - name: listoperatorresult
+        method: GET
+        description: Retrieve a list of Operator Results for the given Transcript.
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: TranscriptSid
+          in: path
+          type: string
+          description: A 34 character string that uniquely identifies this Transcript.
+          required: true
+        - name: Redacted
+          in: query
+          type: boolean
+          description: Grant access to PII redacted/unredacted Language Understanding operator. If redaction is enabled, the
+            default is True.
+        - name: PageSize
+          in: query
+          type: integer
+          description: How many resources to return in each list page. The default is 50, and the maximum is 1000.
+        - name: Page
+          in: query
+          type: integer
+          description: The page index. This value is simply for client state.
+        - name: PageToken
+          in: query
+          type: string
+          description: The page token. This is provided by the API.
+    - name: v2-Transcripts-TranscriptSid-OperatorResults-OperatorSid
+      path: /v2/Transcripts/{TranscriptSid}/OperatorResults/{OperatorSid}
+      operations:
+      - name: fetchoperatorresult
+        method: GET
+        description: Fetch a specific Operator Result for the given Transcript.
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: TranscriptSid
+          in: path
+          type: string
+          description: A 34 character string that uniquely identifies this Transcript.
+          required: true
+        - name: OperatorSid
+          in: path
+          type: string
+          description: A 34 character string that identifies this Language Understanding operator sid.
+          required: true
+        - name: Redacted
+          in: query
+          type: boolean
+          description: Grant access to PII redacted/unredacted Language Understanding operator. If redaction is enabled, the
+            default is True.
+    - name: v2-Transcripts-TranscriptSid-Sentences
+      path: /v2/Transcripts/{TranscriptSid}/Sentences
+      operations:
+      - name: listsentence
+        method: GET
+        description: Get all Transcript Sentences by TranscriptSid
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: TranscriptSid
+          in: path
+          type: string
+          description: The unique SID identifier of the Transcript.
+          required: true
+        - name: Redacted
+          in: query
+          type: boolean
+          description: Grant access to PII Redacted/Unredacted Sentences. If redaction is enabled, the default is `true` to
+            access redacted sentences.
+        - name: PageSize
+          in: query
+          type: integer
+          description: How many resources to return in each list page. The default is 50, and the maximum is 1000.
+        - name: Page
+          in: query
+          type: integer
+          description: The page index. This value is simply for client state.
+        - name: PageToken
+          in: query
+          type: string
+          description: The page token. This is provided by the API.
+    authentication:
+      type: basic
+      username: '{{env.TWILIO_USER}}'
+      password: '{{env.TWILIO_PASS}}'
+  exposes:
+  - type: rest
+    namespace: intelligence-transcripts-rest
+    port: 8080
+    description: REST adapter for Twilio - Intelligence — Transcripts. One Spectral-compliant resource per consumed operation,
+      prefixed with /v1.
+    resources:
+    - path: /v1/v2/transcripts
+      name: v2-transcripts
+      description: REST surface for v2-Transcripts.
+      operations:
+      - method: POST
+        name: createtranscript
+        description: Create a new Transcript for the service
+        call: intelligence-transcripts.createtranscript
+        with:
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: GET
+        name: listtranscript
+        description: Retrieve a list of Transcripts for a given service.
+        call: intelligence-transcripts.listtranscript
+        with:
+          ServiceSid: rest.ServiceSid
+          BeforeStartTime: rest.BeforeStartTime
+          AfterStartTime: rest.AfterStartTime
+          BeforeDateCreated: rest.BeforeDateCreated
+          AfterDateCreated: rest.AfterDateCreated
+          Status: rest.Status
+          LanguageCode: rest.LanguageCode
+          SourceSid: rest.SourceSid
+          PageSize: rest.PageSize
+          Page: rest.Page
+          PageToken: rest.PageToken
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/v2/transcripts/{sid}
+      name: v2-transcripts-sid
+      description: REST surface for v2-Transcripts-Sid.
+      operations:
+      - method: GET
+        name: fetchtranscript
+        description: Fetch a specific Transcript.
+        call: intelligence-transcripts.fetchtranscript
+        with:
+          Sid: rest.Sid
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: DELETE
+        name: deletetranscript
+        description: Delete a specific Transcript.
+        call: intelligence-transcripts.deletetranscript
+        with:
+          Sid: rest.Sid
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/v2/transcripts/{sid}/media
+      name: v2-transcripts-sid-media
+      description: REST surface for v2-Transcripts-Sid-Media.
+      operations:
+      - method: GET
+        name: fetchmedia
+        description: Get download URLs for media if possible
+        call: intelligence-transcripts.fetchmedia
+        with:
+          Sid: rest.Sid
+          Redacted: rest.Redacted
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/v2/transcripts/{transcriptsid}/operatorresults
+      name: v2-transcripts-transcriptsid-operatorresults
+      description: REST surface for v2-Transcripts-TranscriptSid-OperatorResults.
+      operations:
+      - method: GET
+        name: listoperatorresult
+        description: Retrieve a list of Operator Results for the given Transcript.
+        call: intelligence-transcripts.listoperatorresult
+        with:
+          TranscriptSid: rest.TranscriptSid
+          Redacted: rest.Redacted
+          PageSize: rest.PageSize
+          Page: rest.Page
+          PageToken: rest.PageToken
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/v2/transcripts/{transcriptsid}/operatorresults/{operatorsid}
+      name: v2-transcripts-transcriptsid-operatorresults-operatorsid
+      description: REST surface for v2-Transcripts-TranscriptSid-OperatorResults-OperatorSid.
+      operations:
+      - method: GET
+        name: fetchoperatorresult
+        description: Fetch a specific Operator Result for the given Transcript.
+        call: intelligence-transcripts.fetchoperatorresult
+        with:
+          TranscriptSid: rest.TranscriptSid
+          OperatorSid: rest.OperatorSid
+          Redacted: rest.Redacted
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/v2/transcripts/{transcriptsid}/sentences
+      name: v2-transcripts-transcriptsid-sentences
+      description: REST surface for v2-Transcripts-TranscriptSid-Sentences.
+      operations:
+      - method: GET
+        name: listsentence
+        description: Get all Transcript Sentences by TranscriptSid
+        call: intelligence-transcripts.listsentence
+        with:
+          TranscriptSid: rest.TranscriptSid
+          Redacted: rest.Redacted
+          PageSize: rest.PageSize
+          Page: rest.Page
+          PageToken: rest.PageToken
+        outputParameters:
+        - type: object
+          mapping: $.
+  - type: mcp
+    namespace: intelligence-transcripts-mcp
+    port: 9090
+    transport: http
+    description: MCP adapter for Twilio - Intelligence — Transcripts. One tool per consumed operation, routed inline through
+      this capability's consumes block.
+    tools:
+    - name: create-new-transcript-service
+      description: Create a new Transcript for the service
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: intelligence-transcripts.createtranscript
+      with:
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: retrieve-list-transcripts-given-service
+      description: Retrieve a list of Transcripts for a given service.
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: intelligence-transcripts.listtranscript
+      with:
+        ServiceSid: tools.ServiceSid
+        BeforeStartTime: tools.BeforeStartTime
+        AfterStartTime: tools.AfterStartTime
+        BeforeDateCreated: tools.BeforeDateCreated
+        AfterDateCreated: tools.AfterDateCreated
+        Status: tools.Status
+        LanguageCode: tools.LanguageCode
+        SourceSid: tools.SourceSid
+        PageSize: tools.PageSize
+        Page: tools.Page
+        PageToken: tools.PageToken
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: fetch-specific-transcript
+      description: Fetch a specific Transcript.
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: intelligence-transcripts.fetchtranscript
+      with:
+        Sid: tools.Sid
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: delete-specific-transcript
+      description: Delete a specific Transcript.
+      hints:
+        readOnly: false
+        destructive: true
+        idempotent: true
+      call: intelligence-transcripts.deletetranscript
+      with:
+        Sid: tools.Sid
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: get-download-urls-media-if
+      description: Get download URLs for media if possible
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: intelligence-transcripts.fetchmedia
+      with:
+        Sid: tools.Sid
+        Redacted: tools.Redacted
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: retrieve-list-operator-results-given
+      description: Retrieve a list of Operator Results for the given Transcript.
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: intelligence-transcripts.listoperatorresult
+      with:
+        TranscriptSid: tools.TranscriptSid
+        Redacted: tools.Redacted
+        PageSize: tools.PageSize
+        Page: tools.Page
+        PageToken: tools.PageToken
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: fetch-specific-operator-result-given
+      description: Fetch a specific Operator Result for the given Transcript.
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: intelligence-transcripts.fetchoperatorresult
+      with:
+        TranscriptSid: tools.TranscriptSid
+        OperatorSid: tools.OperatorSid
+        Redacted: tools.Redacted
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: get-all-transcript-sentences-transcriptsid
+      description: Get all Transcript Sentences by TranscriptSid
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: intelligence-transcripts.listsentence
+      with:
+        TranscriptSid: tools.TranscriptSid
+        Redacted: tools.Redacted
+        PageSize: tools.PageSize
+        Page: tools.Page
+        PageToken: tools.PageToken
+      outputParameters:
+      - type: object
+        mapping: $.

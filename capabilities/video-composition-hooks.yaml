@@ -1,0 +1,235 @@
+naftiko: 1.0.0-alpha2
+info:
+  label: Twilio Video API — Composition Hooks
+  description: 'Twilio Video API — Composition Hooks. 5 operations. Lead operation: Twilio List Composition Hooks. Self-contained
+    Naftiko capability covering one Twilio business surface.'
+  tags:
+  - Twilio
+  - Composition Hooks
+  created: '2026-05-19'
+  modified: '2026-05-19'
+binds:
+- namespace: env
+  keys:
+    TWILIO_API_KEY: TWILIO_API_KEY
+capability:
+  consumes:
+  - type: http
+    namespace: video-composition-hooks
+    baseUri: https://video.twilio.com/v1
+    description: Twilio Video API — Composition Hooks business capability. Self-contained, no shared references.
+    resources:
+    - name: CompositionHooks
+      path: /CompositionHooks
+      operations:
+      - name: listcompositionhooks
+        method: GET
+        description: Twilio List Composition Hooks
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: Enabled
+          in: query
+          type: boolean
+        - name: PageSize
+          in: query
+          type: integer
+      - name: createcompositionhook
+        method: POST
+        description: Twilio Create a Composition Hook
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: true
+    - name: CompositionHooks-CompositionHookSid
+      path: /CompositionHooks/{CompositionHookSid}
+      operations:
+      - name: fetchcompositionhook
+        method: GET
+        description: Twilio Fetch a Composition Hook
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: CompositionHookSid
+          in: path
+          type: string
+          required: true
+      - name: updatecompositionhook
+        method: POST
+        description: Twilio Update a Composition Hook
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: CompositionHookSid
+          in: path
+          type: string
+          required: true
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: true
+      - name: deletecompositionhook
+        method: DELETE
+        description: Twilio Delete a Composition Hook
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: CompositionHookSid
+          in: path
+          type: string
+          required: true
+    authentication:
+      type: basic
+      username: '{{env.TWILIO_USER}}'
+      password: '{{env.TWILIO_PASS}}'
+  exposes:
+  - type: rest
+    namespace: video-composition-hooks-rest
+    port: 8080
+    description: REST adapter for Twilio Video API — Composition Hooks. One Spectral-compliant resource per consumed operation,
+      prefixed with /v1.
+    resources:
+    - path: /v1/compositionhooks
+      name: compositionhooks
+      description: REST surface for CompositionHooks.
+      operations:
+      - method: GET
+        name: listcompositionhooks
+        description: Twilio List Composition Hooks
+        call: video-composition-hooks.listcompositionhooks
+        with:
+          Enabled: rest.Enabled
+          PageSize: rest.PageSize
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: POST
+        name: createcompositionhook
+        description: Twilio Create a Composition Hook
+        call: video-composition-hooks.createcompositionhook
+        with:
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/compositionhooks/{compositionhooksid}
+      name: compositionhooks-compositionhooksid
+      description: REST surface for CompositionHooks-CompositionHookSid.
+      operations:
+      - method: GET
+        name: fetchcompositionhook
+        description: Twilio Fetch a Composition Hook
+        call: video-composition-hooks.fetchcompositionhook
+        with:
+          CompositionHookSid: rest.CompositionHookSid
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: POST
+        name: updatecompositionhook
+        description: Twilio Update a Composition Hook
+        call: video-composition-hooks.updatecompositionhook
+        with:
+          CompositionHookSid: rest.CompositionHookSid
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: DELETE
+        name: deletecompositionhook
+        description: Twilio Delete a Composition Hook
+        call: video-composition-hooks.deletecompositionhook
+        with:
+          CompositionHookSid: rest.CompositionHookSid
+        outputParameters:
+        - type: object
+          mapping: $.
+  - type: mcp
+    namespace: video-composition-hooks-mcp
+    port: 9090
+    transport: http
+    description: MCP adapter for Twilio Video API — Composition Hooks. One tool per consumed operation, routed inline through
+      this capability's consumes block.
+    tools:
+    - name: twilio-list-composition-hooks
+      description: Twilio List Composition Hooks
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: video-composition-hooks.listcompositionhooks
+      with:
+        Enabled: tools.Enabled
+        PageSize: tools.PageSize
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: twilio-create-composition-hook
+      description: Twilio Create a Composition Hook
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: video-composition-hooks.createcompositionhook
+      with:
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: twilio-fetch-composition-hook
+      description: Twilio Fetch a Composition Hook
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: video-composition-hooks.fetchcompositionhook
+      with:
+        CompositionHookSid: tools.CompositionHookSid
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: twilio-update-composition-hook
+      description: Twilio Update a Composition Hook
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: video-composition-hooks.updatecompositionhook
+      with:
+        CompositionHookSid: tools.CompositionHookSid
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: twilio-delete-composition-hook
+      description: Twilio Delete a Composition Hook
+      hints:
+        readOnly: false
+        destructive: true
+        idempotent: true
+      call: video-composition-hooks.deletecompositionhook
+      with:
+        CompositionHookSid: tools.CompositionHookSid
+      outputParameters:
+      - type: object
+        mapping: $.

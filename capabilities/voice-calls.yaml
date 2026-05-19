@@ -1,0 +1,236 @@
+naftiko: 1.0.0-alpha2
+info:
+  label: Twilio Voice API — Calls
+  description: 'Twilio Voice API — Calls. 5 operations. Lead operation: Twilio List Calls. Self-contained Naftiko capability
+    covering one Twilio business surface.'
+  tags:
+  - Twilio
+  - Calls
+  created: '2026-05-19'
+  modified: '2026-05-19'
+binds:
+- namespace: env
+  keys:
+    TWILIO_API_KEY: TWILIO_API_KEY
+capability:
+  consumes:
+  - type: http
+    namespace: voice-calls
+    baseUri: https://api.twilio.com/2010-04-01
+    description: Twilio Voice API — Calls business capability. Self-contained, no shared references.
+    resources:
+    - name: Accounts-AccountSid-Calls.json
+      path: /Accounts/{AccountSid}/Calls.json
+      operations:
+      - name: listcalls
+        method: GET
+        description: Twilio List Calls
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: To
+          in: query
+          type: string
+          description: Filter by the phone number that received the call
+        - name: From
+          in: query
+          type: string
+          description: Filter by the phone number that initiated the call
+        - name: Status
+          in: query
+          type: string
+          description: Filter by call status
+        - name: StartTime
+          in: query
+          type: string
+          description: Filter by start time (YYYY-MM-DD)
+        - name: EndTime
+          in: query
+          type: string
+          description: Filter by end time (YYYY-MM-DD)
+        - name: PageSize
+          in: query
+          type: integer
+      - name: createcall
+        method: POST
+        description: Twilio Make a Call
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: true
+    - name: Accounts-AccountSid-Calls-CallSid}.json
+      path: /Accounts/{AccountSid}/Calls/{CallSid}.json
+      operations:
+      - name: fetchcall
+        method: GET
+        description: Twilio Fetch a Call
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+      - name: updatecall
+        method: POST
+        description: Twilio Modify a Live Call
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: true
+      - name: deletecall
+        method: DELETE
+        description: Twilio Delete a Call Record
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+    authentication:
+      type: basic
+      username: '{{env.TWILIO_USER}}'
+      password: '{{env.TWILIO_PASS}}'
+  exposes:
+  - type: rest
+    namespace: voice-calls-rest
+    port: 8080
+    description: REST adapter for Twilio Voice API — Calls. One Spectral-compliant resource per consumed operation, prefixed
+      with /v1.
+    resources:
+    - path: /v1/accounts/{accountsid}/calls-json
+      name: accounts-accountsid-calls-json
+      description: REST surface for Accounts-AccountSid-Calls.json.
+      operations:
+      - method: GET
+        name: listcalls
+        description: Twilio List Calls
+        call: voice-calls.listcalls
+        with:
+          To: rest.To
+          From: rest.From
+          Status: rest.Status
+          StartTime: rest.StartTime
+          EndTime: rest.EndTime
+          PageSize: rest.PageSize
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: POST
+        name: createcall
+        description: Twilio Make a Call
+        call: voice-calls.createcall
+        with:
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/accounts/{accountsid}/calls/callsid-json
+      name: accounts-accountsid-calls-callsid-json
+      description: REST surface for Accounts-AccountSid-Calls-CallSid}.json.
+      operations:
+      - method: GET
+        name: fetchcall
+        description: Twilio Fetch a Call
+        call: voice-calls.fetchcall
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: POST
+        name: updatecall
+        description: Twilio Modify a Live Call
+        call: voice-calls.updatecall
+        with:
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: DELETE
+        name: deletecall
+        description: Twilio Delete a Call Record
+        call: voice-calls.deletecall
+        outputParameters:
+        - type: object
+          mapping: $.
+  - type: mcp
+    namespace: voice-calls-mcp
+    port: 9090
+    transport: http
+    description: MCP adapter for Twilio Voice API — Calls. One tool per consumed operation, routed inline through this capability's
+      consumes block.
+    tools:
+    - name: twilio-list-calls
+      description: Twilio List Calls
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: voice-calls.listcalls
+      with:
+        To: tools.To
+        From: tools.From
+        Status: tools.Status
+        StartTime: tools.StartTime
+        EndTime: tools.EndTime
+        PageSize: tools.PageSize
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: twilio-make-call
+      description: Twilio Make a Call
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: voice-calls.createcall
+      with:
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: twilio-fetch-call
+      description: Twilio Fetch a Call
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: voice-calls.fetchcall
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: twilio-modify-live-call
+      description: Twilio Modify a Live Call
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: voice-calls.updatecall
+      with:
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: twilio-delete-call-record
+      description: Twilio Delete a Call Record
+      hints:
+        readOnly: false
+        destructive: true
+        idempotent: true
+      call: voice-calls.deletecall
+      outputParameters:
+      - type: object
+        mapping: $.

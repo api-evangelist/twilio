@@ -1,0 +1,2059 @@
+naftiko: 1.0.0-alpha2
+info:
+  label: Twilio - Serverless — Services
+  description: 'Twilio - Serverless — Services. 39 operations. Lead operation: Services. Self-contained Naftiko capability
+    covering one Twilio business surface.'
+  tags:
+  - Twilio
+  - Services
+  created: '2026-05-19'
+  modified: '2026-05-19'
+binds:
+- namespace: env
+  keys:
+    TWILIO_API_KEY: TWILIO_API_KEY
+capability:
+  consumes:
+  - type: http
+    namespace: serverless-services
+    baseUri: https://serverless.twilio.com
+    description: Twilio - Serverless — Services business capability. Self-contained, no shared references.
+    resources:
+    - name: v1-Services
+      path: /v1/Services
+      operations:
+      - name: listservice
+        method: GET
+        description: Retrieve a list of all Services.
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: PageSize
+          in: query
+          type: integer
+          description: How many resources to return in each list page. The default is 50, and the maximum is 1000.
+        - name: Page
+          in: query
+          type: integer
+          description: The page index. This value is simply for client state.
+        - name: PageToken
+          in: query
+          type: string
+          description: The page token. This is provided by the API.
+      - name: createservice
+        method: POST
+        description: Create a new Service resource.
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: false
+    - name: v1-Services-ServiceSid-Assets
+      path: /v1/Services/{ServiceSid}/Assets
+      operations:
+      - name: listasset
+        method: GET
+        description: Retrieve a list of all Assets.
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: ServiceSid
+          in: path
+          type: string
+          description: The SID of the Service to read the Asset resources from.
+          required: true
+        - name: PageSize
+          in: query
+          type: integer
+          description: How many resources to return in each list page. The default is 50, and the maximum is 1000.
+        - name: Page
+          in: query
+          type: integer
+          description: The page index. This value is simply for client state.
+        - name: PageToken
+          in: query
+          type: string
+          description: The page token. This is provided by the API.
+      - name: createasset
+        method: POST
+        description: Create a new Asset resource.
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: ServiceSid
+          in: path
+          type: string
+          description: The SID of the Service to create the Asset resource under.
+          required: true
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: false
+    - name: v1-Services-ServiceSid-Assets-AssetSid-Versions
+      path: /v1/Services/{ServiceSid}/Assets/{AssetSid}/Versions
+      operations:
+      - name: listassetversion
+        method: GET
+        description: Retrieve a list of all Asset Versions.
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: ServiceSid
+          in: path
+          type: string
+          description: The SID of the Service to read the Asset Version resource from.
+          required: true
+        - name: AssetSid
+          in: path
+          type: string
+          description: The SID of the Asset resource that is the parent of the Asset Version resources to read.
+          required: true
+        - name: PageSize
+          in: query
+          type: integer
+          description: How many resources to return in each list page. The default is 50, and the maximum is 1000.
+        - name: Page
+          in: query
+          type: integer
+          description: The page index. This value is simply for client state.
+        - name: PageToken
+          in: query
+          type: string
+          description: The page token. This is provided by the API.
+    - name: v1-Services-ServiceSid-Assets-AssetSid-Versions-Sid
+      path: /v1/Services/{ServiceSid}/Assets/{AssetSid}/Versions/{Sid}
+      operations:
+      - name: fetchassetversion
+        method: GET
+        description: Retrieve a specific Asset Version.
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: ServiceSid
+          in: path
+          type: string
+          description: The SID of the Service to fetch the Asset Version resource from.
+          required: true
+        - name: AssetSid
+          in: path
+          type: string
+          description: The SID of the Asset resource that is the parent of the Asset Version resource to fetch.
+          required: true
+        - name: Sid
+          in: path
+          type: string
+          description: The SID of the Asset Version resource to fetch.
+          required: true
+    - name: v1-Services-ServiceSid-Assets-Sid
+      path: /v1/Services/{ServiceSid}/Assets/{Sid}
+      operations:
+      - name: fetchasset
+        method: GET
+        description: Retrieve a specific Asset resource.
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: ServiceSid
+          in: path
+          type: string
+          description: The SID of the Service to fetch the Asset resource from.
+          required: true
+        - name: Sid
+          in: path
+          type: string
+          description: The SID that identifies the Asset resource to fetch.
+          required: true
+      - name: deleteasset
+        method: DELETE
+        description: Delete an Asset resource.
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: ServiceSid
+          in: path
+          type: string
+          description: The SID of the Service to delete the Asset resource from.
+          required: true
+        - name: Sid
+          in: path
+          type: string
+          description: The SID that identifies the Asset resource to delete.
+          required: true
+      - name: updateasset
+        method: POST
+        description: Update a specific Asset resource.
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: ServiceSid
+          in: path
+          type: string
+          description: The SID of the Service to update the Asset resource from.
+          required: true
+        - name: Sid
+          in: path
+          type: string
+          description: The SID that identifies the Asset resource to update.
+          required: true
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: false
+    - name: v1-Services-ServiceSid-Builds
+      path: /v1/Services/{ServiceSid}/Builds
+      operations:
+      - name: listbuild
+        method: GET
+        description: Retrieve a list of all Builds.
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: ServiceSid
+          in: path
+          type: string
+          description: The SID of the Service to read the Build resources from.
+          required: true
+        - name: PageSize
+          in: query
+          type: integer
+          description: How many resources to return in each list page. The default is 50, and the maximum is 1000.
+        - name: Page
+          in: query
+          type: integer
+          description: The page index. This value is simply for client state.
+        - name: PageToken
+          in: query
+          type: string
+          description: The page token. This is provided by the API.
+      - name: createbuild
+        method: POST
+        description: Create a new Build resource. At least one function version or asset version is required.
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: ServiceSid
+          in: path
+          type: string
+          description: The SID of the Service to create the Build resource under.
+          required: true
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: false
+    - name: v1-Services-ServiceSid-Builds-Sid
+      path: /v1/Services/{ServiceSid}/Builds/{Sid}
+      operations:
+      - name: fetchbuild
+        method: GET
+        description: Retrieve a specific Build resource.
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: ServiceSid
+          in: path
+          type: string
+          description: The SID of the Service to fetch the Build resource from.
+          required: true
+        - name: Sid
+          in: path
+          type: string
+          description: The SID of the Build resource to fetch.
+          required: true
+      - name: deletebuild
+        method: DELETE
+        description: Delete a Build resource.
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: ServiceSid
+          in: path
+          type: string
+          description: The SID of the Service to delete the Build resource from.
+          required: true
+        - name: Sid
+          in: path
+          type: string
+          description: The SID of the Build resource to delete.
+          required: true
+    - name: v1-Services-ServiceSid-Builds-Sid-Status
+      path: /v1/Services/{ServiceSid}/Builds/{Sid}/Status
+      operations:
+      - name: fetchbuildstatus
+        method: GET
+        description: Retrieve a specific Build resource.
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: ServiceSid
+          in: path
+          type: string
+          description: The SID of the Service to fetch the Build resource from.
+          required: true
+        - name: Sid
+          in: path
+          type: string
+          description: The SID of the Build resource to fetch.
+          required: true
+    - name: v1-Services-ServiceSid-Environments
+      path: /v1/Services/{ServiceSid}/Environments
+      operations:
+      - name: listenvironment
+        method: GET
+        description: Retrieve a list of all environments.
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: ServiceSid
+          in: path
+          type: string
+          description: The SID of the Service to read the Environment resources from.
+          required: true
+        - name: PageSize
+          in: query
+          type: integer
+          description: How many resources to return in each list page. The default is 50, and the maximum is 1000.
+        - name: Page
+          in: query
+          type: integer
+          description: The page index. This value is simply for client state.
+        - name: PageToken
+          in: query
+          type: string
+          description: The page token. This is provided by the API.
+      - name: createenvironment
+        method: POST
+        description: Create a new environment.
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: ServiceSid
+          in: path
+          type: string
+          description: The SID of the Service to create the Environment resource under.
+          required: true
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: false
+    - name: v1-Services-ServiceSid-Environments-EnvironmentSid-Deployments
+      path: /v1/Services/{ServiceSid}/Environments/{EnvironmentSid}/Deployments
+      operations:
+      - name: listdeployment
+        method: GET
+        description: Retrieve a list of all Deployments.
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: ServiceSid
+          in: path
+          type: string
+          description: The SID of the Service to read the Deployment resources from.
+          required: true
+        - name: EnvironmentSid
+          in: path
+          type: string
+          description: The SID of the Environment used by the Deployment resources to read.
+          required: true
+        - name: PageSize
+          in: query
+          type: integer
+          description: How many resources to return in each list page. The default is 50, and the maximum is 1000.
+        - name: Page
+          in: query
+          type: integer
+          description: The page index. This value is simply for client state.
+        - name: PageToken
+          in: query
+          type: string
+          description: The page token. This is provided by the API.
+      - name: createdeployment
+        method: POST
+        description: Create a new Deployment.
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: ServiceSid
+          in: path
+          type: string
+          description: The SID of the Service to create the Deployment resource under.
+          required: true
+        - name: EnvironmentSid
+          in: path
+          type: string
+          description: The SID of the Environment for the Deployment.
+          required: true
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: false
+    - name: v1-Services-ServiceSid-Environments-EnvironmentSid-Deployments-Sid
+      path: /v1/Services/{ServiceSid}/Environments/{EnvironmentSid}/Deployments/{Sid}
+      operations:
+      - name: fetchdeployment
+        method: GET
+        description: Retrieve a specific Deployment.
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: ServiceSid
+          in: path
+          type: string
+          description: The SID of the Service to fetch the Deployment resource from.
+          required: true
+        - name: EnvironmentSid
+          in: path
+          type: string
+          description: The SID of the Environment used by the Deployment to fetch.
+          required: true
+        - name: Sid
+          in: path
+          type: string
+          description: The SID that identifies the Deployment resource to fetch.
+          required: true
+    - name: v1-Services-ServiceSid-Environments-EnvironmentSid-Logs
+      path: /v1/Services/{ServiceSid}/Environments/{EnvironmentSid}/Logs
+      operations:
+      - name: listlog
+        method: GET
+        description: Retrieve a list of all logs.
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: ServiceSid
+          in: path
+          type: string
+          description: The SID of the Service to read the Log resource from.
+          required: true
+        - name: EnvironmentSid
+          in: path
+          type: string
+          description: The SID of the environment with the Log resources to read.
+          required: true
+        - name: FunctionSid
+          in: query
+          type: string
+          description: The SID of the function whose invocation produced the Log resources to read.
+        - name: StartDate
+          in: query
+          type: string
+          description: The date/time (in GMT, ISO 8601) after which the Log resources must have been created. Defaults to
+            1 day prior to current date/time.
+        - name: EndDate
+          in: query
+          type: string
+          description: The date/time (in GMT, ISO 8601) before which the Log resources must have been created. Defaults to
+            current date/time.
+        - name: PageSize
+          in: query
+          type: integer
+          description: How many resources to return in each list page. The default is 50, and the maximum is 1000.
+        - name: Page
+          in: query
+          type: integer
+          description: The page index. This value is simply for client state.
+        - name: PageToken
+          in: query
+          type: string
+          description: The page token. This is provided by the API.
+    - name: v1-Services-ServiceSid-Environments-EnvironmentSid-Logs-Sid
+      path: /v1/Services/{ServiceSid}/Environments/{EnvironmentSid}/Logs/{Sid}
+      operations:
+      - name: fetchlog
+        method: GET
+        description: Retrieve a specific log.
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: ServiceSid
+          in: path
+          type: string
+          description: The SID of the Service to fetch the Log resource from.
+          required: true
+        - name: EnvironmentSid
+          in: path
+          type: string
+          description: The SID of the environment with the Log resource to fetch.
+          required: true
+        - name: Sid
+          in: path
+          type: string
+          description: The SID of the Log resource to fetch.
+          required: true
+    - name: v1-Services-ServiceSid-Environments-EnvironmentSid-Variables
+      path: /v1/Services/{ServiceSid}/Environments/{EnvironmentSid}/Variables
+      operations:
+      - name: listvariable
+        method: GET
+        description: Retrieve a list of all Variables.
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: ServiceSid
+          in: path
+          type: string
+          description: The SID of the Service to read the Variable resources from.
+          required: true
+        - name: EnvironmentSid
+          in: path
+          type: string
+          description: The SID of the Environment with the Variable resources to read.
+          required: true
+        - name: PageSize
+          in: query
+          type: integer
+          description: How many resources to return in each list page. The default is 50, and the maximum is 1000.
+        - name: Page
+          in: query
+          type: integer
+          description: The page index. This value is simply for client state.
+        - name: PageToken
+          in: query
+          type: string
+          description: The page token. This is provided by the API.
+      - name: createvariable
+        method: POST
+        description: Create a new Variable.
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: ServiceSid
+          in: path
+          type: string
+          description: The SID of the Service to create the Variable resource under.
+          required: true
+        - name: EnvironmentSid
+          in: path
+          type: string
+          description: The SID of the Environment in which the Variable resource exists.
+          required: true
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: false
+    - name: v1-Services-ServiceSid-Environments-EnvironmentSid-Variables-Sid
+      path: /v1/Services/{ServiceSid}/Environments/{EnvironmentSid}/Variables/{Sid}
+      operations:
+      - name: fetchvariable
+        method: GET
+        description: Retrieve a specific Variable.
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: ServiceSid
+          in: path
+          type: string
+          description: The SID of the Service to fetch the Variable resource from.
+          required: true
+        - name: EnvironmentSid
+          in: path
+          type: string
+          description: The SID of the Environment with the Variable resource to fetch.
+          required: true
+        - name: Sid
+          in: path
+          type: string
+          description: The SID of the Variable resource to fetch.
+          required: true
+      - name: updatevariable
+        method: POST
+        description: Update a specific Variable.
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: ServiceSid
+          in: path
+          type: string
+          description: The SID of the Service to update the Variable resource under.
+          required: true
+        - name: EnvironmentSid
+          in: path
+          type: string
+          description: The SID of the Environment with the Variable resource to update.
+          required: true
+        - name: Sid
+          in: path
+          type: string
+          description: The SID of the Variable resource to update.
+          required: true
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: false
+      - name: deletevariable
+        method: DELETE
+        description: Delete a specific Variable.
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: ServiceSid
+          in: path
+          type: string
+          description: The SID of the Service to delete the Variable resource from.
+          required: true
+        - name: EnvironmentSid
+          in: path
+          type: string
+          description: The SID of the Environment with the Variables to delete.
+          required: true
+        - name: Sid
+          in: path
+          type: string
+          description: The SID of the Variable resource to delete.
+          required: true
+    - name: v1-Services-ServiceSid-Environments-Sid
+      path: /v1/Services/{ServiceSid}/Environments/{Sid}
+      operations:
+      - name: fetchenvironment
+        method: GET
+        description: Retrieve a specific environment.
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: ServiceSid
+          in: path
+          type: string
+          description: The SID of the Service to fetch the Environment resource from.
+          required: true
+        - name: Sid
+          in: path
+          type: string
+          description: The SID of the Environment resource to fetch.
+          required: true
+      - name: deleteenvironment
+        method: DELETE
+        description: Delete a specific environment.
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: ServiceSid
+          in: path
+          type: string
+          description: The SID of the Service to delete the Environment resource from.
+          required: true
+        - name: Sid
+          in: path
+          type: string
+          description: The SID of the Environment resource to delete.
+          required: true
+    - name: v1-Services-ServiceSid-Functions
+      path: /v1/Services/{ServiceSid}/Functions
+      operations:
+      - name: listfunction
+        method: GET
+        description: Retrieve a list of all Functions.
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: ServiceSid
+          in: path
+          type: string
+          description: The SID of the Service to read the Function resources from.
+          required: true
+        - name: PageSize
+          in: query
+          type: integer
+          description: How many resources to return in each list page. The default is 50, and the maximum is 1000.
+        - name: Page
+          in: query
+          type: integer
+          description: The page index. This value is simply for client state.
+        - name: PageToken
+          in: query
+          type: string
+          description: The page token. This is provided by the API.
+      - name: createfunction
+        method: POST
+        description: Create a new Function resource.
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: ServiceSid
+          in: path
+          type: string
+          description: The SID of the Service to create the Function resource under.
+          required: true
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: false
+    - name: v1-Services-ServiceSid-Functions-FunctionSid-Versions
+      path: /v1/Services/{ServiceSid}/Functions/{FunctionSid}/Versions
+      operations:
+      - name: listfunctionversion
+        method: GET
+        description: Retrieve a list of all Function Version resources.
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: ServiceSid
+          in: path
+          type: string
+          description: The SID of the Service to read the Function Version resources from.
+          required: true
+        - name: FunctionSid
+          in: path
+          type: string
+          description: The SID of the function that is the parent of the Function Version resources to read.
+          required: true
+        - name: PageSize
+          in: query
+          type: integer
+          description: How many resources to return in each list page. The default is 50, and the maximum is 1000.
+        - name: Page
+          in: query
+          type: integer
+          description: The page index. This value is simply for client state.
+        - name: PageToken
+          in: query
+          type: string
+          description: The page token. This is provided by the API.
+    - name: v1-Services-ServiceSid-Functions-FunctionSid-Versions-Sid
+      path: /v1/Services/{ServiceSid}/Functions/{FunctionSid}/Versions/{Sid}
+      operations:
+      - name: fetchfunctionversion
+        method: GET
+        description: Retrieve a specific Function Version resource.
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: ServiceSid
+          in: path
+          type: string
+          description: The SID of the Service to fetch the Function Version resource from.
+          required: true
+        - name: FunctionSid
+          in: path
+          type: string
+          description: The SID of the function that is the parent of the Function Version resource to fetch.
+          required: true
+        - name: Sid
+          in: path
+          type: string
+          description: The SID of the Function Version resource to fetch.
+          required: true
+    - name: v1-Services-ServiceSid-Functions-FunctionSid-Versions-Sid-Content
+      path: /v1/Services/{ServiceSid}/Functions/{FunctionSid}/Versions/{Sid}/Content
+      operations:
+      - name: fetchfunctionversioncontent
+        method: GET
+        description: Retrieve a the content of a specific Function Version resource.
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: ServiceSid
+          in: path
+          type: string
+          description: The SID of the Service to fetch the Function Version content from.
+          required: true
+        - name: FunctionSid
+          in: path
+          type: string
+          description: The SID of the Function that is the parent of the Function Version content to fetch.
+          required: true
+        - name: Sid
+          in: path
+          type: string
+          description: The SID of the Function Version content to fetch.
+          required: true
+    - name: v1-Services-ServiceSid-Functions-Sid
+      path: /v1/Services/{ServiceSid}/Functions/{Sid}
+      operations:
+      - name: fetchfunction
+        method: GET
+        description: Retrieve a specific Function resource.
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: ServiceSid
+          in: path
+          type: string
+          description: The SID of the Service to fetch the Function resource from.
+          required: true
+        - name: Sid
+          in: path
+          type: string
+          description: The SID of the Function resource to fetch.
+          required: true
+      - name: deletefunction
+        method: DELETE
+        description: Delete a Function resource.
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: ServiceSid
+          in: path
+          type: string
+          description: The SID of the Service to delete the Function resource from.
+          required: true
+        - name: Sid
+          in: path
+          type: string
+          description: The SID of the Function resource to delete.
+          required: true
+      - name: updatefunction
+        method: POST
+        description: Update a specific Function resource.
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: ServiceSid
+          in: path
+          type: string
+          description: The SID of the Service to update the Function resource from.
+          required: true
+        - name: Sid
+          in: path
+          type: string
+          description: The SID of the Function resource to update.
+          required: true
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: false
+    - name: v1-Services-Sid
+      path: /v1/Services/{Sid}
+      operations:
+      - name: fetchservice
+        method: GET
+        description: Retrieve a specific Service resource.
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: Sid
+          in: path
+          type: string
+          description: The `sid` or `unique_name` of the Service resource to fetch.
+          required: true
+      - name: deleteservice
+        method: DELETE
+        description: Delete a Service resource.
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: Sid
+          in: path
+          type: string
+          description: The `sid` or `unique_name` of the Service resource to delete.
+          required: true
+      - name: updateservice
+        method: POST
+        description: Update a specific Service resource.
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: Sid
+          in: path
+          type: string
+          description: The `sid` or `unique_name` of the Service resource to update.
+          required: true
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: false
+    authentication:
+      type: basic
+      username: '{{env.TWILIO_USER}}'
+      password: '{{env.TWILIO_PASS}}'
+  exposes:
+  - type: rest
+    namespace: serverless-services-rest
+    port: 8080
+    description: REST adapter for Twilio - Serverless — Services. One Spectral-compliant resource per consumed operation,
+      prefixed with /v1.
+    resources:
+    - path: /v1/v1/services
+      name: v1-services
+      description: REST surface for v1-Services.
+      operations:
+      - method: GET
+        name: listservice
+        description: Retrieve a list of all Services.
+        call: serverless-services.listservice
+        with:
+          PageSize: rest.PageSize
+          Page: rest.Page
+          PageToken: rest.PageToken
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: POST
+        name: createservice
+        description: Create a new Service resource.
+        call: serverless-services.createservice
+        with:
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/v1/services/{servicesid}/assets
+      name: v1-services-servicesid-assets
+      description: REST surface for v1-Services-ServiceSid-Assets.
+      operations:
+      - method: GET
+        name: listasset
+        description: Retrieve a list of all Assets.
+        call: serverless-services.listasset
+        with:
+          ServiceSid: rest.ServiceSid
+          PageSize: rest.PageSize
+          Page: rest.Page
+          PageToken: rest.PageToken
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: POST
+        name: createasset
+        description: Create a new Asset resource.
+        call: serverless-services.createasset
+        with:
+          ServiceSid: rest.ServiceSid
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/v1/services/{servicesid}/assets/{assetsid}/versions
+      name: v1-services-servicesid-assets-assetsid-versions
+      description: REST surface for v1-Services-ServiceSid-Assets-AssetSid-Versions.
+      operations:
+      - method: GET
+        name: listassetversion
+        description: Retrieve a list of all Asset Versions.
+        call: serverless-services.listassetversion
+        with:
+          ServiceSid: rest.ServiceSid
+          AssetSid: rest.AssetSid
+          PageSize: rest.PageSize
+          Page: rest.Page
+          PageToken: rest.PageToken
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/v1/services/{servicesid}/assets/{assetsid}/versions/{sid}
+      name: v1-services-servicesid-assets-assetsid-versions-sid
+      description: REST surface for v1-Services-ServiceSid-Assets-AssetSid-Versions-Sid.
+      operations:
+      - method: GET
+        name: fetchassetversion
+        description: Retrieve a specific Asset Version.
+        call: serverless-services.fetchassetversion
+        with:
+          ServiceSid: rest.ServiceSid
+          AssetSid: rest.AssetSid
+          Sid: rest.Sid
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/v1/services/{servicesid}/assets/{sid}
+      name: v1-services-servicesid-assets-sid
+      description: REST surface for v1-Services-ServiceSid-Assets-Sid.
+      operations:
+      - method: GET
+        name: fetchasset
+        description: Retrieve a specific Asset resource.
+        call: serverless-services.fetchasset
+        with:
+          ServiceSid: rest.ServiceSid
+          Sid: rest.Sid
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: DELETE
+        name: deleteasset
+        description: Delete an Asset resource.
+        call: serverless-services.deleteasset
+        with:
+          ServiceSid: rest.ServiceSid
+          Sid: rest.Sid
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: POST
+        name: updateasset
+        description: Update a specific Asset resource.
+        call: serverless-services.updateasset
+        with:
+          ServiceSid: rest.ServiceSid
+          Sid: rest.Sid
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/v1/services/{servicesid}/builds
+      name: v1-services-servicesid-builds
+      description: REST surface for v1-Services-ServiceSid-Builds.
+      operations:
+      - method: GET
+        name: listbuild
+        description: Retrieve a list of all Builds.
+        call: serverless-services.listbuild
+        with:
+          ServiceSid: rest.ServiceSid
+          PageSize: rest.PageSize
+          Page: rest.Page
+          PageToken: rest.PageToken
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: POST
+        name: createbuild
+        description: Create a new Build resource. At least one function version or asset version is required.
+        call: serverless-services.createbuild
+        with:
+          ServiceSid: rest.ServiceSid
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/v1/services/{servicesid}/builds/{sid}
+      name: v1-services-servicesid-builds-sid
+      description: REST surface for v1-Services-ServiceSid-Builds-Sid.
+      operations:
+      - method: GET
+        name: fetchbuild
+        description: Retrieve a specific Build resource.
+        call: serverless-services.fetchbuild
+        with:
+          ServiceSid: rest.ServiceSid
+          Sid: rest.Sid
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: DELETE
+        name: deletebuild
+        description: Delete a Build resource.
+        call: serverless-services.deletebuild
+        with:
+          ServiceSid: rest.ServiceSid
+          Sid: rest.Sid
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/v1/services/{servicesid}/builds/{sid}/status
+      name: v1-services-servicesid-builds-sid-status
+      description: REST surface for v1-Services-ServiceSid-Builds-Sid-Status.
+      operations:
+      - method: GET
+        name: fetchbuildstatus
+        description: Retrieve a specific Build resource.
+        call: serverless-services.fetchbuildstatus
+        with:
+          ServiceSid: rest.ServiceSid
+          Sid: rest.Sid
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/v1/services/{servicesid}/environments
+      name: v1-services-servicesid-environments
+      description: REST surface for v1-Services-ServiceSid-Environments.
+      operations:
+      - method: GET
+        name: listenvironment
+        description: Retrieve a list of all environments.
+        call: serverless-services.listenvironment
+        with:
+          ServiceSid: rest.ServiceSid
+          PageSize: rest.PageSize
+          Page: rest.Page
+          PageToken: rest.PageToken
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: POST
+        name: createenvironment
+        description: Create a new environment.
+        call: serverless-services.createenvironment
+        with:
+          ServiceSid: rest.ServiceSid
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/v1/services/{servicesid}/environments/{environmentsid}/deployments
+      name: v1-services-servicesid-environments-environmentsid-deployments
+      description: REST surface for v1-Services-ServiceSid-Environments-EnvironmentSid-Deployments.
+      operations:
+      - method: GET
+        name: listdeployment
+        description: Retrieve a list of all Deployments.
+        call: serverless-services.listdeployment
+        with:
+          ServiceSid: rest.ServiceSid
+          EnvironmentSid: rest.EnvironmentSid
+          PageSize: rest.PageSize
+          Page: rest.Page
+          PageToken: rest.PageToken
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: POST
+        name: createdeployment
+        description: Create a new Deployment.
+        call: serverless-services.createdeployment
+        with:
+          ServiceSid: rest.ServiceSid
+          EnvironmentSid: rest.EnvironmentSid
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/v1/services/{servicesid}/environments/{environmentsid}/deployments/{sid}
+      name: v1-services-servicesid-environments-environmentsid-deployments-sid
+      description: REST surface for v1-Services-ServiceSid-Environments-EnvironmentSid-Deployments-Sid.
+      operations:
+      - method: GET
+        name: fetchdeployment
+        description: Retrieve a specific Deployment.
+        call: serverless-services.fetchdeployment
+        with:
+          ServiceSid: rest.ServiceSid
+          EnvironmentSid: rest.EnvironmentSid
+          Sid: rest.Sid
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/v1/services/{servicesid}/environments/{environmentsid}/logs
+      name: v1-services-servicesid-environments-environmentsid-logs
+      description: REST surface for v1-Services-ServiceSid-Environments-EnvironmentSid-Logs.
+      operations:
+      - method: GET
+        name: listlog
+        description: Retrieve a list of all logs.
+        call: serverless-services.listlog
+        with:
+          ServiceSid: rest.ServiceSid
+          EnvironmentSid: rest.EnvironmentSid
+          FunctionSid: rest.FunctionSid
+          StartDate: rest.StartDate
+          EndDate: rest.EndDate
+          PageSize: rest.PageSize
+          Page: rest.Page
+          PageToken: rest.PageToken
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/v1/services/{servicesid}/environments/{environmentsid}/logs/{sid}
+      name: v1-services-servicesid-environments-environmentsid-logs-sid
+      description: REST surface for v1-Services-ServiceSid-Environments-EnvironmentSid-Logs-Sid.
+      operations:
+      - method: GET
+        name: fetchlog
+        description: Retrieve a specific log.
+        call: serverless-services.fetchlog
+        with:
+          ServiceSid: rest.ServiceSid
+          EnvironmentSid: rest.EnvironmentSid
+          Sid: rest.Sid
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/v1/services/{servicesid}/environments/{environmentsid}/variables
+      name: v1-services-servicesid-environments-environmentsid-variables
+      description: REST surface for v1-Services-ServiceSid-Environments-EnvironmentSid-Variables.
+      operations:
+      - method: GET
+        name: listvariable
+        description: Retrieve a list of all Variables.
+        call: serverless-services.listvariable
+        with:
+          ServiceSid: rest.ServiceSid
+          EnvironmentSid: rest.EnvironmentSid
+          PageSize: rest.PageSize
+          Page: rest.Page
+          PageToken: rest.PageToken
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: POST
+        name: createvariable
+        description: Create a new Variable.
+        call: serverless-services.createvariable
+        with:
+          ServiceSid: rest.ServiceSid
+          EnvironmentSid: rest.EnvironmentSid
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/v1/services/{servicesid}/environments/{environmentsid}/variables/{sid}
+      name: v1-services-servicesid-environments-environmentsid-variables-sid
+      description: REST surface for v1-Services-ServiceSid-Environments-EnvironmentSid-Variables-Sid.
+      operations:
+      - method: GET
+        name: fetchvariable
+        description: Retrieve a specific Variable.
+        call: serverless-services.fetchvariable
+        with:
+          ServiceSid: rest.ServiceSid
+          EnvironmentSid: rest.EnvironmentSid
+          Sid: rest.Sid
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: POST
+        name: updatevariable
+        description: Update a specific Variable.
+        call: serverless-services.updatevariable
+        with:
+          ServiceSid: rest.ServiceSid
+          EnvironmentSid: rest.EnvironmentSid
+          Sid: rest.Sid
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: DELETE
+        name: deletevariable
+        description: Delete a specific Variable.
+        call: serverless-services.deletevariable
+        with:
+          ServiceSid: rest.ServiceSid
+          EnvironmentSid: rest.EnvironmentSid
+          Sid: rest.Sid
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/v1/services/{servicesid}/environments/{sid}
+      name: v1-services-servicesid-environments-sid
+      description: REST surface for v1-Services-ServiceSid-Environments-Sid.
+      operations:
+      - method: GET
+        name: fetchenvironment
+        description: Retrieve a specific environment.
+        call: serverless-services.fetchenvironment
+        with:
+          ServiceSid: rest.ServiceSid
+          Sid: rest.Sid
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: DELETE
+        name: deleteenvironment
+        description: Delete a specific environment.
+        call: serverless-services.deleteenvironment
+        with:
+          ServiceSid: rest.ServiceSid
+          Sid: rest.Sid
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/v1/services/{servicesid}/functions
+      name: v1-services-servicesid-functions
+      description: REST surface for v1-Services-ServiceSid-Functions.
+      operations:
+      - method: GET
+        name: listfunction
+        description: Retrieve a list of all Functions.
+        call: serverless-services.listfunction
+        with:
+          ServiceSid: rest.ServiceSid
+          PageSize: rest.PageSize
+          Page: rest.Page
+          PageToken: rest.PageToken
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: POST
+        name: createfunction
+        description: Create a new Function resource.
+        call: serverless-services.createfunction
+        with:
+          ServiceSid: rest.ServiceSid
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/v1/services/{servicesid}/functions/{functionsid}/versions
+      name: v1-services-servicesid-functions-functionsid-versions
+      description: REST surface for v1-Services-ServiceSid-Functions-FunctionSid-Versions.
+      operations:
+      - method: GET
+        name: listfunctionversion
+        description: Retrieve a list of all Function Version resources.
+        call: serverless-services.listfunctionversion
+        with:
+          ServiceSid: rest.ServiceSid
+          FunctionSid: rest.FunctionSid
+          PageSize: rest.PageSize
+          Page: rest.Page
+          PageToken: rest.PageToken
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/v1/services/{servicesid}/functions/{functionsid}/versions/{sid}
+      name: v1-services-servicesid-functions-functionsid-versions-sid
+      description: REST surface for v1-Services-ServiceSid-Functions-FunctionSid-Versions-Sid.
+      operations:
+      - method: GET
+        name: fetchfunctionversion
+        description: Retrieve a specific Function Version resource.
+        call: serverless-services.fetchfunctionversion
+        with:
+          ServiceSid: rest.ServiceSid
+          FunctionSid: rest.FunctionSid
+          Sid: rest.Sid
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/v1/services/{servicesid}/functions/{functionsid}/versions/{sid}/content
+      name: v1-services-servicesid-functions-functionsid-versions-sid-content
+      description: REST surface for v1-Services-ServiceSid-Functions-FunctionSid-Versions-Sid-Content.
+      operations:
+      - method: GET
+        name: fetchfunctionversioncontent
+        description: Retrieve a the content of a specific Function Version resource.
+        call: serverless-services.fetchfunctionversioncontent
+        with:
+          ServiceSid: rest.ServiceSid
+          FunctionSid: rest.FunctionSid
+          Sid: rest.Sid
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/v1/services/{servicesid}/functions/{sid}
+      name: v1-services-servicesid-functions-sid
+      description: REST surface for v1-Services-ServiceSid-Functions-Sid.
+      operations:
+      - method: GET
+        name: fetchfunction
+        description: Retrieve a specific Function resource.
+        call: serverless-services.fetchfunction
+        with:
+          ServiceSid: rest.ServiceSid
+          Sid: rest.Sid
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: DELETE
+        name: deletefunction
+        description: Delete a Function resource.
+        call: serverless-services.deletefunction
+        with:
+          ServiceSid: rest.ServiceSid
+          Sid: rest.Sid
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: POST
+        name: updatefunction
+        description: Update a specific Function resource.
+        call: serverless-services.updatefunction
+        with:
+          ServiceSid: rest.ServiceSid
+          Sid: rest.Sid
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/v1/services/{sid}
+      name: v1-services-sid
+      description: REST surface for v1-Services-Sid.
+      operations:
+      - method: GET
+        name: fetchservice
+        description: Retrieve a specific Service resource.
+        call: serverless-services.fetchservice
+        with:
+          Sid: rest.Sid
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: DELETE
+        name: deleteservice
+        description: Delete a Service resource.
+        call: serverless-services.deleteservice
+        with:
+          Sid: rest.Sid
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: POST
+        name: updateservice
+        description: Update a specific Service resource.
+        call: serverless-services.updateservice
+        with:
+          Sid: rest.Sid
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+  - type: mcp
+    namespace: serverless-services-mcp
+    port: 9090
+    transport: http
+    description: MCP adapter for Twilio - Serverless — Services. One tool per consumed operation, routed inline through this
+      capability's consumes block.
+    tools:
+    - name: retrieve-list-all-services
+      description: Retrieve a list of all Services.
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: serverless-services.listservice
+      with:
+        PageSize: tools.PageSize
+        Page: tools.Page
+        PageToken: tools.PageToken
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: create-new-service-resource
+      description: Create a new Service resource.
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: serverless-services.createservice
+      with:
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: retrieve-list-all-assets
+      description: Retrieve a list of all Assets.
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: serverless-services.listasset
+      with:
+        ServiceSid: tools.ServiceSid
+        PageSize: tools.PageSize
+        Page: tools.Page
+        PageToken: tools.PageToken
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: create-new-asset-resource
+      description: Create a new Asset resource.
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: serverless-services.createasset
+      with:
+        ServiceSid: tools.ServiceSid
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: retrieve-list-all-asset-versions
+      description: Retrieve a list of all Asset Versions.
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: serverless-services.listassetversion
+      with:
+        ServiceSid: tools.ServiceSid
+        AssetSid: tools.AssetSid
+        PageSize: tools.PageSize
+        Page: tools.Page
+        PageToken: tools.PageToken
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: retrieve-specific-asset-version
+      description: Retrieve a specific Asset Version.
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: serverless-services.fetchassetversion
+      with:
+        ServiceSid: tools.ServiceSid
+        AssetSid: tools.AssetSid
+        Sid: tools.Sid
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: retrieve-specific-asset-resource
+      description: Retrieve a specific Asset resource.
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: serverless-services.fetchasset
+      with:
+        ServiceSid: tools.ServiceSid
+        Sid: tools.Sid
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: delete-asset-resource
+      description: Delete an Asset resource.
+      hints:
+        readOnly: false
+        destructive: true
+        idempotent: true
+      call: serverless-services.deleteasset
+      with:
+        ServiceSid: tools.ServiceSid
+        Sid: tools.Sid
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: update-specific-asset-resource
+      description: Update a specific Asset resource.
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: serverless-services.updateasset
+      with:
+        ServiceSid: tools.ServiceSid
+        Sid: tools.Sid
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: retrieve-list-all-builds
+      description: Retrieve a list of all Builds.
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: serverless-services.listbuild
+      with:
+        ServiceSid: tools.ServiceSid
+        PageSize: tools.PageSize
+        Page: tools.Page
+        PageToken: tools.PageToken
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: create-new-build-resource-least
+      description: Create a new Build resource. At least one function version or asset version is required.
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: serverless-services.createbuild
+      with:
+        ServiceSid: tools.ServiceSid
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: retrieve-specific-build-resource
+      description: Retrieve a specific Build resource.
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: serverless-services.fetchbuild
+      with:
+        ServiceSid: tools.ServiceSid
+        Sid: tools.Sid
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: delete-build-resource
+      description: Delete a Build resource.
+      hints:
+        readOnly: false
+        destructive: true
+        idempotent: true
+      call: serverless-services.deletebuild
+      with:
+        ServiceSid: tools.ServiceSid
+        Sid: tools.Sid
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: retrieve-specific-build-resource-2
+      description: Retrieve a specific Build resource.
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: serverless-services.fetchbuildstatus
+      with:
+        ServiceSid: tools.ServiceSid
+        Sid: tools.Sid
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: retrieve-list-all-environments
+      description: Retrieve a list of all environments.
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: serverless-services.listenvironment
+      with:
+        ServiceSid: tools.ServiceSid
+        PageSize: tools.PageSize
+        Page: tools.Page
+        PageToken: tools.PageToken
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: create-new-environment
+      description: Create a new environment.
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: serverless-services.createenvironment
+      with:
+        ServiceSid: tools.ServiceSid
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: retrieve-list-all-deployments
+      description: Retrieve a list of all Deployments.
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: serverless-services.listdeployment
+      with:
+        ServiceSid: tools.ServiceSid
+        EnvironmentSid: tools.EnvironmentSid
+        PageSize: tools.PageSize
+        Page: tools.Page
+        PageToken: tools.PageToken
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: create-new-deployment
+      description: Create a new Deployment.
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: serverless-services.createdeployment
+      with:
+        ServiceSid: tools.ServiceSid
+        EnvironmentSid: tools.EnvironmentSid
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: retrieve-specific-deployment
+      description: Retrieve a specific Deployment.
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: serverless-services.fetchdeployment
+      with:
+        ServiceSid: tools.ServiceSid
+        EnvironmentSid: tools.EnvironmentSid
+        Sid: tools.Sid
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: retrieve-list-all-logs
+      description: Retrieve a list of all logs.
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: serverless-services.listlog
+      with:
+        ServiceSid: tools.ServiceSid
+        EnvironmentSid: tools.EnvironmentSid
+        FunctionSid: tools.FunctionSid
+        StartDate: tools.StartDate
+        EndDate: tools.EndDate
+        PageSize: tools.PageSize
+        Page: tools.Page
+        PageToken: tools.PageToken
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: retrieve-specific-log
+      description: Retrieve a specific log.
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: serverless-services.fetchlog
+      with:
+        ServiceSid: tools.ServiceSid
+        EnvironmentSid: tools.EnvironmentSid
+        Sid: tools.Sid
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: retrieve-list-all-variables
+      description: Retrieve a list of all Variables.
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: serverless-services.listvariable
+      with:
+        ServiceSid: tools.ServiceSid
+        EnvironmentSid: tools.EnvironmentSid
+        PageSize: tools.PageSize
+        Page: tools.Page
+        PageToken: tools.PageToken
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: create-new-variable
+      description: Create a new Variable.
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: serverless-services.createvariable
+      with:
+        ServiceSid: tools.ServiceSid
+        EnvironmentSid: tools.EnvironmentSid
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: retrieve-specific-variable
+      description: Retrieve a specific Variable.
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: serverless-services.fetchvariable
+      with:
+        ServiceSid: tools.ServiceSid
+        EnvironmentSid: tools.EnvironmentSid
+        Sid: tools.Sid
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: update-specific-variable
+      description: Update a specific Variable.
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: serverless-services.updatevariable
+      with:
+        ServiceSid: tools.ServiceSid
+        EnvironmentSid: tools.EnvironmentSid
+        Sid: tools.Sid
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: delete-specific-variable
+      description: Delete a specific Variable.
+      hints:
+        readOnly: false
+        destructive: true
+        idempotent: true
+      call: serverless-services.deletevariable
+      with:
+        ServiceSid: tools.ServiceSid
+        EnvironmentSid: tools.EnvironmentSid
+        Sid: tools.Sid
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: retrieve-specific-environment
+      description: Retrieve a specific environment.
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: serverless-services.fetchenvironment
+      with:
+        ServiceSid: tools.ServiceSid
+        Sid: tools.Sid
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: delete-specific-environment
+      description: Delete a specific environment.
+      hints:
+        readOnly: false
+        destructive: true
+        idempotent: true
+      call: serverless-services.deleteenvironment
+      with:
+        ServiceSid: tools.ServiceSid
+        Sid: tools.Sid
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: retrieve-list-all-functions
+      description: Retrieve a list of all Functions.
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: serverless-services.listfunction
+      with:
+        ServiceSid: tools.ServiceSid
+        PageSize: tools.PageSize
+        Page: tools.Page
+        PageToken: tools.PageToken
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: create-new-function-resource
+      description: Create a new Function resource.
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: serverless-services.createfunction
+      with:
+        ServiceSid: tools.ServiceSid
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: retrieve-list-all-function-version
+      description: Retrieve a list of all Function Version resources.
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: serverless-services.listfunctionversion
+      with:
+        ServiceSid: tools.ServiceSid
+        FunctionSid: tools.FunctionSid
+        PageSize: tools.PageSize
+        Page: tools.Page
+        PageToken: tools.PageToken
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: retrieve-specific-function-version-resource
+      description: Retrieve a specific Function Version resource.
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: serverless-services.fetchfunctionversion
+      with:
+        ServiceSid: tools.ServiceSid
+        FunctionSid: tools.FunctionSid
+        Sid: tools.Sid
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: retrieve-content-specific-function-version
+      description: Retrieve a the content of a specific Function Version resource.
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: serverless-services.fetchfunctionversioncontent
+      with:
+        ServiceSid: tools.ServiceSid
+        FunctionSid: tools.FunctionSid
+        Sid: tools.Sid
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: retrieve-specific-function-resource
+      description: Retrieve a specific Function resource.
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: serverless-services.fetchfunction
+      with:
+        ServiceSid: tools.ServiceSid
+        Sid: tools.Sid
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: delete-function-resource
+      description: Delete a Function resource.
+      hints:
+        readOnly: false
+        destructive: true
+        idempotent: true
+      call: serverless-services.deletefunction
+      with:
+        ServiceSid: tools.ServiceSid
+        Sid: tools.Sid
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: update-specific-function-resource
+      description: Update a specific Function resource.
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: serverless-services.updatefunction
+      with:
+        ServiceSid: tools.ServiceSid
+        Sid: tools.Sid
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: retrieve-specific-service-resource
+      description: Retrieve a specific Service resource.
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: serverless-services.fetchservice
+      with:
+        Sid: tools.Sid
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: delete-service-resource
+      description: Delete a Service resource.
+      hints:
+        readOnly: false
+        destructive: true
+        idempotent: true
+      call: serverless-services.deleteservice
+      with:
+        Sid: tools.Sid
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: update-specific-service-resource
+      description: Update a specific Service resource.
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: serverless-services.updateservice
+      with:
+        Sid: tools.Sid
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.

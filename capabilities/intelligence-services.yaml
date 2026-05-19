@@ -1,0 +1,252 @@
+naftiko: 1.0.0-alpha2
+info:
+  label: Twilio - Intelligence — Services
+  description: 'Twilio - Intelligence — Services. 5 operations. Lead operation: Services. Self-contained Naftiko capability
+    covering one Twilio business surface.'
+  tags:
+  - Twilio
+  - Services
+  created: '2026-05-19'
+  modified: '2026-05-19'
+binds:
+- namespace: env
+  keys:
+    TWILIO_API_KEY: TWILIO_API_KEY
+capability:
+  consumes:
+  - type: http
+    namespace: intelligence-services
+    baseUri: https://intelligence.twilio.com
+    description: Twilio - Intelligence — Services business capability. Self-contained, no shared references.
+    resources:
+    - name: v2-Services
+      path: /v2/Services
+      operations:
+      - name: createservice
+        method: POST
+        description: Create a new Service for the given Account
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: false
+      - name: listservice
+        method: GET
+        description: Retrieves a list of all Services for an account.
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: PageSize
+          in: query
+          type: integer
+          description: How many resources to return in each list page. The default is 50, and the maximum is 1000.
+        - name: Page
+          in: query
+          type: integer
+          description: The page index. This value is simply for client state.
+        - name: PageToken
+          in: query
+          type: string
+          description: The page token. This is provided by the API.
+    - name: v2-Services-Sid
+      path: /v2/Services/{Sid}
+      operations:
+      - name: deleteservice
+        method: DELETE
+        description: Delete a specific Service.
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: Sid
+          in: path
+          type: string
+          description: A 34 character string that uniquely identifies this Service.
+          required: true
+      - name: fetchservice
+        method: GET
+        description: Fetch a specific Service.
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: Sid
+          in: path
+          type: string
+          description: A 34 character string that uniquely identifies this Service.
+          required: true
+      - name: updateservice
+        method: POST
+        description: Update a specific Service.
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: Sid
+          in: path
+          type: string
+          description: A 34 character string that uniquely identifies this Service.
+          required: true
+        - name: If-Match
+          in: header
+          type: string
+          description: The If-Match HTTP request header
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: false
+    authentication:
+      type: basic
+      username: '{{env.TWILIO_USER}}'
+      password: '{{env.TWILIO_PASS}}'
+  exposes:
+  - type: rest
+    namespace: intelligence-services-rest
+    port: 8080
+    description: REST adapter for Twilio - Intelligence — Services. One Spectral-compliant resource per consumed operation,
+      prefixed with /v1.
+    resources:
+    - path: /v1/v2/services
+      name: v2-services
+      description: REST surface for v2-Services.
+      operations:
+      - method: POST
+        name: createservice
+        description: Create a new Service for the given Account
+        call: intelligence-services.createservice
+        with:
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: GET
+        name: listservice
+        description: Retrieves a list of all Services for an account.
+        call: intelligence-services.listservice
+        with:
+          PageSize: rest.PageSize
+          Page: rest.Page
+          PageToken: rest.PageToken
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/v2/services/{sid}
+      name: v2-services-sid
+      description: REST surface for v2-Services-Sid.
+      operations:
+      - method: DELETE
+        name: deleteservice
+        description: Delete a specific Service.
+        call: intelligence-services.deleteservice
+        with:
+          Sid: rest.Sid
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: GET
+        name: fetchservice
+        description: Fetch a specific Service.
+        call: intelligence-services.fetchservice
+        with:
+          Sid: rest.Sid
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: POST
+        name: updateservice
+        description: Update a specific Service.
+        call: intelligence-services.updateservice
+        with:
+          Sid: rest.Sid
+          If-Match: rest.If-Match
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+  - type: mcp
+    namespace: intelligence-services-mcp
+    port: 9090
+    transport: http
+    description: MCP adapter for Twilio - Intelligence — Services. One tool per consumed operation, routed inline through
+      this capability's consumes block.
+    tools:
+    - name: create-new-service-given-account
+      description: Create a new Service for the given Account
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: intelligence-services.createservice
+      with:
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: retrieves-list-all-services-account
+      description: Retrieves a list of all Services for an account.
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: intelligence-services.listservice
+      with:
+        PageSize: tools.PageSize
+        Page: tools.Page
+        PageToken: tools.PageToken
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: delete-specific-service
+      description: Delete a specific Service.
+      hints:
+        readOnly: false
+        destructive: true
+        idempotent: true
+      call: intelligence-services.deleteservice
+      with:
+        Sid: tools.Sid
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: fetch-specific-service
+      description: Fetch a specific Service.
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: intelligence-services.fetchservice
+      with:
+        Sid: tools.Sid
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: update-specific-service
+      description: Update a specific Service.
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: intelligence-services.updateservice
+      with:
+        Sid: tools.Sid
+        If-Match: tools.If-Match
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.

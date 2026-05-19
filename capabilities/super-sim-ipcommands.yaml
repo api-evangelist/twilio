@@ -1,0 +1,195 @@
+naftiko: 1.0.0-alpha2
+info:
+  label: Twilio - Supersim — IpCommands
+  description: 'Twilio - Supersim — IpCommands. 3 operations. Lead operation: IpCommands. Self-contained Naftiko capability
+    covering one Twilio business surface.'
+  tags:
+  - Twilio
+  - IpCommands
+  created: '2026-05-19'
+  modified: '2026-05-19'
+binds:
+- namespace: env
+  keys:
+    TWILIO_API_KEY: TWILIO_API_KEY
+capability:
+  consumes:
+  - type: http
+    namespace: super-sim-ipcommands
+    baseUri: https://supersim.twilio.com
+    description: Twilio - Supersim — IpCommands business capability. Self-contained, no shared references.
+    resources:
+    - name: v1-IpCommands
+      path: /v1/IpCommands
+      operations:
+      - name: createipcommand
+        method: POST
+        description: Send an IP Command to a Super SIM.
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: false
+      - name: listipcommand
+        method: GET
+        description: Retrieve a list of IP Commands from your account.
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: Sim
+          in: query
+          type: string
+          description: The SID or unique name of the Sim resource that IP Command was sent to or from.
+        - name: SimIccid
+          in: query
+          type: string
+          description: The ICCID of the Sim resource that IP Command was sent to or from.
+        - name: Status
+          in: query
+          type: string
+          description: 'The status of the IP Command. Can be: `queued`, `sent`, `received` or `failed`. See the [IP Command
+            Status Values](https://www.twilio.com/docs/iot/supersim/api/'
+        - name: Direction
+          in: query
+          type: string
+          description: The direction of the IP Command. Can be `to_sim` or `from_sim`. The value of `to_sim` is synonymous
+            with the term `mobile terminated`, and `from_sim` is synonym
+        - name: PageSize
+          in: query
+          type: integer
+          description: How many resources to return in each list page. The default is 50, and the maximum is 1000.
+        - name: Page
+          in: query
+          type: integer
+          description: The page index. This value is simply for client state.
+        - name: PageToken
+          in: query
+          type: string
+          description: The page token. This is provided by the API.
+    - name: v1-IpCommands-Sid
+      path: /v1/IpCommands/{Sid}
+      operations:
+      - name: fetchipcommand
+        method: GET
+        description: Fetch IP Command instance from your account.
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: Sid
+          in: path
+          type: string
+          description: The SID of the IP Command resource to fetch.
+          required: true
+    authentication:
+      type: basic
+      username: '{{env.TWILIO_USER}}'
+      password: '{{env.TWILIO_PASS}}'
+  exposes:
+  - type: rest
+    namespace: super-sim-ipcommands-rest
+    port: 8080
+    description: REST adapter for Twilio - Supersim — IpCommands. One Spectral-compliant resource per consumed operation,
+      prefixed with /v1.
+    resources:
+    - path: /v1/v1/ipcommands
+      name: v1-ipcommands
+      description: REST surface for v1-IpCommands.
+      operations:
+      - method: POST
+        name: createipcommand
+        description: Send an IP Command to a Super SIM.
+        call: super-sim-ipcommands.createipcommand
+        with:
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: GET
+        name: listipcommand
+        description: Retrieve a list of IP Commands from your account.
+        call: super-sim-ipcommands.listipcommand
+        with:
+          Sim: rest.Sim
+          SimIccid: rest.SimIccid
+          Status: rest.Status
+          Direction: rest.Direction
+          PageSize: rest.PageSize
+          Page: rest.Page
+          PageToken: rest.PageToken
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/v1/ipcommands/{sid}
+      name: v1-ipcommands-sid
+      description: REST surface for v1-IpCommands-Sid.
+      operations:
+      - method: GET
+        name: fetchipcommand
+        description: Fetch IP Command instance from your account.
+        call: super-sim-ipcommands.fetchipcommand
+        with:
+          Sid: rest.Sid
+        outputParameters:
+        - type: object
+          mapping: $.
+  - type: mcp
+    namespace: super-sim-ipcommands-mcp
+    port: 9090
+    transport: http
+    description: MCP adapter for Twilio - Supersim — IpCommands. One tool per consumed operation, routed inline through this
+      capability's consumes block.
+    tools:
+    - name: send-ip-command-super-sim
+      description: Send an IP Command to a Super SIM.
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: super-sim-ipcommands.createipcommand
+      with:
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: retrieve-list-ip-commands-your
+      description: Retrieve a list of IP Commands from your account.
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: super-sim-ipcommands.listipcommand
+      with:
+        Sim: tools.Sim
+        SimIccid: tools.SimIccid
+        Status: tools.Status
+        Direction: tools.Direction
+        PageSize: tools.PageSize
+        Page: tools.Page
+        PageToken: tools.PageToken
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: fetch-ip-command-instance-your
+      description: Fetch IP Command instance from your account.
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: super-sim-ipcommands.fetchipcommand
+      with:
+        Sid: tools.Sid
+      outputParameters:
+      - type: object
+        mapping: $.

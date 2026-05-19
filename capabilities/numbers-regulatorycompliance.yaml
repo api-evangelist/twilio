@@ -1,0 +1,1529 @@
+naftiko: 1.0.0-alpha2
+info:
+  label: Twilio - Numbers — RegulatoryCompliance
+  description: 'Twilio - Numbers — RegulatoryCompliance. 31 operations. Lead operation: RegulatoryCompliance. Self-contained
+    Naftiko capability covering one Twilio business surface.'
+  tags:
+  - Twilio
+  - RegulatoryCompliance
+  created: '2026-05-19'
+  modified: '2026-05-19'
+binds:
+- namespace: env
+  keys:
+    TWILIO_API_KEY: TWILIO_API_KEY
+capability:
+  consumes:
+  - type: http
+    namespace: numbers-regulatorycompliance
+    baseUri: https://numbers.twilio.com
+    description: Twilio - Numbers — RegulatoryCompliance business capability. Self-contained, no shared references.
+    resources:
+    - name: v2-RegulatoryCompliance-Bundles
+      path: /v2/RegulatoryCompliance/Bundles
+      operations:
+      - name: createbundle
+        method: POST
+        description: Create a new Bundle.
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: false
+      - name: listbundle
+        method: GET
+        description: Retrieve a list of all Bundles for an account.
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: Status
+          in: query
+          type: string
+          description: The verification status of the Bundle resource. Please refer to [Bundle Statuses](https://www.twilio.com/docs/phone-numbers/regulatory/api/bundles#bundle-status
+        - name: FriendlyName
+          in: query
+          type: string
+          description: The string that you assigned to describe the resource. The column can contain 255 variable characters.
+        - name: RegulationSid
+          in: query
+          type: string
+          description: The unique string of a [Regulation resource](https://www.twilio.com/docs/phone-numbers/regulatory/api/regulations)
+            that is associated to the Bundle resource.
+        - name: IsoCountry
+          in: query
+          type: string
+          description: The 2-digit [ISO country code](https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2) of the Bundle's phone
+            number country ownership request.
+        - name: NumberType
+          in: query
+          type: string
+          description: The type of phone number of the Bundle's ownership request. Can be `local`, `mobile`, `national`, or
+            `tollfree`.
+        - name: HasValidUntilDate
+          in: query
+          type: boolean
+          description: Indicates that the Bundle is a valid Bundle until a specified expiration date.
+        - name: SortBy
+          in: query
+          type: string
+          description: Can be `valid-until` or `date-updated`. Defaults to `date-created`.
+        - name: SortDirection
+          in: query
+          type: string
+          description: Default is `DESC`. Can be `ASC` or `DESC`.
+        - name: ValidUntilDate
+          in: query
+          type: string
+          description: 'Date to filter Bundles having their `valid_until_date` before or after the specified date. Can be
+            `ValidUntilDate>=` or `ValidUntilDate<=`. Both can be used in '
+        - name: ValidUntilDate<
+          in: query
+          type: string
+          description: 'Date to filter Bundles having their `valid_until_date` before or after the specified date. Can be
+            `ValidUntilDate>=` or `ValidUntilDate<=`. Both can be used in '
+        - name: ValidUntilDate>
+          in: query
+          type: string
+          description: 'Date to filter Bundles having their `valid_until_date` before or after the specified date. Can be
+            `ValidUntilDate>=` or `ValidUntilDate<=`. Both can be used in '
+        - name: PageSize
+          in: query
+          type: integer
+          description: How many resources to return in each list page. The default is 50, and the maximum is 1000.
+        - name: Page
+          in: query
+          type: integer
+          description: The page index. This value is simply for client state.
+        - name: PageToken
+          in: query
+          type: string
+          description: The page token. This is provided by the API.
+    - name: v2-RegulatoryCompliance-Bundles-BundleSid-Copies
+      path: /v2/RegulatoryCompliance/Bundles/{BundleSid}/Copies
+      operations:
+      - name: createbundlecopy
+        method: POST
+        description: Creates a new copy of a Bundle. It will internally create copies of all the bundle items (identities
+          and documents) of the original bundle
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: BundleSid
+          in: path
+          type: string
+          description: The unique string that identifies the Bundle to be copied.
+          required: true
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: false
+      - name: listbundlecopy
+        method: GET
+        description: Retrieve a list of all Bundles Copies for a Bundle.
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: BundleSid
+          in: path
+          type: string
+          description: The unique string that we created to identify the Bundle resource.
+          required: true
+        - name: PageSize
+          in: query
+          type: integer
+          description: How many resources to return in each list page. The default is 50, and the maximum is 1000.
+        - name: Page
+          in: query
+          type: integer
+          description: The page index. This value is simply for client state.
+        - name: PageToken
+          in: query
+          type: string
+          description: The page token. This is provided by the API.
+    - name: v2-RegulatoryCompliance-Bundles-BundleSid-Evaluations
+      path: /v2/RegulatoryCompliance/Bundles/{BundleSid}/Evaluations
+      operations:
+      - name: createevaluation
+        method: POST
+        description: Creates an evaluation for a bundle
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: BundleSid
+          in: path
+          type: string
+          description: The unique string that identifies the Bundle resource.
+          required: true
+      - name: listevaluation
+        method: GET
+        description: Retrieve a list of Evaluations associated to the Bundle resource.
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: BundleSid
+          in: path
+          type: string
+          description: The unique string that identifies the Bundle resource.
+          required: true
+        - name: PageSize
+          in: query
+          type: integer
+          description: How many resources to return in each list page. The default is 50, and the maximum is 1000.
+        - name: Page
+          in: query
+          type: integer
+          description: The page index. This value is simply for client state.
+        - name: PageToken
+          in: query
+          type: string
+          description: The page token. This is provided by the API.
+    - name: v2-RegulatoryCompliance-Bundles-BundleSid-Evaluations-Sid
+      path: /v2/RegulatoryCompliance/Bundles/{BundleSid}/Evaluations/{Sid}
+      operations:
+      - name: fetchevaluation
+        method: GET
+        description: Fetch specific Evaluation Instance.
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: BundleSid
+          in: path
+          type: string
+          description: The unique string that we created to identify the Bundle resource.
+          required: true
+        - name: Sid
+          in: path
+          type: string
+          description: The unique string that identifies the Evaluation resource.
+          required: true
+    - name: v2-RegulatoryCompliance-Bundles-BundleSid-ItemAssignments
+      path: /v2/RegulatoryCompliance/Bundles/{BundleSid}/ItemAssignments
+      operations:
+      - name: createitemassignment
+        method: POST
+        description: Create a new Assigned Item.
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: BundleSid
+          in: path
+          type: string
+          description: The unique string that we created to identify the Bundle resource.
+          required: true
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: false
+      - name: listitemassignment
+        method: GET
+        description: Retrieve a list of all Assigned Items for an account.
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: BundleSid
+          in: path
+          type: string
+          description: The unique string that we created to identify the Bundle resource.
+          required: true
+        - name: PageSize
+          in: query
+          type: integer
+          description: How many resources to return in each list page. The default is 50, and the maximum is 1000.
+        - name: Page
+          in: query
+          type: integer
+          description: The page index. This value is simply for client state.
+        - name: PageToken
+          in: query
+          type: string
+          description: The page token. This is provided by the API.
+    - name: v2-RegulatoryCompliance-Bundles-BundleSid-ItemAssignments-Sid
+      path: /v2/RegulatoryCompliance/Bundles/{BundleSid}/ItemAssignments/{Sid}
+      operations:
+      - name: fetchitemassignment
+        method: GET
+        description: Fetch specific Assigned Item Instance.
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: BundleSid
+          in: path
+          type: string
+          description: The unique string that we created to identify the Bundle resource.
+          required: true
+        - name: Sid
+          in: path
+          type: string
+          description: The unique string that we created to identify the Identity resource.
+          required: true
+      - name: deleteitemassignment
+        method: DELETE
+        description: Remove an Assignment Item Instance.
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: BundleSid
+          in: path
+          type: string
+          description: The unique string that we created to identify the Bundle resource.
+          required: true
+        - name: Sid
+          in: path
+          type: string
+          description: The unique string that we created to identify the Identity resource.
+          required: true
+    - name: v2-RegulatoryCompliance-Bundles-BundleSid-ReplaceItems
+      path: /v2/RegulatoryCompliance/Bundles/{BundleSid}/ReplaceItems
+      operations:
+      - name: createreplaceitems
+        method: POST
+        description: Replaces all bundle items in the target bundle (specified in the path) with all the bundle items of the
+          source bundle (specified by the from_bundle_sid body param)
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: BundleSid
+          in: path
+          type: string
+          description: The unique string that identifies the Bundle where the item assignments are going to be replaced.
+          required: true
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: false
+    - name: v2-RegulatoryCompliance-Bundles-Sid
+      path: /v2/RegulatoryCompliance/Bundles/{Sid}
+      operations:
+      - name: fetchbundle
+        method: GET
+        description: Fetch a specific Bundle instance.
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: Sid
+          in: path
+          type: string
+          description: The unique string that we created to identify the Bundle resource.
+          required: true
+      - name: updatebundle
+        method: POST
+        description: Updates a Bundle in an account.
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: Sid
+          in: path
+          type: string
+          description: The unique string that we created to identify the Bundle resource.
+          required: true
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: false
+      - name: deletebundle
+        method: DELETE
+        description: Delete a specific Bundle.
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: Sid
+          in: path
+          type: string
+          description: The unique string that we created to identify the Bundle resource.
+          required: true
+    - name: v2-RegulatoryCompliance-EndUserTypes
+      path: /v2/RegulatoryCompliance/EndUserTypes
+      operations:
+      - name: listendusertype
+        method: GET
+        description: Retrieve a list of all End-User Types.
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: PageSize
+          in: query
+          type: integer
+          description: How many resources to return in each list page. The default is 50, and the maximum is 1000.
+        - name: Page
+          in: query
+          type: integer
+          description: The page index. This value is simply for client state.
+        - name: PageToken
+          in: query
+          type: string
+          description: The page token. This is provided by the API.
+    - name: v2-RegulatoryCompliance-EndUserTypes-Sid
+      path: /v2/RegulatoryCompliance/EndUserTypes/{Sid}
+      operations:
+      - name: fetchendusertype
+        method: GET
+        description: Fetch a specific End-User Type Instance.
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: Sid
+          in: path
+          type: string
+          description: The unique string that identifies the End-User Type resource.
+          required: true
+    - name: v2-RegulatoryCompliance-EndUsers
+      path: /v2/RegulatoryCompliance/EndUsers
+      operations:
+      - name: createenduser
+        method: POST
+        description: Create a new End User.
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: false
+      - name: listenduser
+        method: GET
+        description: Retrieve a list of all End User for an account.
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: PageSize
+          in: query
+          type: integer
+          description: How many resources to return in each list page. The default is 50, and the maximum is 1000.
+        - name: Page
+          in: query
+          type: integer
+          description: The page index. This value is simply for client state.
+        - name: PageToken
+          in: query
+          type: string
+          description: The page token. This is provided by the API.
+    - name: v2-RegulatoryCompliance-EndUsers-Sid
+      path: /v2/RegulatoryCompliance/EndUsers/{Sid}
+      operations:
+      - name: fetchenduser
+        method: GET
+        description: Fetch specific End User Instance.
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: Sid
+          in: path
+          type: string
+          description: The unique string created by Twilio to identify the End User resource.
+          required: true
+      - name: updateenduser
+        method: POST
+        description: Update an existing End User.
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: Sid
+          in: path
+          type: string
+          description: The unique string created by Twilio to identify the End User resource.
+          required: true
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: false
+      - name: deleteenduser
+        method: DELETE
+        description: Delete a specific End User.
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: Sid
+          in: path
+          type: string
+          description: The unique string created by Twilio to identify the End User resource.
+          required: true
+    - name: v2-RegulatoryCompliance-Regulations
+      path: /v2/RegulatoryCompliance/Regulations
+      operations:
+      - name: listregulation
+        method: GET
+        description: Retrieve a list of all Regulations.
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: EndUserType
+          in: query
+          type: string
+          description: The type of End User the regulation requires - can be `individual` or `business`.
+        - name: IsoCountry
+          in: query
+          type: string
+          description: The ISO country code of the phone number's country.
+        - name: NumberType
+          in: query
+          type: string
+          description: The type of phone number that the regulatory requiremnt is restricting.
+        - name: PageSize
+          in: query
+          type: integer
+          description: How many resources to return in each list page. The default is 50, and the maximum is 1000.
+        - name: Page
+          in: query
+          type: integer
+          description: The page index. This value is simply for client state.
+        - name: PageToken
+          in: query
+          type: string
+          description: The page token. This is provided by the API.
+    - name: v2-RegulatoryCompliance-Regulations-Sid
+      path: /v2/RegulatoryCompliance/Regulations/{Sid}
+      operations:
+      - name: fetchregulation
+        method: GET
+        description: Fetch specific Regulation Instance.
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: Sid
+          in: path
+          type: string
+          description: The unique string that identifies the Regulation resource.
+          required: true
+    - name: v2-RegulatoryCompliance-SupportingDocumentTypes
+      path: /v2/RegulatoryCompliance/SupportingDocumentTypes
+      operations:
+      - name: listsupportingdocumenttype
+        method: GET
+        description: Retrieve a list of all Supporting Document Types.
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: PageSize
+          in: query
+          type: integer
+          description: How many resources to return in each list page. The default is 50, and the maximum is 1000.
+        - name: Page
+          in: query
+          type: integer
+          description: The page index. This value is simply for client state.
+        - name: PageToken
+          in: query
+          type: string
+          description: The page token. This is provided by the API.
+    - name: v2-RegulatoryCompliance-SupportingDocumentTypes-Sid
+      path: /v2/RegulatoryCompliance/SupportingDocumentTypes/{Sid}
+      operations:
+      - name: fetchsupportingdocumenttype
+        method: GET
+        description: Fetch a specific Supporting Document Type Instance.
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: Sid
+          in: path
+          type: string
+          description: The unique string that identifies the Supporting Document Type resource.
+          required: true
+    - name: v2-RegulatoryCompliance-SupportingDocuments
+      path: /v2/RegulatoryCompliance/SupportingDocuments
+      operations:
+      - name: createsupportingdocument
+        method: POST
+        description: Create a new Supporting Document.
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: false
+      - name: listsupportingdocument
+        method: GET
+        description: Retrieve a list of all Supporting Document for an account.
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: PageSize
+          in: query
+          type: integer
+          description: How many resources to return in each list page. The default is 50, and the maximum is 1000.
+        - name: Page
+          in: query
+          type: integer
+          description: The page index. This value is simply for client state.
+        - name: PageToken
+          in: query
+          type: string
+          description: The page token. This is provided by the API.
+    - name: v2-RegulatoryCompliance-SupportingDocuments-Sid
+      path: /v2/RegulatoryCompliance/SupportingDocuments/{Sid}
+      operations:
+      - name: fetchsupportingdocument
+        method: GET
+        description: Fetch specific Supporting Document Instance.
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: Sid
+          in: path
+          type: string
+          description: The unique string created by Twilio to identify the Supporting Document resource.
+          required: true
+      - name: updatesupportingdocument
+        method: POST
+        description: Update an existing Supporting Document.
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: Sid
+          in: path
+          type: string
+          description: The unique string created by Twilio to identify the Supporting Document resource.
+          required: true
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: false
+      - name: deletesupportingdocument
+        method: DELETE
+        description: Delete a specific Supporting Document.
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: Sid
+          in: path
+          type: string
+          description: The unique string created by Twilio to identify the Supporting Document resource.
+          required: true
+    authentication:
+      type: basic
+      username: '{{env.TWILIO_USER}}'
+      password: '{{env.TWILIO_PASS}}'
+  exposes:
+  - type: rest
+    namespace: numbers-regulatorycompliance-rest
+    port: 8080
+    description: REST adapter for Twilio - Numbers — RegulatoryCompliance. One Spectral-compliant resource per consumed operation,
+      prefixed with /v1.
+    resources:
+    - path: /v1/v2/regulatorycompliance/bundles
+      name: v2-regulatorycompliance-bundles
+      description: REST surface for v2-RegulatoryCompliance-Bundles.
+      operations:
+      - method: POST
+        name: createbundle
+        description: Create a new Bundle.
+        call: numbers-regulatorycompliance.createbundle
+        with:
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: GET
+        name: listbundle
+        description: Retrieve a list of all Bundles for an account.
+        call: numbers-regulatorycompliance.listbundle
+        with:
+          Status: rest.Status
+          FriendlyName: rest.FriendlyName
+          RegulationSid: rest.RegulationSid
+          IsoCountry: rest.IsoCountry
+          NumberType: rest.NumberType
+          HasValidUntilDate: rest.HasValidUntilDate
+          SortBy: rest.SortBy
+          SortDirection: rest.SortDirection
+          ValidUntilDate: rest.ValidUntilDate
+          ValidUntilDate<: rest.ValidUntilDate<
+          ValidUntilDate>: rest.ValidUntilDate>
+          PageSize: rest.PageSize
+          Page: rest.Page
+          PageToken: rest.PageToken
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/v2/regulatorycompliance/bundles/{bundlesid}/copies
+      name: v2-regulatorycompliance-bundles-bundlesid-copies
+      description: REST surface for v2-RegulatoryCompliance-Bundles-BundleSid-Copies.
+      operations:
+      - method: POST
+        name: createbundlecopy
+        description: Creates a new copy of a Bundle. It will internally create copies of all the bundle items (identities
+          and documents) of the original bundle
+        call: numbers-regulatorycompliance.createbundlecopy
+        with:
+          BundleSid: rest.BundleSid
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: GET
+        name: listbundlecopy
+        description: Retrieve a list of all Bundles Copies for a Bundle.
+        call: numbers-regulatorycompliance.listbundlecopy
+        with:
+          BundleSid: rest.BundleSid
+          PageSize: rest.PageSize
+          Page: rest.Page
+          PageToken: rest.PageToken
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/v2/regulatorycompliance/bundles/{bundlesid}/evaluations
+      name: v2-regulatorycompliance-bundles-bundlesid-evaluations
+      description: REST surface for v2-RegulatoryCompliance-Bundles-BundleSid-Evaluations.
+      operations:
+      - method: POST
+        name: createevaluation
+        description: Creates an evaluation for a bundle
+        call: numbers-regulatorycompliance.createevaluation
+        with:
+          BundleSid: rest.BundleSid
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: GET
+        name: listevaluation
+        description: Retrieve a list of Evaluations associated to the Bundle resource.
+        call: numbers-regulatorycompliance.listevaluation
+        with:
+          BundleSid: rest.BundleSid
+          PageSize: rest.PageSize
+          Page: rest.Page
+          PageToken: rest.PageToken
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/v2/regulatorycompliance/bundles/{bundlesid}/evaluations/{sid}
+      name: v2-regulatorycompliance-bundles-bundlesid-evaluations-sid
+      description: REST surface for v2-RegulatoryCompliance-Bundles-BundleSid-Evaluations-Sid.
+      operations:
+      - method: GET
+        name: fetchevaluation
+        description: Fetch specific Evaluation Instance.
+        call: numbers-regulatorycompliance.fetchevaluation
+        with:
+          BundleSid: rest.BundleSid
+          Sid: rest.Sid
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/v2/regulatorycompliance/bundles/{bundlesid}/itemassignments
+      name: v2-regulatorycompliance-bundles-bundlesid-itemassignments
+      description: REST surface for v2-RegulatoryCompliance-Bundles-BundleSid-ItemAssignments.
+      operations:
+      - method: POST
+        name: createitemassignment
+        description: Create a new Assigned Item.
+        call: numbers-regulatorycompliance.createitemassignment
+        with:
+          BundleSid: rest.BundleSid
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: GET
+        name: listitemassignment
+        description: Retrieve a list of all Assigned Items for an account.
+        call: numbers-regulatorycompliance.listitemassignment
+        with:
+          BundleSid: rest.BundleSid
+          PageSize: rest.PageSize
+          Page: rest.Page
+          PageToken: rest.PageToken
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/v2/regulatorycompliance/bundles/{bundlesid}/itemassignments/{sid}
+      name: v2-regulatorycompliance-bundles-bundlesid-itemassignments-sid
+      description: REST surface for v2-RegulatoryCompliance-Bundles-BundleSid-ItemAssignments-Sid.
+      operations:
+      - method: GET
+        name: fetchitemassignment
+        description: Fetch specific Assigned Item Instance.
+        call: numbers-regulatorycompliance.fetchitemassignment
+        with:
+          BundleSid: rest.BundleSid
+          Sid: rest.Sid
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: DELETE
+        name: deleteitemassignment
+        description: Remove an Assignment Item Instance.
+        call: numbers-regulatorycompliance.deleteitemassignment
+        with:
+          BundleSid: rest.BundleSid
+          Sid: rest.Sid
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/v2/regulatorycompliance/bundles/{bundlesid}/replaceitems
+      name: v2-regulatorycompliance-bundles-bundlesid-replaceitems
+      description: REST surface for v2-RegulatoryCompliance-Bundles-BundleSid-ReplaceItems.
+      operations:
+      - method: POST
+        name: createreplaceitems
+        description: Replaces all bundle items in the target bundle (specified in the path) with all the bundle items of the
+          source bundle (specified by the from_bundle_sid body param)
+        call: numbers-regulatorycompliance.createreplaceitems
+        with:
+          BundleSid: rest.BundleSid
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/v2/regulatorycompliance/bundles/{sid}
+      name: v2-regulatorycompliance-bundles-sid
+      description: REST surface for v2-RegulatoryCompliance-Bundles-Sid.
+      operations:
+      - method: GET
+        name: fetchbundle
+        description: Fetch a specific Bundle instance.
+        call: numbers-regulatorycompliance.fetchbundle
+        with:
+          Sid: rest.Sid
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: POST
+        name: updatebundle
+        description: Updates a Bundle in an account.
+        call: numbers-regulatorycompliance.updatebundle
+        with:
+          Sid: rest.Sid
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: DELETE
+        name: deletebundle
+        description: Delete a specific Bundle.
+        call: numbers-regulatorycompliance.deletebundle
+        with:
+          Sid: rest.Sid
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/v2/regulatorycompliance/endusertypes
+      name: v2-regulatorycompliance-endusertypes
+      description: REST surface for v2-RegulatoryCompliance-EndUserTypes.
+      operations:
+      - method: GET
+        name: listendusertype
+        description: Retrieve a list of all End-User Types.
+        call: numbers-regulatorycompliance.listendusertype
+        with:
+          PageSize: rest.PageSize
+          Page: rest.Page
+          PageToken: rest.PageToken
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/v2/regulatorycompliance/endusertypes/{sid}
+      name: v2-regulatorycompliance-endusertypes-sid
+      description: REST surface for v2-RegulatoryCompliance-EndUserTypes-Sid.
+      operations:
+      - method: GET
+        name: fetchendusertype
+        description: Fetch a specific End-User Type Instance.
+        call: numbers-regulatorycompliance.fetchendusertype
+        with:
+          Sid: rest.Sid
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/v2/regulatorycompliance/endusers
+      name: v2-regulatorycompliance-endusers
+      description: REST surface for v2-RegulatoryCompliance-EndUsers.
+      operations:
+      - method: POST
+        name: createenduser
+        description: Create a new End User.
+        call: numbers-regulatorycompliance.createenduser
+        with:
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: GET
+        name: listenduser
+        description: Retrieve a list of all End User for an account.
+        call: numbers-regulatorycompliance.listenduser
+        with:
+          PageSize: rest.PageSize
+          Page: rest.Page
+          PageToken: rest.PageToken
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/v2/regulatorycompliance/endusers/{sid}
+      name: v2-regulatorycompliance-endusers-sid
+      description: REST surface for v2-RegulatoryCompliance-EndUsers-Sid.
+      operations:
+      - method: GET
+        name: fetchenduser
+        description: Fetch specific End User Instance.
+        call: numbers-regulatorycompliance.fetchenduser
+        with:
+          Sid: rest.Sid
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: POST
+        name: updateenduser
+        description: Update an existing End User.
+        call: numbers-regulatorycompliance.updateenduser
+        with:
+          Sid: rest.Sid
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: DELETE
+        name: deleteenduser
+        description: Delete a specific End User.
+        call: numbers-regulatorycompliance.deleteenduser
+        with:
+          Sid: rest.Sid
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/v2/regulatorycompliance/regulations
+      name: v2-regulatorycompliance-regulations
+      description: REST surface for v2-RegulatoryCompliance-Regulations.
+      operations:
+      - method: GET
+        name: listregulation
+        description: Retrieve a list of all Regulations.
+        call: numbers-regulatorycompliance.listregulation
+        with:
+          EndUserType: rest.EndUserType
+          IsoCountry: rest.IsoCountry
+          NumberType: rest.NumberType
+          PageSize: rest.PageSize
+          Page: rest.Page
+          PageToken: rest.PageToken
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/v2/regulatorycompliance/regulations/{sid}
+      name: v2-regulatorycompliance-regulations-sid
+      description: REST surface for v2-RegulatoryCompliance-Regulations-Sid.
+      operations:
+      - method: GET
+        name: fetchregulation
+        description: Fetch specific Regulation Instance.
+        call: numbers-regulatorycompliance.fetchregulation
+        with:
+          Sid: rest.Sid
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/v2/regulatorycompliance/supportingdocumenttypes
+      name: v2-regulatorycompliance-supportingdocumenttypes
+      description: REST surface for v2-RegulatoryCompliance-SupportingDocumentTypes.
+      operations:
+      - method: GET
+        name: listsupportingdocumenttype
+        description: Retrieve a list of all Supporting Document Types.
+        call: numbers-regulatorycompliance.listsupportingdocumenttype
+        with:
+          PageSize: rest.PageSize
+          Page: rest.Page
+          PageToken: rest.PageToken
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/v2/regulatorycompliance/supportingdocumenttypes/{sid}
+      name: v2-regulatorycompliance-supportingdocumenttypes-sid
+      description: REST surface for v2-RegulatoryCompliance-SupportingDocumentTypes-Sid.
+      operations:
+      - method: GET
+        name: fetchsupportingdocumenttype
+        description: Fetch a specific Supporting Document Type Instance.
+        call: numbers-regulatorycompliance.fetchsupportingdocumenttype
+        with:
+          Sid: rest.Sid
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/v2/regulatorycompliance/supportingdocuments
+      name: v2-regulatorycompliance-supportingdocuments
+      description: REST surface for v2-RegulatoryCompliance-SupportingDocuments.
+      operations:
+      - method: POST
+        name: createsupportingdocument
+        description: Create a new Supporting Document.
+        call: numbers-regulatorycompliance.createsupportingdocument
+        with:
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: GET
+        name: listsupportingdocument
+        description: Retrieve a list of all Supporting Document for an account.
+        call: numbers-regulatorycompliance.listsupportingdocument
+        with:
+          PageSize: rest.PageSize
+          Page: rest.Page
+          PageToken: rest.PageToken
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/v2/regulatorycompliance/supportingdocuments/{sid}
+      name: v2-regulatorycompliance-supportingdocuments-sid
+      description: REST surface for v2-RegulatoryCompliance-SupportingDocuments-Sid.
+      operations:
+      - method: GET
+        name: fetchsupportingdocument
+        description: Fetch specific Supporting Document Instance.
+        call: numbers-regulatorycompliance.fetchsupportingdocument
+        with:
+          Sid: rest.Sid
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: POST
+        name: updatesupportingdocument
+        description: Update an existing Supporting Document.
+        call: numbers-regulatorycompliance.updatesupportingdocument
+        with:
+          Sid: rest.Sid
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: DELETE
+        name: deletesupportingdocument
+        description: Delete a specific Supporting Document.
+        call: numbers-regulatorycompliance.deletesupportingdocument
+        with:
+          Sid: rest.Sid
+        outputParameters:
+        - type: object
+          mapping: $.
+  - type: mcp
+    namespace: numbers-regulatorycompliance-mcp
+    port: 9090
+    transport: http
+    description: MCP adapter for Twilio - Numbers — RegulatoryCompliance. One tool per consumed operation, routed inline through
+      this capability's consumes block.
+    tools:
+    - name: create-new-bundle
+      description: Create a new Bundle.
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: numbers-regulatorycompliance.createbundle
+      with:
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: retrieve-list-all-bundles-account
+      description: Retrieve a list of all Bundles for an account.
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: numbers-regulatorycompliance.listbundle
+      with:
+        Status: tools.Status
+        FriendlyName: tools.FriendlyName
+        RegulationSid: tools.RegulationSid
+        IsoCountry: tools.IsoCountry
+        NumberType: tools.NumberType
+        HasValidUntilDate: tools.HasValidUntilDate
+        SortBy: tools.SortBy
+        SortDirection: tools.SortDirection
+        ValidUntilDate: tools.ValidUntilDate
+        ValidUntilDate<: tools.ValidUntilDate<
+        ValidUntilDate>: tools.ValidUntilDate>
+        PageSize: tools.PageSize
+        Page: tools.Page
+        PageToken: tools.PageToken
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: creates-new-copy-bundle-it
+      description: Creates a new copy of a Bundle. It will internally create copies of all the bundle items (identities and
+        documents) of the original bundle
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: numbers-regulatorycompliance.createbundlecopy
+      with:
+        BundleSid: tools.BundleSid
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: retrieve-list-all-bundles-copies
+      description: Retrieve a list of all Bundles Copies for a Bundle.
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: numbers-regulatorycompliance.listbundlecopy
+      with:
+        BundleSid: tools.BundleSid
+        PageSize: tools.PageSize
+        Page: tools.Page
+        PageToken: tools.PageToken
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: creates-evaluation-bundle
+      description: Creates an evaluation for a bundle
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: numbers-regulatorycompliance.createevaluation
+      with:
+        BundleSid: tools.BundleSid
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: retrieve-list-evaluations-associated-bundle
+      description: Retrieve a list of Evaluations associated to the Bundle resource.
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: numbers-regulatorycompliance.listevaluation
+      with:
+        BundleSid: tools.BundleSid
+        PageSize: tools.PageSize
+        Page: tools.Page
+        PageToken: tools.PageToken
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: fetch-specific-evaluation-instance
+      description: Fetch specific Evaluation Instance.
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: numbers-regulatorycompliance.fetchevaluation
+      with:
+        BundleSid: tools.BundleSid
+        Sid: tools.Sid
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: create-new-assigned-item
+      description: Create a new Assigned Item.
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: numbers-regulatorycompliance.createitemassignment
+      with:
+        BundleSid: tools.BundleSid
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: retrieve-list-all-assigned-items
+      description: Retrieve a list of all Assigned Items for an account.
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: numbers-regulatorycompliance.listitemassignment
+      with:
+        BundleSid: tools.BundleSid
+        PageSize: tools.PageSize
+        Page: tools.Page
+        PageToken: tools.PageToken
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: fetch-specific-assigned-item-instance
+      description: Fetch specific Assigned Item Instance.
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: numbers-regulatorycompliance.fetchitemassignment
+      with:
+        BundleSid: tools.BundleSid
+        Sid: tools.Sid
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: remove-assignment-item-instance
+      description: Remove an Assignment Item Instance.
+      hints:
+        readOnly: false
+        destructive: true
+        idempotent: true
+      call: numbers-regulatorycompliance.deleteitemassignment
+      with:
+        BundleSid: tools.BundleSid
+        Sid: tools.Sid
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: replaces-all-bundle-items-target
+      description: Replaces all bundle items in the target bundle (specified in the path) with all the bundle items of the
+        source bundle (specified by the from_bundle_sid body param)
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: false
+      call: numbers-regulatorycompliance.createreplaceitems
+      with:
+        BundleSid: tools.BundleSid
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: fetch-specific-bundle-instance
+      description: Fetch a specific Bundle instance.
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: numbers-regulatorycompliance.fetchbundle
+      with:
+        Sid: tools.Sid
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: updates-bundle-account
+      description: Updates a Bundle in an account.
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: numbers-regulatorycompliance.updatebundle
+      with:
+        Sid: tools.Sid
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: delete-specific-bundle
+      description: Delete a specific Bundle.
+      hints:
+        readOnly: false
+        destructive: true
+        idempotent: true
+      call: numbers-regulatorycompliance.deletebundle
+      with:
+        Sid: tools.Sid
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: retrieve-list-all-end-user
+      description: Retrieve a list of all End-User Types.
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: numbers-regulatorycompliance.listendusertype
+      with:
+        PageSize: tools.PageSize
+        Page: tools.Page
+        PageToken: tools.PageToken
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: fetch-specific-end-user-type
+      description: Fetch a specific End-User Type Instance.
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: numbers-regulatorycompliance.fetchendusertype
+      with:
+        Sid: tools.Sid
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: create-new-end-user
+      description: Create a new End User.
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: numbers-regulatorycompliance.createenduser
+      with:
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: retrieve-list-all-end-user-2
+      description: Retrieve a list of all End User for an account.
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: numbers-regulatorycompliance.listenduser
+      with:
+        PageSize: tools.PageSize
+        Page: tools.Page
+        PageToken: tools.PageToken
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: fetch-specific-end-user-instance
+      description: Fetch specific End User Instance.
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: numbers-regulatorycompliance.fetchenduser
+      with:
+        Sid: tools.Sid
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: update-existing-end-user
+      description: Update an existing End User.
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: numbers-regulatorycompliance.updateenduser
+      with:
+        Sid: tools.Sid
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: delete-specific-end-user
+      description: Delete a specific End User.
+      hints:
+        readOnly: false
+        destructive: true
+        idempotent: true
+      call: numbers-regulatorycompliance.deleteenduser
+      with:
+        Sid: tools.Sid
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: retrieve-list-all-regulations
+      description: Retrieve a list of all Regulations.
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: numbers-regulatorycompliance.listregulation
+      with:
+        EndUserType: tools.EndUserType
+        IsoCountry: tools.IsoCountry
+        NumberType: tools.NumberType
+        PageSize: tools.PageSize
+        Page: tools.Page
+        PageToken: tools.PageToken
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: fetch-specific-regulation-instance
+      description: Fetch specific Regulation Instance.
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: numbers-regulatorycompliance.fetchregulation
+      with:
+        Sid: tools.Sid
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: retrieve-list-all-supporting-document
+      description: Retrieve a list of all Supporting Document Types.
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: numbers-regulatorycompliance.listsupportingdocumenttype
+      with:
+        PageSize: tools.PageSize
+        Page: tools.Page
+        PageToken: tools.PageToken
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: fetch-specific-supporting-document-type
+      description: Fetch a specific Supporting Document Type Instance.
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: numbers-regulatorycompliance.fetchsupportingdocumenttype
+      with:
+        Sid: tools.Sid
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: create-new-supporting-document
+      description: Create a new Supporting Document.
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: numbers-regulatorycompliance.createsupportingdocument
+      with:
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: retrieve-list-all-supporting-document-2
+      description: Retrieve a list of all Supporting Document for an account.
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: numbers-regulatorycompliance.listsupportingdocument
+      with:
+        PageSize: tools.PageSize
+        Page: tools.Page
+        PageToken: tools.PageToken
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: fetch-specific-supporting-document-instance
+      description: Fetch specific Supporting Document Instance.
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: numbers-regulatorycompliance.fetchsupportingdocument
+      with:
+        Sid: tools.Sid
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: update-existing-supporting-document
+      description: Update an existing Supporting Document.
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: numbers-regulatorycompliance.updatesupportingdocument
+      with:
+        Sid: tools.Sid
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: delete-specific-supporting-document
+      description: Delete a specific Supporting Document.
+      hints:
+        readOnly: false
+        destructive: true
+        idempotent: true
+      call: numbers-regulatorycompliance.deletesupportingdocument
+      with:
+        Sid: tools.Sid
+      outputParameters:
+      - type: object
+        mapping: $.

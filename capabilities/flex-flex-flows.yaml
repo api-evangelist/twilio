@@ -1,0 +1,235 @@
+naftiko: 1.0.0-alpha2
+info:
+  label: Twilio Flex API — Flex Flows
+  description: 'Twilio Flex API — Flex Flows. 5 operations. Lead operation: Twilio List Flex Flows. Self-contained Naftiko
+    capability covering one Twilio business surface.'
+  tags:
+  - Twilio
+  - Flex Flows
+  created: '2026-05-19'
+  modified: '2026-05-19'
+binds:
+- namespace: env
+  keys:
+    TWILIO_API_KEY: TWILIO_API_KEY
+capability:
+  consumes:
+  - type: http
+    namespace: flex-flex-flows
+    baseUri: https://flex-api.twilio.com/v1
+    description: Twilio Flex API — Flex Flows business capability. Self-contained, no shared references.
+    resources:
+    - name: FlexFlows
+      path: /FlexFlows
+      operations:
+      - name: listflexflows
+        method: GET
+        description: Twilio List Flex Flows
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: FriendlyName
+          in: query
+          type: string
+        - name: PageSize
+          in: query
+          type: integer
+      - name: createflexflow
+        method: POST
+        description: Twilio Create a Flex Flow
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: true
+    - name: FlexFlows-FlexFlowSid
+      path: /FlexFlows/{FlexFlowSid}
+      operations:
+      - name: fetchflexflow
+        method: GET
+        description: Twilio Fetch a Flex Flow
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: FlexFlowSid
+          in: path
+          type: string
+          required: true
+      - name: updateflexflow
+        method: POST
+        description: Twilio Update a Flex Flow
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: FlexFlowSid
+          in: path
+          type: string
+          required: true
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: true
+      - name: deleteflexflow
+        method: DELETE
+        description: Twilio Delete a Flex Flow
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: FlexFlowSid
+          in: path
+          type: string
+          required: true
+    authentication:
+      type: basic
+      username: '{{env.TWILIO_USER}}'
+      password: '{{env.TWILIO_PASS}}'
+  exposes:
+  - type: rest
+    namespace: flex-flex-flows-rest
+    port: 8080
+    description: REST adapter for Twilio Flex API — Flex Flows. One Spectral-compliant resource per consumed operation, prefixed
+      with /v1.
+    resources:
+    - path: /v1/flexflows
+      name: flexflows
+      description: REST surface for FlexFlows.
+      operations:
+      - method: GET
+        name: listflexflows
+        description: Twilio List Flex Flows
+        call: flex-flex-flows.listflexflows
+        with:
+          FriendlyName: rest.FriendlyName
+          PageSize: rest.PageSize
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: POST
+        name: createflexflow
+        description: Twilio Create a Flex Flow
+        call: flex-flex-flows.createflexflow
+        with:
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/flexflows/{flexflowsid}
+      name: flexflows-flexflowsid
+      description: REST surface for FlexFlows-FlexFlowSid.
+      operations:
+      - method: GET
+        name: fetchflexflow
+        description: Twilio Fetch a Flex Flow
+        call: flex-flex-flows.fetchflexflow
+        with:
+          FlexFlowSid: rest.FlexFlowSid
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: POST
+        name: updateflexflow
+        description: Twilio Update a Flex Flow
+        call: flex-flex-flows.updateflexflow
+        with:
+          FlexFlowSid: rest.FlexFlowSid
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: DELETE
+        name: deleteflexflow
+        description: Twilio Delete a Flex Flow
+        call: flex-flex-flows.deleteflexflow
+        with:
+          FlexFlowSid: rest.FlexFlowSid
+        outputParameters:
+        - type: object
+          mapping: $.
+  - type: mcp
+    namespace: flex-flex-flows-mcp
+    port: 9090
+    transport: http
+    description: MCP adapter for Twilio Flex API — Flex Flows. One tool per consumed operation, routed inline through this
+      capability's consumes block.
+    tools:
+    - name: twilio-list-flex-flows
+      description: Twilio List Flex Flows
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: flex-flex-flows.listflexflows
+      with:
+        FriendlyName: tools.FriendlyName
+        PageSize: tools.PageSize
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: twilio-create-flex-flow
+      description: Twilio Create a Flex Flow
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: flex-flex-flows.createflexflow
+      with:
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: twilio-fetch-flex-flow
+      description: Twilio Fetch a Flex Flow
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: flex-flex-flows.fetchflexflow
+      with:
+        FlexFlowSid: tools.FlexFlowSid
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: twilio-update-flex-flow
+      description: Twilio Update a Flex Flow
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: flex-flex-flows.updateflexflow
+      with:
+        FlexFlowSid: tools.FlexFlowSid
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: twilio-delete-flex-flow
+      description: Twilio Delete a Flex Flow
+      hints:
+        readOnly: false
+        destructive: true
+        idempotent: true
+      call: flex-flex-flows.deleteflexflow
+      with:
+        FlexFlowSid: tools.FlexFlowSid
+      outputParameters:
+      - type: object
+        mapping: $.

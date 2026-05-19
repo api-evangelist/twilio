@@ -1,0 +1,140 @@
+naftiko: 1.0.0-alpha2
+info:
+  label: Twilio - Events — Types
+  description: 'Twilio - Events — Types. 2 operations. Lead operation: Types. Self-contained Naftiko capability covering one
+    Twilio business surface.'
+  tags:
+  - Twilio
+  - Types
+  created: '2026-05-19'
+  modified: '2026-05-19'
+binds:
+- namespace: env
+  keys:
+    TWILIO_API_KEY: TWILIO_API_KEY
+capability:
+  consumes:
+  - type: http
+    namespace: events-types
+    baseUri: https://events.twilio.com
+    description: Twilio - Events — Types business capability. Self-contained, no shared references.
+    resources:
+    - name: v1-Types
+      path: /v1/Types
+      operations:
+      - name: listeventtype
+        method: GET
+        description: Retrieve a paginated list of all the available Event Types.
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: SchemaId
+          in: query
+          type: string
+          description: A string parameter filtering the results to return only the Event Types using a given schema.
+        - name: PageSize
+          in: query
+          type: integer
+          description: How many resources to return in each list page. The default is 50, and the maximum is 1000.
+        - name: Page
+          in: query
+          type: integer
+          description: The page index. This value is simply for client state.
+        - name: PageToken
+          in: query
+          type: string
+          description: The page token. This is provided by the API.
+    - name: v1-Types-Type
+      path: /v1/Types/{Type}
+      operations:
+      - name: fetcheventtype
+        method: GET
+        description: Fetch a specific Event Type.
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: Type
+          in: path
+          type: string
+          description: A string that uniquely identifies this Event Type.
+          required: true
+    authentication:
+      type: basic
+      username: '{{env.TWILIO_USER}}'
+      password: '{{env.TWILIO_PASS}}'
+  exposes:
+  - type: rest
+    namespace: events-types-rest
+    port: 8080
+    description: REST adapter for Twilio - Events — Types. One Spectral-compliant resource per consumed operation, prefixed
+      with /v1.
+    resources:
+    - path: /v1/v1/types
+      name: v1-types
+      description: REST surface for v1-Types.
+      operations:
+      - method: GET
+        name: listeventtype
+        description: Retrieve a paginated list of all the available Event Types.
+        call: events-types.listeventtype
+        with:
+          SchemaId: rest.SchemaId
+          PageSize: rest.PageSize
+          Page: rest.Page
+          PageToken: rest.PageToken
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/v1/types/{type}
+      name: v1-types-type
+      description: REST surface for v1-Types-Type.
+      operations:
+      - method: GET
+        name: fetcheventtype
+        description: Fetch a specific Event Type.
+        call: events-types.fetcheventtype
+        with:
+          Type: rest.Type
+        outputParameters:
+        - type: object
+          mapping: $.
+  - type: mcp
+    namespace: events-types-mcp
+    port: 9090
+    transport: http
+    description: MCP adapter for Twilio - Events — Types. One tool per consumed operation, routed inline through this capability's
+      consumes block.
+    tools:
+    - name: retrieve-paginated-list-all-available
+      description: Retrieve a paginated list of all the available Event Types.
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: events-types.listeventtype
+      with:
+        SchemaId: tools.SchemaId
+        PageSize: tools.PageSize
+        Page: tools.Page
+        PageToken: tools.PageToken
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: fetch-specific-event-type
+      description: Fetch a specific Event Type.
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: events-types.fetcheventtype
+      with:
+        Type: tools.Type
+      outputParameters:
+      - type: object
+        mapping: $.

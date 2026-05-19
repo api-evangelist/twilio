@@ -1,0 +1,228 @@
+naftiko: 1.0.0-alpha2
+info:
+  label: Twilio SendGrid Email API — Suppressions
+  description: 'Twilio SendGrid Email API — Suppressions. 4 operations. Lead operation: Twilio List Blocked Emails. Self-contained
+    Naftiko capability covering one Twilio business surface.'
+  tags:
+  - Twilio
+  - Suppressions
+  created: '2026-05-19'
+  modified: '2026-05-19'
+binds:
+- namespace: env
+  keys:
+    TWILIO_API_KEY: TWILIO_API_KEY
+capability:
+  consumes:
+  - type: http
+    namespace: sendgrid-suppressions
+    baseUri: https://api.sendgrid.com/v3
+    description: Twilio SendGrid Email API — Suppressions business capability. Self-contained, no shared references.
+    resources:
+    - name: suppression-blocks
+      path: /suppression/blocks
+      operations:
+      - name: listblocks
+        method: GET
+        description: Twilio List Blocked Emails
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: start_time
+          in: query
+          type: integer
+        - name: end_time
+          in: query
+          type: integer
+        - name: limit
+          in: query
+          type: integer
+    - name: suppression-bounces
+      path: /suppression/bounces
+      operations:
+      - name: listbounces
+        method: GET
+        description: Twilio List Bounced Emails
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: start_time
+          in: query
+          type: integer
+        - name: end_time
+          in: query
+          type: integer
+        - name: limit
+          in: query
+          type: integer
+        - name: offset
+          in: query
+          type: integer
+      - name: deletebounces
+        method: DELETE
+        description: Twilio Delete Bounces
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: false
+    - name: suppression-unsubscribes
+      path: /suppression/unsubscribes
+      operations:
+      - name: listglobalunsubscribes
+        method: GET
+        description: Twilio List Global Unsubscribes
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: start_time
+          in: query
+          type: integer
+        - name: end_time
+          in: query
+          type: integer
+        - name: limit
+          in: query
+          type: integer
+    authentication:
+      type: bearer
+      token: '{{env.TWILIO_API_KEY}}'
+  exposes:
+  - type: rest
+    namespace: sendgrid-suppressions-rest
+    port: 8080
+    description: REST adapter for Twilio SendGrid Email API — Suppressions. One Spectral-compliant resource per consumed operation,
+      prefixed with /v1.
+    resources:
+    - path: /v1/suppression/blocks
+      name: suppression-blocks
+      description: REST surface for suppression-blocks.
+      operations:
+      - method: GET
+        name: listblocks
+        description: Twilio List Blocked Emails
+        call: sendgrid-suppressions.listblocks
+        with:
+          start_time: rest.start_time
+          end_time: rest.end_time
+          limit: rest.limit
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/suppression/bounces
+      name: suppression-bounces
+      description: REST surface for suppression-bounces.
+      operations:
+      - method: GET
+        name: listbounces
+        description: Twilio List Bounced Emails
+        call: sendgrid-suppressions.listbounces
+        with:
+          start_time: rest.start_time
+          end_time: rest.end_time
+          limit: rest.limit
+          offset: rest.offset
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: DELETE
+        name: deletebounces
+        description: Twilio Delete Bounces
+        call: sendgrid-suppressions.deletebounces
+        with:
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/suppression/unsubscribes
+      name: suppression-unsubscribes
+      description: REST surface for suppression-unsubscribes.
+      operations:
+      - method: GET
+        name: listglobalunsubscribes
+        description: Twilio List Global Unsubscribes
+        call: sendgrid-suppressions.listglobalunsubscribes
+        with:
+          start_time: rest.start_time
+          end_time: rest.end_time
+          limit: rest.limit
+        outputParameters:
+        - type: object
+          mapping: $.
+  - type: mcp
+    namespace: sendgrid-suppressions-mcp
+    port: 9090
+    transport: http
+    description: MCP adapter for Twilio SendGrid Email API — Suppressions. One tool per consumed operation, routed inline
+      through this capability's consumes block.
+    tools:
+    - name: twilio-list-blocked-emails
+      description: Twilio List Blocked Emails
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: sendgrid-suppressions.listblocks
+      with:
+        start_time: tools.start_time
+        end_time: tools.end_time
+        limit: tools.limit
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: twilio-list-bounced-emails
+      description: Twilio List Bounced Emails
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: sendgrid-suppressions.listbounces
+      with:
+        start_time: tools.start_time
+        end_time: tools.end_time
+        limit: tools.limit
+        offset: tools.offset
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: twilio-delete-bounces
+      description: Twilio Delete Bounces
+      hints:
+        readOnly: false
+        destructive: true
+        idempotent: true
+      call: sendgrid-suppressions.deletebounces
+      with:
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: twilio-list-global-unsubscribes
+      description: Twilio List Global Unsubscribes
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: sendgrid-suppressions.listglobalunsubscribes
+      with:
+        start_time: tools.start_time
+        end_time: tools.end_time
+        limit: tools.limit
+      outputParameters:
+      - type: object
+        mapping: $.

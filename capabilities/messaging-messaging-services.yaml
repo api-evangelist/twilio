@@ -1,0 +1,206 @@
+naftiko: 1.0.0-alpha2
+info:
+  label: Twilio Messaging API — Messaging Services
+  description: 'Twilio Messaging API — Messaging Services. 5 operations. Lead operation: Twilio List Messaging Services. Self-contained
+    Naftiko capability covering one Twilio business surface.'
+  tags:
+  - Twilio
+  - Messaging Services
+  created: '2026-05-19'
+  modified: '2026-05-19'
+binds:
+- namespace: env
+  keys:
+    TWILIO_API_KEY: TWILIO_API_KEY
+capability:
+  consumes:
+  - type: http
+    namespace: messaging-messaging-services
+    baseUri: https://api.twilio.com/2010-04-01
+    description: Twilio Messaging API — Messaging Services business capability. Self-contained, no shared references.
+    resources:
+    - name: Services
+      path: /Services
+      operations:
+      - name: listmessagingservices
+        method: GET
+        description: Twilio List Messaging Services
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: PageSize
+          in: query
+          type: integer
+      - name: createmessagingservice
+        method: POST
+        description: Twilio Create a Messaging Service
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: true
+    - name: Services-ServiceSid
+      path: /Services/{ServiceSid}
+      operations:
+      - name: fetchmessagingservice
+        method: GET
+        description: Twilio Fetch a Messaging Service
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+      - name: updatemessagingservice
+        method: POST
+        description: Twilio Update a Messaging Service
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: true
+      - name: deletemessagingservice
+        method: DELETE
+        description: Twilio Delete a Messaging Service
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+    authentication:
+      type: basic
+      username: '{{env.TWILIO_USER}}'
+      password: '{{env.TWILIO_PASS}}'
+  exposes:
+  - type: rest
+    namespace: messaging-messaging-services-rest
+    port: 8080
+    description: REST adapter for Twilio Messaging API — Messaging Services. One Spectral-compliant resource per consumed
+      operation, prefixed with /v1.
+    resources:
+    - path: /v1/services
+      name: services
+      description: REST surface for Services.
+      operations:
+      - method: GET
+        name: listmessagingservices
+        description: Twilio List Messaging Services
+        call: messaging-messaging-services.listmessagingservices
+        with:
+          PageSize: rest.PageSize
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: POST
+        name: createmessagingservice
+        description: Twilio Create a Messaging Service
+        call: messaging-messaging-services.createmessagingservice
+        with:
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/services/{servicesid}
+      name: services-servicesid
+      description: REST surface for Services-ServiceSid.
+      operations:
+      - method: GET
+        name: fetchmessagingservice
+        description: Twilio Fetch a Messaging Service
+        call: messaging-messaging-services.fetchmessagingservice
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: POST
+        name: updatemessagingservice
+        description: Twilio Update a Messaging Service
+        call: messaging-messaging-services.updatemessagingservice
+        with:
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: DELETE
+        name: deletemessagingservice
+        description: Twilio Delete a Messaging Service
+        call: messaging-messaging-services.deletemessagingservice
+        outputParameters:
+        - type: object
+          mapping: $.
+  - type: mcp
+    namespace: messaging-messaging-services-mcp
+    port: 9090
+    transport: http
+    description: MCP adapter for Twilio Messaging API — Messaging Services. One tool per consumed operation, routed inline
+      through this capability's consumes block.
+    tools:
+    - name: twilio-list-messaging-services
+      description: Twilio List Messaging Services
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: messaging-messaging-services.listmessagingservices
+      with:
+        PageSize: tools.PageSize
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: twilio-create-messaging-service
+      description: Twilio Create a Messaging Service
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: messaging-messaging-services.createmessagingservice
+      with:
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: twilio-fetch-messaging-service
+      description: Twilio Fetch a Messaging Service
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: messaging-messaging-services.fetchmessagingservice
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: twilio-update-messaging-service
+      description: Twilio Update a Messaging Service
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: messaging-messaging-services.updatemessagingservice
+      with:
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: twilio-delete-messaging-service
+      description: Twilio Delete a Messaging Service
+      hints:
+        readOnly: false
+        destructive: true
+        idempotent: true
+      call: messaging-messaging-services.deletemessagingservice
+      outputParameters:
+      - type: object
+        mapping: $.

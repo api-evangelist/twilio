@@ -1,0 +1,81 @@
+naftiko: 1.0.0-alpha2
+info:
+  label: Twilio Verify API — Verification Checks
+  description: 'Twilio Verify API — Verification Checks. 1 operations. Lead operation: Twilio Check a Verification Code. Self-contained
+    Naftiko capability covering one Twilio business surface.'
+  tags:
+  - Twilio
+  - Verification Checks
+  created: '2026-05-19'
+  modified: '2026-05-19'
+binds:
+- namespace: env
+  keys:
+    TWILIO_API_KEY: TWILIO_API_KEY
+capability:
+  consumes:
+  - type: http
+    namespace: verify-verification-checks
+    baseUri: https://verify.twilio.com/v2
+    description: Twilio Verify API — Verification Checks business capability. Self-contained, no shared references.
+    resources:
+    - name: Services-ServiceSid-VerificationCheck
+      path: /Services/{ServiceSid}/VerificationCheck
+      operations:
+      - name: createverificationcheck
+        method: POST
+        description: Twilio Check a Verification Code
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: true
+    authentication:
+      type: basic
+      username: '{{env.TWILIO_USER}}'
+      password: '{{env.TWILIO_PASS}}'
+  exposes:
+  - type: rest
+    namespace: verify-verification-checks-rest
+    port: 8080
+    description: REST adapter for Twilio Verify API — Verification Checks. One Spectral-compliant resource per consumed operation,
+      prefixed with /v1.
+    resources:
+    - path: /v1/services/{servicesid}/verificationcheck
+      name: services-servicesid-verificationcheck
+      description: REST surface for Services-ServiceSid-VerificationCheck.
+      operations:
+      - method: POST
+        name: createverificationcheck
+        description: Twilio Check a Verification Code
+        call: verify-verification-checks.createverificationcheck
+        with:
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+  - type: mcp
+    namespace: verify-verification-checks-mcp
+    port: 9090
+    transport: http
+    description: MCP adapter for Twilio Verify API — Verification Checks. One tool per consumed operation, routed inline through
+      this capability's consumes block.
+    tools:
+    - name: twilio-check-verification-code
+      description: Twilio Check a Verification Code
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: false
+      call: verify-verification-checks.createverificationcheck
+      with:
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.
