@@ -1,0 +1,736 @@
+asyncapi: '2.6.0'
+info:
+  title: Twilio Real-Time WebSocket APIs
+  version: '1.0.0'
+  description: |
+    AsyncAPI 2.6 specification for Twilio's public WebSocket APIs:
+
+    - **Media Streams** — Bidirectional and one-way raw audio over WebSocket.
+      Twilio acts as the WebSocket *client* and connects out to a
+      customer-hosted `wss://` endpoint declared via TwiML `<Stream url="..."/>`
+      or `<Connect><Stream url="..."/></Connect>`.
+    - **ConversationRelay** — Real-time voice AI orchestration WebSocket where
+      Twilio handles STT/TTS and forwards transcribed prompts to a
+      customer-hosted backend, which streams back text tokens, play, sendDigits,
+      language, or end instructions.
+
+    Voice Intelligence (Twilio Intelligence) is intentionally not modeled here
+    because it operates post-call (transcripts/operator results) and does not
+    expose a public real-time WebSocket protocol at the time of writing.
+
+    Sources:
+      - https://www.twilio.com/docs/voice/twiml/stream
+      - https://www.twilio.com/docs/voice/media-streams/websocket-messages
+      - https://www.twilio.com/docs/voice/twiml/connect/conversationrelay
+      - https://www.twilio.com/docs/voice/conversationrelay/websocket-messages
+  contact:
+    name: Twilio Developer Docs
+    url: https://www.twilio.com/docs
+  license:
+    name: Proprietary (Twilio)
+    url: https://www.twilio.com/legal/tos
+
+defaultContentType: application/json
+
+servers:
+  mediaStreamsCustomerHosted:
+    url: '{customerWebsocketHost}/{path}'
+    protocol: wss
+    description: |
+      Customer-hosted WebSocket endpoint that Twilio Media Streams connects to.
+      The URL is declared in TwiML via `<Stream url="wss://example.com/..."/>`
+      (one-way) or `<Connect><Stream url="wss://example.com/..."/></Connect>`
+      (bidirectional). Twilio is the WebSocket client; the customer is the
+      server.
+    variables:
+      customerWebsocketHost:
+        description: Customer-hosted host (e.g. example.com).
+        default: example.com
+      path:
+        description: Path on the customer host where Twilio will connect.
+        default: media
+  conversationRelayCustomerHosted:
+    url: '{customerWebsocketHost}/{path}'
+    protocol: wss
+    description: |
+      Customer-hosted WebSocket endpoint that Twilio ConversationRelay
+      connects to. Declared in TwiML via `<Connect><ConversationRelay url="wss://example.com/..."/></Connect>`.
+      Twilio is the WebSocket client; the customer is the server.
+    variables:
+      customerWebsocketHost:
+        description: Customer-hosted host.
+        default: example.com
+      path:
+        description: Path on the customer host where Twilio will connect.
+        default: conversation-relay
+
+channels:
+
+  # ---------------------------------------------------------------------------
+  # Media Streams — Twilio <-> Customer Server
+  # Twilio sends: connected, start, media, dtmf, mark, stop
+  # Customer sends (bidirectional only): media, mark, clear
+  # ---------------------------------------------------------------------------
+  media-streams:
+    description: |
+      Single Media Streams WebSocket session. All frames are JSON-encoded text
+      frames carrying an `event` discriminator. The session begins with
+      `connected`, then `start`, followed by a continuous stream of `media`
+      frames and optional `dtmf` / `mark` frames, terminated by `stop`.
+
+      In bidirectional mode (`<Connect><Stream>`), the customer server may
+      additionally send `media`, `mark`, and `clear` frames back to Twilio
+      using the `streamSid` provided in the `start` frame.
+    bindings:
+      ws:
+        bindingVersion: '0.1.0'
+
+    subscribe:
+      summary: Frames sent FROM Twilio TO the customer server.
+      operationId: receiveFromTwilio
+      message:
+        oneOf:
+          - $ref: '#/components/messages/MediaStreamConnected'
+          - $ref: '#/components/messages/MediaStreamStart'
+          - $ref: '#/components/messages/MediaStreamMedia'
+          - $ref: '#/components/messages/MediaStreamDtmf'
+          - $ref: '#/components/messages/MediaStreamMark'
+          - $ref: '#/components/messages/MediaStreamStop'
+
+    publish:
+      summary: |
+        Frames sent FROM the customer server TO Twilio. Only valid in
+        bidirectional Media Streams (`<Connect><Stream>`).
+      operationId: sendToTwilio
+      message:
+        oneOf:
+          - $ref: '#/components/messages/MediaStreamOutboundMedia'
+          - $ref: '#/components/messages/MediaStreamOutboundMark'
+          - $ref: '#/components/messages/MediaStreamOutboundClear'
+
+  # ---------------------------------------------------------------------------
+  # ConversationRelay — Twilio <-> Customer Server
+  # Twilio sends: setup, prompt, dtmf, interrupt, error
+  # Customer sends: text, play, sendDigits, language, end
+  # ---------------------------------------------------------------------------
+  conversation-relay:
+    description: |
+      Single ConversationRelay WebSocket session. All frames are JSON-encoded
+      text frames carrying a `type` discriminator. The session begins with a
+      `setup` message and continues with `prompt`, `dtmf`, `interrupt`, and
+      `error` frames from Twilio. The customer server streams back `text`
+      tokens, `play` media, `sendDigits` DTMF, `language` switches, and an
+      `end` directive to terminate the session.
+    bindings:
+      ws:
+        bindingVersion: '0.1.0'
+
+    subscribe:
+      summary: Frames sent FROM Twilio TO the customer server.
+      operationId: relayReceiveFromTwilio
+      message:
+        oneOf:
+          - $ref: '#/components/messages/RelaySetup'
+          - $ref: '#/components/messages/RelayPrompt'
+          - $ref: '#/components/messages/RelayDtmf'
+          - $ref: '#/components/messages/RelayInterrupt'
+          - $ref: '#/components/messages/RelayError'
+
+    publish:
+      summary: Frames sent FROM the customer server TO Twilio.
+      operationId: relaySendToTwilio
+      message:
+        oneOf:
+          - $ref: '#/components/messages/RelayText'
+          - $ref: '#/components/messages/RelayPlay'
+          - $ref: '#/components/messages/RelaySendDigits'
+          - $ref: '#/components/messages/RelayLanguage'
+          - $ref: '#/components/messages/RelayEnd'
+
+components:
+
+  messages:
+
+    # -------------------- Media Streams: Twilio -> Customer --------------------
+
+    MediaStreamConnected:
+      name: connected
+      title: Media Streams `connected` frame
+      summary: First frame sent by Twilio when the WebSocket opens.
+      contentType: application/json
+      payload:
+        $ref: '#/components/schemas/MediaConnected'
+
+    MediaStreamStart:
+      name: start
+      title: Media Streams `start` frame
+      summary: Sent once at stream initiation with stream metadata.
+      contentType: application/json
+      payload:
+        $ref: '#/components/schemas/MediaStart'
+
+    MediaStreamMedia:
+      name: media
+      title: Media Streams `media` frame (inbound)
+      summary: Continuous audio frame carrying base64 mulaw/8000 payload.
+      contentType: application/json
+      payload:
+        $ref: '#/components/schemas/MediaMedia'
+
+    MediaStreamDtmf:
+      name: dtmf
+      title: Media Streams `dtmf` frame
+      summary: |
+        Sent when a DTMF digit is detected on the inbound track. Bidirectional
+        Media Streams only.
+      contentType: application/json
+      payload:
+        $ref: '#/components/schemas/MediaDtmf'
+
+    MediaStreamMark:
+      name: mark
+      title: Media Streams `mark` frame (inbound to customer)
+      summary: |
+        Echoed back to the customer server when a previously sent outbound
+        audio buffer with a matching `mark.name` has finished playing.
+        Bidirectional Media Streams only.
+      contentType: application/json
+      payload:
+        $ref: '#/components/schemas/MediaMark'
+
+    MediaStreamStop:
+      name: stop
+      title: Media Streams `stop` frame
+      summary: Sent once when the stream terminates.
+      contentType: application/json
+      payload:
+        $ref: '#/components/schemas/MediaStop'
+
+    # -------------------- Media Streams: Customer -> Twilio --------------------
+
+    MediaStreamOutboundMedia:
+      name: outboundMedia
+      title: Media Streams outbound `media` frame
+      summary: |
+        Base64-encoded mulaw/8000 audio sent from the customer server to Twilio
+        for playback on the call. Bidirectional Media Streams only.
+      contentType: application/json
+      payload:
+        $ref: '#/components/schemas/MediaOutboundMedia'
+
+    MediaStreamOutboundMark:
+      name: outboundMark
+      title: Media Streams outbound `mark` frame
+      summary: |
+        Sent after one or more outbound `media` frames. Twilio will echo the
+        mark back to the customer with the same `mark.name` once the preceding
+        audio has finished playing. Bidirectional Media Streams only.
+      contentType: application/json
+      payload:
+        $ref: '#/components/schemas/MediaOutboundMark'
+
+    MediaStreamOutboundClear:
+      name: clear
+      title: Media Streams outbound `clear` frame
+      summary: |
+        Interrupts and discards any audio that Twilio has buffered for
+        playback. Bidirectional Media Streams only.
+      contentType: application/json
+      payload:
+        $ref: '#/components/schemas/MediaOutboundClear'
+
+    # -------------------- ConversationRelay: Twilio -> Customer ----------------
+
+    RelaySetup:
+      name: setup
+      title: ConversationRelay `setup` message
+      summary: Sent immediately after the WebSocket connection establishes.
+      contentType: application/json
+      payload:
+        $ref: '#/components/schemas/RelaySetupPayload'
+
+    RelayPrompt:
+      name: prompt
+      title: ConversationRelay `prompt` message
+      summary: Transcribed caller speech, streamed as the caller talks.
+      contentType: application/json
+      payload:
+        $ref: '#/components/schemas/RelayPromptPayload'
+
+    RelayDtmf:
+      name: dtmf
+      title: ConversationRelay `dtmf` message
+      summary: A DTMF key pressed by the caller.
+      contentType: application/json
+      payload:
+        $ref: '#/components/schemas/RelayDtmfPayload'
+
+    RelayInterrupt:
+      name: interrupt
+      title: ConversationRelay `interrupt` message
+      summary: Caller speech interrupted in-progress TTS playback.
+      contentType: application/json
+      payload:
+        $ref: '#/components/schemas/RelayInterruptPayload'
+
+    RelayError:
+      name: error
+      title: ConversationRelay `error` message
+      summary: Session-level error reported by Twilio.
+      contentType: application/json
+      payload:
+        $ref: '#/components/schemas/RelayErrorPayload'
+
+    # -------------------- ConversationRelay: Customer -> Twilio ----------------
+
+    RelayText:
+      name: text
+      title: ConversationRelay `text` (text token) message
+      summary: Streams an individual TTS text token (or final token) to Twilio.
+      contentType: application/json
+      payload:
+        $ref: '#/components/schemas/RelayTextPayload'
+
+    RelayPlay:
+      name: play
+      title: ConversationRelay `play` message
+      summary: Requests Twilio to play an external media file to the caller.
+      contentType: application/json
+      payload:
+        $ref: '#/components/schemas/RelayPlayPayload'
+
+    RelaySendDigits:
+      name: sendDigits
+      title: ConversationRelay `sendDigits` message
+      summary: Sends DTMF digits down the call leg.
+      contentType: application/json
+      payload:
+        $ref: '#/components/schemas/RelaySendDigitsPayload'
+
+    RelayLanguage:
+      name: language
+      title: ConversationRelay `language` (switch language) message
+      summary: Switches the TTS and/or STT language mid-session.
+      contentType: application/json
+      payload:
+        $ref: '#/components/schemas/RelayLanguagePayload'
+
+    RelayEnd:
+      name: end
+      title: ConversationRelay `end` message
+      summary: Ends the ConversationRelay session and hands the call back to TwiML.
+      contentType: application/json
+      payload:
+        $ref: '#/components/schemas/RelayEndPayload'
+
+  # ---------------------------------------------------------------------------
+  # Schemas
+  # ---------------------------------------------------------------------------
+  schemas:
+
+    # -------------------- Media Streams schemas --------------------
+
+    MediaConnected:
+      type: object
+      required: [event, protocol, version]
+      properties:
+        event:
+          type: string
+          const: connected
+          description: Always `connected`.
+        protocol:
+          type: string
+          description: Protocol identifier. Currently always `Call`.
+          example: Call
+        version:
+          type: string
+          description: Semantic version of the Media Streams protocol.
+          example: 1.0.0
+
+    MediaStart:
+      type: object
+      required: [event, sequenceNumber, start, streamSid]
+      properties:
+        event:
+          type: string
+          const: start
+        sequenceNumber:
+          type: string
+          description: Message order counter as a string, starting at "1".
+          example: '1'
+        streamSid:
+          type: string
+          description: Unique stream identifier (mirrored from `start.streamSid`).
+        start:
+          type: object
+          required: [streamSid, accountSid, callSid, tracks, mediaFormat]
+          properties:
+            streamSid:
+              type: string
+              description: Unique stream identifier.
+            accountSid:
+              type: string
+              description: SID of the Twilio account that owns the stream.
+            callSid:
+              type: string
+              description: SID of the Call that initiated the stream.
+            tracks:
+              type: array
+              description: Tracks included in the stream.
+              items:
+                type: string
+                enum: [inbound, outbound]
+            customParameters:
+              type: object
+              description: |
+                Key/value pairs supplied via `<Parameter name="..." value="..."/>`
+                children of the `<Stream>` TwiML element.
+              additionalProperties:
+                type: string
+            mediaFormat:
+              type: object
+              required: [encoding, sampleRate, channels]
+              properties:
+                encoding:
+                  type: string
+                  const: audio/x-mulaw
+                sampleRate:
+                  type: integer
+                  const: 8000
+                channels:
+                  type: integer
+                  const: 1
+
+    MediaMedia:
+      type: object
+      required: [event, sequenceNumber, media, streamSid]
+      properties:
+        event:
+          type: string
+          const: media
+        sequenceNumber:
+          type: string
+          description: Message order counter as a string.
+        streamSid:
+          type: string
+        media:
+          type: object
+          required: [track, chunk, timestamp, payload]
+          properties:
+            track:
+              type: string
+              enum: [inbound, outbound]
+            chunk:
+              type: string
+              description: Chunk sequence number starting at "1".
+            timestamp:
+              type: string
+              description: Milliseconds elapsed since the start of the stream.
+            payload:
+              type: string
+              format: byte
+              description: Base64-encoded mulaw/8000 audio data.
+
+    MediaDtmf:
+      type: object
+      required: [event, sequenceNumber, streamSid, dtmf]
+      properties:
+        event:
+          type: string
+          const: dtmf
+        sequenceNumber:
+          type: string
+        streamSid:
+          type: string
+        dtmf:
+          type: object
+          required: [track, digit]
+          properties:
+            track:
+              type: string
+              const: inbound_track
+            digit:
+              type: string
+              description: The DTMF key that was pressed (0-9, *, #).
+
+    MediaMark:
+      type: object
+      required: [event, sequenceNumber, streamSid, mark]
+      properties:
+        event:
+          type: string
+          const: mark
+        sequenceNumber:
+          type: string
+        streamSid:
+          type: string
+        mark:
+          type: object
+          required: [name]
+          properties:
+            name:
+              type: string
+              description: |
+                The same label the customer server attached to a previously
+                sent outbound `mark` frame.
+
+    MediaStop:
+      type: object
+      required: [event, sequenceNumber, streamSid, stop]
+      properties:
+        event:
+          type: string
+          const: stop
+        sequenceNumber:
+          type: string
+        streamSid:
+          type: string
+        stop:
+          type: object
+          required: [accountSid, callSid]
+          properties:
+            accountSid:
+              type: string
+            callSid:
+              type: string
+
+    MediaOutboundMedia:
+      type: object
+      required: [event, streamSid, media]
+      properties:
+        event:
+          type: string
+          const: media
+        streamSid:
+          type: string
+          description: The stream identifier received in the `start` frame.
+        media:
+          type: object
+          required: [payload]
+          properties:
+            payload:
+              type: string
+              format: byte
+              description: Base64-encoded mulaw/8000 audio data.
+
+    MediaOutboundMark:
+      type: object
+      required: [event, streamSid, mark]
+      properties:
+        event:
+          type: string
+          const: mark
+        streamSid:
+          type: string
+        mark:
+          type: object
+          required: [name]
+          properties:
+            name:
+              type: string
+              description: |
+                Customer-chosen label that Twilio will echo back in an inbound
+                `mark` frame once the preceding audio has finished playing.
+
+    MediaOutboundClear:
+      type: object
+      required: [event, streamSid]
+      properties:
+        event:
+          type: string
+          const: clear
+        streamSid:
+          type: string
+
+    # -------------------- ConversationRelay schemas --------------------
+
+    RelaySetupPayload:
+      type: object
+      required: [type, sessionId, callSid]
+      properties:
+        type:
+          type: string
+          const: setup
+        sessionId:
+          type: string
+          description: Unique ConversationRelay session identifier.
+        accountSid:
+          type: string
+          description: SID of the Twilio account.
+        parentCallSid:
+          type: string
+          description: SID of the parent call, if any.
+        callSid:
+          type: string
+          description: SID of the call.
+        from:
+          type: string
+          description: Caller's phone number (E.164).
+        to:
+          type: string
+          description: Recipient's phone number (E.164).
+        forwardedFrom:
+          type: string
+          description: Original number, if the call was forwarded.
+        callType:
+          type: string
+          description: Call classification (e.g. `PSTN`).
+        callerName:
+          type: string
+          description: Caller's display name (CNAM), when available.
+        direction:
+          type: string
+          enum: [inbound, outbound]
+        callStatus:
+          type: string
+          description: Current call status (e.g. `RINGING`, `IN-PROGRESS`).
+        customParameters:
+          type: object
+          description: Custom TwiML `<Parameter>` values forwarded by Twilio.
+          additionalProperties:
+            type: string
+
+    RelayPromptPayload:
+      type: object
+      required: [type, voicePrompt]
+      properties:
+        type:
+          type: string
+          const: prompt
+        voicePrompt:
+          type: string
+          description: Transcribed caller speech.
+        lang:
+          type: string
+          description: BCP-47 language code of the recognized speech (e.g. `en-US`).
+        last:
+          type: boolean
+          description: True when this is the final transcription chunk for the utterance.
+
+    RelayDtmfPayload:
+      type: object
+      required: [type, digit]
+      properties:
+        type:
+          type: string
+          const: dtmf
+        digit:
+          type: string
+          description: The DTMF key pressed by the caller.
+
+    RelayInterruptPayload:
+      type: object
+      required: [type]
+      properties:
+        type:
+          type: string
+          const: interrupt
+        utteranceUntilInterrupt:
+          type: string
+          description: Portion of TTS speech delivered before the interruption.
+        durationUntilInterruptMs:
+          type: integer
+          description: Milliseconds of TTS played before the interruption.
+
+    RelayErrorPayload:
+      type: object
+      required: [type]
+      properties:
+        type:
+          type: string
+          const: error
+        description:
+          type: string
+          description: Human-readable error description.
+
+    RelayTextPayload:
+      type: object
+      required: [type, token]
+      properties:
+        type:
+          type: string
+          const: text
+        token:
+          type: string
+          description: A text token to be synthesised and spoken to the caller.
+        last:
+          type: boolean
+          default: false
+          description: True when this is the final token in a response.
+        lang:
+          type: string
+          description: BCP-47 language code to use for this token's TTS.
+        interruptible:
+          type: boolean
+          description: Whether caller speech may interrupt this token.
+        preemptible:
+          type: boolean
+          description: |
+            Whether a later text/play message can replace this token before it
+            has finished playing.
+
+    RelayPlayPayload:
+      type: object
+      required: [type, source]
+      properties:
+        type:
+          type: string
+          const: play
+        source:
+          type: string
+          format: uri
+          description: HTTPS URL of the media file to play.
+        loop:
+          type: integer
+          default: 1
+          description: |
+            Number of times to play the audio. A value of `0` means play up to
+            1000 times.
+        interruptible:
+          type: boolean
+          description: Whether caller speech may interrupt playback.
+        preemptible:
+          type: boolean
+          default: false
+          description: Whether a later message can replace this playback before completion.
+
+    RelaySendDigitsPayload:
+      type: object
+      required: [type, digits]
+      properties:
+        type:
+          type: string
+          const: sendDigits
+        digits:
+          type: string
+          minLength: 1
+          description: |
+            One or more DTMF characters to send on the call leg. Allowed
+            characters are `0-9`, `w` (half-second pause), `#`, and `*`.
+
+    RelayLanguagePayload:
+      type: object
+      required: [type]
+      properties:
+        type:
+          type: string
+          const: language
+        ttsLanguage:
+          type: string
+          description: BCP-47 language code for outbound TTS (optional).
+        transcriptionLanguage:
+          type: string
+          description: BCP-47 language code for inbound STT (optional).
+
+    RelayEndPayload:
+      type: object
+      required: [type]
+      properties:
+        type:
+          type: string
+          const: end
+        handoffData:
+          type: string
+          description: |
+            JSON-encoded string that Twilio will forward to the TwiML
+            `<ConversationRelay>` action URL as context for the next step.
