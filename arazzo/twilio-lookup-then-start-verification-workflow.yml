@@ -1,0 +1,94 @@
+arazzo: 1.0.1
+info:
+  title: Twilio Validate a Number then Start a Verification
+  summary: Look up a phone number, and only when it is a valid mobile number start a Verify verification.
+  description: >-
+    A fraud-resistant onboarding pattern that pairs Lookup with Verify. The
+    workflow first looks up the phone number with the validation and line type
+    intelligence packages, branches on whether the number is valid, and only
+    when it is valid does it start a verification on the Verify service. Invalid
+    numbers short-circuit the flow before any verification is sent. Every step
+    spells out its request inline so the flow can be read and executed without
+    opening the underlying OpenAPI description.
+  version: 1.0.0
+sourceDescriptions:
+- name: lookupApi
+  url: ../openapi/twilio-lookup-openapi.yml
+  type: openapi
+- name: verifyApi
+  url: ../openapi/twilio-verify-openapi.yml
+  type: openapi
+workflows:
+- workflowId: lookup-then-start-verification
+  summary: Validate a number with Lookup, then conditionally start a verification.
+  description: >-
+    Fetches phone number intelligence and branches on the valid flag, starting a
+    Verify verification only for valid numbers.
+  inputs:
+    type: object
+    required:
+    - phoneNumber
+    - serviceSid
+    - channel
+    properties:
+      phoneNumber:
+        type: string
+        description: The phone number to validate and verify, in E.164 format.
+      serviceSid:
+        type: string
+        description: The Verify service SID (starts with VA).
+      channel:
+        type: string
+        description: Delivery channel - one of sms, call, email, whatsapp, or sna.
+  steps:
+  - stepId: lookupNumber
+    description: >-
+      Query the Lookup API for validation and line type intelligence on the
+      supplied number.
+    operationId: fetchPhoneNumber
+    parameters:
+    - name: PhoneNumber
+      in: path
+      value: $inputs.phoneNumber
+    - name: Fields
+      in: query
+      value: validation,line_type_intelligence
+    successCriteria:
+    - condition: $statusCode == 200
+    outputs:
+      valid: $response.body#/valid
+    onSuccess:
+    - name: numberValid
+      type: goto
+      stepId: startVerification
+      criteria:
+      - context: $response.body
+        condition: $.valid == true
+        type: jsonpath
+    - name: numberInvalid
+      type: end
+      criteria:
+      - context: $response.body
+        condition: $.valid == false
+        type: jsonpath
+  - stepId: startVerification
+    description: >-
+      Start a verification on the Verify service for the validated number.
+    operationId: createVerification
+    parameters:
+    - name: ServiceSid
+      in: path
+      value: $inputs.serviceSid
+    requestBody:
+      contentType: application/x-www-form-urlencoded
+      payload:
+        To: $inputs.phoneNumber
+        Channel: $inputs.channel
+    successCriteria:
+    - condition: $statusCode == 201
+    outputs:
+      verificationSid: $response.body#/sid
+      status: $response.body#/status
+  outputs:
+    valid: $steps.lookupNumber.outputs.valid
+    verificationSid: $steps.startVerification.outputs.verificationSid

@@ -1,0 +1,106 @@
+arazzo: 1.0.1
+info:
+  title: Twilio Find an In-Progress Conference and Add a Participant
+  summary: List in-progress conferences, fetch a matching one by SID, then dial a new participant into it.
+  description: >-
+    A conference operations pattern. The workflow lists conferences filtered to
+    the in-progress status, fetches the first matching conference to confirm it
+    is live, and then dials a new participant into that conference by calling
+    them from a Twilio caller ID. Every step spells out its request inline so the
+    flow can be read and executed without opening the underlying OpenAPI
+    description.
+  version: 1.0.0
+sourceDescriptions:
+- name: voiceApi
+  url: ../openapi/twilio-voice-openapi.yml
+  type: openapi
+workflows:
+- workflowId: find-and-add-participant
+  summary: Locate a live conference and dial a participant into it.
+  description: >-
+    Lists in-progress conferences, fetches the first match, and adds a
+    participant by dialing them.
+  inputs:
+    type: object
+    required:
+    - accountSid
+    - from
+    - to
+    properties:
+      accountSid:
+        type: string
+        description: The Twilio account SID (starts with AC).
+      from:
+        type: string
+        description: Twilio phone number to use as the participant caller ID.
+      to:
+        type: string
+        description: Phone number to call and add to the conference.
+  steps:
+  - stepId: listConferences
+    description: >-
+      List conferences currently in progress.
+    operationId: listConferences
+    parameters:
+    - name: AccountSid
+      in: path
+      value: $inputs.accountSid
+    - name: Status
+      in: query
+      value: in-progress
+    successCriteria:
+    - condition: $statusCode == 200
+    outputs:
+      conferenceSid: $response.body#/conferences/0/sid
+    onSuccess:
+    - name: found
+      type: goto
+      stepId: fetchConference
+      criteria:
+      - context: $response.body
+        condition: $.conferences.length > 0
+        type: jsonpath
+    - name: none
+      type: end
+      criteria:
+      - context: $response.body
+        condition: $.conferences.length == 0
+        type: jsonpath
+  - stepId: fetchConference
+    description: >-
+      Fetch the matched conference by SID to confirm it is live.
+    operationId: fetchConference
+    parameters:
+    - name: AccountSid
+      in: path
+      value: $inputs.accountSid
+    - name: ConferenceSid
+      in: path
+      value: $steps.listConferences.outputs.conferenceSid
+    successCriteria:
+    - condition: $statusCode == 200
+    outputs:
+      status: $response.body#/status
+  - stepId: addParticipant
+    description: >-
+      Dial a new participant into the conference from the Twilio caller ID.
+    operationId: createParticipant
+    parameters:
+    - name: AccountSid
+      in: path
+      value: $inputs.accountSid
+    - name: ConferenceSid
+      in: path
+      value: $steps.listConferences.outputs.conferenceSid
+    requestBody:
+      contentType: application/x-www-form-urlencoded
+      payload:
+        From: $inputs.from
+        To: $inputs.to
+    successCriteria:
+    - condition: $statusCode == 201
+    outputs:
+      participantCallSid: $response.body#/call_sid
+  outputs:
+    conferenceSid: $steps.listConferences.outputs.conferenceSid
+    participantCallSid: $steps.addParticipant.outputs.participantCallSid

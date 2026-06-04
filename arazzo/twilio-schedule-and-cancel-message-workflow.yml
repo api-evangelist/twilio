@@ -1,0 +1,121 @@
+arazzo: 1.0.1
+info:
+  title: Twilio Schedule a Message and Cancel It Before Send
+  summary: Schedule a future message via a messaging service, then cancel it while it is still scheduled.
+  description: >-
+    A scheduled messaging control pattern. The workflow schedules a message for
+    future delivery through a messaging service using a fixed schedule type and
+    a send-at time, then fetches the message to confirm it is in the scheduled
+    state, and finally cancels it by updating its status to canceled while it is
+    still queued. Every step spells out its request inline so the flow can be
+    read and executed without opening the underlying OpenAPI description.
+  version: 1.0.0
+sourceDescriptions:
+- name: messagingApi
+  url: ../openapi/twilio-messaging-openapi.yml
+  type: openapi
+workflows:
+- workflowId: schedule-and-cancel-message
+  summary: Schedule a message, confirm it is scheduled, then cancel it.
+  description: >-
+    Creates a scheduled message via a messaging service, fetches it to confirm
+    the scheduled state, and cancels it while still queued.
+  inputs:
+    type: object
+    required:
+    - accountSid
+    - to
+    - messagingServiceSid
+    - body
+    - sendAt
+    properties:
+      accountSid:
+        type: string
+        description: The Twilio account SID (starts with AC).
+      to:
+        type: string
+        description: Recipient phone number in E.164 format.
+      messagingServiceSid:
+        type: string
+        description: SID (starts with MG) of the messaging service to schedule through.
+      body:
+        type: string
+        description: The text content of the scheduled message.
+      sendAt:
+        type: string
+        description: ISO 8601 time to send the scheduled message.
+  steps:
+  - stepId: scheduleMessage
+    description: >-
+      Schedule the message for future delivery through the messaging service.
+    operationId: createMessage
+    parameters:
+    - name: AccountSid
+      in: path
+      value: $inputs.accountSid
+    requestBody:
+      contentType: application/x-www-form-urlencoded
+      payload:
+        To: $inputs.to
+        MessagingServiceSid: $inputs.messagingServiceSid
+        Body: $inputs.body
+        SendAt: $inputs.sendAt
+        ScheduleType: fixed
+    successCriteria:
+    - condition: $statusCode == 201
+    outputs:
+      messageSid: $response.body#/sid
+      status: $response.body#/status
+  - stepId: confirmScheduled
+    description: >-
+      Fetch the message to confirm it is in the scheduled state before
+      cancelling.
+    operationId: fetchMessage
+    parameters:
+    - name: AccountSid
+      in: path
+      value: $inputs.accountSid
+    - name: MessageSid
+      in: path
+      value: $steps.scheduleMessage.outputs.messageSid
+    successCriteria:
+    - condition: $statusCode == 200
+    outputs:
+      status: $response.body#/status
+    onSuccess:
+    - name: scheduled
+      type: goto
+      stepId: cancelMessage
+      criteria:
+      - context: $response.body
+        condition: $.status == "scheduled"
+        type: jsonpath
+    - name: notScheduled
+      type: end
+      criteria:
+      - context: $response.body
+        condition: $.status != "scheduled"
+        type: jsonpath
+  - stepId: cancelMessage
+    description: >-
+      Cancel the still-queued scheduled message by updating its status to
+      canceled.
+    operationId: updateMessage
+    parameters:
+    - name: AccountSid
+      in: path
+      value: $inputs.accountSid
+    - name: MessageSid
+      in: path
+      value: $steps.scheduleMessage.outputs.messageSid
+    requestBody:
+      contentType: application/x-www-form-urlencoded
+      payload:
+        Status: canceled
+    successCriteria:
+    - condition: $statusCode == 200
+    outputs:
+      finalStatus: $response.body#/status
+  outputs:
+    messageSid: $steps.scheduleMessage.outputs.messageSid
+    finalStatus: $steps.cancelMessage.outputs.finalStatus

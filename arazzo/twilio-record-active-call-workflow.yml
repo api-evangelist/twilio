@@ -1,0 +1,104 @@
+arazzo: 1.0.1
+info:
+  title: Twilio Place a Call and Record It
+  summary: Start an outbound call, begin recording the in-progress call, then fetch the recording resource.
+  description: >-
+    A voice compliance and quality pattern. The workflow initiates an outbound
+    call, captures the call SID, starts a recording on that live call, and then
+    fetches the recording resource to confirm it was created and to read its
+    status. Every step spells out its request inline so the flow can be read and
+    executed without opening the underlying OpenAPI description.
+  version: 1.0.0
+sourceDescriptions:
+- name: voiceApi
+  url: ../openapi/twilio-voice-openapi.yml
+  type: openapi
+workflows:
+- workflowId: record-active-call
+  summary: Call, start a recording on the live call, and verify the recording.
+  description: >-
+    Creates a call, starts a call recording, and fetches the resulting recording
+    resource to confirm its status.
+  inputs:
+    type: object
+    required:
+    - accountSid
+    - to
+    - from
+    - url
+    properties:
+      accountSid:
+        type: string
+        description: The Twilio account SID (starts with AC).
+      to:
+        type: string
+        description: Destination phone number or client identifier.
+      from:
+        type: string
+        description: Twilio phone number or verified caller ID.
+      url:
+        type: string
+        description: TwiML URL that returns instructions for the call.
+      recordingStatusCallback:
+        type: string
+        description: Optional URL notified when the recording status changes.
+  steps:
+  - stepId: makeCall
+    description: >-
+      Initiate the outbound call that will be recorded.
+    operationId: createCall
+    parameters:
+    - name: AccountSid
+      in: path
+      value: $inputs.accountSid
+    requestBody:
+      contentType: application/x-www-form-urlencoded
+      payload:
+        To: $inputs.to
+        From: $inputs.from
+        Url: $inputs.url
+    successCriteria:
+    - condition: $statusCode == 201
+    outputs:
+      callSid: $response.body#/sid
+  - stepId: startRecording
+    description: >-
+      Start recording the in-progress call identified by the call SID.
+    operationId: createCallRecording
+    parameters:
+    - name: AccountSid
+      in: path
+      value: $inputs.accountSid
+    - name: CallSid
+      in: path
+      value: $steps.makeCall.outputs.callSid
+    requestBody:
+      contentType: application/x-www-form-urlencoded
+      payload:
+        RecordingStatusCallback: $inputs.recordingStatusCallback
+    successCriteria:
+    - condition: $statusCode == 201
+    outputs:
+      recordingSid: $response.body#/sid
+      recordingStatus: $response.body#/status
+  - stepId: fetchRecording
+    description: >-
+      Fetch the recording resource by SID to confirm it exists and read its
+      current status.
+    operationId: fetchRecording
+    parameters:
+    - name: AccountSid
+      in: path
+      value: $inputs.accountSid
+    - name: RecordingSid
+      in: path
+      value: $steps.startRecording.outputs.recordingSid
+    successCriteria:
+    - condition: $statusCode == 200
+    outputs:
+      status: $response.body#/status
+      duration: $response.body#/duration
+  outputs:
+    callSid: $steps.makeCall.outputs.callSid
+    recordingSid: $steps.startRecording.outputs.recordingSid
+    recordingStatus: $steps.fetchRecording.outputs.status

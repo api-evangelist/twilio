@@ -1,0 +1,100 @@
+arazzo: 1.0.1
+info:
+  title: Twilio Studio Create a Flow and Run an Execution
+  summary: Publish a new Studio Flow from a definition, then trigger an execution of it for a contact.
+  description: >-
+    An end-to-end Studio authoring and activation flow. The workflow creates a
+    new Studio Flow from a JSON flow definition and publishes it, then triggers
+    an execution of the freshly created flow for a specific contact, and finally
+    fetches the execution back to read its status. This chains flow authoring
+    directly into a live run. Every step spells out its request inline so the
+    flow can be read and executed without opening the underlying OpenAPI
+    description.
+  version: 1.0.0
+sourceDescriptions:
+- name: studioApi
+  url: ../openapi/studio-openapi-original.yml
+  type: openapi
+workflows:
+- workflowId: create-flow-and-execute
+  summary: Publish a Studio Flow then trigger and inspect an execution.
+  description: >-
+    Creates a published Studio Flow from a definition, triggers an execution for
+    a contact, and fetches the execution status.
+  inputs:
+    type: object
+    required:
+    - friendlyName
+    - status
+    - definition
+    - to
+    - from
+    properties:
+      friendlyName:
+        type: string
+        description: Human-readable name for the new flow.
+      status:
+        type: string
+        description: Flow status to publish with - draft or published.
+      definition:
+        type: string
+        description: JSON flow definition string.
+      to:
+        type: string
+        description: Contact phone number to run the execution for (E.164).
+      from:
+        type: string
+        description: Twilio number or sender associated with the flow.
+  steps:
+  - stepId: createFlow
+    description: >-
+      Create and publish a new Studio Flow from the supplied definition.
+    operationId: CreateFlow
+    requestBody:
+      contentType: application/x-www-form-urlencoded
+      payload:
+        FriendlyName: $inputs.friendlyName
+        Status: $inputs.status
+        Definition: $inputs.definition
+    successCriteria:
+    - condition: $statusCode == 200
+    outputs:
+      flowSid: $response.body#/sid
+      valid: $response.body#/valid
+  - stepId: triggerExecution
+    description: >-
+      Trigger an execution of the newly created flow for the contact.
+    operationId: CreateExecution
+    parameters:
+    - name: FlowSid
+      in: path
+      value: $steps.createFlow.outputs.flowSid
+    requestBody:
+      contentType: application/x-www-form-urlencoded
+      payload:
+        To: $inputs.to
+        From: $inputs.from
+    successCriteria:
+    - condition: $statusCode == 200
+    outputs:
+      executionSid: $response.body#/sid
+      status: $response.body#/status
+  - stepId: fetchExecution
+    description: >-
+      Fetch the execution by SID to read its current status.
+    operationId: FetchExecution
+    parameters:
+    - name: FlowSid
+      in: path
+      value: $steps.createFlow.outputs.flowSid
+    - name: Sid
+      in: path
+      value: $steps.triggerExecution.outputs.executionSid
+    successCriteria:
+    - condition: $statusCode == 200
+    outputs:
+      status: $response.body#/status
+  outputs:
+    flowSid: $steps.createFlow.outputs.flowSid
+    executionSid: $steps.triggerExecution.outputs.executionSid
+    status: $steps.fetchExecution.outputs.status

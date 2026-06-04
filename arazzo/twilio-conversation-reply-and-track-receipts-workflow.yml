@@ -1,0 +1,100 @@
+arazzo: 1.0.1
+info:
+  title: Twilio Reply to a Conversation and Track Delivery Receipts
+  summary: Confirm a conversation exists, post a reply message, then list the per-channel delivery receipts.
+  description: >-
+    An agent or bot reply pattern for Twilio Conversations. The workflow first
+    fetches the target conversation to confirm it exists and is active, posts a
+    reply message into it, and then lists the delivery receipts for that message
+    so the sender can observe per-binding delivery state. Every step spells out
+    its request inline so the flow can be read and executed without opening the
+    underlying OpenAPI description.
+  version: 1.0.0
+sourceDescriptions:
+- name: conversationsApi
+  url: ../openapi/conversations-openapi-original.yml
+  type: openapi
+workflows:
+- workflowId: conversation-reply-and-track-receipts
+  summary: Verify a conversation, post a reply, and list its delivery receipts.
+  description: >-
+    Fetches a conversation by SID, posts a reply message, then lists the
+    delivery receipts for the posted message.
+  inputs:
+    type: object
+    required:
+    - conversationSid
+    - body
+    properties:
+      conversationSid:
+        type: string
+        description: The SID of the existing conversation (starts with CH).
+      author:
+        type: string
+        description: Optional author identity for the reply message.
+      body:
+        type: string
+        description: The text content of the reply message.
+  steps:
+  - stepId: fetchConversation
+    description: >-
+      Fetch the conversation by SID to confirm it exists and read its state.
+    operationId: FetchConversation
+    parameters:
+    - name: Sid
+      in: path
+      value: $inputs.conversationSid
+    successCriteria:
+    - condition: $statusCode == 200
+    outputs:
+      state: $response.body#/state
+    onSuccess:
+    - name: active
+      type: goto
+      stepId: postReply
+      criteria:
+      - context: $response.body
+        condition: $.state != "closed"
+        type: jsonpath
+    - name: closed
+      type: end
+      criteria:
+      - context: $response.body
+        condition: $.state == "closed"
+        type: jsonpath
+  - stepId: postReply
+    description: >-
+      Post the reply message into the conversation.
+    operationId: CreateConversationMessage
+    parameters:
+    - name: ConversationSid
+      in: path
+      value: $inputs.conversationSid
+    requestBody:
+      contentType: application/x-www-form-urlencoded
+      payload:
+        Author: $inputs.author
+        Body: $inputs.body
+    successCriteria:
+    - condition: $statusCode == 200
+    outputs:
+      messageSid: $response.body#/sid
+  - stepId: listReceipts
+    description: >-
+      List the delivery receipts for the posted message to observe per-binding
+      delivery state.
+    operationId: ListConversationMessageReceipt
+    parameters:
+    - name: ConversationSid
+      in: path
+      value: $inputs.conversationSid
+    - name: MessageSid
+      in: path
+      value: $steps.postReply.outputs.messageSid
+    successCriteria:
+    - condition: $statusCode == 200
+    outputs:
+      receipts: $response.body#/delivery_receipts
+  outputs:
+    messageSid: $steps.postReply.outputs.messageSid
+    receipts: $steps.listReceipts.outputs.receipts

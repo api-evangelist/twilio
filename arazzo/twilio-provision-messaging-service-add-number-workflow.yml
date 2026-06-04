@@ -1,0 +1,82 @@
+arazzo: 1.0.1
+info:
+  title: Twilio Provision a Messaging Service and Attach a Sender Number
+  summary: Create a messaging service, attach a phone number to its sender pool, then fetch the service back.
+  description: >-
+    A messaging onboarding flow. The workflow creates a new messaging service
+    with a friendly name and inbound webhook configuration, attaches an existing
+    Twilio phone number to the service's sender pool, and then fetches the
+    service back to confirm its configuration. This is the standard chain for
+    standing up scalable, pooled messaging. Every step spells out its request
+    inline so the flow can be read and executed without opening the underlying
+    OpenAPI description.
+  version: 1.0.0
+sourceDescriptions:
+- name: messagingApi
+  url: ../openapi/twilio-messaging-openapi.yml
+  type: openapi
+workflows:
+- workflowId: provision-messaging-service-add-number
+  summary: Create a messaging service, add a sender number, and confirm it.
+  description: >-
+    Creates a messaging service, adds a phone number to its sender pool, then
+    fetches the service resource to confirm the configuration.
+  inputs:
+    type: object
+    required:
+    - friendlyName
+    - phoneNumberSid
+    properties:
+      friendlyName:
+        type: string
+        description: Descriptive name for the messaging service.
+      inboundRequestUrl:
+        type: string
+        description: Optional webhook URL for inbound messages.
+      phoneNumberSid:
+        type: string
+        description: SID (starts with PN) of the phone number to add to the pool.
+  steps:
+  - stepId: createService
+    description: >-
+      Create the messaging service that will own the sender pool.
+    operationId: createMessagingService
+    requestBody:
+      contentType: application/x-www-form-urlencoded
+      payload:
+        FriendlyName: $inputs.friendlyName
+        InboundRequestUrl: $inputs.inboundRequestUrl
+    successCriteria:
+    - condition: $statusCode == 201
+    outputs:
+      serviceSid: $response.body#/sid
+  - stepId: addNumber
+    description: >-
+      Attach an existing Twilio phone number to the messaging service sender
+      pool.
+    operationId: addPhoneNumber
+    parameters:
+    - name: ServiceSid
+      in: path
+      value: $steps.createService.outputs.serviceSid
+    requestBody:
+      contentType: application/x-www-form-urlencoded
+      payload:
+        PhoneNumberSid: $inputs.phoneNumberSid
+    successCriteria:
+    - condition: $statusCode == 201
+  - stepId: confirmService
+    description: >-
+      Fetch the messaging service back to confirm its configuration.
+    operationId: fetchMessagingService
+    parameters:
+    - name: ServiceSid
+      in: path
+      value: $steps.createService.outputs.serviceSid
+    successCriteria:
+    - condition: $statusCode == 200
+    outputs:
+      friendlyName: $response.body#/friendly_name
+  outputs:
+    serviceSid: $steps.createService.outputs.serviceSid
+    friendlyName: $steps.confirmService.outputs.friendlyName

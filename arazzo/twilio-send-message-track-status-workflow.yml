@@ -1,0 +1,102 @@
+arazzo: 1.0.1
+info:
+  title: Twilio Send a Message and Track Delivery Status
+  summary: Send an SMS/MMS and poll the message resource until it reaches a terminal delivery status.
+  description: >-
+    The canonical Twilio messaging pattern. The workflow sends an SMS or MMS
+    from a Twilio number to a recipient, captures the returned message SID, and
+    then re-fetches the message resource to read its current delivery status.
+    Because Twilio delivers messages asynchronously, the fetch step is set up to
+    be polled until the message reaches a terminal status such as delivered,
+    undelivered, or failed. Every step spells out its request inline so the flow
+    can be read and executed without opening the underlying OpenAPI description.
+  version: 1.0.0
+sourceDescriptions:
+- name: messagingApi
+  url: ../openapi/twilio-messaging-openapi.yml
+  type: openapi
+workflows:
+- workflowId: send-message-track-status
+  summary: Send a message and confirm its final delivery status.
+  description: >-
+    Sends a message via the Twilio REST API and then fetches the same message by
+    its SID to observe the delivery status, branching to a delivered or failed
+    terminal state.
+  inputs:
+    type: object
+    required:
+    - accountSid
+    - to
+    - from
+    - body
+    properties:
+      accountSid:
+        type: string
+        description: The Twilio account SID (starts with AC) that owns the message.
+      to:
+        type: string
+        description: Recipient phone number in E.164 format.
+      from:
+        type: string
+        description: Twilio phone number, short code, or alphanumeric sender ID.
+      body:
+        type: string
+        description: The text content of the message (up to 1600 characters).
+      statusCallback:
+        type: string
+        description: Optional URL for asynchronous status callbacks.
+  steps:
+  - stepId: sendMessage
+    description: >-
+      Send the SMS or MMS message from the Twilio sender to the recipient. The
+      message is created and queued for delivery, returning a message SID.
+    operationId: createMessage
+    parameters:
+    - name: AccountSid
+      in: path
+      value: $inputs.accountSid
+    requestBody:
+      contentType: application/x-www-form-urlencoded
+      payload:
+        To: $inputs.to
+        From: $inputs.from
+        Body: $inputs.body
+        StatusCallback: $inputs.statusCallback
+    successCriteria:
+    - condition: $statusCode == 201
+    outputs:
+      messageSid: $response.body#/sid
+      initialStatus: $response.body#/status
+  - stepId: checkStatus
+    description: >-
+      Fetch the message by its SID to read the current delivery status. Poll
+      this step until the status becomes delivered, undelivered, or failed.
+    operationId: fetchMessage
+    parameters:
+    - name: AccountSid
+      in: path
+      value: $inputs.accountSid
+    - name: MessageSid
+      in: path
+      value: $steps.sendMessage.outputs.messageSid
+    successCriteria:
+    - condition: $statusCode == 200
+    outputs:
+      status: $response.body#/status
+      errorCode: $response.body#/error_code
+    onSuccess:
+    - name: delivered
+      type: end
+      criteria:
+      - context: $response.body
+        condition: $.status == "delivered"
+        type: jsonpath
+    - name: failed
+      type: end
+      criteria:
+      - context: $response.body
+        condition: $.status == "failed" || $.status == "undelivered"
+        type: jsonpath
+  outputs:
+    messageSid: $steps.sendMessage.outputs.messageSid
+    finalStatus: $steps.checkStatus.outputs.status

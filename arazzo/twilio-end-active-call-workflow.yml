@@ -1,0 +1,86 @@
+arazzo: 1.0.1
+info:
+  title: Twilio Inspect a Call and Hang It Up If Live
+  summary: Fetch a call by SID and, when it is still in progress, update it to completed to end the call.
+  description: >-
+    A call control pattern. The workflow fetches a call by its SID to read the
+    current status and branches: when the call is still ringing or in progress it
+    updates the call resource with a completed status to hang it up, and when the
+    call has already ended it stops without taking action. Every step spells out
+    its request inline so the flow can be read and executed without opening the
+    underlying OpenAPI description.
+  version: 1.0.0
+sourceDescriptions:
+- name: voiceApi
+  url: ../openapi/twilio-voice-openapi.yml
+  type: openapi
+workflows:
+- workflowId: end-active-call
+  summary: Hang up a call only if it is still live.
+  description: >-
+    Fetches a call by SID and conditionally updates it to completed to end the
+    call when it is in progress or ringing.
+  inputs:
+    type: object
+    required:
+    - accountSid
+    - callSid
+    properties:
+      accountSid:
+        type: string
+        description: The Twilio account SID (starts with AC).
+      callSid:
+        type: string
+        description: The SID of the call to inspect and possibly end (starts with CA).
+  steps:
+  - stepId: fetchCall
+    description: >-
+      Fetch the call by SID to read its current status.
+    operationId: fetchCall
+    parameters:
+    - name: AccountSid
+      in: path
+      value: $inputs.accountSid
+    - name: CallSid
+      in: path
+      value: $inputs.callSid
+    successCriteria:
+    - condition: $statusCode == 200
+    outputs:
+      status: $response.body#/status
+    onSuccess:
+    - name: live
+      type: goto
+      stepId: hangUp
+      criteria:
+      - context: $response.body
+        condition: $.status == "in-progress" || $.status == "ringing" || $.status == "queued"
+        type: jsonpath
+    - name: alreadyEnded
+      type: end
+      criteria:
+      - context: $response.body
+        condition: $.status == "completed" || $.status == "canceled" || $.status == "failed"
+        type: jsonpath
+  - stepId: hangUp
+    description: >-
+      Update the live call with a completed status to hang it up.
+    operationId: updateCall
+    parameters:
+    - name: AccountSid
+      in: path
+      value: $inputs.accountSid
+    - name: CallSid
+      in: path
+      value: $inputs.callSid
+    requestBody:
+      contentType: application/x-www-form-urlencoded
+      payload:
+        Status: completed
+    successCriteria:
+    - condition: $statusCode == 200
+    outputs:
+      finalStatus: $response.body#/status
+  outputs:
+    callSid: $inputs.callSid
+    finalStatus: $steps.hangUp.outputs.finalStatus

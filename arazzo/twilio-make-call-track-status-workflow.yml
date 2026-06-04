@@ -1,0 +1,101 @@
+arazzo: 1.0.1
+info:
+  title: Twilio Make a Call and Track Its Status
+  summary: Place an outbound call with a TwiML URL, then fetch the call resource to follow its progress.
+  description: >-
+    The canonical Twilio voice pattern. The workflow initiates an outbound call
+    from a Twilio number to a destination, handing the call a TwiML URL to drive
+    the in-call experience, and captures the returned call SID. It then fetches
+    the same call resource to read its current status, which can be polled until
+    the call reaches a terminal state such as completed, busy, no-answer, or
+    failed. Every step spells out its request inline so the flow can be read and
+    executed without opening the underlying OpenAPI description.
+  version: 1.0.0
+sourceDescriptions:
+- name: voiceApi
+  url: ../openapi/twilio-voice-openapi.yml
+  type: openapi
+workflows:
+- workflowId: make-call-track-status
+  summary: Initiate an outbound call and observe its final status.
+  description: >-
+    Creates a call via the Twilio REST API and then fetches the call by SID,
+    branching to completed or failed terminal states.
+  inputs:
+    type: object
+    required:
+    - accountSid
+    - to
+    - from
+    - url
+    properties:
+      accountSid:
+        type: string
+        description: The Twilio account SID (starts with AC) placing the call.
+      to:
+        type: string
+        description: Destination phone number, SIP URI, or client identifier.
+      from:
+        type: string
+        description: Twilio phone number or verified caller ID.
+      url:
+        type: string
+        description: TwiML URL that returns instructions for the call.
+      statusCallback:
+        type: string
+        description: Optional URL for call status webhooks.
+  steps:
+  - stepId: makeCall
+    description: >-
+      Initiate the outbound call from the Twilio caller ID to the destination,
+      using the supplied TwiML URL to control the call flow.
+    operationId: createCall
+    parameters:
+    - name: AccountSid
+      in: path
+      value: $inputs.accountSid
+    requestBody:
+      contentType: application/x-www-form-urlencoded
+      payload:
+        To: $inputs.to
+        From: $inputs.from
+        Url: $inputs.url
+        StatusCallback: $inputs.statusCallback
+    successCriteria:
+    - condition: $statusCode == 201
+    outputs:
+      callSid: $response.body#/sid
+      initialStatus: $response.body#/status
+  - stepId: checkCall
+    description: >-
+      Fetch the call by SID to read its current status. Poll this step until the
+      call reaches a terminal status.
+    operationId: fetchCall
+    parameters:
+    - name: AccountSid
+      in: path
+      value: $inputs.accountSid
+    - name: CallSid
+      in: path
+      value: $steps.makeCall.outputs.callSid
+    successCriteria:
+    - condition: $statusCode == 200
+    outputs:
+      status: $response.body#/status
+      duration: $response.body#/duration
+    onSuccess:
+    - name: completed
+      type: end
+      criteria:
+      - context: $response.body
+        condition: $.status == "completed"
+        type: jsonpath
+    - name: notConnected
+      type: end
+      criteria:
+      - context: $response.body
+        condition: $.status == "busy" || $.status == "no-answer" || $.status == "failed" || $.status == "canceled"
+        type: jsonpath
+  outputs:
+    callSid: $steps.makeCall.outputs.callSid
+    finalStatus: $steps.checkCall.outputs.status

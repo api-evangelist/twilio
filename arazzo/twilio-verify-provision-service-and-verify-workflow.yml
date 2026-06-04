@@ -1,0 +1,115 @@
+arazzo: 1.0.1
+info:
+  title: Twilio Verify Provision a Service and Run a Verification
+  summary: Create a Verify service, start a verification on it, and check the supplied code.
+  description: >-
+    An end-to-end onboarding flow for Twilio Verify. The workflow first creates
+    a new Verify service with a friendly name and code length, then starts a
+    verification on that freshly created service, and finally checks the
+    user-supplied code against the verification. This chains service
+    provisioning into the two-factor flow so a brand new tenant can be stood up
+    and exercised in one pass. Every step spells out its request inline so the
+    flow can be read and executed without opening the underlying OpenAPI
+    description.
+  version: 1.0.0
+sourceDescriptions:
+- name: verifyApi
+  url: ../openapi/twilio-verify-openapi.yml
+  type: openapi
+workflows:
+- workflowId: provision-service-and-verify
+  summary: Provision a Verify service then start and check a verification on it.
+  description: >-
+    Creates a Verify service, starts a verification using the new service SID,
+    and checks the entered code, branching to approved or not-approved.
+  inputs:
+    type: object
+    required:
+    - friendlyName
+    - to
+    - channel
+    - code
+    properties:
+      friendlyName:
+        type: string
+        description: Human-readable name for the new Verify service.
+      codeLength:
+        type: integer
+        description: Length of the verification code (4-10, default 6).
+      to:
+        type: string
+        description: Phone number (E.164) or email address to verify.
+      channel:
+        type: string
+        description: Delivery channel - one of sms, call, email, whatsapp, or sna.
+      code:
+        type: string
+        description: The verification code the user entered to check.
+  steps:
+  - stepId: createService
+    description: >-
+      Create a new Verify service that will host the verification.
+    operationId: createService
+    requestBody:
+      contentType: application/x-www-form-urlencoded
+      payload:
+        FriendlyName: $inputs.friendlyName
+        CodeLength: $inputs.codeLength
+    successCriteria:
+    - condition: $statusCode == 201
+    outputs:
+      serviceSid: $response.body#/sid
+  - stepId: startVerification
+    description: >-
+      Start a verification on the newly created service, delivering a code to
+      the recipient over the chosen channel.
+    operationId: createVerification
+    parameters:
+    - name: ServiceSid
+      in: path
+      value: $steps.createService.outputs.serviceSid
+    requestBody:
+      contentType: application/x-www-form-urlencoded
+      payload:
+        To: $inputs.to
+        Channel: $inputs.channel
+    successCriteria:
+    - condition: $statusCode == 201
+    outputs:
+      verificationSid: $response.body#/sid
+      status: $response.body#/status
+  - stepId: checkVerification
+    description: >-
+      Check the user-entered code against the verification.
+    operationId: createVerificationCheck
+    parameters:
+    - name: ServiceSid
+      in: path
+      value: $steps.createService.outputs.serviceSid
+    requestBody:
+      contentType: application/x-www-form-urlencoded
+      payload:
+        To: $inputs.to
+        Code: $inputs.code
+    successCriteria:
+    - condition: $statusCode == 200
+    outputs:
+      status: $response.body#/status
+      valid: $response.body#/valid
+    onSuccess:
+    - name: approved
+      type: end
+      criteria:
+      - context: $response.body
+        condition: $.status == "approved"
+        type: jsonpath
+    - name: notApproved
+      type: end
+      criteria:
+      - context: $response.body
+        condition: $.status != "approved"
+        type: jsonpath
+  outputs:
+    serviceSid: $steps.createService.outputs.serviceSid
+    verificationSid: $steps.startVerification.outputs.verificationSid
+    checkStatus: $steps.checkVerification.outputs.status

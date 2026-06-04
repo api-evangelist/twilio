@@ -1,0 +1,100 @@
+arazzo: 1.0.1
+info:
+  title: Twilio Send an MMS and List Its Media
+  summary: Send an MMS with a media URL, fetch the message back, then list the media attached to it.
+  description: >-
+    A multimedia messaging pattern. The workflow sends an MMS that includes a
+    media URL, fetches the message resource back to confirm it was created, and
+    then lists the media sub-resources attached to the message so the stored
+    media SIDs can be retrieved. Every step spells out its request inline so the
+    flow can be read and executed without opening the underlying OpenAPI
+    description.
+  version: 1.0.0
+sourceDescriptions:
+- name: messagingApi
+  url: ../openapi/twilio-messaging-openapi.yml
+  type: openapi
+workflows:
+- workflowId: send-mms-and-list-media
+  summary: Send an MMS and enumerate its stored media.
+  description: >-
+    Sends an MMS with a media URL, fetches the message, and lists the media
+    attached to it.
+  inputs:
+    type: object
+    required:
+    - accountSid
+    - to
+    - from
+    - mediaUrl
+    properties:
+      accountSid:
+        type: string
+        description: The Twilio account SID (starts with AC).
+      to:
+        type: string
+        description: Recipient phone number in E.164 format.
+      from:
+        type: string
+        description: Twilio phone number to send from.
+      body:
+        type: string
+        description: Optional text body to accompany the media.
+      mediaUrl:
+        type: string
+        description: URL of the media to include in the MMS.
+  steps:
+  - stepId: sendMms
+    description: >-
+      Send the MMS including the media URL.
+    operationId: createMessage
+    parameters:
+    - name: AccountSid
+      in: path
+      value: $inputs.accountSid
+    requestBody:
+      contentType: application/x-www-form-urlencoded
+      payload:
+        To: $inputs.to
+        From: $inputs.from
+        Body: $inputs.body
+        MediaUrl:
+        - $inputs.mediaUrl
+    successCriteria:
+    - condition: $statusCode == 201
+    outputs:
+      messageSid: $response.body#/sid
+      numMedia: $response.body#/num_media
+  - stepId: fetchMessage
+    description: >-
+      Fetch the message back to confirm it was created.
+    operationId: fetchMessage
+    parameters:
+    - name: AccountSid
+      in: path
+      value: $inputs.accountSid
+    - name: MessageSid
+      in: path
+      value: $steps.sendMms.outputs.messageSid
+    successCriteria:
+    - condition: $statusCode == 200
+    outputs:
+      status: $response.body#/status
+  - stepId: listMedia
+    description: >-
+      List the media sub-resources attached to the message.
+    operationId: listMedia
+    parameters:
+    - name: AccountSid
+      in: path
+      value: $inputs.accountSid
+    - name: MessageSid
+      in: path
+      value: $steps.sendMms.outputs.messageSid
+    successCriteria:
+    - condition: $statusCode == 200
+    outputs:
+      mediaList: $response.body#/media_list
+  outputs:
+    messageSid: $steps.sendMms.outputs.messageSid
+    mediaList: $steps.listMedia.outputs.mediaList

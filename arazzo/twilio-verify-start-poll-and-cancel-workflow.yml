@@ -1,0 +1,109 @@
+arazzo: 1.0.1
+info:
+  title: Twilio Verify Start, Poll, and Cancel a Verification
+  summary: Start a verification, fetch it to read its status, and cancel it if it is still pending.
+  description: >-
+    A verification lifecycle management pattern. The workflow starts a
+    verification on a Verify service, fetches the verification back by its SID to
+    read the current status, and branches: when the verification is still
+    pending it cancels it by updating its status to canceled, and when it has
+    already been approved it ends. This is used to expire stale verifications.
+    Every step spells out its request inline so the flow can be read and executed
+    without opening the underlying OpenAPI description.
+  version: 1.0.0
+sourceDescriptions:
+- name: verifyApi
+  url: ../openapi/twilio-verify-openapi.yml
+  type: openapi
+workflows:
+- workflowId: start-poll-and-cancel-verification
+  summary: Start a verification, read its status, and cancel it if still pending.
+  description: >-
+    Creates a verification, fetches it to read the status, and conditionally
+    cancels it when it remains pending.
+  inputs:
+    type: object
+    required:
+    - serviceSid
+    - to
+    - channel
+    properties:
+      serviceSid:
+        type: string
+        description: The Verify service SID (starts with VA).
+      to:
+        type: string
+        description: Phone number (E.164) or email address to verify.
+      channel:
+        type: string
+        description: Delivery channel - one of sms, call, email, whatsapp, or sna.
+  steps:
+  - stepId: startVerification
+    description: >-
+      Start a verification on the service.
+    operationId: createVerification
+    parameters:
+    - name: ServiceSid
+      in: path
+      value: $inputs.serviceSid
+    requestBody:
+      contentType: application/x-www-form-urlencoded
+      payload:
+        To: $inputs.to
+        Channel: $inputs.channel
+    successCriteria:
+    - condition: $statusCode == 201
+    outputs:
+      verificationSid: $response.body#/sid
+      status: $response.body#/status
+  - stepId: fetchVerification
+    description: >-
+      Fetch the verification by SID to read its current status.
+    operationId: fetchVerification
+    parameters:
+    - name: ServiceSid
+      in: path
+      value: $inputs.serviceSid
+    - name: VerificationSid
+      in: path
+      value: $steps.startVerification.outputs.verificationSid
+    successCriteria:
+    - condition: $statusCode == 200
+    outputs:
+      status: $response.body#/status
+    onSuccess:
+    - name: stillPending
+      type: goto
+      stepId: cancelVerification
+      criteria:
+      - context: $response.body
+        condition: $.status == "pending"
+        type: jsonpath
+    - name: settled
+      type: end
+      criteria:
+      - context: $response.body
+        condition: $.status != "pending"
+        type: jsonpath
+  - stepId: cancelVerification
+    description: >-
+      Cancel the still-pending verification by updating its status to canceled.
+    operationId: updateVerification
+    parameters:
+    - name: ServiceSid
+      in: path
+      value: $inputs.serviceSid
+    - name: VerificationSid
+      in: path
+      value: $steps.startVerification.outputs.verificationSid
+    requestBody:
+      contentType: application/x-www-form-urlencoded
+      payload:
+        Status: canceled
+    successCriteria:
+    - condition: $statusCode == 200
+    outputs:
+      finalStatus: $response.body#/status
+  outputs:
+    verificationSid: $steps.startVerification.outputs.verificationSid
+    finalStatus: $steps.cancelVerification.outputs.finalStatus

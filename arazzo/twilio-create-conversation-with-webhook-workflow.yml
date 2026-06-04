@@ -1,0 +1,75 @@
+arazzo: 1.0.1
+info:
+  title: Twilio Create a Conversation and Attach a Scoped Webhook
+  summary: Create a Conversations thread, then attach a conversation-scoped webhook that targets your service.
+  description: >-
+    An event-driven Conversations setup pattern. The workflow creates a new
+    conversation and then attaches a conversation-scoped webhook to it, pointing
+    a webhook target at the supplied callback URL so that events on this specific
+    conversation are delivered to your service. Every step spells out its request
+    inline so the flow can be read and executed without opening the underlying
+    OpenAPI description.
+  version: 1.0.0
+sourceDescriptions:
+- name: conversationsApi
+  url: ../openapi/conversations-openapi-original.yml
+  type: openapi
+workflows:
+- workflowId: create-conversation-with-webhook
+  summary: Create a conversation and attach a scoped webhook to it.
+  description: >-
+    Creates a conversation, then registers a conversation-scoped webhook that
+    posts events to the supplied URL.
+  inputs:
+    type: object
+    required:
+    - target
+    - configurationUrl
+    properties:
+      friendlyName:
+        type: string
+        description: Optional human-readable name for the conversation.
+      target:
+        type: string
+        description: The webhook target type (e.g. webhook).
+      configurationUrl:
+        type: string
+        description: The URL that conversation events are delivered to.
+      configurationMethod:
+        type: string
+        description: HTTP method used to call the webhook URL (GET or POST).
+  steps:
+  - stepId: createConversation
+    description: >-
+      Create the conversation thread that the webhook will be scoped to.
+    operationId: CreateConversation
+    requestBody:
+      contentType: application/x-www-form-urlencoded
+      payload:
+        FriendlyName: $inputs.friendlyName
+    successCriteria:
+    - condition: $statusCode == 200
+    outputs:
+      conversationSid: $response.body#/sid
+  - stepId: attachWebhook
+    description: >-
+      Attach a conversation-scoped webhook that delivers events to the supplied
+      URL.
+    operationId: CreateConversationScopedWebhook
+    parameters:
+    - name: ConversationSid
+      in: path
+      value: $steps.createConversation.outputs.conversationSid
+    requestBody:
+      contentType: application/x-www-form-urlencoded
+      payload:
+        Target: $inputs.target
+        Configuration.Url: $inputs.configurationUrl
+        Configuration.Method: $inputs.configurationMethod
+    successCriteria:
+    - condition: $statusCode == 200
+    outputs:
+      webhookSid: $response.body#/sid
+  outputs:
+    conversationSid: $steps.createConversation.outputs.conversationSid
+    webhookSid: $steps.attachWebhook.outputs.webhookSid

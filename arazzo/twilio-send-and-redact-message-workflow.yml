@@ -1,0 +1,84 @@
+arazzo: 1.0.1
+info:
+  title: Twilio Send a Message and Redact Its Body
+  summary: Send an SMS, then redact the stored message body by updating it to an empty string for privacy.
+  description: >-
+    A privacy and compliance pattern. The workflow sends an SMS, captures the
+    message SID, and then redacts the message body from Twilio's records by
+    updating the message with an empty body string. This is used to remove
+    sensitive content such as one-time codes or personal data from the message
+    log after delivery. Every step spells out its request inline so the flow can
+    be read and executed without opening the underlying OpenAPI description.
+  version: 1.0.0
+sourceDescriptions:
+- name: messagingApi
+  url: ../openapi/twilio-messaging-openapi.yml
+  type: openapi
+workflows:
+- workflowId: send-and-redact-message
+  summary: Send a message then redact its stored body.
+  description: >-
+    Sends a message and then updates it with an empty body to redact the stored
+    content.
+  inputs:
+    type: object
+    required:
+    - accountSid
+    - to
+    - from
+    - body
+    properties:
+      accountSid:
+        type: string
+        description: The Twilio account SID (starts with AC).
+      to:
+        type: string
+        description: Recipient phone number in E.164 format.
+      from:
+        type: string
+        description: Twilio phone number or sender ID to send from.
+      body:
+        type: string
+        description: The sensitive text content of the message to send.
+  steps:
+  - stepId: sendMessage
+    description: >-
+      Send the SMS containing the sensitive content.
+    operationId: createMessage
+    parameters:
+    - name: AccountSid
+      in: path
+      value: $inputs.accountSid
+    requestBody:
+      contentType: application/x-www-form-urlencoded
+      payload:
+        To: $inputs.to
+        From: $inputs.from
+        Body: $inputs.body
+    successCriteria:
+    - condition: $statusCode == 201
+    outputs:
+      messageSid: $response.body#/sid
+  - stepId: redactBody
+    description: >-
+      Redact the stored message body by updating the message with an empty body
+      string.
+    operationId: updateMessage
+    parameters:
+    - name: AccountSid
+      in: path
+      value: $inputs.accountSid
+    - name: MessageSid
+      in: path
+      value: $steps.sendMessage.outputs.messageSid
+    requestBody:
+      contentType: application/x-www-form-urlencoded
+      payload:
+        Body: ""
+    successCriteria:
+    - condition: $statusCode == 200
+    outputs:
+      body: $response.body#/body
+  outputs:
+    messageSid: $steps.sendMessage.outputs.messageSid
+    redactedBody: $steps.redactBody.outputs.body

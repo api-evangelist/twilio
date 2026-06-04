@@ -1,0 +1,98 @@
+arazzo: 1.0.1
+info:
+  title: Twilio Create a Conversation, Add a Participant, and Send a Message
+  summary: Stand up a Conversations thread, attach an SMS participant by address, and post the first message.
+  description: >-
+    The foundational Twilio Conversations flow. The workflow creates a new
+    conversation, adds a participant to it by their messaging binding address
+    and the Twilio proxy address, and then posts the opening message into the
+    conversation. This is the minimum chain needed to start a two-way
+    omnichannel thread. Every step spells out its request inline so the flow can
+    be read and executed without opening the underlying OpenAPI description.
+  version: 1.0.0
+sourceDescriptions:
+- name: conversationsApi
+  url: ../openapi/conversations-openapi-original.yml
+  type: openapi
+workflows:
+- workflowId: create-conversation-add-participant-send-message
+  summary: Create a conversation, add an SMS participant, and send the first message.
+  description: >-
+    Creates a conversation, adds a participant addressed by their phone number
+    via the Twilio proxy address, and posts an opening message authored by the
+    business.
+  inputs:
+    type: object
+    required:
+    - participantAddress
+    - proxyAddress
+    - body
+    properties:
+      friendlyName:
+        type: string
+        description: Optional human-readable name for the conversation.
+      participantAddress:
+        type: string
+        description: The participant's address (e.g. their phone number in E.164).
+      proxyAddress:
+        type: string
+        description: The Twilio phone number used as the proxy for the participant.
+      author:
+        type: string
+        description: Optional author identity for the opening message.
+      body:
+        type: string
+        description: The text content of the opening message.
+  steps:
+  - stepId: createConversation
+    description: >-
+      Create the conversation thread that will hold the participant and
+      messages.
+    operationId: CreateConversation
+    requestBody:
+      contentType: application/x-www-form-urlencoded
+      payload:
+        FriendlyName: $inputs.friendlyName
+    successCriteria:
+    - condition: $statusCode == 200
+    outputs:
+      conversationSid: $response.body#/sid
+  - stepId: addParticipant
+    description: >-
+      Add a participant to the conversation, bound to their messaging address
+      and the Twilio proxy address.
+    operationId: CreateConversationParticipant
+    parameters:
+    - name: ConversationSid
+      in: path
+      value: $steps.createConversation.outputs.conversationSid
+    requestBody:
+      contentType: application/x-www-form-urlencoded
+      payload:
+        MessagingBinding.Address: $inputs.participantAddress
+        MessagingBinding.ProxyAddress: $inputs.proxyAddress
+    successCriteria:
+    - condition: $statusCode == 200
+    outputs:
+      participantSid: $response.body#/sid
+  - stepId: sendMessage
+    description: >-
+      Post the opening message into the conversation.
+    operationId: CreateConversationMessage
+    parameters:
+    - name: ConversationSid
+      in: path
+      value: $steps.createConversation.outputs.conversationSid
+    requestBody:
+      contentType: application/x-www-form-urlencoded
+      payload:
+        Author: $inputs.author
+        Body: $inputs.body
+    successCriteria:
+    - condition: $statusCode == 200
+    outputs:
+      messageSid: $response.body#/sid
+  outputs:
+    conversationSid: $steps.createConversation.outputs.conversationSid
+    participantSid: $steps.addParticipant.outputs.participantSid
+    messageSid: $steps.sendMessage.outputs.messageSid

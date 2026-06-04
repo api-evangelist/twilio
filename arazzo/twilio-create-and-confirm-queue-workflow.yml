@@ -1,0 +1,75 @@
+arazzo: 1.0.1
+info:
+  title: Twilio Create a Call Queue and Confirm It
+  summary: Create a voice call queue with a size limit, then fetch it back to confirm its configuration.
+  description: >-
+    A call routing setup pattern. The workflow creates a new call queue with a
+    friendly name and a maximum size, then fetches the queue resource back by its
+    SID to confirm the configuration and read the current size. This is the
+    standard chain for provisioning a queue that inbound calls can be enqueued
+    into. Every step spells out its request inline so the flow can be read and
+    executed without opening the underlying OpenAPI description.
+  version: 1.0.0
+sourceDescriptions:
+- name: voiceApi
+  url: ../openapi/twilio-voice-openapi.yml
+  type: openapi
+workflows:
+- workflowId: create-and-confirm-queue
+  summary: Provision a call queue and confirm its settings.
+  description: >-
+    Creates a call queue and fetches it back to confirm the friendly name and
+    maximum size.
+  inputs:
+    type: object
+    required:
+    - accountSid
+    - friendlyName
+    properties:
+      accountSid:
+        type: string
+        description: The Twilio account SID (starts with AC).
+      friendlyName:
+        type: string
+        description: Descriptive name for the queue.
+      maxSize:
+        type: integer
+        description: Optional maximum number of calls allowed in the queue.
+  steps:
+  - stepId: createQueue
+    description: >-
+      Create the call queue with the supplied name and size limit.
+    operationId: createQueue
+    parameters:
+    - name: AccountSid
+      in: path
+      value: $inputs.accountSid
+    requestBody:
+      contentType: application/x-www-form-urlencoded
+      payload:
+        FriendlyName: $inputs.friendlyName
+        MaxSize: $inputs.maxSize
+    successCriteria:
+    - condition: $statusCode == 201
+    outputs:
+      queueSid: $response.body#/sid
+  - stepId: confirmQueue
+    description: >-
+      Fetch the queue back by SID to confirm its configuration.
+    operationId: fetchQueue
+    parameters:
+    - name: AccountSid
+      in: path
+      value: $inputs.accountSid
+    - name: QueueSid
+      in: path
+      value: $steps.createQueue.outputs.queueSid
+    successCriteria:
+    - condition: $statusCode == 200
+    outputs:
+      friendlyName: $response.body#/friendly_name
+      currentSize: $response.body#/current_size
+      maxSize: $response.body#/max_size
+  outputs:
+    queueSid: $steps.createQueue.outputs.queueSid
+    currentSize: $steps.confirmQueue.outputs.currentSize

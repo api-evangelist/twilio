@@ -1,0 +1,100 @@
+arazzo: 1.0.1
+info:
+  title: Twilio Validate a Number then Send a Message
+  summary: Look up a phone number for validity and line type, then send an SMS only when the number is valid.
+  description: >-
+    A defensive messaging pattern that avoids wasting sends on bad numbers. The
+    workflow first runs a Lookup against the supplied phone number, requesting
+    the validation and line type intelligence data packages. When the number is
+    reported valid it proceeds to send the SMS; when it is invalid the workflow
+    ends without sending. Every step spells out its request inline so the flow
+    can be read and executed without opening the underlying OpenAPI description.
+  version: 1.0.0
+sourceDescriptions:
+- name: lookupApi
+  url: ../openapi/twilio-lookup-openapi.yml
+  type: openapi
+- name: messagingApi
+  url: ../openapi/twilio-messaging-openapi.yml
+  type: openapi
+workflows:
+- workflowId: lookup-then-send-message
+  summary: Validate a number with Lookup, then conditionally send a message.
+  description: >-
+    Fetches phone number intelligence and branches on the valid flag: sends an
+    SMS when the number is valid and ends without sending when it is not.
+  inputs:
+    type: object
+    required:
+    - accountSid
+    - phoneNumber
+    - from
+    - body
+    properties:
+      accountSid:
+        type: string
+        description: The Twilio account SID (starts with AC) used to send the message.
+      phoneNumber:
+        type: string
+        description: The phone number to validate and message, in E.164 format.
+      from:
+        type: string
+        description: Twilio phone number or sender ID to send the message from.
+      body:
+        type: string
+        description: The text content of the message.
+  steps:
+  - stepId: lookupNumber
+    description: >-
+      Query the Lookup API for validation and line type intelligence on the
+      supplied phone number.
+    operationId: fetchPhoneNumber
+    parameters:
+    - name: PhoneNumber
+      in: path
+      value: $inputs.phoneNumber
+    - name: Fields
+      in: query
+      value: validation,line_type_intelligence
+    successCriteria:
+    - condition: $statusCode == 200
+    outputs:
+      valid: $response.body#/valid
+      nationalFormat: $response.body#/national_format
+    onSuccess:
+    - name: numberValid
+      type: goto
+      stepId: sendMessage
+      criteria:
+      - context: $response.body
+        condition: $.valid == true
+        type: jsonpath
+    - name: numberInvalid
+      type: end
+      criteria:
+      - context: $response.body
+        condition: $.valid == false
+        type: jsonpath
+  - stepId: sendMessage
+    description: >-
+      Send the SMS to the validated phone number from the supplied Twilio
+      sender.
+    operationId: createMessage
+    parameters:
+    - name: AccountSid
+      in: path
+      value: $inputs.accountSid
+    requestBody:
+      contentType: application/x-www-form-urlencoded
+      payload:
+        To: $inputs.phoneNumber
+        From: $inputs.from
+        Body: $inputs.body
+    successCriteria:
+    - condition: $statusCode == 201
+    outputs:
+      messageSid: $response.body#/sid
+      status: $response.body#/status
+  outputs:
+    valid: $steps.lookupNumber.outputs.valid
+    messageSid: $steps.sendMessage.outputs.messageSid
