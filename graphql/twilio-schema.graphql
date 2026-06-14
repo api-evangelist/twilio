@@ -1,0 +1,1201 @@
+# Twilio GraphQL Schema (SDL)
+#
+# Conceptual data model covering Twilio Flex, TaskRouter, Conversations,
+# Voice, Messaging, Video, Verify, and Accounts APIs.
+#
+# Source: derived from Twilio REST API documentation. The Flex GraphQL
+# endpoint (https://flex-api.twilio.com/v1/graphql) is not publicly
+# introspectable without a valid Flex access token.
+#
+# Schema version: 2026-06-14
+
+scalar DateTime
+scalar JSON
+scalar URL
+
+# ─────────────────────────────────────────────
+# Enumerations
+# ─────────────────────────────────────────────
+
+enum AccountStatus {
+  ACTIVE
+  SUSPENDED
+  CLOSED
+}
+
+enum CallStatus {
+  QUEUED
+  RINGING
+  IN_PROGRESS
+  CANCELED
+  COMPLETED
+  BUSY
+  FAILED
+  NO_ANSWER
+}
+
+enum CallDirection {
+  INBOUND
+  OUTBOUND_API
+  OUTBOUND_DIAL
+  TRUNKING_TERMINATING
+  TRUNKING_ORIGINATING
+}
+
+enum MessageStatus {
+  ACCEPTED
+  SCHEDULED
+  QUEUED
+  SENDING
+  SENT
+  RECEIVING
+  RECEIVED
+  DELIVERED
+  UNDELIVERED
+  FAILED
+  READ
+  CANCELED
+}
+
+enum MessageDirection {
+  INBOUND
+  OUTBOUND_API
+  OUTBOUND_CALL
+  OUTBOUND_REPLY
+}
+
+enum RecordingStatus {
+  IN_PROGRESS
+  PAUSED
+  STOPPED
+  PROCESSING
+  COMPLETED
+  ABSENT
+  DELETED
+}
+
+enum RecordingSource {
+  DIAL_VERB
+  CONFERENCE
+  OUTBOUND_API
+  TRUNKING
+  RECORD_VERB
+  SIP_DIALING
+  CONFERENCE_RECORD_VERB
+  GATEWAY
+}
+
+enum ConferenceStatus {
+  INIT
+  IN_PROGRESS
+  COMPLETED
+}
+
+enum WorkerActivityStatus {
+  AVAILABLE
+  UNAVAILABLE
+  OFFLINE
+}
+
+enum TaskStatus {
+  PENDING
+  RESERVED
+  ASSIGNED
+  CANCELED
+  COMPLETED
+  WRAPPING
+}
+
+enum TaskRouterEventType {
+  WORKFLOW_ENTERED
+  WORKFLOW_TIMEOUT
+  WORKFLOW_SKIPPED
+  TASK_CREATED
+  TASK_CANCELED
+  TASK_COMPLETED
+  TASK_DELETED
+  TASK_UPDATED
+  TASK_WRAPUP
+  TASK_SYSTEM_DELETED
+  RESERVATION_CREATED
+  RESERVATION_ACCEPTED
+  RESERVATION_REJECTED
+  RESERVATION_TIMEOUT
+  RESERVATION_CANCELED
+  RESERVATION_RESCINDED
+  RESERVATION_COMPLETED
+  WORKER_CREATED
+  WORKER_DELETED
+  WORKER_UPDATED
+  WORKER_ACTIVITY_UPDATED
+  WORKER_ATTRIBUTES_UPDATED
+  WORKER_CAPACITY_UPDATED
+  WORKER_CHANNEL_AVAILABILITY_UPDATED
+  QUEUE_MISSED
+  QUEUE_ENTERED
+  QUEUE_ABANDONED
+  WORKER_ENTERED_QUEUE
+  WORKSPACE_UPDATED
+}
+
+enum ReservationStatus {
+  PENDING
+  ACCEPTED
+  REJECTED
+  TIMEOUT
+  CANCELED
+  RESCINDED
+  COMPLETED
+  WRAPPING
+}
+
+enum ConversationState {
+  ACTIVE
+  INACTIVE
+  CLOSED
+}
+
+enum ParticipantType {
+  CHAT
+  SMS
+  WHATSAPP
+  EMAIL
+  VOICE
+}
+
+enum VerificationChannel {
+  SMS
+  CALL
+  EMAIL
+  WHATSAPP
+  SILENT_NETWORK_AUTH
+  TOTP
+}
+
+enum VerificationStatus {
+  PENDING
+  APPROVED
+  CANCELED
+  MAX_ATTEMPTS_REACHED
+  DELETED
+  FAILED
+  EXPIRED
+}
+
+enum InteractionStatus {
+  ACTIVE
+  CLOSED
+}
+
+enum InteractionChannelType {
+  VOICE
+  CHAT
+  EMAIL
+  SMS
+  WHATSAPP
+  FACEBOOK_MESSENGER
+  WEB
+}
+
+enum RoomType {
+  GO
+  PEER_TO_PEER
+  GROUP
+  GROUP_SMALL
+}
+
+enum RoomStatus {
+  IN_PROGRESS
+  FAILED
+  COMPLETED
+}
+
+enum CompositionStatus {
+  ENQUEUED
+  PROCESSING
+  COMPLETED
+  DELETED
+  FAILED
+}
+
+enum SinkType {
+  KINESIS
+  SEGMENT
+  WEBHOOK
+}
+
+enum SinkStatus {
+  INITIALIZED
+  VALIDATING
+  ACTIVE
+  FAILED
+}
+
+enum FlexFlowChannelType {
+  WEB
+  SMS
+  FACEBOOK
+  WHATSAPP
+  LINE
+  CUSTOM
+}
+
+enum FlexFlowIntegrationType {
+  STUDIO
+  EXTERNAL
+  TASK
+}
+
+# ─────────────────────────────────────────────
+# Core Account & Authentication
+# ─────────────────────────────────────────────
+
+"""Twilio Account (master or subaccount)."""
+type Account {
+  sid: ID!
+  friendlyName: String!
+  status: AccountStatus!
+  type: String!
+  dateCreated: DateTime!
+  dateUpdated: DateTime!
+  authToken: String
+  ownerAccountSid: ID
+  uri: String
+  subresourceUris: JSON
+}
+
+"""API Key for programmatic authentication (preferred over Auth Token)."""
+type ApiKey {
+  sid: ID!
+  friendlyName: String
+  dateCreated: DateTime!
+  dateUpdated: DateTime!
+}
+
+# ─────────────────────────────────────────────
+# Voice — Calls, Recordings, Conferences, Queues
+# ─────────────────────────────────────────────
+
+"""An inbound or outbound voice call."""
+type Call {
+  sid: ID!
+  accountSid: ID!
+  to: String!
+  from: String!
+  direction: CallDirection!
+  status: CallStatus!
+  startTime: DateTime
+  endTime: DateTime
+  duration: Int
+  price: String
+  priceUnit: String
+  answeredBy: String
+  callerName: String
+  forwardedFrom: String
+  groupSid: ID
+  parentCallSid: ID
+  phoneNumberSid: ID
+  annotation: String
+  answeredByAnnotation: String
+  dateCreated: DateTime!
+  dateUpdated: DateTime!
+  recordings: [Recording!]
+  participants: [ConferenceParticipant!]
+}
+
+"""A voice call recording."""
+type Recording {
+  sid: ID!
+  accountSid: ID!
+  callSid: ID
+  conferenceSid: ID
+  status: RecordingStatus!
+  source: RecordingSource
+  duration: Int
+  channels: Int
+  price: String
+  priceUnit: String
+  errorCode: Int
+  uri: String!
+  mediaUrl: URL
+  startTime: DateTime
+  dateCreated: DateTime!
+  dateUpdated: DateTime!
+}
+
+"""An audio conference room."""
+type Conference {
+  sid: ID!
+  accountSid: ID!
+  friendlyName: String
+  status: ConferenceStatus!
+  region: String
+  dateCreated: DateTime!
+  dateUpdated: DateTime!
+  participants: [ConferenceParticipant!]
+  recordings: [Recording!]
+}
+
+"""A participant in a voice conference."""
+type ConferenceParticipant {
+  callSid: ID!
+  conferenceSid: ID!
+  accountSid: ID!
+  label: String
+  muted: Boolean!
+  hold: Boolean!
+  coaching: Boolean!
+  callSidToCoach: ID
+  startConferenceOnEnter: Boolean!
+  endConferenceOnExit: Boolean!
+  status: CallStatus
+  duration: Int
+  dateCreated: DateTime!
+  dateUpdated: DateTime!
+}
+
+"""A voice call queue."""
+type Queue {
+  sid: ID!
+  accountSid: ID!
+  friendlyName: String!
+  currentSize: Int!
+  maxSize: Int!
+  averageWaitTime: Int
+  dateCreated: DateTime!
+  dateUpdated: DateTime!
+}
+
+# ─────────────────────────────────────────────
+# Messaging — Messages, Media
+# ─────────────────────────────────────────────
+
+"""An SMS, MMS, or WhatsApp message."""
+type Message {
+  sid: ID!
+  accountSid: ID!
+  messagingServiceSid: ID
+  to: String!
+  from: String!
+  body: String
+  status: MessageStatus!
+  direction: MessageDirection!
+  numSegments: String
+  numMedia: String
+  price: String
+  priceUnit: String
+  errorCode: Int
+  errorMessage: String
+  dateCreated: DateTime!
+  dateSent: DateTime
+  dateUpdated: DateTime!
+  media: [Media!]
+}
+
+"""Media (image, video, audio) attached to an MMS message."""
+type Media {
+  sid: ID!
+  accountSid: ID!
+  messageSid: ID!
+  contentType: String!
+  dateCreated: DateTime!
+  dateUpdated: DateTime!
+  uri: String!
+}
+
+# ─────────────────────────────────────────────
+# Conversations API
+# ─────────────────────────────────────────────
+
+"""A multi-channel conversation thread (SMS, WhatsApp, Chat)."""
+type Conversation {
+  sid: ID!
+  accountSid: ID!
+  chatServiceSid: ID
+  friendlyName: String
+  uniqueName: String
+  state: ConversationState!
+  attributes: JSON
+  dateCreated: DateTime!
+  dateUpdated: DateTime!
+  timers: ConversationTimers
+  participants: [ConversationParticipant!]
+  messages: [ConversationMessage!]
+  webhooks: [ConversationWebhook!]
+}
+
+"""Timing configuration for conversation auto-close behaviour."""
+type ConversationTimers {
+  dateInactive: DateTime
+  dateClosed: DateTime
+}
+
+"""A participant in a Conversation (can be SMS, WhatsApp, Chat, or Voice)."""
+type ConversationParticipant {
+  sid: ID!
+  accountSid: ID!
+  conversationSid: ID!
+  identity: String
+  messagingBinding: ParticipantMessagingBinding
+  type: ParticipantType
+  attributes: JSON
+  roleSid: ID
+  dateCreated: DateTime!
+  dateUpdated: DateTime!
+  lastReadMessageIndex: Int
+  lastReadTimestamp: DateTime
+}
+
+"""Messaging binding details for an SMS or WhatsApp Conversation participant."""
+type ParticipantMessagingBinding {
+  address: String
+  proxyAddress: String
+  type: String
+  name: String
+}
+
+"""A message posted inside a Conversation."""
+type ConversationMessage {
+  sid: ID!
+  accountSid: ID!
+  conversationSid: ID!
+  index: Int!
+  author: String
+  body: String
+  attributes: JSON
+  media: [JSON]
+  dateCreated: DateTime!
+  dateUpdated: DateTime!
+  delivery: ConversationMessageDelivery
+}
+
+"""Delivery status summary for a Conversation message."""
+type ConversationMessageDelivery {
+  total: Int
+  sent: String
+  delivered: String
+  read: String
+  failed: String
+  undelivered: String
+}
+
+"""Webhook attached to a Conversation or Conversation Service."""
+type ConversationWebhook {
+  sid: ID!
+  accountSid: ID!
+  conversationSid: ID
+  chatServiceSid: ID
+  target: String!
+  configuration: ConversationWebhookConfig
+  dateCreated: DateTime!
+  dateUpdated: DateTime!
+}
+
+"""Configuration block for a Conversation webhook."""
+type ConversationWebhookConfig {
+  url: URL
+  method: String
+  filters: [String]
+  triggers: [String]
+  flowSid: ID
+}
+
+# ─────────────────────────────────────────────
+# TaskRouter (Contact-Center Routing Engine)
+# ─────────────────────────────────────────────
+
+"""
+A TaskRouter Workspace — the top-level container for routing objects.
+Mirrors https://www.twilio.com/docs/taskrouter/api/workspace.
+"""
+type Workspace {
+  sid: ID!
+  accountSid: ID!
+  friendlyName: String!
+  defaultActivityName: String
+  defaultActivitySid: ID
+  timeoutActivityName: String
+  timeoutActivitySid: ID
+  eventCallbackUrl: URL
+  eventsFilter: String
+  multiTaskEnabled: Boolean!
+  prioritizeQueueOrder: String
+  dateCreated: DateTime!
+  dateUpdated: DateTime!
+  workers: [Worker!]
+  taskQueues: [TaskQueue!]
+  workflows: [Workflow!]
+  activities: [Activity!]
+  tasks: [Task!]
+  events: [TaskRouterEvent!]
+}
+
+"""A TaskRouter Worker — an agent or entity that processes Tasks."""
+type Worker {
+  sid: ID!
+  accountSid: ID!
+  workspaceSid: ID!
+  friendlyName: String!
+  activitySid: ID!
+  activityName: String!
+  attributes: JSON
+  available: Boolean!
+  dateCreated: DateTime!
+  dateUpdated: DateTime!
+  dateStatusChanged: DateTime
+  reservations: [Reservation!]
+  channels: [WorkerChannel!]
+}
+
+"""A Worker's capacity and availability for a specific Task Channel."""
+type WorkerChannel {
+  sid: ID!
+  accountSid: ID!
+  workspaceSid: ID!
+  workerSid: ID!
+  taskChannelSid: ID!
+  taskChannelUniqueName: String!
+  configuredCapacity: Int!
+  available: Boolean!
+  availableCapacityPercentage: Int!
+  assignedTasks: Int!
+  dateCreated: DateTime!
+  dateUpdated: DateTime!
+}
+
+"""A TaskRouter Activity — describes a Worker's current state."""
+type Activity {
+  sid: ID!
+  accountSid: ID!
+  workspaceSid: ID!
+  friendlyName: String!
+  available: Boolean!
+  dateCreated: DateTime!
+  dateUpdated: DateTime!
+}
+
+"""A Task Queue that holds pending Tasks waiting to be assigned."""
+type TaskQueue {
+  sid: ID!
+  accountSid: ID!
+  workspaceSid: ID!
+  friendlyName: String!
+  targetWorkers: String
+  maxReservedWorkers: Int
+  taskOrder: String
+  assignmentActivitySid: ID
+  reservationActivitySid: ID
+  dateCreated: DateTime!
+  dateUpdated: DateTime!
+  statistics: TaskQueueStatistics
+}
+
+"""Real-time and cumulative statistics for a Task Queue."""
+type TaskQueueStatistics {
+  realtime: JSON
+  cumulative: JSON
+}
+
+"""A TaskRouter Workflow that routes Tasks into Queues."""
+type Workflow {
+  sid: ID!
+  accountSid: ID!
+  workspaceSid: ID!
+  friendlyName: String!
+  configuration: String
+  assignmentCallbackUrl: URL
+  fallbackAssignmentCallbackUrl: URL
+  taskReservationTimeout: Int
+  documentContentType: String
+  dateCreated: DateTime!
+  dateUpdated: DateTime!
+}
+
+"""A Task Channel — defines task types (voice, chat, email, etc.)."""
+type TaskChannel {
+  sid: ID!
+  accountSid: ID!
+  workspaceSid: ID!
+  friendlyName: String!
+  uniqueName: String!
+  channelOptimizedRouting: Boolean
+  dateCreated: DateTime!
+  dateUpdated: DateTime!
+}
+
+"""A work item waiting to be or currently being handled by a Worker."""
+type Task {
+  sid: ID!
+  accountSid: ID!
+  workspaceSid: ID!
+  workflowSid: ID!
+  workflowFriendlyName: String
+  taskQueueSid: ID
+  taskQueueFriendlyName: String
+  taskQueueEnteredDate: DateTime
+  taskChannelSid: ID
+  taskChannelUniqueName: String
+  assignmentStatus: TaskStatus!
+  attributes: JSON
+  addons: JSON
+  age: Int
+  priority: Int
+  reason: String
+  timeout: Int
+  dateCreated: DateTime!
+  dateUpdated: DateTime!
+  reservations: [Reservation!]
+}
+
+"""A Reservation — the assignment of a Task to a Worker."""
+type Reservation {
+  sid: ID!
+  accountSid: ID!
+  workspaceSid: ID!
+  taskSid: ID!
+  workerSid: ID!
+  workerName: String
+  reservationStatus: ReservationStatus!
+  workerPreviousActivity: String
+  dateCreated: DateTime!
+  dateUpdated: DateTime!
+}
+
+"""A TaskRouter event emitted when state changes occur in a Workspace."""
+type TaskRouterEvent {
+  sid: ID!
+  accountSid: ID!
+  workspaceSid: ID!
+  eventType: TaskRouterEventType!
+  description: String
+  resourceType: String
+  resourceSid: ID
+  resourceUrl: URL
+  actorType: String
+  actorSid: ID
+  actorUrl: URL
+  eventData: JSON
+  dateCreated: DateTime!
+}
+
+# ─────────────────────────────────────────────
+# Twilio Flex
+# ─────────────────────────────────────────────
+
+"""
+A Flex Flow — the entry-point configuration that links an inbound channel
+(web, SMS, WhatsApp, Facebook) to a Studio flow, external URL, or TaskRouter.
+Mirrors https://www.twilio.com/docs/flex/developer/messaging/manage-flows.
+"""
+type FlexFlow {
+  sid: ID!
+  accountSid: ID!
+  friendlyName: String!
+  chatServiceSid: ID!
+  channelType: FlexFlowChannelType!
+  contactIdentity: String
+  enabled: Boolean!
+  integrationType: FlexFlowIntegrationType!
+  integration: FlexFlowIntegration
+  longLived: Boolean
+  janitorEnabled: Boolean
+  dateCreated: DateTime!
+  dateUpdated: DateTime!
+}
+
+"""Integration configuration block for a Flex Flow."""
+type FlexFlowIntegration {
+  workspaceSid: ID
+  workflowSid: ID
+  taskChannel: String
+  creationOnMessage: Boolean
+  flowSid: ID
+  url: URL
+  retryCount: Int
+  retryPeriod: Int
+}
+
+"""
+A Flex Interaction — represents a complete omnichannel engagement session.
+Mirrors https://www.twilio.com/docs/flex/developer/interactions-api.
+"""
+type Interaction {
+  sid: ID!
+  accountSid: ID!
+  channel: InteractionChannelInput
+  routing: JSON
+  status: InteractionStatus
+  dateCreated: DateTime!
+  dateUpdated: DateTime!
+  channels: [InteractionChannel!]
+}
+
+"""Input block describing the channel that initiated an Interaction."""
+type InteractionChannelInput {
+  type: InteractionChannelType!
+  initiatedBy: String
+  properties: JSON
+}
+
+"""A channel within a Flex Interaction (one Interaction may have many channels)."""
+type InteractionChannel {
+  sid: ID!
+  accountSid: ID!
+  interactionSid: ID!
+  type: InteractionChannelType!
+  status: String
+  errorCode: Int
+  errorMessage: String
+  dateCreated: DateTime!
+  dateUpdated: DateTime!
+  participants: [InteractionChannelParticipant!]
+}
+
+"""A participant (agent or customer) within an Interaction Channel."""
+type InteractionChannelParticipant {
+  sid: ID!
+  accountSid: ID!
+  interactionSid: ID!
+  channelSid: ID!
+  type: String
+  routingProperties: JSON
+  mediaProperties: JSON
+  dateCreated: DateTime!
+  dateUpdated: DateTime!
+}
+
+"""A Twilio Flex Plugin registered via the Plugins API."""
+type Plugin {
+  sid: ID!
+  accountSid: ID!
+  uniqueName: String!
+  friendlyName: String
+  description: String
+  pluginServiceSid: ID
+  archived: Boolean!
+  changelog: String
+  dateCreated: DateTime!
+  dateUpdated: DateTime!
+  latestVersion: PluginVersion
+}
+
+"""A specific version of a Flex Plugin."""
+type PluginVersion {
+  sid: ID!
+  accountSid: ID!
+  pluginSid: ID!
+  version: String!
+  pluginUrl: URL!
+  private: Boolean!
+  archived: Boolean!
+  changelog: String
+  dateCreated: DateTime!
+  dateUpdated: DateTime!
+}
+
+# ─────────────────────────────────────────────
+# Video
+# ─────────────────────────────────────────────
+
+"""A Twilio Video room for peer-to-peer or group video sessions."""
+type Room {
+  sid: ID!
+  accountSid: ID!
+  uniqueName: String
+  status: RoomStatus!
+  type: RoomType!
+  enableTurn: Boolean
+  statusCallbackUrl: URL
+  statusCallbackMethod: String
+  maxParticipants: Int
+  maxParticipantDuration: Int
+  maxConcurrentPublishedTracks: Int
+  recordParticipantsOnConnect: Boolean
+  videoCodecs: [String]
+  mediaRegion: String
+  duration: Int
+  endTime: DateTime
+  dateCreated: DateTime!
+  dateUpdated: DateTime!
+  participants: [RoomParticipant!]
+  recordings: [RoomRecording!]
+}
+
+"""A participant connected to a Video room."""
+type RoomParticipant {
+  sid: ID!
+  accountSid: ID!
+  roomSid: ID!
+  identity: String!
+  status: String
+  startTime: DateTime
+  endTime: DateTime
+  duration: Int
+  dateCreated: DateTime!
+  dateUpdated: DateTime!
+}
+
+"""A recording of a Video room or individual track."""
+type RoomRecording {
+  sid: ID!
+  accountSid: ID!
+  roomSid: ID!
+  status: RecordingStatus!
+  type: String
+  codec: String
+  groupingSids: JSON
+  trackName: String
+  offset: Int
+  mediaExternalLocation: URL
+  duration: Int
+  size: Int
+  dateCreated: DateTime!
+  dateUpdated: DateTime!
+}
+
+# ─────────────────────────────────────────────
+# Verify
+# ─────────────────────────────────────────────
+
+"""A Twilio Verify service configuration."""
+type VerifyService {
+  sid: ID!
+  accountSid: ID!
+  friendlyName: String!
+  codeLength: Int!
+  lookupEnabled: Boolean!
+  psd2Enabled: Boolean!
+  skipSmsToLandlines: Boolean!
+  dtmfInputRequired: Boolean!
+  ttsName: String
+  mailerSid: ID
+  doNotShareWarningEnabled: Boolean!
+  customCodeEnabled: Boolean!
+  defaultTemplateSid: ID
+  dateCreated: DateTime!
+  dateUpdated: DateTime!
+}
+
+"""A Verify verification attempt (OTP sent to a phone or email)."""
+type Verification {
+  sid: ID!
+  accountSid: ID!
+  serviceSid: ID!
+  to: String!
+  channel: VerificationChannel!
+  status: VerificationStatus!
+  valid: Boolean!
+  lookup: JSON
+  amount: String
+  payee: String
+  sendCodeAttempts: [JSON]
+  dateCreated: DateTime!
+  dateUpdated: DateTime!
+}
+
+"""The result of checking a Verify code supplied by the end user."""
+type VerificationCheck {
+  sid: ID!
+  accountSid: ID!
+  serviceSid: ID!
+  to: String!
+  channel: VerificationChannel!
+  status: VerificationStatus!
+  valid: Boolean!
+  amount: String
+  payee: String
+  dateCreated: DateTime!
+  dateUpdated: DateTime!
+}
+
+# ─────────────────────────────────────────────
+# Events (Twilio EventStreams / Sinks)
+# ─────────────────────────────────────────────
+
+"""An EventStreams Sink — a destination for Twilio event data."""
+type Sink {
+  sid: ID!
+  accountSid: ID!
+  description: String
+  sinkConfiguration: JSON!
+  sinkType: SinkType!
+  status: SinkStatus!
+  dateCreated: DateTime!
+  dateUpdated: DateTime!
+}
+
+"""A Subscription that filters events from a Sink."""
+type EventSubscription {
+  sid: ID!
+  accountSid: ID!
+  sinkSid: ID!
+  description: String
+  dateCreated: DateTime!
+  dateUpdated: DateTime!
+  subscribedEvents: [SubscribedEventType!]
+}
+
+"""An event type subscribed to within an EventStreams Subscription."""
+type SubscribedEventType {
+  type: String!
+  schemaVersion: Int
+}
+
+# ─────────────────────────────────────────────
+# Query Root
+# ─────────────────────────────────────────────
+
+type Query {
+  # Account
+  account(sid: ID!): Account
+  accounts(status: AccountStatus, pageSize: Int, page: Int): [Account!]!
+
+  # Voice
+  call(sid: ID!): Call
+  calls(to: String, from: String, status: CallStatus, startTime: DateTime, pageSize: Int, page: Int): [Call!]!
+  recording(sid: ID!): Recording
+  recordings(callSid: ID, conferenceSid: ID, status: RecordingStatus, pageSize: Int): [Recording!]!
+  conference(sid: ID!): Conference
+  conferences(friendlyName: String, status: ConferenceStatus, pageSize: Int): [Conference!]!
+  queue(sid: ID!): Queue
+  queues(pageSize: Int): [Queue!]!
+
+  # Messaging
+  message(sid: ID!): Message
+  messages(to: String, from: String, dateSent: DateTime, pageSize: Int, page: Int): [Message!]!
+
+  # Conversations
+  conversation(sid: ID!): Conversation
+  conversations(state: ConversationState, pageSize: Int): [Conversation!]!
+  conversationMessage(conversationSid: ID!, sid: ID!): ConversationMessage
+  conversationMessages(conversationSid: ID!, pageSize: Int): [ConversationMessage!]!
+  conversationParticipant(conversationSid: ID!, sid: ID!): ConversationParticipant
+  conversationParticipants(conversationSid: ID!, pageSize: Int): [ConversationParticipant!]!
+
+  # TaskRouter
+  workspace(sid: ID!): Workspace
+  workspaces(friendlyName: String, pageSize: Int): [Workspace!]!
+  worker(workspaceSid: ID!, sid: ID!): Worker
+  workers(workspaceSid: ID!, activityName: String, available: Boolean, pageSize: Int): [Worker!]!
+  task(workspaceSid: ID!, sid: ID!): Task
+  tasks(workspaceSid: ID!, assignmentStatus: TaskStatus, workflowSid: ID, taskQueueSid: ID, pageSize: Int): [Task!]!
+  taskQueue(workspaceSid: ID!, sid: ID!): TaskQueue
+  taskQueues(workspaceSid: ID!, friendlyName: String, pageSize: Int): [TaskQueue!]!
+  workflow(workspaceSid: ID!, sid: ID!): Workflow
+  workflows(workspaceSid: ID!, friendlyName: String, pageSize: Int): [Workflow!]!
+  activity(workspaceSid: ID!, sid: ID!): Activity
+  activities(workspaceSid: ID!, friendlyName: String, available: Boolean, pageSize: Int): [Activity!]!
+  reservation(workspaceSid: ID!, taskSid: ID!, sid: ID!): Reservation
+  reservations(workspaceSid: ID!, taskSid: ID!, reservationStatus: ReservationStatus, pageSize: Int): [Reservation!]!
+  taskRouterEvents(workspaceSid: ID!, eventType: TaskRouterEventType, resourceType: String, pageSize: Int): [TaskRouterEvent!]!
+
+  # Flex
+  flexFlow(sid: ID!): FlexFlow
+  flexFlows(friendlyName: String, channelType: FlexFlowChannelType, enabled: Boolean, pageSize: Int): [FlexFlow!]!
+  interaction(sid: ID!): Interaction
+  plugin(sid: ID!): Plugin
+  plugins(pageSize: Int): [Plugin!]!
+
+  # Video
+  room(sid: ID!): Room
+  rooms(status: RoomStatus, uniqueName: String, pageSize: Int): [Room!]!
+
+  # Verify
+  verifyService(sid: ID!): VerifyService
+  verifyServices(pageSize: Int): [VerifyService!]!
+  verification(serviceSid: ID!, sid: ID!): Verification
+
+  # Events
+  sink(sid: ID!): Sink
+  sinks(sinkType: SinkType, status: SinkStatus, pageSize: Int): [Sink!]!
+  eventSubscription(sid: ID!): EventSubscription
+  eventSubscriptions(sinkSid: ID, pageSize: Int): [EventSubscription!]!
+}
+
+# ─────────────────────────────────────────────
+# Mutation Root
+# ─────────────────────────────────────────────
+
+input CreateCallInput {
+  to: String!
+  from: String!
+  url: URL
+  twiml: String
+  applicationSid: ID
+  method: String
+  statusCallback: URL
+  statusCallbackMethod: String
+  machineDetection: String
+  record: Boolean
+  recordingChannels: String
+  recordingStatusCallback: URL
+  timeout: Int
+}
+
+input UpdateCallInput {
+  status: CallStatus
+  url: URL
+  method: String
+  twiml: String
+  statusCallback: URL
+}
+
+input SendMessageInput {
+  to: String!
+  from: String
+  messagingServiceSid: ID
+  body: String
+  mediaUrl: [URL]
+  statusCallback: URL
+  sendAt: DateTime
+  scheduleType: String
+}
+
+input CreateConversationInput {
+  friendlyName: String
+  uniqueName: String
+  attributes: JSON
+  state: ConversationState
+}
+
+input AddConversationParticipantInput {
+  conversationSid: ID!
+  identity: String
+  messagingBindingAddress: String
+  messagingBindingProxyAddress: String
+  attributes: JSON
+}
+
+input SendConversationMessageInput {
+  conversationSid: ID!
+  author: String
+  body: String
+  attributes: JSON
+  mediaUrl: URL
+}
+
+input CreateTaskInput {
+  workspaceSid: ID!
+  workflowSid: ID!
+  attributes: JSON!
+  taskChannel: String
+  priority: Int
+  timeout: Int
+}
+
+input UpdateTaskInput {
+  assignmentStatus: TaskStatus
+  attributes: JSON
+  reason: String
+  priority: Int
+}
+
+input UpdateReservationInput {
+  reservationStatus: ReservationStatus!
+  workerActivitySid: ID
+  instruction: String
+  dequeueFrom: String
+  dequeuePostWorkActivitySid: ID
+  callFrom: String
+  callUrl: URL
+  redirectCallSid: ID
+  redirectUrl: URL
+}
+
+input CreateWorkerInput {
+  workspaceSid: ID!
+  friendlyName: String!
+  activitySid: ID
+  attributes: JSON
+}
+
+input StartVerificationInput {
+  serviceSid: ID!
+  to: String!
+  channel: VerificationChannel!
+  locale: String
+  amount: String
+  payee: String
+}
+
+input CheckVerificationInput {
+  serviceSid: ID!
+  to: String!
+  code: String!
+}
+
+input CreateInteractionInput {
+  channel: InteractionChannelTypeInput!
+  routing: JSON!
+}
+
+input InteractionChannelTypeInput {
+  type: InteractionChannelType!
+  initiatedBy: String
+  properties: JSON
+}
+
+type Mutation {
+  # Voice
+  createCall(input: CreateCallInput!): Call
+  updateCall(sid: ID!, input: UpdateCallInput!): Call
+  deleteCall(sid: ID!): Boolean
+  deleteRecording(sid: ID!): Boolean
+
+  # Messaging
+  sendMessage(input: SendMessageInput!): Message
+  updateMessage(sid: ID!, body: String): Message
+  deleteMessage(sid: ID!): Boolean
+
+  # Conferences
+  muteConferenceParticipant(conferenceSid: ID!, callSid: ID!, muted: Boolean!): ConferenceParticipant
+  holdConferenceParticipant(conferenceSid: ID!, callSid: ID!, hold: Boolean!): ConferenceParticipant
+  removeConferenceParticipant(conferenceSid: ID!, callSid: ID!): Boolean
+
+  # Conversations
+  createConversation(input: CreateConversationInput!): Conversation
+  updateConversation(sid: ID!, state: ConversationState, friendlyName: String, attributes: JSON): Conversation
+  deleteConversation(sid: ID!): Boolean
+  addConversationParticipant(input: AddConversationParticipantInput!): ConversationParticipant
+  removeConversationParticipant(conversationSid: ID!, sid: ID!): Boolean
+  sendConversationMessage(input: SendConversationMessageInput!): ConversationMessage
+  deleteConversationMessage(conversationSid: ID!, sid: ID!): Boolean
+
+  # TaskRouter
+  createTask(input: CreateTaskInput!): Task
+  updateTask(workspaceSid: ID!, sid: ID!, input: UpdateTaskInput!): Task
+  deleteTask(workspaceSid: ID!, sid: ID!): Boolean
+  createWorker(input: CreateWorkerInput!): Worker
+  updateWorkerActivity(workspaceSid: ID!, sid: ID!, activitySid: ID!): Worker
+  deleteWorker(workspaceSid: ID!, sid: ID!): Boolean
+  updateReservation(workspaceSid: ID!, taskSid: ID!, sid: ID!, input: UpdateReservationInput!): Reservation
+
+  # Flex
+  createInteraction(input: CreateInteractionInput!): Interaction
+
+  # Verify
+  startVerification(input: StartVerificationInput!): Verification
+  cancelVerification(serviceSid: ID!, sid: ID!): Verification
+  checkVerification(input: CheckVerificationInput!): VerificationCheck
+}
+
+# ─────────────────────────────────────────────
+# Subscription Root (Flex/TaskRouter real-time)
+# ─────────────────────────────────────────────
+
+type Subscription {
+  """Stream TaskRouter events for a Workspace in real time."""
+  taskRouterEvents(workspaceSid: ID!): TaskRouterEvent
+
+  """Stream Conversation message events."""
+  conversationMessages(conversationSid: ID!): ConversationMessage
+
+  """Stream worker availability changes."""
+  workerActivityChanged(workspaceSid: ID!): Worker
+
+  """Stream reservation state changes for a Worker."""
+  reservationChanged(workspaceSid: ID!, workerSid: ID!): Reservation
+
+  """Stream Interaction lifecycle events."""
+  interactionEvents(accountSid: ID!): Interaction
+}
