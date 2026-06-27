@@ -1,0 +1,2368 @@
+{
+  "info": {
+    "_postman_id": "cbffc5c4-0504-46ec-9413-cde2fe94bad7",
+    "name": "Twilio Accounts API",
+    "description": "Manage Twilio accounts and subaccounts programmatically. Create and configure subaccounts, manage API credentials, promote auth tokens, and control account-level settings for identity and access management.\n\nContact Support:\n Name: Twilio Support\n Email: support@twilio.com",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "createdAt": "2026-06-05T13:21:30.000Z",
+    "updatedAt": "2026-06-05T13:21:31.000Z",
+    "lastUpdatedBy": "35240",
+    "uid": "35240-cbffc5c4-0504-46ec-9413-cde2fe94bad7"
+  },
+  "item": [
+    {
+      "name": "Accounts.json",
+      "item": [
+        {
+          "name": "Twilio List Accounts",
+          "id": "ad682083-5703-4307-ad91-ab5e345d9803",
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          },
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/Accounts.json?FriendlyName=<string>&Status=active&PageSize=<integer>",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "Accounts.json"
+              ],
+              "query": [
+                {
+                  "description": "Filter by friendly name",
+                  "key": "FriendlyName",
+                  "value": "<string>"
+                },
+                {
+                  "description": "Filter by account status",
+                  "key": "Status",
+                  "value": "active"
+                },
+                {
+                  "key": "PageSize",
+                  "value": "<integer>"
+                }
+              ]
+            },
+            "description": "Retrieve a list of subaccounts belonging to the main account."
+          },
+          "response": [
+            {
+              "id": "30faf32a-ad9c-46b7-b809-a12d46e47d97",
+              "name": "List of accounts",
+              "originalRequest": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  },
+                  {
+                    "description": "Added as a part of security scheme: basic",
+                    "key": "Authorization",
+                    "value": "Basic <credentials>"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/Accounts.json?FriendlyName=<string>&Status=active&PageSize=<integer>",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "Accounts.json"
+                  ],
+                  "query": [
+                    {
+                      "description": "Filter by friendly name",
+                      "key": "FriendlyName",
+                      "value": "<string>"
+                    },
+                    {
+                      "description": "Filter by account status",
+                      "key": "Status",
+                      "value": "active"
+                    },
+                    {
+                      "key": "PageSize",
+                      "value": "<integer>"
+                    }
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "cookie": [],
+              "responseTime": null,
+              "body": "{\n  \"accounts\": [\n    {\n      \"sid\": \"ACxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx\",\n      \"friendly_name\": \"<string>\",\n      \"status\": \"active\",\n      \"type\": \"Trial\",\n      \"auth_token\": \"<string>\",\n      \"owner_account_sid\": \"<string>\",\n      \"date_created\": \"<dateTime>\",\n      \"date_updated\": \"<dateTime>\",\n      \"uri\": \"<string>\",\n      \"subresource_uris\": {\n        \"calls\": \"<string>\",\n        \"messages\": \"<string>\",\n        \"recordings\": \"<string>\",\n        \"keys\": \"<string>\"\n      }\n    },\n    {\n      \"sid\": \"ACxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx\",\n      \"friendly_name\": \"<string>\",\n      \"status\": \"active\",\n      \"type\": \"Full\",\n      \"auth_token\": \"<string>\",\n      \"owner_account_sid\": \"<string>\",\n      \"date_created\": \"<dateTime>\",\n      \"date_updated\": \"<dateTime>\",\n      \"uri\": \"<string>\",\n      \"subresource_uris\": {\n        \"calls\": \"<string>\",\n        \"messages\": \"<string>\",\n        \"recordings\": \"<string>\",\n        \"keys\": \"<string>\"\n      }\n    }\n  ],\n  \"first_page_uri\": \"<string>\",\n  \"next_page_uri\": \"<string>\",\n  \"page\": \"<integer>\",\n  \"page_size\": \"<integer>\"\n}",
+              "createdAt": "2026-06-05T13:21:31.000Z",
+              "updatedAt": "2026-06-05T13:21:31.000Z",
+              "uid": "35240-30faf32a-ad9c-46b7-b809-a12d46e47d97"
+            },
+            {
+              "id": "ef8d88ef-9a14-4c1e-b850-3245ecfe0a01",
+              "name": "Unauthorized",
+              "originalRequest": {
+                "method": "GET",
+                "header": [
+                  {
+                    "description": "Added as a part of security scheme: basic",
+                    "key": "Authorization",
+                    "value": "Basic <credentials>"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/Accounts.json?FriendlyName=<string>&Status=active&PageSize=<integer>",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "Accounts.json"
+                  ],
+                  "query": [
+                    {
+                      "description": "Filter by friendly name",
+                      "key": "FriendlyName",
+                      "value": "<string>"
+                    },
+                    {
+                      "description": "Filter by account status",
+                      "key": "Status",
+                      "value": "active"
+                    },
+                    {
+                      "key": "PageSize",
+                      "value": "<integer>"
+                    }
+                  ]
+                }
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "_postman_previewlanguage": "text",
+              "header": [],
+              "cookie": [],
+              "responseTime": null,
+              "body": null,
+              "createdAt": "2026-06-05T13:21:31.000Z",
+              "updatedAt": "2026-06-05T13:21:31.000Z",
+              "uid": "35240-ef8d88ef-9a14-4c1e-b850-3245ecfe0a01"
+            }
+          ],
+          "createdAt": "2026-06-05T13:21:31.000Z",
+          "updatedAt": "2026-06-05T13:21:31.000Z",
+          "uid": "35240-ad682083-5703-4307-ad91-ab5e345d9803"
+        },
+        {
+          "name": "Twilio Create a Subaccount",
+          "id": "cd9c35f4-7431-41ea-bd12-58a39ea05880",
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          },
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/x-www-form-urlencoded"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "urlencoded",
+              "urlencoded": [
+                {
+                  "description": "Human-readable name for the subaccount",
+                  "key": "FriendlyName",
+                  "value": "<string>"
+                }
+              ]
+            },
+            "url": {
+              "raw": "{{baseUrl}}/Accounts.json",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "Accounts.json"
+              ]
+            },
+            "description": "Create a new subaccount under the main account."
+          },
+          "response": [
+            {
+              "id": "f950b357-559a-440a-b599-c9541fcf8f59",
+              "name": "Subaccount created",
+              "originalRequest": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/x-www-form-urlencoded"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  },
+                  {
+                    "description": "Added as a part of security scheme: basic",
+                    "key": "Authorization",
+                    "value": "Basic <credentials>"
+                  }
+                ],
+                "body": {
+                  "mode": "urlencoded",
+                  "urlencoded": [
+                    {
+                      "description": "Human-readable name for the subaccount",
+                      "key": "FriendlyName",
+                      "value": "<string>"
+                    }
+                  ]
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/Accounts.json",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "Accounts.json"
+                  ]
+                }
+              },
+              "status": "Created",
+              "code": 201,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "cookie": [],
+              "responseTime": null,
+              "body": "{\n  \"sid\": \"ACxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx\",\n  \"friendly_name\": \"<string>\",\n  \"status\": \"active\",\n  \"type\": \"Full\",\n  \"auth_token\": \"<string>\",\n  \"owner_account_sid\": \"<string>\",\n  \"date_created\": \"<dateTime>\",\n  \"date_updated\": \"<dateTime>\",\n  \"uri\": \"<string>\",\n  \"subresource_uris\": {\n    \"calls\": \"<string>\",\n    \"messages\": \"<string>\",\n    \"recordings\": \"<string>\",\n    \"keys\": \"<string>\"\n  }\n}",
+              "createdAt": "2026-06-05T13:21:31.000Z",
+              "updatedAt": "2026-06-05T13:21:31.000Z",
+              "uid": "35240-f950b357-559a-440a-b599-c9541fcf8f59"
+            },
+            {
+              "id": "2ee7870b-a2d6-43aa-abaa-78bb213e55f9",
+              "name": "Invalid request",
+              "originalRequest": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/x-www-form-urlencoded"
+                  },
+                  {
+                    "description": "Added as a part of security scheme: basic",
+                    "key": "Authorization",
+                    "value": "Basic <credentials>"
+                  }
+                ],
+                "body": {
+                  "mode": "urlencoded",
+                  "urlencoded": [
+                    {
+                      "description": "Human-readable name for the subaccount",
+                      "key": "FriendlyName",
+                      "value": "<string>"
+                    }
+                  ]
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/Accounts.json",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "Accounts.json"
+                  ]
+                }
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "_postman_previewlanguage": "text",
+              "header": [],
+              "cookie": [],
+              "responseTime": null,
+              "body": null,
+              "createdAt": "2026-06-05T13:21:31.000Z",
+              "updatedAt": "2026-06-05T13:21:31.000Z",
+              "uid": "35240-2ee7870b-a2d6-43aa-abaa-78bb213e55f9"
+            },
+            {
+              "id": "c38c9f8f-1f0e-4252-a28a-9da8996d054b",
+              "name": "Unauthorized",
+              "originalRequest": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/x-www-form-urlencoded"
+                  },
+                  {
+                    "description": "Added as a part of security scheme: basic",
+                    "key": "Authorization",
+                    "value": "Basic <credentials>"
+                  }
+                ],
+                "body": {
+                  "mode": "urlencoded",
+                  "urlencoded": [
+                    {
+                      "description": "Human-readable name for the subaccount",
+                      "key": "FriendlyName",
+                      "value": "<string>"
+                    }
+                  ]
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/Accounts.json",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "Accounts.json"
+                  ]
+                }
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "_postman_previewlanguage": "text",
+              "header": [],
+              "cookie": [],
+              "responseTime": null,
+              "body": null,
+              "createdAt": "2026-06-05T13:21:31.000Z",
+              "updatedAt": "2026-06-05T13:21:31.000Z",
+              "uid": "35240-c38c9f8f-1f0e-4252-a28a-9da8996d054b"
+            }
+          ],
+          "createdAt": "2026-06-05T13:21:31.000Z",
+          "updatedAt": "2026-06-05T13:21:31.000Z",
+          "uid": "35240-cd9c35f4-7431-41ea-bd12-58a39ea05880"
+        }
+      ],
+      "id": "b68bfb7d-f827-4d87-9150-13a25e2b5727",
+      "createdAt": "2026-06-05T13:21:31.000Z",
+      "updatedAt": "2026-06-05T13:21:31.000Z",
+      "uid": "35240-b68bfb7d-f827-4d87-9150-13a25e2b5727"
+    },
+    {
+      "name": "Accounts",
+      "item": [
+        {
+          "name": "{AccountSid}.json",
+          "item": [
+            {
+              "name": "Twilio Fetch an Account",
+              "id": "d71393e0-6fad-4dec-afe7-03db7bcecc54",
+              "protocolProfileBehavior": {
+                "disableBodyPruning": true
+              },
+              "request": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/Accounts/{{AccountSid}}.json",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "Accounts",
+                    "{{AccountSid}}.json"
+                  ]
+                },
+                "description": "Retrieve details for a specific account or subaccount."
+              },
+              "response": [
+                {
+                  "id": "1f5bfa69-1173-4f79-a14d-f2443dde8673",
+                  "name": "Account details",
+                  "originalRequest": {
+                    "method": "GET",
+                    "header": [
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: basic",
+                        "key": "Authorization",
+                        "value": "Basic <credentials>"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/Accounts/{{AccountSid}}.json",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "Accounts",
+                        "{{AccountSid}}.json"
+                      ]
+                    }
+                  },
+                  "status": "OK",
+                  "code": 200,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    }
+                  ],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": "{\n  \"sid\": \"ACxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx\",\n  \"friendly_name\": \"<string>\",\n  \"status\": \"active\",\n  \"type\": \"Full\",\n  \"auth_token\": \"<string>\",\n  \"owner_account_sid\": \"<string>\",\n  \"date_created\": \"<dateTime>\",\n  \"date_updated\": \"<dateTime>\",\n  \"uri\": \"<string>\",\n  \"subresource_uris\": {\n    \"calls\": \"<string>\",\n    \"messages\": \"<string>\",\n    \"recordings\": \"<string>\",\n    \"keys\": \"<string>\"\n  }\n}",
+                  "createdAt": "2026-06-05T13:21:31.000Z",
+                  "updatedAt": "2026-06-05T13:21:31.000Z",
+                  "uid": "35240-1f5bfa69-1173-4f79-a14d-f2443dde8673"
+                },
+                {
+                  "id": "8f7f0e14-1327-4c98-aed3-b445a17c5e5e",
+                  "name": "Unauthorized",
+                  "originalRequest": {
+                    "method": "GET",
+                    "header": [
+                      {
+                        "description": "Added as a part of security scheme: basic",
+                        "key": "Authorization",
+                        "value": "Basic <credentials>"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/Accounts/{{AccountSid}}.json",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "Accounts",
+                        "{{AccountSid}}.json"
+                      ]
+                    }
+                  },
+                  "status": "Unauthorized",
+                  "code": 401,
+                  "_postman_previewlanguage": "text",
+                  "header": [],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": null,
+                  "createdAt": "2026-06-05T13:21:31.000Z",
+                  "updatedAt": "2026-06-05T13:21:31.000Z",
+                  "uid": "35240-8f7f0e14-1327-4c98-aed3-b445a17c5e5e"
+                },
+                {
+                  "id": "720795d2-4b65-46be-8a1e-226db233b0f9",
+                  "name": "Account not found",
+                  "originalRequest": {
+                    "method": "GET",
+                    "header": [
+                      {
+                        "description": "Added as a part of security scheme: basic",
+                        "key": "Authorization",
+                        "value": "Basic <credentials>"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/Accounts/{{AccountSid}}.json",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "Accounts",
+                        "{{AccountSid}}.json"
+                      ]
+                    }
+                  },
+                  "status": "Not Found",
+                  "code": 404,
+                  "_postman_previewlanguage": "text",
+                  "header": [],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": null,
+                  "createdAt": "2026-06-05T13:21:31.000Z",
+                  "updatedAt": "2026-06-05T13:21:31.000Z",
+                  "uid": "35240-720795d2-4b65-46be-8a1e-226db233b0f9"
+                }
+              ],
+              "createdAt": "2026-06-05T13:21:31.000Z",
+              "updatedAt": "2026-06-05T13:21:31.000Z",
+              "uid": "35240-d71393e0-6fad-4dec-afe7-03db7bcecc54"
+            },
+            {
+              "name": "Twilio Update an Account",
+              "id": "19f28790-50ae-4638-8abf-e0f78f48dc0d",
+              "protocolProfileBehavior": {
+                "disableBodyPruning": true
+              },
+              "request": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/x-www-form-urlencoded"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "body": {
+                  "mode": "urlencoded",
+                  "urlencoded": [
+                    {
+                      "key": "FriendlyName",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "Status",
+                      "value": "closed"
+                    }
+                  ]
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/Accounts/{{AccountSid}}.json",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "Accounts",
+                    "{{AccountSid}}.json"
+                  ]
+                },
+                "description": "Update account properties such as friendly name or status."
+              },
+              "response": [
+                {
+                  "id": "14bc8bc3-16b2-4c32-8738-77ab7a79c26e",
+                  "name": "Account updated",
+                  "originalRequest": {
+                    "method": "POST",
+                    "header": [
+                      {
+                        "key": "Content-Type",
+                        "value": "application/x-www-form-urlencoded"
+                      },
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: basic",
+                        "key": "Authorization",
+                        "value": "Basic <credentials>"
+                      }
+                    ],
+                    "body": {
+                      "mode": "urlencoded",
+                      "urlencoded": [
+                        {
+                          "key": "FriendlyName",
+                          "value": "<string>"
+                        },
+                        {
+                          "key": "Status",
+                          "value": "closed"
+                        }
+                      ]
+                    },
+                    "url": {
+                      "raw": "{{baseUrl}}/Accounts/{{AccountSid}}.json",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "Accounts",
+                        "{{AccountSid}}.json"
+                      ]
+                    }
+                  },
+                  "status": "OK",
+                  "code": 200,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    }
+                  ],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": "{\n  \"sid\": \"ACxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx\",\n  \"friendly_name\": \"<string>\",\n  \"status\": \"active\",\n  \"type\": \"Full\",\n  \"auth_token\": \"<string>\",\n  \"owner_account_sid\": \"<string>\",\n  \"date_created\": \"<dateTime>\",\n  \"date_updated\": \"<dateTime>\",\n  \"uri\": \"<string>\",\n  \"subresource_uris\": {\n    \"calls\": \"<string>\",\n    \"messages\": \"<string>\",\n    \"recordings\": \"<string>\",\n    \"keys\": \"<string>\"\n  }\n}",
+                  "createdAt": "2026-06-05T13:21:31.000Z",
+                  "updatedAt": "2026-06-05T13:21:31.000Z",
+                  "uid": "35240-14bc8bc3-16b2-4c32-8738-77ab7a79c26e"
+                },
+                {
+                  "id": "c0baa4c0-a05f-452c-890a-97f572621179",
+                  "name": "Unauthorized",
+                  "originalRequest": {
+                    "method": "POST",
+                    "header": [
+                      {
+                        "key": "Content-Type",
+                        "value": "application/x-www-form-urlencoded"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: basic",
+                        "key": "Authorization",
+                        "value": "Basic <credentials>"
+                      }
+                    ],
+                    "body": {
+                      "mode": "urlencoded",
+                      "urlencoded": [
+                        {
+                          "key": "FriendlyName",
+                          "value": "<string>"
+                        },
+                        {
+                          "key": "Status",
+                          "value": "closed"
+                        }
+                      ]
+                    },
+                    "url": {
+                      "raw": "{{baseUrl}}/Accounts/{{AccountSid}}.json",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "Accounts",
+                        "{{AccountSid}}.json"
+                      ]
+                    }
+                  },
+                  "status": "Unauthorized",
+                  "code": 401,
+                  "_postman_previewlanguage": "text",
+                  "header": [],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": null,
+                  "createdAt": "2026-06-05T13:21:31.000Z",
+                  "updatedAt": "2026-06-05T13:21:31.000Z",
+                  "uid": "35240-c0baa4c0-a05f-452c-890a-97f572621179"
+                },
+                {
+                  "id": "4a4c4faf-e77e-464b-9bec-ff6a2ff27ab3",
+                  "name": "Account not found",
+                  "originalRequest": {
+                    "method": "POST",
+                    "header": [
+                      {
+                        "key": "Content-Type",
+                        "value": "application/x-www-form-urlencoded"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: basic",
+                        "key": "Authorization",
+                        "value": "Basic <credentials>"
+                      }
+                    ],
+                    "body": {
+                      "mode": "urlencoded",
+                      "urlencoded": [
+                        {
+                          "key": "FriendlyName",
+                          "value": "<string>"
+                        },
+                        {
+                          "key": "Status",
+                          "value": "closed"
+                        }
+                      ]
+                    },
+                    "url": {
+                      "raw": "{{baseUrl}}/Accounts/{{AccountSid}}.json",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "Accounts",
+                        "{{AccountSid}}.json"
+                      ]
+                    }
+                  },
+                  "status": "Not Found",
+                  "code": 404,
+                  "_postman_previewlanguage": "text",
+                  "header": [],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": null,
+                  "createdAt": "2026-06-05T13:21:31.000Z",
+                  "updatedAt": "2026-06-05T13:21:31.000Z",
+                  "uid": "35240-4a4c4faf-e77e-464b-9bec-ff6a2ff27ab3"
+                }
+              ],
+              "createdAt": "2026-06-05T13:21:31.000Z",
+              "updatedAt": "2026-06-05T13:21:31.000Z",
+              "uid": "35240-19f28790-50ae-4638-8abf-e0f78f48dc0d"
+            }
+          ],
+          "id": "0436ca5a-1c3d-449d-84c0-11afa7a03079",
+          "createdAt": "2026-06-05T13:21:31.000Z",
+          "updatedAt": "2026-06-05T13:21:31.000Z",
+          "uid": "35240-0436ca5a-1c3d-449d-84c0-11afa7a03079"
+        },
+        {
+          "name": "{AccountSid}",
+          "item": [
+            {
+              "name": "Keys.json",
+              "item": [
+                {
+                  "name": "Twilio List Api Keys",
+                  "id": "0aac7294-b0bf-4a6a-b90a-1c2ce2e2778c",
+                  "protocolProfileBehavior": {
+                    "disableBodyPruning": true
+                  },
+                  "request": {
+                    "method": "GET",
+                    "header": [
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/Accounts/:AccountSid/Keys.json",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "Accounts",
+                        ":AccountSid",
+                        "Keys.json"
+                      ],
+                      "variable": [
+                        {
+                          "id": "83b43d1b-398a-43ab-b3fc-657e7bc45297",
+                          "key": "AccountSid",
+                          "value": "ACxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",
+                          "description": "(Required) The unique identifier of the Twilio account"
+                        }
+                      ]
+                    },
+                    "description": "Retrieve a list of API keys for the account."
+                  },
+                  "response": [
+                    {
+                      "id": "9a2c0230-452e-4e0d-86fc-5d128060ee26",
+                      "name": "List of API keys",
+                      "originalRequest": {
+                        "method": "GET",
+                        "header": [
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          },
+                          {
+                            "description": "Added as a part of security scheme: basic",
+                            "key": "Authorization",
+                            "value": "Basic <credentials>"
+                          }
+                        ],
+                        "url": {
+                          "raw": "{{baseUrl}}/Accounts/:AccountSid/Keys.json",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "Accounts",
+                            ":AccountSid",
+                            "Keys.json"
+                          ],
+                          "variable": [
+                            {
+                              "key": "AccountSid"
+                            }
+                          ]
+                        }
+                      },
+                      "status": "OK",
+                      "code": 200,
+                      "_postman_previewlanguage": "json",
+                      "header": [
+                        {
+                          "key": "Content-Type",
+                          "value": "application/json"
+                        }
+                      ],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": "{\n  \"keys\": [\n    {\n      \"sid\": \"SKxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx\",\n      \"friendly_name\": \"<string>\",\n      \"date_created\": \"<dateTime>\",\n      \"date_updated\": \"<dateTime>\"\n    },\n    {\n      \"sid\": \"SKxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx\",\n      \"friendly_name\": \"<string>\",\n      \"date_created\": \"<dateTime>\",\n      \"date_updated\": \"<dateTime>\"\n    }\n  ],\n  \"first_page_uri\": \"<string>\",\n  \"next_page_uri\": \"<string>\",\n  \"page\": \"<integer>\",\n  \"page_size\": \"<integer>\"\n}",
+                      "createdAt": "2026-06-05T13:21:31.000Z",
+                      "updatedAt": "2026-06-05T13:21:31.000Z",
+                      "uid": "35240-9a2c0230-452e-4e0d-86fc-5d128060ee26"
+                    },
+                    {
+                      "id": "7d525cde-f272-4562-8f94-b822dde6cabb",
+                      "name": "Unauthorized",
+                      "originalRequest": {
+                        "method": "GET",
+                        "header": [
+                          {
+                            "description": "Added as a part of security scheme: basic",
+                            "key": "Authorization",
+                            "value": "Basic <credentials>"
+                          }
+                        ],
+                        "url": {
+                          "raw": "{{baseUrl}}/Accounts/:AccountSid/Keys.json",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "Accounts",
+                            ":AccountSid",
+                            "Keys.json"
+                          ],
+                          "variable": [
+                            {
+                              "key": "AccountSid"
+                            }
+                          ]
+                        }
+                      },
+                      "status": "Unauthorized",
+                      "code": 401,
+                      "_postman_previewlanguage": "text",
+                      "header": [],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": null,
+                      "createdAt": "2026-06-05T13:21:31.000Z",
+                      "updatedAt": "2026-06-05T13:21:31.000Z",
+                      "uid": "35240-7d525cde-f272-4562-8f94-b822dde6cabb"
+                    }
+                  ],
+                  "createdAt": "2026-06-05T13:21:31.000Z",
+                  "updatedAt": "2026-06-05T13:21:31.000Z",
+                  "uid": "35240-0aac7294-b0bf-4a6a-b90a-1c2ce2e2778c"
+                },
+                {
+                  "name": "Twilio Create an Api Key",
+                  "id": "435f3aec-c030-457b-bee1-be27d156a661",
+                  "protocolProfileBehavior": {
+                    "disableBodyPruning": true
+                  },
+                  "request": {
+                    "method": "POST",
+                    "header": [
+                      {
+                        "key": "Content-Type",
+                        "value": "application/x-www-form-urlencoded"
+                      },
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      }
+                    ],
+                    "body": {
+                      "mode": "urlencoded",
+                      "urlencoded": [
+                        {
+                          "description": "Descriptive name for the API key",
+                          "key": "FriendlyName",
+                          "value": "<string>"
+                        },
+                        {
+                          "description": "Account SID to scope the key to",
+                          "key": "AccountSid",
+                          "value": "<string>"
+                        }
+                      ]
+                    },
+                    "url": {
+                      "raw": "{{baseUrl}}/Accounts/:AccountSid/Keys.json",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "Accounts",
+                        ":AccountSid",
+                        "Keys.json"
+                      ],
+                      "variable": [
+                        {
+                          "id": "3b0b439f-a0c6-48cd-966b-85c04335ad5a",
+                          "key": "AccountSid",
+                          "value": "ACxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",
+                          "description": "(Required) The unique identifier of the Twilio account"
+                        }
+                      ]
+                    },
+                    "description": "Create a new API key for authentication. The secret is only returned once upon creation."
+                  },
+                  "response": [
+                    {
+                      "id": "0c506900-594f-4bd9-be71-5fd811b19f34",
+                      "name": "API key created (secret returned only once)",
+                      "originalRequest": {
+                        "method": "POST",
+                        "header": [
+                          {
+                            "key": "Content-Type",
+                            "value": "application/x-www-form-urlencoded"
+                          },
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          },
+                          {
+                            "description": "Added as a part of security scheme: basic",
+                            "key": "Authorization",
+                            "value": "Basic <credentials>"
+                          }
+                        ],
+                        "body": {
+                          "mode": "urlencoded",
+                          "urlencoded": [
+                            {
+                              "description": "Descriptive name for the API key",
+                              "key": "FriendlyName",
+                              "value": "<string>"
+                            },
+                            {
+                              "description": "Account SID to scope the key to",
+                              "key": "AccountSid",
+                              "value": "<string>"
+                            }
+                          ]
+                        },
+                        "url": {
+                          "raw": "{{baseUrl}}/Accounts/:AccountSid/Keys.json",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "Accounts",
+                            ":AccountSid",
+                            "Keys.json"
+                          ],
+                          "variable": [
+                            {
+                              "key": "AccountSid"
+                            }
+                          ]
+                        }
+                      },
+                      "status": "Created",
+                      "code": 201,
+                      "_postman_previewlanguage": "json",
+                      "header": [
+                        {
+                          "key": "Content-Type",
+                          "value": "application/json"
+                        }
+                      ],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": "{\n  \"sid\": \"SKxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx\",\n  \"friendly_name\": \"<string>\",\n  \"secret\": \"<string>\",\n  \"date_created\": \"<dateTime>\"\n}",
+                      "createdAt": "2026-06-05T13:21:31.000Z",
+                      "updatedAt": "2026-06-05T13:21:31.000Z",
+                      "uid": "35240-0c506900-594f-4bd9-be71-5fd811b19f34"
+                    },
+                    {
+                      "id": "2ec0b712-aa71-406d-98ff-cefc0f052440",
+                      "name": "Unauthorized",
+                      "originalRequest": {
+                        "method": "POST",
+                        "header": [
+                          {
+                            "key": "Content-Type",
+                            "value": "application/x-www-form-urlencoded"
+                          },
+                          {
+                            "description": "Added as a part of security scheme: basic",
+                            "key": "Authorization",
+                            "value": "Basic <credentials>"
+                          }
+                        ],
+                        "body": {
+                          "mode": "urlencoded",
+                          "urlencoded": [
+                            {
+                              "description": "Descriptive name for the API key",
+                              "key": "FriendlyName",
+                              "value": "<string>"
+                            },
+                            {
+                              "description": "Account SID to scope the key to",
+                              "key": "AccountSid",
+                              "value": "<string>"
+                            }
+                          ]
+                        },
+                        "url": {
+                          "raw": "{{baseUrl}}/Accounts/:AccountSid/Keys.json",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "Accounts",
+                            ":AccountSid",
+                            "Keys.json"
+                          ],
+                          "variable": [
+                            {
+                              "key": "AccountSid"
+                            }
+                          ]
+                        }
+                      },
+                      "status": "Unauthorized",
+                      "code": 401,
+                      "_postman_previewlanguage": "text",
+                      "header": [],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": null,
+                      "createdAt": "2026-06-05T13:21:31.000Z",
+                      "updatedAt": "2026-06-05T13:21:31.000Z",
+                      "uid": "35240-2ec0b712-aa71-406d-98ff-cefc0f052440"
+                    }
+                  ],
+                  "createdAt": "2026-06-05T13:21:31.000Z",
+                  "updatedAt": "2026-06-05T13:21:31.000Z",
+                  "uid": "35240-435f3aec-c030-457b-bee1-be27d156a661"
+                }
+              ],
+              "id": "b75408e6-34c8-4c42-a7b6-6748f6930ff2",
+              "createdAt": "2026-06-05T13:21:31.000Z",
+              "updatedAt": "2026-06-05T13:21:31.000Z",
+              "uid": "35240-b75408e6-34c8-4c42-a7b6-6748f6930ff2"
+            },
+            {
+              "name": "Keys",
+              "item": [
+                {
+                  "name": "{KeySid}.json",
+                  "item": [
+                    {
+                      "name": "Twilio Fetch an Api Key",
+                      "id": "7d69af80-af7e-439f-b892-f4755a2a696d",
+                      "protocolProfileBehavior": {
+                        "disableBodyPruning": true
+                      },
+                      "request": {
+                        "method": "GET",
+                        "header": [
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          }
+                        ],
+                        "url": {
+                          "raw": "{{baseUrl}}/Accounts/:AccountSid/Keys/{{KeySid}}.json",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "Accounts",
+                            ":AccountSid",
+                            "Keys",
+                            "{{KeySid}}.json"
+                          ],
+                          "variable": [
+                            {
+                              "id": "831c6313-b3e3-4ee2-9120-5be1d84a409d",
+                              "key": "AccountSid",
+                              "value": "ACxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",
+                              "description": "(Required) The unique identifier of the Twilio account"
+                            }
+                          ]
+                        }
+                      },
+                      "response": [
+                        {
+                          "id": "75e12676-dd74-45a2-a5f7-fa14aedcc3ac",
+                          "name": "API key details",
+                          "originalRequest": {
+                            "method": "GET",
+                            "header": [
+                              {
+                                "key": "Accept",
+                                "value": "application/json"
+                              },
+                              {
+                                "description": "Added as a part of security scheme: basic",
+                                "key": "Authorization",
+                                "value": "Basic <credentials>"
+                              }
+                            ],
+                            "url": {
+                              "raw": "{{baseUrl}}/Accounts/:AccountSid/Keys/{{KeySid}}.json",
+                              "host": [
+                                "{{baseUrl}}"
+                              ],
+                              "path": [
+                                "Accounts",
+                                ":AccountSid",
+                                "Keys",
+                                "{{KeySid}}.json"
+                              ],
+                              "variable": [
+                                {
+                                  "key": "AccountSid"
+                                }
+                              ]
+                            }
+                          },
+                          "status": "OK",
+                          "code": 200,
+                          "_postman_previewlanguage": "json",
+                          "header": [
+                            {
+                              "key": "Content-Type",
+                              "value": "application/json"
+                            }
+                          ],
+                          "cookie": [],
+                          "responseTime": null,
+                          "body": "{\n  \"sid\": \"SKxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx\",\n  \"friendly_name\": \"<string>\",\n  \"date_created\": \"<dateTime>\",\n  \"date_updated\": \"<dateTime>\"\n}",
+                          "createdAt": "2026-06-05T13:21:31.000Z",
+                          "updatedAt": "2026-06-05T13:21:31.000Z",
+                          "uid": "35240-75e12676-dd74-45a2-a5f7-fa14aedcc3ac"
+                        },
+                        {
+                          "id": "cc6e3dab-dce3-4183-babd-e0d5ea07c37d",
+                          "name": "Key not found",
+                          "originalRequest": {
+                            "method": "GET",
+                            "header": [
+                              {
+                                "description": "Added as a part of security scheme: basic",
+                                "key": "Authorization",
+                                "value": "Basic <credentials>"
+                              }
+                            ],
+                            "url": {
+                              "raw": "{{baseUrl}}/Accounts/:AccountSid/Keys/{{KeySid}}.json",
+                              "host": [
+                                "{{baseUrl}}"
+                              ],
+                              "path": [
+                                "Accounts",
+                                ":AccountSid",
+                                "Keys",
+                                "{{KeySid}}.json"
+                              ],
+                              "variable": [
+                                {
+                                  "key": "AccountSid"
+                                }
+                              ]
+                            }
+                          },
+                          "status": "Not Found",
+                          "code": 404,
+                          "_postman_previewlanguage": "text",
+                          "header": [],
+                          "cookie": [],
+                          "responseTime": null,
+                          "body": null,
+                          "createdAt": "2026-06-05T13:21:31.000Z",
+                          "updatedAt": "2026-06-05T13:21:31.000Z",
+                          "uid": "35240-cc6e3dab-dce3-4183-babd-e0d5ea07c37d"
+                        }
+                      ],
+                      "createdAt": "2026-06-05T13:21:31.000Z",
+                      "updatedAt": "2026-06-05T13:21:31.000Z",
+                      "uid": "35240-7d69af80-af7e-439f-b892-f4755a2a696d"
+                    },
+                    {
+                      "name": "Twilio Update an Api Key",
+                      "id": "09f82e60-3bbb-4a30-97ec-53899e3636ae",
+                      "protocolProfileBehavior": {
+                        "disableBodyPruning": true
+                      },
+                      "request": {
+                        "method": "POST",
+                        "header": [
+                          {
+                            "key": "Content-Type",
+                            "value": "application/x-www-form-urlencoded"
+                          }
+                        ],
+                        "body": {
+                          "mode": "urlencoded",
+                          "urlencoded": [
+                            {
+                              "key": "FriendlyName",
+                              "value": "<string>"
+                            }
+                          ]
+                        },
+                        "url": {
+                          "raw": "{{baseUrl}}/Accounts/:AccountSid/Keys/{{KeySid}}.json",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "Accounts",
+                            ":AccountSid",
+                            "Keys",
+                            "{{KeySid}}.json"
+                          ],
+                          "variable": [
+                            {
+                              "id": "6a62232b-b3a3-4447-8dbb-e1a204b1c579",
+                              "key": "AccountSid",
+                              "value": "ACxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",
+                              "description": "(Required) The unique identifier of the Twilio account"
+                            }
+                          ]
+                        }
+                      },
+                      "response": [
+                        {
+                          "id": "1e5c1f03-9ce4-4c79-b62c-0a28d18e8cb4",
+                          "name": "Key updated",
+                          "originalRequest": {
+                            "method": "POST",
+                            "header": [
+                              {
+                                "key": "Content-Type",
+                                "value": "application/x-www-form-urlencoded"
+                              },
+                              {
+                                "description": "Added as a part of security scheme: basic",
+                                "key": "Authorization",
+                                "value": "Basic <credentials>"
+                              }
+                            ],
+                            "body": {
+                              "mode": "urlencoded",
+                              "urlencoded": [
+                                {
+                                  "key": "FriendlyName",
+                                  "value": "<string>"
+                                }
+                              ]
+                            },
+                            "url": {
+                              "raw": "{{baseUrl}}/Accounts/:AccountSid/Keys/{{KeySid}}.json",
+                              "host": [
+                                "{{baseUrl}}"
+                              ],
+                              "path": [
+                                "Accounts",
+                                ":AccountSid",
+                                "Keys",
+                                "{{KeySid}}.json"
+                              ],
+                              "variable": [
+                                {
+                                  "key": "AccountSid"
+                                }
+                              ]
+                            }
+                          },
+                          "status": "OK",
+                          "code": 200,
+                          "_postman_previewlanguage": "text",
+                          "header": [],
+                          "cookie": [],
+                          "responseTime": null,
+                          "body": null,
+                          "createdAt": "2026-06-05T13:21:31.000Z",
+                          "updatedAt": "2026-06-05T13:21:31.000Z",
+                          "uid": "35240-1e5c1f03-9ce4-4c79-b62c-0a28d18e8cb4"
+                        }
+                      ],
+                      "createdAt": "2026-06-05T13:21:31.000Z",
+                      "updatedAt": "2026-06-05T13:21:31.000Z",
+                      "uid": "35240-09f82e60-3bbb-4a30-97ec-53899e3636ae"
+                    },
+                    {
+                      "name": "Twilio Delete an Api Key",
+                      "id": "121f0ddb-0f2b-4c43-b387-4221d9ee8a5b",
+                      "protocolProfileBehavior": {
+                        "disableBodyPruning": true
+                      },
+                      "request": {
+                        "method": "DELETE",
+                        "header": [],
+                        "url": {
+                          "raw": "{{baseUrl}}/Accounts/:AccountSid/Keys/{{KeySid}}.json",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "Accounts",
+                            ":AccountSid",
+                            "Keys",
+                            "{{KeySid}}.json"
+                          ],
+                          "variable": [
+                            {
+                              "id": "0db67f79-9054-4d94-84d4-e1550a50327d",
+                              "key": "AccountSid",
+                              "value": "ACxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",
+                              "description": "(Required) The unique identifier of the Twilio account"
+                            }
+                          ]
+                        }
+                      },
+                      "response": [
+                        {
+                          "id": "1be2539c-ccc2-4a05-913d-fff07fdf4cf1",
+                          "name": "Key deleted",
+                          "originalRequest": {
+                            "method": "DELETE",
+                            "header": [
+                              {
+                                "description": "Added as a part of security scheme: basic",
+                                "key": "Authorization",
+                                "value": "Basic <credentials>"
+                              }
+                            ],
+                            "url": {
+                              "raw": "{{baseUrl}}/Accounts/:AccountSid/Keys/{{KeySid}}.json",
+                              "host": [
+                                "{{baseUrl}}"
+                              ],
+                              "path": [
+                                "Accounts",
+                                ":AccountSid",
+                                "Keys",
+                                "{{KeySid}}.json"
+                              ],
+                              "variable": [
+                                {
+                                  "key": "AccountSid"
+                                }
+                              ]
+                            }
+                          },
+                          "status": "No Content",
+                          "code": 204,
+                          "_postman_previewlanguage": "text",
+                          "header": [],
+                          "cookie": [],
+                          "responseTime": null,
+                          "body": null,
+                          "createdAt": "2026-06-05T13:21:31.000Z",
+                          "updatedAt": "2026-06-05T13:21:31.000Z",
+                          "uid": "35240-1be2539c-ccc2-4a05-913d-fff07fdf4cf1"
+                        }
+                      ],
+                      "createdAt": "2026-06-05T13:21:31.000Z",
+                      "updatedAt": "2026-06-05T13:21:31.000Z",
+                      "uid": "35240-121f0ddb-0f2b-4c43-b387-4221d9ee8a5b"
+                    }
+                  ],
+                  "id": "eac676fc-9525-45d4-a32d-afc972c9b389",
+                  "createdAt": "2026-06-05T13:21:31.000Z",
+                  "updatedAt": "2026-06-05T13:21:31.000Z",
+                  "uid": "35240-eac676fc-9525-45d4-a32d-afc972c9b389"
+                }
+              ],
+              "id": "5146edd8-ee48-4ff0-9763-73d78c5d3e84",
+              "createdAt": "2026-06-05T13:21:31.000Z",
+              "updatedAt": "2026-06-05T13:21:31.000Z",
+              "uid": "35240-5146edd8-ee48-4ff0-9763-73d78c5d3e84"
+            }
+          ],
+          "id": "80a13870-bd91-4cc6-b204-aa77867e8a5c",
+          "createdAt": "2026-06-05T13:21:31.000Z",
+          "updatedAt": "2026-06-05T13:21:31.000Z",
+          "uid": "35240-80a13870-bd91-4cc6-b204-aa77867e8a5c"
+        }
+      ],
+      "id": "b7592840-760a-4cb2-b5fa-5242cee8868b",
+      "createdAt": "2026-06-05T13:21:31.000Z",
+      "updatedAt": "2026-06-05T13:21:31.000Z",
+      "uid": "35240-b7592840-760a-4cb2-b5fa-5242cee8868b"
+    },
+    {
+      "name": "Credentials",
+      "item": [
+        {
+          "name": "AWS",
+          "item": [
+            {
+              "name": "Twilio List Aws Credentials",
+              "id": "26217f83-a112-4042-8ea3-9936bb2d89d4",
+              "protocolProfileBehavior": {
+                "disableBodyPruning": true
+              },
+              "request": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/Credentials/AWS",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "Credentials",
+                    "AWS"
+                  ]
+                }
+              },
+              "response": [
+                {
+                  "id": "a465cf24-a145-46e9-8419-1f530174c8f7",
+                  "name": "List of AWS credentials",
+                  "originalRequest": {
+                    "method": "GET",
+                    "header": [
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: basic",
+                        "key": "Authorization",
+                        "value": "Basic <credentials>"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/Credentials/AWS",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "Credentials",
+                        "AWS"
+                      ]
+                    }
+                  },
+                  "status": "OK",
+                  "code": 200,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    }
+                  ],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": "{\n  \"credentials\": [\n    {\n      \"sid\": \"CRd98F96cEdc94fE8fd8ed1334cb206d5A\",\n      \"friendly_name\": \"<string>\",\n      \"date_created\": \"<dateTime>\",\n      \"date_updated\": \"<dateTime>\",\n      \"url\": \"<uri>\"\n    },\n    {\n      \"sid\": \"CRDEcdF65bED62155E21d2b6A9cddDc8fF\",\n      \"friendly_name\": \"<string>\",\n      \"date_created\": \"<dateTime>\",\n      \"date_updated\": \"<dateTime>\",\n      \"url\": \"<uri>\"\n    }\n  ]\n}",
+                  "createdAt": "2026-06-05T13:21:31.000Z",
+                  "updatedAt": "2026-06-05T13:21:31.000Z",
+                  "uid": "35240-a465cf24-a145-46e9-8419-1f530174c8f7"
+                }
+              ],
+              "createdAt": "2026-06-05T13:21:31.000Z",
+              "updatedAt": "2026-06-05T13:21:31.000Z",
+              "uid": "35240-26217f83-a112-4042-8ea3-9936bb2d89d4"
+            },
+            {
+              "name": "Twilio Create an Aws Credential",
+              "id": "c952a44f-ecee-45f5-9d1f-f0171ccd9445",
+              "protocolProfileBehavior": {
+                "disableBodyPruning": true
+              },
+              "request": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/x-www-form-urlencoded"
+                  }
+                ],
+                "body": {
+                  "mode": "urlencoded",
+                  "urlencoded": [
+                    {
+                      "description": "(Required) AWS access key ID and secret access key",
+                      "key": "Credentials",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "FriendlyName",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "AccountSid",
+                      "value": "<string>"
+                    }
+                  ]
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/Credentials/AWS",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "Credentials",
+                    "AWS"
+                  ]
+                }
+              },
+              "response": [
+                {
+                  "id": "780c3a06-b954-4d41-982e-a549842b4dc1",
+                  "name": "AWS credential created",
+                  "originalRequest": {
+                    "method": "POST",
+                    "header": [
+                      {
+                        "key": "Content-Type",
+                        "value": "application/x-www-form-urlencoded"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: basic",
+                        "key": "Authorization",
+                        "value": "Basic <credentials>"
+                      }
+                    ],
+                    "body": {
+                      "mode": "urlencoded",
+                      "urlencoded": [
+                        {
+                          "description": "(Required) AWS access key ID and secret access key",
+                          "key": "Credentials",
+                          "value": "<string>"
+                        },
+                        {
+                          "key": "FriendlyName",
+                          "value": "<string>"
+                        },
+                        {
+                          "key": "AccountSid",
+                          "value": "<string>"
+                        }
+                      ]
+                    },
+                    "url": {
+                      "raw": "{{baseUrl}}/Credentials/AWS",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "Credentials",
+                        "AWS"
+                      ]
+                    }
+                  },
+                  "status": "Created",
+                  "code": 201,
+                  "_postman_previewlanguage": "text",
+                  "header": [],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": null,
+                  "createdAt": "2026-06-05T13:21:31.000Z",
+                  "updatedAt": "2026-06-05T13:21:31.000Z",
+                  "uid": "35240-780c3a06-b954-4d41-982e-a549842b4dc1"
+                }
+              ],
+              "createdAt": "2026-06-05T13:21:31.000Z",
+              "updatedAt": "2026-06-05T13:21:31.000Z",
+              "uid": "35240-c952a44f-ecee-45f5-9d1f-f0171ccd9445"
+            }
+          ],
+          "id": "245814f4-995a-44af-a90b-9c3bae1dc169",
+          "createdAt": "2026-06-05T13:21:31.000Z",
+          "updatedAt": "2026-06-05T13:21:31.000Z",
+          "uid": "35240-245814f4-995a-44af-a90b-9c3bae1dc169"
+        },
+        {
+          "name": "PublicKeys",
+          "item": [
+            {
+              "name": "Twilio List Public Key Credentials",
+              "id": "9f750c2f-50ea-47dc-82b6-ef9795dd3ce2",
+              "protocolProfileBehavior": {
+                "disableBodyPruning": true
+              },
+              "request": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/Credentials/PublicKeys",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "Credentials",
+                    "PublicKeys"
+                  ]
+                }
+              },
+              "response": [
+                {
+                  "id": "7a69e460-d085-401e-a71c-66cfdf4ecebc",
+                  "name": "List of public key credentials",
+                  "originalRequest": {
+                    "method": "GET",
+                    "header": [
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: basic",
+                        "key": "Authorization",
+                        "value": "Basic <credentials>"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/Credentials/PublicKeys",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "Credentials",
+                        "PublicKeys"
+                      ]
+                    }
+                  },
+                  "status": "OK",
+                  "code": 200,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    }
+                  ],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": "{\n  \"credentials\": [\n    {\n      \"sid\": \"CRd98F96cEdc94fE8fd8ed1334cb206d5A\",\n      \"friendly_name\": \"<string>\",\n      \"date_created\": \"<dateTime>\",\n      \"date_updated\": \"<dateTime>\",\n      \"url\": \"<uri>\"\n    },\n    {\n      \"sid\": \"CRDEcdF65bED62155E21d2b6A9cddDc8fF\",\n      \"friendly_name\": \"<string>\",\n      \"date_created\": \"<dateTime>\",\n      \"date_updated\": \"<dateTime>\",\n      \"url\": \"<uri>\"\n    }\n  ]\n}",
+                  "createdAt": "2026-06-05T13:21:31.000Z",
+                  "updatedAt": "2026-06-05T13:21:31.000Z",
+                  "uid": "35240-7a69e460-d085-401e-a71c-66cfdf4ecebc"
+                }
+              ],
+              "createdAt": "2026-06-05T13:21:31.000Z",
+              "updatedAt": "2026-06-05T13:21:31.000Z",
+              "uid": "35240-9f750c2f-50ea-47dc-82b6-ef9795dd3ce2"
+            },
+            {
+              "name": "Twilio Create a Public Key Credential",
+              "id": "34f095b4-9214-45ae-adb0-4546671369ef",
+              "protocolProfileBehavior": {
+                "disableBodyPruning": true
+              },
+              "request": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/x-www-form-urlencoded"
+                  }
+                ],
+                "body": {
+                  "mode": "urlencoded",
+                  "urlencoded": [
+                    {
+                      "description": "(Required) DER-encoded public key",
+                      "key": "PublicKey",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "FriendlyName",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "AccountSid",
+                      "value": "<string>"
+                    }
+                  ]
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/Credentials/PublicKeys",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "Credentials",
+                    "PublicKeys"
+                  ]
+                }
+              },
+              "response": [
+                {
+                  "id": "d15cf0ce-744c-4bf7-8030-c46dc7ca1540",
+                  "name": "Public key created",
+                  "originalRequest": {
+                    "method": "POST",
+                    "header": [
+                      {
+                        "key": "Content-Type",
+                        "value": "application/x-www-form-urlencoded"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: basic",
+                        "key": "Authorization",
+                        "value": "Basic <credentials>"
+                      }
+                    ],
+                    "body": {
+                      "mode": "urlencoded",
+                      "urlencoded": [
+                        {
+                          "description": "(Required) DER-encoded public key",
+                          "key": "PublicKey",
+                          "value": "<string>"
+                        },
+                        {
+                          "key": "FriendlyName",
+                          "value": "<string>"
+                        },
+                        {
+                          "key": "AccountSid",
+                          "value": "<string>"
+                        }
+                      ]
+                    },
+                    "url": {
+                      "raw": "{{baseUrl}}/Credentials/PublicKeys",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "Credentials",
+                        "PublicKeys"
+                      ]
+                    }
+                  },
+                  "status": "Created",
+                  "code": 201,
+                  "_postman_previewlanguage": "text",
+                  "header": [],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": null,
+                  "createdAt": "2026-06-05T13:21:31.000Z",
+                  "updatedAt": "2026-06-05T13:21:31.000Z",
+                  "uid": "35240-d15cf0ce-744c-4bf7-8030-c46dc7ca1540"
+                }
+              ],
+              "createdAt": "2026-06-05T13:21:31.000Z",
+              "updatedAt": "2026-06-05T13:21:31.000Z",
+              "uid": "35240-34f095b4-9214-45ae-adb0-4546671369ef"
+            }
+          ],
+          "id": "f557993f-d1f3-4465-b6d4-a718f8b9a0b9",
+          "createdAt": "2026-06-05T13:21:31.000Z",
+          "updatedAt": "2026-06-05T13:21:31.000Z",
+          "uid": "35240-f557993f-d1f3-4465-b6d4-a718f8b9a0b9"
+        }
+      ],
+      "id": "66d5685b-6230-468c-9256-0184341b22dd",
+      "createdAt": "2026-06-05T13:21:31.000Z",
+      "updatedAt": "2026-06-05T13:21:31.000Z",
+      "uid": "35240-66d5685b-6230-468c-9256-0184341b22dd"
+    },
+    {
+      "name": "AuthTokens",
+      "item": [
+        {
+          "name": "Promote",
+          "item": [
+            {
+              "name": "Twilio Promote Secondary Auth Token",
+              "id": "756a98d6-2c83-4bf3-b195-d8e104860fae",
+              "protocolProfileBehavior": {
+                "disableBodyPruning": true
+              },
+              "request": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/AuthTokens/Promote",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "AuthTokens",
+                    "Promote"
+                  ]
+                },
+                "description": "Promote the secondary auth token to primary. The old primary token will be invalidated immediately."
+              },
+              "response": [
+                {
+                  "id": "f428dddc-b37e-4fe2-a00a-9cc70cc379ab",
+                  "name": "Auth token promoted",
+                  "originalRequest": {
+                    "method": "POST",
+                    "header": [
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: basic",
+                        "key": "Authorization",
+                        "value": "Basic <credentials>"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/AuthTokens/Promote",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "AuthTokens",
+                        "Promote"
+                      ]
+                    }
+                  },
+                  "status": "OK",
+                  "code": 200,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    }
+                  ],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": "{\n  \"account_sid\": \"ACxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx\",\n  \"auth_token\": \"<string>\",\n  \"date_created\": \"<dateTime>\",\n  \"date_updated\": \"<dateTime>\",\n  \"url\": \"<uri>\"\n}",
+                  "createdAt": "2026-06-05T13:21:31.000Z",
+                  "updatedAt": "2026-06-05T13:21:31.000Z",
+                  "uid": "35240-f428dddc-b37e-4fe2-a00a-9cc70cc379ab"
+                }
+              ],
+              "createdAt": "2026-06-05T13:21:31.000Z",
+              "updatedAt": "2026-06-05T13:21:31.000Z",
+              "uid": "35240-756a98d6-2c83-4bf3-b195-d8e104860fae"
+            }
+          ],
+          "id": "bd6b357c-19dd-4f83-ba8d-289408673b8e",
+          "createdAt": "2026-06-05T13:21:31.000Z",
+          "updatedAt": "2026-06-05T13:21:31.000Z",
+          "uid": "35240-bd6b357c-19dd-4f83-ba8d-289408673b8e"
+        },
+        {
+          "name": "Secondary",
+          "item": [
+            {
+              "name": "Twilio Create a Secondary Auth Token",
+              "id": "96de6a1e-8bc2-441b-bfdb-4872b9209243",
+              "protocolProfileBehavior": {
+                "disableBodyPruning": true
+              },
+              "request": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/AuthTokens/Secondary",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "AuthTokens",
+                    "Secondary"
+                  ]
+                },
+                "description": "Create a secondary auth token for the account. Use this to rotate auth tokens without downtime."
+              },
+              "response": [
+                {
+                  "id": "b20ed2c0-7ccc-4864-a244-e3d306c6d0d2",
+                  "name": "Secondary auth token created",
+                  "originalRequest": {
+                    "method": "POST",
+                    "header": [
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: basic",
+                        "key": "Authorization",
+                        "value": "Basic <credentials>"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/AuthTokens/Secondary",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "AuthTokens",
+                        "Secondary"
+                      ]
+                    }
+                  },
+                  "status": "Created",
+                  "code": 201,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    }
+                  ],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": "{\n  \"account_sid\": \"ACxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx\",\n  \"secondary_auth_token\": \"<string>\",\n  \"date_created\": \"<dateTime>\",\n  \"date_updated\": \"<dateTime>\",\n  \"url\": \"<uri>\"\n}",
+                  "createdAt": "2026-06-05T13:21:31.000Z",
+                  "updatedAt": "2026-06-05T13:21:31.000Z",
+                  "uid": "35240-b20ed2c0-7ccc-4864-a244-e3d306c6d0d2"
+                }
+              ],
+              "createdAt": "2026-06-05T13:21:31.000Z",
+              "updatedAt": "2026-06-05T13:21:31.000Z",
+              "uid": "35240-96de6a1e-8bc2-441b-bfdb-4872b9209243"
+            },
+            {
+              "name": "Twilio Delete the Secondary Auth Token",
+              "id": "8a3d743e-020e-4d57-b517-86a845406ec9",
+              "protocolProfileBehavior": {
+                "disableBodyPruning": true
+              },
+              "request": {
+                "method": "DELETE",
+                "header": [],
+                "url": {
+                  "raw": "{{baseUrl}}/AuthTokens/Secondary",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "AuthTokens",
+                    "Secondary"
+                  ]
+                }
+              },
+              "response": [
+                {
+                  "id": "cc52a755-8169-45c0-ae19-7847a430e3bc",
+                  "name": "Secondary auth token deleted",
+                  "originalRequest": {
+                    "method": "DELETE",
+                    "header": [
+                      {
+                        "description": "Added as a part of security scheme: basic",
+                        "key": "Authorization",
+                        "value": "Basic <credentials>"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/AuthTokens/Secondary",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "AuthTokens",
+                        "Secondary"
+                      ]
+                    }
+                  },
+                  "status": "No Content",
+                  "code": 204,
+                  "_postman_previewlanguage": "text",
+                  "header": [],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": null,
+                  "createdAt": "2026-06-05T13:21:31.000Z",
+                  "updatedAt": "2026-06-05T13:21:31.000Z",
+                  "uid": "35240-cc52a755-8169-45c0-ae19-7847a430e3bc"
+                }
+              ],
+              "createdAt": "2026-06-05T13:21:31.000Z",
+              "updatedAt": "2026-06-05T13:21:31.000Z",
+              "uid": "35240-8a3d743e-020e-4d57-b517-86a845406ec9"
+            }
+          ],
+          "id": "7a03f50c-2a0d-46b1-a5eb-82944d6cca51",
+          "createdAt": "2026-06-05T13:21:31.000Z",
+          "updatedAt": "2026-06-05T13:21:31.000Z",
+          "uid": "35240-7a03f50c-2a0d-46b1-a5eb-82944d6cca51"
+        }
+      ],
+      "id": "82b16831-17ab-4553-a6d3-44666d04525a",
+      "createdAt": "2026-06-05T13:21:31.000Z",
+      "updatedAt": "2026-06-05T13:21:31.000Z",
+      "uid": "35240-82b16831-17ab-4553-a6d3-44666d04525a"
+    },
+    {
+      "name": "SafeList",
+      "item": [
+        {
+          "name": "Numbers",
+          "item": [
+            {
+              "name": "{PhoneNumber}",
+              "item": [
+                {
+                  "name": "Twilio Check if a Number is Safelisted",
+                  "id": "8c6b487a-2b77-46a2-8dd5-66ed47312ffa",
+                  "protocolProfileBehavior": {
+                    "disableBodyPruning": true
+                  },
+                  "request": {
+                    "method": "GET",
+                    "header": [],
+                    "url": {
+                      "raw": "{{baseUrl}}/SafeList/Numbers/:PhoneNumber",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "SafeList",
+                        "Numbers",
+                        ":PhoneNumber"
+                      ],
+                      "variable": [
+                        {
+                          "id": "ffc4d83d-62e6-4147-b2a3-bbef600e2404",
+                          "key": "PhoneNumber",
+                          "value": "<string>",
+                          "description": "(Required) "
+                        }
+                      ]
+                    }
+                  },
+                  "response": [
+                    {
+                      "id": "7c1e5962-b5f0-43c9-ba22-815bcbe67256",
+                      "name": "Number is safelisted",
+                      "originalRequest": {
+                        "method": "GET",
+                        "header": [
+                          {
+                            "description": "Added as a part of security scheme: basic",
+                            "key": "Authorization",
+                            "value": "Basic <credentials>"
+                          }
+                        ],
+                        "url": {
+                          "raw": "{{baseUrl}}/SafeList/Numbers/:PhoneNumber",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "SafeList",
+                            "Numbers",
+                            ":PhoneNumber"
+                          ],
+                          "variable": [
+                            {
+                              "key": "PhoneNumber"
+                            }
+                          ]
+                        }
+                      },
+                      "status": "OK",
+                      "code": 200,
+                      "_postman_previewlanguage": "text",
+                      "header": [],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": null,
+                      "createdAt": "2026-06-05T13:21:31.000Z",
+                      "updatedAt": "2026-06-05T13:21:31.000Z",
+                      "uid": "35240-7c1e5962-b5f0-43c9-ba22-815bcbe67256"
+                    },
+                    {
+                      "id": "c25dce5b-5c21-4f47-9fbb-4c10f4a11225",
+                      "name": "Number not found in safelist",
+                      "originalRequest": {
+                        "method": "GET",
+                        "header": [
+                          {
+                            "description": "Added as a part of security scheme: basic",
+                            "key": "Authorization",
+                            "value": "Basic <credentials>"
+                          }
+                        ],
+                        "url": {
+                          "raw": "{{baseUrl}}/SafeList/Numbers/:PhoneNumber",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "SafeList",
+                            "Numbers",
+                            ":PhoneNumber"
+                          ],
+                          "variable": [
+                            {
+                              "key": "PhoneNumber"
+                            }
+                          ]
+                        }
+                      },
+                      "status": "Not Found",
+                      "code": 404,
+                      "_postman_previewlanguage": "text",
+                      "header": [],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": null,
+                      "createdAt": "2026-06-05T13:21:31.000Z",
+                      "updatedAt": "2026-06-05T13:21:31.000Z",
+                      "uid": "35240-c25dce5b-5c21-4f47-9fbb-4c10f4a11225"
+                    }
+                  ],
+                  "createdAt": "2026-06-05T13:21:31.000Z",
+                  "updatedAt": "2026-06-05T13:21:31.000Z",
+                  "uid": "35240-8c6b487a-2b77-46a2-8dd5-66ed47312ffa"
+                },
+                {
+                  "name": "Twilio Remove a Number from the Safelist",
+                  "id": "6e0b613a-02ad-4163-8506-a5564d662d68",
+                  "protocolProfileBehavior": {
+                    "disableBodyPruning": true
+                  },
+                  "request": {
+                    "method": "DELETE",
+                    "header": [],
+                    "url": {
+                      "raw": "{{baseUrl}}/SafeList/Numbers/:PhoneNumber",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "SafeList",
+                        "Numbers",
+                        ":PhoneNumber"
+                      ],
+                      "variable": [
+                        {
+                          "id": "57447008-a2e2-4f27-a8cd-b79a1bbf30c3",
+                          "key": "PhoneNumber",
+                          "value": "<string>",
+                          "description": "(Required) "
+                        }
+                      ]
+                    }
+                  },
+                  "response": [
+                    {
+                      "id": "5e915a3f-5106-418d-ba08-f195c34aa9be",
+                      "name": "Number removed from safelist",
+                      "originalRequest": {
+                        "method": "DELETE",
+                        "header": [
+                          {
+                            "description": "Added as a part of security scheme: basic",
+                            "key": "Authorization",
+                            "value": "Basic <credentials>"
+                          }
+                        ],
+                        "url": {
+                          "raw": "{{baseUrl}}/SafeList/Numbers/:PhoneNumber",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "SafeList",
+                            "Numbers",
+                            ":PhoneNumber"
+                          ],
+                          "variable": [
+                            {
+                              "key": "PhoneNumber"
+                            }
+                          ]
+                        }
+                      },
+                      "status": "No Content",
+                      "code": 204,
+                      "_postman_previewlanguage": "text",
+                      "header": [],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": null,
+                      "createdAt": "2026-06-05T13:21:31.000Z",
+                      "updatedAt": "2026-06-05T13:21:31.000Z",
+                      "uid": "35240-5e915a3f-5106-418d-ba08-f195c34aa9be"
+                    }
+                  ],
+                  "createdAt": "2026-06-05T13:21:31.000Z",
+                  "updatedAt": "2026-06-05T13:21:31.000Z",
+                  "uid": "35240-6e0b613a-02ad-4163-8506-a5564d662d68"
+                }
+              ],
+              "id": "09ebdd80-8f23-4736-ae87-59026bde5be3",
+              "createdAt": "2026-06-05T13:21:31.000Z",
+              "updatedAt": "2026-06-05T13:21:31.000Z",
+              "uid": "35240-09ebdd80-8f23-4736-ae87-59026bde5be3"
+            },
+            {
+              "name": "Twilio Add a Number to the Safelist",
+              "id": "33785fe5-ec3e-4a52-87a5-e66c285236cc",
+              "protocolProfileBehavior": {
+                "disableBodyPruning": true
+              },
+              "request": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/x-www-form-urlencoded"
+                  }
+                ],
+                "body": {
+                  "mode": "urlencoded",
+                  "urlencoded": [
+                    {
+                      "description": "(Required) Phone number in E.164 format",
+                      "key": "PhoneNumber",
+                      "value": "<string>"
+                    }
+                  ]
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/SafeList/Numbers",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "SafeList",
+                    "Numbers"
+                  ]
+                },
+                "description": "Add a phone number to the account safelist for verified caller IDs."
+              },
+              "response": [
+                {
+                  "id": "f3e2c020-f485-4056-a63e-80b4c30e1bf0",
+                  "name": "Number added to safelist",
+                  "originalRequest": {
+                    "method": "POST",
+                    "header": [
+                      {
+                        "key": "Content-Type",
+                        "value": "application/x-www-form-urlencoded"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: basic",
+                        "key": "Authorization",
+                        "value": "Basic <credentials>"
+                      }
+                    ],
+                    "body": {
+                      "mode": "urlencoded",
+                      "urlencoded": [
+                        {
+                          "description": "(Required) Phone number in E.164 format",
+                          "key": "PhoneNumber",
+                          "value": "<string>"
+                        }
+                      ]
+                    },
+                    "url": {
+                      "raw": "{{baseUrl}}/SafeList/Numbers",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "SafeList",
+                        "Numbers"
+                      ]
+                    }
+                  },
+                  "status": "Created",
+                  "code": 201,
+                  "_postman_previewlanguage": "text",
+                  "header": [],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": null,
+                  "createdAt": "2026-06-05T13:21:31.000Z",
+                  "updatedAt": "2026-06-05T13:21:31.000Z",
+                  "uid": "35240-f3e2c020-f485-4056-a63e-80b4c30e1bf0"
+                }
+              ],
+              "createdAt": "2026-06-05T13:21:31.000Z",
+              "updatedAt": "2026-06-05T13:21:31.000Z",
+              "uid": "35240-33785fe5-ec3e-4a52-87a5-e66c285236cc"
+            }
+          ],
+          "id": "37f13426-81f6-46e1-ac62-abf725d790be",
+          "createdAt": "2026-06-05T13:21:31.000Z",
+          "updatedAt": "2026-06-05T13:21:31.000Z",
+          "uid": "35240-37f13426-81f6-46e1-ac62-abf725d790be"
+        }
+      ],
+      "id": "1894d915-04ca-48b0-b300-092793fbb0ec",
+      "createdAt": "2026-06-05T13:21:31.000Z",
+      "updatedAt": "2026-06-05T13:21:31.000Z",
+      "uid": "35240-1894d915-04ca-48b0-b300-092793fbb0ec"
+    }
+  ],
+  "auth": {
+    "type": "basic",
+    "basic": [
+      {
+        "key": "username",
+        "value": "{{basicAuthUsername}}",
+        "type": "string"
+      },
+      {
+        "key": "password",
+        "value": "{{basicAuthPassword}}",
+        "type": "string"
+      }
+    ]
+  },
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "https://api.twilio.com/2010-04-01"
+    },
+    {
+      "key": "AccountSid",
+      "value": "ACxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
+    },
+    {
+      "key": "KeySid",
+      "value": "SKxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
+    }
+  ]
+}

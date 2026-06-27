@@ -1,0 +1,550 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Twilio Messaging API",
+    "version": "2.0"
+  },
+  "request": {
+    "auth": {
+      "type": "basic",
+      "username": "{{username}}",
+      "password": "{{password}}"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Messages",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Twilio List Messages",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.twilio.com/2010-04-01/Accounts/:AccountSid/Messages.json",
+            "params": [
+              {
+                "name": "AccountSid",
+                "value": "",
+                "type": "path",
+                "description": "The unique identifier of the Twilio account"
+              },
+              {
+                "name": "To",
+                "value": "",
+                "type": "query",
+                "description": "Filter by recipient phone number"
+              },
+              {
+                "name": "From",
+                "value": "",
+                "type": "query",
+                "description": "Filter by sender phone number"
+              },
+              {
+                "name": "DateSent",
+                "value": "",
+                "type": "query",
+                "description": "Filter by date sent (YYYY-MM-DD)"
+              },
+              {
+                "name": "PageSize",
+                "value": "",
+                "type": "query",
+                "description": "Number of records to return per page (max 1000)"
+              },
+              {
+                "name": "Page",
+                "value": "",
+                "type": "query",
+                "description": "Page number to retrieve"
+              }
+            ]
+          },
+          "docs": "Retrieve a list of messages associated with your account. The list includes paging information and is sorted by DateSent descending."
+        },
+        {
+          "info": {
+            "name": "Twilio Send a Message",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.twilio.com/2010-04-01/Accounts/:AccountSid/Messages.json",
+            "params": [
+              {
+                "name": "AccountSid",
+                "value": "",
+                "type": "path",
+                "description": "The unique identifier of the Twilio account"
+              }
+            ],
+            "body": {
+              "type": "form-urlencoded",
+              "data": []
+            }
+          },
+          "docs": "Send an SMS or MMS message. Specify the recipient, sender, and body or media URL. Messages can be sent from a Twilio phone number, short code, alphanumeric sender ID, or messaging service."
+        },
+        {
+          "info": {
+            "name": "Twilio Fetch a Message",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.twilio.com/2010-04-01/Accounts/:AccountSid/Messages/:MessageSid.json",
+            "params": [
+              {
+                "name": "AccountSid",
+                "value": "",
+                "type": "path",
+                "description": "The unique identifier of the Twilio account"
+              },
+              {
+                "name": "MessageSid",
+                "value": "",
+                "type": "path",
+                "description": "The unique identifier of the message"
+              }
+            ]
+          },
+          "docs": "Retrieve details of a specific message by its SID."
+        },
+        {
+          "info": {
+            "name": "Twilio Update a Message",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.twilio.com/2010-04-01/Accounts/:AccountSid/Messages/:MessageSid.json",
+            "params": [
+              {
+                "name": "AccountSid",
+                "value": "",
+                "type": "path",
+                "description": "The unique identifier of the Twilio account"
+              },
+              {
+                "name": "MessageSid",
+                "value": "",
+                "type": "path",
+                "description": "The unique identifier of the message"
+              }
+            ],
+            "body": {
+              "type": "form-urlencoded",
+              "data": [
+                {
+                  "name": "Body",
+                  "value": ""
+                },
+                {
+                  "name": "Status",
+                  "value": ""
+                }
+              ]
+            }
+          },
+          "docs": "Update the body of a message resource. Can be used to redact message content by posting an empty body."
+        },
+        {
+          "info": {
+            "name": "Twilio Delete a Message",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://api.twilio.com/2010-04-01/Accounts/:AccountSid/Messages/:MessageSid.json",
+            "params": [
+              {
+                "name": "AccountSid",
+                "value": "",
+                "type": "path",
+                "description": "The unique identifier of the Twilio account"
+              },
+              {
+                "name": "MessageSid",
+                "value": "",
+                "type": "path",
+                "description": "The unique identifier of the message"
+              }
+            ]
+          },
+          "docs": "Delete a message record from your account. The message will no longer appear in your account logs."
+        }
+      ]
+    },
+    {
+      "info": {
+        "name": "Media",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Twilio List Media for a Message",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.twilio.com/2010-04-01/Accounts/:AccountSid/Messages/:MessageSid/Media.json",
+            "params": [
+              {
+                "name": "AccountSid",
+                "value": "",
+                "type": "path",
+                "description": "The unique identifier of the Twilio account"
+              },
+              {
+                "name": "MessageSid",
+                "value": "",
+                "type": "path",
+                "description": "The unique identifier of the message"
+              },
+              {
+                "name": "PageSize",
+                "value": "",
+                "type": "query"
+              }
+            ]
+          },
+          "docs": "Retrieve a list of media associated with an MMS message."
+        },
+        {
+          "info": {
+            "name": "Twilio Fetch a Media Resource",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.twilio.com/2010-04-01/Accounts/:AccountSid/Messages/:MessageSid/Media/:MediaSid.json",
+            "params": [
+              {
+                "name": "AccountSid",
+                "value": "",
+                "type": "path",
+                "description": "The unique identifier of the Twilio account"
+              },
+              {
+                "name": "MessageSid",
+                "value": "",
+                "type": "path",
+                "description": "The unique identifier of the message"
+              },
+              {
+                "name": "MediaSid",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "Retrieve a specific media resource associated with a message."
+        },
+        {
+          "info": {
+            "name": "Twilio Delete a Media Resource",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://api.twilio.com/2010-04-01/Accounts/:AccountSid/Messages/:MessageSid/Media/:MediaSid.json",
+            "params": [
+              {
+                "name": "AccountSid",
+                "value": "",
+                "type": "path",
+                "description": "The unique identifier of the Twilio account"
+              },
+              {
+                "name": "MessageSid",
+                "value": "",
+                "type": "path",
+                "description": "The unique identifier of the message"
+              },
+              {
+                "name": "MediaSid",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "Twilio Delete a Media Resource"
+        }
+      ]
+    },
+    {
+      "info": {
+        "name": "Messaging Services",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Twilio List Messaging Services",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.twilio.com/2010-04-01/Services",
+            "params": [
+              {
+                "name": "PageSize",
+                "value": "",
+                "type": "query"
+              }
+            ]
+          },
+          "docs": "Retrieve a list of messaging services associated with your account."
+        },
+        {
+          "info": {
+            "name": "Twilio Create a Messaging Service",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.twilio.com/2010-04-01/Services",
+            "body": {
+              "type": "form-urlencoded",
+              "data": []
+            }
+          },
+          "docs": "Create a new messaging service for managing senders and message configuration at scale."
+        },
+        {
+          "info": {
+            "name": "Twilio Fetch a Messaging Service",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.twilio.com/2010-04-01/Services/:ServiceSid",
+            "params": [
+              {
+                "name": "ServiceSid",
+                "value": "",
+                "type": "path",
+                "description": "The unique identifier of the messaging service"
+              }
+            ]
+          },
+          "docs": "Twilio Fetch a Messaging Service"
+        },
+        {
+          "info": {
+            "name": "Twilio Update a Messaging Service",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.twilio.com/2010-04-01/Services/:ServiceSid",
+            "params": [
+              {
+                "name": "ServiceSid",
+                "value": "",
+                "type": "path",
+                "description": "The unique identifier of the messaging service"
+              }
+            ],
+            "body": {
+              "type": "form-urlencoded",
+              "data": []
+            }
+          },
+          "docs": "Twilio Update a Messaging Service"
+        },
+        {
+          "info": {
+            "name": "Twilio Delete a Messaging Service",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://api.twilio.com/2010-04-01/Services/:ServiceSid",
+            "params": [
+              {
+                "name": "ServiceSid",
+                "value": "",
+                "type": "path",
+                "description": "The unique identifier of the messaging service"
+              }
+            ]
+          },
+          "docs": "Twilio Delete a Messaging Service"
+        }
+      ]
+    },
+    {
+      "info": {
+        "name": "Phone Numbers",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Twilio List Phone Numbers in a Messaging Service",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.twilio.com/2010-04-01/Services/:ServiceSid/PhoneNumbers",
+            "params": [
+              {
+                "name": "ServiceSid",
+                "value": "",
+                "type": "path",
+                "description": "The unique identifier of the messaging service"
+              }
+            ]
+          },
+          "docs": "Twilio List Phone Numbers in a Messaging Service"
+        },
+        {
+          "info": {
+            "name": "Twilio Add a Phone Number to a Messaging Service",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.twilio.com/2010-04-01/Services/:ServiceSid/PhoneNumbers",
+            "params": [
+              {
+                "name": "ServiceSid",
+                "value": "",
+                "type": "path",
+                "description": "The unique identifier of the messaging service"
+              }
+            ],
+            "body": {
+              "type": "form-urlencoded",
+              "data": [
+                {
+                  "name": "PhoneNumberSid",
+                  "value": ""
+                }
+              ]
+            }
+          },
+          "docs": "Twilio Add a Phone Number to a Messaging Service"
+        }
+      ]
+    },
+    {
+      "info": {
+        "name": "Alpha Senders",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Twilio List Alpha Senders in a Messaging Service",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.twilio.com/2010-04-01/Services/:ServiceSid/AlphaSenders",
+            "params": [
+              {
+                "name": "ServiceSid",
+                "value": "",
+                "type": "path",
+                "description": "The unique identifier of the messaging service"
+              }
+            ]
+          },
+          "docs": "Twilio List Alpha Senders in a Messaging Service"
+        },
+        {
+          "info": {
+            "name": "Twilio Add an Alpha Sender to a Messaging Service",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.twilio.com/2010-04-01/Services/:ServiceSid/AlphaSenders",
+            "params": [
+              {
+                "name": "ServiceSid",
+                "value": "",
+                "type": "path",
+                "description": "The unique identifier of the messaging service"
+              }
+            ],
+            "body": {
+              "type": "form-urlencoded",
+              "data": [
+                {
+                  "name": "AlphaSender",
+                  "value": ""
+                }
+              ]
+            }
+          },
+          "docs": "Twilio Add an Alpha Sender to a Messaging Service"
+        }
+      ]
+    },
+    {
+      "info": {
+        "name": "Short Codes",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Twilio List Short Codes in a Messaging Service",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.twilio.com/2010-04-01/Services/:ServiceSid/ShortCodes",
+            "params": [
+              {
+                "name": "ServiceSid",
+                "value": "",
+                "type": "path",
+                "description": "The unique identifier of the messaging service"
+              }
+            ]
+          },
+          "docs": "Twilio List Short Codes in a Messaging Service"
+        },
+        {
+          "info": {
+            "name": "Twilio Add a Short Code to a Messaging Service",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.twilio.com/2010-04-01/Services/:ServiceSid/ShortCodes",
+            "params": [
+              {
+                "name": "ServiceSid",
+                "value": "",
+                "type": "path",
+                "description": "The unique identifier of the messaging service"
+              }
+            ],
+            "body": {
+              "type": "form-urlencoded",
+              "data": [
+                {
+                  "name": "ShortCodeSid",
+                  "value": ""
+                }
+              ]
+            }
+          },
+          "docs": "Twilio Add a Short Code to a Messaging Service"
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

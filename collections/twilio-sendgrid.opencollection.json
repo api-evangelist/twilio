@@ -1,0 +1,546 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Twilio SendGrid Email API",
+    "version": "3.0"
+  },
+  "request": {
+    "auth": {
+      "type": "bearer",
+      "token": "{{bearerToken}}"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Mail Send",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Twilio Send an Email",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.sendgrid.com/v3/mail/send",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Send an email message to one or more recipients. Supports personalizations, dynamic templates, attachments, categories, and scheduling."
+        }
+      ]
+    },
+    {
+      "info": {
+        "name": "Templates",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Twilio List Email Templates",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.sendgrid.com/v3/templates",
+            "params": [
+              {
+                "name": "generations",
+                "value": "",
+                "type": "query",
+                "description": "Filter by template generation"
+              },
+              {
+                "name": "page_size",
+                "value": "",
+                "type": "query"
+              }
+            ]
+          },
+          "docs": "Retrieve all transactional or dynamic templates."
+        },
+        {
+          "info": {
+            "name": "Twilio Create an Email Template",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.sendgrid.com/v3/templates",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Twilio Create an Email Template"
+        },
+        {
+          "info": {
+            "name": "Twilio Fetch a Template",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.sendgrid.com/v3/templates/:template_id",
+            "params": [
+              {
+                "name": "template_id",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "Twilio Fetch a Template"
+        },
+        {
+          "info": {
+            "name": "Twilio Update a Template",
+            "type": "http"
+          },
+          "http": {
+            "method": "PATCH",
+            "url": "https://api.sendgrid.com/v3/templates/:template_id",
+            "params": [
+              {
+                "name": "template_id",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Twilio Update a Template"
+        },
+        {
+          "info": {
+            "name": "Twilio Delete a Template",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://api.sendgrid.com/v3/templates/:template_id",
+            "params": [
+              {
+                "name": "template_id",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "Twilio Delete a Template"
+        },
+        {
+          "info": {
+            "name": "Twilio Create a Template Version",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.sendgrid.com/v3/templates/:template_id/versions",
+            "params": [
+              {
+                "name": "template_id",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Twilio Create a Template Version"
+        }
+      ]
+    },
+    {
+      "info": {
+        "name": "Contacts",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Twilio List Marketing Contacts",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.sendgrid.com/v3/marketing/contacts"
+          },
+          "docs": "Retrieve a paginated list of marketing contacts."
+        },
+        {
+          "info": {
+            "name": "Twilio Add or Update Contacts",
+            "type": "http"
+          },
+          "http": {
+            "method": "PUT",
+            "url": "https://api.sendgrid.com/v3/marketing/contacts",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Add new contacts or update existing ones. Contacts are matched by email address."
+        },
+        {
+          "info": {
+            "name": "Twilio Delete Contacts",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://api.sendgrid.com/v3/marketing/contacts",
+            "params": [
+              {
+                "name": "ids",
+                "value": "",
+                "type": "query",
+                "description": "Comma-separated contact IDs"
+              }
+            ]
+          },
+          "docs": "Twilio Delete Contacts"
+        },
+        {
+          "info": {
+            "name": "Twilio Search Contacts",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.sendgrid.com/v3/marketing/contacts/search",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Search contacts using SGQL (SendGrid Query Language)."
+        }
+      ]
+    },
+    {
+      "info": {
+        "name": "Lists",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Twilio List Contact Lists",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.sendgrid.com/v3/marketing/lists",
+            "params": [
+              {
+                "name": "page_size",
+                "value": "",
+                "type": "query"
+              }
+            ]
+          },
+          "docs": "Twilio List Contact Lists"
+        },
+        {
+          "info": {
+            "name": "Twilio Create a Contact List",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.sendgrid.com/v3/marketing/lists",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Twilio Create a Contact List"
+        },
+        {
+          "info": {
+            "name": "Twilio Fetch a Contact List",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.sendgrid.com/v3/marketing/lists/:list_id",
+            "params": [
+              {
+                "name": "list_id",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "Twilio Fetch a Contact List"
+        },
+        {
+          "info": {
+            "name": "Twilio Update a Contact List",
+            "type": "http"
+          },
+          "http": {
+            "method": "PATCH",
+            "url": "https://api.sendgrid.com/v3/marketing/lists/:list_id",
+            "params": [
+              {
+                "name": "list_id",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Twilio Update a Contact List"
+        },
+        {
+          "info": {
+            "name": "Twilio Delete a Contact List",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://api.sendgrid.com/v3/marketing/lists/:list_id",
+            "params": [
+              {
+                "name": "list_id",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "delete_contacts",
+                "value": "",
+                "type": "query",
+                "description": "Whether to delete contacts in the list"
+              }
+            ]
+          },
+          "docs": "Twilio Delete a Contact List"
+        }
+      ]
+    },
+    {
+      "info": {
+        "name": "Senders",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Twilio List Verified Senders",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.sendgrid.com/v3/verified_senders"
+          },
+          "docs": "Twilio List Verified Senders"
+        },
+        {
+          "info": {
+            "name": "Twilio Create a Verified Sender",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.sendgrid.com/v3/verified_senders",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Twilio Create a Verified Sender"
+        }
+      ]
+    },
+    {
+      "info": {
+        "name": "Suppressions",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Twilio List Bounced Emails",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.sendgrid.com/v3/suppression/bounces",
+            "params": [
+              {
+                "name": "start_time",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "end_time",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "limit",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "offset",
+                "value": "",
+                "type": "query"
+              }
+            ]
+          },
+          "docs": "Twilio List Bounced Emails"
+        },
+        {
+          "info": {
+            "name": "Twilio Delete Bounces",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://api.sendgrid.com/v3/suppression/bounces",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Twilio Delete Bounces"
+        },
+        {
+          "info": {
+            "name": "Twilio List Blocked Emails",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.sendgrid.com/v3/suppression/blocks",
+            "params": [
+              {
+                "name": "start_time",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "end_time",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "limit",
+                "value": "",
+                "type": "query"
+              }
+            ]
+          },
+          "docs": "Twilio List Blocked Emails"
+        },
+        {
+          "info": {
+            "name": "Twilio List Global Unsubscribes",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.sendgrid.com/v3/suppression/unsubscribes",
+            "params": [
+              {
+                "name": "start_time",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "end_time",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "limit",
+                "value": "",
+                "type": "query"
+              }
+            ]
+          },
+          "docs": "Twilio List Global Unsubscribes"
+        }
+      ]
+    },
+    {
+      "info": {
+        "name": "Stats",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Twilio Fetch Global Email Stats",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.sendgrid.com/v3/stats",
+            "params": [
+              {
+                "name": "start_date",
+                "value": "",
+                "type": "query",
+                "description": "Start date (YYYY-MM-DD)"
+              },
+              {
+                "name": "end_date",
+                "value": "",
+                "type": "query",
+                "description": "End date (YYYY-MM-DD)"
+              },
+              {
+                "name": "aggregated_by",
+                "value": "",
+                "type": "query"
+              }
+            ]
+          },
+          "docs": "Retrieve aggregate email statistics including requests, deliveries, opens, clicks, bounces, and more."
+        }
+      ]
+    },
+    {
+      "info": {
+        "name": "Email Validation",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Twilio Validate an Email Address",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.sendgrid.com/v3/validations/email",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Check if an email address is valid and deliverable."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

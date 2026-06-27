@@ -1,0 +1,313 @@
+{
+  "info": {
+    "_postman_id": "270bf4d0-4d9d-46af-ae70-05dd992eebd8",
+    "name": "Twilio - Frontline",
+    "description": "This is the public Twilio REST API.\n\nContact Support:\n Name: Twilio Support\n Email: support@twilio.com",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "createdAt": "2026-06-05T13:21:47.000Z",
+    "updatedAt": "2026-06-05T13:21:48.000Z",
+    "lastUpdatedBy": "35240",
+    "uid": "35240-270bf4d0-4d9d-46af-ae70-05dd992eebd8"
+  },
+  "item": [
+    {
+      "name": "v1",
+      "item": [
+        {
+          "name": "Users",
+          "item": [
+            {
+              "name": "{Sid}",
+              "item": [
+                {
+                  "name": "Fetch User",
+                  "id": "2f19ef41-0d97-4594-a67a-14b4210cb204",
+                  "protocolProfileBehavior": {
+                    "disableBodyPruning": true
+                  },
+                  "request": {
+                    "auth": {
+                      "type": "basic",
+                      "basic": [
+                        {
+                          "key": "username",
+                          "value": "{{basicAuthUsername}}",
+                          "type": "string"
+                        },
+                        {
+                          "key": "password",
+                          "value": "{{basicAuthPassword}}",
+                          "type": "string"
+                        }
+                      ]
+                    },
+                    "method": "GET",
+                    "header": [
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/v1/Users/:Sid",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "v1",
+                        "Users",
+                        ":Sid"
+                      ],
+                      "variable": [
+                        {
+                          "id": "d1a3131f-d2d9-4626-bf00-8986331d0502",
+                          "key": "Sid",
+                          "value": "<string>",
+                          "description": "(Required) The SID of the User resource to fetch. This value can be either the `sid` or the `identity` of the User resource to fetch."
+                        }
+                      ]
+                    },
+                    "description": "Fetch a frontline user"
+                  },
+                  "response": [
+                    {
+                      "id": "6ccde9de-0058-4710-a802-93ce25b00d25",
+                      "name": "OK",
+                      "originalRequest": {
+                        "method": "GET",
+                        "header": [
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          },
+                          {
+                            "description": "Added as a part of security scheme: basic",
+                            "key": "Authorization",
+                            "value": "Basic <credentials>"
+                          }
+                        ],
+                        "url": {
+                          "raw": "{{baseUrl}}/v1/Users/:Sid",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "v1",
+                            "Users",
+                            ":Sid"
+                          ],
+                          "variable": [
+                            {
+                              "key": "Sid"
+                            }
+                          ]
+                        }
+                      },
+                      "status": "OK",
+                      "code": 200,
+                      "_postman_previewlanguage": "json",
+                      "header": [
+                        {
+                          "key": "Content-Type",
+                          "value": "application/json"
+                        }
+                      ],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": "{\n  \"sid\": \"US802fe208DdaaAfB5D20b9861dCafBFbf\",\n  \"identity\": \"<string>\",\n  \"friendly_name\": \"<string>\",\n  \"avatar\": \"<string>\",\n  \"state\": \"deactivated\",\n  \"is_available\": \"<boolean>\",\n  \"url\": \"<uri>\"\n}",
+                      "createdAt": "2026-06-05T13:21:48.000Z",
+                      "updatedAt": "2026-06-05T13:21:48.000Z",
+                      "uid": "35240-6ccde9de-0058-4710-a802-93ce25b00d25"
+                    }
+                  ],
+                  "createdAt": "2026-06-05T13:21:48.000Z",
+                  "updatedAt": "2026-06-05T13:21:48.000Z",
+                  "uid": "35240-2f19ef41-0d97-4594-a67a-14b4210cb204"
+                },
+                {
+                  "name": "Update User",
+                  "id": "9fe88823-3b31-4530-9331-39fd6c1c2627",
+                  "protocolProfileBehavior": {
+                    "disableBodyPruning": true
+                  },
+                  "request": {
+                    "auth": {
+                      "type": "basic",
+                      "basic": [
+                        {
+                          "key": "username",
+                          "value": "{{basicAuthUsername}}",
+                          "type": "string"
+                        },
+                        {
+                          "key": "password",
+                          "value": "{{basicAuthPassword}}",
+                          "type": "string"
+                        }
+                      ]
+                    },
+                    "method": "POST",
+                    "header": [
+                      {
+                        "key": "Content-Type",
+                        "value": "application/x-www-form-urlencoded"
+                      },
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      }
+                    ],
+                    "body": {
+                      "mode": "urlencoded",
+                      "urlencoded": [
+                        {
+                          "description": "The string that you assigned to describe the User.",
+                          "key": "FriendlyName",
+                          "value": "<string>"
+                        },
+                        {
+                          "description": "The avatar URL which will be shown in Frontline application.",
+                          "key": "Avatar",
+                          "value": "<string>"
+                        },
+                        {
+                          "key": "State",
+                          "value": "active"
+                        },
+                        {
+                          "description": "Whether the User is available for new conversations. Set to `false` to prevent User from receiving new inbound conversations if you are using [Pool Routing](https://www.twilio.com/docs/frontline/handle-incoming-conversations#3-pool-routing).",
+                          "key": "IsAvailable",
+                          "value": "<boolean>"
+                        }
+                      ]
+                    },
+                    "url": {
+                      "raw": "{{baseUrl}}/v1/Users/:Sid",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "v1",
+                        "Users",
+                        ":Sid"
+                      ],
+                      "variable": [
+                        {
+                          "id": "10ec0eb7-4050-47a7-820e-e3bf0d010fcf",
+                          "key": "Sid",
+                          "value": "<string>",
+                          "description": "(Required) The SID of the User resource to update. This value can be either the `sid` or the `identity` of the User resource to update."
+                        }
+                      ]
+                    },
+                    "description": "Update an existing frontline user"
+                  },
+                  "response": [
+                    {
+                      "id": "9b28ed32-9e8a-4140-9768-fe33bd56c22b",
+                      "name": "OK",
+                      "originalRequest": {
+                        "method": "POST",
+                        "header": [
+                          {
+                            "key": "Content-Type",
+                            "value": "application/x-www-form-urlencoded"
+                          },
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          },
+                          {
+                            "description": "Added as a part of security scheme: basic",
+                            "key": "Authorization",
+                            "value": "Basic <credentials>"
+                          }
+                        ],
+                        "body": {
+                          "mode": "urlencoded",
+                          "urlencoded": [
+                            {
+                              "description": "The string that you assigned to describe the User.",
+                              "key": "FriendlyName",
+                              "value": "<string>"
+                            },
+                            {
+                              "description": "The avatar URL which will be shown in Frontline application.",
+                              "key": "Avatar",
+                              "value": "<string>"
+                            },
+                            {
+                              "key": "State",
+                              "value": "active"
+                            },
+                            {
+                              "description": "Whether the User is available for new conversations. Set to `false` to prevent User from receiving new inbound conversations if you are using [Pool Routing](https://www.twilio.com/docs/frontline/handle-incoming-conversations#3-pool-routing).",
+                              "key": "IsAvailable",
+                              "value": "<boolean>"
+                            }
+                          ]
+                        },
+                        "url": {
+                          "raw": "{{baseUrl}}/v1/Users/:Sid",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "v1",
+                            "Users",
+                            ":Sid"
+                          ],
+                          "variable": [
+                            {
+                              "key": "Sid"
+                            }
+                          ]
+                        }
+                      },
+                      "status": "OK",
+                      "code": 200,
+                      "_postman_previewlanguage": "json",
+                      "header": [
+                        {
+                          "key": "Content-Type",
+                          "value": "application/json"
+                        }
+                      ],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": "{\n  \"sid\": \"US802fe208DdaaAfB5D20b9861dCafBFbf\",\n  \"identity\": \"<string>\",\n  \"friendly_name\": \"<string>\",\n  \"avatar\": \"<string>\",\n  \"state\": \"deactivated\",\n  \"is_available\": \"<boolean>\",\n  \"url\": \"<uri>\"\n}",
+                      "createdAt": "2026-06-05T13:21:48.000Z",
+                      "updatedAt": "2026-06-05T13:21:48.000Z",
+                      "uid": "35240-9b28ed32-9e8a-4140-9768-fe33bd56c22b"
+                    }
+                  ],
+                  "createdAt": "2026-06-05T13:21:48.000Z",
+                  "updatedAt": "2026-06-05T13:21:48.000Z",
+                  "uid": "35240-9fe88823-3b31-4530-9331-39fd6c1c2627"
+                }
+              ],
+              "id": "9a6a4da5-612a-4b88-9f0e-074dd028fa14",
+              "createdAt": "2026-06-05T13:21:48.000Z",
+              "updatedAt": "2026-06-05T13:21:48.000Z",
+              "uid": "35240-9a6a4da5-612a-4b88-9f0e-074dd028fa14"
+            }
+          ],
+          "id": "84d4491e-cac6-496e-98e2-584da2de214f",
+          "createdAt": "2026-06-05T13:21:48.000Z",
+          "updatedAt": "2026-06-05T13:21:48.000Z",
+          "uid": "35240-84d4491e-cac6-496e-98e2-584da2de214f"
+        }
+      ],
+      "id": "3e4bb953-ae66-4680-977c-10d5f14fe9b0",
+      "createdAt": "2026-06-05T13:21:48.000Z",
+      "updatedAt": "2026-06-05T13:21:48.000Z",
+      "uid": "35240-3e4bb953-ae66-4680-977c-10d5f14fe9b0"
+    }
+  ],
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "https://frontline-api.twilio.com"
+    }
+  ]
+}

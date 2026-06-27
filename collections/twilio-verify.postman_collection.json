@@ -1,0 +1,3992 @@
+{
+  "item": [
+    {
+      "id": "5f34485e-a2d7-4507-a7bc-e9b686a73ce9",
+      "name": "Access Tokens",
+      "description": {
+        "content": "Generate access tokens for SDKs",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "6b891d95-6f0e-4b4e-ba30-f95d32b59b08",
+          "name": "Twilio Create an Access Token",
+          "request": {
+            "name": "Twilio Create an Access Token",
+            "description": {
+              "content": "Generate an access token for use with Verify Push or TOTP SDKs.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "Services",
+                ":ServiceSid",
+                "AccessTokens"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "ServiceSid",
+                  "description": "(Required) The SID of the Verify service"
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/x-www-form-urlencoded"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": null,
+            "body": {
+              "mode": "urlencoded",
+              "urlencoded": [
+                {
+                  "disabled": false,
+                  "key": "Identity",
+                  "value": "<string>",
+                  "description": "(Required) "
+                },
+                {
+                  "disabled": false,
+                  "key": "FactorType",
+                  "value": "<string>",
+                  "description": "(Required) "
+                },
+                {
+                  "disabled": false,
+                  "key": "FactorFriendlyName",
+                  "value": "<string>"
+                },
+                {
+                  "disabled": false,
+                  "key": "Ttl",
+                  "value": "60",
+                  "description": "Token time to live in seconds"
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "id": "fab392ba-5230-485c-bf36-7fceeeca979f",
+              "name": "Access token created",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "Services",
+                    ":ServiceSid",
+                    "AccessTokens"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "ServiceSid",
+                      "description": "(Required) The SID of the Verify service"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: basic",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Basic <credentials>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "urlencoded",
+                  "urlencoded": [
+                    {
+                      "disabled": false,
+                      "description": {
+                        "content": "(Required) ",
+                        "type": "text/plain"
+                      },
+                      "key": "Identity",
+                      "value": "<string>"
+                    },
+                    {
+                      "disabled": false,
+                      "description": {
+                        "content": "(Required) ",
+                        "type": "text/plain"
+                      },
+                      "key": "FactorType",
+                      "value": "<string>"
+                    },
+                    {
+                      "disabled": false,
+                      "key": "FactorFriendlyName",
+                      "value": "<string>"
+                    },
+                    {
+                      "disabled": false,
+                      "description": {
+                        "content": "Token time to live in seconds",
+                        "type": "text/plain"
+                      },
+                      "key": "Ttl",
+                      "value": "60"
+                    }
+                  ]
+                }
+              },
+              "status": "Created",
+              "code": 201,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"sid\": \"string\",\n  \"account_sid\": \"ACxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx\",\n  \"service_sid\": \"VA5115EC3c0F88d35443A3Ec78FcD3cb6E\",\n  \"entity_identity\": \"string\",\n  \"factor_type\": \"push\",\n  \"factor_friendly_name\": \"string\",\n  \"token\": \"string\",\n  \"ttl\": 6577,\n  \"date_created\": \"1967-03-26T03:37:36.423Z\",\n  \"url\": \"http://gMXAXv.ityjU,AwY1ZyPOYIakInxWyThw9dbrLGu\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    },
+    {
+      "id": "1f5c9ca5-a56a-4515-9624-5c1aa7559ec0",
+      "name": "Challenges",
+      "description": {
+        "content": "Manage push authentication challenges",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "0237a23f-804d-4249-aa75-d898d1072848",
+          "name": "Twilio List Challenges for an Entity",
+          "request": {
+            "name": "Twilio List Challenges for an Entity",
+            "description": {},
+            "url": {
+              "path": [
+                "Services",
+                ":ServiceSid",
+                "Entities",
+                ":Identity",
+                "Challenges"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "FactorSid",
+                  "value": "<string>"
+                },
+                {
+                  "disabled": false,
+                  "key": "Status",
+                  "value": "<string>"
+                }
+              ],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "ServiceSid",
+                  "description": "(Required) The SID of the Verify service"
+                },
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "Identity",
+                  "description": "(Required) "
+                }
+              ]
+            },
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "e9cf56d3-650b-4043-84b7-49f019102e04",
+              "name": "List of challenges",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "Services",
+                    ":ServiceSid",
+                    "Entities",
+                    ":Identity",
+                    "Challenges"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "FactorSid",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "Status",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "ServiceSid",
+                      "description": "(Required) The SID of the Verify service"
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "Identity",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: basic",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Basic <credentials>"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "772cb9a5-1acd-48d9-a040-f56349075ee9",
+          "name": "Twilio Create a Challenge",
+          "request": {
+            "name": "Twilio Create a Challenge",
+            "description": {
+              "content": "Create a new push authentication challenge for an entity.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "Services",
+                ":ServiceSid",
+                "Entities",
+                ":Identity",
+                "Challenges"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "ServiceSid",
+                  "description": "(Required) The SID of the Verify service"
+                },
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "Identity",
+                  "description": "(Required) "
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/x-www-form-urlencoded"
+              }
+            ],
+            "method": "POST",
+            "auth": null,
+            "body": {
+              "mode": "urlencoded",
+              "urlencoded": [
+                {
+                  "disabled": false,
+                  "key": "FactorSid",
+                  "value": "<string>",
+                  "description": "(Required) "
+                },
+                {
+                  "disabled": false,
+                  "key": "ExpirationDate",
+                  "value": "<dateTime>"
+                },
+                {
+                  "disabled": false,
+                  "key": "Details.Message",
+                  "value": "<string>",
+                  "description": "Message to display in the push notification"
+                },
+                {
+                  "disabled": false,
+                  "key": "Details.Fields",
+                  "value": "<string>",
+                  "description": "JSON array of label/value pairs for context"
+                },
+                {
+                  "disabled": false,
+                  "key": "HiddenDetails",
+                  "value": "<string>",
+                  "description": "JSON object with hidden challenge details"
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "id": "a48b5c07-a3c8-4558-a065-f2b222b3079b",
+              "name": "Challenge created",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "Services",
+                    ":ServiceSid",
+                    "Entities",
+                    ":Identity",
+                    "Challenges"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "ServiceSid",
+                      "description": "(Required) The SID of the Verify service"
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "Identity",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: basic",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Basic <credentials>"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "urlencoded",
+                  "urlencoded": [
+                    {
+                      "disabled": false,
+                      "description": {
+                        "content": "(Required) ",
+                        "type": "text/plain"
+                      },
+                      "key": "FactorSid",
+                      "value": "<string>"
+                    },
+                    {
+                      "disabled": false,
+                      "key": "ExpirationDate",
+                      "value": "<dateTime>"
+                    },
+                    {
+                      "disabled": false,
+                      "description": {
+                        "content": "Message to display in the push notification",
+                        "type": "text/plain"
+                      },
+                      "key": "Details.Message",
+                      "value": "<string>"
+                    },
+                    {
+                      "disabled": false,
+                      "description": {
+                        "content": "JSON array of label/value pairs for context",
+                        "type": "text/plain"
+                      },
+                      "key": "Details.Fields",
+                      "value": "<string>"
+                    },
+                    {
+                      "disabled": false,
+                      "description": {
+                        "content": "JSON object with hidden challenge details",
+                        "type": "text/plain"
+                      },
+                      "key": "HiddenDetails",
+                      "value": "<string>"
+                    }
+                  ]
+                }
+              },
+              "status": "Created",
+              "code": 201,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    },
+    {
+      "id": "9fdc5469-95bd-4d3f-a0ca-a8ae1727c24f",
+      "name": "Entities",
+      "description": {
+        "content": "Manage end-user entities for TOTP and push",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "94613133-c489-447a-b31c-7c24cf160967",
+          "name": "Twilio List Entities",
+          "request": {
+            "name": "Twilio List Entities",
+            "description": {},
+            "url": {
+              "path": [
+                "Services",
+                ":ServiceSid",
+                "Entities"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "ServiceSid",
+                  "description": "(Required) The SID of the Verify service"
+                }
+              ]
+            },
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "b4925b01-bd06-41a7-b031-34aab0901aad",
+              "name": "List of entities",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "Services",
+                    ":ServiceSid",
+                    "Entities"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "ServiceSid",
+                      "description": "(Required) The SID of the Verify service"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: basic",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Basic <credentials>"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "02a85063-563b-4a1a-b30c-526c8b37e8dd",
+          "name": "Twilio Create an Entity",
+          "request": {
+            "name": "Twilio Create an Entity",
+            "description": {
+              "content": "Create a new entity representing an end user for TOTP or push authentication.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "Services",
+                ":ServiceSid",
+                "Entities"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "ServiceSid",
+                  "description": "(Required) The SID of the Verify service"
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/x-www-form-urlencoded"
+              }
+            ],
+            "method": "POST",
+            "auth": null,
+            "body": {
+              "mode": "urlencoded",
+              "urlencoded": [
+                {
+                  "disabled": false,
+                  "key": "Identity",
+                  "value": "<string>",
+                  "description": "(Required) Unique identity of the end user"
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "id": "560f1123-2e0d-49db-8477-38171f61a625",
+              "name": "Entity created",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "Services",
+                    ":ServiceSid",
+                    "Entities"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "ServiceSid",
+                      "description": "(Required) The SID of the Verify service"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: basic",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Basic <credentials>"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "urlencoded",
+                  "urlencoded": [
+                    {
+                      "disabled": false,
+                      "description": {
+                        "content": "(Required) Unique identity of the end user",
+                        "type": "text/plain"
+                      },
+                      "key": "Identity",
+                      "value": "<string>"
+                    }
+                  ]
+                }
+              },
+              "status": "Created",
+              "code": 201,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    },
+    {
+      "id": "a9baa015-0509-4f25-b519-89518345b474",
+      "name": "Factors",
+      "description": {
+        "content": "Manage authentication factors (TOTP, push)",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "6aef91a3-c8de-404f-9814-d2742359b071",
+          "name": "Twilio List Factors for an Entity",
+          "request": {
+            "name": "Twilio List Factors for an Entity",
+            "description": {},
+            "url": {
+              "path": [
+                "Services",
+                ":ServiceSid",
+                "Entities",
+                ":Identity",
+                "Factors"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "ServiceSid",
+                  "description": "(Required) The SID of the Verify service"
+                },
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "Identity",
+                  "description": "(Required) "
+                }
+              ]
+            },
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "6d25c511-a99f-4886-a02c-b168b63fa933",
+              "name": "List of factors",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "Services",
+                    ":ServiceSid",
+                    "Entities",
+                    ":Identity",
+                    "Factors"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "ServiceSid",
+                      "description": "(Required) The SID of the Verify service"
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "Identity",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: basic",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Basic <credentials>"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "a25d1195-4aaa-4947-b90e-3df145482c5e",
+          "name": "Twilio Create a Factor",
+          "request": {
+            "name": "Twilio Create a Factor",
+            "description": {
+              "content": "Create a new authentication factor (TOTP or push) for an entity.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "Services",
+                ":ServiceSid",
+                "Entities",
+                ":Identity",
+                "Factors"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "ServiceSid",
+                  "description": "(Required) The SID of the Verify service"
+                },
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "Identity",
+                  "description": "(Required) "
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/x-www-form-urlencoded"
+              }
+            ],
+            "method": "POST",
+            "auth": null,
+            "body": {
+              "mode": "urlencoded",
+              "urlencoded": [
+                {
+                  "disabled": false,
+                  "key": "FriendlyName",
+                  "value": "<string>",
+                  "description": "(Required) "
+                },
+                {
+                  "disabled": false,
+                  "key": "FactorType",
+                  "value": "<string>",
+                  "description": "(Required) "
+                },
+                {
+                  "disabled": false,
+                  "key": "Binding.Alg",
+                  "value": "<string>"
+                },
+                {
+                  "disabled": false,
+                  "key": "Binding.CodeLength",
+                  "value": "<integer>"
+                },
+                {
+                  "disabled": false,
+                  "key": "Binding.TimeStep",
+                  "value": "<integer>"
+                },
+                {
+                  "disabled": false,
+                  "key": "Config.NotificationPlatform",
+                  "value": "<string>"
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "id": "aaed0500-2ae9-4464-ae6e-3da985bff65e",
+              "name": "Factor created",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "Services",
+                    ":ServiceSid",
+                    "Entities",
+                    ":Identity",
+                    "Factors"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "ServiceSid",
+                      "description": "(Required) The SID of the Verify service"
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "Identity",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: basic",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Basic <credentials>"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "urlencoded",
+                  "urlencoded": [
+                    {
+                      "disabled": false,
+                      "description": {
+                        "content": "(Required) ",
+                        "type": "text/plain"
+                      },
+                      "key": "FriendlyName",
+                      "value": "<string>"
+                    },
+                    {
+                      "disabled": false,
+                      "description": {
+                        "content": "(Required) ",
+                        "type": "text/plain"
+                      },
+                      "key": "FactorType",
+                      "value": "<string>"
+                    },
+                    {
+                      "disabled": false,
+                      "key": "Binding.Alg",
+                      "value": "<string>"
+                    },
+                    {
+                      "disabled": false,
+                      "key": "Binding.CodeLength",
+                      "value": "<integer>"
+                    },
+                    {
+                      "disabled": false,
+                      "key": "Binding.TimeStep",
+                      "value": "<integer>"
+                    },
+                    {
+                      "disabled": false,
+                      "key": "Config.NotificationPlatform",
+                      "value": "<string>"
+                    }
+                  ]
+                }
+              },
+              "status": "Created",
+              "code": 201,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    },
+    {
+      "id": "9b86f6f8-2fac-4831-a5ff-88f5d4e171d1",
+      "name": "Rate Limits",
+      "description": {
+        "content": "Configure rate limiting for verification requests",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "cad9c3f5-ef6a-4054-ba94-d1d5241cc75a",
+          "name": "Twilio List Rate Limits",
+          "request": {
+            "name": "Twilio List Rate Limits",
+            "description": {},
+            "url": {
+              "path": [
+                "Services",
+                ":ServiceSid",
+                "RateLimits"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "ServiceSid",
+                  "description": "(Required) The SID of the Verify service"
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "1c8ef531-ac86-419d-8202-9ec21ef7f0c6",
+              "name": "List of rate limits",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "Services",
+                    ":ServiceSid",
+                    "RateLimits"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "ServiceSid",
+                      "description": "(Required) The SID of the Verify service"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: basic",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Basic <credentials>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"rate_limits\": [\n    {\n      \"sid\": \"RK91ccCeE2FF4ad710AffB30e8cF63ce7e\",\n      \"service_sid\": \"string\",\n      \"unique_name\": \"string\",\n      \"description\": \"string\",\n      \"date_created\": \"1955-04-07T08:47:30.079Z\",\n      \"date_updated\": \"1972-04-21T19:37:43.554Z\",\n      \"url\": \"http://kfzRbUXUVmXtRX.dxJ8nyrPynCYm\",\n      \"links\": {}\n    },\n    {\n      \"sid\": \"RKBe8B3B396cbf7cc031b6fa3E4fe22EB7\",\n      \"service_sid\": \"string\",\n      \"unique_name\": \"string\",\n      \"description\": \"string\",\n      \"date_created\": \"1975-11-21T20:14:36.777Z\",\n      \"date_updated\": \"1985-02-28T04:39:29.327Z\",\n      \"url\": \"http://xqwLdCvqvEQVRlPKXsnawDTzBKL.unovbAeBPeqtdY+S,Vd1VB\",\n      \"links\": {}\n    }\n  ],\n  \"meta\": {\n    \"page\": 1423,\n    \"page_size\": 6504,\n    \"first_page_url\": \"http://IMiqXepqHlfeVdukKaSAQAffAD.mvbAUg+,zUbtF3yiBW.VG4dAy4IhVNN.K-I.f6O,sfw3mZFT.O.lrRehhTm\",\n    \"previous_page_url\": \"https://XQxorYzmXsxRAZTXqpsbZjKSbRqYNuJp.spjsv1mk.kPTw-CbOjGkCEKrDGCmpCFVwkZt-CYp8cB\",\n    \"next_page_url\": \"https://ewoioYnHhksKvQ.xfFnq-e5f5L6pySIuA.,-4vGwE-jyg,AaGWrZ7VQe5tKluyH0MKXb0xhkTB3WbZ+moCkksTJOc9Lr3i31c.AE.2C\",\n    \"url\": \"http://CJuhdAoRJDRDfgSkYkIKVlnwbIGikfI.dwoyhUn,LhWG9SkUwIgIE8PfNBsyWPD9Dv3g34Ewt3N0iaxldlnEtcSynEsX,\",\n    \"key\": \"string\"\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "5908f455-0688-421e-92b9-a5b8c57a43be",
+          "name": "Twilio Create a Rate Limit",
+          "request": {
+            "name": "Twilio Create a Rate Limit",
+            "description": {},
+            "url": {
+              "path": [
+                "Services",
+                ":ServiceSid",
+                "RateLimits"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "ServiceSid",
+                  "description": "(Required) The SID of the Verify service"
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/x-www-form-urlencoded"
+              }
+            ],
+            "method": "POST",
+            "auth": null,
+            "body": {
+              "mode": "urlencoded",
+              "urlencoded": [
+                {
+                  "disabled": false,
+                  "key": "UniqueName",
+                  "value": "<string>",
+                  "description": "(Required) Unique name for the rate limit"
+                },
+                {
+                  "disabled": false,
+                  "key": "Description",
+                  "value": "<string>"
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "id": "37582eb2-4b50-483f-84d7-268d9fb3b0a7",
+              "name": "Rate limit created",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "Services",
+                    ":ServiceSid",
+                    "RateLimits"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "ServiceSid",
+                      "description": "(Required) The SID of the Verify service"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: basic",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Basic <credentials>"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "urlencoded",
+                  "urlencoded": [
+                    {
+                      "disabled": false,
+                      "description": {
+                        "content": "(Required) Unique name for the rate limit",
+                        "type": "text/plain"
+                      },
+                      "key": "UniqueName",
+                      "value": "<string>"
+                    },
+                    {
+                      "disabled": false,
+                      "key": "Description",
+                      "value": "<string>"
+                    }
+                  ]
+                }
+              },
+              "status": "Created",
+              "code": 201,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "16923fbf-7c50-4ca7-b5db-c3738df7e6f4",
+          "name": "Twilio List Rate Limit Buckets",
+          "request": {
+            "name": "Twilio List Rate Limit Buckets",
+            "description": {},
+            "url": {
+              "path": [
+                "Services",
+                ":ServiceSid",
+                "RateLimits",
+                ":RateLimitSid",
+                "Buckets"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "ServiceSid",
+                  "description": "(Required) The SID of the Verify service"
+                },
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "RateLimitSid",
+                  "description": "(Required) "
+                }
+              ]
+            },
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "925c438b-9634-44a7-b6fc-f6f97f5a3eed",
+              "name": "List of buckets",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "Services",
+                    ":ServiceSid",
+                    "RateLimits",
+                    ":RateLimitSid",
+                    "Buckets"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "ServiceSid",
+                      "description": "(Required) The SID of the Verify service"
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "RateLimitSid",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: basic",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Basic <credentials>"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "630dec23-48c2-4053-8405-84e260578270",
+          "name": "Twilio Create a Rate Limit Bucket",
+          "request": {
+            "name": "Twilio Create a Rate Limit Bucket",
+            "description": {},
+            "url": {
+              "path": [
+                "Services",
+                ":ServiceSid",
+                "RateLimits",
+                ":RateLimitSid",
+                "Buckets"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "ServiceSid",
+                  "description": "(Required) The SID of the Verify service"
+                },
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "RateLimitSid",
+                  "description": "(Required) "
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/x-www-form-urlencoded"
+              }
+            ],
+            "method": "POST",
+            "auth": null,
+            "body": {
+              "mode": "urlencoded",
+              "urlencoded": [
+                {
+                  "disabled": false,
+                  "key": "Max",
+                  "value": "<integer>",
+                  "description": "(Required) Maximum number of requests"
+                },
+                {
+                  "disabled": false,
+                  "key": "Interval",
+                  "value": "<integer>",
+                  "description": "(Required) Time window in seconds"
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "id": "dd39acbf-a4a2-40bd-9ca9-8e64e7276b14",
+              "name": "Bucket created",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "Services",
+                    ":ServiceSid",
+                    "RateLimits",
+                    ":RateLimitSid",
+                    "Buckets"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "ServiceSid",
+                      "description": "(Required) The SID of the Verify service"
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "RateLimitSid",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: basic",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Basic <credentials>"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "urlencoded",
+                  "urlencoded": [
+                    {
+                      "disabled": false,
+                      "description": {
+                        "content": "(Required) Maximum number of requests",
+                        "type": "text/plain"
+                      },
+                      "key": "Max",
+                      "value": "<integer>"
+                    },
+                    {
+                      "disabled": false,
+                      "description": {
+                        "content": "(Required) Time window in seconds",
+                        "type": "text/plain"
+                      },
+                      "key": "Interval",
+                      "value": "<integer>"
+                    }
+                  ]
+                }
+              },
+              "status": "Created",
+              "code": 201,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    },
+    {
+      "id": "2d76695c-169e-4e3c-bcfa-9f81dfe9fc58",
+      "name": "Verification Checks",
+      "description": {
+        "content": "Check verification codes",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "e61504c2-c382-4077-96fd-6d2a490f58d0",
+          "name": "Twilio Check a Verification Code",
+          "request": {
+            "name": "Twilio Check a Verification Code",
+            "description": {
+              "content": "Check whether a user-provided code matches the verification code that was sent. Returns approved if the code is correct.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "Services",
+                ":ServiceSid",
+                "VerificationCheck"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "ServiceSid",
+                  "description": "(Required) The SID of the Verify service"
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/x-www-form-urlencoded"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": null,
+            "body": {
+              "mode": "urlencoded",
+              "urlencoded": [
+                {
+                  "disabled": false,
+                  "key": "Code",
+                  "value": "<string>",
+                  "description": "The verification code entered by the user"
+                },
+                {
+                  "disabled": false,
+                  "key": "To",
+                  "value": "<string>",
+                  "description": "Phone number or email being verified"
+                },
+                {
+                  "disabled": false,
+                  "key": "VerificationSid",
+                  "value": "<string>",
+                  "description": "SID of the verification (alternative to To)"
+                },
+                {
+                  "disabled": false,
+                  "key": "Amount",
+                  "value": "<string>",
+                  "description": "Amount for PSD2 verification check"
+                },
+                {
+                  "disabled": false,
+                  "key": "Payee",
+                  "value": "<string>",
+                  "description": "Payee for PSD2 verification check"
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "id": "ebc65a49-5483-4e74-8b8f-cc307087e675",
+              "name": "Verification check result",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "Services",
+                    ":ServiceSid",
+                    "VerificationCheck"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "ServiceSid",
+                      "description": "(Required) The SID of the Verify service"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: basic",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Basic <credentials>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "urlencoded",
+                  "urlencoded": [
+                    {
+                      "disabled": false,
+                      "description": {
+                        "content": "The verification code entered by the user",
+                        "type": "text/plain"
+                      },
+                      "key": "Code",
+                      "value": "<string>"
+                    },
+                    {
+                      "disabled": false,
+                      "description": {
+                        "content": "Phone number or email being verified",
+                        "type": "text/plain"
+                      },
+                      "key": "To",
+                      "value": "<string>"
+                    },
+                    {
+                      "disabled": false,
+                      "description": {
+                        "content": "SID of the verification (alternative to To)",
+                        "type": "text/plain"
+                      },
+                      "key": "VerificationSid",
+                      "value": "<string>"
+                    },
+                    {
+                      "disabled": false,
+                      "description": {
+                        "content": "Amount for PSD2 verification check",
+                        "type": "text/plain"
+                      },
+                      "key": "Amount",
+                      "value": "<string>"
+                    },
+                    {
+                      "disabled": false,
+                      "description": {
+                        "content": "Payee for PSD2 verification check",
+                        "type": "text/plain"
+                      },
+                      "key": "Payee",
+                      "value": "<string>"
+                    }
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"sid\": \"VE81a1a3D7eDdDBBfa6d6bacF07A66AFFa\",\n  \"service_sid\": \"VA24EcBd6BA38612CC6F695eAc6dc77840\",\n  \"account_sid\": \"ACxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx\",\n  \"to\": \"string\",\n  \"channel\": \"sna\",\n  \"status\": \"canceled\",\n  \"valid\": true,\n  \"amount\": \"string\",\n  \"payee\": \"string\",\n  \"date_created\": \"1948-10-10T10:43:31.095Z\",\n  \"date_updated\": \"1989-12-04T22:43:47.441Z\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "a723b9ce-cd6f-4ccd-90ed-1fd11a05e216",
+              "name": "Verification not found or expired",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "Services",
+                    ":ServiceSid",
+                    "VerificationCheck"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "ServiceSid",
+                      "description": "(Required) The SID of the Verify service"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: basic",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Basic <credentials>"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "urlencoded",
+                  "urlencoded": [
+                    {
+                      "disabled": false,
+                      "description": {
+                        "content": "The verification code entered by the user",
+                        "type": "text/plain"
+                      },
+                      "key": "Code",
+                      "value": "<string>"
+                    },
+                    {
+                      "disabled": false,
+                      "description": {
+                        "content": "Phone number or email being verified",
+                        "type": "text/plain"
+                      },
+                      "key": "To",
+                      "value": "<string>"
+                    },
+                    {
+                      "disabled": false,
+                      "description": {
+                        "content": "SID of the verification (alternative to To)",
+                        "type": "text/plain"
+                      },
+                      "key": "VerificationSid",
+                      "value": "<string>"
+                    },
+                    {
+                      "disabled": false,
+                      "description": {
+                        "content": "Amount for PSD2 verification check",
+                        "type": "text/plain"
+                      },
+                      "key": "Amount",
+                      "value": "<string>"
+                    },
+                    {
+                      "disabled": false,
+                      "description": {
+                        "content": "Payee for PSD2 verification check",
+                        "type": "text/plain"
+                      },
+                      "key": "Payee",
+                      "value": "<string>"
+                    }
+                  ]
+                }
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    },
+    {
+      "id": "afa5ee03-3327-4567-8239-7acc125055a2",
+      "name": "Verifications",
+      "description": {
+        "content": "Send and manage verification codes",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "18c3e17e-cc5b-48e5-87da-c0c2ada0f49b",
+          "name": "Twilio Start a Verification",
+          "request": {
+            "name": "Twilio Start a Verification",
+            "description": {
+              "content": "Send a verification code to a user via SMS, voice call, email, WhatsApp, or SNA. The code is automatically generated and sent.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "Services",
+                ":ServiceSid",
+                "Verifications"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "ServiceSid",
+                  "description": "(Required) The SID of the Verify service"
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/x-www-form-urlencoded"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": null,
+            "body": {
+              "mode": "urlencoded",
+              "urlencoded": [
+                {
+                  "disabled": false,
+                  "key": "To",
+                  "value": "<string>",
+                  "description": "(Required) Phone number (E.164) or email address to verify"
+                },
+                {
+                  "disabled": false,
+                  "key": "Channel",
+                  "value": "<string>",
+                  "description": "(Required) Channel to use for delivery"
+                },
+                {
+                  "disabled": false,
+                  "key": "CustomFriendlyName",
+                  "value": "<string>",
+                  "description": "Custom name shown in the verification message"
+                },
+                {
+                  "disabled": false,
+                  "key": "CustomMessage",
+                  "value": "<string>",
+                  "description": "Custom message for SMS verification"
+                },
+                {
+                  "disabled": false,
+                  "key": "SendDigits",
+                  "value": "<string>",
+                  "description": "DTMF digits to play before the code (call channel)"
+                },
+                {
+                  "disabled": false,
+                  "key": "Locale",
+                  "value": "<string>",
+                  "description": "Locale for the verification message (e.g., en)"
+                },
+                {
+                  "disabled": false,
+                  "key": "CustomCode",
+                  "value": "<string>",
+                  "description": "Custom verification code (requires custom code enabled)"
+                },
+                {
+                  "disabled": false,
+                  "key": "Amount",
+                  "value": "<string>",
+                  "description": "Amount for PSD2 verification"
+                },
+                {
+                  "disabled": false,
+                  "key": "Payee",
+                  "value": "<string>",
+                  "description": "Payee for PSD2 verification"
+                },
+                {
+                  "disabled": false,
+                  "key": "RateLimits",
+                  "value": "<string>",
+                  "description": "JSON object of rate limit key-value pairs"
+                },
+                {
+                  "disabled": false,
+                  "key": "TemplateSid",
+                  "value": "<string>",
+                  "description": "SID of a custom template"
+                },
+                {
+                  "disabled": false,
+                  "key": "TemplateCustomSubstitutions",
+                  "value": "<string>",
+                  "description": "JSON object of template substitution variables"
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "id": "982a2237-4f5d-4307-8df4-fc43e00131f3",
+              "name": "Verification created and code sent",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "Services",
+                    ":ServiceSid",
+                    "Verifications"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "ServiceSid",
+                      "description": "(Required) The SID of the Verify service"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: basic",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Basic <credentials>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "urlencoded",
+                  "urlencoded": [
+                    {
+                      "disabled": false,
+                      "description": {
+                        "content": "(Required) Phone number (E.164) or email address to verify",
+                        "type": "text/plain"
+                      },
+                      "key": "To",
+                      "value": "<string>"
+                    },
+                    {
+                      "disabled": false,
+                      "description": {
+                        "content": "(Required) Channel to use for delivery",
+                        "type": "text/plain"
+                      },
+                      "key": "Channel",
+                      "value": "<string>"
+                    },
+                    {
+                      "disabled": false,
+                      "description": {
+                        "content": "Custom name shown in the verification message",
+                        "type": "text/plain"
+                      },
+                      "key": "CustomFriendlyName",
+                      "value": "<string>"
+                    },
+                    {
+                      "disabled": false,
+                      "description": {
+                        "content": "Custom message for SMS verification",
+                        "type": "text/plain"
+                      },
+                      "key": "CustomMessage",
+                      "value": "<string>"
+                    },
+                    {
+                      "disabled": false,
+                      "description": {
+                        "content": "DTMF digits to play before the code (call channel)",
+                        "type": "text/plain"
+                      },
+                      "key": "SendDigits",
+                      "value": "<string>"
+                    },
+                    {
+                      "disabled": false,
+                      "description": {
+                        "content": "Locale for the verification message (e.g., en)",
+                        "type": "text/plain"
+                      },
+                      "key": "Locale",
+                      "value": "<string>"
+                    },
+                    {
+                      "disabled": false,
+                      "description": {
+                        "content": "Custom verification code (requires custom code enabled)",
+                        "type": "text/plain"
+                      },
+                      "key": "CustomCode",
+                      "value": "<string>"
+                    },
+                    {
+                      "disabled": false,
+                      "description": {
+                        "content": "Amount for PSD2 verification",
+                        "type": "text/plain"
+                      },
+                      "key": "Amount",
+                      "value": "<string>"
+                    },
+                    {
+                      "disabled": false,
+                      "description": {
+                        "content": "Payee for PSD2 verification",
+                        "type": "text/plain"
+                      },
+                      "key": "Payee",
+                      "value": "<string>"
+                    },
+                    {
+                      "disabled": false,
+                      "description": {
+                        "content": "JSON object of rate limit key-value pairs",
+                        "type": "text/plain"
+                      },
+                      "key": "RateLimits",
+                      "value": "<string>"
+                    },
+                    {
+                      "disabled": false,
+                      "description": {
+                        "content": "SID of a custom template",
+                        "type": "text/plain"
+                      },
+                      "key": "TemplateSid",
+                      "value": "<string>"
+                    },
+                    {
+                      "disabled": false,
+                      "description": {
+                        "content": "JSON object of template substitution variables",
+                        "type": "text/plain"
+                      },
+                      "key": "TemplateCustomSubstitutions",
+                      "value": "<string>"
+                    }
+                  ]
+                }
+              },
+              "status": "Created",
+              "code": 201,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"sid\": \"VE5E7DC3EfFbe2CED0dF30fD4A3e60EfC3\",\n  \"service_sid\": \"VA35Af3EdCf9D74B5cF2E68F3bF4e6af01\",\n  \"account_sid\": \"ACxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx\",\n  \"to\": \"string\",\n  \"channel\": \"call\",\n  \"status\": \"failed\",\n  \"valid\": true,\n  \"lookup\": {\n    \"carrier\": {}\n  },\n  \"send_code_attempts\": [\n    {\n      \"attempt_sid\": \"string\",\n      \"channel\": \"string\",\n      \"time\": \"1966-10-03T13:54:03.857Z\"\n    },\n    {\n      \"attempt_sid\": \"string\",\n      \"channel\": \"string\",\n      \"time\": \"1998-06-22T15:11:42.237Z\"\n    }\n  ],\n  \"date_created\": \"2025-03-09T04:22:38.706Z\",\n  \"date_updated\": \"2011-04-14T07:57:03.397Z\",\n  \"url\": \"http://iyRggNfIFJZtAhUifLTkVFhFQZvGJjh.wivUtd55RPSjPVehaPTAgwq-.2.wXwjQ8oqHCwdm,XmAJGMBdN+dlpr2BJH.jaLR\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "daf42d30-55aa-488f-8640-d51e1badcf70",
+              "name": "Invalid request",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "Services",
+                    ":ServiceSid",
+                    "Verifications"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "ServiceSid",
+                      "description": "(Required) The SID of the Verify service"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: basic",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Basic <credentials>"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "urlencoded",
+                  "urlencoded": [
+                    {
+                      "disabled": false,
+                      "description": {
+                        "content": "(Required) Phone number (E.164) or email address to verify",
+                        "type": "text/plain"
+                      },
+                      "key": "To",
+                      "value": "<string>"
+                    },
+                    {
+                      "disabled": false,
+                      "description": {
+                        "content": "(Required) Channel to use for delivery",
+                        "type": "text/plain"
+                      },
+                      "key": "Channel",
+                      "value": "<string>"
+                    },
+                    {
+                      "disabled": false,
+                      "description": {
+                        "content": "Custom name shown in the verification message",
+                        "type": "text/plain"
+                      },
+                      "key": "CustomFriendlyName",
+                      "value": "<string>"
+                    },
+                    {
+                      "disabled": false,
+                      "description": {
+                        "content": "Custom message for SMS verification",
+                        "type": "text/plain"
+                      },
+                      "key": "CustomMessage",
+                      "value": "<string>"
+                    },
+                    {
+                      "disabled": false,
+                      "description": {
+                        "content": "DTMF digits to play before the code (call channel)",
+                        "type": "text/plain"
+                      },
+                      "key": "SendDigits",
+                      "value": "<string>"
+                    },
+                    {
+                      "disabled": false,
+                      "description": {
+                        "content": "Locale for the verification message (e.g., en)",
+                        "type": "text/plain"
+                      },
+                      "key": "Locale",
+                      "value": "<string>"
+                    },
+                    {
+                      "disabled": false,
+                      "description": {
+                        "content": "Custom verification code (requires custom code enabled)",
+                        "type": "text/plain"
+                      },
+                      "key": "CustomCode",
+                      "value": "<string>"
+                    },
+                    {
+                      "disabled": false,
+                      "description": {
+                        "content": "Amount for PSD2 verification",
+                        "type": "text/plain"
+                      },
+                      "key": "Amount",
+                      "value": "<string>"
+                    },
+                    {
+                      "disabled": false,
+                      "description": {
+                        "content": "Payee for PSD2 verification",
+                        "type": "text/plain"
+                      },
+                      "key": "Payee",
+                      "value": "<string>"
+                    },
+                    {
+                      "disabled": false,
+                      "description": {
+                        "content": "JSON object of rate limit key-value pairs",
+                        "type": "text/plain"
+                      },
+                      "key": "RateLimits",
+                      "value": "<string>"
+                    },
+                    {
+                      "disabled": false,
+                      "description": {
+                        "content": "SID of a custom template",
+                        "type": "text/plain"
+                      },
+                      "key": "TemplateSid",
+                      "value": "<string>"
+                    },
+                    {
+                      "disabled": false,
+                      "description": {
+                        "content": "JSON object of template substitution variables",
+                        "type": "text/plain"
+                      },
+                      "key": "TemplateCustomSubstitutions",
+                      "value": "<string>"
+                    }
+                  ]
+                }
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "205e0fa1-75ab-4c31-b148-e88c5e010396",
+              "name": "Rate limit exceeded",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "Services",
+                    ":ServiceSid",
+                    "Verifications"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "ServiceSid",
+                      "description": "(Required) The SID of the Verify service"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: basic",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Basic <credentials>"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "urlencoded",
+                  "urlencoded": [
+                    {
+                      "disabled": false,
+                      "description": {
+                        "content": "(Required) Phone number (E.164) or email address to verify",
+                        "type": "text/plain"
+                      },
+                      "key": "To",
+                      "value": "<string>"
+                    },
+                    {
+                      "disabled": false,
+                      "description": {
+                        "content": "(Required) Channel to use for delivery",
+                        "type": "text/plain"
+                      },
+                      "key": "Channel",
+                      "value": "<string>"
+                    },
+                    {
+                      "disabled": false,
+                      "description": {
+                        "content": "Custom name shown in the verification message",
+                        "type": "text/plain"
+                      },
+                      "key": "CustomFriendlyName",
+                      "value": "<string>"
+                    },
+                    {
+                      "disabled": false,
+                      "description": {
+                        "content": "Custom message for SMS verification",
+                        "type": "text/plain"
+                      },
+                      "key": "CustomMessage",
+                      "value": "<string>"
+                    },
+                    {
+                      "disabled": false,
+                      "description": {
+                        "content": "DTMF digits to play before the code (call channel)",
+                        "type": "text/plain"
+                      },
+                      "key": "SendDigits",
+                      "value": "<string>"
+                    },
+                    {
+                      "disabled": false,
+                      "description": {
+                        "content": "Locale for the verification message (e.g., en)",
+                        "type": "text/plain"
+                      },
+                      "key": "Locale",
+                      "value": "<string>"
+                    },
+                    {
+                      "disabled": false,
+                      "description": {
+                        "content": "Custom verification code (requires custom code enabled)",
+                        "type": "text/plain"
+                      },
+                      "key": "CustomCode",
+                      "value": "<string>"
+                    },
+                    {
+                      "disabled": false,
+                      "description": {
+                        "content": "Amount for PSD2 verification",
+                        "type": "text/plain"
+                      },
+                      "key": "Amount",
+                      "value": "<string>"
+                    },
+                    {
+                      "disabled": false,
+                      "description": {
+                        "content": "Payee for PSD2 verification",
+                        "type": "text/plain"
+                      },
+                      "key": "Payee",
+                      "value": "<string>"
+                    },
+                    {
+                      "disabled": false,
+                      "description": {
+                        "content": "JSON object of rate limit key-value pairs",
+                        "type": "text/plain"
+                      },
+                      "key": "RateLimits",
+                      "value": "<string>"
+                    },
+                    {
+                      "disabled": false,
+                      "description": {
+                        "content": "SID of a custom template",
+                        "type": "text/plain"
+                      },
+                      "key": "TemplateSid",
+                      "value": "<string>"
+                    },
+                    {
+                      "disabled": false,
+                      "description": {
+                        "content": "JSON object of template substitution variables",
+                        "type": "text/plain"
+                      },
+                      "key": "TemplateCustomSubstitutions",
+                      "value": "<string>"
+                    }
+                  ]
+                }
+              },
+              "status": "Too Many Requests",
+              "code": 429,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "0544febf-730f-43bb-bf6b-3fb7d12555f6",
+          "name": "Twilio Fetch a Verification",
+          "request": {
+            "name": "Twilio Fetch a Verification",
+            "description": {},
+            "url": {
+              "path": [
+                "Services",
+                ":ServiceSid",
+                "Verifications",
+                ":VerificationSid"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "ServiceSid",
+                  "description": "(Required) The SID of the Verify service"
+                },
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "VerificationSid",
+                  "description": "(Required) "
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "a9f4735e-a983-498c-a467-fbfd1b27afc5",
+              "name": "Verification details",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "Services",
+                    ":ServiceSid",
+                    "Verifications",
+                    ":VerificationSid"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "ServiceSid",
+                      "description": "(Required) The SID of the Verify service"
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "VerificationSid",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: basic",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Basic <credentials>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"sid\": \"VE5E7DC3EfFbe2CED0dF30fD4A3e60EfC3\",\n  \"service_sid\": \"VA35Af3EdCf9D74B5cF2E68F3bF4e6af01\",\n  \"account_sid\": \"ACxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx\",\n  \"to\": \"string\",\n  \"channel\": \"call\",\n  \"status\": \"failed\",\n  \"valid\": true,\n  \"lookup\": {\n    \"carrier\": {}\n  },\n  \"send_code_attempts\": [\n    {\n      \"attempt_sid\": \"string\",\n      \"channel\": \"string\",\n      \"time\": \"1966-10-03T13:54:03.857Z\"\n    },\n    {\n      \"attempt_sid\": \"string\",\n      \"channel\": \"string\",\n      \"time\": \"1998-06-22T15:11:42.237Z\"\n    }\n  ],\n  \"date_created\": \"2025-03-09T04:22:38.706Z\",\n  \"date_updated\": \"2011-04-14T07:57:03.397Z\",\n  \"url\": \"http://iyRggNfIFJZtAhUifLTkVFhFQZvGJjh.wivUtd55RPSjPVehaPTAgwq-.2.wXwjQ8oqHCwdm,XmAJGMBdN+dlpr2BJH.jaLR\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "2a5760f7-8431-4c99-b6a4-3002b04b59ef",
+          "name": "Twilio Update a Verification",
+          "request": {
+            "name": "Twilio Update a Verification",
+            "description": {
+              "content": "Cancel a pending verification or mark it as approved.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "Services",
+                ":ServiceSid",
+                "Verifications",
+                ":VerificationSid"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "ServiceSid",
+                  "description": "(Required) The SID of the Verify service"
+                },
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "VerificationSid",
+                  "description": "(Required) "
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/x-www-form-urlencoded"
+              }
+            ],
+            "method": "POST",
+            "auth": null,
+            "body": {
+              "mode": "urlencoded",
+              "urlencoded": [
+                {
+                  "disabled": false,
+                  "key": "Status",
+                  "value": "<string>",
+                  "description": "(Required) "
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "id": "3cab5d2d-a8f7-42de-b5bb-c231675e6290",
+              "name": "Verification updated",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "Services",
+                    ":ServiceSid",
+                    "Verifications",
+                    ":VerificationSid"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "ServiceSid",
+                      "description": "(Required) The SID of the Verify service"
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "VerificationSid",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: basic",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Basic <credentials>"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "urlencoded",
+                  "urlencoded": [
+                    {
+                      "disabled": false,
+                      "description": {
+                        "content": "(Required) ",
+                        "type": "text/plain"
+                      },
+                      "key": "Status",
+                      "value": "<string>"
+                    }
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    },
+    {
+      "id": "f0ab0664-e56d-45a5-b549-123fe238eaf5",
+      "name": "Webhooks",
+      "description": {
+        "content": "Configure event webhooks",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "aa03f370-7841-4d0f-be57-5e7152c187ac",
+          "name": "Twilio List Webhooks",
+          "request": {
+            "name": "Twilio List Webhooks",
+            "description": {},
+            "url": {
+              "path": [
+                "Services",
+                ":ServiceSid",
+                "Webhooks"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "ServiceSid",
+                  "description": "(Required) The SID of the Verify service"
+                }
+              ]
+            },
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "dee25615-dda3-40e6-9e73-1533a9884b90",
+              "name": "List of webhooks",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "Services",
+                    ":ServiceSid",
+                    "Webhooks"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "ServiceSid",
+                      "description": "(Required) The SID of the Verify service"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: basic",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Basic <credentials>"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "68acddcd-bd76-423f-a22c-6dfaf8a21555",
+          "name": "Twilio Create a Webhook",
+          "request": {
+            "name": "Twilio Create a Webhook",
+            "description": {},
+            "url": {
+              "path": [
+                "Services",
+                ":ServiceSid",
+                "Webhooks"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "ServiceSid",
+                  "description": "(Required) The SID of the Verify service"
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/x-www-form-urlencoded"
+              }
+            ],
+            "method": "POST",
+            "auth": null,
+            "body": {
+              "mode": "urlencoded",
+              "urlencoded": [
+                {
+                  "disabled": false,
+                  "key": "FriendlyName",
+                  "value": "<string>",
+                  "description": "(Required) "
+                },
+                {
+                  "disabled": false,
+                  "key": "EventTypes",
+                  "value": "<string>",
+                  "description": "(Required) "
+                },
+                {
+                  "disabled": false,
+                  "key": "EventTypes",
+                  "value": "<string>",
+                  "description": "(Required) "
+                },
+                {
+                  "disabled": false,
+                  "key": "WebhookUrl",
+                  "value": "<uri>",
+                  "description": "(Required) "
+                },
+                {
+                  "disabled": false,
+                  "key": "Status",
+                  "value": "<string>"
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "id": "399c2c0a-c132-43d1-8207-e5ed605cd722",
+              "name": "Webhook created",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "Services",
+                    ":ServiceSid",
+                    "Webhooks"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "ServiceSid",
+                      "description": "(Required) The SID of the Verify service"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: basic",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Basic <credentials>"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "urlencoded",
+                  "urlencoded": [
+                    {
+                      "disabled": false,
+                      "description": {
+                        "content": "(Required) ",
+                        "type": "text/plain"
+                      },
+                      "key": "FriendlyName",
+                      "value": "<string>"
+                    },
+                    {
+                      "disabled": false,
+                      "description": {
+                        "content": "(Required) ",
+                        "type": "text/plain"
+                      },
+                      "key": "EventTypes",
+                      "value": "<string>"
+                    },
+                    {
+                      "disabled": false,
+                      "description": {
+                        "content": "(Required) ",
+                        "type": "text/plain"
+                      },
+                      "key": "EventTypes",
+                      "value": "<string>"
+                    },
+                    {
+                      "disabled": false,
+                      "description": {
+                        "content": "(Required) ",
+                        "type": "text/plain"
+                      },
+                      "key": "WebhookUrl",
+                      "value": "<uri>"
+                    },
+                    {
+                      "disabled": false,
+                      "key": "Status",
+                      "value": "<string>"
+                    }
+                  ]
+                }
+              },
+              "status": "Created",
+              "code": 201,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    },
+    {
+      "id": "244f53d1-7994-479b-8ed6-c2fd61261f7e",
+      "name": "Twilio List Verify Services",
+      "request": {
+        "name": "Twilio List Verify Services",
+        "description": {
+          "content": "Retrieve a list of all Verify services in your account.",
+          "type": "text/plain"
+        },
+        "url": {
+          "path": [
+            "Services"
+          ],
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "query": [
+            {
+              "disabled": false,
+              "key": "PageSize",
+              "value": "<integer>"
+            }
+          ],
+          "variable": []
+        },
+        "header": [
+          {
+            "key": "Accept",
+            "value": "application/json"
+          }
+        ],
+        "method": "GET",
+        "auth": null
+      },
+      "response": [
+        {
+          "id": "42411ce7-5a7d-43e6-85a3-c41f4a53c5fe",
+          "name": "List of services",
+          "originalRequest": {
+            "url": {
+              "path": [
+                "Services"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "key": "PageSize",
+                  "value": "<integer>"
+                }
+              ],
+              "variable": []
+            },
+            "header": [
+              {
+                "description": {
+                  "content": "Added as a part of security scheme: basic",
+                  "type": "text/plain"
+                },
+                "key": "Authorization",
+                "value": "Basic <credentials>"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "body": {}
+          },
+          "status": "OK",
+          "code": 200,
+          "header": [
+            {
+              "key": "Content-Type",
+              "value": "application/json"
+            }
+          ],
+          "body": "{\n  \"services\": [\n    {\n      \"sid\": \"VA95F72b669b60bCCcc8f0570e3A7CAAAA\",\n      \"account_sid\": \"ACxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx\",\n      \"friendly_name\": \"string\",\n      \"code_length\": 974,\n      \"lookup_enabled\": false,\n      \"skip_sms_to_landlines\": true,\n      \"dtmf_input_required\": true,\n      \"tts_name\": \"string\",\n      \"do_not_share_warning_enabled\": false,\n      \"custom_code_enabled\": true,\n      \"push\": {\n        \"include_date\": true,\n        \"apn_credential_sid\": \"string\",\n        \"fcm_credential_sid\": \"string\"\n      },\n      \"totp\": {\n        \"issuer\": \"string\",\n        \"time_step\": 8363,\n        \"code_length\": 7474,\n        \"skew\": 8561\n      },\n      \"default_template_sid\": \"string\",\n      \"date_created\": \"1950-07-24T16:06:58.343Z\",\n      \"date_updated\": \"2006-05-14T04:45:11.788Z\",\n      \"url\": \"http://imzMKHnFHhjnhOscIm.zlCrFc,nt3R6X1\",\n      \"links\": {}\n    },\n    {\n      \"sid\": \"VA9ac6aFc38ddeAbd4FC9eFE78CaAe6D14\",\n      \"account_sid\": \"ACxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx\",\n      \"friendly_name\": \"string\",\n      \"code_length\": 6359,\n      \"lookup_enabled\": true,\n      \"skip_sms_to_landlines\": false,\n      \"dtmf_input_required\": false,\n      \"tts_name\": \"string\",\n      \"do_not_share_warning_enabled\": false,\n      \"custom_code_enabled\": false,\n      \"push\": {\n        \"include_date\": false,\n        \"apn_credential_sid\": \"string\",\n        \"fcm_credential_sid\": \"string\"\n      },\n      \"totp\": {\n        \"issuer\": \"string\",\n        \"time_step\": 167,\n        \"code_length\": 8691,\n        \"skew\": 7706\n      },\n      \"default_template_sid\": \"string\",\n      \"date_created\": \"1987-07-10T18:01:24.302Z\",\n      \"date_updated\": \"1988-06-05T00:37:34.837Z\",\n      \"url\": \"http://nUDnOpVZGDDKgTmomqeC.bzuIomvy7LDZjuoOlveGBNbMrX6nghsLtxk8L1AhGxDeH7Mstq,69hRac6ZQn5trTf\",\n      \"links\": {}\n    }\n  ],\n  \"meta\": {\n    \"page\": 8193,\n    \"page_size\": 4825,\n    \"first_page_url\": \"http://OBYLnnLRoaDQiwZEJ.dzaerpshT-,Digk49IpNE8iGHJ8j\",\n    \"previous_page_url\": \"https://hKaBbRYCsWknA.hoVmshRtfBPy5+tJI\",\n    \"next_page_url\": \"https://bwSnBcgAbTWVYP.czoE7bEBpjQfGEgEObgS5mBWIk1ZqzkYyRPwPh\",\n    \"url\": \"http://EVHyrUQGkHhjcvMvrIIUhOnxXGeoh.lzjX6EcNn-gO48tCLzcaIqhHPQZtfgY8O6Axp4kqum9rb1uXOOd-XvQg7ZvdNr1YVoP5qY4UpWlOb\",\n    \"key\": \"string\"\n  }\n}",
+          "cookie": [],
+          "_postman_previewlanguage": "json"
+        },
+        {
+          "id": "5ab6b839-578c-4b35-98f9-988ee288517c",
+          "name": "Unauthorized",
+          "originalRequest": {
+            "url": {
+              "path": [
+                "Services"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "key": "PageSize",
+                  "value": "<integer>"
+                }
+              ],
+              "variable": []
+            },
+            "header": [
+              {
+                "description": {
+                  "content": "Added as a part of security scheme: basic",
+                  "type": "text/plain"
+                },
+                "key": "Authorization",
+                "value": "Basic <credentials>"
+              }
+            ],
+            "method": "GET",
+            "body": {}
+          },
+          "status": "Unauthorized",
+          "code": 401,
+          "header": [
+            {
+              "key": "Content-Type",
+              "value": "text/plain"
+            }
+          ],
+          "body": "",
+          "cookie": [],
+          "_postman_previewlanguage": "text"
+        }
+      ],
+      "event": [],
+      "protocolProfileBehavior": {
+        "disableBodyPruning": true
+      }
+    },
+    {
+      "id": "bd04786d-750a-44d6-a3d0-42604875541c",
+      "name": "Twilio Create a Verify Service",
+      "request": {
+        "name": "Twilio Create a Verify Service",
+        "description": {
+          "content": "Create a new Verify service to configure verification behavior including code length, channels, and branding.",
+          "type": "text/plain"
+        },
+        "url": {
+          "path": [
+            "Services"
+          ],
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "query": [],
+          "variable": []
+        },
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/x-www-form-urlencoded"
+          },
+          {
+            "key": "Accept",
+            "value": "application/json"
+          }
+        ],
+        "method": "POST",
+        "auth": null,
+        "body": {
+          "mode": "urlencoded",
+          "urlencoded": [
+            {
+              "disabled": false,
+              "key": "FriendlyName",
+              "value": "<string>",
+              "description": "(Required) Human-readable service name (shown in verification messages)"
+            },
+            {
+              "disabled": false,
+              "key": "CodeLength",
+              "value": "6",
+              "description": "Length of the verification code"
+            },
+            {
+              "disabled": false,
+              "key": "LookupEnabled",
+              "value": "false"
+            },
+            {
+              "disabled": false,
+              "key": "SkipSmsToLandlines",
+              "value": "false"
+            },
+            {
+              "disabled": false,
+              "key": "DtmfInputRequired",
+              "value": "true"
+            },
+            {
+              "disabled": false,
+              "key": "TtsName",
+              "value": "<string>"
+            },
+            {
+              "disabled": false,
+              "key": "DoNotShareWarningEnabled",
+              "value": "false"
+            },
+            {
+              "disabled": false,
+              "key": "CustomCodeEnabled",
+              "value": "false"
+            },
+            {
+              "disabled": false,
+              "key": "Push.IncludeDate",
+              "value": "<boolean>"
+            },
+            {
+              "disabled": false,
+              "key": "Push.ApnCredentialSid",
+              "value": "<string>"
+            },
+            {
+              "disabled": false,
+              "key": "Push.FcmCredentialSid",
+              "value": "<string>"
+            },
+            {
+              "disabled": false,
+              "key": "Totp.Issuer",
+              "value": "<string>"
+            },
+            {
+              "disabled": false,
+              "key": "Totp.TimeStep",
+              "value": "<integer>"
+            },
+            {
+              "disabled": false,
+              "key": "Totp.CodeLength",
+              "value": "<integer>"
+            },
+            {
+              "disabled": false,
+              "key": "Totp.Skew",
+              "value": "<integer>"
+            },
+            {
+              "disabled": false,
+              "key": "DefaultTemplateSid",
+              "value": "<string>"
+            }
+          ]
+        }
+      },
+      "response": [
+        {
+          "id": "6fc19b3a-caf4-492a-90c0-9c00965fd27f",
+          "name": "Service created",
+          "originalRequest": {
+            "url": {
+              "path": [
+                "Services"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "description": {
+                  "content": "Added as a part of security scheme: basic",
+                  "type": "text/plain"
+                },
+                "key": "Authorization",
+                "value": "Basic <credentials>"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "body": {
+              "mode": "urlencoded",
+              "urlencoded": [
+                {
+                  "disabled": false,
+                  "description": {
+                    "content": "(Required) Human-readable service name (shown in verification messages)",
+                    "type": "text/plain"
+                  },
+                  "key": "FriendlyName",
+                  "value": "<string>"
+                },
+                {
+                  "disabled": false,
+                  "description": {
+                    "content": "Length of the verification code",
+                    "type": "text/plain"
+                  },
+                  "key": "CodeLength",
+                  "value": "6"
+                },
+                {
+                  "disabled": false,
+                  "key": "LookupEnabled",
+                  "value": "false"
+                },
+                {
+                  "disabled": false,
+                  "key": "SkipSmsToLandlines",
+                  "value": "false"
+                },
+                {
+                  "disabled": false,
+                  "key": "DtmfInputRequired",
+                  "value": "true"
+                },
+                {
+                  "disabled": false,
+                  "key": "TtsName",
+                  "value": "<string>"
+                },
+                {
+                  "disabled": false,
+                  "key": "DoNotShareWarningEnabled",
+                  "value": "false"
+                },
+                {
+                  "disabled": false,
+                  "key": "CustomCodeEnabled",
+                  "value": "false"
+                },
+                {
+                  "disabled": false,
+                  "key": "Push.IncludeDate",
+                  "value": "<boolean>"
+                },
+                {
+                  "disabled": false,
+                  "key": "Push.ApnCredentialSid",
+                  "value": "<string>"
+                },
+                {
+                  "disabled": false,
+                  "key": "Push.FcmCredentialSid",
+                  "value": "<string>"
+                },
+                {
+                  "disabled": false,
+                  "key": "Totp.Issuer",
+                  "value": "<string>"
+                },
+                {
+                  "disabled": false,
+                  "key": "Totp.TimeStep",
+                  "value": "<integer>"
+                },
+                {
+                  "disabled": false,
+                  "key": "Totp.CodeLength",
+                  "value": "<integer>"
+                },
+                {
+                  "disabled": false,
+                  "key": "Totp.Skew",
+                  "value": "<integer>"
+                },
+                {
+                  "disabled": false,
+                  "key": "DefaultTemplateSid",
+                  "value": "<string>"
+                }
+              ]
+            }
+          },
+          "status": "Created",
+          "code": 201,
+          "header": [
+            {
+              "key": "Content-Type",
+              "value": "application/json"
+            }
+          ],
+          "body": "{\n  \"sid\": \"VAc4cec30adff29f4b9ae9c6aD1f4Bdd52\",\n  \"account_sid\": \"ACxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx\",\n  \"friendly_name\": \"string\",\n  \"code_length\": 8755,\n  \"lookup_enabled\": false,\n  \"skip_sms_to_landlines\": false,\n  \"dtmf_input_required\": true,\n  \"tts_name\": \"string\",\n  \"do_not_share_warning_enabled\": false,\n  \"custom_code_enabled\": true,\n  \"push\": {\n    \"include_date\": false,\n    \"apn_credential_sid\": \"string\",\n    \"fcm_credential_sid\": \"string\"\n  },\n  \"totp\": {\n    \"issuer\": \"string\",\n    \"time_step\": 9054,\n    \"code_length\": 7763,\n    \"skew\": 5012\n  },\n  \"default_template_sid\": \"string\",\n  \"date_created\": \"1949-07-16T03:15:08.923Z\",\n  \"date_updated\": \"1951-01-06T14:08:56.283Z\",\n  \"url\": \"http://CYlIgdlBjHidSSBRHXFuJEDrHuDOmFpou.vybtB32-qxgFLyagTE-biqQsLtzcE7Z6tFaFs7ye9JRwdbMWbR5K\",\n  \"links\": {}\n}",
+          "cookie": [],
+          "_postman_previewlanguage": "json"
+        },
+        {
+          "id": "259c7382-90d5-4b27-bbb3-c27fc6f0da1f",
+          "name": "Invalid request",
+          "originalRequest": {
+            "url": {
+              "path": [
+                "Services"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "description": {
+                  "content": "Added as a part of security scheme: basic",
+                  "type": "text/plain"
+                },
+                "key": "Authorization",
+                "value": "Basic <credentials>"
+              }
+            ],
+            "method": "POST",
+            "body": {
+              "mode": "urlencoded",
+              "urlencoded": [
+                {
+                  "disabled": false,
+                  "description": {
+                    "content": "(Required) Human-readable service name (shown in verification messages)",
+                    "type": "text/plain"
+                  },
+                  "key": "FriendlyName",
+                  "value": "<string>"
+                },
+                {
+                  "disabled": false,
+                  "description": {
+                    "content": "Length of the verification code",
+                    "type": "text/plain"
+                  },
+                  "key": "CodeLength",
+                  "value": "6"
+                },
+                {
+                  "disabled": false,
+                  "key": "LookupEnabled",
+                  "value": "false"
+                },
+                {
+                  "disabled": false,
+                  "key": "SkipSmsToLandlines",
+                  "value": "false"
+                },
+                {
+                  "disabled": false,
+                  "key": "DtmfInputRequired",
+                  "value": "true"
+                },
+                {
+                  "disabled": false,
+                  "key": "TtsName",
+                  "value": "<string>"
+                },
+                {
+                  "disabled": false,
+                  "key": "DoNotShareWarningEnabled",
+                  "value": "false"
+                },
+                {
+                  "disabled": false,
+                  "key": "CustomCodeEnabled",
+                  "value": "false"
+                },
+                {
+                  "disabled": false,
+                  "key": "Push.IncludeDate",
+                  "value": "<boolean>"
+                },
+                {
+                  "disabled": false,
+                  "key": "Push.ApnCredentialSid",
+                  "value": "<string>"
+                },
+                {
+                  "disabled": false,
+                  "key": "Push.FcmCredentialSid",
+                  "value": "<string>"
+                },
+                {
+                  "disabled": false,
+                  "key": "Totp.Issuer",
+                  "value": "<string>"
+                },
+                {
+                  "disabled": false,
+                  "key": "Totp.TimeStep",
+                  "value": "<integer>"
+                },
+                {
+                  "disabled": false,
+                  "key": "Totp.CodeLength",
+                  "value": "<integer>"
+                },
+                {
+                  "disabled": false,
+                  "key": "Totp.Skew",
+                  "value": "<integer>"
+                },
+                {
+                  "disabled": false,
+                  "key": "DefaultTemplateSid",
+                  "value": "<string>"
+                }
+              ]
+            }
+          },
+          "status": "Bad Request",
+          "code": 400,
+          "header": [
+            {
+              "key": "Content-Type",
+              "value": "text/plain"
+            }
+          ],
+          "body": "",
+          "cookie": [],
+          "_postman_previewlanguage": "text"
+        }
+      ],
+      "event": [],
+      "protocolProfileBehavior": {
+        "disableBodyPruning": true
+      }
+    },
+    {
+      "id": "251f43b3-8e7a-4b80-8a4f-3f7594528070",
+      "name": "Twilio Fetch a Verify Service",
+      "request": {
+        "name": "Twilio Fetch a Verify Service",
+        "description": {},
+        "url": {
+          "path": [
+            "Services",
+            ":ServiceSid"
+          ],
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "query": [],
+          "variable": [
+            {
+              "disabled": false,
+              "type": "any",
+              "value": "<string>",
+              "key": "ServiceSid",
+              "description": "(Required) The SID of the Verify service"
+            }
+          ]
+        },
+        "header": [
+          {
+            "key": "Accept",
+            "value": "application/json"
+          }
+        ],
+        "method": "GET",
+        "auth": null
+      },
+      "response": [
+        {
+          "id": "e25e2a66-b411-4cba-b7c3-efd05fc0b6fb",
+          "name": "Service details",
+          "originalRequest": {
+            "url": {
+              "path": [
+                "Services",
+                ":ServiceSid"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "ServiceSid",
+                  "description": "(Required) The SID of the Verify service"
+                }
+              ]
+            },
+            "header": [
+              {
+                "description": {
+                  "content": "Added as a part of security scheme: basic",
+                  "type": "text/plain"
+                },
+                "key": "Authorization",
+                "value": "Basic <credentials>"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "body": {}
+          },
+          "status": "OK",
+          "code": 200,
+          "header": [
+            {
+              "key": "Content-Type",
+              "value": "application/json"
+            }
+          ],
+          "body": "{\n  \"sid\": \"VAc4cec30adff29f4b9ae9c6aD1f4Bdd52\",\n  \"account_sid\": \"ACxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx\",\n  \"friendly_name\": \"string\",\n  \"code_length\": 8755,\n  \"lookup_enabled\": false,\n  \"skip_sms_to_landlines\": false,\n  \"dtmf_input_required\": true,\n  \"tts_name\": \"string\",\n  \"do_not_share_warning_enabled\": false,\n  \"custom_code_enabled\": true,\n  \"push\": {\n    \"include_date\": false,\n    \"apn_credential_sid\": \"string\",\n    \"fcm_credential_sid\": \"string\"\n  },\n  \"totp\": {\n    \"issuer\": \"string\",\n    \"time_step\": 9054,\n    \"code_length\": 7763,\n    \"skew\": 5012\n  },\n  \"default_template_sid\": \"string\",\n  \"date_created\": \"1949-07-16T03:15:08.923Z\",\n  \"date_updated\": \"1951-01-06T14:08:56.283Z\",\n  \"url\": \"http://CYlIgdlBjHidSSBRHXFuJEDrHuDOmFpou.vybtB32-qxgFLyagTE-biqQsLtzcE7Z6tFaFs7ye9JRwdbMWbR5K\",\n  \"links\": {}\n}",
+          "cookie": [],
+          "_postman_previewlanguage": "json"
+        },
+        {
+          "id": "d87a9a3d-303f-4a94-9353-b8c2b66ae57f",
+          "name": "Service not found",
+          "originalRequest": {
+            "url": {
+              "path": [
+                "Services",
+                ":ServiceSid"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "ServiceSid",
+                  "description": "(Required) The SID of the Verify service"
+                }
+              ]
+            },
+            "header": [
+              {
+                "description": {
+                  "content": "Added as a part of security scheme: basic",
+                  "type": "text/plain"
+                },
+                "key": "Authorization",
+                "value": "Basic <credentials>"
+              }
+            ],
+            "method": "GET",
+            "body": {}
+          },
+          "status": "Not Found",
+          "code": 404,
+          "header": [
+            {
+              "key": "Content-Type",
+              "value": "text/plain"
+            }
+          ],
+          "body": "",
+          "cookie": [],
+          "_postman_previewlanguage": "text"
+        }
+      ],
+      "event": [],
+      "protocolProfileBehavior": {
+        "disableBodyPruning": true
+      }
+    },
+    {
+      "id": "4fe8ce6b-961b-4220-ac16-fc43ea573843",
+      "name": "Twilio Update a Verify Service",
+      "request": {
+        "name": "Twilio Update a Verify Service",
+        "description": {},
+        "url": {
+          "path": [
+            "Services",
+            ":ServiceSid"
+          ],
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "query": [],
+          "variable": [
+            {
+              "disabled": false,
+              "type": "any",
+              "value": "<string>",
+              "key": "ServiceSid",
+              "description": "(Required) The SID of the Verify service"
+            }
+          ]
+        },
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/x-www-form-urlencoded"
+          },
+          {
+            "key": "Accept",
+            "value": "application/json"
+          }
+        ],
+        "method": "POST",
+        "auth": null,
+        "body": {
+          "mode": "urlencoded",
+          "urlencoded": [
+            {
+              "disabled": false,
+              "key": "FriendlyName",
+              "value": "<string>",
+              "description": "(Required) Human-readable service name (shown in verification messages)"
+            },
+            {
+              "disabled": false,
+              "key": "CodeLength",
+              "value": "6",
+              "description": "Length of the verification code"
+            },
+            {
+              "disabled": false,
+              "key": "LookupEnabled",
+              "value": "false"
+            },
+            {
+              "disabled": false,
+              "key": "SkipSmsToLandlines",
+              "value": "false"
+            },
+            {
+              "disabled": false,
+              "key": "DtmfInputRequired",
+              "value": "true"
+            },
+            {
+              "disabled": false,
+              "key": "TtsName",
+              "value": "<string>"
+            },
+            {
+              "disabled": false,
+              "key": "DoNotShareWarningEnabled",
+              "value": "false"
+            },
+            {
+              "disabled": false,
+              "key": "CustomCodeEnabled",
+              "value": "false"
+            },
+            {
+              "disabled": false,
+              "key": "Push.IncludeDate",
+              "value": "<boolean>"
+            },
+            {
+              "disabled": false,
+              "key": "Push.ApnCredentialSid",
+              "value": "<string>"
+            },
+            {
+              "disabled": false,
+              "key": "Push.FcmCredentialSid",
+              "value": "<string>"
+            },
+            {
+              "disabled": false,
+              "key": "Totp.Issuer",
+              "value": "<string>"
+            },
+            {
+              "disabled": false,
+              "key": "Totp.TimeStep",
+              "value": "<integer>"
+            },
+            {
+              "disabled": false,
+              "key": "Totp.CodeLength",
+              "value": "<integer>"
+            },
+            {
+              "disabled": false,
+              "key": "Totp.Skew",
+              "value": "<integer>"
+            },
+            {
+              "disabled": false,
+              "key": "DefaultTemplateSid",
+              "value": "<string>"
+            }
+          ]
+        }
+      },
+      "response": [
+        {
+          "id": "59fc3c41-5421-4187-ae17-08a393e32fe8",
+          "name": "Service updated",
+          "originalRequest": {
+            "url": {
+              "path": [
+                "Services",
+                ":ServiceSid"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "ServiceSid",
+                  "description": "(Required) The SID of the Verify service"
+                }
+              ]
+            },
+            "header": [
+              {
+                "description": {
+                  "content": "Added as a part of security scheme: basic",
+                  "type": "text/plain"
+                },
+                "key": "Authorization",
+                "value": "Basic <credentials>"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "body": {
+              "mode": "urlencoded",
+              "urlencoded": [
+                {
+                  "disabled": false,
+                  "description": {
+                    "content": "(Required) Human-readable service name (shown in verification messages)",
+                    "type": "text/plain"
+                  },
+                  "key": "FriendlyName",
+                  "value": "<string>"
+                },
+                {
+                  "disabled": false,
+                  "description": {
+                    "content": "Length of the verification code",
+                    "type": "text/plain"
+                  },
+                  "key": "CodeLength",
+                  "value": "6"
+                },
+                {
+                  "disabled": false,
+                  "key": "LookupEnabled",
+                  "value": "false"
+                },
+                {
+                  "disabled": false,
+                  "key": "SkipSmsToLandlines",
+                  "value": "false"
+                },
+                {
+                  "disabled": false,
+                  "key": "DtmfInputRequired",
+                  "value": "true"
+                },
+                {
+                  "disabled": false,
+                  "key": "TtsName",
+                  "value": "<string>"
+                },
+                {
+                  "disabled": false,
+                  "key": "DoNotShareWarningEnabled",
+                  "value": "false"
+                },
+                {
+                  "disabled": false,
+                  "key": "CustomCodeEnabled",
+                  "value": "false"
+                },
+                {
+                  "disabled": false,
+                  "key": "Push.IncludeDate",
+                  "value": "<boolean>"
+                },
+                {
+                  "disabled": false,
+                  "key": "Push.ApnCredentialSid",
+                  "value": "<string>"
+                },
+                {
+                  "disabled": false,
+                  "key": "Push.FcmCredentialSid",
+                  "value": "<string>"
+                },
+                {
+                  "disabled": false,
+                  "key": "Totp.Issuer",
+                  "value": "<string>"
+                },
+                {
+                  "disabled": false,
+                  "key": "Totp.TimeStep",
+                  "value": "<integer>"
+                },
+                {
+                  "disabled": false,
+                  "key": "Totp.CodeLength",
+                  "value": "<integer>"
+                },
+                {
+                  "disabled": false,
+                  "key": "Totp.Skew",
+                  "value": "<integer>"
+                },
+                {
+                  "disabled": false,
+                  "key": "DefaultTemplateSid",
+                  "value": "<string>"
+                }
+              ]
+            }
+          },
+          "status": "OK",
+          "code": 200,
+          "header": [
+            {
+              "key": "Content-Type",
+              "value": "application/json"
+            }
+          ],
+          "body": "{\n  \"sid\": \"VAc4cec30adff29f4b9ae9c6aD1f4Bdd52\",\n  \"account_sid\": \"ACxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx\",\n  \"friendly_name\": \"string\",\n  \"code_length\": 8755,\n  \"lookup_enabled\": false,\n  \"skip_sms_to_landlines\": false,\n  \"dtmf_input_required\": true,\n  \"tts_name\": \"string\",\n  \"do_not_share_warning_enabled\": false,\n  \"custom_code_enabled\": true,\n  \"push\": {\n    \"include_date\": false,\n    \"apn_credential_sid\": \"string\",\n    \"fcm_credential_sid\": \"string\"\n  },\n  \"totp\": {\n    \"issuer\": \"string\",\n    \"time_step\": 9054,\n    \"code_length\": 7763,\n    \"skew\": 5012\n  },\n  \"default_template_sid\": \"string\",\n  \"date_created\": \"1949-07-16T03:15:08.923Z\",\n  \"date_updated\": \"1951-01-06T14:08:56.283Z\",\n  \"url\": \"http://CYlIgdlBjHidSSBRHXFuJEDrHuDOmFpou.vybtB32-qxgFLyagTE-biqQsLtzcE7Z6tFaFs7ye9JRwdbMWbR5K\",\n  \"links\": {}\n}",
+          "cookie": [],
+          "_postman_previewlanguage": "json"
+        }
+      ],
+      "event": [],
+      "protocolProfileBehavior": {
+        "disableBodyPruning": true
+      }
+    },
+    {
+      "id": "d18a8ac8-4deb-41c5-aa16-ebbaab8abc22",
+      "name": "Twilio Delete a Verify Service",
+      "request": {
+        "name": "Twilio Delete a Verify Service",
+        "description": {},
+        "url": {
+          "path": [
+            "Services",
+            ":ServiceSid"
+          ],
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "query": [],
+          "variable": [
+            {
+              "disabled": false,
+              "type": "any",
+              "value": "<string>",
+              "key": "ServiceSid",
+              "description": "(Required) The SID of the Verify service"
+            }
+          ]
+        },
+        "method": "DELETE",
+        "auth": null
+      },
+      "response": [
+        {
+          "id": "85c0aca8-20e0-427f-9ac3-a37d81d3a30a",
+          "name": "Service deleted",
+          "originalRequest": {
+            "url": {
+              "path": [
+                "Services",
+                ":ServiceSid"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "ServiceSid",
+                  "description": "(Required) The SID of the Verify service"
+                }
+              ]
+            },
+            "header": [
+              {
+                "description": {
+                  "content": "Added as a part of security scheme: basic",
+                  "type": "text/plain"
+                },
+                "key": "Authorization",
+                "value": "Basic <credentials>"
+              }
+            ],
+            "method": "DELETE",
+            "body": {}
+          },
+          "status": "No Content",
+          "code": 204,
+          "header": [
+            {
+              "key": "Content-Type",
+              "value": "text/plain"
+            }
+          ],
+          "body": "",
+          "cookie": [],
+          "_postman_previewlanguage": "text"
+        }
+      ],
+      "event": [],
+      "protocolProfileBehavior": {
+        "disableBodyPruning": true
+      }
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "type": "string",
+      "value": "https://verify.twilio.com/v2",
+      "key": "baseUrl"
+    }
+  ],
+  "auth": {
+    "type": "basic",
+    "basic": [
+      {
+        "key": "username",
+        "value": "{{basicAuthUsername}}"
+      },
+      {
+        "key": "password",
+        "value": "{{basicAuthPassword}}"
+      }
+    ]
+  },
+  "info": {
+    "_postman_id": "db4e0676-9cf4-469e-bbc1-627d164a87e7",
+    "name": "Twilio Verify API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "User verification and two-factor authentication API. Send verification codes via SMS, voice, email, WhatsApp, or push notifications. Supports TOTP, push authentication, and silent network authentication for fraud prevention and user identity verification.\n\nContact Support:\n Name: Twilio Support\n Email: support@twilio.com",
+      "type": "text/plain"
+    }
+  }
+}

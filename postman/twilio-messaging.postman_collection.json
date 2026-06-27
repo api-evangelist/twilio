@@ -1,0 +1,3828 @@
+{
+  "info": {
+    "_postman_id": "11b24983-91d7-460d-998b-b48e0367c71b",
+    "name": "Twilio Messaging API",
+    "description": "Send and receive SMS and MMS messages globally using Twilio's Messaging API. Supports programmable messaging, messaging services, alphanumeric sender IDs, A2P 10DLC registration, toll-free verification, and link shortening.\n\nContact Support:\n Name: Twilio Support\n Email: support@twilio.com",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "createdAt": "2026-06-05T13:21:58.000Z",
+    "updatedAt": "2026-06-05T13:21:59.000Z",
+    "lastUpdatedBy": "35240",
+    "uid": "35240-11b24983-91d7-460d-998b-b48e0367c71b"
+  },
+  "item": [
+    {
+      "name": "Accounts",
+      "item": [
+        {
+          "name": "{AccountSid}",
+          "item": [
+            {
+              "name": "Messages.json",
+              "item": [
+                {
+                  "name": "Twilio List Messages",
+                  "id": "042cc915-0679-4dfc-b82c-d59a86713c62",
+                  "protocolProfileBehavior": {
+                    "disableBodyPruning": true
+                  },
+                  "request": {
+                    "method": "GET",
+                    "header": [
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/Accounts/:AccountSid/Messages.json?To=<string>&From=<string>&DateSent=<date>&PageSize=50&Page=<integer>",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "Accounts",
+                        ":AccountSid",
+                        "Messages.json"
+                      ],
+                      "query": [
+                        {
+                          "description": "Filter by recipient phone number",
+                          "key": "To",
+                          "value": "<string>"
+                        },
+                        {
+                          "description": "Filter by sender phone number",
+                          "key": "From",
+                          "value": "<string>"
+                        },
+                        {
+                          "description": "Filter by date sent (YYYY-MM-DD)",
+                          "key": "DateSent",
+                          "value": "<date>"
+                        },
+                        {
+                          "description": "Number of records to return per page (max 1000)",
+                          "key": "PageSize",
+                          "value": "50"
+                        },
+                        {
+                          "description": "Page number to retrieve",
+                          "key": "Page",
+                          "value": "<integer>"
+                        }
+                      ],
+                      "variable": [
+                        {
+                          "id": "e7cc67aa-65c2-48f7-a8b6-f7aa1593381f",
+                          "key": "AccountSid",
+                          "value": "ACxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",
+                          "description": "(Required) The unique identifier of the Twilio account"
+                        }
+                      ]
+                    },
+                    "description": "Retrieve a list of messages associated with your account. The list includes paging information and is sorted by DateSent descending."
+                  },
+                  "response": [
+                    {
+                      "id": "408a2a99-0796-4011-a4e3-fe69381a8904",
+                      "name": "List of messages",
+                      "originalRequest": {
+                        "method": "GET",
+                        "header": [
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          },
+                          {
+                            "description": "Added as a part of security scheme: basic",
+                            "key": "Authorization",
+                            "value": "Basic <credentials>"
+                          }
+                        ],
+                        "url": {
+                          "raw": "{{baseUrl}}/Accounts/:AccountSid/Messages.json?To=<string>&From=<string>&DateSent=<date>&PageSize=50&Page=<integer>",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "Accounts",
+                            ":AccountSid",
+                            "Messages.json"
+                          ],
+                          "query": [
+                            {
+                              "description": "Filter by recipient phone number",
+                              "key": "To",
+                              "value": "<string>"
+                            },
+                            {
+                              "description": "Filter by sender phone number",
+                              "key": "From",
+                              "value": "<string>"
+                            },
+                            {
+                              "description": "Filter by date sent (YYYY-MM-DD)",
+                              "key": "DateSent",
+                              "value": "<date>"
+                            },
+                            {
+                              "description": "Number of records to return per page (max 1000)",
+                              "key": "PageSize",
+                              "value": "50"
+                            },
+                            {
+                              "description": "Page number to retrieve",
+                              "key": "Page",
+                              "value": "<integer>"
+                            }
+                          ],
+                          "variable": [
+                            {
+                              "key": "AccountSid"
+                            }
+                          ]
+                        }
+                      },
+                      "status": "OK",
+                      "code": 200,
+                      "_postman_previewlanguage": "json",
+                      "header": [
+                        {
+                          "key": "Content-Type",
+                          "value": "application/json"
+                        }
+                      ],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": "{\n  \"messages\": [\n    {\n      \"sid\": \"SMD8a3Ecef0EFCC24FC7bBbff067bAeaaB\",\n      \"account_sid\": \"ACxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx\",\n      \"messaging_service_sid\": \"MGc7AEBF094F9b5fbDBc46cF497A339d5D\",\n      \"to\": \"<string>\",\n      \"from\": \"<string>\",\n      \"body\": \"<string>\",\n      \"status\": \"delivered\",\n      \"direction\": \"outbound-call\",\n      \"price\": \"<string>\",\n      \"price_unit\": \"<string>\",\n      \"num_segments\": \"<string>\",\n      \"num_media\": \"<string>\",\n      \"error_code\": \"<integer>\",\n      \"error_message\": \"<string>\",\n      \"date_created\": \"<dateTime>\",\n      \"date_updated\": \"<dateTime>\",\n      \"date_sent\": \"<dateTime>\",\n      \"uri\": \"<string>\",\n      \"api_version\": \"<string>\",\n      \"subresource_uris\": {\n        \"media\": \"<string>\"\n      }\n    },\n    {\n      \"sid\": \"MM6C1dDc42F47D592F4Eb3bF9925eBc313\",\n      \"account_sid\": \"ACxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx\",\n      \"messaging_service_sid\": \"MG808d24EdDAEce0F71CfA1A7A94BBaC78\",\n      \"to\": \"<string>\",\n      \"from\": \"<string>\",\n      \"body\": \"<string>\",\n      \"status\": \"delivered\",\n      \"direction\": \"outbound-reply\",\n      \"price\": \"<string>\",\n      \"price_unit\": \"<string>\",\n      \"num_segments\": \"<string>\",\n      \"num_media\": \"<string>\",\n      \"error_code\": \"<integer>\",\n      \"error_message\": \"<string>\",\n      \"date_created\": \"<dateTime>\",\n      \"date_updated\": \"<dateTime>\",\n      \"date_sent\": \"<dateTime>\",\n      \"uri\": \"<string>\",\n      \"api_version\": \"<string>\",\n      \"subresource_uris\": {\n        \"media\": \"<string>\"\n      }\n    }\n  ],\n  \"first_page_uri\": \"<string>\",\n  \"next_page_uri\": \"<string>\",\n  \"previous_page_uri\": \"<string>\",\n  \"page\": \"<integer>\",\n  \"page_size\": \"<integer>\",\n  \"uri\": \"<string>\"\n}",
+                      "createdAt": "2026-06-05T13:21:59.000Z",
+                      "updatedAt": "2026-06-05T13:21:59.000Z",
+                      "uid": "35240-408a2a99-0796-4011-a4e3-fe69381a8904"
+                    },
+                    {
+                      "id": "ae4e75e8-49c8-410a-a6ef-300b08840b85",
+                      "name": "Unauthorized - invalid credentials",
+                      "originalRequest": {
+                        "method": "GET",
+                        "header": [
+                          {
+                            "description": "Added as a part of security scheme: basic",
+                            "key": "Authorization",
+                            "value": "Basic <credentials>"
+                          }
+                        ],
+                        "url": {
+                          "raw": "{{baseUrl}}/Accounts/:AccountSid/Messages.json?To=<string>&From=<string>&DateSent=<date>&PageSize=50&Page=<integer>",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "Accounts",
+                            ":AccountSid",
+                            "Messages.json"
+                          ],
+                          "query": [
+                            {
+                              "description": "Filter by recipient phone number",
+                              "key": "To",
+                              "value": "<string>"
+                            },
+                            {
+                              "description": "Filter by sender phone number",
+                              "key": "From",
+                              "value": "<string>"
+                            },
+                            {
+                              "description": "Filter by date sent (YYYY-MM-DD)",
+                              "key": "DateSent",
+                              "value": "<date>"
+                            },
+                            {
+                              "description": "Number of records to return per page (max 1000)",
+                              "key": "PageSize",
+                              "value": "50"
+                            },
+                            {
+                              "description": "Page number to retrieve",
+                              "key": "Page",
+                              "value": "<integer>"
+                            }
+                          ],
+                          "variable": [
+                            {
+                              "key": "AccountSid"
+                            }
+                          ]
+                        }
+                      },
+                      "status": "Unauthorized",
+                      "code": 401,
+                      "_postman_previewlanguage": "text",
+                      "header": [],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": null,
+                      "createdAt": "2026-06-05T13:21:59.000Z",
+                      "updatedAt": "2026-06-05T13:21:59.000Z",
+                      "uid": "35240-ae4e75e8-49c8-410a-a6ef-300b08840b85"
+                    },
+                    {
+                      "id": "50f6fa75-da5f-4de1-b881-3431f9b926db",
+                      "name": "Account not found",
+                      "originalRequest": {
+                        "method": "GET",
+                        "header": [
+                          {
+                            "description": "Added as a part of security scheme: basic",
+                            "key": "Authorization",
+                            "value": "Basic <credentials>"
+                          }
+                        ],
+                        "url": {
+                          "raw": "{{baseUrl}}/Accounts/:AccountSid/Messages.json?To=<string>&From=<string>&DateSent=<date>&PageSize=50&Page=<integer>",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "Accounts",
+                            ":AccountSid",
+                            "Messages.json"
+                          ],
+                          "query": [
+                            {
+                              "description": "Filter by recipient phone number",
+                              "key": "To",
+                              "value": "<string>"
+                            },
+                            {
+                              "description": "Filter by sender phone number",
+                              "key": "From",
+                              "value": "<string>"
+                            },
+                            {
+                              "description": "Filter by date sent (YYYY-MM-DD)",
+                              "key": "DateSent",
+                              "value": "<date>"
+                            },
+                            {
+                              "description": "Number of records to return per page (max 1000)",
+                              "key": "PageSize",
+                              "value": "50"
+                            },
+                            {
+                              "description": "Page number to retrieve",
+                              "key": "Page",
+                              "value": "<integer>"
+                            }
+                          ],
+                          "variable": [
+                            {
+                              "key": "AccountSid"
+                            }
+                          ]
+                        }
+                      },
+                      "status": "Not Found",
+                      "code": 404,
+                      "_postman_previewlanguage": "text",
+                      "header": [],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": null,
+                      "createdAt": "2026-06-05T13:21:59.000Z",
+                      "updatedAt": "2026-06-05T13:21:59.000Z",
+                      "uid": "35240-50f6fa75-da5f-4de1-b881-3431f9b926db"
+                    }
+                  ],
+                  "createdAt": "2026-06-05T13:21:59.000Z",
+                  "updatedAt": "2026-06-05T13:21:59.000Z",
+                  "uid": "35240-042cc915-0679-4dfc-b82c-d59a86713c62"
+                },
+                {
+                  "name": "Twilio Send a Message",
+                  "id": "d6cbebc0-f3ba-473f-bd88-44ec966e2119",
+                  "protocolProfileBehavior": {
+                    "disableBodyPruning": true
+                  },
+                  "request": {
+                    "method": "POST",
+                    "header": [
+                      {
+                        "key": "Content-Type",
+                        "value": "application/x-www-form-urlencoded"
+                      },
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      }
+                    ],
+                    "body": {
+                      "mode": "urlencoded",
+                      "urlencoded": [
+                        {
+                          "description": "(Required) Recipient phone number in E.164 format",
+                          "key": "To",
+                          "value": "<string>"
+                        },
+                        {
+                          "description": "Twilio phone number, short code, or alphanumeric sender ID",
+                          "key": "From",
+                          "value": "<string>"
+                        },
+                        {
+                          "description": "The text content of the message (max 1600 characters)",
+                          "key": "Body",
+                          "value": "<string>"
+                        },
+                        {
+                          "description": "SID of the messaging service to use",
+                          "key": "MessagingServiceSid",
+                          "value": "MG304BDa9c4A7Fc4910B84B7957A89bAa1"
+                        },
+                        {
+                          "description": "URLs of media to include in MMS messages (max 10)",
+                          "key": "MediaUrl",
+                          "value": "<uri>"
+                        },
+                        {
+                          "description": "URLs of media to include in MMS messages (max 10)",
+                          "key": "MediaUrl",
+                          "value": "<uri>"
+                        },
+                        {
+                          "description": "URL for status callback notifications",
+                          "key": "StatusCallback",
+                          "value": "<uri>"
+                        },
+                        {
+                          "description": "Maximum price in USD to pay for the message",
+                          "key": "MaxPrice",
+                          "value": "<number>"
+                        },
+                        {
+                          "description": "Validity period in seconds (max 14400)",
+                          "key": "ValidityPeriod",
+                          "value": "<integer>"
+                        },
+                        {
+                          "description": "Time to send a scheduled message (requires messaging service)",
+                          "key": "SendAt",
+                          "value": "<dateTime>"
+                        },
+                        {
+                          "description": "Schedule type for scheduled messages",
+                          "key": "ScheduleType",
+                          "value": "fixed"
+                        },
+                        {
+                          "description": "SID of a content template to use",
+                          "key": "ContentSid",
+                          "value": "HX2AA92CaaF0EA3BfDB7c7bC3Bd2c13aBF"
+                        },
+                        {
+                          "description": "JSON string of variables for content templates",
+                          "key": "ContentVariables",
+                          "value": "<string>"
+                        }
+                      ]
+                    },
+                    "url": {
+                      "raw": "{{baseUrl}}/Accounts/:AccountSid/Messages.json",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "Accounts",
+                        ":AccountSid",
+                        "Messages.json"
+                      ],
+                      "variable": [
+                        {
+                          "id": "1b3a6ed8-8896-4597-af21-07c7c364ee8f",
+                          "key": "AccountSid",
+                          "value": "ACxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",
+                          "description": "(Required) The unique identifier of the Twilio account"
+                        }
+                      ]
+                    },
+                    "description": "Send an SMS or MMS message. Specify the recipient, sender, and body or media URL. Messages can be sent from a Twilio phone number, short code, alphanumeric sender ID, or messaging service."
+                  },
+                  "response": [
+                    {
+                      "id": "2a74b06d-7f22-4bff-81b0-1bfb26646d4e",
+                      "name": "Message created and queued for delivery",
+                      "originalRequest": {
+                        "method": "POST",
+                        "header": [
+                          {
+                            "key": "Content-Type",
+                            "value": "application/x-www-form-urlencoded"
+                          },
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          },
+                          {
+                            "description": "Added as a part of security scheme: basic",
+                            "key": "Authorization",
+                            "value": "Basic <credentials>"
+                          }
+                        ],
+                        "body": {
+                          "mode": "urlencoded",
+                          "urlencoded": [
+                            {
+                              "description": "(Required) Recipient phone number in E.164 format",
+                              "key": "To",
+                              "value": "<string>"
+                            },
+                            {
+                              "description": "Twilio phone number, short code, or alphanumeric sender ID",
+                              "key": "From",
+                              "value": "<string>"
+                            },
+                            {
+                              "description": "The text content of the message (max 1600 characters)",
+                              "key": "Body",
+                              "value": "<string>"
+                            },
+                            {
+                              "description": "SID of the messaging service to use",
+                              "key": "MessagingServiceSid",
+                              "value": "MG304BDa9c4A7Fc4910B84B7957A89bAa1"
+                            },
+                            {
+                              "description": "URLs of media to include in MMS messages (max 10)",
+                              "key": "MediaUrl",
+                              "value": "<uri>"
+                            },
+                            {
+                              "description": "URLs of media to include in MMS messages (max 10)",
+                              "key": "MediaUrl",
+                              "value": "<uri>"
+                            },
+                            {
+                              "description": "URL for status callback notifications",
+                              "key": "StatusCallback",
+                              "value": "<uri>"
+                            },
+                            {
+                              "description": "Maximum price in USD to pay for the message",
+                              "key": "MaxPrice",
+                              "value": "<number>"
+                            },
+                            {
+                              "description": "Validity period in seconds (max 14400)",
+                              "key": "ValidityPeriod",
+                              "value": "<integer>"
+                            },
+                            {
+                              "description": "Time to send a scheduled message (requires messaging service)",
+                              "key": "SendAt",
+                              "value": "<dateTime>"
+                            },
+                            {
+                              "description": "Schedule type for scheduled messages",
+                              "key": "ScheduleType",
+                              "value": "fixed"
+                            },
+                            {
+                              "description": "SID of a content template to use",
+                              "key": "ContentSid",
+                              "value": "HX2AA92CaaF0EA3BfDB7c7bC3Bd2c13aBF"
+                            },
+                            {
+                              "description": "JSON string of variables for content templates",
+                              "key": "ContentVariables",
+                              "value": "<string>"
+                            }
+                          ]
+                        },
+                        "url": {
+                          "raw": "{{baseUrl}}/Accounts/:AccountSid/Messages.json",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "Accounts",
+                            ":AccountSid",
+                            "Messages.json"
+                          ],
+                          "variable": [
+                            {
+                              "key": "AccountSid"
+                            }
+                          ]
+                        }
+                      },
+                      "status": "Created",
+                      "code": 201,
+                      "_postman_previewlanguage": "json",
+                      "header": [
+                        {
+                          "key": "Content-Type",
+                          "value": "application/json"
+                        }
+                      ],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": "{\n  \"sid\": \"SM5FE209FaDedCae1A3DDEb9C77580dcd8\",\n  \"account_sid\": \"ACxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx\",\n  \"messaging_service_sid\": \"MGb05Af3B4f9b12D0EE29fE9EC12Bf3ad8\",\n  \"to\": \"<string>\",\n  \"from\": \"<string>\",\n  \"body\": \"<string>\",\n  \"status\": \"partially_delivered\",\n  \"direction\": \"inbound\",\n  \"price\": \"<string>\",\n  \"price_unit\": \"<string>\",\n  \"num_segments\": \"<string>\",\n  \"num_media\": \"<string>\",\n  \"error_code\": \"<integer>\",\n  \"error_message\": \"<string>\",\n  \"date_created\": \"<dateTime>\",\n  \"date_updated\": \"<dateTime>\",\n  \"date_sent\": \"<dateTime>\",\n  \"uri\": \"<string>\",\n  \"api_version\": \"<string>\",\n  \"subresource_uris\": {\n    \"media\": \"<string>\"\n  }\n}",
+                      "createdAt": "2026-06-05T13:21:59.000Z",
+                      "updatedAt": "2026-06-05T13:21:59.000Z",
+                      "uid": "35240-2a74b06d-7f22-4bff-81b0-1bfb26646d4e"
+                    },
+                    {
+                      "id": "82b7e9c2-86ad-4bb4-890c-bfc562db8d97",
+                      "name": "Invalid request parameters",
+                      "originalRequest": {
+                        "method": "POST",
+                        "header": [
+                          {
+                            "key": "Content-Type",
+                            "value": "application/x-www-form-urlencoded"
+                          },
+                          {
+                            "description": "Added as a part of security scheme: basic",
+                            "key": "Authorization",
+                            "value": "Basic <credentials>"
+                          }
+                        ],
+                        "body": {
+                          "mode": "urlencoded",
+                          "urlencoded": [
+                            {
+                              "description": "(Required) Recipient phone number in E.164 format",
+                              "key": "To",
+                              "value": "<string>"
+                            },
+                            {
+                              "description": "Twilio phone number, short code, or alphanumeric sender ID",
+                              "key": "From",
+                              "value": "<string>"
+                            },
+                            {
+                              "description": "The text content of the message (max 1600 characters)",
+                              "key": "Body",
+                              "value": "<string>"
+                            },
+                            {
+                              "description": "SID of the messaging service to use",
+                              "key": "MessagingServiceSid",
+                              "value": "MG304BDa9c4A7Fc4910B84B7957A89bAa1"
+                            },
+                            {
+                              "description": "URLs of media to include in MMS messages (max 10)",
+                              "key": "MediaUrl",
+                              "value": "<uri>"
+                            },
+                            {
+                              "description": "URLs of media to include in MMS messages (max 10)",
+                              "key": "MediaUrl",
+                              "value": "<uri>"
+                            },
+                            {
+                              "description": "URL for status callback notifications",
+                              "key": "StatusCallback",
+                              "value": "<uri>"
+                            },
+                            {
+                              "description": "Maximum price in USD to pay for the message",
+                              "key": "MaxPrice",
+                              "value": "<number>"
+                            },
+                            {
+                              "description": "Validity period in seconds (max 14400)",
+                              "key": "ValidityPeriod",
+                              "value": "<integer>"
+                            },
+                            {
+                              "description": "Time to send a scheduled message (requires messaging service)",
+                              "key": "SendAt",
+                              "value": "<dateTime>"
+                            },
+                            {
+                              "description": "Schedule type for scheduled messages",
+                              "key": "ScheduleType",
+                              "value": "fixed"
+                            },
+                            {
+                              "description": "SID of a content template to use",
+                              "key": "ContentSid",
+                              "value": "HX2AA92CaaF0EA3BfDB7c7bC3Bd2c13aBF"
+                            },
+                            {
+                              "description": "JSON string of variables for content templates",
+                              "key": "ContentVariables",
+                              "value": "<string>"
+                            }
+                          ]
+                        },
+                        "url": {
+                          "raw": "{{baseUrl}}/Accounts/:AccountSid/Messages.json",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "Accounts",
+                            ":AccountSid",
+                            "Messages.json"
+                          ],
+                          "variable": [
+                            {
+                              "key": "AccountSid"
+                            }
+                          ]
+                        }
+                      },
+                      "status": "Bad Request",
+                      "code": 400,
+                      "_postman_previewlanguage": "text",
+                      "header": [],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": null,
+                      "createdAt": "2026-06-05T13:21:59.000Z",
+                      "updatedAt": "2026-06-05T13:21:59.000Z",
+                      "uid": "35240-82b7e9c2-86ad-4bb4-890c-bfc562db8d97"
+                    },
+                    {
+                      "id": "68a341bc-ded6-4395-aa87-0e81bd165e88",
+                      "name": "Unauthorized - invalid credentials",
+                      "originalRequest": {
+                        "method": "POST",
+                        "header": [
+                          {
+                            "key": "Content-Type",
+                            "value": "application/x-www-form-urlencoded"
+                          },
+                          {
+                            "description": "Added as a part of security scheme: basic",
+                            "key": "Authorization",
+                            "value": "Basic <credentials>"
+                          }
+                        ],
+                        "body": {
+                          "mode": "urlencoded",
+                          "urlencoded": [
+                            {
+                              "description": "(Required) Recipient phone number in E.164 format",
+                              "key": "To",
+                              "value": "<string>"
+                            },
+                            {
+                              "description": "Twilio phone number, short code, or alphanumeric sender ID",
+                              "key": "From",
+                              "value": "<string>"
+                            },
+                            {
+                              "description": "The text content of the message (max 1600 characters)",
+                              "key": "Body",
+                              "value": "<string>"
+                            },
+                            {
+                              "description": "SID of the messaging service to use",
+                              "key": "MessagingServiceSid",
+                              "value": "MG304BDa9c4A7Fc4910B84B7957A89bAa1"
+                            },
+                            {
+                              "description": "URLs of media to include in MMS messages (max 10)",
+                              "key": "MediaUrl",
+                              "value": "<uri>"
+                            },
+                            {
+                              "description": "URLs of media to include in MMS messages (max 10)",
+                              "key": "MediaUrl",
+                              "value": "<uri>"
+                            },
+                            {
+                              "description": "URL for status callback notifications",
+                              "key": "StatusCallback",
+                              "value": "<uri>"
+                            },
+                            {
+                              "description": "Maximum price in USD to pay for the message",
+                              "key": "MaxPrice",
+                              "value": "<number>"
+                            },
+                            {
+                              "description": "Validity period in seconds (max 14400)",
+                              "key": "ValidityPeriod",
+                              "value": "<integer>"
+                            },
+                            {
+                              "description": "Time to send a scheduled message (requires messaging service)",
+                              "key": "SendAt",
+                              "value": "<dateTime>"
+                            },
+                            {
+                              "description": "Schedule type for scheduled messages",
+                              "key": "ScheduleType",
+                              "value": "fixed"
+                            },
+                            {
+                              "description": "SID of a content template to use",
+                              "key": "ContentSid",
+                              "value": "HX2AA92CaaF0EA3BfDB7c7bC3Bd2c13aBF"
+                            },
+                            {
+                              "description": "JSON string of variables for content templates",
+                              "key": "ContentVariables",
+                              "value": "<string>"
+                            }
+                          ]
+                        },
+                        "url": {
+                          "raw": "{{baseUrl}}/Accounts/:AccountSid/Messages.json",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "Accounts",
+                            ":AccountSid",
+                            "Messages.json"
+                          ],
+                          "variable": [
+                            {
+                              "key": "AccountSid"
+                            }
+                          ]
+                        }
+                      },
+                      "status": "Unauthorized",
+                      "code": 401,
+                      "_postman_previewlanguage": "text",
+                      "header": [],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": null,
+                      "createdAt": "2026-06-05T13:21:59.000Z",
+                      "updatedAt": "2026-06-05T13:21:59.000Z",
+                      "uid": "35240-68a341bc-ded6-4395-aa87-0e81bd165e88"
+                    },
+                    {
+                      "id": "20bf8e84-735f-45df-8f84-b565e0752bb3",
+                      "name": "Unable to create message",
+                      "originalRequest": {
+                        "method": "POST",
+                        "header": [
+                          {
+                            "key": "Content-Type",
+                            "value": "application/x-www-form-urlencoded"
+                          },
+                          {
+                            "description": "Added as a part of security scheme: basic",
+                            "key": "Authorization",
+                            "value": "Basic <credentials>"
+                          }
+                        ],
+                        "body": {
+                          "mode": "urlencoded",
+                          "urlencoded": [
+                            {
+                              "description": "(Required) Recipient phone number in E.164 format",
+                              "key": "To",
+                              "value": "<string>"
+                            },
+                            {
+                              "description": "Twilio phone number, short code, or alphanumeric sender ID",
+                              "key": "From",
+                              "value": "<string>"
+                            },
+                            {
+                              "description": "The text content of the message (max 1600 characters)",
+                              "key": "Body",
+                              "value": "<string>"
+                            },
+                            {
+                              "description": "SID of the messaging service to use",
+                              "key": "MessagingServiceSid",
+                              "value": "MG304BDa9c4A7Fc4910B84B7957A89bAa1"
+                            },
+                            {
+                              "description": "URLs of media to include in MMS messages (max 10)",
+                              "key": "MediaUrl",
+                              "value": "<uri>"
+                            },
+                            {
+                              "description": "URLs of media to include in MMS messages (max 10)",
+                              "key": "MediaUrl",
+                              "value": "<uri>"
+                            },
+                            {
+                              "description": "URL for status callback notifications",
+                              "key": "StatusCallback",
+                              "value": "<uri>"
+                            },
+                            {
+                              "description": "Maximum price in USD to pay for the message",
+                              "key": "MaxPrice",
+                              "value": "<number>"
+                            },
+                            {
+                              "description": "Validity period in seconds (max 14400)",
+                              "key": "ValidityPeriod",
+                              "value": "<integer>"
+                            },
+                            {
+                              "description": "Time to send a scheduled message (requires messaging service)",
+                              "key": "SendAt",
+                              "value": "<dateTime>"
+                            },
+                            {
+                              "description": "Schedule type for scheduled messages",
+                              "key": "ScheduleType",
+                              "value": "fixed"
+                            },
+                            {
+                              "description": "SID of a content template to use",
+                              "key": "ContentSid",
+                              "value": "HX2AA92CaaF0EA3BfDB7c7bC3Bd2c13aBF"
+                            },
+                            {
+                              "description": "JSON string of variables for content templates",
+                              "key": "ContentVariables",
+                              "value": "<string>"
+                            }
+                          ]
+                        },
+                        "url": {
+                          "raw": "{{baseUrl}}/Accounts/:AccountSid/Messages.json",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "Accounts",
+                            ":AccountSid",
+                            "Messages.json"
+                          ],
+                          "variable": [
+                            {
+                              "key": "AccountSid"
+                            }
+                          ]
+                        }
+                      },
+                      "status": "Unprocessable Entity (WebDAV) (RFC 4918)",
+                      "code": 422,
+                      "_postman_previewlanguage": "text",
+                      "header": [],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": null,
+                      "createdAt": "2026-06-05T13:21:59.000Z",
+                      "updatedAt": "2026-06-05T13:21:59.000Z",
+                      "uid": "35240-20bf8e84-735f-45df-8f84-b565e0752bb3"
+                    }
+                  ],
+                  "createdAt": "2026-06-05T13:21:59.000Z",
+                  "updatedAt": "2026-06-05T13:21:59.000Z",
+                  "uid": "35240-d6cbebc0-f3ba-473f-bd88-44ec966e2119"
+                }
+              ],
+              "id": "29ce1951-b8d8-488b-b181-bbe662ee664a",
+              "createdAt": "2026-06-05T13:21:59.000Z",
+              "updatedAt": "2026-06-05T13:21:59.000Z",
+              "uid": "35240-29ce1951-b8d8-488b-b181-bbe662ee664a"
+            },
+            {
+              "name": "Messages",
+              "item": [
+                {
+                  "name": "{MessageSid}.json",
+                  "item": [
+                    {
+                      "name": "Twilio Fetch a Message",
+                      "id": "80199351-6be4-4e4c-8476-aa7658c566ed",
+                      "protocolProfileBehavior": {
+                        "disableBodyPruning": true
+                      },
+                      "request": {
+                        "method": "GET",
+                        "header": [
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          }
+                        ],
+                        "url": {
+                          "raw": "{{baseUrl}}/Accounts/:AccountSid/Messages/{{MessageSid}}.json",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "Accounts",
+                            ":AccountSid",
+                            "Messages",
+                            "{{MessageSid}}.json"
+                          ],
+                          "variable": [
+                            {
+                              "id": "e6bbe9d1-40ae-4907-909f-6fad7fe6619d",
+                              "key": "AccountSid",
+                              "value": "ACxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",
+                              "description": "(Required) The unique identifier of the Twilio account"
+                            }
+                          ]
+                        },
+                        "description": "Retrieve details of a specific message by its SID."
+                      },
+                      "response": [
+                        {
+                          "id": "6c39b1de-2cea-4cd6-8573-5e12f7f642fb",
+                          "name": "Message details",
+                          "originalRequest": {
+                            "method": "GET",
+                            "header": [
+                              {
+                                "key": "Accept",
+                                "value": "application/json"
+                              },
+                              {
+                                "description": "Added as a part of security scheme: basic",
+                                "key": "Authorization",
+                                "value": "Basic <credentials>"
+                              }
+                            ],
+                            "url": {
+                              "raw": "{{baseUrl}}/Accounts/:AccountSid/Messages/{{MessageSid}}.json",
+                              "host": [
+                                "{{baseUrl}}"
+                              ],
+                              "path": [
+                                "Accounts",
+                                ":AccountSid",
+                                "Messages",
+                                "{{MessageSid}}.json"
+                              ],
+                              "variable": [
+                                {
+                                  "key": "AccountSid"
+                                }
+                              ]
+                            }
+                          },
+                          "status": "OK",
+                          "code": 200,
+                          "_postman_previewlanguage": "json",
+                          "header": [
+                            {
+                              "key": "Content-Type",
+                              "value": "application/json"
+                            }
+                          ],
+                          "cookie": [],
+                          "responseTime": null,
+                          "body": "{\n  \"sid\": \"SM5FE209FaDedCae1A3DDEb9C77580dcd8\",\n  \"account_sid\": \"ACxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx\",\n  \"messaging_service_sid\": \"MGb05Af3B4f9b12D0EE29fE9EC12Bf3ad8\",\n  \"to\": \"<string>\",\n  \"from\": \"<string>\",\n  \"body\": \"<string>\",\n  \"status\": \"partially_delivered\",\n  \"direction\": \"inbound\",\n  \"price\": \"<string>\",\n  \"price_unit\": \"<string>\",\n  \"num_segments\": \"<string>\",\n  \"num_media\": \"<string>\",\n  \"error_code\": \"<integer>\",\n  \"error_message\": \"<string>\",\n  \"date_created\": \"<dateTime>\",\n  \"date_updated\": \"<dateTime>\",\n  \"date_sent\": \"<dateTime>\",\n  \"uri\": \"<string>\",\n  \"api_version\": \"<string>\",\n  \"subresource_uris\": {\n    \"media\": \"<string>\"\n  }\n}",
+                          "createdAt": "2026-06-05T13:21:59.000Z",
+                          "updatedAt": "2026-06-05T13:21:59.000Z",
+                          "uid": "35240-6c39b1de-2cea-4cd6-8573-5e12f7f642fb"
+                        },
+                        {
+                          "id": "c87ebc6f-d2dc-460b-97d9-fb4eb20bbadb",
+                          "name": "Unauthorized",
+                          "originalRequest": {
+                            "method": "GET",
+                            "header": [
+                              {
+                                "description": "Added as a part of security scheme: basic",
+                                "key": "Authorization",
+                                "value": "Basic <credentials>"
+                              }
+                            ],
+                            "url": {
+                              "raw": "{{baseUrl}}/Accounts/:AccountSid/Messages/{{MessageSid}}.json",
+                              "host": [
+                                "{{baseUrl}}"
+                              ],
+                              "path": [
+                                "Accounts",
+                                ":AccountSid",
+                                "Messages",
+                                "{{MessageSid}}.json"
+                              ],
+                              "variable": [
+                                {
+                                  "key": "AccountSid"
+                                }
+                              ]
+                            }
+                          },
+                          "status": "Unauthorized",
+                          "code": 401,
+                          "_postman_previewlanguage": "text",
+                          "header": [],
+                          "cookie": [],
+                          "responseTime": null,
+                          "body": null,
+                          "createdAt": "2026-06-05T13:21:59.000Z",
+                          "updatedAt": "2026-06-05T13:21:59.000Z",
+                          "uid": "35240-c87ebc6f-d2dc-460b-97d9-fb4eb20bbadb"
+                        },
+                        {
+                          "id": "acac0eaa-f50c-4e14-a7bb-4e7f0762972a",
+                          "name": "Message not found",
+                          "originalRequest": {
+                            "method": "GET",
+                            "header": [
+                              {
+                                "description": "Added as a part of security scheme: basic",
+                                "key": "Authorization",
+                                "value": "Basic <credentials>"
+                              }
+                            ],
+                            "url": {
+                              "raw": "{{baseUrl}}/Accounts/:AccountSid/Messages/{{MessageSid}}.json",
+                              "host": [
+                                "{{baseUrl}}"
+                              ],
+                              "path": [
+                                "Accounts",
+                                ":AccountSid",
+                                "Messages",
+                                "{{MessageSid}}.json"
+                              ],
+                              "variable": [
+                                {
+                                  "key": "AccountSid"
+                                }
+                              ]
+                            }
+                          },
+                          "status": "Not Found",
+                          "code": 404,
+                          "_postman_previewlanguage": "text",
+                          "header": [],
+                          "cookie": [],
+                          "responseTime": null,
+                          "body": null,
+                          "createdAt": "2026-06-05T13:21:59.000Z",
+                          "updatedAt": "2026-06-05T13:21:59.000Z",
+                          "uid": "35240-acac0eaa-f50c-4e14-a7bb-4e7f0762972a"
+                        }
+                      ],
+                      "createdAt": "2026-06-05T13:21:59.000Z",
+                      "updatedAt": "2026-06-05T13:21:59.000Z",
+                      "uid": "35240-80199351-6be4-4e4c-8476-aa7658c566ed"
+                    },
+                    {
+                      "name": "Twilio Update a Message",
+                      "id": "d3c69713-97ed-40a7-bd28-0b7fe54d835f",
+                      "protocolProfileBehavior": {
+                        "disableBodyPruning": true
+                      },
+                      "request": {
+                        "method": "POST",
+                        "header": [
+                          {
+                            "key": "Content-Type",
+                            "value": "application/x-www-form-urlencoded"
+                          },
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          }
+                        ],
+                        "body": {
+                          "mode": "urlencoded",
+                          "urlencoded": [
+                            {
+                              "description": "The updated message body (empty string to redact)",
+                              "key": "Body",
+                              "value": "<string>"
+                            },
+                            {
+                              "description": "Set to canceled to cancel a queued message",
+                              "key": "Status",
+                              "value": "canceled"
+                            }
+                          ]
+                        },
+                        "url": {
+                          "raw": "{{baseUrl}}/Accounts/:AccountSid/Messages/{{MessageSid}}.json",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "Accounts",
+                            ":AccountSid",
+                            "Messages",
+                            "{{MessageSid}}.json"
+                          ],
+                          "variable": [
+                            {
+                              "id": "934de8b4-3e62-4c90-a420-5be7ab2cb58b",
+                              "key": "AccountSid",
+                              "value": "ACxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",
+                              "description": "(Required) The unique identifier of the Twilio account"
+                            }
+                          ]
+                        },
+                        "description": "Update the body of a message resource. Can be used to redact message content by posting an empty body."
+                      },
+                      "response": [
+                        {
+                          "id": "908332c8-4040-40f5-b62b-3d6a3e53e379",
+                          "name": "Message updated",
+                          "originalRequest": {
+                            "method": "POST",
+                            "header": [
+                              {
+                                "key": "Content-Type",
+                                "value": "application/x-www-form-urlencoded"
+                              },
+                              {
+                                "key": "Accept",
+                                "value": "application/json"
+                              },
+                              {
+                                "description": "Added as a part of security scheme: basic",
+                                "key": "Authorization",
+                                "value": "Basic <credentials>"
+                              }
+                            ],
+                            "body": {
+                              "mode": "urlencoded",
+                              "urlencoded": [
+                                {
+                                  "description": "The updated message body (empty string to redact)",
+                                  "key": "Body",
+                                  "value": "<string>"
+                                },
+                                {
+                                  "description": "Set to canceled to cancel a queued message",
+                                  "key": "Status",
+                                  "value": "canceled"
+                                }
+                              ]
+                            },
+                            "url": {
+                              "raw": "{{baseUrl}}/Accounts/:AccountSid/Messages/{{MessageSid}}.json",
+                              "host": [
+                                "{{baseUrl}}"
+                              ],
+                              "path": [
+                                "Accounts",
+                                ":AccountSid",
+                                "Messages",
+                                "{{MessageSid}}.json"
+                              ],
+                              "variable": [
+                                {
+                                  "key": "AccountSid"
+                                }
+                              ]
+                            }
+                          },
+                          "status": "OK",
+                          "code": 200,
+                          "_postman_previewlanguage": "json",
+                          "header": [
+                            {
+                              "key": "Content-Type",
+                              "value": "application/json"
+                            }
+                          ],
+                          "cookie": [],
+                          "responseTime": null,
+                          "body": "{\n  \"sid\": \"SM5FE209FaDedCae1A3DDEb9C77580dcd8\",\n  \"account_sid\": \"ACxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx\",\n  \"messaging_service_sid\": \"MGb05Af3B4f9b12D0EE29fE9EC12Bf3ad8\",\n  \"to\": \"<string>\",\n  \"from\": \"<string>\",\n  \"body\": \"<string>\",\n  \"status\": \"partially_delivered\",\n  \"direction\": \"inbound\",\n  \"price\": \"<string>\",\n  \"price_unit\": \"<string>\",\n  \"num_segments\": \"<string>\",\n  \"num_media\": \"<string>\",\n  \"error_code\": \"<integer>\",\n  \"error_message\": \"<string>\",\n  \"date_created\": \"<dateTime>\",\n  \"date_updated\": \"<dateTime>\",\n  \"date_sent\": \"<dateTime>\",\n  \"uri\": \"<string>\",\n  \"api_version\": \"<string>\",\n  \"subresource_uris\": {\n    \"media\": \"<string>\"\n  }\n}",
+                          "createdAt": "2026-06-05T13:21:59.000Z",
+                          "updatedAt": "2026-06-05T13:21:59.000Z",
+                          "uid": "35240-908332c8-4040-40f5-b62b-3d6a3e53e379"
+                        },
+                        {
+                          "id": "6932eaf5-0ef5-4836-9c0d-cdd763d86a5a",
+                          "name": "Unauthorized",
+                          "originalRequest": {
+                            "method": "POST",
+                            "header": [
+                              {
+                                "key": "Content-Type",
+                                "value": "application/x-www-form-urlencoded"
+                              },
+                              {
+                                "description": "Added as a part of security scheme: basic",
+                                "key": "Authorization",
+                                "value": "Basic <credentials>"
+                              }
+                            ],
+                            "body": {
+                              "mode": "urlencoded",
+                              "urlencoded": [
+                                {
+                                  "description": "The updated message body (empty string to redact)",
+                                  "key": "Body",
+                                  "value": "<string>"
+                                },
+                                {
+                                  "description": "Set to canceled to cancel a queued message",
+                                  "key": "Status",
+                                  "value": "canceled"
+                                }
+                              ]
+                            },
+                            "url": {
+                              "raw": "{{baseUrl}}/Accounts/:AccountSid/Messages/{{MessageSid}}.json",
+                              "host": [
+                                "{{baseUrl}}"
+                              ],
+                              "path": [
+                                "Accounts",
+                                ":AccountSid",
+                                "Messages",
+                                "{{MessageSid}}.json"
+                              ],
+                              "variable": [
+                                {
+                                  "key": "AccountSid"
+                                }
+                              ]
+                            }
+                          },
+                          "status": "Unauthorized",
+                          "code": 401,
+                          "_postman_previewlanguage": "text",
+                          "header": [],
+                          "cookie": [],
+                          "responseTime": null,
+                          "body": null,
+                          "createdAt": "2026-06-05T13:21:59.000Z",
+                          "updatedAt": "2026-06-05T13:21:59.000Z",
+                          "uid": "35240-6932eaf5-0ef5-4836-9c0d-cdd763d86a5a"
+                        },
+                        {
+                          "id": "344f43d3-220c-4192-9ac1-45264970c642",
+                          "name": "Message not found",
+                          "originalRequest": {
+                            "method": "POST",
+                            "header": [
+                              {
+                                "key": "Content-Type",
+                                "value": "application/x-www-form-urlencoded"
+                              },
+                              {
+                                "description": "Added as a part of security scheme: basic",
+                                "key": "Authorization",
+                                "value": "Basic <credentials>"
+                              }
+                            ],
+                            "body": {
+                              "mode": "urlencoded",
+                              "urlencoded": [
+                                {
+                                  "description": "The updated message body (empty string to redact)",
+                                  "key": "Body",
+                                  "value": "<string>"
+                                },
+                                {
+                                  "description": "Set to canceled to cancel a queued message",
+                                  "key": "Status",
+                                  "value": "canceled"
+                                }
+                              ]
+                            },
+                            "url": {
+                              "raw": "{{baseUrl}}/Accounts/:AccountSid/Messages/{{MessageSid}}.json",
+                              "host": [
+                                "{{baseUrl}}"
+                              ],
+                              "path": [
+                                "Accounts",
+                                ":AccountSid",
+                                "Messages",
+                                "{{MessageSid}}.json"
+                              ],
+                              "variable": [
+                                {
+                                  "key": "AccountSid"
+                                }
+                              ]
+                            }
+                          },
+                          "status": "Not Found",
+                          "code": 404,
+                          "_postman_previewlanguage": "text",
+                          "header": [],
+                          "cookie": [],
+                          "responseTime": null,
+                          "body": null,
+                          "createdAt": "2026-06-05T13:21:59.000Z",
+                          "updatedAt": "2026-06-05T13:21:59.000Z",
+                          "uid": "35240-344f43d3-220c-4192-9ac1-45264970c642"
+                        }
+                      ],
+                      "createdAt": "2026-06-05T13:21:59.000Z",
+                      "updatedAt": "2026-06-05T13:21:59.000Z",
+                      "uid": "35240-d3c69713-97ed-40a7-bd28-0b7fe54d835f"
+                    },
+                    {
+                      "name": "Twilio Delete a Message",
+                      "id": "8c0e7a1d-9bc1-46e8-98c4-3ad18eeb945f",
+                      "protocolProfileBehavior": {
+                        "disableBodyPruning": true
+                      },
+                      "request": {
+                        "method": "DELETE",
+                        "header": [],
+                        "url": {
+                          "raw": "{{baseUrl}}/Accounts/:AccountSid/Messages/{{MessageSid}}.json",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "Accounts",
+                            ":AccountSid",
+                            "Messages",
+                            "{{MessageSid}}.json"
+                          ],
+                          "variable": [
+                            {
+                              "id": "70709328-da5c-49cf-9fbd-44f65535aeed",
+                              "key": "AccountSid",
+                              "value": "ACxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",
+                              "description": "(Required) The unique identifier of the Twilio account"
+                            }
+                          ]
+                        },
+                        "description": "Delete a message record from your account. The message will no longer appear in your account logs."
+                      },
+                      "response": [
+                        {
+                          "id": "a73c6aa9-22fd-42e8-b766-eca4b3ff7370",
+                          "name": "Message deleted",
+                          "originalRequest": {
+                            "method": "DELETE",
+                            "header": [
+                              {
+                                "description": "Added as a part of security scheme: basic",
+                                "key": "Authorization",
+                                "value": "Basic <credentials>"
+                              }
+                            ],
+                            "url": {
+                              "raw": "{{baseUrl}}/Accounts/:AccountSid/Messages/{{MessageSid}}.json",
+                              "host": [
+                                "{{baseUrl}}"
+                              ],
+                              "path": [
+                                "Accounts",
+                                ":AccountSid",
+                                "Messages",
+                                "{{MessageSid}}.json"
+                              ],
+                              "variable": [
+                                {
+                                  "key": "AccountSid"
+                                }
+                              ]
+                            }
+                          },
+                          "status": "No Content",
+                          "code": 204,
+                          "_postman_previewlanguage": "text",
+                          "header": [],
+                          "cookie": [],
+                          "responseTime": null,
+                          "body": null,
+                          "createdAt": "2026-06-05T13:21:59.000Z",
+                          "updatedAt": "2026-06-05T13:21:59.000Z",
+                          "uid": "35240-a73c6aa9-22fd-42e8-b766-eca4b3ff7370"
+                        },
+                        {
+                          "id": "8f137d22-cf02-4e0e-9448-1b49650968c4",
+                          "name": "Unauthorized",
+                          "originalRequest": {
+                            "method": "DELETE",
+                            "header": [
+                              {
+                                "description": "Added as a part of security scheme: basic",
+                                "key": "Authorization",
+                                "value": "Basic <credentials>"
+                              }
+                            ],
+                            "url": {
+                              "raw": "{{baseUrl}}/Accounts/:AccountSid/Messages/{{MessageSid}}.json",
+                              "host": [
+                                "{{baseUrl}}"
+                              ],
+                              "path": [
+                                "Accounts",
+                                ":AccountSid",
+                                "Messages",
+                                "{{MessageSid}}.json"
+                              ],
+                              "variable": [
+                                {
+                                  "key": "AccountSid"
+                                }
+                              ]
+                            }
+                          },
+                          "status": "Unauthorized",
+                          "code": 401,
+                          "_postman_previewlanguage": "text",
+                          "header": [],
+                          "cookie": [],
+                          "responseTime": null,
+                          "body": null,
+                          "createdAt": "2026-06-05T13:21:59.000Z",
+                          "updatedAt": "2026-06-05T13:21:59.000Z",
+                          "uid": "35240-8f137d22-cf02-4e0e-9448-1b49650968c4"
+                        },
+                        {
+                          "id": "aab62d80-eecf-477d-9780-4fb81b44b6a4",
+                          "name": "Message not found",
+                          "originalRequest": {
+                            "method": "DELETE",
+                            "header": [
+                              {
+                                "description": "Added as a part of security scheme: basic",
+                                "key": "Authorization",
+                                "value": "Basic <credentials>"
+                              }
+                            ],
+                            "url": {
+                              "raw": "{{baseUrl}}/Accounts/:AccountSid/Messages/{{MessageSid}}.json",
+                              "host": [
+                                "{{baseUrl}}"
+                              ],
+                              "path": [
+                                "Accounts",
+                                ":AccountSid",
+                                "Messages",
+                                "{{MessageSid}}.json"
+                              ],
+                              "variable": [
+                                {
+                                  "key": "AccountSid"
+                                }
+                              ]
+                            }
+                          },
+                          "status": "Not Found",
+                          "code": 404,
+                          "_postman_previewlanguage": "text",
+                          "header": [],
+                          "cookie": [],
+                          "responseTime": null,
+                          "body": null,
+                          "createdAt": "2026-06-05T13:21:59.000Z",
+                          "updatedAt": "2026-06-05T13:21:59.000Z",
+                          "uid": "35240-aab62d80-eecf-477d-9780-4fb81b44b6a4"
+                        }
+                      ],
+                      "createdAt": "2026-06-05T13:21:59.000Z",
+                      "updatedAt": "2026-06-05T13:21:59.000Z",
+                      "uid": "35240-8c0e7a1d-9bc1-46e8-98c4-3ad18eeb945f"
+                    }
+                  ],
+                  "id": "76367f35-2960-4b7e-82a7-75092a1e3d23",
+                  "createdAt": "2026-06-05T13:21:59.000Z",
+                  "updatedAt": "2026-06-05T13:21:59.000Z",
+                  "uid": "35240-76367f35-2960-4b7e-82a7-75092a1e3d23"
+                },
+                {
+                  "name": "{MessageSid}",
+                  "item": [
+                    {
+                      "name": "Media.json",
+                      "item": [
+                        {
+                          "name": "Twilio List Media for a Message",
+                          "id": "d69cb540-d7d8-4066-aa47-2334c9ef5e07",
+                          "protocolProfileBehavior": {
+                            "disableBodyPruning": true
+                          },
+                          "request": {
+                            "method": "GET",
+                            "header": [
+                              {
+                                "key": "Accept",
+                                "value": "application/json"
+                              }
+                            ],
+                            "url": {
+                              "raw": "{{baseUrl}}/Accounts/:AccountSid/Messages/:MessageSid/Media.json?PageSize=<integer>",
+                              "host": [
+                                "{{baseUrl}}"
+                              ],
+                              "path": [
+                                "Accounts",
+                                ":AccountSid",
+                                "Messages",
+                                ":MessageSid",
+                                "Media.json"
+                              ],
+                              "query": [
+                                {
+                                  "key": "PageSize",
+                                  "value": "<integer>"
+                                }
+                              ],
+                              "variable": [
+                                {
+                                  "id": "08ab1d41-7578-4557-a4b4-9ffd3ed5148c",
+                                  "key": "AccountSid",
+                                  "value": "ACxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",
+                                  "description": "(Required) The unique identifier of the Twilio account"
+                                },
+                                {
+                                  "id": "df1ee9a2-56f2-4ed5-b12b-992801b171ce",
+                                  "key": "MessageSid",
+                                  "value": "SM53FDC36B90f493c9e9c1eAfB4A3Ac3d4",
+                                  "description": "(Required) The unique identifier of the message"
+                                }
+                              ]
+                            },
+                            "description": "Retrieve a list of media associated with an MMS message."
+                          },
+                          "response": [
+                            {
+                              "id": "37757201-1e32-44be-93f8-aa58b73f8114",
+                              "name": "List of media resources",
+                              "originalRequest": {
+                                "method": "GET",
+                                "header": [
+                                  {
+                                    "key": "Accept",
+                                    "value": "application/json"
+                                  },
+                                  {
+                                    "description": "Added as a part of security scheme: basic",
+                                    "key": "Authorization",
+                                    "value": "Basic <credentials>"
+                                  }
+                                ],
+                                "url": {
+                                  "raw": "{{baseUrl}}/Accounts/:AccountSid/Messages/:MessageSid/Media.json?PageSize=<integer>",
+                                  "host": [
+                                    "{{baseUrl}}"
+                                  ],
+                                  "path": [
+                                    "Accounts",
+                                    ":AccountSid",
+                                    "Messages",
+                                    ":MessageSid",
+                                    "Media.json"
+                                  ],
+                                  "query": [
+                                    {
+                                      "key": "PageSize",
+                                      "value": "<integer>"
+                                    }
+                                  ],
+                                  "variable": [
+                                    {
+                                      "key": "AccountSid"
+                                    },
+                                    {
+                                      "key": "MessageSid"
+                                    }
+                                  ]
+                                }
+                              },
+                              "status": "OK",
+                              "code": 200,
+                              "_postman_previewlanguage": "json",
+                              "header": [
+                                {
+                                  "key": "Content-Type",
+                                  "value": "application/json"
+                                }
+                              ],
+                              "cookie": [],
+                              "responseTime": null,
+                              "body": "{\n  \"media_list\": [\n    {\n      \"sid\": \"ME6CED0CaA3b8eDe4ED70Fe25aa76A7b4D\",\n      \"account_sid\": \"ACxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx\",\n      \"parent_sid\": \"<string>\",\n      \"content_type\": \"<string>\",\n      \"date_created\": \"<dateTime>\",\n      \"date_updated\": \"<dateTime>\",\n      \"uri\": \"<string>\"\n    },\n    {\n      \"sid\": \"ME65ec868Aa4bCcbDFcD5BF580aBbd29De\",\n      \"account_sid\": \"ACxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx\",\n      \"parent_sid\": \"<string>\",\n      \"content_type\": \"<string>\",\n      \"date_created\": \"<dateTime>\",\n      \"date_updated\": \"<dateTime>\",\n      \"uri\": \"<string>\"\n    }\n  ],\n  \"page\": \"<integer>\",\n  \"page_size\": \"<integer>\",\n  \"uri\": \"<string>\"\n}",
+                              "createdAt": "2026-06-05T13:21:59.000Z",
+                              "updatedAt": "2026-06-05T13:21:59.000Z",
+                              "uid": "35240-37757201-1e32-44be-93f8-aa58b73f8114"
+                            },
+                            {
+                              "id": "c30955f2-44a9-4134-9e1f-f8add5d3fd34",
+                              "name": "Unauthorized",
+                              "originalRequest": {
+                                "method": "GET",
+                                "header": [
+                                  {
+                                    "description": "Added as a part of security scheme: basic",
+                                    "key": "Authorization",
+                                    "value": "Basic <credentials>"
+                                  }
+                                ],
+                                "url": {
+                                  "raw": "{{baseUrl}}/Accounts/:AccountSid/Messages/:MessageSid/Media.json?PageSize=<integer>",
+                                  "host": [
+                                    "{{baseUrl}}"
+                                  ],
+                                  "path": [
+                                    "Accounts",
+                                    ":AccountSid",
+                                    "Messages",
+                                    ":MessageSid",
+                                    "Media.json"
+                                  ],
+                                  "query": [
+                                    {
+                                      "key": "PageSize",
+                                      "value": "<integer>"
+                                    }
+                                  ],
+                                  "variable": [
+                                    {
+                                      "key": "AccountSid"
+                                    },
+                                    {
+                                      "key": "MessageSid"
+                                    }
+                                  ]
+                                }
+                              },
+                              "status": "Unauthorized",
+                              "code": 401,
+                              "_postman_previewlanguage": "text",
+                              "header": [],
+                              "cookie": [],
+                              "responseTime": null,
+                              "body": null,
+                              "createdAt": "2026-06-05T13:21:59.000Z",
+                              "updatedAt": "2026-06-05T13:21:59.000Z",
+                              "uid": "35240-c30955f2-44a9-4134-9e1f-f8add5d3fd34"
+                            }
+                          ],
+                          "createdAt": "2026-06-05T13:21:59.000Z",
+                          "updatedAt": "2026-06-05T13:21:59.000Z",
+                          "uid": "35240-d69cb540-d7d8-4066-aa47-2334c9ef5e07"
+                        }
+                      ],
+                      "id": "3a94ab0b-876a-4b16-97e2-07d2e848cafc",
+                      "createdAt": "2026-06-05T13:21:59.000Z",
+                      "updatedAt": "2026-06-05T13:21:59.000Z",
+                      "uid": "35240-3a94ab0b-876a-4b16-97e2-07d2e848cafc"
+                    },
+                    {
+                      "name": "Media",
+                      "item": [
+                        {
+                          "name": "{MediaSid}.json",
+                          "item": [
+                            {
+                              "name": "Twilio Fetch a Media Resource",
+                              "id": "293e4957-c8ca-4afb-89f4-535694fef186",
+                              "protocolProfileBehavior": {
+                                "disableBodyPruning": true
+                              },
+                              "request": {
+                                "method": "GET",
+                                "header": [
+                                  {
+                                    "key": "Accept",
+                                    "value": "application/json"
+                                  }
+                                ],
+                                "url": {
+                                  "raw": "{{baseUrl}}/Accounts/:AccountSid/Messages/:MessageSid/Media/{{MediaSid}}.json",
+                                  "host": [
+                                    "{{baseUrl}}"
+                                  ],
+                                  "path": [
+                                    "Accounts",
+                                    ":AccountSid",
+                                    "Messages",
+                                    ":MessageSid",
+                                    "Media",
+                                    "{{MediaSid}}.json"
+                                  ],
+                                  "variable": [
+                                    {
+                                      "id": "06bb6355-740d-4536-8f5f-b7f3a800f451",
+                                      "key": "AccountSid",
+                                      "value": "ACxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",
+                                      "description": "(Required) The unique identifier of the Twilio account"
+                                    },
+                                    {
+                                      "id": "514b35f6-a3ed-4b82-adac-14766a0d0cb4",
+                                      "key": "MessageSid",
+                                      "value": "SM53FDC36B90f493c9e9c1eAfB4A3Ac3d4",
+                                      "description": "(Required) The unique identifier of the message"
+                                    }
+                                  ]
+                                },
+                                "description": "Retrieve a specific media resource associated with a message."
+                              },
+                              "response": [
+                                {
+                                  "id": "779fa7c8-1a7d-4ada-8aef-683bc14dc5ef",
+                                  "name": "Media resource details",
+                                  "originalRequest": {
+                                    "method": "GET",
+                                    "header": [
+                                      {
+                                        "key": "Accept",
+                                        "value": "application/json"
+                                      },
+                                      {
+                                        "description": "Added as a part of security scheme: basic",
+                                        "key": "Authorization",
+                                        "value": "Basic <credentials>"
+                                      }
+                                    ],
+                                    "url": {
+                                      "raw": "{{baseUrl}}/Accounts/:AccountSid/Messages/:MessageSid/Media/{{MediaSid}}.json",
+                                      "host": [
+                                        "{{baseUrl}}"
+                                      ],
+                                      "path": [
+                                        "Accounts",
+                                        ":AccountSid",
+                                        "Messages",
+                                        ":MessageSid",
+                                        "Media",
+                                        "{{MediaSid}}.json"
+                                      ],
+                                      "variable": [
+                                        {
+                                          "key": "AccountSid"
+                                        },
+                                        {
+                                          "key": "MessageSid"
+                                        }
+                                      ]
+                                    }
+                                  },
+                                  "status": "OK",
+                                  "code": 200,
+                                  "_postman_previewlanguage": "json",
+                                  "header": [
+                                    {
+                                      "key": "Content-Type",
+                                      "value": "application/json"
+                                    }
+                                  ],
+                                  "cookie": [],
+                                  "responseTime": null,
+                                  "body": "{\n  \"sid\": \"ME4fceFA57D4744f9aC88c8A7897d73Cd8\",\n  \"account_sid\": \"ACxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx\",\n  \"parent_sid\": \"<string>\",\n  \"content_type\": \"<string>\",\n  \"date_created\": \"<dateTime>\",\n  \"date_updated\": \"<dateTime>\",\n  \"uri\": \"<string>\"\n}",
+                                  "createdAt": "2026-06-05T13:21:59.000Z",
+                                  "updatedAt": "2026-06-05T13:21:59.000Z",
+                                  "uid": "35240-779fa7c8-1a7d-4ada-8aef-683bc14dc5ef"
+                                },
+                                {
+                                  "id": "130d2402-5a4c-492d-84e3-4035ec74a637",
+                                  "name": "Unauthorized",
+                                  "originalRequest": {
+                                    "method": "GET",
+                                    "header": [
+                                      {
+                                        "description": "Added as a part of security scheme: basic",
+                                        "key": "Authorization",
+                                        "value": "Basic <credentials>"
+                                      }
+                                    ],
+                                    "url": {
+                                      "raw": "{{baseUrl}}/Accounts/:AccountSid/Messages/:MessageSid/Media/{{MediaSid}}.json",
+                                      "host": [
+                                        "{{baseUrl}}"
+                                      ],
+                                      "path": [
+                                        "Accounts",
+                                        ":AccountSid",
+                                        "Messages",
+                                        ":MessageSid",
+                                        "Media",
+                                        "{{MediaSid}}.json"
+                                      ],
+                                      "variable": [
+                                        {
+                                          "key": "AccountSid"
+                                        },
+                                        {
+                                          "key": "MessageSid"
+                                        }
+                                      ]
+                                    }
+                                  },
+                                  "status": "Unauthorized",
+                                  "code": 401,
+                                  "_postman_previewlanguage": "text",
+                                  "header": [],
+                                  "cookie": [],
+                                  "responseTime": null,
+                                  "body": null,
+                                  "createdAt": "2026-06-05T13:21:59.000Z",
+                                  "updatedAt": "2026-06-05T13:21:59.000Z",
+                                  "uid": "35240-130d2402-5a4c-492d-84e3-4035ec74a637"
+                                },
+                                {
+                                  "id": "76e6cb41-5cf8-4edd-86c0-13092bd331b9",
+                                  "name": "Media not found",
+                                  "originalRequest": {
+                                    "method": "GET",
+                                    "header": [
+                                      {
+                                        "description": "Added as a part of security scheme: basic",
+                                        "key": "Authorization",
+                                        "value": "Basic <credentials>"
+                                      }
+                                    ],
+                                    "url": {
+                                      "raw": "{{baseUrl}}/Accounts/:AccountSid/Messages/:MessageSid/Media/{{MediaSid}}.json",
+                                      "host": [
+                                        "{{baseUrl}}"
+                                      ],
+                                      "path": [
+                                        "Accounts",
+                                        ":AccountSid",
+                                        "Messages",
+                                        ":MessageSid",
+                                        "Media",
+                                        "{{MediaSid}}.json"
+                                      ],
+                                      "variable": [
+                                        {
+                                          "key": "AccountSid"
+                                        },
+                                        {
+                                          "key": "MessageSid"
+                                        }
+                                      ]
+                                    }
+                                  },
+                                  "status": "Not Found",
+                                  "code": 404,
+                                  "_postman_previewlanguage": "text",
+                                  "header": [],
+                                  "cookie": [],
+                                  "responseTime": null,
+                                  "body": null,
+                                  "createdAt": "2026-06-05T13:21:59.000Z",
+                                  "updatedAt": "2026-06-05T13:21:59.000Z",
+                                  "uid": "35240-76e6cb41-5cf8-4edd-86c0-13092bd331b9"
+                                }
+                              ],
+                              "createdAt": "2026-06-05T13:21:59.000Z",
+                              "updatedAt": "2026-06-05T13:21:59.000Z",
+                              "uid": "35240-293e4957-c8ca-4afb-89f4-535694fef186"
+                            },
+                            {
+                              "name": "Twilio Delete a Media Resource",
+                              "id": "68bd0edc-6d42-4bce-8757-50acc39f2f41",
+                              "protocolProfileBehavior": {
+                                "disableBodyPruning": true
+                              },
+                              "request": {
+                                "method": "DELETE",
+                                "header": [],
+                                "url": {
+                                  "raw": "{{baseUrl}}/Accounts/:AccountSid/Messages/:MessageSid/Media/{{MediaSid}}.json",
+                                  "host": [
+                                    "{{baseUrl}}"
+                                  ],
+                                  "path": [
+                                    "Accounts",
+                                    ":AccountSid",
+                                    "Messages",
+                                    ":MessageSid",
+                                    "Media",
+                                    "{{MediaSid}}.json"
+                                  ],
+                                  "variable": [
+                                    {
+                                      "id": "b2c931d9-e008-4428-8927-0fa52190d5fd",
+                                      "key": "AccountSid",
+                                      "value": "ACxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",
+                                      "description": "(Required) The unique identifier of the Twilio account"
+                                    },
+                                    {
+                                      "id": "bb44ec81-406d-4991-b359-cb4b8705f509",
+                                      "key": "MessageSid",
+                                      "value": "SM53FDC36B90f493c9e9c1eAfB4A3Ac3d4",
+                                      "description": "(Required) The unique identifier of the message"
+                                    }
+                                  ]
+                                }
+                              },
+                              "response": [
+                                {
+                                  "id": "02a54974-8127-4077-9590-1c812970c8e9",
+                                  "name": "Media deleted",
+                                  "originalRequest": {
+                                    "method": "DELETE",
+                                    "header": [
+                                      {
+                                        "description": "Added as a part of security scheme: basic",
+                                        "key": "Authorization",
+                                        "value": "Basic <credentials>"
+                                      }
+                                    ],
+                                    "url": {
+                                      "raw": "{{baseUrl}}/Accounts/:AccountSid/Messages/:MessageSid/Media/{{MediaSid}}.json",
+                                      "host": [
+                                        "{{baseUrl}}"
+                                      ],
+                                      "path": [
+                                        "Accounts",
+                                        ":AccountSid",
+                                        "Messages",
+                                        ":MessageSid",
+                                        "Media",
+                                        "{{MediaSid}}.json"
+                                      ],
+                                      "variable": [
+                                        {
+                                          "key": "AccountSid"
+                                        },
+                                        {
+                                          "key": "MessageSid"
+                                        }
+                                      ]
+                                    }
+                                  },
+                                  "status": "No Content",
+                                  "code": 204,
+                                  "_postman_previewlanguage": "text",
+                                  "header": [],
+                                  "cookie": [],
+                                  "responseTime": null,
+                                  "body": null,
+                                  "createdAt": "2026-06-05T13:21:59.000Z",
+                                  "updatedAt": "2026-06-05T13:21:59.000Z",
+                                  "uid": "35240-02a54974-8127-4077-9590-1c812970c8e9"
+                                },
+                                {
+                                  "id": "2e31f9a4-624f-4729-91d9-7efa0299909d",
+                                  "name": "Media not found",
+                                  "originalRequest": {
+                                    "method": "DELETE",
+                                    "header": [
+                                      {
+                                        "description": "Added as a part of security scheme: basic",
+                                        "key": "Authorization",
+                                        "value": "Basic <credentials>"
+                                      }
+                                    ],
+                                    "url": {
+                                      "raw": "{{baseUrl}}/Accounts/:AccountSid/Messages/:MessageSid/Media/{{MediaSid}}.json",
+                                      "host": [
+                                        "{{baseUrl}}"
+                                      ],
+                                      "path": [
+                                        "Accounts",
+                                        ":AccountSid",
+                                        "Messages",
+                                        ":MessageSid",
+                                        "Media",
+                                        "{{MediaSid}}.json"
+                                      ],
+                                      "variable": [
+                                        {
+                                          "key": "AccountSid"
+                                        },
+                                        {
+                                          "key": "MessageSid"
+                                        }
+                                      ]
+                                    }
+                                  },
+                                  "status": "Not Found",
+                                  "code": 404,
+                                  "_postman_previewlanguage": "text",
+                                  "header": [],
+                                  "cookie": [],
+                                  "responseTime": null,
+                                  "body": null,
+                                  "createdAt": "2026-06-05T13:21:59.000Z",
+                                  "updatedAt": "2026-06-05T13:21:59.000Z",
+                                  "uid": "35240-2e31f9a4-624f-4729-91d9-7efa0299909d"
+                                }
+                              ],
+                              "createdAt": "2026-06-05T13:21:59.000Z",
+                              "updatedAt": "2026-06-05T13:21:59.000Z",
+                              "uid": "35240-68bd0edc-6d42-4bce-8757-50acc39f2f41"
+                            }
+                          ],
+                          "id": "2a93bdea-074b-4ee5-8ca2-088ad65cc2a3",
+                          "createdAt": "2026-06-05T13:21:59.000Z",
+                          "updatedAt": "2026-06-05T13:21:59.000Z",
+                          "uid": "35240-2a93bdea-074b-4ee5-8ca2-088ad65cc2a3"
+                        }
+                      ],
+                      "id": "d76bf0c8-f61c-4772-957d-2aae39b641e4",
+                      "createdAt": "2026-06-05T13:21:59.000Z",
+                      "updatedAt": "2026-06-05T13:21:59.000Z",
+                      "uid": "35240-d76bf0c8-f61c-4772-957d-2aae39b641e4"
+                    }
+                  ],
+                  "id": "4d94c1fb-b21f-4a4d-a947-a1fcdbdda4aa",
+                  "createdAt": "2026-06-05T13:21:59.000Z",
+                  "updatedAt": "2026-06-05T13:21:59.000Z",
+                  "uid": "35240-4d94c1fb-b21f-4a4d-a947-a1fcdbdda4aa"
+                }
+              ],
+              "id": "8fa602d4-c81f-4845-ac2b-a99fd1af24d7",
+              "createdAt": "2026-06-05T13:21:59.000Z",
+              "updatedAt": "2026-06-05T13:21:59.000Z",
+              "uid": "35240-8fa602d4-c81f-4845-ac2b-a99fd1af24d7"
+            }
+          ],
+          "id": "e3f91a1f-8ea5-4f17-921a-f83ca9842448",
+          "createdAt": "2026-06-05T13:21:59.000Z",
+          "updatedAt": "2026-06-05T13:21:59.000Z",
+          "uid": "35240-e3f91a1f-8ea5-4f17-921a-f83ca9842448"
+        }
+      ],
+      "id": "87faf858-71d9-4909-be5e-8f6e51b542a1",
+      "createdAt": "2026-06-05T13:21:59.000Z",
+      "updatedAt": "2026-06-05T13:21:59.000Z",
+      "uid": "35240-87faf858-71d9-4909-be5e-8f6e51b542a1"
+    },
+    {
+      "name": "Services",
+      "item": [
+        {
+          "name": "{ServiceSid}",
+          "item": [
+            {
+              "name": "PhoneNumbers",
+              "item": [
+                {
+                  "name": "Twilio List Phone Numbers in a Messaging Service",
+                  "id": "97f6f332-a19a-40ec-a8bf-dd87333cc6ff",
+                  "protocolProfileBehavior": {
+                    "disableBodyPruning": true
+                  },
+                  "request": {
+                    "method": "GET",
+                    "header": [
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/Services/:ServiceSid/PhoneNumbers",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "Services",
+                        ":ServiceSid",
+                        "PhoneNumbers"
+                      ],
+                      "variable": [
+                        {
+                          "id": "fc2632dd-3383-434c-99b3-b03db6fe30ed",
+                          "key": "ServiceSid",
+                          "value": "MGBfFcaDB048eAb0a006Efd97f308df780",
+                          "description": "(Required) The unique identifier of the messaging service"
+                        }
+                      ]
+                    }
+                  },
+                  "response": [
+                    {
+                      "id": "854868f7-2e6f-4c12-ac2e-9164e4bfa0e8",
+                      "name": "List of phone numbers",
+                      "originalRequest": {
+                        "method": "GET",
+                        "header": [
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          },
+                          {
+                            "description": "Added as a part of security scheme: basic",
+                            "key": "Authorization",
+                            "value": "Basic <credentials>"
+                          }
+                        ],
+                        "url": {
+                          "raw": "{{baseUrl}}/Services/:ServiceSid/PhoneNumbers",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "Services",
+                            ":ServiceSid",
+                            "PhoneNumbers"
+                          ],
+                          "variable": [
+                            {
+                              "key": "ServiceSid"
+                            }
+                          ]
+                        }
+                      },
+                      "status": "OK",
+                      "code": 200,
+                      "_postman_previewlanguage": "json",
+                      "header": [
+                        {
+                          "key": "Content-Type",
+                          "value": "application/json"
+                        }
+                      ],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": "{\n  \"phone_numbers\": [\n    {\n      \"sid\": \"PN3DD4Fee5944A4De12fF0cEe8770db3Ab\",\n      \"phone_number\": \"<string>\",\n      \"country_code\": \"<string>\",\n      \"capabilities\": [\n        \"<string>\",\n        \"<string>\"\n      ],\n      \"date_created\": \"<dateTime>\"\n    },\n    {\n      \"sid\": \"PNEA66Fe7d91DBaf4bBb8fcCdF025dd1AE\",\n      \"phone_number\": \"<string>\",\n      \"country_code\": \"<string>\",\n      \"capabilities\": [\n        \"<string>\",\n        \"<string>\"\n      ],\n      \"date_created\": \"<dateTime>\"\n    }\n  ]\n}",
+                      "createdAt": "2026-06-05T13:21:59.000Z",
+                      "updatedAt": "2026-06-05T13:21:59.000Z",
+                      "uid": "35240-854868f7-2e6f-4c12-ac2e-9164e4bfa0e8"
+                    }
+                  ],
+                  "createdAt": "2026-06-05T13:21:59.000Z",
+                  "updatedAt": "2026-06-05T13:21:59.000Z",
+                  "uid": "35240-97f6f332-a19a-40ec-a8bf-dd87333cc6ff"
+                },
+                {
+                  "name": "Twilio Add a Phone Number to a Messaging Service",
+                  "id": "703ae13f-d030-4135-bd3f-52b3486f5db9",
+                  "protocolProfileBehavior": {
+                    "disableBodyPruning": true
+                  },
+                  "request": {
+                    "method": "POST",
+                    "header": [
+                      {
+                        "key": "Content-Type",
+                        "value": "application/x-www-form-urlencoded"
+                      }
+                    ],
+                    "body": {
+                      "mode": "urlencoded",
+                      "urlencoded": [
+                        {
+                          "description": "(Required) SID of the phone number to add",
+                          "key": "PhoneNumberSid",
+                          "value": "PNeb0C59f31E66fB43b1AB91F45413761B"
+                        }
+                      ]
+                    },
+                    "url": {
+                      "raw": "{{baseUrl}}/Services/:ServiceSid/PhoneNumbers",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "Services",
+                        ":ServiceSid",
+                        "PhoneNumbers"
+                      ],
+                      "variable": [
+                        {
+                          "id": "ac6cc330-c86c-4fd4-87e4-83bd30abce37",
+                          "key": "ServiceSid",
+                          "value": "MGBfFcaDB048eAb0a006Efd97f308df780",
+                          "description": "(Required) The unique identifier of the messaging service"
+                        }
+                      ]
+                    }
+                  },
+                  "response": [
+                    {
+                      "id": "fbfc0459-55d4-4609-bab9-03252e6fe666",
+                      "name": "Phone number added",
+                      "originalRequest": {
+                        "method": "POST",
+                        "header": [
+                          {
+                            "key": "Content-Type",
+                            "value": "application/x-www-form-urlencoded"
+                          },
+                          {
+                            "description": "Added as a part of security scheme: basic",
+                            "key": "Authorization",
+                            "value": "Basic <credentials>"
+                          }
+                        ],
+                        "body": {
+                          "mode": "urlencoded",
+                          "urlencoded": [
+                            {
+                              "description": "(Required) SID of the phone number to add",
+                              "key": "PhoneNumberSid",
+                              "value": "PNeb0C59f31E66fB43b1AB91F45413761B"
+                            }
+                          ]
+                        },
+                        "url": {
+                          "raw": "{{baseUrl}}/Services/:ServiceSid/PhoneNumbers",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "Services",
+                            ":ServiceSid",
+                            "PhoneNumbers"
+                          ],
+                          "variable": [
+                            {
+                              "key": "ServiceSid"
+                            }
+                          ]
+                        }
+                      },
+                      "status": "Created",
+                      "code": 201,
+                      "_postman_previewlanguage": "text",
+                      "header": [],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": null,
+                      "createdAt": "2026-06-05T13:21:59.000Z",
+                      "updatedAt": "2026-06-05T13:21:59.000Z",
+                      "uid": "35240-fbfc0459-55d4-4609-bab9-03252e6fe666"
+                    },
+                    {
+                      "id": "ba19c563-798a-4f89-8aaf-99d29e9a6329",
+                      "name": "Invalid request",
+                      "originalRequest": {
+                        "method": "POST",
+                        "header": [
+                          {
+                            "key": "Content-Type",
+                            "value": "application/x-www-form-urlencoded"
+                          },
+                          {
+                            "description": "Added as a part of security scheme: basic",
+                            "key": "Authorization",
+                            "value": "Basic <credentials>"
+                          }
+                        ],
+                        "body": {
+                          "mode": "urlencoded",
+                          "urlencoded": [
+                            {
+                              "description": "(Required) SID of the phone number to add",
+                              "key": "PhoneNumberSid",
+                              "value": "PNeb0C59f31E66fB43b1AB91F45413761B"
+                            }
+                          ]
+                        },
+                        "url": {
+                          "raw": "{{baseUrl}}/Services/:ServiceSid/PhoneNumbers",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "Services",
+                            ":ServiceSid",
+                            "PhoneNumbers"
+                          ],
+                          "variable": [
+                            {
+                              "key": "ServiceSid"
+                            }
+                          ]
+                        }
+                      },
+                      "status": "Bad Request",
+                      "code": 400,
+                      "_postman_previewlanguage": "text",
+                      "header": [],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": null,
+                      "createdAt": "2026-06-05T13:21:59.000Z",
+                      "updatedAt": "2026-06-05T13:21:59.000Z",
+                      "uid": "35240-ba19c563-798a-4f89-8aaf-99d29e9a6329"
+                    }
+                  ],
+                  "createdAt": "2026-06-05T13:21:59.000Z",
+                  "updatedAt": "2026-06-05T13:21:59.000Z",
+                  "uid": "35240-703ae13f-d030-4135-bd3f-52b3486f5db9"
+                }
+              ],
+              "id": "4150e331-06ff-4e20-be8f-05703120e4da",
+              "createdAt": "2026-06-05T13:21:59.000Z",
+              "updatedAt": "2026-06-05T13:21:59.000Z",
+              "uid": "35240-4150e331-06ff-4e20-be8f-05703120e4da"
+            },
+            {
+              "name": "AlphaSenders",
+              "item": [
+                {
+                  "name": "Twilio List Alpha Senders in a Messaging Service",
+                  "id": "c05cb709-9dbc-44be-90f4-851899617cf4",
+                  "protocolProfileBehavior": {
+                    "disableBodyPruning": true
+                  },
+                  "request": {
+                    "method": "GET",
+                    "header": [
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/Services/:ServiceSid/AlphaSenders",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "Services",
+                        ":ServiceSid",
+                        "AlphaSenders"
+                      ],
+                      "variable": [
+                        {
+                          "id": "bdc5d603-fc66-4b17-95bc-29f31c481ba0",
+                          "key": "ServiceSid",
+                          "value": "MGBfFcaDB048eAb0a006Efd97f308df780",
+                          "description": "(Required) The unique identifier of the messaging service"
+                        }
+                      ]
+                    }
+                  },
+                  "response": [
+                    {
+                      "id": "90c129b9-76f8-4397-aea2-2a1042c68eb1",
+                      "name": "List of alpha senders",
+                      "originalRequest": {
+                        "method": "GET",
+                        "header": [
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          },
+                          {
+                            "description": "Added as a part of security scheme: basic",
+                            "key": "Authorization",
+                            "value": "Basic <credentials>"
+                          }
+                        ],
+                        "url": {
+                          "raw": "{{baseUrl}}/Services/:ServiceSid/AlphaSenders",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "Services",
+                            ":ServiceSid",
+                            "AlphaSenders"
+                          ],
+                          "variable": [
+                            {
+                              "key": "ServiceSid"
+                            }
+                          ]
+                        }
+                      },
+                      "status": "OK",
+                      "code": 200,
+                      "_postman_previewlanguage": "json",
+                      "header": [
+                        {
+                          "key": "Content-Type",
+                          "value": "application/json"
+                        }
+                      ],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": "{\n  \"alpha_senders\": [\n    {\n      \"sid\": \"AI5C5109bdf45eCA5E3CAcaD31f3aec1BF\",\n      \"alpha_sender\": \"<string>\",\n      \"capabilities\": [\n        \"<string>\",\n        \"<string>\"\n      ],\n      \"date_created\": \"<dateTime>\"\n    },\n    {\n      \"sid\": \"AIbb63Ba6Cc0DfdCb43C81f5C310dED1aa\",\n      \"alpha_sender\": \"<string>\",\n      \"capabilities\": [\n        \"<string>\",\n        \"<string>\"\n      ],\n      \"date_created\": \"<dateTime>\"\n    }\n  ]\n}",
+                      "createdAt": "2026-06-05T13:21:59.000Z",
+                      "updatedAt": "2026-06-05T13:21:59.000Z",
+                      "uid": "35240-90c129b9-76f8-4397-aea2-2a1042c68eb1"
+                    }
+                  ],
+                  "createdAt": "2026-06-05T13:21:59.000Z",
+                  "updatedAt": "2026-06-05T13:21:59.000Z",
+                  "uid": "35240-c05cb709-9dbc-44be-90f4-851899617cf4"
+                },
+                {
+                  "name": "Twilio Add an Alpha Sender to a Messaging Service",
+                  "id": "4bf14ccc-3880-4810-a647-f9c3ea087f3c",
+                  "protocolProfileBehavior": {
+                    "disableBodyPruning": true
+                  },
+                  "request": {
+                    "method": "POST",
+                    "header": [
+                      {
+                        "key": "Content-Type",
+                        "value": "application/x-www-form-urlencoded"
+                      }
+                    ],
+                    "body": {
+                      "mode": "urlencoded",
+                      "urlencoded": [
+                        {
+                          "description": "(Required) Alphanumeric sender ID string (max 11 characters)",
+                          "key": "AlphaSender",
+                          "value": "<string>"
+                        }
+                      ]
+                    },
+                    "url": {
+                      "raw": "{{baseUrl}}/Services/:ServiceSid/AlphaSenders",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "Services",
+                        ":ServiceSid",
+                        "AlphaSenders"
+                      ],
+                      "variable": [
+                        {
+                          "id": "a36a8ea0-481d-4c29-8f08-5603376569db",
+                          "key": "ServiceSid",
+                          "value": "MGBfFcaDB048eAb0a006Efd97f308df780",
+                          "description": "(Required) The unique identifier of the messaging service"
+                        }
+                      ]
+                    }
+                  },
+                  "response": [
+                    {
+                      "id": "fe373b92-72b4-4152-8df1-f0313341125b",
+                      "name": "Alpha sender added",
+                      "originalRequest": {
+                        "method": "POST",
+                        "header": [
+                          {
+                            "key": "Content-Type",
+                            "value": "application/x-www-form-urlencoded"
+                          },
+                          {
+                            "description": "Added as a part of security scheme: basic",
+                            "key": "Authorization",
+                            "value": "Basic <credentials>"
+                          }
+                        ],
+                        "body": {
+                          "mode": "urlencoded",
+                          "urlencoded": [
+                            {
+                              "description": "(Required) Alphanumeric sender ID string (max 11 characters)",
+                              "key": "AlphaSender",
+                              "value": "<string>"
+                            }
+                          ]
+                        },
+                        "url": {
+                          "raw": "{{baseUrl}}/Services/:ServiceSid/AlphaSenders",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "Services",
+                            ":ServiceSid",
+                            "AlphaSenders"
+                          ],
+                          "variable": [
+                            {
+                              "key": "ServiceSid"
+                            }
+                          ]
+                        }
+                      },
+                      "status": "Created",
+                      "code": 201,
+                      "_postman_previewlanguage": "text",
+                      "header": [],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": null,
+                      "createdAt": "2026-06-05T13:21:59.000Z",
+                      "updatedAt": "2026-06-05T13:21:59.000Z",
+                      "uid": "35240-fe373b92-72b4-4152-8df1-f0313341125b"
+                    },
+                    {
+                      "id": "a6fc10f3-f63d-41ca-b559-750a25473026",
+                      "name": "Invalid request",
+                      "originalRequest": {
+                        "method": "POST",
+                        "header": [
+                          {
+                            "key": "Content-Type",
+                            "value": "application/x-www-form-urlencoded"
+                          },
+                          {
+                            "description": "Added as a part of security scheme: basic",
+                            "key": "Authorization",
+                            "value": "Basic <credentials>"
+                          }
+                        ],
+                        "body": {
+                          "mode": "urlencoded",
+                          "urlencoded": [
+                            {
+                              "description": "(Required) Alphanumeric sender ID string (max 11 characters)",
+                              "key": "AlphaSender",
+                              "value": "<string>"
+                            }
+                          ]
+                        },
+                        "url": {
+                          "raw": "{{baseUrl}}/Services/:ServiceSid/AlphaSenders",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "Services",
+                            ":ServiceSid",
+                            "AlphaSenders"
+                          ],
+                          "variable": [
+                            {
+                              "key": "ServiceSid"
+                            }
+                          ]
+                        }
+                      },
+                      "status": "Bad Request",
+                      "code": 400,
+                      "_postman_previewlanguage": "text",
+                      "header": [],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": null,
+                      "createdAt": "2026-06-05T13:21:59.000Z",
+                      "updatedAt": "2026-06-05T13:21:59.000Z",
+                      "uid": "35240-a6fc10f3-f63d-41ca-b559-750a25473026"
+                    }
+                  ],
+                  "createdAt": "2026-06-05T13:21:59.000Z",
+                  "updatedAt": "2026-06-05T13:21:59.000Z",
+                  "uid": "35240-4bf14ccc-3880-4810-a647-f9c3ea087f3c"
+                }
+              ],
+              "id": "5e4ededc-7157-452b-baad-117a170e985f",
+              "createdAt": "2026-06-05T13:21:59.000Z",
+              "updatedAt": "2026-06-05T13:21:59.000Z",
+              "uid": "35240-5e4ededc-7157-452b-baad-117a170e985f"
+            },
+            {
+              "name": "ShortCodes",
+              "item": [
+                {
+                  "name": "Twilio List Short Codes in a Messaging Service",
+                  "id": "0c790d6d-219f-429f-bd92-397c3ceb9139",
+                  "protocolProfileBehavior": {
+                    "disableBodyPruning": true
+                  },
+                  "request": {
+                    "method": "GET",
+                    "header": [
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/Services/:ServiceSid/ShortCodes",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "Services",
+                        ":ServiceSid",
+                        "ShortCodes"
+                      ],
+                      "variable": [
+                        {
+                          "id": "8a02931e-744e-4526-ae9e-8df93f58fcee",
+                          "key": "ServiceSid",
+                          "value": "MGBfFcaDB048eAb0a006Efd97f308df780",
+                          "description": "(Required) The unique identifier of the messaging service"
+                        }
+                      ]
+                    }
+                  },
+                  "response": [
+                    {
+                      "id": "09399670-2acc-44d8-a046-87177ea8c48f",
+                      "name": "List of short codes",
+                      "originalRequest": {
+                        "method": "GET",
+                        "header": [
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          },
+                          {
+                            "description": "Added as a part of security scheme: basic",
+                            "key": "Authorization",
+                            "value": "Basic <credentials>"
+                          }
+                        ],
+                        "url": {
+                          "raw": "{{baseUrl}}/Services/:ServiceSid/ShortCodes",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "Services",
+                            ":ServiceSid",
+                            "ShortCodes"
+                          ],
+                          "variable": [
+                            {
+                              "key": "ServiceSid"
+                            }
+                          ]
+                        }
+                      },
+                      "status": "OK",
+                      "code": 200,
+                      "_postman_previewlanguage": "json",
+                      "header": [
+                        {
+                          "key": "Content-Type",
+                          "value": "application/json"
+                        }
+                      ],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": "{\n  \"short_codes\": [\n    {\n      \"sid\": \"SC99038D5d7bBBcfa49c7739eC2bb9B4dA\",\n      \"short_code\": \"<string>\",\n      \"country_code\": \"<string>\",\n      \"capabilities\": [\n        \"<string>\",\n        \"<string>\"\n      ],\n      \"date_created\": \"<dateTime>\"\n    },\n    {\n      \"sid\": \"SC9D76C6c6B98414E3557aa8f66749eDcF\",\n      \"short_code\": \"<string>\",\n      \"country_code\": \"<string>\",\n      \"capabilities\": [\n        \"<string>\",\n        \"<string>\"\n      ],\n      \"date_created\": \"<dateTime>\"\n    }\n  ]\n}",
+                      "createdAt": "2026-06-05T13:21:59.000Z",
+                      "updatedAt": "2026-06-05T13:21:59.000Z",
+                      "uid": "35240-09399670-2acc-44d8-a046-87177ea8c48f"
+                    }
+                  ],
+                  "createdAt": "2026-06-05T13:21:59.000Z",
+                  "updatedAt": "2026-06-05T13:21:59.000Z",
+                  "uid": "35240-0c790d6d-219f-429f-bd92-397c3ceb9139"
+                },
+                {
+                  "name": "Twilio Add a Short Code to a Messaging Service",
+                  "id": "7a79eb58-611d-43ff-bfe4-32f45edaf670",
+                  "protocolProfileBehavior": {
+                    "disableBodyPruning": true
+                  },
+                  "request": {
+                    "method": "POST",
+                    "header": [
+                      {
+                        "key": "Content-Type",
+                        "value": "application/x-www-form-urlencoded"
+                      }
+                    ],
+                    "body": {
+                      "mode": "urlencoded",
+                      "urlencoded": [
+                        {
+                          "description": "(Required) SID of the short code to add",
+                          "key": "ShortCodeSid",
+                          "value": "SC1E2FC80EFf818B8f2B0a9Dc094E92dA2"
+                        }
+                      ]
+                    },
+                    "url": {
+                      "raw": "{{baseUrl}}/Services/:ServiceSid/ShortCodes",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "Services",
+                        ":ServiceSid",
+                        "ShortCodes"
+                      ],
+                      "variable": [
+                        {
+                          "id": "4fca9777-5df6-4173-a80a-0c062424de47",
+                          "key": "ServiceSid",
+                          "value": "MGBfFcaDB048eAb0a006Efd97f308df780",
+                          "description": "(Required) The unique identifier of the messaging service"
+                        }
+                      ]
+                    }
+                  },
+                  "response": [
+                    {
+                      "id": "a213676c-db40-4997-92dd-d9ecf266828e",
+                      "name": "Short code added",
+                      "originalRequest": {
+                        "method": "POST",
+                        "header": [
+                          {
+                            "key": "Content-Type",
+                            "value": "application/x-www-form-urlencoded"
+                          },
+                          {
+                            "description": "Added as a part of security scheme: basic",
+                            "key": "Authorization",
+                            "value": "Basic <credentials>"
+                          }
+                        ],
+                        "body": {
+                          "mode": "urlencoded",
+                          "urlencoded": [
+                            {
+                              "description": "(Required) SID of the short code to add",
+                              "key": "ShortCodeSid",
+                              "value": "SC1E2FC80EFf818B8f2B0a9Dc094E92dA2"
+                            }
+                          ]
+                        },
+                        "url": {
+                          "raw": "{{baseUrl}}/Services/:ServiceSid/ShortCodes",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "Services",
+                            ":ServiceSid",
+                            "ShortCodes"
+                          ],
+                          "variable": [
+                            {
+                              "key": "ServiceSid"
+                            }
+                          ]
+                        }
+                      },
+                      "status": "Created",
+                      "code": 201,
+                      "_postman_previewlanguage": "text",
+                      "header": [],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": null,
+                      "createdAt": "2026-06-05T13:21:59.000Z",
+                      "updatedAt": "2026-06-05T13:21:59.000Z",
+                      "uid": "35240-a213676c-db40-4997-92dd-d9ecf266828e"
+                    },
+                    {
+                      "id": "5eac4c8f-41d0-40e9-b340-86c442f1e219",
+                      "name": "Invalid request",
+                      "originalRequest": {
+                        "method": "POST",
+                        "header": [
+                          {
+                            "key": "Content-Type",
+                            "value": "application/x-www-form-urlencoded"
+                          },
+                          {
+                            "description": "Added as a part of security scheme: basic",
+                            "key": "Authorization",
+                            "value": "Basic <credentials>"
+                          }
+                        ],
+                        "body": {
+                          "mode": "urlencoded",
+                          "urlencoded": [
+                            {
+                              "description": "(Required) SID of the short code to add",
+                              "key": "ShortCodeSid",
+                              "value": "SC1E2FC80EFf818B8f2B0a9Dc094E92dA2"
+                            }
+                          ]
+                        },
+                        "url": {
+                          "raw": "{{baseUrl}}/Services/:ServiceSid/ShortCodes",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "Services",
+                            ":ServiceSid",
+                            "ShortCodes"
+                          ],
+                          "variable": [
+                            {
+                              "key": "ServiceSid"
+                            }
+                          ]
+                        }
+                      },
+                      "status": "Bad Request",
+                      "code": 400,
+                      "_postman_previewlanguage": "text",
+                      "header": [],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": null,
+                      "createdAt": "2026-06-05T13:21:59.000Z",
+                      "updatedAt": "2026-06-05T13:21:59.000Z",
+                      "uid": "35240-5eac4c8f-41d0-40e9-b340-86c442f1e219"
+                    }
+                  ],
+                  "createdAt": "2026-06-05T13:21:59.000Z",
+                  "updatedAt": "2026-06-05T13:21:59.000Z",
+                  "uid": "35240-7a79eb58-611d-43ff-bfe4-32f45edaf670"
+                }
+              ],
+              "id": "d9000187-15dd-48eb-914a-4758c1c219b5",
+              "createdAt": "2026-06-05T13:21:59.000Z",
+              "updatedAt": "2026-06-05T13:21:59.000Z",
+              "uid": "35240-d9000187-15dd-48eb-914a-4758c1c219b5"
+            },
+            {
+              "name": "Twilio Fetch a Messaging Service",
+              "id": "829cd537-0b48-4507-9bda-ea67b3332707",
+              "protocolProfileBehavior": {
+                "disableBodyPruning": true
+              },
+              "request": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/Services/:ServiceSid",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "Services",
+                    ":ServiceSid"
+                  ],
+                  "variable": [
+                    {
+                      "id": "3396764d-214a-4dab-bfc2-1fc09d678a56",
+                      "key": "ServiceSid",
+                      "value": "MGBfFcaDB048eAb0a006Efd97f308df780",
+                      "description": "(Required) The unique identifier of the messaging service"
+                    }
+                  ]
+                }
+              },
+              "response": [
+                {
+                  "id": "1566700a-50f3-4193-b383-134c82e72625",
+                  "name": "Messaging service details",
+                  "originalRequest": {
+                    "method": "GET",
+                    "header": [
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: basic",
+                        "key": "Authorization",
+                        "value": "Basic <credentials>"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/Services/:ServiceSid",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "Services",
+                        ":ServiceSid"
+                      ],
+                      "variable": [
+                        {
+                          "key": "ServiceSid"
+                        }
+                      ]
+                    }
+                  },
+                  "status": "OK",
+                  "code": 200,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    }
+                  ],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": "{\n  \"sid\": \"MGae8BcD187C69bF6F20a93C8d328A329f\",\n  \"account_sid\": \"ACxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx\",\n  \"friendly_name\": \"<string>\",\n  \"inbound_request_url\": \"<uri>\",\n  \"inbound_method\": \"GET\",\n  \"fallback_url\": \"<uri>\",\n  \"fallback_method\": \"GET\",\n  \"status_callback\": \"<uri>\",\n  \"sticky_sender\": \"<boolean>\",\n  \"smart_encoding\": \"<boolean>\",\n  \"area_code_geomatch\": \"<boolean>\",\n  \"validity_period\": \"<integer>\",\n  \"date_created\": \"<dateTime>\",\n  \"date_updated\": \"<dateTime>\",\n  \"url\": \"<uri>\"\n}",
+                  "createdAt": "2026-06-05T13:21:59.000Z",
+                  "updatedAt": "2026-06-05T13:21:59.000Z",
+                  "uid": "35240-1566700a-50f3-4193-b383-134c82e72625"
+                },
+                {
+                  "id": "f2b5b5c6-ffe7-41ad-84a5-f0a6d0c62005",
+                  "name": "Service not found",
+                  "originalRequest": {
+                    "method": "GET",
+                    "header": [
+                      {
+                        "description": "Added as a part of security scheme: basic",
+                        "key": "Authorization",
+                        "value": "Basic <credentials>"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/Services/:ServiceSid",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "Services",
+                        ":ServiceSid"
+                      ],
+                      "variable": [
+                        {
+                          "key": "ServiceSid"
+                        }
+                      ]
+                    }
+                  },
+                  "status": "Not Found",
+                  "code": 404,
+                  "_postman_previewlanguage": "text",
+                  "header": [],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": null,
+                  "createdAt": "2026-06-05T13:21:59.000Z",
+                  "updatedAt": "2026-06-05T13:21:59.000Z",
+                  "uid": "35240-f2b5b5c6-ffe7-41ad-84a5-f0a6d0c62005"
+                }
+              ],
+              "createdAt": "2026-06-05T13:21:59.000Z",
+              "updatedAt": "2026-06-05T13:21:59.000Z",
+              "uid": "35240-829cd537-0b48-4507-9bda-ea67b3332707"
+            },
+            {
+              "name": "Twilio Update a Messaging Service",
+              "id": "d2fc8245-5f4b-4ee8-8262-cdb29ca19ac9",
+              "protocolProfileBehavior": {
+                "disableBodyPruning": true
+              },
+              "request": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/x-www-form-urlencoded"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "body": {
+                  "mode": "urlencoded",
+                  "urlencoded": [
+                    {
+                      "description": "(Required) Descriptive name for the messaging service",
+                      "key": "FriendlyName",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "InboundRequestUrl",
+                      "value": "<uri>"
+                    },
+                    {
+                      "key": "InboundMethod",
+                      "value": "GET"
+                    },
+                    {
+                      "key": "FallbackUrl",
+                      "value": "<uri>"
+                    },
+                    {
+                      "key": "FallbackMethod",
+                      "value": "GET"
+                    },
+                    {
+                      "key": "StatusCallback",
+                      "value": "<uri>"
+                    },
+                    {
+                      "key": "StickySender",
+                      "value": "<boolean>"
+                    },
+                    {
+                      "key": "SmartEncoding",
+                      "value": "<boolean>"
+                    },
+                    {
+                      "key": "AreaCodeGeomatch",
+                      "value": "<boolean>"
+                    },
+                    {
+                      "key": "ValidityPeriod",
+                      "value": "<integer>"
+                    }
+                  ]
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/Services/:ServiceSid",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "Services",
+                    ":ServiceSid"
+                  ],
+                  "variable": [
+                    {
+                      "id": "ac243384-154c-4aa6-aca4-a4768556f82c",
+                      "key": "ServiceSid",
+                      "value": "MGBfFcaDB048eAb0a006Efd97f308df780",
+                      "description": "(Required) The unique identifier of the messaging service"
+                    }
+                  ]
+                }
+              },
+              "response": [
+                {
+                  "id": "8372a6d0-d62b-404b-8e8d-b951d65a807a",
+                  "name": "Messaging service updated",
+                  "originalRequest": {
+                    "method": "POST",
+                    "header": [
+                      {
+                        "key": "Content-Type",
+                        "value": "application/x-www-form-urlencoded"
+                      },
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: basic",
+                        "key": "Authorization",
+                        "value": "Basic <credentials>"
+                      }
+                    ],
+                    "body": {
+                      "mode": "urlencoded",
+                      "urlencoded": [
+                        {
+                          "description": "(Required) Descriptive name for the messaging service",
+                          "key": "FriendlyName",
+                          "value": "<string>"
+                        },
+                        {
+                          "key": "InboundRequestUrl",
+                          "value": "<uri>"
+                        },
+                        {
+                          "key": "InboundMethod",
+                          "value": "GET"
+                        },
+                        {
+                          "key": "FallbackUrl",
+                          "value": "<uri>"
+                        },
+                        {
+                          "key": "FallbackMethod",
+                          "value": "GET"
+                        },
+                        {
+                          "key": "StatusCallback",
+                          "value": "<uri>"
+                        },
+                        {
+                          "key": "StickySender",
+                          "value": "<boolean>"
+                        },
+                        {
+                          "key": "SmartEncoding",
+                          "value": "<boolean>"
+                        },
+                        {
+                          "key": "AreaCodeGeomatch",
+                          "value": "<boolean>"
+                        },
+                        {
+                          "key": "ValidityPeriod",
+                          "value": "<integer>"
+                        }
+                      ]
+                    },
+                    "url": {
+                      "raw": "{{baseUrl}}/Services/:ServiceSid",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "Services",
+                        ":ServiceSid"
+                      ],
+                      "variable": [
+                        {
+                          "key": "ServiceSid"
+                        }
+                      ]
+                    }
+                  },
+                  "status": "OK",
+                  "code": 200,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    }
+                  ],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": "{\n  \"sid\": \"MGae8BcD187C69bF6F20a93C8d328A329f\",\n  \"account_sid\": \"ACxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx\",\n  \"friendly_name\": \"<string>\",\n  \"inbound_request_url\": \"<uri>\",\n  \"inbound_method\": \"GET\",\n  \"fallback_url\": \"<uri>\",\n  \"fallback_method\": \"GET\",\n  \"status_callback\": \"<uri>\",\n  \"sticky_sender\": \"<boolean>\",\n  \"smart_encoding\": \"<boolean>\",\n  \"area_code_geomatch\": \"<boolean>\",\n  \"validity_period\": \"<integer>\",\n  \"date_created\": \"<dateTime>\",\n  \"date_updated\": \"<dateTime>\",\n  \"url\": \"<uri>\"\n}",
+                  "createdAt": "2026-06-05T13:21:59.000Z",
+                  "updatedAt": "2026-06-05T13:21:59.000Z",
+                  "uid": "35240-8372a6d0-d62b-404b-8e8d-b951d65a807a"
+                },
+                {
+                  "id": "b823a67e-c616-440b-9cf9-003638d08773",
+                  "name": "Invalid request",
+                  "originalRequest": {
+                    "method": "POST",
+                    "header": [
+                      {
+                        "key": "Content-Type",
+                        "value": "application/x-www-form-urlencoded"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: basic",
+                        "key": "Authorization",
+                        "value": "Basic <credentials>"
+                      }
+                    ],
+                    "body": {
+                      "mode": "urlencoded",
+                      "urlencoded": [
+                        {
+                          "description": "(Required) Descriptive name for the messaging service",
+                          "key": "FriendlyName",
+                          "value": "<string>"
+                        },
+                        {
+                          "key": "InboundRequestUrl",
+                          "value": "<uri>"
+                        },
+                        {
+                          "key": "InboundMethod",
+                          "value": "GET"
+                        },
+                        {
+                          "key": "FallbackUrl",
+                          "value": "<uri>"
+                        },
+                        {
+                          "key": "FallbackMethod",
+                          "value": "GET"
+                        },
+                        {
+                          "key": "StatusCallback",
+                          "value": "<uri>"
+                        },
+                        {
+                          "key": "StickySender",
+                          "value": "<boolean>"
+                        },
+                        {
+                          "key": "SmartEncoding",
+                          "value": "<boolean>"
+                        },
+                        {
+                          "key": "AreaCodeGeomatch",
+                          "value": "<boolean>"
+                        },
+                        {
+                          "key": "ValidityPeriod",
+                          "value": "<integer>"
+                        }
+                      ]
+                    },
+                    "url": {
+                      "raw": "{{baseUrl}}/Services/:ServiceSid",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "Services",
+                        ":ServiceSid"
+                      ],
+                      "variable": [
+                        {
+                          "key": "ServiceSid"
+                        }
+                      ]
+                    }
+                  },
+                  "status": "Bad Request",
+                  "code": 400,
+                  "_postman_previewlanguage": "text",
+                  "header": [],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": null,
+                  "createdAt": "2026-06-05T13:21:59.000Z",
+                  "updatedAt": "2026-06-05T13:21:59.000Z",
+                  "uid": "35240-b823a67e-c616-440b-9cf9-003638d08773"
+                }
+              ],
+              "createdAt": "2026-06-05T13:21:59.000Z",
+              "updatedAt": "2026-06-05T13:21:59.000Z",
+              "uid": "35240-d2fc8245-5f4b-4ee8-8262-cdb29ca19ac9"
+            },
+            {
+              "name": "Twilio Delete a Messaging Service",
+              "id": "77a6d4d0-6289-4188-94e1-f00c59c7e651",
+              "protocolProfileBehavior": {
+                "disableBodyPruning": true
+              },
+              "request": {
+                "method": "DELETE",
+                "header": [],
+                "url": {
+                  "raw": "{{baseUrl}}/Services/:ServiceSid",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "Services",
+                    ":ServiceSid"
+                  ],
+                  "variable": [
+                    {
+                      "id": "8ba6d2aa-d294-49f0-bed8-9fcf2f84135c",
+                      "key": "ServiceSid",
+                      "value": "MGBfFcaDB048eAb0a006Efd97f308df780",
+                      "description": "(Required) The unique identifier of the messaging service"
+                    }
+                  ]
+                }
+              },
+              "response": [
+                {
+                  "id": "83013d5d-a36b-4dea-b2cb-fe7d5ac5305a",
+                  "name": "Messaging service deleted",
+                  "originalRequest": {
+                    "method": "DELETE",
+                    "header": [
+                      {
+                        "description": "Added as a part of security scheme: basic",
+                        "key": "Authorization",
+                        "value": "Basic <credentials>"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/Services/:ServiceSid",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "Services",
+                        ":ServiceSid"
+                      ],
+                      "variable": [
+                        {
+                          "key": "ServiceSid"
+                        }
+                      ]
+                    }
+                  },
+                  "status": "No Content",
+                  "code": 204,
+                  "_postman_previewlanguage": "text",
+                  "header": [],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": null,
+                  "createdAt": "2026-06-05T13:21:59.000Z",
+                  "updatedAt": "2026-06-05T13:21:59.000Z",
+                  "uid": "35240-83013d5d-a36b-4dea-b2cb-fe7d5ac5305a"
+                },
+                {
+                  "id": "968e7860-dfbc-460a-b198-25239218ec41",
+                  "name": "Service not found",
+                  "originalRequest": {
+                    "method": "DELETE",
+                    "header": [
+                      {
+                        "description": "Added as a part of security scheme: basic",
+                        "key": "Authorization",
+                        "value": "Basic <credentials>"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/Services/:ServiceSid",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "Services",
+                        ":ServiceSid"
+                      ],
+                      "variable": [
+                        {
+                          "key": "ServiceSid"
+                        }
+                      ]
+                    }
+                  },
+                  "status": "Not Found",
+                  "code": 404,
+                  "_postman_previewlanguage": "text",
+                  "header": [],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": null,
+                  "createdAt": "2026-06-05T13:21:59.000Z",
+                  "updatedAt": "2026-06-05T13:21:59.000Z",
+                  "uid": "35240-968e7860-dfbc-460a-b198-25239218ec41"
+                }
+              ],
+              "createdAt": "2026-06-05T13:21:59.000Z",
+              "updatedAt": "2026-06-05T13:21:59.000Z",
+              "uid": "35240-77a6d4d0-6289-4188-94e1-f00c59c7e651"
+            }
+          ],
+          "id": "53b28d8b-0643-4e89-8418-cd6601ea67ee",
+          "createdAt": "2026-06-05T13:21:59.000Z",
+          "updatedAt": "2026-06-05T13:21:59.000Z",
+          "uid": "35240-53b28d8b-0643-4e89-8418-cd6601ea67ee"
+        },
+        {
+          "name": "Twilio List Messaging Services",
+          "id": "e7f8e84b-d303-437b-8594-955dc138db4b",
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          },
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/Services?PageSize=<integer>",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "Services"
+              ],
+              "query": [
+                {
+                  "key": "PageSize",
+                  "value": "<integer>"
+                }
+              ]
+            },
+            "description": "Retrieve a list of messaging services associated with your account."
+          },
+          "response": [
+            {
+              "id": "014cd43e-8c8c-4029-b4d1-066bb12eb64b",
+              "name": "List of messaging services",
+              "originalRequest": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  },
+                  {
+                    "description": "Added as a part of security scheme: basic",
+                    "key": "Authorization",
+                    "value": "Basic <credentials>"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/Services?PageSize=<integer>",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "Services"
+                  ],
+                  "query": [
+                    {
+                      "key": "PageSize",
+                      "value": "<integer>"
+                    }
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "cookie": [],
+              "responseTime": null,
+              "body": "{\n  \"services\": [\n    {\n      \"sid\": \"MGAbd4Dae7dD82BEcBCcC98B4b8875C31e\",\n      \"account_sid\": \"ACxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx\",\n      \"friendly_name\": \"<string>\",\n      \"inbound_request_url\": \"<uri>\",\n      \"inbound_method\": \"GET\",\n      \"fallback_url\": \"<uri>\",\n      \"fallback_method\": \"POST\",\n      \"status_callback\": \"<uri>\",\n      \"sticky_sender\": \"<boolean>\",\n      \"smart_encoding\": \"<boolean>\",\n      \"area_code_geomatch\": \"<boolean>\",\n      \"validity_period\": \"<integer>\",\n      \"date_created\": \"<dateTime>\",\n      \"date_updated\": \"<dateTime>\",\n      \"url\": \"<uri>\"\n    },\n    {\n      \"sid\": \"MG4b521bAdBdEbCb3AD8DDDDBcFa34E3e9\",\n      \"account_sid\": \"ACxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx\",\n      \"friendly_name\": \"<string>\",\n      \"inbound_request_url\": \"<uri>\",\n      \"inbound_method\": \"POST\",\n      \"fallback_url\": \"<uri>\",\n      \"fallback_method\": \"GET\",\n      \"status_callback\": \"<uri>\",\n      \"sticky_sender\": \"<boolean>\",\n      \"smart_encoding\": \"<boolean>\",\n      \"area_code_geomatch\": \"<boolean>\",\n      \"validity_period\": \"<integer>\",\n      \"date_created\": \"<dateTime>\",\n      \"date_updated\": \"<dateTime>\",\n      \"url\": \"<uri>\"\n    }\n  ],\n  \"meta\": {\n    \"page\": \"<integer>\",\n    \"page_size\": \"<integer>\",\n    \"first_page_url\": \"<uri>\",\n    \"previous_page_url\": \"<uri>\",\n    \"next_page_url\": \"<uri>\",\n    \"url\": \"<uri>\",\n    \"key\": \"<string>\"\n  }\n}",
+              "createdAt": "2026-06-05T13:21:59.000Z",
+              "updatedAt": "2026-06-05T13:21:59.000Z",
+              "uid": "35240-014cd43e-8c8c-4029-b4d1-066bb12eb64b"
+            },
+            {
+              "id": "f40b3e49-434c-4c07-a602-54fa653420c7",
+              "name": "Unauthorized",
+              "originalRequest": {
+                "method": "GET",
+                "header": [
+                  {
+                    "description": "Added as a part of security scheme: basic",
+                    "key": "Authorization",
+                    "value": "Basic <credentials>"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/Services?PageSize=<integer>",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "Services"
+                  ],
+                  "query": [
+                    {
+                      "key": "PageSize",
+                      "value": "<integer>"
+                    }
+                  ]
+                }
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "_postman_previewlanguage": "text",
+              "header": [],
+              "cookie": [],
+              "responseTime": null,
+              "body": null,
+              "createdAt": "2026-06-05T13:21:59.000Z",
+              "updatedAt": "2026-06-05T13:21:59.000Z",
+              "uid": "35240-f40b3e49-434c-4c07-a602-54fa653420c7"
+            }
+          ],
+          "createdAt": "2026-06-05T13:21:59.000Z",
+          "updatedAt": "2026-06-05T13:21:59.000Z",
+          "uid": "35240-e7f8e84b-d303-437b-8594-955dc138db4b"
+        },
+        {
+          "name": "Twilio Create a Messaging Service",
+          "id": "c3c101b1-dd33-45bb-aa09-e6f2517df35a",
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          },
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/x-www-form-urlencoded"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "urlencoded",
+              "urlencoded": [
+                {
+                  "description": "(Required) Descriptive name for the messaging service",
+                  "key": "FriendlyName",
+                  "value": "<string>"
+                },
+                {
+                  "key": "InboundRequestUrl",
+                  "value": "<uri>"
+                },
+                {
+                  "key": "InboundMethod",
+                  "value": "GET"
+                },
+                {
+                  "key": "FallbackUrl",
+                  "value": "<uri>"
+                },
+                {
+                  "key": "FallbackMethod",
+                  "value": "GET"
+                },
+                {
+                  "key": "StatusCallback",
+                  "value": "<uri>"
+                },
+                {
+                  "key": "StickySender",
+                  "value": "<boolean>"
+                },
+                {
+                  "key": "SmartEncoding",
+                  "value": "<boolean>"
+                },
+                {
+                  "key": "AreaCodeGeomatch",
+                  "value": "<boolean>"
+                },
+                {
+                  "key": "ValidityPeriod",
+                  "value": "<integer>"
+                }
+              ]
+            },
+            "url": {
+              "raw": "{{baseUrl}}/Services",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "Services"
+              ]
+            },
+            "description": "Create a new messaging service for managing senders and message configuration at scale."
+          },
+          "response": [
+            {
+              "id": "fc681e06-0451-42c2-8db3-0579df4f9728",
+              "name": "Messaging service created",
+              "originalRequest": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/x-www-form-urlencoded"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  },
+                  {
+                    "description": "Added as a part of security scheme: basic",
+                    "key": "Authorization",
+                    "value": "Basic <credentials>"
+                  }
+                ],
+                "body": {
+                  "mode": "urlencoded",
+                  "urlencoded": [
+                    {
+                      "description": "(Required) Descriptive name for the messaging service",
+                      "key": "FriendlyName",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "InboundRequestUrl",
+                      "value": "<uri>"
+                    },
+                    {
+                      "key": "InboundMethod",
+                      "value": "GET"
+                    },
+                    {
+                      "key": "FallbackUrl",
+                      "value": "<uri>"
+                    },
+                    {
+                      "key": "FallbackMethod",
+                      "value": "GET"
+                    },
+                    {
+                      "key": "StatusCallback",
+                      "value": "<uri>"
+                    },
+                    {
+                      "key": "StickySender",
+                      "value": "<boolean>"
+                    },
+                    {
+                      "key": "SmartEncoding",
+                      "value": "<boolean>"
+                    },
+                    {
+                      "key": "AreaCodeGeomatch",
+                      "value": "<boolean>"
+                    },
+                    {
+                      "key": "ValidityPeriod",
+                      "value": "<integer>"
+                    }
+                  ]
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/Services",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "Services"
+                  ]
+                }
+              },
+              "status": "Created",
+              "code": 201,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "cookie": [],
+              "responseTime": null,
+              "body": "{\n  \"sid\": \"MGae8BcD187C69bF6F20a93C8d328A329f\",\n  \"account_sid\": \"ACxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx\",\n  \"friendly_name\": \"<string>\",\n  \"inbound_request_url\": \"<uri>\",\n  \"inbound_method\": \"GET\",\n  \"fallback_url\": \"<uri>\",\n  \"fallback_method\": \"GET\",\n  \"status_callback\": \"<uri>\",\n  \"sticky_sender\": \"<boolean>\",\n  \"smart_encoding\": \"<boolean>\",\n  \"area_code_geomatch\": \"<boolean>\",\n  \"validity_period\": \"<integer>\",\n  \"date_created\": \"<dateTime>\",\n  \"date_updated\": \"<dateTime>\",\n  \"url\": \"<uri>\"\n}",
+              "createdAt": "2026-06-05T13:21:59.000Z",
+              "updatedAt": "2026-06-05T13:21:59.000Z",
+              "uid": "35240-fc681e06-0451-42c2-8db3-0579df4f9728"
+            },
+            {
+              "id": "0f809eb8-7a55-4a76-a6f5-bcd0f916deb1",
+              "name": "Invalid request",
+              "originalRequest": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/x-www-form-urlencoded"
+                  },
+                  {
+                    "description": "Added as a part of security scheme: basic",
+                    "key": "Authorization",
+                    "value": "Basic <credentials>"
+                  }
+                ],
+                "body": {
+                  "mode": "urlencoded",
+                  "urlencoded": [
+                    {
+                      "description": "(Required) Descriptive name for the messaging service",
+                      "key": "FriendlyName",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "InboundRequestUrl",
+                      "value": "<uri>"
+                    },
+                    {
+                      "key": "InboundMethod",
+                      "value": "GET"
+                    },
+                    {
+                      "key": "FallbackUrl",
+                      "value": "<uri>"
+                    },
+                    {
+                      "key": "FallbackMethod",
+                      "value": "GET"
+                    },
+                    {
+                      "key": "StatusCallback",
+                      "value": "<uri>"
+                    },
+                    {
+                      "key": "StickySender",
+                      "value": "<boolean>"
+                    },
+                    {
+                      "key": "SmartEncoding",
+                      "value": "<boolean>"
+                    },
+                    {
+                      "key": "AreaCodeGeomatch",
+                      "value": "<boolean>"
+                    },
+                    {
+                      "key": "ValidityPeriod",
+                      "value": "<integer>"
+                    }
+                  ]
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/Services",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "Services"
+                  ]
+                }
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "_postman_previewlanguage": "text",
+              "header": [],
+              "cookie": [],
+              "responseTime": null,
+              "body": null,
+              "createdAt": "2026-06-05T13:21:59.000Z",
+              "updatedAt": "2026-06-05T13:21:59.000Z",
+              "uid": "35240-0f809eb8-7a55-4a76-a6f5-bcd0f916deb1"
+            },
+            {
+              "id": "363a29ce-34d6-4e6e-871c-88ded724aa01",
+              "name": "Unauthorized",
+              "originalRequest": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/x-www-form-urlencoded"
+                  },
+                  {
+                    "description": "Added as a part of security scheme: basic",
+                    "key": "Authorization",
+                    "value": "Basic <credentials>"
+                  }
+                ],
+                "body": {
+                  "mode": "urlencoded",
+                  "urlencoded": [
+                    {
+                      "description": "(Required) Descriptive name for the messaging service",
+                      "key": "FriendlyName",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "InboundRequestUrl",
+                      "value": "<uri>"
+                    },
+                    {
+                      "key": "InboundMethod",
+                      "value": "GET"
+                    },
+                    {
+                      "key": "FallbackUrl",
+                      "value": "<uri>"
+                    },
+                    {
+                      "key": "FallbackMethod",
+                      "value": "GET"
+                    },
+                    {
+                      "key": "StatusCallback",
+                      "value": "<uri>"
+                    },
+                    {
+                      "key": "StickySender",
+                      "value": "<boolean>"
+                    },
+                    {
+                      "key": "SmartEncoding",
+                      "value": "<boolean>"
+                    },
+                    {
+                      "key": "AreaCodeGeomatch",
+                      "value": "<boolean>"
+                    },
+                    {
+                      "key": "ValidityPeriod",
+                      "value": "<integer>"
+                    }
+                  ]
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/Services",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "Services"
+                  ]
+                }
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "_postman_previewlanguage": "text",
+              "header": [],
+              "cookie": [],
+              "responseTime": null,
+              "body": null,
+              "createdAt": "2026-06-05T13:21:59.000Z",
+              "updatedAt": "2026-06-05T13:21:59.000Z",
+              "uid": "35240-363a29ce-34d6-4e6e-871c-88ded724aa01"
+            }
+          ],
+          "createdAt": "2026-06-05T13:21:59.000Z",
+          "updatedAt": "2026-06-05T13:21:59.000Z",
+          "uid": "35240-c3c101b1-dd33-45bb-aa09-e6f2517df35a"
+        }
+      ],
+      "id": "d9d5e97f-2a4e-4c9d-bcc7-5171c3a11c02",
+      "createdAt": "2026-06-05T13:21:59.000Z",
+      "updatedAt": "2026-06-05T13:21:59.000Z",
+      "uid": "35240-d9d5e97f-2a4e-4c9d-bcc7-5171c3a11c02"
+    }
+  ],
+  "auth": {
+    "type": "basic",
+    "basic": [
+      {
+        "key": "username",
+        "value": "{{basicAuthUsername}}",
+        "type": "string"
+      },
+      {
+        "key": "password",
+        "value": "{{basicAuthPassword}}",
+        "type": "string"
+      }
+    ]
+  },
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "https://api.twilio.com/2010-04-01"
+    },
+    {
+      "key": "MessageSid",
+      "value": "SM53FDC36B90f493c9e9c1eAfB4A3Ac3d4"
+    },
+    {
+      "key": "MediaSid",
+      "value": "MEaBEE62babdFcd4de23fe145AEF96bDB8"
+    }
+  ]
+}

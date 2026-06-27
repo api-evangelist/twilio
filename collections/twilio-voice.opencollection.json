@@ -1,0 +1,677 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Twilio Voice API",
+    "version": "2.0"
+  },
+  "request": {
+    "auth": {
+      "type": "basic",
+      "username": "{{username}}",
+      "password": "{{password}}"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Calls",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Twilio List Calls",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.twilio.com/2010-04-01/Accounts/:AccountSid/Calls.json",
+            "params": [
+              {
+                "name": "AccountSid",
+                "value": "",
+                "type": "path",
+                "description": "The unique identifier of the Twilio account"
+              },
+              {
+                "name": "To",
+                "value": "",
+                "type": "query",
+                "description": "Filter by the phone number that received the call"
+              },
+              {
+                "name": "From",
+                "value": "",
+                "type": "query",
+                "description": "Filter by the phone number that initiated the call"
+              },
+              {
+                "name": "Status",
+                "value": "",
+                "type": "query",
+                "description": "Filter by call status"
+              },
+              {
+                "name": "StartTime",
+                "value": "",
+                "type": "query",
+                "description": "Filter by start time (YYYY-MM-DD)"
+              },
+              {
+                "name": "EndTime",
+                "value": "",
+                "type": "query",
+                "description": "Filter by end time (YYYY-MM-DD)"
+              },
+              {
+                "name": "PageSize",
+                "value": "",
+                "type": "query"
+              }
+            ]
+          },
+          "docs": "Retrieve a list of calls made to and from your account. Results are sorted by DateUpdated descending."
+        },
+        {
+          "info": {
+            "name": "Twilio Make a Call",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.twilio.com/2010-04-01/Accounts/:AccountSid/Calls.json",
+            "params": [
+              {
+                "name": "AccountSid",
+                "value": "",
+                "type": "path",
+                "description": "The unique identifier of the Twilio account"
+              }
+            ],
+            "body": {
+              "type": "form-urlencoded",
+              "data": []
+            }
+          },
+          "docs": "Initiate a new outbound phone call. Provide a TwiML URL or ApplicationSid to control the call flow, along with the To and From phone numbers."
+        },
+        {
+          "info": {
+            "name": "Twilio Fetch a Call",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.twilio.com/2010-04-01/Accounts/:AccountSid/Calls/:CallSid.json",
+            "params": [
+              {
+                "name": "AccountSid",
+                "value": "",
+                "type": "path",
+                "description": "The unique identifier of the Twilio account"
+              },
+              {
+                "name": "CallSid",
+                "value": "",
+                "type": "path",
+                "description": "The unique identifier of the call"
+              }
+            ]
+          },
+          "docs": "Retrieve details of a specific call by its SID."
+        },
+        {
+          "info": {
+            "name": "Twilio Modify a Live Call",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.twilio.com/2010-04-01/Accounts/:AccountSid/Calls/:CallSid.json",
+            "params": [
+              {
+                "name": "AccountSid",
+                "value": "",
+                "type": "path",
+                "description": "The unique identifier of the Twilio account"
+              },
+              {
+                "name": "CallSid",
+                "value": "",
+                "type": "path",
+                "description": "The unique identifier of the call"
+              }
+            ],
+            "body": {
+              "type": "form-urlencoded",
+              "data": []
+            }
+          },
+          "docs": "Modify an in-progress call. Redirect to a new TwiML URL, end the call, or put the caller on hold."
+        },
+        {
+          "info": {
+            "name": "Twilio Delete a Call Record",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://api.twilio.com/2010-04-01/Accounts/:AccountSid/Calls/:CallSid.json",
+            "params": [
+              {
+                "name": "AccountSid",
+                "value": "",
+                "type": "path",
+                "description": "The unique identifier of the Twilio account"
+              },
+              {
+                "name": "CallSid",
+                "value": "",
+                "type": "path",
+                "description": "The unique identifier of the call"
+              }
+            ]
+          },
+          "docs": "Delete a call record from your account."
+        }
+      ]
+    },
+    {
+      "info": {
+        "name": "Recordings",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Twilio List Recordings for a Call",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.twilio.com/2010-04-01/Accounts/:AccountSid/Calls/:CallSid/Recordings.json",
+            "params": [
+              {
+                "name": "AccountSid",
+                "value": "",
+                "type": "path",
+                "description": "The unique identifier of the Twilio account"
+              },
+              {
+                "name": "CallSid",
+                "value": "",
+                "type": "path",
+                "description": "The unique identifier of the call"
+              }
+            ]
+          },
+          "docs": "Retrieve a list of recordings associated with a specific call."
+        },
+        {
+          "info": {
+            "name": "Twilio Start Recording a Call",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.twilio.com/2010-04-01/Accounts/:AccountSid/Calls/:CallSid/Recordings.json",
+            "params": [
+              {
+                "name": "AccountSid",
+                "value": "",
+                "type": "path",
+                "description": "The unique identifier of the Twilio account"
+              },
+              {
+                "name": "CallSid",
+                "value": "",
+                "type": "path",
+                "description": "The unique identifier of the call"
+              }
+            ],
+            "body": {
+              "type": "form-urlencoded",
+              "data": [
+                {
+                  "name": "RecordingStatusCallback",
+                  "value": ""
+                },
+                {
+                  "name": "RecordingStatusCallbackMethod",
+                  "value": ""
+                },
+                {
+                  "name": "RecordingChannels",
+                  "value": ""
+                },
+                {
+                  "name": "Trim",
+                  "value": ""
+                }
+              ]
+            }
+          },
+          "docs": "Start recording an in-progress call."
+        },
+        {
+          "info": {
+            "name": "Twilio List All Recordings",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.twilio.com/2010-04-01/Accounts/:AccountSid/Recordings.json",
+            "params": [
+              {
+                "name": "AccountSid",
+                "value": "",
+                "type": "path",
+                "description": "The unique identifier of the Twilio account"
+              },
+              {
+                "name": "DateCreated",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "CallSid",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "PageSize",
+                "value": "",
+                "type": "query"
+              }
+            ]
+          },
+          "docs": "Retrieve a list of all recordings associated with your account."
+        },
+        {
+          "info": {
+            "name": "Twilio Fetch a Recording",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.twilio.com/2010-04-01/Accounts/:AccountSid/Recordings/:RecordingSid.json",
+            "params": [
+              {
+                "name": "AccountSid",
+                "value": "",
+                "type": "path",
+                "description": "The unique identifier of the Twilio account"
+              },
+              {
+                "name": "RecordingSid",
+                "value": "",
+                "type": "path",
+                "description": "The unique identifier of the recording"
+              }
+            ]
+          },
+          "docs": "Twilio Fetch a Recording"
+        },
+        {
+          "info": {
+            "name": "Twilio Delete a Recording",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://api.twilio.com/2010-04-01/Accounts/:AccountSid/Recordings/:RecordingSid.json",
+            "params": [
+              {
+                "name": "AccountSid",
+                "value": "",
+                "type": "path",
+                "description": "The unique identifier of the Twilio account"
+              },
+              {
+                "name": "RecordingSid",
+                "value": "",
+                "type": "path",
+                "description": "The unique identifier of the recording"
+              }
+            ]
+          },
+          "docs": "Twilio Delete a Recording"
+        }
+      ]
+    },
+    {
+      "info": {
+        "name": "Conferences",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Twilio List Conferences",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.twilio.com/2010-04-01/Accounts/:AccountSid/Conferences.json",
+            "params": [
+              {
+                "name": "AccountSid",
+                "value": "",
+                "type": "path",
+                "description": "The unique identifier of the Twilio account"
+              },
+              {
+                "name": "Status",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "FriendlyName",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "DateCreated",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "PageSize",
+                "value": "",
+                "type": "query"
+              }
+            ]
+          },
+          "docs": "Retrieve a list of conferences within your account."
+        },
+        {
+          "info": {
+            "name": "Twilio Fetch a Conference",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.twilio.com/2010-04-01/Accounts/:AccountSid/Conferences/:ConferenceSid.json",
+            "params": [
+              {
+                "name": "AccountSid",
+                "value": "",
+                "type": "path",
+                "description": "The unique identifier of the Twilio account"
+              },
+              {
+                "name": "ConferenceSid",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "Twilio Fetch a Conference"
+        },
+        {
+          "info": {
+            "name": "Twilio Update a Conference",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.twilio.com/2010-04-01/Accounts/:AccountSid/Conferences/:ConferenceSid.json",
+            "params": [
+              {
+                "name": "AccountSid",
+                "value": "",
+                "type": "path",
+                "description": "The unique identifier of the Twilio account"
+              },
+              {
+                "name": "ConferenceSid",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "form-urlencoded",
+              "data": [
+                {
+                  "name": "Status",
+                  "value": ""
+                },
+                {
+                  "name": "AnnounceUrl",
+                  "value": ""
+                },
+                {
+                  "name": "AnnounceMethod",
+                  "value": ""
+                }
+              ]
+            }
+          },
+          "docs": "End a conference or announce a message to participants."
+        },
+        {
+          "info": {
+            "name": "Twilio List Conference Participants",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.twilio.com/2010-04-01/Accounts/:AccountSid/Conferences/:ConferenceSid/Participants.json",
+            "params": [
+              {
+                "name": "AccountSid",
+                "value": "",
+                "type": "path",
+                "description": "The unique identifier of the Twilio account"
+              },
+              {
+                "name": "ConferenceSid",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "Twilio List Conference Participants"
+        },
+        {
+          "info": {
+            "name": "Twilio Add a Participant to a Conference",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.twilio.com/2010-04-01/Accounts/:AccountSid/Conferences/:ConferenceSid/Participants.json",
+            "params": [
+              {
+                "name": "AccountSid",
+                "value": "",
+                "type": "path",
+                "description": "The unique identifier of the Twilio account"
+              },
+              {
+                "name": "ConferenceSid",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "form-urlencoded",
+              "data": [
+                {
+                  "name": "From",
+                  "value": ""
+                },
+                {
+                  "name": "To",
+                  "value": ""
+                },
+                {
+                  "name": "Muted",
+                  "value": ""
+                },
+                {
+                  "name": "Hold",
+                  "value": ""
+                },
+                {
+                  "name": "Record",
+                  "value": ""
+                },
+                {
+                  "name": "StatusCallback",
+                  "value": ""
+                }
+              ]
+            }
+          },
+          "docs": "Twilio Add a Participant to a Conference"
+        }
+      ]
+    },
+    {
+      "info": {
+        "name": "Queues",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Twilio List Call Queues",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.twilio.com/2010-04-01/Accounts/:AccountSid/Queues.json",
+            "params": [
+              {
+                "name": "AccountSid",
+                "value": "",
+                "type": "path",
+                "description": "The unique identifier of the Twilio account"
+              }
+            ]
+          },
+          "docs": "Twilio List Call Queues"
+        },
+        {
+          "info": {
+            "name": "Twilio Create a Call Queue",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.twilio.com/2010-04-01/Accounts/:AccountSid/Queues.json",
+            "params": [
+              {
+                "name": "AccountSid",
+                "value": "",
+                "type": "path",
+                "description": "The unique identifier of the Twilio account"
+              }
+            ],
+            "body": {
+              "type": "form-urlencoded",
+              "data": [
+                {
+                  "name": "FriendlyName",
+                  "value": ""
+                },
+                {
+                  "name": "MaxSize",
+                  "value": ""
+                }
+              ]
+            }
+          },
+          "docs": "Twilio Create a Call Queue"
+        },
+        {
+          "info": {
+            "name": "Twilio Fetch a Queue",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.twilio.com/2010-04-01/Accounts/:AccountSid/Queues/:QueueSid.json",
+            "params": [
+              {
+                "name": "AccountSid",
+                "value": "",
+                "type": "path",
+                "description": "The unique identifier of the Twilio account"
+              },
+              {
+                "name": "QueueSid",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "Twilio Fetch a Queue"
+        },
+        {
+          "info": {
+            "name": "Twilio Update a Queue",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.twilio.com/2010-04-01/Accounts/:AccountSid/Queues/:QueueSid.json",
+            "params": [
+              {
+                "name": "AccountSid",
+                "value": "",
+                "type": "path",
+                "description": "The unique identifier of the Twilio account"
+              },
+              {
+                "name": "QueueSid",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "form-urlencoded",
+              "data": [
+                {
+                  "name": "FriendlyName",
+                  "value": ""
+                },
+                {
+                  "name": "MaxSize",
+                  "value": ""
+                }
+              ]
+            }
+          },
+          "docs": "Twilio Update a Queue"
+        },
+        {
+          "info": {
+            "name": "Twilio Delete a Queue",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://api.twilio.com/2010-04-01/Accounts/:AccountSid/Queues/:QueueSid.json",
+            "params": [
+              {
+                "name": "AccountSid",
+                "value": "",
+                "type": "path",
+                "description": "The unique identifier of the Twilio account"
+              },
+              {
+                "name": "QueueSid",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "Twilio Delete a Queue"
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

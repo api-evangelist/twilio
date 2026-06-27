@@ -1,0 +1,3581 @@
+{
+  "info": {
+    "_postman_id": "dc1a0f2a-991f-41ca-9482-28ebf47cdf5c",
+    "name": "Twilio Voice API",
+    "description": "Build and manage voice call experiences with Twilio's Voice API. Make outbound calls, receive inbound calls, control calls in progress with TwiML, record calls, set up conferencing, and manage SIP trunking.\n\nContact Support:\n Name: Twilio Support\n Email: support@twilio.com",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "createdAt": "2026-06-05T13:22:47.000Z",
+    "updatedAt": "2026-06-05T13:22:48.000Z",
+    "lastUpdatedBy": "35240",
+    "uid": "35240-dc1a0f2a-991f-41ca-9482-28ebf47cdf5c"
+  },
+  "item": [
+    {
+      "name": "Accounts",
+      "item": [
+        {
+          "name": "{AccountSid}",
+          "item": [
+            {
+              "name": "Calls.json",
+              "item": [
+                {
+                  "name": "Twilio List Calls",
+                  "id": "33e9e8c3-0684-42b4-8432-a732a985715e",
+                  "protocolProfileBehavior": {
+                    "disableBodyPruning": true
+                  },
+                  "request": {
+                    "method": "GET",
+                    "header": [
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/Accounts/:AccountSid/Calls.json?To=<string>&From=<string>&Status=completed&StartTime=<date>&EndTime=<date>&PageSize=50",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "Accounts",
+                        ":AccountSid",
+                        "Calls.json"
+                      ],
+                      "query": [
+                        {
+                          "description": "Filter by the phone number that received the call",
+                          "key": "To",
+                          "value": "<string>"
+                        },
+                        {
+                          "description": "Filter by the phone number that initiated the call",
+                          "key": "From",
+                          "value": "<string>"
+                        },
+                        {
+                          "description": "Filter by call status",
+                          "key": "Status",
+                          "value": "completed"
+                        },
+                        {
+                          "description": "Filter by start time (YYYY-MM-DD)",
+                          "key": "StartTime",
+                          "value": "<date>"
+                        },
+                        {
+                          "description": "Filter by end time (YYYY-MM-DD)",
+                          "key": "EndTime",
+                          "value": "<date>"
+                        },
+                        {
+                          "key": "PageSize",
+                          "value": "50"
+                        }
+                      ],
+                      "variable": [
+                        {
+                          "id": "dfbf18b8-d04f-49df-95ed-1f7fac322e38",
+                          "key": "AccountSid",
+                          "value": "ACxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",
+                          "description": "(Required) The unique identifier of the Twilio account"
+                        }
+                      ]
+                    },
+                    "description": "Retrieve a list of calls made to and from your account. Results are sorted by DateUpdated descending."
+                  },
+                  "response": [
+                    {
+                      "id": "2a856ade-8dbc-449a-be4d-64448f499ff1",
+                      "name": "List of calls",
+                      "originalRequest": {
+                        "method": "GET",
+                        "header": [
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          },
+                          {
+                            "description": "Added as a part of security scheme: basic",
+                            "key": "Authorization",
+                            "value": "Basic <credentials>"
+                          }
+                        ],
+                        "url": {
+                          "raw": "{{baseUrl}}/Accounts/:AccountSid/Calls.json?To=<string>&From=<string>&Status=completed&StartTime=<date>&EndTime=<date>&PageSize=50",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "Accounts",
+                            ":AccountSid",
+                            "Calls.json"
+                          ],
+                          "query": [
+                            {
+                              "description": "Filter by the phone number that received the call",
+                              "key": "To",
+                              "value": "<string>"
+                            },
+                            {
+                              "description": "Filter by the phone number that initiated the call",
+                              "key": "From",
+                              "value": "<string>"
+                            },
+                            {
+                              "description": "Filter by call status",
+                              "key": "Status",
+                              "value": "completed"
+                            },
+                            {
+                              "description": "Filter by start time (YYYY-MM-DD)",
+                              "key": "StartTime",
+                              "value": "<date>"
+                            },
+                            {
+                              "description": "Filter by end time (YYYY-MM-DD)",
+                              "key": "EndTime",
+                              "value": "<date>"
+                            },
+                            {
+                              "key": "PageSize",
+                              "value": "50"
+                            }
+                          ],
+                          "variable": [
+                            {
+                              "key": "AccountSid"
+                            }
+                          ]
+                        }
+                      },
+                      "status": "OK",
+                      "code": 200,
+                      "_postman_previewlanguage": "json",
+                      "header": [
+                        {
+                          "key": "Content-Type",
+                          "value": "application/json"
+                        }
+                      ],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": "{\n  \"calls\": [\n    {\n      \"sid\": \"CAc1f9FEf9CefAB159aA4a466Efb995BbB\",\n      \"account_sid\": \"ACxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx\",\n      \"parent_call_sid\": \"<string>\",\n      \"to\": \"<string>\",\n      \"to_formatted\": \"<string>\",\n      \"from\": \"<string>\",\n      \"from_formatted\": \"<string>\",\n      \"phone_number_sid\": \"<string>\",\n      \"status\": \"canceled\",\n      \"direction\": \"outbound-api\",\n      \"price\": \"<string>\",\n      \"price_unit\": \"<string>\",\n      \"duration\": \"<string>\",\n      \"start_time\": \"<dateTime>\",\n      \"end_time\": \"<dateTime>\",\n      \"date_created\": \"<dateTime>\",\n      \"date_updated\": \"<dateTime>\",\n      \"answered_by\": \"machine\",\n      \"caller_name\": \"<string>\",\n      \"forwarded_from\": \"<string>\",\n      \"group_sid\": \"<string>\",\n      \"uri\": \"<string>\",\n      \"api_version\": \"<string>\",\n      \"subresource_uris\": {\n        \"recordings\": \"<string>\",\n        \"notifications\": \"<string>\"\n      }\n    },\n    {\n      \"sid\": \"CA4b7BeafB21ac17Fdc2aB3aF6C19E59dE\",\n      \"account_sid\": \"ACxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx\",\n      \"parent_call_sid\": \"<string>\",\n      \"to\": \"<string>\",\n      \"to_formatted\": \"<string>\",\n      \"from\": \"<string>\",\n      \"from_formatted\": \"<string>\",\n      \"phone_number_sid\": \"<string>\",\n      \"status\": \"ringing\",\n      \"direction\": \"inbound\",\n      \"price\": \"<string>\",\n      \"price_unit\": \"<string>\",\n      \"duration\": \"<string>\",\n      \"start_time\": \"<dateTime>\",\n      \"end_time\": \"<dateTime>\",\n      \"date_created\": \"<dateTime>\",\n      \"date_updated\": \"<dateTime>\",\n      \"answered_by\": \"machine\",\n      \"caller_name\": \"<string>\",\n      \"forwarded_from\": \"<string>\",\n      \"group_sid\": \"<string>\",\n      \"uri\": \"<string>\",\n      \"api_version\": \"<string>\",\n      \"subresource_uris\": {\n        \"recordings\": \"<string>\",\n        \"notifications\": \"<string>\"\n      }\n    }\n  ],\n  \"first_page_uri\": \"<string>\",\n  \"next_page_uri\": \"<string>\",\n  \"previous_page_uri\": \"<string>\",\n  \"page\": \"<integer>\",\n  \"page_size\": \"<integer>\",\n  \"uri\": \"<string>\"\n}",
+                      "createdAt": "2026-06-05T13:22:48.000Z",
+                      "updatedAt": "2026-06-05T13:22:48.000Z",
+                      "uid": "35240-2a856ade-8dbc-449a-be4d-64448f499ff1"
+                    },
+                    {
+                      "id": "bf0e64f7-ab1c-4d29-bc6c-5006ac9a3074",
+                      "name": "Unauthorized",
+                      "originalRequest": {
+                        "method": "GET",
+                        "header": [
+                          {
+                            "description": "Added as a part of security scheme: basic",
+                            "key": "Authorization",
+                            "value": "Basic <credentials>"
+                          }
+                        ],
+                        "url": {
+                          "raw": "{{baseUrl}}/Accounts/:AccountSid/Calls.json?To=<string>&From=<string>&Status=completed&StartTime=<date>&EndTime=<date>&PageSize=50",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "Accounts",
+                            ":AccountSid",
+                            "Calls.json"
+                          ],
+                          "query": [
+                            {
+                              "description": "Filter by the phone number that received the call",
+                              "key": "To",
+                              "value": "<string>"
+                            },
+                            {
+                              "description": "Filter by the phone number that initiated the call",
+                              "key": "From",
+                              "value": "<string>"
+                            },
+                            {
+                              "description": "Filter by call status",
+                              "key": "Status",
+                              "value": "completed"
+                            },
+                            {
+                              "description": "Filter by start time (YYYY-MM-DD)",
+                              "key": "StartTime",
+                              "value": "<date>"
+                            },
+                            {
+                              "description": "Filter by end time (YYYY-MM-DD)",
+                              "key": "EndTime",
+                              "value": "<date>"
+                            },
+                            {
+                              "key": "PageSize",
+                              "value": "50"
+                            }
+                          ],
+                          "variable": [
+                            {
+                              "key": "AccountSid"
+                            }
+                          ]
+                        }
+                      },
+                      "status": "Unauthorized",
+                      "code": 401,
+                      "_postman_previewlanguage": "text",
+                      "header": [],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": null,
+                      "createdAt": "2026-06-05T13:22:48.000Z",
+                      "updatedAt": "2026-06-05T13:22:48.000Z",
+                      "uid": "35240-bf0e64f7-ab1c-4d29-bc6c-5006ac9a3074"
+                    }
+                  ],
+                  "createdAt": "2026-06-05T13:22:48.000Z",
+                  "updatedAt": "2026-06-05T13:22:48.000Z",
+                  "uid": "35240-33e9e8c3-0684-42b4-8432-a732a985715e"
+                },
+                {
+                  "name": "Twilio Make a Call",
+                  "id": "3398a9a6-efe4-483a-b852-2c2683f9deb3",
+                  "protocolProfileBehavior": {
+                    "disableBodyPruning": true
+                  },
+                  "request": {
+                    "method": "POST",
+                    "header": [
+                      {
+                        "key": "Content-Type",
+                        "value": "application/x-www-form-urlencoded"
+                      },
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      }
+                    ],
+                    "body": {
+                      "mode": "urlencoded",
+                      "urlencoded": [
+                        {
+                          "description": "(Required) Phone number, SIP URI, or client identifier to call",
+                          "key": "To",
+                          "value": "<string>"
+                        },
+                        {
+                          "description": "(Required) Twilio phone number or verified caller ID",
+                          "key": "From",
+                          "value": "<string>"
+                        },
+                        {
+                          "description": "TwiML URL for call instructions",
+                          "key": "Url",
+                          "value": "<uri>"
+                        },
+                        {
+                          "description": "SID of the TwiML application to handle the call",
+                          "key": "ApplicationSid",
+                          "value": "AP71b6EabD2089f41D8aEfC6bf9e32FAF3"
+                        },
+                        {
+                          "key": "Method",
+                          "value": "POST"
+                        },
+                        {
+                          "description": "URL for call status webhooks",
+                          "key": "StatusCallback",
+                          "value": "<uri>"
+                        },
+                        {
+                          "key": "StatusCallbackMethod",
+                          "value": "GET"
+                        },
+                        {
+                          "key": "StatusCallbackEvent",
+                          "value": "initiated"
+                        },
+                        {
+                          "key": "StatusCallbackEvent",
+                          "value": "initiated"
+                        },
+                        {
+                          "description": "Ring timeout in seconds",
+                          "key": "Timeout",
+                          "value": "60"
+                        },
+                        {
+                          "description": "Whether to record the call",
+                          "key": "Record",
+                          "value": "false"
+                        },
+                        {
+                          "key": "RecordingChannels",
+                          "value": "dual"
+                        },
+                        {
+                          "key": "RecordingStatusCallback",
+                          "value": "<uri>"
+                        },
+                        {
+                          "description": "Enable answering machine detection",
+                          "key": "MachineDetection",
+                          "value": "DetectMessageEnd"
+                        },
+                        {
+                          "description": "Inline TwiML instructions for the call",
+                          "key": "Twiml",
+                          "value": "<string>"
+                        },
+                        {
+                          "description": "Caller ID to display on outbound call",
+                          "key": "CallerId",
+                          "value": "<string>"
+                        }
+                      ]
+                    },
+                    "url": {
+                      "raw": "{{baseUrl}}/Accounts/:AccountSid/Calls.json",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "Accounts",
+                        ":AccountSid",
+                        "Calls.json"
+                      ],
+                      "variable": [
+                        {
+                          "id": "07bf011f-d003-4b60-b38f-2ce2cd2e7878",
+                          "key": "AccountSid",
+                          "value": "ACxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",
+                          "description": "(Required) The unique identifier of the Twilio account"
+                        }
+                      ]
+                    },
+                    "description": "Initiate a new outbound phone call. Provide a TwiML URL or ApplicationSid to control the call flow, along with the To and From phone numbers."
+                  },
+                  "response": [
+                    {
+                      "id": "2ac87f37-32a4-4807-b031-da90049ece4c",
+                      "name": "Call initiated",
+                      "originalRequest": {
+                        "method": "POST",
+                        "header": [
+                          {
+                            "key": "Content-Type",
+                            "value": "application/x-www-form-urlencoded"
+                          },
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          },
+                          {
+                            "description": "Added as a part of security scheme: basic",
+                            "key": "Authorization",
+                            "value": "Basic <credentials>"
+                          }
+                        ],
+                        "body": {
+                          "mode": "urlencoded",
+                          "urlencoded": [
+                            {
+                              "description": "(Required) Phone number, SIP URI, or client identifier to call",
+                              "key": "To",
+                              "value": "<string>"
+                            },
+                            {
+                              "description": "(Required) Twilio phone number or verified caller ID",
+                              "key": "From",
+                              "value": "<string>"
+                            },
+                            {
+                              "description": "TwiML URL for call instructions",
+                              "key": "Url",
+                              "value": "<uri>"
+                            },
+                            {
+                              "description": "SID of the TwiML application to handle the call",
+                              "key": "ApplicationSid",
+                              "value": "AP71b6EabD2089f41D8aEfC6bf9e32FAF3"
+                            },
+                            {
+                              "key": "Method",
+                              "value": "POST"
+                            },
+                            {
+                              "description": "URL for call status webhooks",
+                              "key": "StatusCallback",
+                              "value": "<uri>"
+                            },
+                            {
+                              "key": "StatusCallbackMethod",
+                              "value": "GET"
+                            },
+                            {
+                              "key": "StatusCallbackEvent",
+                              "value": "initiated"
+                            },
+                            {
+                              "key": "StatusCallbackEvent",
+                              "value": "initiated"
+                            },
+                            {
+                              "description": "Ring timeout in seconds",
+                              "key": "Timeout",
+                              "value": "60"
+                            },
+                            {
+                              "description": "Whether to record the call",
+                              "key": "Record",
+                              "value": "false"
+                            },
+                            {
+                              "key": "RecordingChannels",
+                              "value": "dual"
+                            },
+                            {
+                              "key": "RecordingStatusCallback",
+                              "value": "<uri>"
+                            },
+                            {
+                              "description": "Enable answering machine detection",
+                              "key": "MachineDetection",
+                              "value": "DetectMessageEnd"
+                            },
+                            {
+                              "description": "Inline TwiML instructions for the call",
+                              "key": "Twiml",
+                              "value": "<string>"
+                            },
+                            {
+                              "description": "Caller ID to display on outbound call",
+                              "key": "CallerId",
+                              "value": "<string>"
+                            }
+                          ]
+                        },
+                        "url": {
+                          "raw": "{{baseUrl}}/Accounts/:AccountSid/Calls.json",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "Accounts",
+                            ":AccountSid",
+                            "Calls.json"
+                          ],
+                          "variable": [
+                            {
+                              "key": "AccountSid"
+                            }
+                          ]
+                        }
+                      },
+                      "status": "Created",
+                      "code": 201,
+                      "_postman_previewlanguage": "json",
+                      "header": [
+                        {
+                          "key": "Content-Type",
+                          "value": "application/json"
+                        }
+                      ],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": "{\n  \"sid\": \"CAe672155A3d6966fA58CF11DCAFB31169\",\n  \"account_sid\": \"ACxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx\",\n  \"parent_call_sid\": \"<string>\",\n  \"to\": \"<string>\",\n  \"to_formatted\": \"<string>\",\n  \"from\": \"<string>\",\n  \"from_formatted\": \"<string>\",\n  \"phone_number_sid\": \"<string>\",\n  \"status\": \"ringing\",\n  \"direction\": \"outbound-dial\",\n  \"price\": \"<string>\",\n  \"price_unit\": \"<string>\",\n  \"duration\": \"<string>\",\n  \"start_time\": \"<dateTime>\",\n  \"end_time\": \"<dateTime>\",\n  \"date_created\": \"<dateTime>\",\n  \"date_updated\": \"<dateTime>\",\n  \"answered_by\": \"human\",\n  \"caller_name\": \"<string>\",\n  \"forwarded_from\": \"<string>\",\n  \"group_sid\": \"<string>\",\n  \"uri\": \"<string>\",\n  \"api_version\": \"<string>\",\n  \"subresource_uris\": {\n    \"recordings\": \"<string>\",\n    \"notifications\": \"<string>\"\n  }\n}",
+                      "createdAt": "2026-06-05T13:22:48.000Z",
+                      "updatedAt": "2026-06-05T13:22:48.000Z",
+                      "uid": "35240-2ac87f37-32a4-4807-b031-da90049ece4c"
+                    },
+                    {
+                      "id": "7f3ecec1-a36a-4df2-b120-dc251c5e959f",
+                      "name": "Invalid request parameters",
+                      "originalRequest": {
+                        "method": "POST",
+                        "header": [
+                          {
+                            "key": "Content-Type",
+                            "value": "application/x-www-form-urlencoded"
+                          },
+                          {
+                            "description": "Added as a part of security scheme: basic",
+                            "key": "Authorization",
+                            "value": "Basic <credentials>"
+                          }
+                        ],
+                        "body": {
+                          "mode": "urlencoded",
+                          "urlencoded": [
+                            {
+                              "description": "(Required) Phone number, SIP URI, or client identifier to call",
+                              "key": "To",
+                              "value": "<string>"
+                            },
+                            {
+                              "description": "(Required) Twilio phone number or verified caller ID",
+                              "key": "From",
+                              "value": "<string>"
+                            },
+                            {
+                              "description": "TwiML URL for call instructions",
+                              "key": "Url",
+                              "value": "<uri>"
+                            },
+                            {
+                              "description": "SID of the TwiML application to handle the call",
+                              "key": "ApplicationSid",
+                              "value": "AP71b6EabD2089f41D8aEfC6bf9e32FAF3"
+                            },
+                            {
+                              "key": "Method",
+                              "value": "POST"
+                            },
+                            {
+                              "description": "URL for call status webhooks",
+                              "key": "StatusCallback",
+                              "value": "<uri>"
+                            },
+                            {
+                              "key": "StatusCallbackMethod",
+                              "value": "GET"
+                            },
+                            {
+                              "key": "StatusCallbackEvent",
+                              "value": "initiated"
+                            },
+                            {
+                              "key": "StatusCallbackEvent",
+                              "value": "initiated"
+                            },
+                            {
+                              "description": "Ring timeout in seconds",
+                              "key": "Timeout",
+                              "value": "60"
+                            },
+                            {
+                              "description": "Whether to record the call",
+                              "key": "Record",
+                              "value": "false"
+                            },
+                            {
+                              "key": "RecordingChannels",
+                              "value": "dual"
+                            },
+                            {
+                              "key": "RecordingStatusCallback",
+                              "value": "<uri>"
+                            },
+                            {
+                              "description": "Enable answering machine detection",
+                              "key": "MachineDetection",
+                              "value": "DetectMessageEnd"
+                            },
+                            {
+                              "description": "Inline TwiML instructions for the call",
+                              "key": "Twiml",
+                              "value": "<string>"
+                            },
+                            {
+                              "description": "Caller ID to display on outbound call",
+                              "key": "CallerId",
+                              "value": "<string>"
+                            }
+                          ]
+                        },
+                        "url": {
+                          "raw": "{{baseUrl}}/Accounts/:AccountSid/Calls.json",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "Accounts",
+                            ":AccountSid",
+                            "Calls.json"
+                          ],
+                          "variable": [
+                            {
+                              "key": "AccountSid"
+                            }
+                          ]
+                        }
+                      },
+                      "status": "Bad Request",
+                      "code": 400,
+                      "_postman_previewlanguage": "text",
+                      "header": [],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": null,
+                      "createdAt": "2026-06-05T13:22:48.000Z",
+                      "updatedAt": "2026-06-05T13:22:48.000Z",
+                      "uid": "35240-7f3ecec1-a36a-4df2-b120-dc251c5e959f"
+                    },
+                    {
+                      "id": "cc8c74c8-7023-4779-835f-e59950e0e00b",
+                      "name": "Unauthorized",
+                      "originalRequest": {
+                        "method": "POST",
+                        "header": [
+                          {
+                            "key": "Content-Type",
+                            "value": "application/x-www-form-urlencoded"
+                          },
+                          {
+                            "description": "Added as a part of security scheme: basic",
+                            "key": "Authorization",
+                            "value": "Basic <credentials>"
+                          }
+                        ],
+                        "body": {
+                          "mode": "urlencoded",
+                          "urlencoded": [
+                            {
+                              "description": "(Required) Phone number, SIP URI, or client identifier to call",
+                              "key": "To",
+                              "value": "<string>"
+                            },
+                            {
+                              "description": "(Required) Twilio phone number or verified caller ID",
+                              "key": "From",
+                              "value": "<string>"
+                            },
+                            {
+                              "description": "TwiML URL for call instructions",
+                              "key": "Url",
+                              "value": "<uri>"
+                            },
+                            {
+                              "description": "SID of the TwiML application to handle the call",
+                              "key": "ApplicationSid",
+                              "value": "AP71b6EabD2089f41D8aEfC6bf9e32FAF3"
+                            },
+                            {
+                              "key": "Method",
+                              "value": "POST"
+                            },
+                            {
+                              "description": "URL for call status webhooks",
+                              "key": "StatusCallback",
+                              "value": "<uri>"
+                            },
+                            {
+                              "key": "StatusCallbackMethod",
+                              "value": "GET"
+                            },
+                            {
+                              "key": "StatusCallbackEvent",
+                              "value": "initiated"
+                            },
+                            {
+                              "key": "StatusCallbackEvent",
+                              "value": "initiated"
+                            },
+                            {
+                              "description": "Ring timeout in seconds",
+                              "key": "Timeout",
+                              "value": "60"
+                            },
+                            {
+                              "description": "Whether to record the call",
+                              "key": "Record",
+                              "value": "false"
+                            },
+                            {
+                              "key": "RecordingChannels",
+                              "value": "dual"
+                            },
+                            {
+                              "key": "RecordingStatusCallback",
+                              "value": "<uri>"
+                            },
+                            {
+                              "description": "Enable answering machine detection",
+                              "key": "MachineDetection",
+                              "value": "DetectMessageEnd"
+                            },
+                            {
+                              "description": "Inline TwiML instructions for the call",
+                              "key": "Twiml",
+                              "value": "<string>"
+                            },
+                            {
+                              "description": "Caller ID to display on outbound call",
+                              "key": "CallerId",
+                              "value": "<string>"
+                            }
+                          ]
+                        },
+                        "url": {
+                          "raw": "{{baseUrl}}/Accounts/:AccountSid/Calls.json",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "Accounts",
+                            ":AccountSid",
+                            "Calls.json"
+                          ],
+                          "variable": [
+                            {
+                              "key": "AccountSid"
+                            }
+                          ]
+                        }
+                      },
+                      "status": "Unauthorized",
+                      "code": 401,
+                      "_postman_previewlanguage": "text",
+                      "header": [],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": null,
+                      "createdAt": "2026-06-05T13:22:48.000Z",
+                      "updatedAt": "2026-06-05T13:22:48.000Z",
+                      "uid": "35240-cc8c74c8-7023-4779-835f-e59950e0e00b"
+                    }
+                  ],
+                  "createdAt": "2026-06-05T13:22:48.000Z",
+                  "updatedAt": "2026-06-05T13:22:48.000Z",
+                  "uid": "35240-3398a9a6-efe4-483a-b852-2c2683f9deb3"
+                }
+              ],
+              "id": "8c4e81ec-ceba-4378-85c7-1a56d54018a5",
+              "createdAt": "2026-06-05T13:22:48.000Z",
+              "updatedAt": "2026-06-05T13:22:48.000Z",
+              "uid": "35240-8c4e81ec-ceba-4378-85c7-1a56d54018a5"
+            },
+            {
+              "name": "Calls",
+              "item": [
+                {
+                  "name": "{CallSid}.json",
+                  "item": [
+                    {
+                      "name": "Twilio Fetch a Call",
+                      "id": "e2db4b7b-abb6-4a44-bb5e-b87320a39a36",
+                      "protocolProfileBehavior": {
+                        "disableBodyPruning": true
+                      },
+                      "request": {
+                        "method": "GET",
+                        "header": [
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          }
+                        ],
+                        "url": {
+                          "raw": "{{baseUrl}}/Accounts/:AccountSid/Calls/{{CallSid}}.json",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "Accounts",
+                            ":AccountSid",
+                            "Calls",
+                            "{{CallSid}}.json"
+                          ],
+                          "variable": [
+                            {
+                              "id": "787cffb5-389b-4c73-afaf-a5ad6e8cc0de",
+                              "key": "AccountSid",
+                              "value": "ACxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",
+                              "description": "(Required) The unique identifier of the Twilio account"
+                            }
+                          ]
+                        },
+                        "description": "Retrieve details of a specific call by its SID."
+                      },
+                      "response": [
+                        {
+                          "id": "1046fb1f-2410-4dbc-b545-952e2626821b",
+                          "name": "Call details",
+                          "originalRequest": {
+                            "method": "GET",
+                            "header": [
+                              {
+                                "key": "Accept",
+                                "value": "application/json"
+                              },
+                              {
+                                "description": "Added as a part of security scheme: basic",
+                                "key": "Authorization",
+                                "value": "Basic <credentials>"
+                              }
+                            ],
+                            "url": {
+                              "raw": "{{baseUrl}}/Accounts/:AccountSid/Calls/{{CallSid}}.json",
+                              "host": [
+                                "{{baseUrl}}"
+                              ],
+                              "path": [
+                                "Accounts",
+                                ":AccountSid",
+                                "Calls",
+                                "{{CallSid}}.json"
+                              ],
+                              "variable": [
+                                {
+                                  "key": "AccountSid"
+                                }
+                              ]
+                            }
+                          },
+                          "status": "OK",
+                          "code": 200,
+                          "_postman_previewlanguage": "json",
+                          "header": [
+                            {
+                              "key": "Content-Type",
+                              "value": "application/json"
+                            }
+                          ],
+                          "cookie": [],
+                          "responseTime": null,
+                          "body": "{\n  \"sid\": \"CAe672155A3d6966fA58CF11DCAFB31169\",\n  \"account_sid\": \"ACxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx\",\n  \"parent_call_sid\": \"<string>\",\n  \"to\": \"<string>\",\n  \"to_formatted\": \"<string>\",\n  \"from\": \"<string>\",\n  \"from_formatted\": \"<string>\",\n  \"phone_number_sid\": \"<string>\",\n  \"status\": \"ringing\",\n  \"direction\": \"outbound-dial\",\n  \"price\": \"<string>\",\n  \"price_unit\": \"<string>\",\n  \"duration\": \"<string>\",\n  \"start_time\": \"<dateTime>\",\n  \"end_time\": \"<dateTime>\",\n  \"date_created\": \"<dateTime>\",\n  \"date_updated\": \"<dateTime>\",\n  \"answered_by\": \"human\",\n  \"caller_name\": \"<string>\",\n  \"forwarded_from\": \"<string>\",\n  \"group_sid\": \"<string>\",\n  \"uri\": \"<string>\",\n  \"api_version\": \"<string>\",\n  \"subresource_uris\": {\n    \"recordings\": \"<string>\",\n    \"notifications\": \"<string>\"\n  }\n}",
+                          "createdAt": "2026-06-05T13:22:48.000Z",
+                          "updatedAt": "2026-06-05T13:22:48.000Z",
+                          "uid": "35240-1046fb1f-2410-4dbc-b545-952e2626821b"
+                        },
+                        {
+                          "id": "4617f6d9-66d2-4571-9131-2730f6fdc857",
+                          "name": "Unauthorized",
+                          "originalRequest": {
+                            "method": "GET",
+                            "header": [
+                              {
+                                "description": "Added as a part of security scheme: basic",
+                                "key": "Authorization",
+                                "value": "Basic <credentials>"
+                              }
+                            ],
+                            "url": {
+                              "raw": "{{baseUrl}}/Accounts/:AccountSid/Calls/{{CallSid}}.json",
+                              "host": [
+                                "{{baseUrl}}"
+                              ],
+                              "path": [
+                                "Accounts",
+                                ":AccountSid",
+                                "Calls",
+                                "{{CallSid}}.json"
+                              ],
+                              "variable": [
+                                {
+                                  "key": "AccountSid"
+                                }
+                              ]
+                            }
+                          },
+                          "status": "Unauthorized",
+                          "code": 401,
+                          "_postman_previewlanguage": "text",
+                          "header": [],
+                          "cookie": [],
+                          "responseTime": null,
+                          "body": null,
+                          "createdAt": "2026-06-05T13:22:48.000Z",
+                          "updatedAt": "2026-06-05T13:22:48.000Z",
+                          "uid": "35240-4617f6d9-66d2-4571-9131-2730f6fdc857"
+                        },
+                        {
+                          "id": "aafab648-9f6c-4d68-a3ae-05b2863ac817",
+                          "name": "Call not found",
+                          "originalRequest": {
+                            "method": "GET",
+                            "header": [
+                              {
+                                "description": "Added as a part of security scheme: basic",
+                                "key": "Authorization",
+                                "value": "Basic <credentials>"
+                              }
+                            ],
+                            "url": {
+                              "raw": "{{baseUrl}}/Accounts/:AccountSid/Calls/{{CallSid}}.json",
+                              "host": [
+                                "{{baseUrl}}"
+                              ],
+                              "path": [
+                                "Accounts",
+                                ":AccountSid",
+                                "Calls",
+                                "{{CallSid}}.json"
+                              ],
+                              "variable": [
+                                {
+                                  "key": "AccountSid"
+                                }
+                              ]
+                            }
+                          },
+                          "status": "Not Found",
+                          "code": 404,
+                          "_postman_previewlanguage": "text",
+                          "header": [],
+                          "cookie": [],
+                          "responseTime": null,
+                          "body": null,
+                          "createdAt": "2026-06-05T13:22:48.000Z",
+                          "updatedAt": "2026-06-05T13:22:48.000Z",
+                          "uid": "35240-aafab648-9f6c-4d68-a3ae-05b2863ac817"
+                        }
+                      ],
+                      "createdAt": "2026-06-05T13:22:48.000Z",
+                      "updatedAt": "2026-06-05T13:22:48.000Z",
+                      "uid": "35240-e2db4b7b-abb6-4a44-bb5e-b87320a39a36"
+                    },
+                    {
+                      "name": "Twilio Modify a Live Call",
+                      "id": "5153f21f-ad68-429a-b337-14c05f2240fc",
+                      "protocolProfileBehavior": {
+                        "disableBodyPruning": true
+                      },
+                      "request": {
+                        "method": "POST",
+                        "header": [
+                          {
+                            "key": "Content-Type",
+                            "value": "application/x-www-form-urlencoded"
+                          },
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          }
+                        ],
+                        "body": {
+                          "mode": "urlencoded",
+                          "urlencoded": [
+                            {
+                              "description": "Redirect the call to a new TwiML URL",
+                              "key": "Url",
+                              "value": "<uri>"
+                            },
+                            {
+                              "key": "Method",
+                              "value": "POST"
+                            },
+                            {
+                              "description": "Set to completed to end the call",
+                              "key": "Status",
+                              "value": "completed"
+                            },
+                            {
+                              "description": "Inline TwiML to redirect the call",
+                              "key": "Twiml",
+                              "value": "<string>"
+                            }
+                          ]
+                        },
+                        "url": {
+                          "raw": "{{baseUrl}}/Accounts/:AccountSid/Calls/{{CallSid}}.json",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "Accounts",
+                            ":AccountSid",
+                            "Calls",
+                            "{{CallSid}}.json"
+                          ],
+                          "variable": [
+                            {
+                              "id": "bf661987-14d7-4d58-8c60-b7573715ec6d",
+                              "key": "AccountSid",
+                              "value": "ACxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",
+                              "description": "(Required) The unique identifier of the Twilio account"
+                            }
+                          ]
+                        },
+                        "description": "Modify an in-progress call. Redirect to a new TwiML URL, end the call, or put the caller on hold."
+                      },
+                      "response": [
+                        {
+                          "id": "10e1e6c8-7a9e-4b46-837b-0f54c440d53e",
+                          "name": "Call updated",
+                          "originalRequest": {
+                            "method": "POST",
+                            "header": [
+                              {
+                                "key": "Content-Type",
+                                "value": "application/x-www-form-urlencoded"
+                              },
+                              {
+                                "key": "Accept",
+                                "value": "application/json"
+                              },
+                              {
+                                "description": "Added as a part of security scheme: basic",
+                                "key": "Authorization",
+                                "value": "Basic <credentials>"
+                              }
+                            ],
+                            "body": {
+                              "mode": "urlencoded",
+                              "urlencoded": [
+                                {
+                                  "description": "Redirect the call to a new TwiML URL",
+                                  "key": "Url",
+                                  "value": "<uri>"
+                                },
+                                {
+                                  "key": "Method",
+                                  "value": "POST"
+                                },
+                                {
+                                  "description": "Set to completed to end the call",
+                                  "key": "Status",
+                                  "value": "completed"
+                                },
+                                {
+                                  "description": "Inline TwiML to redirect the call",
+                                  "key": "Twiml",
+                                  "value": "<string>"
+                                }
+                              ]
+                            },
+                            "url": {
+                              "raw": "{{baseUrl}}/Accounts/:AccountSid/Calls/{{CallSid}}.json",
+                              "host": [
+                                "{{baseUrl}}"
+                              ],
+                              "path": [
+                                "Accounts",
+                                ":AccountSid",
+                                "Calls",
+                                "{{CallSid}}.json"
+                              ],
+                              "variable": [
+                                {
+                                  "key": "AccountSid"
+                                }
+                              ]
+                            }
+                          },
+                          "status": "OK",
+                          "code": 200,
+                          "_postman_previewlanguage": "json",
+                          "header": [
+                            {
+                              "key": "Content-Type",
+                              "value": "application/json"
+                            }
+                          ],
+                          "cookie": [],
+                          "responseTime": null,
+                          "body": "{\n  \"sid\": \"CAe672155A3d6966fA58CF11DCAFB31169\",\n  \"account_sid\": \"ACxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx\",\n  \"parent_call_sid\": \"<string>\",\n  \"to\": \"<string>\",\n  \"to_formatted\": \"<string>\",\n  \"from\": \"<string>\",\n  \"from_formatted\": \"<string>\",\n  \"phone_number_sid\": \"<string>\",\n  \"status\": \"ringing\",\n  \"direction\": \"outbound-dial\",\n  \"price\": \"<string>\",\n  \"price_unit\": \"<string>\",\n  \"duration\": \"<string>\",\n  \"start_time\": \"<dateTime>\",\n  \"end_time\": \"<dateTime>\",\n  \"date_created\": \"<dateTime>\",\n  \"date_updated\": \"<dateTime>\",\n  \"answered_by\": \"human\",\n  \"caller_name\": \"<string>\",\n  \"forwarded_from\": \"<string>\",\n  \"group_sid\": \"<string>\",\n  \"uri\": \"<string>\",\n  \"api_version\": \"<string>\",\n  \"subresource_uris\": {\n    \"recordings\": \"<string>\",\n    \"notifications\": \"<string>\"\n  }\n}",
+                          "createdAt": "2026-06-05T13:22:48.000Z",
+                          "updatedAt": "2026-06-05T13:22:48.000Z",
+                          "uid": "35240-10e1e6c8-7a9e-4b46-837b-0f54c440d53e"
+                        },
+                        {
+                          "id": "493a4d55-9b4f-4d82-aed5-f8206670f253",
+                          "name": "Unauthorized",
+                          "originalRequest": {
+                            "method": "POST",
+                            "header": [
+                              {
+                                "key": "Content-Type",
+                                "value": "application/x-www-form-urlencoded"
+                              },
+                              {
+                                "description": "Added as a part of security scheme: basic",
+                                "key": "Authorization",
+                                "value": "Basic <credentials>"
+                              }
+                            ],
+                            "body": {
+                              "mode": "urlencoded",
+                              "urlencoded": [
+                                {
+                                  "description": "Redirect the call to a new TwiML URL",
+                                  "key": "Url",
+                                  "value": "<uri>"
+                                },
+                                {
+                                  "key": "Method",
+                                  "value": "POST"
+                                },
+                                {
+                                  "description": "Set to completed to end the call",
+                                  "key": "Status",
+                                  "value": "completed"
+                                },
+                                {
+                                  "description": "Inline TwiML to redirect the call",
+                                  "key": "Twiml",
+                                  "value": "<string>"
+                                }
+                              ]
+                            },
+                            "url": {
+                              "raw": "{{baseUrl}}/Accounts/:AccountSid/Calls/{{CallSid}}.json",
+                              "host": [
+                                "{{baseUrl}}"
+                              ],
+                              "path": [
+                                "Accounts",
+                                ":AccountSid",
+                                "Calls",
+                                "{{CallSid}}.json"
+                              ],
+                              "variable": [
+                                {
+                                  "key": "AccountSid"
+                                }
+                              ]
+                            }
+                          },
+                          "status": "Unauthorized",
+                          "code": 401,
+                          "_postman_previewlanguage": "text",
+                          "header": [],
+                          "cookie": [],
+                          "responseTime": null,
+                          "body": null,
+                          "createdAt": "2026-06-05T13:22:48.000Z",
+                          "updatedAt": "2026-06-05T13:22:48.000Z",
+                          "uid": "35240-493a4d55-9b4f-4d82-aed5-f8206670f253"
+                        },
+                        {
+                          "id": "12b006f5-9427-499f-88ed-c0f54ed7b28a",
+                          "name": "Call not found",
+                          "originalRequest": {
+                            "method": "POST",
+                            "header": [
+                              {
+                                "key": "Content-Type",
+                                "value": "application/x-www-form-urlencoded"
+                              },
+                              {
+                                "description": "Added as a part of security scheme: basic",
+                                "key": "Authorization",
+                                "value": "Basic <credentials>"
+                              }
+                            ],
+                            "body": {
+                              "mode": "urlencoded",
+                              "urlencoded": [
+                                {
+                                  "description": "Redirect the call to a new TwiML URL",
+                                  "key": "Url",
+                                  "value": "<uri>"
+                                },
+                                {
+                                  "key": "Method",
+                                  "value": "POST"
+                                },
+                                {
+                                  "description": "Set to completed to end the call",
+                                  "key": "Status",
+                                  "value": "completed"
+                                },
+                                {
+                                  "description": "Inline TwiML to redirect the call",
+                                  "key": "Twiml",
+                                  "value": "<string>"
+                                }
+                              ]
+                            },
+                            "url": {
+                              "raw": "{{baseUrl}}/Accounts/:AccountSid/Calls/{{CallSid}}.json",
+                              "host": [
+                                "{{baseUrl}}"
+                              ],
+                              "path": [
+                                "Accounts",
+                                ":AccountSid",
+                                "Calls",
+                                "{{CallSid}}.json"
+                              ],
+                              "variable": [
+                                {
+                                  "key": "AccountSid"
+                                }
+                              ]
+                            }
+                          },
+                          "status": "Not Found",
+                          "code": 404,
+                          "_postman_previewlanguage": "text",
+                          "header": [],
+                          "cookie": [],
+                          "responseTime": null,
+                          "body": null,
+                          "createdAt": "2026-06-05T13:22:48.000Z",
+                          "updatedAt": "2026-06-05T13:22:48.000Z",
+                          "uid": "35240-12b006f5-9427-499f-88ed-c0f54ed7b28a"
+                        }
+                      ],
+                      "createdAt": "2026-06-05T13:22:48.000Z",
+                      "updatedAt": "2026-06-05T13:22:48.000Z",
+                      "uid": "35240-5153f21f-ad68-429a-b337-14c05f2240fc"
+                    },
+                    {
+                      "name": "Twilio Delete a Call Record",
+                      "id": "9b9a035c-87b7-49a8-80b6-0cd304d694f8",
+                      "protocolProfileBehavior": {
+                        "disableBodyPruning": true
+                      },
+                      "request": {
+                        "method": "DELETE",
+                        "header": [],
+                        "url": {
+                          "raw": "{{baseUrl}}/Accounts/:AccountSid/Calls/{{CallSid}}.json",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "Accounts",
+                            ":AccountSid",
+                            "Calls",
+                            "{{CallSid}}.json"
+                          ],
+                          "variable": [
+                            {
+                              "id": "4decd7c3-f347-4b07-bcb7-f2a687a63e52",
+                              "key": "AccountSid",
+                              "value": "ACxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",
+                              "description": "(Required) The unique identifier of the Twilio account"
+                            }
+                          ]
+                        },
+                        "description": "Delete a call record from your account."
+                      },
+                      "response": [
+                        {
+                          "id": "ddc9991d-7210-4fd6-8d46-8729320c9796",
+                          "name": "Call record deleted",
+                          "originalRequest": {
+                            "method": "DELETE",
+                            "header": [
+                              {
+                                "description": "Added as a part of security scheme: basic",
+                                "key": "Authorization",
+                                "value": "Basic <credentials>"
+                              }
+                            ],
+                            "url": {
+                              "raw": "{{baseUrl}}/Accounts/:AccountSid/Calls/{{CallSid}}.json",
+                              "host": [
+                                "{{baseUrl}}"
+                              ],
+                              "path": [
+                                "Accounts",
+                                ":AccountSid",
+                                "Calls",
+                                "{{CallSid}}.json"
+                              ],
+                              "variable": [
+                                {
+                                  "key": "AccountSid"
+                                }
+                              ]
+                            }
+                          },
+                          "status": "No Content",
+                          "code": 204,
+                          "_postman_previewlanguage": "text",
+                          "header": [],
+                          "cookie": [],
+                          "responseTime": null,
+                          "body": null,
+                          "createdAt": "2026-06-05T13:22:48.000Z",
+                          "updatedAt": "2026-06-05T13:22:48.000Z",
+                          "uid": "35240-ddc9991d-7210-4fd6-8d46-8729320c9796"
+                        },
+                        {
+                          "id": "cfb2713b-1e5e-4f15-903d-f025781027a9",
+                          "name": "Unauthorized",
+                          "originalRequest": {
+                            "method": "DELETE",
+                            "header": [
+                              {
+                                "description": "Added as a part of security scheme: basic",
+                                "key": "Authorization",
+                                "value": "Basic <credentials>"
+                              }
+                            ],
+                            "url": {
+                              "raw": "{{baseUrl}}/Accounts/:AccountSid/Calls/{{CallSid}}.json",
+                              "host": [
+                                "{{baseUrl}}"
+                              ],
+                              "path": [
+                                "Accounts",
+                                ":AccountSid",
+                                "Calls",
+                                "{{CallSid}}.json"
+                              ],
+                              "variable": [
+                                {
+                                  "key": "AccountSid"
+                                }
+                              ]
+                            }
+                          },
+                          "status": "Unauthorized",
+                          "code": 401,
+                          "_postman_previewlanguage": "text",
+                          "header": [],
+                          "cookie": [],
+                          "responseTime": null,
+                          "body": null,
+                          "createdAt": "2026-06-05T13:22:48.000Z",
+                          "updatedAt": "2026-06-05T13:22:48.000Z",
+                          "uid": "35240-cfb2713b-1e5e-4f15-903d-f025781027a9"
+                        },
+                        {
+                          "id": "8c419cd3-e138-4aaf-96d8-e769631202a3",
+                          "name": "Call not found",
+                          "originalRequest": {
+                            "method": "DELETE",
+                            "header": [
+                              {
+                                "description": "Added as a part of security scheme: basic",
+                                "key": "Authorization",
+                                "value": "Basic <credentials>"
+                              }
+                            ],
+                            "url": {
+                              "raw": "{{baseUrl}}/Accounts/:AccountSid/Calls/{{CallSid}}.json",
+                              "host": [
+                                "{{baseUrl}}"
+                              ],
+                              "path": [
+                                "Accounts",
+                                ":AccountSid",
+                                "Calls",
+                                "{{CallSid}}.json"
+                              ],
+                              "variable": [
+                                {
+                                  "key": "AccountSid"
+                                }
+                              ]
+                            }
+                          },
+                          "status": "Not Found",
+                          "code": 404,
+                          "_postman_previewlanguage": "text",
+                          "header": [],
+                          "cookie": [],
+                          "responseTime": null,
+                          "body": null,
+                          "createdAt": "2026-06-05T13:22:48.000Z",
+                          "updatedAt": "2026-06-05T13:22:48.000Z",
+                          "uid": "35240-8c419cd3-e138-4aaf-96d8-e769631202a3"
+                        }
+                      ],
+                      "createdAt": "2026-06-05T13:22:48.000Z",
+                      "updatedAt": "2026-06-05T13:22:48.000Z",
+                      "uid": "35240-9b9a035c-87b7-49a8-80b6-0cd304d694f8"
+                    }
+                  ],
+                  "id": "4c0902d0-ca6c-4546-a34e-09c82155f01d",
+                  "createdAt": "2026-06-05T13:22:48.000Z",
+                  "updatedAt": "2026-06-05T13:22:48.000Z",
+                  "uid": "35240-4c0902d0-ca6c-4546-a34e-09c82155f01d"
+                },
+                {
+                  "name": "{CallSid}",
+                  "item": [
+                    {
+                      "name": "Recordings.json",
+                      "item": [
+                        {
+                          "name": "Twilio List Recordings for a Call",
+                          "id": "8e4a8b4f-6fa5-4f87-9a4b-ff22b0adbf0b",
+                          "protocolProfileBehavior": {
+                            "disableBodyPruning": true
+                          },
+                          "request": {
+                            "method": "GET",
+                            "header": [
+                              {
+                                "key": "Accept",
+                                "value": "application/json"
+                              }
+                            ],
+                            "url": {
+                              "raw": "{{baseUrl}}/Accounts/:AccountSid/Calls/:CallSid/Recordings.json",
+                              "host": [
+                                "{{baseUrl}}"
+                              ],
+                              "path": [
+                                "Accounts",
+                                ":AccountSid",
+                                "Calls",
+                                ":CallSid",
+                                "Recordings.json"
+                              ],
+                              "variable": [
+                                {
+                                  "id": "16e6fd0d-1c58-4d88-8f43-040026e8c1f3",
+                                  "key": "AccountSid",
+                                  "value": "ACxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",
+                                  "description": "(Required) The unique identifier of the Twilio account"
+                                },
+                                {
+                                  "id": "cfe11e72-7a69-48a4-8689-edff43b7419b",
+                                  "key": "CallSid",
+                                  "value": "CA9eE45956DBF819aEbF42304Cc3815f3a",
+                                  "description": "(Required) The unique identifier of the call"
+                                }
+                              ]
+                            },
+                            "description": "Retrieve a list of recordings associated with a specific call."
+                          },
+                          "response": [
+                            {
+                              "id": "9dcdb12d-c008-4bb5-9d6a-68be91162fe1",
+                              "name": "List of recordings",
+                              "originalRequest": {
+                                "method": "GET",
+                                "header": [
+                                  {
+                                    "key": "Accept",
+                                    "value": "application/json"
+                                  },
+                                  {
+                                    "description": "Added as a part of security scheme: basic",
+                                    "key": "Authorization",
+                                    "value": "Basic <credentials>"
+                                  }
+                                ],
+                                "url": {
+                                  "raw": "{{baseUrl}}/Accounts/:AccountSid/Calls/:CallSid/Recordings.json",
+                                  "host": [
+                                    "{{baseUrl}}"
+                                  ],
+                                  "path": [
+                                    "Accounts",
+                                    ":AccountSid",
+                                    "Calls",
+                                    ":CallSid",
+                                    "Recordings.json"
+                                  ],
+                                  "variable": [
+                                    {
+                                      "key": "AccountSid"
+                                    },
+                                    {
+                                      "key": "CallSid"
+                                    }
+                                  ]
+                                }
+                              },
+                              "status": "OK",
+                              "code": 200,
+                              "_postman_previewlanguage": "json",
+                              "header": [
+                                {
+                                  "key": "Content-Type",
+                                  "value": "application/json"
+                                }
+                              ],
+                              "cookie": [],
+                              "responseTime": null,
+                              "body": "{\n  \"recordings\": [\n    {\n      \"sid\": \"REFbe80bfE8FC8DeFEABEdefb8CF11fEe8\",\n      \"account_sid\": \"ACxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx\",\n      \"call_sid\": \"CA5ADbCa2d23f3CfaD42AF1f597D19CCD5\",\n      \"conference_sid\": \"<string>\",\n      \"channels\": \"<integer>\",\n      \"status\": \"absent\",\n      \"duration\": \"<string>\",\n      \"price\": \"<string>\",\n      \"price_unit\": \"<string>\",\n      \"source\": \"StartCallRecordingAPI\",\n      \"date_created\": \"<dateTime>\",\n      \"date_updated\": \"<dateTime>\",\n      \"uri\": \"<string>\"\n    },\n    {\n      \"sid\": \"RE9c5aB4EFe7E488B3727F906D6f76Ca6f\",\n      \"account_sid\": \"ACxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx\",\n      \"call_sid\": \"CA791dCDeDA60b9c747340AbD7Aa9aAfCE\",\n      \"conference_sid\": \"<string>\",\n      \"channels\": \"<integer>\",\n      \"status\": \"completed\",\n      \"duration\": \"<string>\",\n      \"price\": \"<string>\",\n      \"price_unit\": \"<string>\",\n      \"source\": \"Conference\",\n      \"date_created\": \"<dateTime>\",\n      \"date_updated\": \"<dateTime>\",\n      \"uri\": \"<string>\"\n    }\n  ],\n  \"first_page_uri\": \"<string>\",\n  \"next_page_uri\": \"<string>\",\n  \"page\": \"<integer>\",\n  \"page_size\": \"<integer>\",\n  \"uri\": \"<string>\"\n}",
+                              "createdAt": "2026-06-05T13:22:48.000Z",
+                              "updatedAt": "2026-06-05T13:22:48.000Z",
+                              "uid": "35240-9dcdb12d-c008-4bb5-9d6a-68be91162fe1"
+                            },
+                            {
+                              "id": "44347139-696f-431f-8de8-ec386b20780d",
+                              "name": "Unauthorized",
+                              "originalRequest": {
+                                "method": "GET",
+                                "header": [
+                                  {
+                                    "description": "Added as a part of security scheme: basic",
+                                    "key": "Authorization",
+                                    "value": "Basic <credentials>"
+                                  }
+                                ],
+                                "url": {
+                                  "raw": "{{baseUrl}}/Accounts/:AccountSid/Calls/:CallSid/Recordings.json",
+                                  "host": [
+                                    "{{baseUrl}}"
+                                  ],
+                                  "path": [
+                                    "Accounts",
+                                    ":AccountSid",
+                                    "Calls",
+                                    ":CallSid",
+                                    "Recordings.json"
+                                  ],
+                                  "variable": [
+                                    {
+                                      "key": "AccountSid"
+                                    },
+                                    {
+                                      "key": "CallSid"
+                                    }
+                                  ]
+                                }
+                              },
+                              "status": "Unauthorized",
+                              "code": 401,
+                              "_postman_previewlanguage": "text",
+                              "header": [],
+                              "cookie": [],
+                              "responseTime": null,
+                              "body": null,
+                              "createdAt": "2026-06-05T13:22:48.000Z",
+                              "updatedAt": "2026-06-05T13:22:48.000Z",
+                              "uid": "35240-44347139-696f-431f-8de8-ec386b20780d"
+                            }
+                          ],
+                          "createdAt": "2026-06-05T13:22:48.000Z",
+                          "updatedAt": "2026-06-05T13:22:48.000Z",
+                          "uid": "35240-8e4a8b4f-6fa5-4f87-9a4b-ff22b0adbf0b"
+                        },
+                        {
+                          "name": "Twilio Start Recording a Call",
+                          "id": "df04463e-89b6-4dba-9852-0da8b4588dcd",
+                          "protocolProfileBehavior": {
+                            "disableBodyPruning": true
+                          },
+                          "request": {
+                            "method": "POST",
+                            "header": [
+                              {
+                                "key": "Content-Type",
+                                "value": "application/x-www-form-urlencoded"
+                              },
+                              {
+                                "key": "Accept",
+                                "value": "application/json"
+                              }
+                            ],
+                            "body": {
+                              "mode": "urlencoded",
+                              "urlencoded": [
+                                {
+                                  "description": "URL for recording status webhooks",
+                                  "key": "RecordingStatusCallback",
+                                  "value": "<uri>"
+                                },
+                                {
+                                  "key": "RecordingStatusCallbackMethod",
+                                  "value": "POST"
+                                },
+                                {
+                                  "description": "Number of recording channels",
+                                  "key": "RecordingChannels",
+                                  "value": "dual"
+                                },
+                                {
+                                  "key": "Trim",
+                                  "value": "trim-silence"
+                                }
+                              ]
+                            },
+                            "url": {
+                              "raw": "{{baseUrl}}/Accounts/:AccountSid/Calls/:CallSid/Recordings.json",
+                              "host": [
+                                "{{baseUrl}}"
+                              ],
+                              "path": [
+                                "Accounts",
+                                ":AccountSid",
+                                "Calls",
+                                ":CallSid",
+                                "Recordings.json"
+                              ],
+                              "variable": [
+                                {
+                                  "id": "b868e438-9b6f-4865-95f9-c415d8dfad05",
+                                  "key": "AccountSid",
+                                  "value": "ACxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",
+                                  "description": "(Required) The unique identifier of the Twilio account"
+                                },
+                                {
+                                  "id": "48a109ef-4fbf-4678-a903-22d803df8140",
+                                  "key": "CallSid",
+                                  "value": "CA9eE45956DBF819aEbF42304Cc3815f3a",
+                                  "description": "(Required) The unique identifier of the call"
+                                }
+                              ]
+                            },
+                            "description": "Start recording an in-progress call."
+                          },
+                          "response": [
+                            {
+                              "id": "11c3a0b0-6967-47ea-b69a-cc560a2ade2a",
+                              "name": "Recording started",
+                              "originalRequest": {
+                                "method": "POST",
+                                "header": [
+                                  {
+                                    "key": "Content-Type",
+                                    "value": "application/x-www-form-urlencoded"
+                                  },
+                                  {
+                                    "key": "Accept",
+                                    "value": "application/json"
+                                  },
+                                  {
+                                    "description": "Added as a part of security scheme: basic",
+                                    "key": "Authorization",
+                                    "value": "Basic <credentials>"
+                                  }
+                                ],
+                                "body": {
+                                  "mode": "urlencoded",
+                                  "urlencoded": [
+                                    {
+                                      "description": "URL for recording status webhooks",
+                                      "key": "RecordingStatusCallback",
+                                      "value": "<uri>"
+                                    },
+                                    {
+                                      "key": "RecordingStatusCallbackMethod",
+                                      "value": "POST"
+                                    },
+                                    {
+                                      "description": "Number of recording channels",
+                                      "key": "RecordingChannels",
+                                      "value": "dual"
+                                    },
+                                    {
+                                      "key": "Trim",
+                                      "value": "trim-silence"
+                                    }
+                                  ]
+                                },
+                                "url": {
+                                  "raw": "{{baseUrl}}/Accounts/:AccountSid/Calls/:CallSid/Recordings.json",
+                                  "host": [
+                                    "{{baseUrl}}"
+                                  ],
+                                  "path": [
+                                    "Accounts",
+                                    ":AccountSid",
+                                    "Calls",
+                                    ":CallSid",
+                                    "Recordings.json"
+                                  ],
+                                  "variable": [
+                                    {
+                                      "key": "AccountSid"
+                                    },
+                                    {
+                                      "key": "CallSid"
+                                    }
+                                  ]
+                                }
+                              },
+                              "status": "Created",
+                              "code": 201,
+                              "_postman_previewlanguage": "json",
+                              "header": [
+                                {
+                                  "key": "Content-Type",
+                                  "value": "application/json"
+                                }
+                              ],
+                              "cookie": [],
+                              "responseTime": null,
+                              "body": "{\n  \"sid\": \"REb68CaEAea7afb7E53e0D430ac706B1D3\",\n  \"account_sid\": \"ACxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx\",\n  \"call_sid\": \"CAfC39bACEaDF2DEA6CfcBabC0e5FAE3C2\",\n  \"conference_sid\": \"<string>\",\n  \"channels\": \"<integer>\",\n  \"status\": \"absent\",\n  \"duration\": \"<string>\",\n  \"price\": \"<string>\",\n  \"price_unit\": \"<string>\",\n  \"source\": \"StartCallRecordingAPI\",\n  \"date_created\": \"<dateTime>\",\n  \"date_updated\": \"<dateTime>\",\n  \"uri\": \"<string>\"\n}",
+                              "createdAt": "2026-06-05T13:22:48.000Z",
+                              "updatedAt": "2026-06-05T13:22:48.000Z",
+                              "uid": "35240-11c3a0b0-6967-47ea-b69a-cc560a2ade2a"
+                            },
+                            {
+                              "id": "db9098a3-d91d-4a8c-b871-3ab1d2b59aa3",
+                              "name": "Unauthorized",
+                              "originalRequest": {
+                                "method": "POST",
+                                "header": [
+                                  {
+                                    "key": "Content-Type",
+                                    "value": "application/x-www-form-urlencoded"
+                                  },
+                                  {
+                                    "description": "Added as a part of security scheme: basic",
+                                    "key": "Authorization",
+                                    "value": "Basic <credentials>"
+                                  }
+                                ],
+                                "body": {
+                                  "mode": "urlencoded",
+                                  "urlencoded": [
+                                    {
+                                      "description": "URL for recording status webhooks",
+                                      "key": "RecordingStatusCallback",
+                                      "value": "<uri>"
+                                    },
+                                    {
+                                      "key": "RecordingStatusCallbackMethod",
+                                      "value": "POST"
+                                    },
+                                    {
+                                      "description": "Number of recording channels",
+                                      "key": "RecordingChannels",
+                                      "value": "dual"
+                                    },
+                                    {
+                                      "key": "Trim",
+                                      "value": "trim-silence"
+                                    }
+                                  ]
+                                },
+                                "url": {
+                                  "raw": "{{baseUrl}}/Accounts/:AccountSid/Calls/:CallSid/Recordings.json",
+                                  "host": [
+                                    "{{baseUrl}}"
+                                  ],
+                                  "path": [
+                                    "Accounts",
+                                    ":AccountSid",
+                                    "Calls",
+                                    ":CallSid",
+                                    "Recordings.json"
+                                  ],
+                                  "variable": [
+                                    {
+                                      "key": "AccountSid"
+                                    },
+                                    {
+                                      "key": "CallSid"
+                                    }
+                                  ]
+                                }
+                              },
+                              "status": "Unauthorized",
+                              "code": 401,
+                              "_postman_previewlanguage": "text",
+                              "header": [],
+                              "cookie": [],
+                              "responseTime": null,
+                              "body": null,
+                              "createdAt": "2026-06-05T13:22:48.000Z",
+                              "updatedAt": "2026-06-05T13:22:48.000Z",
+                              "uid": "35240-db9098a3-d91d-4a8c-b871-3ab1d2b59aa3"
+                            }
+                          ],
+                          "createdAt": "2026-06-05T13:22:48.000Z",
+                          "updatedAt": "2026-06-05T13:22:48.000Z",
+                          "uid": "35240-df04463e-89b6-4dba-9852-0da8b4588dcd"
+                        }
+                      ],
+                      "id": "78409a03-8b98-44bd-8c7e-8b3c4d7e4a43",
+                      "createdAt": "2026-06-05T13:22:48.000Z",
+                      "updatedAt": "2026-06-05T13:22:48.000Z",
+                      "uid": "35240-78409a03-8b98-44bd-8c7e-8b3c4d7e4a43"
+                    }
+                  ],
+                  "id": "a19150e3-a48e-4d4c-a400-3c134dd1efd2",
+                  "createdAt": "2026-06-05T13:22:48.000Z",
+                  "updatedAt": "2026-06-05T13:22:48.000Z",
+                  "uid": "35240-a19150e3-a48e-4d4c-a400-3c134dd1efd2"
+                }
+              ],
+              "id": "93496d53-12f0-4224-accb-57a10d5cf2f0",
+              "createdAt": "2026-06-05T13:22:48.000Z",
+              "updatedAt": "2026-06-05T13:22:48.000Z",
+              "uid": "35240-93496d53-12f0-4224-accb-57a10d5cf2f0"
+            },
+            {
+              "name": "Recordings.json",
+              "item": [
+                {
+                  "name": "Twilio List All Recordings",
+                  "id": "337ba5c6-6c8c-4fca-92d4-64f6a094ab44",
+                  "protocolProfileBehavior": {
+                    "disableBodyPruning": true
+                  },
+                  "request": {
+                    "method": "GET",
+                    "header": [
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/Accounts/:AccountSid/Recordings.json?DateCreated=<date>&CallSid=CA9eE45956DBF819aEbF42304Cc3815f3a&PageSize=<integer>",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "Accounts",
+                        ":AccountSid",
+                        "Recordings.json"
+                      ],
+                      "query": [
+                        {
+                          "key": "DateCreated",
+                          "value": "<date>"
+                        },
+                        {
+                          "key": "CallSid",
+                          "value": "CA9eE45956DBF819aEbF42304Cc3815f3a"
+                        },
+                        {
+                          "key": "PageSize",
+                          "value": "<integer>"
+                        }
+                      ],
+                      "variable": [
+                        {
+                          "id": "875d6cae-4f69-4930-b193-24986351a614",
+                          "key": "AccountSid",
+                          "value": "ACxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",
+                          "description": "(Required) The unique identifier of the Twilio account"
+                        }
+                      ]
+                    },
+                    "description": "Retrieve a list of all recordings associated with your account."
+                  },
+                  "response": [
+                    {
+                      "id": "aa0cdf68-8266-4e23-95a7-9532156e674e",
+                      "name": "List of recordings",
+                      "originalRequest": {
+                        "method": "GET",
+                        "header": [
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          },
+                          {
+                            "description": "Added as a part of security scheme: basic",
+                            "key": "Authorization",
+                            "value": "Basic <credentials>"
+                          }
+                        ],
+                        "url": {
+                          "raw": "{{baseUrl}}/Accounts/:AccountSid/Recordings.json?DateCreated=<date>&CallSid=CA9eE45956DBF819aEbF42304Cc3815f3a&PageSize=<integer>",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "Accounts",
+                            ":AccountSid",
+                            "Recordings.json"
+                          ],
+                          "query": [
+                            {
+                              "key": "DateCreated",
+                              "value": "<date>"
+                            },
+                            {
+                              "key": "CallSid",
+                              "value": "CA9eE45956DBF819aEbF42304Cc3815f3a"
+                            },
+                            {
+                              "key": "PageSize",
+                              "value": "<integer>"
+                            }
+                          ],
+                          "variable": [
+                            {
+                              "key": "AccountSid"
+                            }
+                          ]
+                        }
+                      },
+                      "status": "OK",
+                      "code": 200,
+                      "_postman_previewlanguage": "json",
+                      "header": [
+                        {
+                          "key": "Content-Type",
+                          "value": "application/json"
+                        }
+                      ],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": "{\n  \"recordings\": [\n    {\n      \"sid\": \"REFbe80bfE8FC8DeFEABEdefb8CF11fEe8\",\n      \"account_sid\": \"ACxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx\",\n      \"call_sid\": \"CA5ADbCa2d23f3CfaD42AF1f597D19CCD5\",\n      \"conference_sid\": \"<string>\",\n      \"channels\": \"<integer>\",\n      \"status\": \"absent\",\n      \"duration\": \"<string>\",\n      \"price\": \"<string>\",\n      \"price_unit\": \"<string>\",\n      \"source\": \"StartCallRecordingAPI\",\n      \"date_created\": \"<dateTime>\",\n      \"date_updated\": \"<dateTime>\",\n      \"uri\": \"<string>\"\n    },\n    {\n      \"sid\": \"RE9c5aB4EFe7E488B3727F906D6f76Ca6f\",\n      \"account_sid\": \"ACxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx\",\n      \"call_sid\": \"CA791dCDeDA60b9c747340AbD7Aa9aAfCE\",\n      \"conference_sid\": \"<string>\",\n      \"channels\": \"<integer>\",\n      \"status\": \"completed\",\n      \"duration\": \"<string>\",\n      \"price\": \"<string>\",\n      \"price_unit\": \"<string>\",\n      \"source\": \"Conference\",\n      \"date_created\": \"<dateTime>\",\n      \"date_updated\": \"<dateTime>\",\n      \"uri\": \"<string>\"\n    }\n  ],\n  \"first_page_uri\": \"<string>\",\n  \"next_page_uri\": \"<string>\",\n  \"page\": \"<integer>\",\n  \"page_size\": \"<integer>\",\n  \"uri\": \"<string>\"\n}",
+                      "createdAt": "2026-06-05T13:22:48.000Z",
+                      "updatedAt": "2026-06-05T13:22:48.000Z",
+                      "uid": "35240-aa0cdf68-8266-4e23-95a7-9532156e674e"
+                    },
+                    {
+                      "id": "884ed439-8621-44d5-b683-cec397a03e76",
+                      "name": "Unauthorized",
+                      "originalRequest": {
+                        "method": "GET",
+                        "header": [
+                          {
+                            "description": "Added as a part of security scheme: basic",
+                            "key": "Authorization",
+                            "value": "Basic <credentials>"
+                          }
+                        ],
+                        "url": {
+                          "raw": "{{baseUrl}}/Accounts/:AccountSid/Recordings.json?DateCreated=<date>&CallSid=CA9eE45956DBF819aEbF42304Cc3815f3a&PageSize=<integer>",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "Accounts",
+                            ":AccountSid",
+                            "Recordings.json"
+                          ],
+                          "query": [
+                            {
+                              "key": "DateCreated",
+                              "value": "<date>"
+                            },
+                            {
+                              "key": "CallSid",
+                              "value": "CA9eE45956DBF819aEbF42304Cc3815f3a"
+                            },
+                            {
+                              "key": "PageSize",
+                              "value": "<integer>"
+                            }
+                          ],
+                          "variable": [
+                            {
+                              "key": "AccountSid"
+                            }
+                          ]
+                        }
+                      },
+                      "status": "Unauthorized",
+                      "code": 401,
+                      "_postman_previewlanguage": "text",
+                      "header": [],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": null,
+                      "createdAt": "2026-06-05T13:22:48.000Z",
+                      "updatedAt": "2026-06-05T13:22:48.000Z",
+                      "uid": "35240-884ed439-8621-44d5-b683-cec397a03e76"
+                    }
+                  ],
+                  "createdAt": "2026-06-05T13:22:48.000Z",
+                  "updatedAt": "2026-06-05T13:22:48.000Z",
+                  "uid": "35240-337ba5c6-6c8c-4fca-92d4-64f6a094ab44"
+                }
+              ],
+              "id": "6b4be9d9-03e8-4ba8-b549-d2e28af3b1ac",
+              "createdAt": "2026-06-05T13:22:48.000Z",
+              "updatedAt": "2026-06-05T13:22:48.000Z",
+              "uid": "35240-6b4be9d9-03e8-4ba8-b549-d2e28af3b1ac"
+            },
+            {
+              "name": "Recordings",
+              "item": [
+                {
+                  "name": "{RecordingSid}.json",
+                  "item": [
+                    {
+                      "name": "Twilio Fetch a Recording",
+                      "id": "f5912a33-b502-4156-96a0-e2622ed0af35",
+                      "protocolProfileBehavior": {
+                        "disableBodyPruning": true
+                      },
+                      "request": {
+                        "method": "GET",
+                        "header": [
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          }
+                        ],
+                        "url": {
+                          "raw": "{{baseUrl}}/Accounts/:AccountSid/Recordings/{{RecordingSid}}.json",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "Accounts",
+                            ":AccountSid",
+                            "Recordings",
+                            "{{RecordingSid}}.json"
+                          ],
+                          "variable": [
+                            {
+                              "id": "64b26aa0-45c7-4955-a213-a7ab43863b62",
+                              "key": "AccountSid",
+                              "value": "ACxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",
+                              "description": "(Required) The unique identifier of the Twilio account"
+                            }
+                          ]
+                        }
+                      },
+                      "response": [
+                        {
+                          "id": "b494c26c-b4c7-4ea3-a801-14d69d17fb8b",
+                          "name": "Recording details",
+                          "originalRequest": {
+                            "method": "GET",
+                            "header": [
+                              {
+                                "key": "Accept",
+                                "value": "application/json"
+                              },
+                              {
+                                "description": "Added as a part of security scheme: basic",
+                                "key": "Authorization",
+                                "value": "Basic <credentials>"
+                              }
+                            ],
+                            "url": {
+                              "raw": "{{baseUrl}}/Accounts/:AccountSid/Recordings/{{RecordingSid}}.json",
+                              "host": [
+                                "{{baseUrl}}"
+                              ],
+                              "path": [
+                                "Accounts",
+                                ":AccountSid",
+                                "Recordings",
+                                "{{RecordingSid}}.json"
+                              ],
+                              "variable": [
+                                {
+                                  "key": "AccountSid"
+                                }
+                              ]
+                            }
+                          },
+                          "status": "OK",
+                          "code": 200,
+                          "_postman_previewlanguage": "json",
+                          "header": [
+                            {
+                              "key": "Content-Type",
+                              "value": "application/json"
+                            }
+                          ],
+                          "cookie": [],
+                          "responseTime": null,
+                          "body": "{\n  \"sid\": \"REb68CaEAea7afb7E53e0D430ac706B1D3\",\n  \"account_sid\": \"ACxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx\",\n  \"call_sid\": \"CAfC39bACEaDF2DEA6CfcBabC0e5FAE3C2\",\n  \"conference_sid\": \"<string>\",\n  \"channels\": \"<integer>\",\n  \"status\": \"absent\",\n  \"duration\": \"<string>\",\n  \"price\": \"<string>\",\n  \"price_unit\": \"<string>\",\n  \"source\": \"StartCallRecordingAPI\",\n  \"date_created\": \"<dateTime>\",\n  \"date_updated\": \"<dateTime>\",\n  \"uri\": \"<string>\"\n}",
+                          "createdAt": "2026-06-05T13:22:48.000Z",
+                          "updatedAt": "2026-06-05T13:22:48.000Z",
+                          "uid": "35240-b494c26c-b4c7-4ea3-a801-14d69d17fb8b"
+                        },
+                        {
+                          "id": "ef703803-e4e5-45c0-9b06-190085ae6047",
+                          "name": "Recording not found",
+                          "originalRequest": {
+                            "method": "GET",
+                            "header": [
+                              {
+                                "description": "Added as a part of security scheme: basic",
+                                "key": "Authorization",
+                                "value": "Basic <credentials>"
+                              }
+                            ],
+                            "url": {
+                              "raw": "{{baseUrl}}/Accounts/:AccountSid/Recordings/{{RecordingSid}}.json",
+                              "host": [
+                                "{{baseUrl}}"
+                              ],
+                              "path": [
+                                "Accounts",
+                                ":AccountSid",
+                                "Recordings",
+                                "{{RecordingSid}}.json"
+                              ],
+                              "variable": [
+                                {
+                                  "key": "AccountSid"
+                                }
+                              ]
+                            }
+                          },
+                          "status": "Not Found",
+                          "code": 404,
+                          "_postman_previewlanguage": "text",
+                          "header": [],
+                          "cookie": [],
+                          "responseTime": null,
+                          "body": null,
+                          "createdAt": "2026-06-05T13:22:48.000Z",
+                          "updatedAt": "2026-06-05T13:22:48.000Z",
+                          "uid": "35240-ef703803-e4e5-45c0-9b06-190085ae6047"
+                        }
+                      ],
+                      "createdAt": "2026-06-05T13:22:48.000Z",
+                      "updatedAt": "2026-06-05T13:22:48.000Z",
+                      "uid": "35240-f5912a33-b502-4156-96a0-e2622ed0af35"
+                    },
+                    {
+                      "name": "Twilio Delete a Recording",
+                      "id": "9f39fd32-f0a8-44f0-9439-b7be573c1431",
+                      "protocolProfileBehavior": {
+                        "disableBodyPruning": true
+                      },
+                      "request": {
+                        "method": "DELETE",
+                        "header": [],
+                        "url": {
+                          "raw": "{{baseUrl}}/Accounts/:AccountSid/Recordings/{{RecordingSid}}.json",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "Accounts",
+                            ":AccountSid",
+                            "Recordings",
+                            "{{RecordingSid}}.json"
+                          ],
+                          "variable": [
+                            {
+                              "id": "17a54322-e4df-4cbc-b8f7-4dd88351a74c",
+                              "key": "AccountSid",
+                              "value": "ACxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",
+                              "description": "(Required) The unique identifier of the Twilio account"
+                            }
+                          ]
+                        }
+                      },
+                      "response": [
+                        {
+                          "id": "ed280c27-04ae-4ed6-88b1-92e04fb20e00",
+                          "name": "Recording deleted",
+                          "originalRequest": {
+                            "method": "DELETE",
+                            "header": [
+                              {
+                                "description": "Added as a part of security scheme: basic",
+                                "key": "Authorization",
+                                "value": "Basic <credentials>"
+                              }
+                            ],
+                            "url": {
+                              "raw": "{{baseUrl}}/Accounts/:AccountSid/Recordings/{{RecordingSid}}.json",
+                              "host": [
+                                "{{baseUrl}}"
+                              ],
+                              "path": [
+                                "Accounts",
+                                ":AccountSid",
+                                "Recordings",
+                                "{{RecordingSid}}.json"
+                              ],
+                              "variable": [
+                                {
+                                  "key": "AccountSid"
+                                }
+                              ]
+                            }
+                          },
+                          "status": "No Content",
+                          "code": 204,
+                          "_postman_previewlanguage": "text",
+                          "header": [],
+                          "cookie": [],
+                          "responseTime": null,
+                          "body": null,
+                          "createdAt": "2026-06-05T13:22:48.000Z",
+                          "updatedAt": "2026-06-05T13:22:48.000Z",
+                          "uid": "35240-ed280c27-04ae-4ed6-88b1-92e04fb20e00"
+                        },
+                        {
+                          "id": "be6b07b0-2b64-41eb-8b5c-a348b9870775",
+                          "name": "Recording not found",
+                          "originalRequest": {
+                            "method": "DELETE",
+                            "header": [
+                              {
+                                "description": "Added as a part of security scheme: basic",
+                                "key": "Authorization",
+                                "value": "Basic <credentials>"
+                              }
+                            ],
+                            "url": {
+                              "raw": "{{baseUrl}}/Accounts/:AccountSid/Recordings/{{RecordingSid}}.json",
+                              "host": [
+                                "{{baseUrl}}"
+                              ],
+                              "path": [
+                                "Accounts",
+                                ":AccountSid",
+                                "Recordings",
+                                "{{RecordingSid}}.json"
+                              ],
+                              "variable": [
+                                {
+                                  "key": "AccountSid"
+                                }
+                              ]
+                            }
+                          },
+                          "status": "Not Found",
+                          "code": 404,
+                          "_postman_previewlanguage": "text",
+                          "header": [],
+                          "cookie": [],
+                          "responseTime": null,
+                          "body": null,
+                          "createdAt": "2026-06-05T13:22:48.000Z",
+                          "updatedAt": "2026-06-05T13:22:48.000Z",
+                          "uid": "35240-be6b07b0-2b64-41eb-8b5c-a348b9870775"
+                        }
+                      ],
+                      "createdAt": "2026-06-05T13:22:48.000Z",
+                      "updatedAt": "2026-06-05T13:22:48.000Z",
+                      "uid": "35240-9f39fd32-f0a8-44f0-9439-b7be573c1431"
+                    }
+                  ],
+                  "id": "3eed5fb5-ed0f-41ff-a373-06674cf8b32a",
+                  "createdAt": "2026-06-05T13:22:48.000Z",
+                  "updatedAt": "2026-06-05T13:22:48.000Z",
+                  "uid": "35240-3eed5fb5-ed0f-41ff-a373-06674cf8b32a"
+                }
+              ],
+              "id": "383b29bf-4f0c-4e65-a2ae-f6f311a214f9",
+              "createdAt": "2026-06-05T13:22:48.000Z",
+              "updatedAt": "2026-06-05T13:22:48.000Z",
+              "uid": "35240-383b29bf-4f0c-4e65-a2ae-f6f311a214f9"
+            },
+            {
+              "name": "Conferences.json",
+              "item": [
+                {
+                  "name": "Twilio List Conferences",
+                  "id": "035c1530-4b4e-4e95-8c78-a91414541f8b",
+                  "protocolProfileBehavior": {
+                    "disableBodyPruning": true
+                  },
+                  "request": {
+                    "method": "GET",
+                    "header": [
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/Accounts/:AccountSid/Conferences.json?Status=completed&FriendlyName=<string>&DateCreated=<date>&PageSize=<integer>",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "Accounts",
+                        ":AccountSid",
+                        "Conferences.json"
+                      ],
+                      "query": [
+                        {
+                          "key": "Status",
+                          "value": "completed"
+                        },
+                        {
+                          "key": "FriendlyName",
+                          "value": "<string>"
+                        },
+                        {
+                          "key": "DateCreated",
+                          "value": "<date>"
+                        },
+                        {
+                          "key": "PageSize",
+                          "value": "<integer>"
+                        }
+                      ],
+                      "variable": [
+                        {
+                          "id": "9ed47d31-2ac9-49fe-9744-44df00f0d8e0",
+                          "key": "AccountSid",
+                          "value": "ACxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",
+                          "description": "(Required) The unique identifier of the Twilio account"
+                        }
+                      ]
+                    },
+                    "description": "Retrieve a list of conferences within your account."
+                  },
+                  "response": [
+                    {
+                      "id": "7e93abb5-de21-4a21-819b-e3bf1d72061c",
+                      "name": "List of conferences",
+                      "originalRequest": {
+                        "method": "GET",
+                        "header": [
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          },
+                          {
+                            "description": "Added as a part of security scheme: basic",
+                            "key": "Authorization",
+                            "value": "Basic <credentials>"
+                          }
+                        ],
+                        "url": {
+                          "raw": "{{baseUrl}}/Accounts/:AccountSid/Conferences.json?Status=completed&FriendlyName=<string>&DateCreated=<date>&PageSize=<integer>",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "Accounts",
+                            ":AccountSid",
+                            "Conferences.json"
+                          ],
+                          "query": [
+                            {
+                              "key": "Status",
+                              "value": "completed"
+                            },
+                            {
+                              "key": "FriendlyName",
+                              "value": "<string>"
+                            },
+                            {
+                              "key": "DateCreated",
+                              "value": "<date>"
+                            },
+                            {
+                              "key": "PageSize",
+                              "value": "<integer>"
+                            }
+                          ],
+                          "variable": [
+                            {
+                              "key": "AccountSid"
+                            }
+                          ]
+                        }
+                      },
+                      "status": "OK",
+                      "code": 200,
+                      "_postman_previewlanguage": "json",
+                      "header": [
+                        {
+                          "key": "Content-Type",
+                          "value": "application/json"
+                        }
+                      ],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": "{\n  \"conferences\": [\n    {\n      \"sid\": \"CF1826344A37A868ABb46afd24dCd6A3bE\",\n      \"account_sid\": \"ACxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx\",\n      \"friendly_name\": \"<string>\",\n      \"status\": \"completed\",\n      \"region\": \"<string>\",\n      \"reason_conference_ended\": \"<string>\",\n      \"call_sid_ending_conference\": \"<string>\",\n      \"date_created\": \"<dateTime>\",\n      \"date_updated\": \"<dateTime>\",\n      \"uri\": \"<string>\",\n      \"subresource_uris\": {\n        \"participants\": \"<string>\",\n        \"recordings\": \"<string>\"\n      }\n    },\n    {\n      \"sid\": \"CF4d2f2C7a46d7C8E1F12eeE61e0eAAAb4\",\n      \"account_sid\": \"ACxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx\",\n      \"friendly_name\": \"<string>\",\n      \"status\": \"completed\",\n      \"region\": \"<string>\",\n      \"reason_conference_ended\": \"<string>\",\n      \"call_sid_ending_conference\": \"<string>\",\n      \"date_created\": \"<dateTime>\",\n      \"date_updated\": \"<dateTime>\",\n      \"uri\": \"<string>\",\n      \"subresource_uris\": {\n        \"participants\": \"<string>\",\n        \"recordings\": \"<string>\"\n      }\n    }\n  ],\n  \"first_page_uri\": \"<string>\",\n  \"next_page_uri\": \"<string>\",\n  \"page\": \"<integer>\",\n  \"page_size\": \"<integer>\"\n}",
+                      "createdAt": "2026-06-05T13:22:48.000Z",
+                      "updatedAt": "2026-06-05T13:22:48.000Z",
+                      "uid": "35240-7e93abb5-de21-4a21-819b-e3bf1d72061c"
+                    },
+                    {
+                      "id": "90f7db7f-2b35-434b-b77d-fc0da8b96a85",
+                      "name": "Unauthorized",
+                      "originalRequest": {
+                        "method": "GET",
+                        "header": [
+                          {
+                            "description": "Added as a part of security scheme: basic",
+                            "key": "Authorization",
+                            "value": "Basic <credentials>"
+                          }
+                        ],
+                        "url": {
+                          "raw": "{{baseUrl}}/Accounts/:AccountSid/Conferences.json?Status=completed&FriendlyName=<string>&DateCreated=<date>&PageSize=<integer>",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "Accounts",
+                            ":AccountSid",
+                            "Conferences.json"
+                          ],
+                          "query": [
+                            {
+                              "key": "Status",
+                              "value": "completed"
+                            },
+                            {
+                              "key": "FriendlyName",
+                              "value": "<string>"
+                            },
+                            {
+                              "key": "DateCreated",
+                              "value": "<date>"
+                            },
+                            {
+                              "key": "PageSize",
+                              "value": "<integer>"
+                            }
+                          ],
+                          "variable": [
+                            {
+                              "key": "AccountSid"
+                            }
+                          ]
+                        }
+                      },
+                      "status": "Unauthorized",
+                      "code": 401,
+                      "_postman_previewlanguage": "text",
+                      "header": [],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": null,
+                      "createdAt": "2026-06-05T13:22:48.000Z",
+                      "updatedAt": "2026-06-05T13:22:48.000Z",
+                      "uid": "35240-90f7db7f-2b35-434b-b77d-fc0da8b96a85"
+                    }
+                  ],
+                  "createdAt": "2026-06-05T13:22:48.000Z",
+                  "updatedAt": "2026-06-05T13:22:48.000Z",
+                  "uid": "35240-035c1530-4b4e-4e95-8c78-a91414541f8b"
+                }
+              ],
+              "id": "571a53a2-85f0-4d7a-b81a-97a3b428e24f",
+              "createdAt": "2026-06-05T13:22:48.000Z",
+              "updatedAt": "2026-06-05T13:22:48.000Z",
+              "uid": "35240-571a53a2-85f0-4d7a-b81a-97a3b428e24f"
+            },
+            {
+              "name": "Conferences",
+              "item": [
+                {
+                  "name": "{ConferenceSid}.json",
+                  "item": [
+                    {
+                      "name": "Twilio Fetch a Conference",
+                      "id": "4d0dc6dc-d6d5-4892-a67a-f8e2b7bf1472",
+                      "protocolProfileBehavior": {
+                        "disableBodyPruning": true
+                      },
+                      "request": {
+                        "method": "GET",
+                        "header": [
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          }
+                        ],
+                        "url": {
+                          "raw": "{{baseUrl}}/Accounts/:AccountSid/Conferences/{{ConferenceSid}}.json",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "Accounts",
+                            ":AccountSid",
+                            "Conferences",
+                            "{{ConferenceSid}}.json"
+                          ],
+                          "variable": [
+                            {
+                              "id": "d5c964c9-ca47-46f6-9a1b-ced6f97a8398",
+                              "key": "AccountSid",
+                              "value": "ACxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",
+                              "description": "(Required) The unique identifier of the Twilio account"
+                            }
+                          ]
+                        }
+                      },
+                      "response": [
+                        {
+                          "id": "bbd6c0da-c77a-4f38-96b2-09c21bc8de19",
+                          "name": "Conference details",
+                          "originalRequest": {
+                            "method": "GET",
+                            "header": [
+                              {
+                                "key": "Accept",
+                                "value": "application/json"
+                              },
+                              {
+                                "description": "Added as a part of security scheme: basic",
+                                "key": "Authorization",
+                                "value": "Basic <credentials>"
+                              }
+                            ],
+                            "url": {
+                              "raw": "{{baseUrl}}/Accounts/:AccountSid/Conferences/{{ConferenceSid}}.json",
+                              "host": [
+                                "{{baseUrl}}"
+                              ],
+                              "path": [
+                                "Accounts",
+                                ":AccountSid",
+                                "Conferences",
+                                "{{ConferenceSid}}.json"
+                              ],
+                              "variable": [
+                                {
+                                  "key": "AccountSid"
+                                }
+                              ]
+                            }
+                          },
+                          "status": "OK",
+                          "code": 200,
+                          "_postman_previewlanguage": "json",
+                          "header": [
+                            {
+                              "key": "Content-Type",
+                              "value": "application/json"
+                            }
+                          ],
+                          "cookie": [],
+                          "responseTime": null,
+                          "body": "{\n  \"sid\": \"CFBEDCE57A957f4A14a56fbCeB58F9AeE4\",\n  \"account_sid\": \"ACxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx\",\n  \"friendly_name\": \"<string>\",\n  \"status\": \"init\",\n  \"region\": \"<string>\",\n  \"reason_conference_ended\": \"<string>\",\n  \"call_sid_ending_conference\": \"<string>\",\n  \"date_created\": \"<dateTime>\",\n  \"date_updated\": \"<dateTime>\",\n  \"uri\": \"<string>\",\n  \"subresource_uris\": {\n    \"participants\": \"<string>\",\n    \"recordings\": \"<string>\"\n  }\n}",
+                          "createdAt": "2026-06-05T13:22:48.000Z",
+                          "updatedAt": "2026-06-05T13:22:48.000Z",
+                          "uid": "35240-bbd6c0da-c77a-4f38-96b2-09c21bc8de19"
+                        },
+                        {
+                          "id": "a511012d-f4d2-48a5-ac55-d87a1a4cf327",
+                          "name": "Conference not found",
+                          "originalRequest": {
+                            "method": "GET",
+                            "header": [
+                              {
+                                "description": "Added as a part of security scheme: basic",
+                                "key": "Authorization",
+                                "value": "Basic <credentials>"
+                              }
+                            ],
+                            "url": {
+                              "raw": "{{baseUrl}}/Accounts/:AccountSid/Conferences/{{ConferenceSid}}.json",
+                              "host": [
+                                "{{baseUrl}}"
+                              ],
+                              "path": [
+                                "Accounts",
+                                ":AccountSid",
+                                "Conferences",
+                                "{{ConferenceSid}}.json"
+                              ],
+                              "variable": [
+                                {
+                                  "key": "AccountSid"
+                                }
+                              ]
+                            }
+                          },
+                          "status": "Not Found",
+                          "code": 404,
+                          "_postman_previewlanguage": "text",
+                          "header": [],
+                          "cookie": [],
+                          "responseTime": null,
+                          "body": null,
+                          "createdAt": "2026-06-05T13:22:48.000Z",
+                          "updatedAt": "2026-06-05T13:22:48.000Z",
+                          "uid": "35240-a511012d-f4d2-48a5-ac55-d87a1a4cf327"
+                        }
+                      ],
+                      "createdAt": "2026-06-05T13:22:48.000Z",
+                      "updatedAt": "2026-06-05T13:22:48.000Z",
+                      "uid": "35240-4d0dc6dc-d6d5-4892-a67a-f8e2b7bf1472"
+                    },
+                    {
+                      "name": "Twilio Update a Conference",
+                      "id": "aceb92ca-87a3-44cd-8832-7bc54f57f500",
+                      "protocolProfileBehavior": {
+                        "disableBodyPruning": true
+                      },
+                      "request": {
+                        "method": "POST",
+                        "header": [
+                          {
+                            "key": "Content-Type",
+                            "value": "application/x-www-form-urlencoded"
+                          },
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          }
+                        ],
+                        "body": {
+                          "mode": "urlencoded",
+                          "urlencoded": [
+                            {
+                              "description": "Set to completed to end the conference",
+                              "key": "Status",
+                              "value": "completed"
+                            },
+                            {
+                              "description": "URL for TwiML to play to all participants",
+                              "key": "AnnounceUrl",
+                              "value": "<uri>"
+                            },
+                            {
+                              "key": "AnnounceMethod",
+                              "value": "POST"
+                            }
+                          ]
+                        },
+                        "url": {
+                          "raw": "{{baseUrl}}/Accounts/:AccountSid/Conferences/{{ConferenceSid}}.json",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "Accounts",
+                            ":AccountSid",
+                            "Conferences",
+                            "{{ConferenceSid}}.json"
+                          ],
+                          "variable": [
+                            {
+                              "id": "a9a65c0c-fde1-4b4c-9900-adad7145ca8a",
+                              "key": "AccountSid",
+                              "value": "ACxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",
+                              "description": "(Required) The unique identifier of the Twilio account"
+                            }
+                          ]
+                        },
+                        "description": "End a conference or announce a message to participants."
+                      },
+                      "response": [
+                        {
+                          "id": "acf78fb4-d915-4d1f-9783-6cb696fde265",
+                          "name": "Conference updated",
+                          "originalRequest": {
+                            "method": "POST",
+                            "header": [
+                              {
+                                "key": "Content-Type",
+                                "value": "application/x-www-form-urlencoded"
+                              },
+                              {
+                                "key": "Accept",
+                                "value": "application/json"
+                              },
+                              {
+                                "description": "Added as a part of security scheme: basic",
+                                "key": "Authorization",
+                                "value": "Basic <credentials>"
+                              }
+                            ],
+                            "body": {
+                              "mode": "urlencoded",
+                              "urlencoded": [
+                                {
+                                  "description": "Set to completed to end the conference",
+                                  "key": "Status",
+                                  "value": "completed"
+                                },
+                                {
+                                  "description": "URL for TwiML to play to all participants",
+                                  "key": "AnnounceUrl",
+                                  "value": "<uri>"
+                                },
+                                {
+                                  "key": "AnnounceMethod",
+                                  "value": "POST"
+                                }
+                              ]
+                            },
+                            "url": {
+                              "raw": "{{baseUrl}}/Accounts/:AccountSid/Conferences/{{ConferenceSid}}.json",
+                              "host": [
+                                "{{baseUrl}}"
+                              ],
+                              "path": [
+                                "Accounts",
+                                ":AccountSid",
+                                "Conferences",
+                                "{{ConferenceSid}}.json"
+                              ],
+                              "variable": [
+                                {
+                                  "key": "AccountSid"
+                                }
+                              ]
+                            }
+                          },
+                          "status": "OK",
+                          "code": 200,
+                          "_postman_previewlanguage": "json",
+                          "header": [
+                            {
+                              "key": "Content-Type",
+                              "value": "application/json"
+                            }
+                          ],
+                          "cookie": [],
+                          "responseTime": null,
+                          "body": "{\n  \"sid\": \"CFBEDCE57A957f4A14a56fbCeB58F9AeE4\",\n  \"account_sid\": \"ACxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx\",\n  \"friendly_name\": \"<string>\",\n  \"status\": \"init\",\n  \"region\": \"<string>\",\n  \"reason_conference_ended\": \"<string>\",\n  \"call_sid_ending_conference\": \"<string>\",\n  \"date_created\": \"<dateTime>\",\n  \"date_updated\": \"<dateTime>\",\n  \"uri\": \"<string>\",\n  \"subresource_uris\": {\n    \"participants\": \"<string>\",\n    \"recordings\": \"<string>\"\n  }\n}",
+                          "createdAt": "2026-06-05T13:22:48.000Z",
+                          "updatedAt": "2026-06-05T13:22:48.000Z",
+                          "uid": "35240-acf78fb4-d915-4d1f-9783-6cb696fde265"
+                        }
+                      ],
+                      "createdAt": "2026-06-05T13:22:48.000Z",
+                      "updatedAt": "2026-06-05T13:22:48.000Z",
+                      "uid": "35240-aceb92ca-87a3-44cd-8832-7bc54f57f500"
+                    }
+                  ],
+                  "id": "63441d78-dbbe-4d2d-913f-3317410bbec5",
+                  "createdAt": "2026-06-05T13:22:48.000Z",
+                  "updatedAt": "2026-06-05T13:22:48.000Z",
+                  "uid": "35240-63441d78-dbbe-4d2d-913f-3317410bbec5"
+                },
+                {
+                  "name": "{ConferenceSid}",
+                  "item": [
+                    {
+                      "name": "Participants.json",
+                      "item": [
+                        {
+                          "name": "Twilio List Conference Participants",
+                          "id": "2d7f4f97-5ff3-4a92-98cb-b879e04a0a3c",
+                          "protocolProfileBehavior": {
+                            "disableBodyPruning": true
+                          },
+                          "request": {
+                            "method": "GET",
+                            "header": [
+                              {
+                                "key": "Accept",
+                                "value": "application/json"
+                              }
+                            ],
+                            "url": {
+                              "raw": "{{baseUrl}}/Accounts/:AccountSid/Conferences/:ConferenceSid/Participants.json",
+                              "host": [
+                                "{{baseUrl}}"
+                              ],
+                              "path": [
+                                "Accounts",
+                                ":AccountSid",
+                                "Conferences",
+                                ":ConferenceSid",
+                                "Participants.json"
+                              ],
+                              "variable": [
+                                {
+                                  "id": "41421d91-68f7-4290-bd1a-c191b6a840b8",
+                                  "key": "AccountSid",
+                                  "value": "ACxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",
+                                  "description": "(Required) The unique identifier of the Twilio account"
+                                },
+                                {
+                                  "id": "ab7b38d4-21c9-46cb-8954-1183c2fcb869",
+                                  "key": "ConferenceSid",
+                                  "value": "CF7B0d4b31cA9FeF8F9c6b6011Ee12F23d",
+                                  "description": "(Required) "
+                                }
+                              ]
+                            }
+                          },
+                          "response": [
+                            {
+                              "id": "ed756af0-c7c6-4b92-b6db-738bc6275257",
+                              "name": "List of participants",
+                              "originalRequest": {
+                                "method": "GET",
+                                "header": [
+                                  {
+                                    "key": "Accept",
+                                    "value": "application/json"
+                                  },
+                                  {
+                                    "description": "Added as a part of security scheme: basic",
+                                    "key": "Authorization",
+                                    "value": "Basic <credentials>"
+                                  }
+                                ],
+                                "url": {
+                                  "raw": "{{baseUrl}}/Accounts/:AccountSid/Conferences/:ConferenceSid/Participants.json",
+                                  "host": [
+                                    "{{baseUrl}}"
+                                  ],
+                                  "path": [
+                                    "Accounts",
+                                    ":AccountSid",
+                                    "Conferences",
+                                    ":ConferenceSid",
+                                    "Participants.json"
+                                  ],
+                                  "variable": [
+                                    {
+                                      "key": "AccountSid"
+                                    },
+                                    {
+                                      "key": "ConferenceSid"
+                                    }
+                                  ]
+                                }
+                              },
+                              "status": "OK",
+                              "code": 200,
+                              "_postman_previewlanguage": "json",
+                              "header": [
+                                {
+                                  "key": "Content-Type",
+                                  "value": "application/json"
+                                }
+                              ],
+                              "cookie": [],
+                              "responseTime": null,
+                              "body": "{\n  \"participants\": [\n    {\n      \"call_sid\": \"CA8aFC21A3a1fDddeCc430AA0AfACC8bef\",\n      \"conference_sid\": \"CFD1a0de7ca5A24e0b2f2EEe8B7cf578dA\",\n      \"account_sid\": \"ACxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx\",\n      \"muted\": \"<boolean>\",\n      \"hold\": \"<boolean>\",\n      \"coaching\": \"<boolean>\",\n      \"status\": \"connected\",\n      \"start_conference_on_enter\": \"<boolean>\",\n      \"end_conference_on_exit\": \"<boolean>\",\n      \"date_created\": \"<dateTime>\",\n      \"date_updated\": \"<dateTime>\",\n      \"uri\": \"<string>\"\n    },\n    {\n      \"call_sid\": \"CAcE54Eb627D998aEfE9Ffe39b3ED85a4A\",\n      \"conference_sid\": \"CFddD76d950b1aa3511D2F8B0ebcddC77b\",\n      \"account_sid\": \"ACxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx\",\n      \"muted\": \"<boolean>\",\n      \"hold\": \"<boolean>\",\n      \"coaching\": \"<boolean>\",\n      \"status\": \"connecting\",\n      \"start_conference_on_enter\": \"<boolean>\",\n      \"end_conference_on_exit\": \"<boolean>\",\n      \"date_created\": \"<dateTime>\",\n      \"date_updated\": \"<dateTime>\",\n      \"uri\": \"<string>\"\n    }\n  ],\n  \"first_page_uri\": \"<string>\",\n  \"next_page_uri\": \"<string>\",\n  \"page\": \"<integer>\",\n  \"page_size\": \"<integer>\"\n}",
+                              "createdAt": "2026-06-05T13:22:48.000Z",
+                              "updatedAt": "2026-06-05T13:22:48.000Z",
+                              "uid": "35240-ed756af0-c7c6-4b92-b6db-738bc6275257"
+                            }
+                          ],
+                          "createdAt": "2026-06-05T13:22:48.000Z",
+                          "updatedAt": "2026-06-05T13:22:48.000Z",
+                          "uid": "35240-2d7f4f97-5ff3-4a92-98cb-b879e04a0a3c"
+                        },
+                        {
+                          "name": "Twilio Add a Participant to a Conference",
+                          "id": "b9803f12-f611-4de0-8325-d62e4440db7c",
+                          "protocolProfileBehavior": {
+                            "disableBodyPruning": true
+                          },
+                          "request": {
+                            "method": "POST",
+                            "header": [
+                              {
+                                "key": "Content-Type",
+                                "value": "application/x-www-form-urlencoded"
+                              },
+                              {
+                                "key": "Accept",
+                                "value": "application/json"
+                              }
+                            ],
+                            "body": {
+                              "mode": "urlencoded",
+                              "urlencoded": [
+                                {
+                                  "description": "(Required) Twilio phone number to use as caller ID",
+                                  "key": "From",
+                                  "value": "<string>"
+                                },
+                                {
+                                  "description": "(Required) Phone number to call and add to conference",
+                                  "key": "To",
+                                  "value": "<string>"
+                                },
+                                {
+                                  "key": "Muted",
+                                  "value": "<boolean>"
+                                },
+                                {
+                                  "key": "Hold",
+                                  "value": "<boolean>"
+                                },
+                                {
+                                  "key": "Record",
+                                  "value": "<boolean>"
+                                },
+                                {
+                                  "key": "StatusCallback",
+                                  "value": "<uri>"
+                                }
+                              ]
+                            },
+                            "url": {
+                              "raw": "{{baseUrl}}/Accounts/:AccountSid/Conferences/:ConferenceSid/Participants.json",
+                              "host": [
+                                "{{baseUrl}}"
+                              ],
+                              "path": [
+                                "Accounts",
+                                ":AccountSid",
+                                "Conferences",
+                                ":ConferenceSid",
+                                "Participants.json"
+                              ],
+                              "variable": [
+                                {
+                                  "id": "76eacf7b-6af6-4ac6-ba8f-3316408c9ec5",
+                                  "key": "AccountSid",
+                                  "value": "ACxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",
+                                  "description": "(Required) The unique identifier of the Twilio account"
+                                },
+                                {
+                                  "id": "423dcfa7-ff00-4525-a76f-810e96093d7f",
+                                  "key": "ConferenceSid",
+                                  "value": "CF7B0d4b31cA9FeF8F9c6b6011Ee12F23d",
+                                  "description": "(Required) "
+                                }
+                              ]
+                            }
+                          },
+                          "response": [
+                            {
+                              "id": "5d407d7d-157c-4d7a-85bf-a0ca0b6911ae",
+                              "name": "Participant added",
+                              "originalRequest": {
+                                "method": "POST",
+                                "header": [
+                                  {
+                                    "key": "Content-Type",
+                                    "value": "application/x-www-form-urlencoded"
+                                  },
+                                  {
+                                    "key": "Accept",
+                                    "value": "application/json"
+                                  },
+                                  {
+                                    "description": "Added as a part of security scheme: basic",
+                                    "key": "Authorization",
+                                    "value": "Basic <credentials>"
+                                  }
+                                ],
+                                "body": {
+                                  "mode": "urlencoded",
+                                  "urlencoded": [
+                                    {
+                                      "description": "(Required) Twilio phone number to use as caller ID",
+                                      "key": "From",
+                                      "value": "<string>"
+                                    },
+                                    {
+                                      "description": "(Required) Phone number to call and add to conference",
+                                      "key": "To",
+                                      "value": "<string>"
+                                    },
+                                    {
+                                      "key": "Muted",
+                                      "value": "<boolean>"
+                                    },
+                                    {
+                                      "key": "Hold",
+                                      "value": "<boolean>"
+                                    },
+                                    {
+                                      "key": "Record",
+                                      "value": "<boolean>"
+                                    },
+                                    {
+                                      "key": "StatusCallback",
+                                      "value": "<uri>"
+                                    }
+                                  ]
+                                },
+                                "url": {
+                                  "raw": "{{baseUrl}}/Accounts/:AccountSid/Conferences/:ConferenceSid/Participants.json",
+                                  "host": [
+                                    "{{baseUrl}}"
+                                  ],
+                                  "path": [
+                                    "Accounts",
+                                    ":AccountSid",
+                                    "Conferences",
+                                    ":ConferenceSid",
+                                    "Participants.json"
+                                  ],
+                                  "variable": [
+                                    {
+                                      "key": "AccountSid"
+                                    },
+                                    {
+                                      "key": "ConferenceSid"
+                                    }
+                                  ]
+                                }
+                              },
+                              "status": "Created",
+                              "code": 201,
+                              "_postman_previewlanguage": "json",
+                              "header": [
+                                {
+                                  "key": "Content-Type",
+                                  "value": "application/json"
+                                }
+                              ],
+                              "cookie": [],
+                              "responseTime": null,
+                              "body": "{\n  \"call_sid\": \"CAcE5c0Af42F2Aee2f74Ae756E696A92c7\",\n  \"conference_sid\": \"CFbe23D8Dbac11bCc604E86aC8c440ee4a\",\n  \"account_sid\": \"ACxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx\",\n  \"muted\": \"<boolean>\",\n  \"hold\": \"<boolean>\",\n  \"coaching\": \"<boolean>\",\n  \"status\": \"connecting\",\n  \"start_conference_on_enter\": \"<boolean>\",\n  \"end_conference_on_exit\": \"<boolean>\",\n  \"date_created\": \"<dateTime>\",\n  \"date_updated\": \"<dateTime>\",\n  \"uri\": \"<string>\"\n}",
+                              "createdAt": "2026-06-05T13:22:48.000Z",
+                              "updatedAt": "2026-06-05T13:22:48.000Z",
+                              "uid": "35240-5d407d7d-157c-4d7a-85bf-a0ca0b6911ae"
+                            }
+                          ],
+                          "createdAt": "2026-06-05T13:22:48.000Z",
+                          "updatedAt": "2026-06-05T13:22:48.000Z",
+                          "uid": "35240-b9803f12-f611-4de0-8325-d62e4440db7c"
+                        }
+                      ],
+                      "id": "fedc0a18-d578-4619-9a43-bea62b41a0ef",
+                      "createdAt": "2026-06-05T13:22:48.000Z",
+                      "updatedAt": "2026-06-05T13:22:48.000Z",
+                      "uid": "35240-fedc0a18-d578-4619-9a43-bea62b41a0ef"
+                    }
+                  ],
+                  "id": "b136a4da-0ad2-430c-aab1-c86fe38269dd",
+                  "createdAt": "2026-06-05T13:22:48.000Z",
+                  "updatedAt": "2026-06-05T13:22:48.000Z",
+                  "uid": "35240-b136a4da-0ad2-430c-aab1-c86fe38269dd"
+                }
+              ],
+              "id": "f0a6a5f5-d2a1-46d1-8d28-43c91c7211e1",
+              "createdAt": "2026-06-05T13:22:48.000Z",
+              "updatedAt": "2026-06-05T13:22:48.000Z",
+              "uid": "35240-f0a6a5f5-d2a1-46d1-8d28-43c91c7211e1"
+            },
+            {
+              "name": "Queues.json",
+              "item": [
+                {
+                  "name": "Twilio List Call Queues",
+                  "id": "b86e5e1e-b3fe-4d25-8b65-12c7df7402f2",
+                  "protocolProfileBehavior": {
+                    "disableBodyPruning": true
+                  },
+                  "request": {
+                    "method": "GET",
+                    "header": [
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/Accounts/:AccountSid/Queues.json",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "Accounts",
+                        ":AccountSid",
+                        "Queues.json"
+                      ],
+                      "variable": [
+                        {
+                          "id": "7d824ab7-1a38-4228-abe0-ae2797fff719",
+                          "key": "AccountSid",
+                          "value": "ACxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",
+                          "description": "(Required) The unique identifier of the Twilio account"
+                        }
+                      ]
+                    }
+                  },
+                  "response": [
+                    {
+                      "id": "b5dd39ce-0de2-41b7-b2c8-87638cea68a9",
+                      "name": "List of queues",
+                      "originalRequest": {
+                        "method": "GET",
+                        "header": [
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          },
+                          {
+                            "description": "Added as a part of security scheme: basic",
+                            "key": "Authorization",
+                            "value": "Basic <credentials>"
+                          }
+                        ],
+                        "url": {
+                          "raw": "{{baseUrl}}/Accounts/:AccountSid/Queues.json",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "Accounts",
+                            ":AccountSid",
+                            "Queues.json"
+                          ],
+                          "variable": [
+                            {
+                              "key": "AccountSid"
+                            }
+                          ]
+                        }
+                      },
+                      "status": "OK",
+                      "code": 200,
+                      "_postman_previewlanguage": "json",
+                      "header": [
+                        {
+                          "key": "Content-Type",
+                          "value": "application/json"
+                        }
+                      ],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": "{\n  \"queues\": [\n    {\n      \"sid\": \"QU010B4C4E777ca14CFCDfefbE719a50A4\",\n      \"account_sid\": \"ACxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx\",\n      \"friendly_name\": \"<string>\",\n      \"current_size\": \"<integer>\",\n      \"max_size\": \"<integer>\",\n      \"average_wait_time\": \"<integer>\",\n      \"date_created\": \"<dateTime>\",\n      \"date_updated\": \"<dateTime>\",\n      \"uri\": \"<string>\"\n    },\n    {\n      \"sid\": \"QUFaede6f6996E3aF1dFdCe9Bc6BAf48EA\",\n      \"account_sid\": \"ACxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx\",\n      \"friendly_name\": \"<string>\",\n      \"current_size\": \"<integer>\",\n      \"max_size\": \"<integer>\",\n      \"average_wait_time\": \"<integer>\",\n      \"date_created\": \"<dateTime>\",\n      \"date_updated\": \"<dateTime>\",\n      \"uri\": \"<string>\"\n    }\n  ],\n  \"first_page_uri\": \"<string>\",\n  \"next_page_uri\": \"<string>\",\n  \"page\": \"<integer>\",\n  \"page_size\": \"<integer>\"\n}",
+                      "createdAt": "2026-06-05T13:22:48.000Z",
+                      "updatedAt": "2026-06-05T13:22:48.000Z",
+                      "uid": "35240-b5dd39ce-0de2-41b7-b2c8-87638cea68a9"
+                    }
+                  ],
+                  "createdAt": "2026-06-05T13:22:48.000Z",
+                  "updatedAt": "2026-06-05T13:22:48.000Z",
+                  "uid": "35240-b86e5e1e-b3fe-4d25-8b65-12c7df7402f2"
+                },
+                {
+                  "name": "Twilio Create a Call Queue",
+                  "id": "07cc14be-4ded-41ea-a27f-d528cb03f6a5",
+                  "protocolProfileBehavior": {
+                    "disableBodyPruning": true
+                  },
+                  "request": {
+                    "method": "POST",
+                    "header": [
+                      {
+                        "key": "Content-Type",
+                        "value": "application/x-www-form-urlencoded"
+                      },
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      }
+                    ],
+                    "body": {
+                      "mode": "urlencoded",
+                      "urlencoded": [
+                        {
+                          "description": "(Required) Descriptive name for the queue",
+                          "key": "FriendlyName",
+                          "value": "<string>"
+                        },
+                        {
+                          "description": "Maximum number of calls in the queue",
+                          "key": "MaxSize",
+                          "value": "1000"
+                        }
+                      ]
+                    },
+                    "url": {
+                      "raw": "{{baseUrl}}/Accounts/:AccountSid/Queues.json",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "Accounts",
+                        ":AccountSid",
+                        "Queues.json"
+                      ],
+                      "variable": [
+                        {
+                          "id": "9e06d614-06b8-40ac-b8ab-b1268c0fe2f0",
+                          "key": "AccountSid",
+                          "value": "ACxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",
+                          "description": "(Required) The unique identifier of the Twilio account"
+                        }
+                      ]
+                    }
+                  },
+                  "response": [
+                    {
+                      "id": "0568eea0-c58e-4d67-8dd8-ab5a1d6e56b7",
+                      "name": "Queue created",
+                      "originalRequest": {
+                        "method": "POST",
+                        "header": [
+                          {
+                            "key": "Content-Type",
+                            "value": "application/x-www-form-urlencoded"
+                          },
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          },
+                          {
+                            "description": "Added as a part of security scheme: basic",
+                            "key": "Authorization",
+                            "value": "Basic <credentials>"
+                          }
+                        ],
+                        "body": {
+                          "mode": "urlencoded",
+                          "urlencoded": [
+                            {
+                              "description": "(Required) Descriptive name for the queue",
+                              "key": "FriendlyName",
+                              "value": "<string>"
+                            },
+                            {
+                              "description": "Maximum number of calls in the queue",
+                              "key": "MaxSize",
+                              "value": "1000"
+                            }
+                          ]
+                        },
+                        "url": {
+                          "raw": "{{baseUrl}}/Accounts/:AccountSid/Queues.json",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "Accounts",
+                            ":AccountSid",
+                            "Queues.json"
+                          ],
+                          "variable": [
+                            {
+                              "key": "AccountSid"
+                            }
+                          ]
+                        }
+                      },
+                      "status": "Created",
+                      "code": 201,
+                      "_postman_previewlanguage": "json",
+                      "header": [
+                        {
+                          "key": "Content-Type",
+                          "value": "application/json"
+                        }
+                      ],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": "{\n  \"sid\": \"QUbF9FeF8658AA98d73433C9edA61C8Aa0\",\n  \"account_sid\": \"ACxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx\",\n  \"friendly_name\": \"<string>\",\n  \"current_size\": \"<integer>\",\n  \"max_size\": \"<integer>\",\n  \"average_wait_time\": \"<integer>\",\n  \"date_created\": \"<dateTime>\",\n  \"date_updated\": \"<dateTime>\",\n  \"uri\": \"<string>\"\n}",
+                      "createdAt": "2026-06-05T13:22:48.000Z",
+                      "updatedAt": "2026-06-05T13:22:48.000Z",
+                      "uid": "35240-0568eea0-c58e-4d67-8dd8-ab5a1d6e56b7"
+                    }
+                  ],
+                  "createdAt": "2026-06-05T13:22:48.000Z",
+                  "updatedAt": "2026-06-05T13:22:48.000Z",
+                  "uid": "35240-07cc14be-4ded-41ea-a27f-d528cb03f6a5"
+                }
+              ],
+              "id": "2485960e-f7c1-4f78-a94b-e4a9ef5ade61",
+              "createdAt": "2026-06-05T13:22:48.000Z",
+              "updatedAt": "2026-06-05T13:22:48.000Z",
+              "uid": "35240-2485960e-f7c1-4f78-a94b-e4a9ef5ade61"
+            },
+            {
+              "name": "Queues",
+              "item": [
+                {
+                  "name": "{QueueSid}.json",
+                  "item": [
+                    {
+                      "name": "Twilio Fetch a Queue",
+                      "id": "f91fc903-5588-47e4-96c0-693831715373",
+                      "protocolProfileBehavior": {
+                        "disableBodyPruning": true
+                      },
+                      "request": {
+                        "method": "GET",
+                        "header": [
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          }
+                        ],
+                        "url": {
+                          "raw": "{{baseUrl}}/Accounts/:AccountSid/Queues/{{QueueSid}}.json",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "Accounts",
+                            ":AccountSid",
+                            "Queues",
+                            "{{QueueSid}}.json"
+                          ],
+                          "variable": [
+                            {
+                              "id": "6fbaff19-c01d-4465-b003-a633ec74bd91",
+                              "key": "AccountSid",
+                              "value": "ACxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",
+                              "description": "(Required) The unique identifier of the Twilio account"
+                            }
+                          ]
+                        }
+                      },
+                      "response": [
+                        {
+                          "id": "eb210433-d4d5-46b9-971c-c1badbe194fe",
+                          "name": "Queue details",
+                          "originalRequest": {
+                            "method": "GET",
+                            "header": [
+                              {
+                                "key": "Accept",
+                                "value": "application/json"
+                              },
+                              {
+                                "description": "Added as a part of security scheme: basic",
+                                "key": "Authorization",
+                                "value": "Basic <credentials>"
+                              }
+                            ],
+                            "url": {
+                              "raw": "{{baseUrl}}/Accounts/:AccountSid/Queues/{{QueueSid}}.json",
+                              "host": [
+                                "{{baseUrl}}"
+                              ],
+                              "path": [
+                                "Accounts",
+                                ":AccountSid",
+                                "Queues",
+                                "{{QueueSid}}.json"
+                              ],
+                              "variable": [
+                                {
+                                  "key": "AccountSid"
+                                }
+                              ]
+                            }
+                          },
+                          "status": "OK",
+                          "code": 200,
+                          "_postman_previewlanguage": "json",
+                          "header": [
+                            {
+                              "key": "Content-Type",
+                              "value": "application/json"
+                            }
+                          ],
+                          "cookie": [],
+                          "responseTime": null,
+                          "body": "{\n  \"sid\": \"QUbF9FeF8658AA98d73433C9edA61C8Aa0\",\n  \"account_sid\": \"ACxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx\",\n  \"friendly_name\": \"<string>\",\n  \"current_size\": \"<integer>\",\n  \"max_size\": \"<integer>\",\n  \"average_wait_time\": \"<integer>\",\n  \"date_created\": \"<dateTime>\",\n  \"date_updated\": \"<dateTime>\",\n  \"uri\": \"<string>\"\n}",
+                          "createdAt": "2026-06-05T13:22:48.000Z",
+                          "updatedAt": "2026-06-05T13:22:48.000Z",
+                          "uid": "35240-eb210433-d4d5-46b9-971c-c1badbe194fe"
+                        }
+                      ],
+                      "createdAt": "2026-06-05T13:22:48.000Z",
+                      "updatedAt": "2026-06-05T13:22:48.000Z",
+                      "uid": "35240-f91fc903-5588-47e4-96c0-693831715373"
+                    },
+                    {
+                      "name": "Twilio Update a Queue",
+                      "id": "7884679d-498c-43bc-8dc8-aac1d4daf4f8",
+                      "protocolProfileBehavior": {
+                        "disableBodyPruning": true
+                      },
+                      "request": {
+                        "method": "POST",
+                        "header": [
+                          {
+                            "key": "Content-Type",
+                            "value": "application/x-www-form-urlencoded"
+                          }
+                        ],
+                        "body": {
+                          "mode": "urlencoded",
+                          "urlencoded": [
+                            {
+                              "key": "FriendlyName",
+                              "value": "<string>"
+                            },
+                            {
+                              "key": "MaxSize",
+                              "value": "<integer>"
+                            }
+                          ]
+                        },
+                        "url": {
+                          "raw": "{{baseUrl}}/Accounts/:AccountSid/Queues/{{QueueSid}}.json",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "Accounts",
+                            ":AccountSid",
+                            "Queues",
+                            "{{QueueSid}}.json"
+                          ],
+                          "variable": [
+                            {
+                              "id": "1752667a-d6d7-425c-82b1-d4822abb8c4f",
+                              "key": "AccountSid",
+                              "value": "ACxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",
+                              "description": "(Required) The unique identifier of the Twilio account"
+                            }
+                          ]
+                        }
+                      },
+                      "response": [
+                        {
+                          "id": "86f1eb8a-4741-4f35-bc17-74bd45df96de",
+                          "name": "Queue updated",
+                          "originalRequest": {
+                            "method": "POST",
+                            "header": [
+                              {
+                                "key": "Content-Type",
+                                "value": "application/x-www-form-urlencoded"
+                              },
+                              {
+                                "description": "Added as a part of security scheme: basic",
+                                "key": "Authorization",
+                                "value": "Basic <credentials>"
+                              }
+                            ],
+                            "body": {
+                              "mode": "urlencoded",
+                              "urlencoded": [
+                                {
+                                  "key": "FriendlyName",
+                                  "value": "<string>"
+                                },
+                                {
+                                  "key": "MaxSize",
+                                  "value": "<integer>"
+                                }
+                              ]
+                            },
+                            "url": {
+                              "raw": "{{baseUrl}}/Accounts/:AccountSid/Queues/{{QueueSid}}.json",
+                              "host": [
+                                "{{baseUrl}}"
+                              ],
+                              "path": [
+                                "Accounts",
+                                ":AccountSid",
+                                "Queues",
+                                "{{QueueSid}}.json"
+                              ],
+                              "variable": [
+                                {
+                                  "key": "AccountSid"
+                                }
+                              ]
+                            }
+                          },
+                          "status": "OK",
+                          "code": 200,
+                          "_postman_previewlanguage": "text",
+                          "header": [],
+                          "cookie": [],
+                          "responseTime": null,
+                          "body": null,
+                          "createdAt": "2026-06-05T13:22:48.000Z",
+                          "updatedAt": "2026-06-05T13:22:48.000Z",
+                          "uid": "35240-86f1eb8a-4741-4f35-bc17-74bd45df96de"
+                        }
+                      ],
+                      "createdAt": "2026-06-05T13:22:48.000Z",
+                      "updatedAt": "2026-06-05T13:22:48.000Z",
+                      "uid": "35240-7884679d-498c-43bc-8dc8-aac1d4daf4f8"
+                    },
+                    {
+                      "name": "Twilio Delete a Queue",
+                      "id": "2c6e0756-7a47-4f55-adbf-c6352ff82e40",
+                      "protocolProfileBehavior": {
+                        "disableBodyPruning": true
+                      },
+                      "request": {
+                        "method": "DELETE",
+                        "header": [],
+                        "url": {
+                          "raw": "{{baseUrl}}/Accounts/:AccountSid/Queues/{{QueueSid}}.json",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "Accounts",
+                            ":AccountSid",
+                            "Queues",
+                            "{{QueueSid}}.json"
+                          ],
+                          "variable": [
+                            {
+                              "id": "2e922015-8381-4ee6-a509-8ef96cca0a4f",
+                              "key": "AccountSid",
+                              "value": "ACxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",
+                              "description": "(Required) The unique identifier of the Twilio account"
+                            }
+                          ]
+                        }
+                      },
+                      "response": [
+                        {
+                          "id": "4c745543-252a-4e15-827d-11bbfe424b48",
+                          "name": "Queue deleted",
+                          "originalRequest": {
+                            "method": "DELETE",
+                            "header": [
+                              {
+                                "description": "Added as a part of security scheme: basic",
+                                "key": "Authorization",
+                                "value": "Basic <credentials>"
+                              }
+                            ],
+                            "url": {
+                              "raw": "{{baseUrl}}/Accounts/:AccountSid/Queues/{{QueueSid}}.json",
+                              "host": [
+                                "{{baseUrl}}"
+                              ],
+                              "path": [
+                                "Accounts",
+                                ":AccountSid",
+                                "Queues",
+                                "{{QueueSid}}.json"
+                              ],
+                              "variable": [
+                                {
+                                  "key": "AccountSid"
+                                }
+                              ]
+                            }
+                          },
+                          "status": "No Content",
+                          "code": 204,
+                          "_postman_previewlanguage": "text",
+                          "header": [],
+                          "cookie": [],
+                          "responseTime": null,
+                          "body": null,
+                          "createdAt": "2026-06-05T13:22:48.000Z",
+                          "updatedAt": "2026-06-05T13:22:48.000Z",
+                          "uid": "35240-4c745543-252a-4e15-827d-11bbfe424b48"
+                        }
+                      ],
+                      "createdAt": "2026-06-05T13:22:48.000Z",
+                      "updatedAt": "2026-06-05T13:22:48.000Z",
+                      "uid": "35240-2c6e0756-7a47-4f55-adbf-c6352ff82e40"
+                    }
+                  ],
+                  "id": "8d5a890d-0504-4a62-9cb2-0bab4638e14c",
+                  "createdAt": "2026-06-05T13:22:48.000Z",
+                  "updatedAt": "2026-06-05T13:22:48.000Z",
+                  "uid": "35240-8d5a890d-0504-4a62-9cb2-0bab4638e14c"
+                }
+              ],
+              "id": "b44ff5bf-cb05-4e6c-a922-74a4cb8bd887",
+              "createdAt": "2026-06-05T13:22:48.000Z",
+              "updatedAt": "2026-06-05T13:22:48.000Z",
+              "uid": "35240-b44ff5bf-cb05-4e6c-a922-74a4cb8bd887"
+            }
+          ],
+          "id": "2fb1bb06-9848-4bb4-91e4-a02424471b0e",
+          "createdAt": "2026-06-05T13:22:48.000Z",
+          "updatedAt": "2026-06-05T13:22:48.000Z",
+          "uid": "35240-2fb1bb06-9848-4bb4-91e4-a02424471b0e"
+        }
+      ],
+      "id": "8f6bfca4-bc9a-4e4e-ba13-55f083428899",
+      "createdAt": "2026-06-05T13:22:48.000Z",
+      "updatedAt": "2026-06-05T13:22:48.000Z",
+      "uid": "35240-8f6bfca4-bc9a-4e4e-ba13-55f083428899"
+    }
+  ],
+  "auth": {
+    "type": "basic",
+    "basic": [
+      {
+        "key": "username",
+        "value": "{{basicAuthUsername}}",
+        "type": "string"
+      },
+      {
+        "key": "password",
+        "value": "{{basicAuthPassword}}",
+        "type": "string"
+      }
+    ]
+  },
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "https://api.twilio.com/2010-04-01"
+    },
+    {
+      "key": "CallSid",
+      "value": "CA9eE45956DBF819aEbF42304Cc3815f3a"
+    },
+    {
+      "key": "RecordingSid",
+      "value": "RE6f3C7b2baEdb1C696027cCBC6435aFFA"
+    },
+    {
+      "key": "ConferenceSid",
+      "value": "CF7B0d4b31cA9FeF8F9c6b6011Ee12F23d"
+    },
+    {
+      "key": "QueueSid",
+      "value": "QUA6078CdA2D1Bf3A8b5085EBa7ECdDEeE"
+    }
+  ]
+}

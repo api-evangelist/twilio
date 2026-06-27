@@ -1,0 +1,457 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Twilio Accounts API",
+    "version": "2.0"
+  },
+  "request": {
+    "auth": {
+      "type": "basic",
+      "username": "{{username}}",
+      "password": "{{password}}"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Accounts",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Twilio List Accounts",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.twilio.com/2010-04-01/Accounts.json",
+            "params": [
+              {
+                "name": "FriendlyName",
+                "value": "",
+                "type": "query",
+                "description": "Filter by friendly name"
+              },
+              {
+                "name": "Status",
+                "value": "",
+                "type": "query",
+                "description": "Filter by account status"
+              },
+              {
+                "name": "PageSize",
+                "value": "",
+                "type": "query"
+              }
+            ]
+          },
+          "docs": "Retrieve a list of subaccounts belonging to the main account."
+        },
+        {
+          "info": {
+            "name": "Twilio Create a Subaccount",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.twilio.com/2010-04-01/Accounts.json",
+            "body": {
+              "type": "form-urlencoded",
+              "data": [
+                {
+                  "name": "FriendlyName",
+                  "value": ""
+                }
+              ]
+            }
+          },
+          "docs": "Create a new subaccount under the main account."
+        },
+        {
+          "info": {
+            "name": "Twilio Fetch an Account",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.twilio.com/2010-04-01/Accounts/:AccountSid.json",
+            "params": [
+              {
+                "name": "AccountSid",
+                "value": "",
+                "type": "path",
+                "description": "The unique identifier of the Twilio account"
+              }
+            ]
+          },
+          "docs": "Retrieve details for a specific account or subaccount."
+        },
+        {
+          "info": {
+            "name": "Twilio Update an Account",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.twilio.com/2010-04-01/Accounts/:AccountSid.json",
+            "params": [
+              {
+                "name": "AccountSid",
+                "value": "",
+                "type": "path",
+                "description": "The unique identifier of the Twilio account"
+              }
+            ],
+            "body": {
+              "type": "form-urlencoded",
+              "data": [
+                {
+                  "name": "FriendlyName",
+                  "value": ""
+                },
+                {
+                  "name": "Status",
+                  "value": ""
+                }
+              ]
+            }
+          },
+          "docs": "Update account properties such as friendly name or status."
+        }
+      ]
+    },
+    {
+      "info": {
+        "name": "Keys",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Twilio List Api Keys",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.twilio.com/2010-04-01/Accounts/:AccountSid/Keys.json",
+            "params": [
+              {
+                "name": "AccountSid",
+                "value": "",
+                "type": "path",
+                "description": "The unique identifier of the Twilio account"
+              }
+            ]
+          },
+          "docs": "Retrieve a list of API keys for the account."
+        },
+        {
+          "info": {
+            "name": "Twilio Create an Api Key",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.twilio.com/2010-04-01/Accounts/:AccountSid/Keys.json",
+            "params": [
+              {
+                "name": "AccountSid",
+                "value": "",
+                "type": "path",
+                "description": "The unique identifier of the Twilio account"
+              }
+            ],
+            "body": {
+              "type": "form-urlencoded",
+              "data": [
+                {
+                  "name": "FriendlyName",
+                  "value": ""
+                },
+                {
+                  "name": "AccountSid",
+                  "value": ""
+                }
+              ]
+            }
+          },
+          "docs": "Create a new API key for authentication. The secret is only returned once upon creation."
+        },
+        {
+          "info": {
+            "name": "Twilio Fetch an Api Key",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.twilio.com/2010-04-01/Accounts/:AccountSid/Keys/:KeySid.json",
+            "params": [
+              {
+                "name": "AccountSid",
+                "value": "",
+                "type": "path",
+                "description": "The unique identifier of the Twilio account"
+              },
+              {
+                "name": "KeySid",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "Twilio Fetch an Api Key"
+        },
+        {
+          "info": {
+            "name": "Twilio Update an Api Key",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.twilio.com/2010-04-01/Accounts/:AccountSid/Keys/:KeySid.json",
+            "params": [
+              {
+                "name": "AccountSid",
+                "value": "",
+                "type": "path",
+                "description": "The unique identifier of the Twilio account"
+              },
+              {
+                "name": "KeySid",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "form-urlencoded",
+              "data": [
+                {
+                  "name": "FriendlyName",
+                  "value": ""
+                }
+              ]
+            }
+          },
+          "docs": "Twilio Update an Api Key"
+        },
+        {
+          "info": {
+            "name": "Twilio Delete an Api Key",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://api.twilio.com/2010-04-01/Accounts/:AccountSid/Keys/:KeySid.json",
+            "params": [
+              {
+                "name": "AccountSid",
+                "value": "",
+                "type": "path",
+                "description": "The unique identifier of the Twilio account"
+              },
+              {
+                "name": "KeySid",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "Twilio Delete an Api Key"
+        }
+      ]
+    },
+    {
+      "info": {
+        "name": "Credentials",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Twilio List Aws Credentials",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.twilio.com/2010-04-01/Credentials/AWS"
+          },
+          "docs": "Twilio List Aws Credentials"
+        },
+        {
+          "info": {
+            "name": "Twilio Create an Aws Credential",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.twilio.com/2010-04-01/Credentials/AWS",
+            "body": {
+              "type": "form-urlencoded",
+              "data": [
+                {
+                  "name": "Credentials",
+                  "value": ""
+                },
+                {
+                  "name": "FriendlyName",
+                  "value": ""
+                },
+                {
+                  "name": "AccountSid",
+                  "value": ""
+                }
+              ]
+            }
+          },
+          "docs": "Twilio Create an Aws Credential"
+        },
+        {
+          "info": {
+            "name": "Twilio List Public Key Credentials",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.twilio.com/2010-04-01/Credentials/PublicKeys"
+          },
+          "docs": "Twilio List Public Key Credentials"
+        },
+        {
+          "info": {
+            "name": "Twilio Create a Public Key Credential",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.twilio.com/2010-04-01/Credentials/PublicKeys",
+            "body": {
+              "type": "form-urlencoded",
+              "data": [
+                {
+                  "name": "PublicKey",
+                  "value": ""
+                },
+                {
+                  "name": "FriendlyName",
+                  "value": ""
+                },
+                {
+                  "name": "AccountSid",
+                  "value": ""
+                }
+              ]
+            }
+          },
+          "docs": "Twilio Create a Public Key Credential"
+        }
+      ]
+    },
+    {
+      "info": {
+        "name": "Auth Tokens",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Twilio Promote Secondary Auth Token",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.twilio.com/2010-04-01/AuthTokens/Promote"
+          },
+          "docs": "Promote the secondary auth token to primary. The old primary token will be invalidated immediately."
+        },
+        {
+          "info": {
+            "name": "Twilio Create a Secondary Auth Token",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.twilio.com/2010-04-01/AuthTokens/Secondary"
+          },
+          "docs": "Create a secondary auth token for the account. Use this to rotate auth tokens without downtime."
+        },
+        {
+          "info": {
+            "name": "Twilio Delete the Secondary Auth Token",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://api.twilio.com/2010-04-01/AuthTokens/Secondary"
+          },
+          "docs": "Twilio Delete the Secondary Auth Token"
+        }
+      ]
+    },
+    {
+      "info": {
+        "name": "Safelist",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Twilio Add a Number to the Safelist",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.twilio.com/2010-04-01/SafeList/Numbers",
+            "body": {
+              "type": "form-urlencoded",
+              "data": [
+                {
+                  "name": "PhoneNumber",
+                  "value": ""
+                }
+              ]
+            }
+          },
+          "docs": "Add a phone number to the account safelist for verified caller IDs."
+        },
+        {
+          "info": {
+            "name": "Twilio Check if a Number is Safelisted",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.twilio.com/2010-04-01/SafeList/Numbers/:PhoneNumber",
+            "params": [
+              {
+                "name": "PhoneNumber",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "Twilio Check if a Number is Safelisted"
+        },
+        {
+          "info": {
+            "name": "Twilio Remove a Number from the Safelist",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://api.twilio.com/2010-04-01/SafeList/Numbers/:PhoneNumber",
+            "params": [
+              {
+                "name": "PhoneNumber",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "Twilio Remove a Number from the Safelist"
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

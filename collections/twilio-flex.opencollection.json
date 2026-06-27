@@ -1,0 +1,577 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Twilio Flex API",
+    "version": "2.0"
+  },
+  "request": {
+    "auth": {
+      "type": "basic",
+      "username": "{{username}}",
+      "password": "{{password}}"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Configuration",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Twilio Fetch Flex Configuration",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://flex-api.twilio.com/v1/Configuration",
+            "params": [
+              {
+                "name": "UiVersion",
+                "value": "",
+                "type": "query",
+                "description": "The Flex UI version to fetch configuration for"
+              }
+            ]
+          },
+          "docs": "Retrieve the current Flex configuration including UI attributes, enabled channels, and runtime settings."
+        },
+        {
+          "info": {
+            "name": "Twilio Update Flex Configuration",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://flex-api.twilio.com/v1/Configuration",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Update the Flex configuration settings."
+        }
+      ]
+    },
+    {
+      "info": {
+        "name": "Channels",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Twilio List Flex Channels",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://flex-api.twilio.com/v1/Channels",
+            "params": [
+              {
+                "name": "PageSize",
+                "value": "",
+                "type": "query"
+              }
+            ]
+          },
+          "docs": "Retrieve a list of Flex channels."
+        },
+        {
+          "info": {
+            "name": "Twilio Create a Flex Channel",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://flex-api.twilio.com/v1/Channels",
+            "body": {
+              "type": "form-urlencoded",
+              "data": []
+            }
+          },
+          "docs": "Create a new Flex channel for handling a customer interaction."
+        },
+        {
+          "info": {
+            "name": "Twilio Fetch a Flex Channel",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://flex-api.twilio.com/v1/Channels/:ChannelSid",
+            "params": [
+              {
+                "name": "ChannelSid",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "Twilio Fetch a Flex Channel"
+        },
+        {
+          "info": {
+            "name": "Twilio Delete a Flex Channel",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://flex-api.twilio.com/v1/Channels/:ChannelSid",
+            "params": [
+              {
+                "name": "ChannelSid",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "Twilio Delete a Flex Channel"
+        }
+      ]
+    },
+    {
+      "info": {
+        "name": "Flex Flows",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Twilio List Flex Flows",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://flex-api.twilio.com/v1/FlexFlows",
+            "params": [
+              {
+                "name": "FriendlyName",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "PageSize",
+                "value": "",
+                "type": "query"
+              }
+            ]
+          },
+          "docs": "Retrieve a list of Flex flows that define how inbound contacts are routed."
+        },
+        {
+          "info": {
+            "name": "Twilio Create a Flex Flow",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://flex-api.twilio.com/v1/FlexFlows",
+            "body": {
+              "type": "form-urlencoded",
+              "data": []
+            }
+          },
+          "docs": "Twilio Create a Flex Flow"
+        },
+        {
+          "info": {
+            "name": "Twilio Fetch a Flex Flow",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://flex-api.twilio.com/v1/FlexFlows/:FlexFlowSid",
+            "params": [
+              {
+                "name": "FlexFlowSid",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "Twilio Fetch a Flex Flow"
+        },
+        {
+          "info": {
+            "name": "Twilio Update a Flex Flow",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://flex-api.twilio.com/v1/FlexFlows/:FlexFlowSid",
+            "params": [
+              {
+                "name": "FlexFlowSid",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "form-urlencoded",
+              "data": []
+            }
+          },
+          "docs": "Twilio Update a Flex Flow"
+        },
+        {
+          "info": {
+            "name": "Twilio Delete a Flex Flow",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://flex-api.twilio.com/v1/FlexFlows/:FlexFlowSid",
+            "params": [
+              {
+                "name": "FlexFlowSid",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "Twilio Delete a Flex Flow"
+        }
+      ]
+    },
+    {
+      "info": {
+        "name": "Interactions",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Twilio Create an Interaction",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://flex-api.twilio.com/v1/Interactions",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Create a new customer interaction. An interaction represents a complete customer engagement that may span multiple channels."
+        },
+        {
+          "info": {
+            "name": "Twilio Fetch an Interaction",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://flex-api.twilio.com/v1/Interactions/:InteractionSid",
+            "params": [
+              {
+                "name": "InteractionSid",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "Twilio Fetch an Interaction"
+        },
+        {
+          "info": {
+            "name": "Twilio List Interaction Channels",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://flex-api.twilio.com/v1/Interactions/:InteractionSid/Channels",
+            "params": [
+              {
+                "name": "InteractionSid",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "Twilio List Interaction Channels"
+        },
+        {
+          "info": {
+            "name": "Twilio Fetch an Interaction Channel",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://flex-api.twilio.com/v1/Interactions/:InteractionSid/Channels/:ChannelSid",
+            "params": [
+              {
+                "name": "InteractionSid",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "ChannelSid",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "Twilio Fetch an Interaction Channel"
+        },
+        {
+          "info": {
+            "name": "Twilio Update an Interaction Channel",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://flex-api.twilio.com/v1/Interactions/:InteractionSid/Channels/:ChannelSid",
+            "params": [
+              {
+                "name": "InteractionSid",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "ChannelSid",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Update the status or routing of an interaction channel."
+        }
+      ]
+    },
+    {
+      "info": {
+        "name": "Web Channels",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Twilio Create a Web Channel",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://flex-api.twilio.com/v1/WebChannels",
+            "body": {
+              "type": "form-urlencoded",
+              "data": [
+                {
+                  "name": "FlexFlowSid",
+                  "value": ""
+                },
+                {
+                  "name": "Identity",
+                  "value": ""
+                },
+                {
+                  "name": "CustomerFriendlyName",
+                  "value": ""
+                },
+                {
+                  "name": "ChatFriendlyName",
+                  "value": ""
+                },
+                {
+                  "name": "ChatUniqueName",
+                  "value": ""
+                },
+                {
+                  "name": "PreEngagementData",
+                  "value": ""
+                }
+              ]
+            }
+          },
+          "docs": "Create a new web chat channel for customer interaction."
+        },
+        {
+          "info": {
+            "name": "Twilio Fetch a Web Channel",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://flex-api.twilio.com/v1/WebChannels/:ChannelSid",
+            "params": [
+              {
+                "name": "ChannelSid",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "Twilio Fetch a Web Channel"
+        },
+        {
+          "info": {
+            "name": "Twilio Update a Web Channel",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://flex-api.twilio.com/v1/WebChannels/:ChannelSid",
+            "params": [
+              {
+                "name": "ChannelSid",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "form-urlencoded",
+              "data": [
+                {
+                  "name": "ChatStatus",
+                  "value": ""
+                },
+                {
+                  "name": "PostEngagementData",
+                  "value": ""
+                }
+              ]
+            }
+          },
+          "docs": "Twilio Update a Web Channel"
+        },
+        {
+          "info": {
+            "name": "Twilio Delete a Web Channel",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://flex-api.twilio.com/v1/WebChannels/:ChannelSid",
+            "params": [
+              {
+                "name": "ChannelSid",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "Twilio Delete a Web Channel"
+        }
+      ]
+    },
+    {
+      "info": {
+        "name": "Plugins",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Twilio List Flex Plugins",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://flex-api.twilio.com/v1/PluginService/Plugins",
+            "headers": [
+              {
+                "name": "FlexMetadata",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "PageSize",
+                "value": "",
+                "type": "query"
+              }
+            ]
+          },
+          "docs": "Twilio List Flex Plugins"
+        },
+        {
+          "info": {
+            "name": "Twilio Create a Flex Plugin",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://flex-api.twilio.com/v1/PluginService/Plugins",
+            "body": {
+              "type": "form-urlencoded",
+              "data": [
+                {
+                  "name": "UniqueName",
+                  "value": ""
+                },
+                {
+                  "name": "FriendlyName",
+                  "value": ""
+                },
+                {
+                  "name": "Description",
+                  "value": ""
+                }
+              ]
+            }
+          },
+          "docs": "Twilio Create a Flex Plugin"
+        }
+      ]
+    },
+    {
+      "info": {
+        "name": "Insights",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Twilio List Questionnaires",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://flex-api.twilio.com/v1/Insights/QualityManagement/Questionnaires",
+            "headers": [
+              {
+                "name": "Token",
+                "value": ""
+              }
+            ]
+          },
+          "docs": "Twilio List Questionnaires"
+        },
+        {
+          "info": {
+            "name": "Twilio Create a Questionnaire",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://flex-api.twilio.com/v1/Insights/QualityManagement/Questionnaires",
+            "body": {
+              "type": "form-urlencoded",
+              "data": [
+                {
+                  "name": "Name",
+                  "value": ""
+                },
+                {
+                  "name": "Description",
+                  "value": ""
+                },
+                {
+                  "name": "Active",
+                  "value": ""
+                }
+              ]
+            }
+          },
+          "docs": "Twilio Create a Questionnaire"
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

@@ -1,0 +1,651 @@
+{
+  "item": [
+    {
+      "id": "cab83f59-dd63-46df-9af6-7bcecc63d50e",
+      "name": "Phone Numbers",
+      "description": {
+        "content": "Query phone number data and intelligence",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "404477b6-152f-4d1e-aed3-2f0d93004a73",
+          "name": "Twilio Look up a Phone Number",
+          "request": {
+            "name": "Twilio Look up a Phone Number",
+            "description": {
+              "content": "Query information about a phone number. Specify which data packages to include using the Fields parameter. Available packages include validation, line type intelligence, caller name, SIM swap, identity match, SMS pumping risk, and more.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "PhoneNumbers",
+                ":PhoneNumber"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "Fields",
+                  "value": "<string>",
+                  "description": "Comma-separated list of data packages to return. Available fields include validation, line_type_intelligence, caller_name, sim_swap, identity_match, sms_pumping_risk, phone_number_quality_score, reassigned_number, line_status"
+                },
+                {
+                  "disabled": false,
+                  "key": "CountryCode",
+                  "value": "<string>",
+                  "description": "ISO 3166-1 alpha-2 country code for national format numbers"
+                },
+                {
+                  "disabled": false,
+                  "key": "FirstName",
+                  "value": "<string>",
+                  "description": "First name for identity match"
+                },
+                {
+                  "disabled": false,
+                  "key": "LastName",
+                  "value": "<string>",
+                  "description": "Last name for identity match"
+                },
+                {
+                  "disabled": false,
+                  "key": "AddressLine1",
+                  "value": "<string>",
+                  "description": "Address line 1 for identity match"
+                },
+                {
+                  "disabled": false,
+                  "key": "AddressLine2",
+                  "value": "<string>",
+                  "description": "Address line 2 for identity match"
+                },
+                {
+                  "disabled": false,
+                  "key": "City",
+                  "value": "<string>",
+                  "description": "City for identity match"
+                },
+                {
+                  "disabled": false,
+                  "key": "State",
+                  "value": "<string>",
+                  "description": "State or province for identity match"
+                },
+                {
+                  "disabled": false,
+                  "key": "PostalCode",
+                  "value": "<string>",
+                  "description": "Postal code for identity match"
+                },
+                {
+                  "disabled": false,
+                  "key": "AddressCountryCode",
+                  "value": "<string>",
+                  "description": "ISO country code for identity match address"
+                },
+                {
+                  "disabled": false,
+                  "key": "NationalId",
+                  "value": "<string>",
+                  "description": "National ID for identity match"
+                },
+                {
+                  "disabled": false,
+                  "key": "DateOfBirth",
+                  "value": "<string>",
+                  "description": "Date of birth for identity match (YYYYMMDD)"
+                }
+              ],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "PhoneNumber",
+                  "description": "(Required) Phone number to look up in E.164 format"
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "c26255a6-3414-4254-b55e-476418c97937",
+              "name": "Phone number lookup results",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "PhoneNumbers",
+                    ":PhoneNumber"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "Fields",
+                      "value": "validation"
+                    },
+                    {
+                      "key": "CountryCode",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "FirstName",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "LastName",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "AddressLine1",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "AddressLine2",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "City",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "State",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "PostalCode",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "AddressCountryCode",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "NationalId",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "DateOfBirth",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "PhoneNumber",
+                      "description": "(Required) Phone number to look up in E.164 format"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: basic",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Basic <credentials>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"phone_number\": \"string\",\n  \"country_code\": \"string\",\n  \"national_format\": \"string\",\n  \"calling_country_code\": \"string\",\n  \"valid\": true,\n  \"validation_errors\": [\n    \"NOT_A_NUMBER\",\n    \"INVALID_COUNTRY_CODE\"\n  ],\n  \"caller_name\": {\n    \"caller_name\": \"string\",\n    \"caller_type\": \"CONSUMER\",\n    \"error_code\": 7455\n  },\n  \"line_type_intelligence\": {\n    \"type\": \"premium\",\n    \"carrier_name\": \"string\",\n    \"mobile_country_code\": \"string\",\n    \"mobile_network_code\": \"string\",\n    \"error_code\": 1225\n  },\n  \"sim_swap\": {\n    \"last_sim_swap\": {\n      \"last_sim_swap_date\": \"1953-05-20T17:42:28.137Z\",\n      \"swapped_period\": \"string\",\n      \"swapped_in_period\": true\n    },\n    \"carrier_name\": \"string\",\n    \"mobile_country_code\": \"string\",\n    \"mobile_network_code\": \"string\",\n    \"error_code\": 6260\n  },\n  \"identity_match\": {\n    \"first_name_match\": \"partial_match\",\n    \"last_name_match\": \"no_match\",\n    \"address_lines_match\": \"partial_match\",\n    \"city_match\": \"string\",\n    \"state_match\": \"string\",\n    \"postal_code_match\": \"string\",\n    \"country_code_match\": \"string\",\n    \"national_id_match\": \"string\",\n    \"date_of_birth_match\": \"string\",\n    \"summary_score\": 9662,\n    \"error_code\": 1628\n  },\n  \"sms_pumping_risk\": {\n    \"carrier_risk_category\": \"high\",\n    \"carrier_risk_score\": 3751,\n    \"number_blocked\": true,\n    \"number_blocked_date\": \"2002-08-03T23:11:06.744Z\",\n    \"sms_pumping_risk_score\": 9043,\n    \"error_code\": 9952\n  },\n  \"phone_number_quality_score\": {\n    \"quality_score\": 7503,\n    \"error_code\": 5444\n  },\n  \"reassigned_number\": {\n    \"last_verified_date\": \"1970-05-21\",\n    \"is_reassigned\": \"no_data_available\",\n    \"error_code\": 5864\n  },\n  \"line_status\": {\n    \"status\": \"inactive\",\n    \"error_code\": 9654\n  },\n  \"url\": \"http://hksIEVJVFvuNmaPYUjjRvEWGxpA.hcAF.FYc40lBd9i-CUEtnwFBf-qmOzbYvFo\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "dfbb3fb5-1ef7-4bd9-8a1b-fa65face8a6b",
+              "name": "Invalid phone number format",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "PhoneNumbers",
+                    ":PhoneNumber"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "Fields",
+                      "value": "validation"
+                    },
+                    {
+                      "key": "CountryCode",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "FirstName",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "LastName",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "AddressLine1",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "AddressLine2",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "City",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "State",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "PostalCode",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "AddressCountryCode",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "NationalId",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "DateOfBirth",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "PhoneNumber",
+                      "description": "(Required) Phone number to look up in E.164 format"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: basic",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Basic <credentials>"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "b7a399d3-600b-40a1-8aa6-bedc7abb90f6",
+              "name": "Unauthorized",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "PhoneNumbers",
+                    ":PhoneNumber"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "Fields",
+                      "value": "validation"
+                    },
+                    {
+                      "key": "CountryCode",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "FirstName",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "LastName",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "AddressLine1",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "AddressLine2",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "City",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "State",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "PostalCode",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "AddressCountryCode",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "NationalId",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "DateOfBirth",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "PhoneNumber",
+                      "description": "(Required) Phone number to look up in E.164 format"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: basic",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Basic <credentials>"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "fee8eefc-6c6e-4fa5-83d0-1561c71de0bb",
+              "name": "Phone number not found",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "PhoneNumbers",
+                    ":PhoneNumber"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "Fields",
+                      "value": "validation"
+                    },
+                    {
+                      "key": "CountryCode",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "FirstName",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "LastName",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "AddressLine1",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "AddressLine2",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "City",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "State",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "PostalCode",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "AddressCountryCode",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "NationalId",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "DateOfBirth",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "PhoneNumber",
+                      "description": "(Required) Phone number to look up in E.164 format"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: basic",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Basic <credentials>"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "b58087fc-7a8e-4869-9f3d-43c3f75368bf",
+              "name": "Rate limit exceeded",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "PhoneNumbers",
+                    ":PhoneNumber"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "Fields",
+                      "value": "validation"
+                    },
+                    {
+                      "key": "CountryCode",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "FirstName",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "LastName",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "AddressLine1",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "AddressLine2",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "City",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "State",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "PostalCode",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "AddressCountryCode",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "NationalId",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "DateOfBirth",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "PhoneNumber",
+                      "description": "(Required) Phone number to look up in E.164 format"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: basic",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Basic <credentials>"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Too Many Requests",
+              "code": 429,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "type": "string",
+      "value": "https://lookups.twilio.com/v2",
+      "key": "baseUrl"
+    }
+  ],
+  "auth": {
+    "type": "basic",
+    "basic": [
+      {
+        "key": "username",
+        "value": "{{basicAuthUsername}}"
+      },
+      {
+        "key": "password",
+        "value": "{{basicAuthPassword}}"
+      }
+    ]
+  },
+  "info": {
+    "_postman_id": "46b01760-e9ec-42a1-92f9-6403407d1e6d",
+    "name": "Twilio Lookup API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "Query phone number information for validation, carrier details, line type intelligence, caller identity, SIM swap detection, and fraud risk assessment. Lookup v2 provides comprehensive phone number intelligence for trusted customer interactions.\n\nContact Support:\n Name: Twilio Support\n Email: support@twilio.com",
+      "type": "text/plain"
+    }
+  }
+}

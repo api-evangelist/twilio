@@ -1,0 +1,733 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Twilio Video API",
+    "version": "2.0"
+  },
+  "request": {
+    "auth": {
+      "type": "basic",
+      "username": "{{username}}",
+      "password": "{{password}}"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Rooms",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Twilio List Rooms",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://video.twilio.com/v1/Rooms",
+            "params": [
+              {
+                "name": "Status",
+                "value": "",
+                "type": "query",
+                "description": "Filter by room status"
+              },
+              {
+                "name": "UniqueName",
+                "value": "",
+                "type": "query",
+                "description": "Filter by unique room name"
+              },
+              {
+                "name": "DateCreatedAfter",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "DateCreatedBefore",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "PageSize",
+                "value": "",
+                "type": "query"
+              }
+            ]
+          },
+          "docs": "Retrieve a list of video rooms in your account."
+        },
+        {
+          "info": {
+            "name": "Twilio Create a Room",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://video.twilio.com/v1/Rooms",
+            "body": {
+              "type": "form-urlencoded",
+              "data": []
+            }
+          },
+          "docs": "Create a new video room. Rooms can be configured as group rooms (up to 50 participants), small group rooms (up to 4), or peer-to-peer rooms (up to 10)."
+        },
+        {
+          "info": {
+            "name": "Twilio Fetch a Room",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://video.twilio.com/v1/Rooms/:RoomSid",
+            "params": [
+              {
+                "name": "RoomSid",
+                "value": "",
+                "type": "path",
+                "description": "The SID or unique name of the room"
+              }
+            ]
+          },
+          "docs": "Retrieve details of a specific video room."
+        },
+        {
+          "info": {
+            "name": "Twilio Update a Room",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://video.twilio.com/v1/Rooms/:RoomSid",
+            "params": [
+              {
+                "name": "RoomSid",
+                "value": "",
+                "type": "path",
+                "description": "The SID or unique name of the room"
+              }
+            ],
+            "body": {
+              "type": "form-urlencoded",
+              "data": [
+                {
+                  "name": "Status",
+                  "value": ""
+                }
+              ]
+            }
+          },
+          "docs": "End an in-progress room by setting its status to completed."
+        }
+      ]
+    },
+    {
+      "info": {
+        "name": "Participants",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Twilio List Room Participants",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://video.twilio.com/v1/Rooms/:RoomSid/Participants",
+            "params": [
+              {
+                "name": "RoomSid",
+                "value": "",
+                "type": "path",
+                "description": "The SID or unique name of the room"
+              },
+              {
+                "name": "Status",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "Identity",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "PageSize",
+                "value": "",
+                "type": "query"
+              }
+            ]
+          },
+          "docs": "Retrieve a list of participants who have connected to a room."
+        },
+        {
+          "info": {
+            "name": "Twilio Fetch a Participant",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://video.twilio.com/v1/Rooms/:RoomSid/Participants/:ParticipantSid",
+            "params": [
+              {
+                "name": "RoomSid",
+                "value": "",
+                "type": "path",
+                "description": "The SID or unique name of the room"
+              },
+              {
+                "name": "ParticipantSid",
+                "value": "",
+                "type": "path",
+                "description": "The SID of the participant"
+              }
+            ]
+          },
+          "docs": "Twilio Fetch a Participant"
+        },
+        {
+          "info": {
+            "name": "Twilio Disconnect a Participant",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://video.twilio.com/v1/Rooms/:RoomSid/Participants/:ParticipantSid",
+            "params": [
+              {
+                "name": "RoomSid",
+                "value": "",
+                "type": "path",
+                "description": "The SID or unique name of the room"
+              },
+              {
+                "name": "ParticipantSid",
+                "value": "",
+                "type": "path",
+                "description": "The SID of the participant"
+              }
+            ],
+            "body": {
+              "type": "form-urlencoded",
+              "data": [
+                {
+                  "name": "Status",
+                  "value": ""
+                }
+              ]
+            }
+          },
+          "docs": "Remove a participant from a room by setting their status to disconnected."
+        },
+        {
+          "info": {
+            "name": "Twilio List Published Tracks",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://video.twilio.com/v1/Rooms/:RoomSid/Participants/:ParticipantSid/PublishedTracks",
+            "params": [
+              {
+                "name": "RoomSid",
+                "value": "",
+                "type": "path",
+                "description": "The SID or unique name of the room"
+              },
+              {
+                "name": "ParticipantSid",
+                "value": "",
+                "type": "path",
+                "description": "The SID of the participant"
+              }
+            ]
+          },
+          "docs": "List the tracks a participant has published to a room."
+        },
+        {
+          "info": {
+            "name": "Twilio Fetch Subscribe Rules",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://video.twilio.com/v1/Rooms/:RoomSid/Participants/:ParticipantSid/SubscribeRules",
+            "params": [
+              {
+                "name": "RoomSid",
+                "value": "",
+                "type": "path",
+                "description": "The SID or unique name of the room"
+              },
+              {
+                "name": "ParticipantSid",
+                "value": "",
+                "type": "path",
+                "description": "The SID of the participant"
+              }
+            ]
+          },
+          "docs": "Twilio Fetch Subscribe Rules"
+        },
+        {
+          "info": {
+            "name": "Twilio Update Subscribe Rules",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://video.twilio.com/v1/Rooms/:RoomSid/Participants/:ParticipantSid/SubscribeRules",
+            "params": [
+              {
+                "name": "RoomSid",
+                "value": "",
+                "type": "path",
+                "description": "The SID or unique name of the room"
+              },
+              {
+                "name": "ParticipantSid",
+                "value": "",
+                "type": "path",
+                "description": "The SID of the participant"
+              }
+            ],
+            "body": {
+              "type": "form-urlencoded",
+              "data": [
+                {
+                  "name": "Rules",
+                  "value": ""
+                }
+              ]
+            }
+          },
+          "docs": "Update the subscribe rules for a participant to control which tracks they receive."
+        }
+      ]
+    },
+    {
+      "info": {
+        "name": "Recordings",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Twilio List Room Recordings",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://video.twilio.com/v1/Rooms/:RoomSid/Recordings",
+            "params": [
+              {
+                "name": "RoomSid",
+                "value": "",
+                "type": "path",
+                "description": "The SID or unique name of the room"
+              },
+              {
+                "name": "Status",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "PageSize",
+                "value": "",
+                "type": "query"
+              }
+            ]
+          },
+          "docs": "Twilio List Room Recordings"
+        },
+        {
+          "info": {
+            "name": "Twilio Fetch a Recording",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://video.twilio.com/v1/Recordings/:RecordingSid",
+            "params": [
+              {
+                "name": "RecordingSid",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "Twilio Fetch a Recording"
+        },
+        {
+          "info": {
+            "name": "Twilio Delete a Recording",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://video.twilio.com/v1/Recordings/:RecordingSid",
+            "params": [
+              {
+                "name": "RecordingSid",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "Twilio Delete a Recording"
+        },
+        {
+          "info": {
+            "name": "Twilio Fetch Recording Settings",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://video.twilio.com/v1/RecordingSettings/Default"
+          },
+          "docs": "Twilio Fetch Recording Settings"
+        },
+        {
+          "info": {
+            "name": "Twilio Create or Update Recording Settings",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://video.twilio.com/v1/RecordingSettings/Default",
+            "body": {
+              "type": "form-urlencoded",
+              "data": [
+                {
+                  "name": "FriendlyName",
+                  "value": ""
+                },
+                {
+                  "name": "AwsCredentialsSid",
+                  "value": ""
+                },
+                {
+                  "name": "AwsS3Url",
+                  "value": ""
+                },
+                {
+                  "name": "AwsStorageEnabled",
+                  "value": ""
+                },
+                {
+                  "name": "EncryptionKeySid",
+                  "value": ""
+                },
+                {
+                  "name": "EncryptionEnabled",
+                  "value": ""
+                }
+              ]
+            }
+          },
+          "docs": "Configure the AWS credentials and S3 bucket for storing recordings."
+        }
+      ]
+    },
+    {
+      "info": {
+        "name": "Recording Rules",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Twilio Fetch Recording Rules",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://video.twilio.com/v1/Rooms/:RoomSid/RecordingRules",
+            "params": [
+              {
+                "name": "RoomSid",
+                "value": "",
+                "type": "path",
+                "description": "The SID or unique name of the room"
+              }
+            ]
+          },
+          "docs": "Twilio Fetch Recording Rules"
+        },
+        {
+          "info": {
+            "name": "Twilio Update Recording Rules",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://video.twilio.com/v1/Rooms/:RoomSid/RecordingRules",
+            "params": [
+              {
+                "name": "RoomSid",
+                "value": "",
+                "type": "path",
+                "description": "The SID or unique name of the room"
+              }
+            ],
+            "body": {
+              "type": "form-urlencoded",
+              "data": [
+                {
+                  "name": "Rules",
+                  "value": ""
+                }
+              ]
+            }
+          },
+          "docs": "Update the recording rules for a room to control which tracks are recorded."
+        }
+      ]
+    },
+    {
+      "info": {
+        "name": "Compositions",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Twilio List Compositions",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://video.twilio.com/v1/Compositions",
+            "params": [
+              {
+                "name": "Status",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "RoomSid",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "PageSize",
+                "value": "",
+                "type": "query"
+              }
+            ]
+          },
+          "docs": "Retrieve a list of compositions. Compositions combine multiple recordings into a single media file."
+        },
+        {
+          "info": {
+            "name": "Twilio Create a Composition",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://video.twilio.com/v1/Compositions",
+            "body": {
+              "type": "form-urlencoded",
+              "data": []
+            }
+          },
+          "docs": "Create a new composition from room recordings. Define the layout, resolution, and which audio and video tracks to include."
+        },
+        {
+          "info": {
+            "name": "Twilio Fetch a Composition",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://video.twilio.com/v1/Compositions/:CompositionSid",
+            "params": [
+              {
+                "name": "CompositionSid",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "Twilio Fetch a Composition"
+        },
+        {
+          "info": {
+            "name": "Twilio Delete a Composition",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://video.twilio.com/v1/Compositions/:CompositionSid",
+            "params": [
+              {
+                "name": "CompositionSid",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "Twilio Delete a Composition"
+        },
+        {
+          "info": {
+            "name": "Twilio Fetch Composition Settings",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://video.twilio.com/v1/CompositionSettings/Default"
+          },
+          "docs": "Twilio Fetch Composition Settings"
+        },
+        {
+          "info": {
+            "name": "Twilio Create or Update Composition Settings",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://video.twilio.com/v1/CompositionSettings/Default",
+            "body": {
+              "type": "form-urlencoded",
+              "data": [
+                {
+                  "name": "FriendlyName",
+                  "value": ""
+                },
+                {
+                  "name": "AwsCredentialsSid",
+                  "value": ""
+                },
+                {
+                  "name": "AwsS3Url",
+                  "value": ""
+                },
+                {
+                  "name": "AwsStorageEnabled",
+                  "value": ""
+                },
+                {
+                  "name": "EncryptionKeySid",
+                  "value": ""
+                },
+                {
+                  "name": "EncryptionEnabled",
+                  "value": ""
+                }
+              ]
+            }
+          },
+          "docs": "Configure the AWS credentials and S3 bucket for storing compositions."
+        }
+      ]
+    },
+    {
+      "info": {
+        "name": "Composition Hooks",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Twilio List Composition Hooks",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://video.twilio.com/v1/CompositionHooks",
+            "params": [
+              {
+                "name": "Enabled",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "PageSize",
+                "value": "",
+                "type": "query"
+              }
+            ]
+          },
+          "docs": "Twilio List Composition Hooks"
+        },
+        {
+          "info": {
+            "name": "Twilio Create a Composition Hook",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://video.twilio.com/v1/CompositionHooks",
+            "body": {
+              "type": "form-urlencoded",
+              "data": []
+            }
+          },
+          "docs": "Create a composition hook that automatically generates compositions when rooms complete."
+        },
+        {
+          "info": {
+            "name": "Twilio Fetch a Composition Hook",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://video.twilio.com/v1/CompositionHooks/:CompositionHookSid",
+            "params": [
+              {
+                "name": "CompositionHookSid",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "Twilio Fetch a Composition Hook"
+        },
+        {
+          "info": {
+            "name": "Twilio Update a Composition Hook",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://video.twilio.com/v1/CompositionHooks/:CompositionHookSid",
+            "params": [
+              {
+                "name": "CompositionHookSid",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "form-urlencoded",
+              "data": []
+            }
+          },
+          "docs": "Twilio Update a Composition Hook"
+        },
+        {
+          "info": {
+            "name": "Twilio Delete a Composition Hook",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://video.twilio.com/v1/CompositionHooks/:CompositionHookSid",
+            "params": [
+              {
+                "name": "CompositionHookSid",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "Twilio Delete a Composition Hook"
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

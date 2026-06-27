@@ -1,0 +1,704 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Twilio Verify API",
+    "version": "2.0"
+  },
+  "request": {
+    "auth": {
+      "type": "basic",
+      "username": "{{username}}",
+      "password": "{{password}}"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Default",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Twilio List Verify Services",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://verify.twilio.com/v2/Services",
+            "params": [
+              {
+                "name": "PageSize",
+                "value": "",
+                "type": "query"
+              }
+            ]
+          },
+          "docs": "Retrieve a list of all Verify services in your account."
+        },
+        {
+          "info": {
+            "name": "Twilio Create a Verify Service",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://verify.twilio.com/v2/Services",
+            "body": {
+              "type": "form-urlencoded",
+              "data": []
+            }
+          },
+          "docs": "Create a new Verify service to configure verification behavior including code length, channels, and branding."
+        },
+        {
+          "info": {
+            "name": "Twilio Fetch a Verify Service",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://verify.twilio.com/v2/Services/:ServiceSid",
+            "params": [
+              {
+                "name": "ServiceSid",
+                "value": "",
+                "type": "path",
+                "description": "The SID of the Verify service"
+              }
+            ]
+          },
+          "docs": "Twilio Fetch a Verify Service"
+        },
+        {
+          "info": {
+            "name": "Twilio Update a Verify Service",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://verify.twilio.com/v2/Services/:ServiceSid",
+            "params": [
+              {
+                "name": "ServiceSid",
+                "value": "",
+                "type": "path",
+                "description": "The SID of the Verify service"
+              }
+            ],
+            "body": {
+              "type": "form-urlencoded",
+              "data": []
+            }
+          },
+          "docs": "Twilio Update a Verify Service"
+        },
+        {
+          "info": {
+            "name": "Twilio Delete a Verify Service",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://verify.twilio.com/v2/Services/:ServiceSid",
+            "params": [
+              {
+                "name": "ServiceSid",
+                "value": "",
+                "type": "path",
+                "description": "The SID of the Verify service"
+              }
+            ]
+          },
+          "docs": "Twilio Delete a Verify Service"
+        }
+      ]
+    },
+    {
+      "info": {
+        "name": "Verifications",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Twilio Start a Verification",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://verify.twilio.com/v2/Services/:ServiceSid/Verifications",
+            "params": [
+              {
+                "name": "ServiceSid",
+                "value": "",
+                "type": "path",
+                "description": "The SID of the Verify service"
+              }
+            ],
+            "body": {
+              "type": "form-urlencoded",
+              "data": []
+            }
+          },
+          "docs": "Send a verification code to a user via SMS, voice call, email, WhatsApp, or SNA. The code is automatically generated and sent."
+        },
+        {
+          "info": {
+            "name": "Twilio Fetch a Verification",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://verify.twilio.com/v2/Services/:ServiceSid/Verifications/:VerificationSid",
+            "params": [
+              {
+                "name": "ServiceSid",
+                "value": "",
+                "type": "path",
+                "description": "The SID of the Verify service"
+              },
+              {
+                "name": "VerificationSid",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "Twilio Fetch a Verification"
+        },
+        {
+          "info": {
+            "name": "Twilio Update a Verification",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://verify.twilio.com/v2/Services/:ServiceSid/Verifications/:VerificationSid",
+            "params": [
+              {
+                "name": "ServiceSid",
+                "value": "",
+                "type": "path",
+                "description": "The SID of the Verify service"
+              },
+              {
+                "name": "VerificationSid",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "form-urlencoded",
+              "data": [
+                {
+                  "name": "Status",
+                  "value": ""
+                }
+              ]
+            }
+          },
+          "docs": "Cancel a pending verification or mark it as approved."
+        }
+      ]
+    },
+    {
+      "info": {
+        "name": "Verification Checks",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Twilio Check a Verification Code",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://verify.twilio.com/v2/Services/:ServiceSid/VerificationCheck",
+            "params": [
+              {
+                "name": "ServiceSid",
+                "value": "",
+                "type": "path",
+                "description": "The SID of the Verify service"
+              }
+            ],
+            "body": {
+              "type": "form-urlencoded",
+              "data": []
+            }
+          },
+          "docs": "Check whether a user-provided code matches the verification code that was sent. Returns approved if the code is correct."
+        }
+      ]
+    },
+    {
+      "info": {
+        "name": "Rate Limits",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Twilio List Rate Limits",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://verify.twilio.com/v2/Services/:ServiceSid/RateLimits",
+            "params": [
+              {
+                "name": "ServiceSid",
+                "value": "",
+                "type": "path",
+                "description": "The SID of the Verify service"
+              }
+            ]
+          },
+          "docs": "Twilio List Rate Limits"
+        },
+        {
+          "info": {
+            "name": "Twilio Create a Rate Limit",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://verify.twilio.com/v2/Services/:ServiceSid/RateLimits",
+            "params": [
+              {
+                "name": "ServiceSid",
+                "value": "",
+                "type": "path",
+                "description": "The SID of the Verify service"
+              }
+            ],
+            "body": {
+              "type": "form-urlencoded",
+              "data": [
+                {
+                  "name": "UniqueName",
+                  "value": ""
+                },
+                {
+                  "name": "Description",
+                  "value": ""
+                }
+              ]
+            }
+          },
+          "docs": "Twilio Create a Rate Limit"
+        },
+        {
+          "info": {
+            "name": "Twilio List Rate Limit Buckets",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://verify.twilio.com/v2/Services/:ServiceSid/RateLimits/:RateLimitSid/Buckets",
+            "params": [
+              {
+                "name": "ServiceSid",
+                "value": "",
+                "type": "path",
+                "description": "The SID of the Verify service"
+              },
+              {
+                "name": "RateLimitSid",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "Twilio List Rate Limit Buckets"
+        },
+        {
+          "info": {
+            "name": "Twilio Create a Rate Limit Bucket",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://verify.twilio.com/v2/Services/:ServiceSid/RateLimits/:RateLimitSid/Buckets",
+            "params": [
+              {
+                "name": "ServiceSid",
+                "value": "",
+                "type": "path",
+                "description": "The SID of the Verify service"
+              },
+              {
+                "name": "RateLimitSid",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "form-urlencoded",
+              "data": [
+                {
+                  "name": "Max",
+                  "value": ""
+                },
+                {
+                  "name": "Interval",
+                  "value": ""
+                }
+              ]
+            }
+          },
+          "docs": "Twilio Create a Rate Limit Bucket"
+        }
+      ]
+    },
+    {
+      "info": {
+        "name": "Entities",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Twilio List Entities",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://verify.twilio.com/v2/Services/:ServiceSid/Entities",
+            "params": [
+              {
+                "name": "ServiceSid",
+                "value": "",
+                "type": "path",
+                "description": "The SID of the Verify service"
+              }
+            ]
+          },
+          "docs": "Twilio List Entities"
+        },
+        {
+          "info": {
+            "name": "Twilio Create an Entity",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://verify.twilio.com/v2/Services/:ServiceSid/Entities",
+            "params": [
+              {
+                "name": "ServiceSid",
+                "value": "",
+                "type": "path",
+                "description": "The SID of the Verify service"
+              }
+            ],
+            "body": {
+              "type": "form-urlencoded",
+              "data": [
+                {
+                  "name": "Identity",
+                  "value": ""
+                }
+              ]
+            }
+          },
+          "docs": "Create a new entity representing an end user for TOTP or push authentication."
+        }
+      ]
+    },
+    {
+      "info": {
+        "name": "Factors",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Twilio List Factors for an Entity",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://verify.twilio.com/v2/Services/:ServiceSid/Entities/:Identity/Factors",
+            "params": [
+              {
+                "name": "ServiceSid",
+                "value": "",
+                "type": "path",
+                "description": "The SID of the Verify service"
+              },
+              {
+                "name": "Identity",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "Twilio List Factors for an Entity"
+        },
+        {
+          "info": {
+            "name": "Twilio Create a Factor",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://verify.twilio.com/v2/Services/:ServiceSid/Entities/:Identity/Factors",
+            "params": [
+              {
+                "name": "ServiceSid",
+                "value": "",
+                "type": "path",
+                "description": "The SID of the Verify service"
+              },
+              {
+                "name": "Identity",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "form-urlencoded",
+              "data": [
+                {
+                  "name": "FriendlyName",
+                  "value": ""
+                },
+                {
+                  "name": "FactorType",
+                  "value": ""
+                },
+                {
+                  "name": "Binding.Alg",
+                  "value": ""
+                },
+                {
+                  "name": "Binding.CodeLength",
+                  "value": ""
+                },
+                {
+                  "name": "Binding.TimeStep",
+                  "value": ""
+                },
+                {
+                  "name": "Config.NotificationPlatform",
+                  "value": ""
+                }
+              ]
+            }
+          },
+          "docs": "Create a new authentication factor (TOTP or push) for an entity."
+        }
+      ]
+    },
+    {
+      "info": {
+        "name": "Challenges",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Twilio List Challenges for an Entity",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://verify.twilio.com/v2/Services/:ServiceSid/Entities/:Identity/Challenges",
+            "params": [
+              {
+                "name": "ServiceSid",
+                "value": "",
+                "type": "path",
+                "description": "The SID of the Verify service"
+              },
+              {
+                "name": "Identity",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "FactorSid",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "Status",
+                "value": "",
+                "type": "query"
+              }
+            ]
+          },
+          "docs": "Twilio List Challenges for an Entity"
+        },
+        {
+          "info": {
+            "name": "Twilio Create a Challenge",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://verify.twilio.com/v2/Services/:ServiceSid/Entities/:Identity/Challenges",
+            "params": [
+              {
+                "name": "ServiceSid",
+                "value": "",
+                "type": "path",
+                "description": "The SID of the Verify service"
+              },
+              {
+                "name": "Identity",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "form-urlencoded",
+              "data": [
+                {
+                  "name": "FactorSid",
+                  "value": ""
+                },
+                {
+                  "name": "ExpirationDate",
+                  "value": ""
+                },
+                {
+                  "name": "Details.Message",
+                  "value": ""
+                },
+                {
+                  "name": "Details.Fields",
+                  "value": ""
+                },
+                {
+                  "name": "HiddenDetails",
+                  "value": ""
+                }
+              ]
+            }
+          },
+          "docs": "Create a new push authentication challenge for an entity."
+        }
+      ]
+    },
+    {
+      "info": {
+        "name": "Access Tokens",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Twilio Create an Access Token",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://verify.twilio.com/v2/Services/:ServiceSid/AccessTokens",
+            "params": [
+              {
+                "name": "ServiceSid",
+                "value": "",
+                "type": "path",
+                "description": "The SID of the Verify service"
+              }
+            ],
+            "body": {
+              "type": "form-urlencoded",
+              "data": [
+                {
+                  "name": "Identity",
+                  "value": ""
+                },
+                {
+                  "name": "FactorType",
+                  "value": ""
+                },
+                {
+                  "name": "FactorFriendlyName",
+                  "value": ""
+                },
+                {
+                  "name": "Ttl",
+                  "value": ""
+                }
+              ]
+            }
+          },
+          "docs": "Generate an access token for use with Verify Push or TOTP SDKs."
+        }
+      ]
+    },
+    {
+      "info": {
+        "name": "Webhooks",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Twilio List Webhooks",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://verify.twilio.com/v2/Services/:ServiceSid/Webhooks",
+            "params": [
+              {
+                "name": "ServiceSid",
+                "value": "",
+                "type": "path",
+                "description": "The SID of the Verify service"
+              }
+            ]
+          },
+          "docs": "Twilio List Webhooks"
+        },
+        {
+          "info": {
+            "name": "Twilio Create a Webhook",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://verify.twilio.com/v2/Services/:ServiceSid/Webhooks",
+            "params": [
+              {
+                "name": "ServiceSid",
+                "value": "",
+                "type": "path",
+                "description": "The SID of the Verify service"
+              }
+            ],
+            "body": {
+              "type": "form-urlencoded",
+              "data": [
+                {
+                  "name": "FriendlyName",
+                  "value": ""
+                },
+                {
+                  "name": "EventTypes",
+                  "value": ""
+                },
+                {
+                  "name": "WebhookUrl",
+                  "value": ""
+                },
+                {
+                  "name": "Status",
+                  "value": ""
+                }
+              ]
+            }
+          },
+          "docs": "Twilio Create a Webhook"
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}
