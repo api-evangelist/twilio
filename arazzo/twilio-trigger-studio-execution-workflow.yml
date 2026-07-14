@@ -1,0 +1,85 @@
+arazzo: 1.0.1
+info:
+  title: Twilio Trigger a Studio Flow Execution
+  summary: Trigger an execution of a published Studio Flow for a contact, then fetch the execution status.
+  description: >-
+    The core Twilio Studio automation pattern. This workflow triggers a new
+    Execution of an already published Studio Flow for a given contact, then
+    fetches that Execution back by SID to read its current status. Each step
+    spells out its request inline so the flow can be read and executed without
+    opening the underlying OpenAPI description.
+  version: 1.0.0
+sourceDescriptions:
+- name: studioApi
+  url: ../openapi/studio-openapi-original.yml
+  type: openapi
+workflows:
+- workflowId: trigger-studio-execution
+  summary: Trigger a Studio Flow execution for a contact and fetch its status.
+  description: >-
+    Creates a new Execution of a published Studio Flow for a contact, then
+    fetches the Execution by SID to confirm its status.
+  inputs:
+    type: object
+    required:
+    - flowSid
+    - to
+    - from
+    properties:
+      flowSid:
+        type: string
+        description: The SID of the published Studio Flow to execute (starts with FW).
+        example: FWaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+      to:
+        type: string
+        description: The contact phone number to start the Flow Execution for (E.164).
+        example: '+15005550006'
+      from:
+        type: string
+        description: The Twilio phone number (or Messaging Service SID) the Flow sends from.
+        example: '+15005550006'
+      parameters:
+        type: string
+        description: >-
+          Optional JSON string of Flow parameters added to the Flow context,
+          e.g. '{"name":"Zeke"}'. Must be passed as a string, not an object.
+        example: '{"name":"Zeke"}'
+  steps:
+  - stepId: triggerExecution
+    description: >-
+      Trigger a new Execution of the published Studio Flow for the contact.
+    operationId: CreateExecution
+    parameters:
+    - name: FlowSid
+      in: path
+      value: $inputs.flowSid
+    requestBody:
+      contentType: application/x-www-form-urlencoded
+      payload:
+        To: $inputs.to
+        From: $inputs.from
+        Parameters: $inputs.parameters
+    successCriteria:
+    - condition: $statusCode == 201
+    outputs:
+      executionSid: $response.body#/sid
+      status: $response.body#/status
+  - stepId: fetchExecution
+    description: >-
+      Fetch the Execution by SID to read its current status.
+    operationId: FetchExecution
+    parameters:
+    - name: FlowSid
+      in: path
+      value: $inputs.flowSid
+    - name: Sid
+      in: path
+      value: $steps.triggerExecution.outputs.executionSid
+    successCriteria:
+    - condition: $statusCode == 200
+    outputs:
+      executionSid: $response.body#/sid
+      status: $response.body#/status
+  outputs:
+    executionSid: $steps.triggerExecution.outputs.executionSid
+    status: $steps.fetchExecution.outputs.status

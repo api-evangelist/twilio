@@ -1,0 +1,90 @@
+generated: '2026-07-14'
+method: searched
+source: https://www.twilio.com/docs/iam/test-credentials
+description: >-
+  Twilio's test-credential surface — the Test Account SID / Test Auth Token pair
+  and the "magic" +15005550000-range phone numbers a developer uses to exercise
+  Programmable Voice, Messaging (SMS), Lookup, and phone-number purchase without
+  spending money or touching real phones. Captured verbatim from
+  twilio.com/docs/iam/test-credentials. Test credentials never charge the
+  account, never change account state, and never connect to real phone numbers;
+  requests made with test credentials cannot interact with resources in the live
+  account, and messages/calls sent with them do not fire status callbacks.
+docs:
+  - https://www.twilio.com/docs/iam/test-credentials
+  - https://www.twilio.com/docs/api/errors
+
+modes:
+  - name: test
+    notes: >-
+      Retrieved from the Console API keys & tokens page ("Test Credentials"
+      section). The Test Account SID begins with "AC", the same format as the
+      live Account SID; only the paired Test Auth Token differs. Twilio does not
+      charge the account, update account state, or connect to real phone numbers.
+      No status callbacks are fired for test-mode messages or calls.
+  - name: live
+    notes: >-
+      Live Account SID also begins with "AC". Requests made with test
+      credentials cannot read or modify any resource created with live
+      credentials, and vice versa.
+
+# Test credentials only work against these resource families; all other
+# endpoints reject test credentials.
+supported_resources:
+  - Incoming Phone Numbers (purchase)
+  - Messages (SMS)
+  - Calls (Programmable Voice)
+  - Lookup
+
+# Magic numbers for buying an Incoming Phone Number with test credentials.
+phone_number_purchase:
+  numbers:
+    - {number: '+15005550000', behavior: number unavailable, error_code: 21422}
+    - {number: '+15005550001', behavior: number invalid, error_code: 21421}
+    - {number: '+15005550006', behavior: valid and available, error_code: null}
+  # AreaCode magic input when searching for available numbers to buy.
+  area_code:
+    - {area_code: '533', behavior: no phone numbers available, error_code: 21452}
+    - {area_code: '500', behavior: phone numbers available, error_code: null}
+
+# Magic numbers for sending SMS with test credentials.
+messaging:
+  from_numbers:
+    - {number: '+15005550001', behavior: invalid 'from' number, error_code: 21212}
+    - {number: '+15005550006', behavior: valid, passes all validation, error_code: null}
+    - {number: '+15005550007', behavior: not SMS-capable / not owned by account, error_code: 21606}
+    - {number: '+15005550008', behavior: SMS queue is full, error_code: 21611}
+    - {number: 'all others', behavior: not owned by account or not SMS-capable, error_code: 21606}
+  to_numbers:
+    - {number: '+15005550001', behavior: invalid 'to' number, error_code: 21211}
+    - {number: '+15005550002', behavior: can't route to this number, error_code: 21612}
+    - {number: '+15005550003', behavior: no international permissions for this number, error_code: 21408}
+    - {number: '+15005550004', behavior: number is blocked / blocklisted, error_code: 21610}
+    - {number: '+15005550009', behavior: number is incapable of receiving SMS, error_code: 21614}
+
+# Magic numbers for placing Programmable Voice calls with test credentials.
+voice:
+  from_numbers:
+    - {number: '+15005550001', behavior: invalid 'from' number, error_code: 21212}
+    - {number: '+15005550006', behavior: valid, passes all validation, error_code: null}
+    - {number: 'all others', behavior: not a verified / owned number, error_code: 21210}
+  to_numbers:
+    - {number: '+15005550001', behavior: invalid 'to' number, error_code: 21217}
+    - {number: '+15005550002', behavior: can't route to this number, error_code: 21214}
+    - {number: '+15005550003', behavior: no international permissions for this number, error_code: 21215}
+    - {number: '+15005550004', behavior: number is blocked / blocklisted, error_code: 21216}
+
+gaps:
+  - >-
+    Twilio's test credentials do not include Stripe-style CLI event "triggers";
+    the equivalent developer-simulation surface is the fixed +15005550000 magic
+    number range documented above. The Twilio CLI (twilio-cli) can send real
+    test-mode messages/calls but does not synthesize webhook events.
+  - >-
+    The docs describe the Test Account SID / Auth Token as retrieved per-account
+    from the Console rather than a published shared value, so no literal token
+    is captured here (only the "AC" SID prefix, which is published).
+  - >-
+    No published magic values exist for Lookup responses; test credentials are
+    listed as supported for Lookup but the docs do not enumerate result-shaping
+    numbers for it beyond the ranges above.

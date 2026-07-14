@@ -1,0 +1,137 @@
+arazzo: 1.0.1
+info:
+  title: Twilio Search and Buy a Number
+  summary: Discover phone number orders, provision (host) a number, then confirm the order.
+  description: >-
+    A number-provisioning flow built on Twilio's Numbers v2 API. The workflow
+    first searches existing HostedNumberOrders (filtering by capability and
+    status so you can see what is already in flight and pick candidate
+    E.164 numbers), then provisions a number by creating a new
+    HostedNumberOrder that hosts the number's capabilities on Twilio's
+    platform and yields an IncomingPhoneNumber SID, and finally fetches the
+    order back to confirm its status. Every step spells out its request
+    inline so the flow can be read and executed without opening the
+    underlying OpenAPI description.
+
+    NOTE ON SCOPE: The goal called for the classic search-available-then-buy
+    pattern (ListAvailablePhoneNumberLocal by area code / capabilities plus
+    CreateIncomingPhoneNumber). Those operations live in the core
+    api.twilio.com (2010-04-01) description, which is NOT vendored in this
+    repo's Twilio OpenAPI set. To keep every operationId verbatim-real, this
+    workflow adapts to the genuine number-provisioning operations that ARE
+    present in numbers-openapi-original.yml (the HostedNumberOrder resource):
+    discover with ListHostedNumberOrder, provision with
+    CreateHostedNumberOrder, and confirm with FetchHostedNumberOrder.
+  version: 1.0.0
+sourceDescriptions:
+- name: numbersApi
+  url: ../openapi/numbers-openapi-original.yml
+  type: openapi
+workflows:
+- workflowId: search-and-buy-number
+  summary: Search hosted number orders, provision a number, and confirm the order.
+  description: >-
+    Lists HostedNumberOrders filtered by SMS capability and status to
+    discover candidate numbers, provisions a number by creating a new
+    HostedNumberOrder (which produces an IncomingPhoneNumber SID), then
+    fetches the order to confirm it landed.
+  inputs:
+    type: object
+    required:
+    - phoneNumber
+    - contactPhoneNumber
+    - addressSid
+    - email
+    properties:
+      smsCapability:
+        type: boolean
+        description: Filter discovery to orders that host the SMS capability.
+        default: true
+      status:
+        type: string
+        description: >-
+          HostedNumberOrder status to filter the discovery search on. One of
+          received, pending-verification, verified, pending-loa,
+          carrier-processing, testing, completed, failed, or action-required.
+        default: received
+      phoneNumber:
+        type: string
+        description: The number to host, in +E.164 format (e.g. a Twilio test number).
+        default: '+15005550006'
+      contactPhoneNumber:
+        type: string
+        description: Contact phone number of the person authorized to sign the LOA.
+        default: '+15108675310'
+      addressSid:
+        type: string
+        description: Address SID (starts with AD) for the owner of the number.
+        default: ADXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+      email:
+        type: string
+        description: Email of the owner of the number being hosted.
+        default: owner@example.com
+      friendlyName:
+        type: string
+        description: Human readable description for the order, up to 128 characters.
+        default: Search-and-buy provisioning
+  steps:
+  - stepId: searchOrders
+    description: >-
+      Discover existing HostedNumberOrders by capability and status so you can
+      see in-flight numbers and pick candidates before provisioning.
+    operationId: ListHostedNumberOrder
+    parameters:
+    - name: Status
+      in: query
+      value: $inputs.status
+    - name: SmsCapability
+      in: query
+      value: $inputs.smsCapability
+    - name: PageSize
+      in: query
+      value: 20
+    successCriteria:
+    - condition: $statusCode == 200
+    outputs:
+      orders: $response.body#/items
+  - stepId: provisionNumber
+    description: >-
+      Provision the number by creating a HostedNumberOrder that hosts its
+      capabilities on Twilio's platform, producing an IncomingPhoneNumber SID.
+    operationId: CreateHostedNumberOrder
+    requestBody:
+      contentType: application/x-www-form-urlencoded
+      payload:
+        PhoneNumber: $inputs.phoneNumber
+        ContactPhoneNumber: $inputs.contactPhoneNumber
+        AddressSid: $inputs.addressSid
+        Email: $inputs.email
+        FriendlyName: $inputs.friendlyName
+        SmsCapability: $inputs.smsCapability
+    successCriteria:
+    - condition: $statusCode == 201
+    outputs:
+      orderSid: $response.body#/sid
+      incomingPhoneNumberSid: $response.body#/incoming_phone_number_sid
+      signingDocumentSid: $response.body#/signing_document_sid
+      status: $response.body#/status
+  - stepId: confirmOrder
+    description: >-
+      Fetch the HostedNumberOrder back to confirm it was created and read its
+      current status.
+    operationId: FetchHostedNumberOrder
+    parameters:
+    - name: Sid
+      in: path
+      value: $steps.provisionNumber.outputs.orderSid
+    successCriteria:
+    - condition: $statusCode == 200
+    outputs:
+      status: $response.body#/status
+      phoneNumber: $response.body#/phone_number
+      incomingPhoneNumberSid: $response.body#/incoming_phone_number_sid
+  outputs:
+    orderSid: $steps.provisionNumber.outputs.orderSid
+    incomingPhoneNumberSid: $steps.confirmOrder.outputs.incomingPhoneNumberSid
+    phoneNumber: $steps.confirmOrder.outputs.phoneNumber
+    status: $steps.confirmOrder.outputs.status

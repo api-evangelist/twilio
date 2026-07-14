@@ -1,0 +1,99 @@
+arazzo: 1.0.1
+info:
+  title: Twilio Sync Document Lifecycle
+  summary: Create a Sync Service, add a Document to it, then update the Document's data.
+  description: >-
+    A Twilio Sync provisioning pattern. The workflow creates a new Sync Service
+    to act as the container namespace, creates a Sync Document inside that
+    Service with an initial JSON data payload and a unique name, then updates
+    the Document with a new data payload. This is the standard chain for
+    standing up real-time shared state that clients can subscribe to. Every step
+    spells out its request inline so the flow can be read and executed without
+    opening the underlying OpenAPI description.
+  version: 1.0.0
+sourceDescriptions:
+- name: syncApi
+  url: ../openapi/sync-openapi-original.yml
+  type: openapi
+workflows:
+- workflowId: sync-document-lifecycle
+  summary: Provision a Sync Service and manage a Document through create and update.
+  description: >-
+    Creates a Sync Service, creates a Document within it seeded with initial
+    data, then updates that Document's data payload.
+  inputs:
+    type: object
+    required:
+    - friendlyName
+    - documentUniqueName
+    - initialData
+    - updatedData
+    properties:
+      friendlyName:
+        type: string
+        description: Descriptive name for the new Sync Service.
+      documentUniqueName:
+        type: string
+        description: Application-defined unique name for the Sync Document.
+      initialData:
+        type: string
+        description: JSON string stored as the Document's initial data (up to 16 KiB).
+      updatedData:
+        type: string
+        description: JSON string that replaces the Document's data on update.
+  steps:
+  - stepId: createService
+    description: >-
+      Create a Sync Service to hold the Document.
+    operationId: CreateService
+    requestBody:
+      contentType: application/x-www-form-urlencoded
+      payload:
+        FriendlyName: $inputs.friendlyName
+    successCriteria:
+    - condition: $statusCode == 201
+    outputs:
+      serviceSid: $response.body#/sid
+  - stepId: createDocument
+    description: >-
+      Create a Sync Document in the new Service, seeded with the initial data.
+    operationId: CreateDocument
+    parameters:
+    - name: ServiceSid
+      in: path
+      value: $steps.createService.outputs.serviceSid
+    requestBody:
+      contentType: application/x-www-form-urlencoded
+      payload:
+        UniqueName: $inputs.documentUniqueName
+        Data: $inputs.initialData
+    successCriteria:
+    - condition: $statusCode == 201
+    outputs:
+      documentSid: $response.body#/sid
+      revision: $response.body#/revision
+  - stepId: updateDocument
+    description: >-
+      Update the Document with a new data payload.
+    operationId: UpdateDocument
+    parameters:
+    - name: ServiceSid
+      in: path
+      value: $steps.createService.outputs.serviceSid
+    - name: Sid
+      in: path
+      value: $steps.createDocument.outputs.documentSid
+    requestBody:
+      contentType: application/x-www-form-urlencoded
+      payload:
+        Data: $inputs.updatedData
+    successCriteria:
+    - condition: $statusCode == 200
+    outputs:
+      documentSid: $response.body#/sid
+      revision: $response.body#/revision
+      dateUpdated: $response.body#/date_updated
+  outputs:
+    serviceSid: $steps.createService.outputs.serviceSid
+    documentSid: $steps.updateDocument.outputs.documentSid
+    revision: $steps.updateDocument.outputs.revision

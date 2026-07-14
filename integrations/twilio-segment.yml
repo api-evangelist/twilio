@@ -1,0 +1,90 @@
+arazzo: 1.0.1
+info:
+  title: Track a sent Twilio SMS as a Segment event
+  summary: When a message is sent via Twilio, emit a track event to Segment for the recipient.
+  description: >-
+    Send an SMS through the Twilio Messaging API and then record that send as a
+    Segment track event so the outbound message becomes part of the recipient's
+    customer analytics timeline. The Twilio message SID, recipient, sender, and
+    status are passed through as event properties on the Segment track call.
+  version: 1.0.0
+sourceDescriptions:
+  - name: twilio
+    url: https://raw.githubusercontent.com/api-evangelist/twilio/refs/heads/main/openapi/twilio-messaging-openapi.yml
+    type: openapi
+  - name: segment
+    url: https://raw.githubusercontent.com/api-evangelist/segment/refs/heads/main/openapi/segment-http-tracking-api-openapi.yml
+    type: openapi
+workflows:
+  - workflowId: twilio-segment-track-sms-sent
+    summary: Send a Twilio SMS and record it as a Segment track event.
+    description: >-
+      Create an SMS message with the Twilio Messaging API, then emit a Segment
+      track event named "SMS Sent" for the recipient, carrying the Twilio
+      message SID, recipient number, sender, and delivery status as properties.
+    inputs:
+      type: object
+      required:
+        - accountSid
+        - to
+        - from
+        - body
+        - userId
+      properties:
+        accountSid:
+          type: string
+          description: Twilio Account SID that owns the message (e.g. AC...).
+        to:
+          type: string
+          description: Recipient phone number in E.164 format.
+        from:
+          type: string
+          description: Twilio phone number, short code, or alphanumeric sender ID.
+        body:
+          type: string
+          description: The text content of the SMS message.
+        userId:
+          type: string
+          description: Segment user identifier for the recipient.
+    steps:
+      - stepId: send-twilio-message
+        description: Send the SMS message through the Twilio Messaging API.
+        operationId: $sourceDescriptions.twilio.createMessage
+        parameters:
+          - name: AccountSid
+            in: path
+            value: $inputs.accountSid
+        requestBody:
+          contentType: application/x-www-form-urlencoded
+          payload:
+            To: $inputs.to
+            From: $inputs.from
+            Body: $inputs.body
+        successCriteria:
+          - condition: $statusCode == 201
+        outputs:
+          messageSid: $response.body#/sid
+          to: $response.body#/to
+          from: $response.body#/from
+          status: $response.body#/status
+      - stepId: track-segment-event
+        description: Record the sent SMS as a Segment track event for the recipient.
+        operationId: $sourceDescriptions.segment.track
+        requestBody:
+          contentType: application/json
+          payload:
+            userId: $inputs.userId
+            event: SMS Sent
+            properties:
+              messageSid: $steps.send-twilio-message.outputs.messageSid
+              to: $steps.send-twilio-message.outputs.to
+              from: $steps.send-twilio-message.outputs.from
+              status: $steps.send-twilio-message.outputs.status
+        successCriteria:
+          - condition: $statusCode == 200
+        outputs:
+          accepted: $response.body#/success
+    outputs:
+      messageSid: $steps.send-twilio-message.outputs.messageSid
+      status: $steps.send-twilio-message.outputs.status
+      accepted: $steps.track-segment-event.outputs.accepted

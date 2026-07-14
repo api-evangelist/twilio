@@ -1,0 +1,101 @@
+arazzo: 1.0.1
+info:
+  title: Twilio SMS with a SendGrid email fallback
+  summary: Send a Twilio SMS, then send a confirmation email via SendGrid as a fallback channel.
+  description: >-
+    Deliver a notification over two Twilio-owned channels: first send an SMS
+    through the Twilio Messaging API, then send a confirmation email through the
+    Twilio SendGrid Mail Send API as a fallback. This ensures the recipient is
+    reached even when the SMS channel is unavailable, using the SMS status and
+    body to compose the follow-up email.
+  version: 1.0.0
+sourceDescriptions:
+  - name: twilio
+    url: https://raw.githubusercontent.com/api-evangelist/twilio/refs/heads/main/openapi/twilio-messaging-openapi.yml
+    type: openapi
+  - name: sendgrid
+    url: https://raw.githubusercontent.com/api-evangelist/sendgrid/refs/heads/main/openapi/tsg_mail_v3.yaml
+    type: openapi
+workflows:
+  - workflowId: twilio-sms-with-sendgrid-email-fallback
+    summary: Send a Twilio SMS, then send a SendGrid confirmation email as a fallback.
+    description: >-
+      Create and queue a Twilio SMS message to the recipient, then send a
+      confirmation email through SendGrid carrying the same body so the
+      recipient receives the notification on a second channel.
+    inputs:
+      type: object
+      required:
+        - accountSid
+        - toPhone
+        - fromPhone
+        - messageBody
+        - toEmail
+        - fromEmail
+      properties:
+        accountSid:
+          type: string
+          description: The Twilio Account SID that owns the message resource.
+        toPhone:
+          type: string
+          description: Recipient phone number in E.164 format (e.g. +15551234567).
+        fromPhone:
+          type: string
+          description: Twilio phone number, short code, or alphanumeric sender ID.
+        messageBody:
+          type: string
+          description: The text content sent by both SMS and the fallback email.
+        toEmail:
+          type: string
+          description: Recipient email address for the SendGrid fallback message.
+        fromEmail:
+          type: string
+          description: Verified SendGrid sender email address the email is sent from.
+        emailSubject:
+          type: string
+          description: Subject line for the SendGrid confirmation email.
+          default: Message confirmation
+    steps:
+      - stepId: send-twilio-sms
+        description: Send an SMS to the recipient through the Twilio Messaging API.
+        operationId: $sourceDescriptions.twilio.createMessage
+        parameters:
+          - name: AccountSid
+            in: path
+            value: $inputs.accountSid
+        requestBody:
+          contentType: application/x-www-form-urlencoded
+          payload:
+            To: $inputs.toPhone
+            From: $inputs.fromPhone
+            Body: $inputs.messageBody
+        successCriteria:
+          - condition: $statusCode == 201
+        outputs:
+          messageSid: $response.body#/sid
+          status: $response.body#/status
+          body: $response.body#/body
+      - stepId: send-sendgrid-email
+        description: Send a confirmation email through SendGrid as a fallback channel.
+        operationId: $sourceDescriptions.sendgrid.SendMail
+        requestBody:
+          contentType: application/json
+          payload:
+            personalizations:
+              - to:
+                  - email: $inputs.toEmail
+                subject: $inputs.emailSubject
+            from:
+              email: $inputs.fromEmail
+            subject: $inputs.emailSubject
+            content:
+              - type: text/plain
+                value: $steps.send-twilio-sms.outputs.body
+        successCriteria:
+          - condition: $statusCode == 202
+        outputs:
+          emailStatus: $statusCode
+    outputs:
+      messageSid: $steps.send-twilio-sms.outputs.messageSid
+      smsStatus: $steps.send-twilio-sms.outputs.status
+      emailStatus: $steps.send-sendgrid-email.outputs.emailStatus

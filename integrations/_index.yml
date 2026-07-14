@@ -1,0 +1,53 @@
+# Twilio integrations, expressed as forkable Arazzo workflows.
+# Each maps a real Twilio integration to a 2-source Arazzo artifact whose steps call
+# verified operationIds in the real OpenAPI for BOTH ends (Twilio + the partner).
+# Added 2026-07-15 as part of the DX-tier deep dive; Twilio had no integrations captured before.
+- slug: twilio-hubspot
+  label: Log a Twilio SMS as a HubSpot engagement
+  partner: hubspot
+  category: CRM
+  use_case: Fetch a Twilio message and create a HubSpot engagement/note on the matching contact.
+  arazzo: twilio-hubspot.yml
+- slug: twilio-intercom
+  label: Mirror a Twilio message into Intercom
+  partner: intercom
+  category: Support
+  use_case: Fetch a Twilio message and create/update the matching Intercom contact or conversation.
+  arazzo: twilio-intercom.yml
+- slug: twilio-salesforce
+  label: Log a Twilio message as a Salesforce activity
+  partner: salesforce
+  category: CRM
+  use_case: Fetch a Twilio message and record it as a Salesforce Task/activity against the matching contact.
+  arazzo: twilio-salesforce.yml
+- slug: twilio-segment
+  label: Track a sent Twilio SMS as a Segment event
+  partner: segment
+  category: Analytics
+  use_case: When a message is sent via Twilio, emit a track event to Segment for the recipient.
+  arazzo: twilio-segment.yml
+- slug: twilio-sendgrid
+  label: Twilio SMS with a SendGrid email fallback
+  partner: sendgrid
+  category: Email
+  use_case: Send a Twilio SMS, then send a confirmation email via SendGrid (both Twilio-owned) as a fallback
+    channel.
+  arazzo: twilio-sendgrid.yml
+- slug: twilio-shopify
+  label: Send a Twilio SMS for a Shopify order
+  partner: shopify
+  category: E-commerce
+  use_case: Read a Shopify order, then send an order-confirmation SMS through Twilio.
+  arazzo: twilio-shopify.yml
+- slug: twilio-slack
+  label: Post an inbound Twilio message to Slack
+  partner: slack
+  category: Collaboration
+  use_case: Fetch a Twilio message and post its contents to a Slack channel.
+  arazzo: twilio-slack.yml
+- slug: twilio-zendesk
+  label: Open a Zendesk ticket from an inbound Twilio message
+  partner: zendesk
+  category: Support
+  use_case: Fetch a Twilio message, then create a Zendesk ticket capturing the sender and body.
+  arazzo: twilio-zendesk.yml

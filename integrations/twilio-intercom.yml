@@ -1,0 +1,91 @@
+arazzo: 1.0.1
+info:
+  title: Mirror a Twilio message into Intercom
+  summary: Fetch a Twilio message and mirror it into Intercom as a contact and conversation.
+  description: >-
+    Retrieve a specific Twilio SMS/MMS message by its SID, then create the
+    matching Intercom contact from the message sender and open an Intercom
+    conversation carrying the message body. This mirrors inbound Twilio
+    messaging traffic into Intercom so support teams can pick up the thread.
+  version: 1.0.0
+sourceDescriptions:
+  - name: twilio
+    url: https://raw.githubusercontent.com/api-evangelist/twilio/refs/heads/main/openapi/twilio-messaging-openapi.yml
+    type: openapi
+  - name: intercom
+    url: https://raw.githubusercontent.com/api-evangelist/intercom/refs/heads/main/openapi/intercom-openapi.yml
+    type: openapi
+workflows:
+  - workflowId: mirror-twilio-message-into-intercom
+    summary: Mirror a Twilio message into an Intercom contact and conversation.
+    description: >-
+      Fetch a Twilio message by SID, create an Intercom contact from the
+      sender's phone number, and open an Intercom conversation from that contact
+      containing the message body.
+    inputs:
+      type: object
+      required:
+        - accountSid
+        - messageSid
+      properties:
+        accountSid:
+          type: string
+          description: The Twilio Account SID that owns the message (e.g. AC...).
+        messageSid:
+          type: string
+          description: The SID of the Twilio message to mirror (e.g. SM... or MM...).
+        contactRole:
+          type: string
+          description: Intercom contact role to assign to the sender.
+          default: user
+    steps:
+      - stepId: fetch-twilio-message
+        description: Retrieve the Twilio message to mirror into Intercom.
+        operationId: $sourceDescriptions.twilio.fetchMessage
+        parameters:
+          - name: AccountSid
+            in: path
+            value: $inputs.accountSid
+          - name: MessageSid
+            in: path
+            value: $inputs.messageSid
+        successCriteria:
+          - condition: $statusCode == 200
+        outputs:
+          messageSid: $response.body#/sid
+          from: $response.body#/from
+          to: $response.body#/to
+          body: $response.body#/body
+          status: $response.body#/status
+      - stepId: create-intercom-contact
+        description: Create the Intercom contact from the Twilio message sender.
+        operationId: $sourceDescriptions.intercom.createContact
+        requestBody:
+          contentType: application/json
+          payload:
+            role: $inputs.contactRole
+            phone: $steps.fetch-twilio-message.outputs.from
+            external_id: $steps.fetch-twilio-message.outputs.from
+        successCriteria:
+          - condition: $statusCode == 200
+        outputs:
+          contactId: $response.body#/id
+          contactType: $response.body#/type
+      - stepId: create-intercom-conversation
+        description: Open an Intercom conversation from the contact carrying the message body.
+        operationId: $sourceDescriptions.intercom.createConversation
+        requestBody:
+          contentType: application/json
+          payload:
+            from:
+              type: contact
+              id: $steps.create-intercom-contact.outputs.contactId
+            body: $steps.fetch-twilio-message.outputs.body
+        successCriteria:
+          - condition: $statusCode == 200
+        outputs:
+          conversationId: $response.body#/id
+    outputs:
+      messageSid: $steps.fetch-twilio-message.outputs.messageSid
+      contactId: $steps.create-intercom-contact.outputs.contactId
+      conversationId: $steps.create-intercom-conversation.outputs.conversationId

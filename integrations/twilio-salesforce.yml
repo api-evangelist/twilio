@@ -1,0 +1,102 @@
+arazzo: 1.0.1
+info:
+  title: Log a Twilio message as a Salesforce activity
+  summary: Fetch a Twilio message and record it as a Salesforce Task against the matching contact.
+  description: >-
+    Retrieve a Twilio SMS message by its SID, confirm the Salesforce Contact it
+    should be attributed to, and create a Salesforce Task record capturing the
+    message body against that contact. This gives sales and support teams a
+    durable activity-timeline record in Salesforce CRM for every inbound or
+    outbound Twilio text.
+  version: 1.0.0
+sourceDescriptions:
+  - name: twilio
+    url: https://raw.githubusercontent.com/api-evangelist/twilio/refs/heads/main/openapi/twilio-messaging-openapi.yml
+    type: openapi
+  - name: salesforce
+    url: https://raw.githubusercontent.com/api-evangelist/salesforce/refs/heads/main/openapi/salesforce-rest-api-openapi.yml
+    type: openapi
+workflows:
+  - workflowId: twilio-salesforce-log-message-as-task
+    summary: Create a Salesforce Task from a Twilio message.
+    description: >-
+      Fetch a Twilio message by SID, verify the target Salesforce Contact
+      exists, and create a Salesforce Task activity carrying the message body
+      linked to that contact via WhoId.
+    inputs:
+      type: object
+      required:
+        - accountSid
+        - messageSid
+        - contactId
+      properties:
+        accountSid:
+          type: string
+          description: The Twilio Account SID that owns the message (e.g. ACxxxx).
+        messageSid:
+          type: string
+          description: The SID of the Twilio message to log (e.g. SMxxxx).
+        contactId:
+          type: string
+          description: The 18-character Salesforce Contact ID to attach the Task to.
+        subject:
+          type: string
+          description: Subject line to give the created Salesforce Task.
+          default: Twilio Message
+    steps:
+      - stepId: fetch-twilio-message
+        description: Retrieve the Twilio message to be logged.
+        operationId: $sourceDescriptions.twilio.fetchMessage
+        parameters:
+          - name: AccountSid
+            in: path
+            value: $inputs.accountSid
+          - name: MessageSid
+            in: path
+            value: $inputs.messageSid
+        successCriteria:
+          - condition: $statusCode == 200
+        outputs:
+          messageSid: $response.body#/sid
+          body: $response.body#/body
+          from: $response.body#/from
+          to: $response.body#/to
+          status: $response.body#/status
+      - stepId: get-salesforce-contact
+        description: Confirm the Salesforce Contact this message belongs to.
+        operationId: $sourceDescriptions.salesforce.getRecord
+        parameters:
+          - name: sobjectType
+            in: path
+            value: Contact
+          - name: id
+            in: path
+            value: $inputs.contactId
+        successCriteria:
+          - condition: $statusCode == 200
+        outputs:
+          contactId: $response.body#/Id
+      - stepId: create-salesforce-task
+        description: Create a Salesforce Task activity from the Twilio message.
+        operationId: $sourceDescriptions.salesforce.createRecord
+        parameters:
+          - name: sobjectType
+            in: path
+            value: Task
+        requestBody:
+          contentType: application/json
+          payload:
+            Subject: $inputs.subject
+            Description: $steps.fetch-twilio-message.outputs.body
+            WhoId: $steps.get-salesforce-contact.outputs.contactId
+            Status: Completed
+            Type: Call
+        successCriteria:
+          - condition: $statusCode == 201
+        outputs:
+          taskId: $response.body#/id
+          success: $response.body#/success
+    outputs:
+      messageSid: $steps.fetch-twilio-message.outputs.messageSid
+      contactId: $steps.get-salesforce-contact.outputs.contactId
+      taskId: $steps.create-salesforce-task.outputs.taskId

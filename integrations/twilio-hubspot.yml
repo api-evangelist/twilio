@@ -1,0 +1,95 @@
+arazzo: 1.0.1
+info:
+  title: Log a Twilio SMS as a HubSpot engagement
+  summary: Fetch a Twilio message and record it as a HubSpot note on the matching contact.
+  description: >-
+    Retrieve a specific Twilio SMS message by its SID, look up the matching
+    HubSpot Contact, and create a HubSpot engagement note carrying the message
+    body on that contact's timeline. This logs inbound and outbound SMS
+    conversations into HubSpot CRM as a durable engagement record.
+  version: 1.0.0
+sourceDescriptions:
+  - name: twilio
+    url: https://raw.githubusercontent.com/api-evangelist/twilio/refs/heads/main/openapi/twilio-messaging-openapi.yml
+    type: openapi
+  - name: hubspotContacts
+    url: https://raw.githubusercontent.com/api-evangelist/hubspot/refs/heads/main/openapi/hubspot-crm-contacts-api-openapi.yml
+    type: openapi
+  - name: hubspotNotes
+    url: https://raw.githubusercontent.com/api-evangelist/hubspot/refs/heads/main/openapi/hubspot-engagement-notes-openapi.yml
+    type: openapi
+workflows:
+  - workflowId: twilio-hubspot-log-sms-as-note
+    summary: Create a HubSpot note engagement from a Twilio SMS message.
+    description: >-
+      Fetch a Twilio message by SID, confirm the matching HubSpot Contact
+      exists, and create a HubSpot note engagement containing the message body
+      so the SMS is logged on the contact's CRM timeline.
+    inputs:
+      type: object
+      required:
+        - accountSid
+        - messageSid
+        - contactId
+      properties:
+        accountSid:
+          type: string
+          description: The Twilio Account SID that owns the message (e.g. AC...).
+        messageSid:
+          type: string
+          description: The Twilio Message SID to fetch (e.g. SM...).
+        contactId:
+          type: string
+          description: The HubSpot Contact ID to log the SMS engagement against.
+        timestamp:
+          type: string
+          description: ISO 8601 timestamp to stamp on the HubSpot note.
+          default: '2026-01-01T00:00:00.000Z'
+    steps:
+      - stepId: fetch-twilio-message
+        description: Retrieve the Twilio SMS message to log.
+        operationId: $sourceDescriptions.twilio.fetchMessage
+        parameters:
+          - name: AccountSid
+            in: path
+            value: $inputs.accountSid
+          - name: MessageSid
+            in: path
+            value: $inputs.messageSid
+        successCriteria:
+          - condition: $statusCode == 200
+        outputs:
+          sid: $response.body#/sid
+          body: $response.body#/body
+          from: $response.body#/from
+          to: $response.body#/to
+          status: $response.body#/status
+      - stepId: get-hubspot-contact
+        description: Look up the matching HubSpot contact for this SMS.
+        operationId: $sourceDescriptions.hubspotContacts.getContact
+        parameters:
+          - name: contactId
+            in: path
+            value: $inputs.contactId
+        successCriteria:
+          - condition: $statusCode == 200
+        outputs:
+          contactId: $response.body#/id
+      - stepId: create-hubspot-note
+        description: Create a HubSpot note engagement carrying the SMS body.
+        operationId: $sourceDescriptions.hubspotNotes.createNote
+        requestBody:
+          contentType: application/json
+          payload:
+            properties:
+              hs_note_body: $steps.fetch-twilio-message.outputs.body
+              hs_timestamp: $inputs.timestamp
+        successCriteria:
+          - condition: $statusCode == 201
+        outputs:
+          noteId: $response.body#/id
+          createdAt: $response.body#/createdAt
+    outputs:
+      messageSid: $steps.fetch-twilio-message.outputs.sid
+      contactId: $steps.get-hubspot-contact.outputs.contactId
+      noteId: $steps.create-hubspot-note.outputs.noteId

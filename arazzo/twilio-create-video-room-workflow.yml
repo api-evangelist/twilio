@@ -1,0 +1,112 @@
+arazzo: 1.0.1
+info:
+  title: Twilio Create a Video Room
+  summary: Create a Twilio Video room, then fetch it so a client can join.
+  description: >-
+    The canonical Twilio Video onboarding pattern. The workflow creates a new
+    video room via the Twilio Video REST API, choosing the room type and
+    participant limits, and captures the returned room SID and unique name. It
+    then fetches the same room by SID to confirm it is in progress and to read
+    the details a client SDK needs to connect, such as the room SID, unique
+    name, type, and status. With an in-progress room confirmed, a client can
+    mint an access token scoped to that room and join. Every step spells out its
+    request inline so the flow can be read and executed without opening the
+    underlying OpenAPI description.
+  version: 1.0.0
+sourceDescriptions:
+- name: videoApi
+  url: ../openapi/twilio-video-openapi.yml
+  type: openapi
+workflows:
+- workflowId: create-video-room
+  summary: Create a video room and retrieve it so a client can join.
+  description: >-
+    Creates a room via the Twilio Video API and then fetches the room by SID,
+    branching to an in-progress room ready to join or a room that failed to
+    start.
+  inputs:
+    type: object
+    required:
+    - uniqueName
+    properties:
+      uniqueName:
+        type: string
+        description: >-
+          A unique name for the room, used by clients to connect. Seed value is
+          a test-friendly example name.
+      type:
+        type: string
+        enum:
+        - go
+        - peer-to-peer
+        - group
+        - group-small
+        description: Type of room to create.
+      maxParticipants:
+        type: integer
+        description: Maximum number of concurrent participants allowed in the room.
+      recordParticipantsOnConnect:
+        type: boolean
+        description: Whether to automatically record participants on connect.
+      statusCallback:
+        type: string
+        description: Optional URL that Twilio calls with room lifecycle events.
+    example:
+      uniqueName: DailyStandup
+      type: group
+      maxParticipants: 10
+      recordParticipantsOnConnect: false
+  steps:
+  - stepId: createRoom
+    description: >-
+      Create a new video room with the supplied unique name and type. Capture
+      the room SID, unique name, and initial status.
+    operationId: createRoom
+    requestBody:
+      contentType: application/x-www-form-urlencoded
+      payload:
+        UniqueName: $inputs.uniqueName
+        Type: $inputs.type
+        MaxParticipants: $inputs.maxParticipants
+        RecordParticipantsOnConnect: $inputs.recordParticipantsOnConnect
+        StatusCallback: $inputs.statusCallback
+    successCriteria:
+    - condition: $statusCode == 201
+    outputs:
+      roomSid: $response.body#/sid
+      uniqueName: $response.body#/unique_name
+      initialStatus: $response.body#/status
+  - stepId: fetchRoom
+    description: >-
+      Fetch the room by SID to confirm it is in progress and to read the details
+      a client needs to join.
+    operationId: fetchRoom
+    parameters:
+    - name: RoomSid
+      in: path
+      value: $steps.createRoom.outputs.roomSid
+    successCriteria:
+    - condition: $statusCode == 200
+    outputs:
+      roomSid: $response.body#/sid
+      uniqueName: $response.body#/unique_name
+      status: $response.body#/status
+      type: $response.body#/type
+      maxParticipants: $response.body#/max_participants
+    onSuccess:
+    - name: readyToJoin
+      type: end
+      criteria:
+      - context: $response.body
+        condition: $.status == "in-progress"
+        type: jsonpath
+    - name: notStarted
+      type: end
+      criteria:
+      - context: $response.body
+        condition: $.status == "completed" || $.status == "failed"
+        type: jsonpath
+  outputs:
+    roomSid: $steps.createRoom.outputs.roomSid
+    uniqueName: $steps.fetchRoom.outputs.uniqueName
+    status: $steps.fetchRoom.outputs.status

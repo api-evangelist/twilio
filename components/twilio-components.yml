@@ -1,0 +1,102 @@
+generated: '2026-07-14'
+method: searched
+source: https://www.twilio.com/docs/voice/sdks/javascript
+description: >-
+  Twilio's client-side / embeddable JavaScript SDKs and UI component libraries —
+  the browser-and-app-facing layer that renders real-time voice, chat, video,
+  state-sync, and full contact-center UX in the client, distinct from the
+  server-side helper libraries (twilio, twilio-python, twilio-java, etc.) that
+  call the REST APIs. Grouped by family: real-time media/data SDKs (Voice, Video,
+  Sync, Conversations), the Flex contact-center UI, and the Paste design system.
+  Each family names its loader/npm library and, where Twilio still publishes one,
+  its CDN loader. NOTE: as of Voice SDK 2.0 the Voice SDK is no longer CDN-hosted
+  (npm-only); only the legacy v1.x twilio-client.js was on the CDN.
+docs:
+  - https://www.twilio.com/docs/voice/sdks/javascript
+  - https://www.twilio.com/docs/video/javascript
+  - https://www.twilio.com/docs/sync/sync-sdk-download
+  - https://www.twilio.com/docs/conversations/sdk-download-install
+  - https://www.twilio.com/docs/flex/developer/ui
+  - https://paste.twilio.design/
+libraries:
+  - {name: "@twilio/voice-sdk", purpose: "Voice JS SDK — makes/receives WebRTC calls in the browser (Device, Call)"}
+  - {name: "twilio-video", purpose: "Video JS SDK — multi-party WebRTC rooms (Twilio.Video)"}
+  - {name: "twilio-sync", purpose: "Sync JS SDK — real-time shared application state (SyncClient / Twilio.Sync)"}
+  - {name: "@twilio/conversations", purpose: "Conversations JS SDK — omnichannel messaging client (Client / Twilio.Conversations)"}
+  - {name: "@twilio/flex-ui", purpose: "Flex UI — React contact-center UI that wraps the bundled Voice/messaging/TaskRouter SDKs"}
+  - {name: "@twilio/flex-webchat-ui", purpose: "Legacy Flex Webchat UI 2.x (EOL — migrate to Webchat 3.x on current Flex UI)"}
+  - {name: "@twilio-paste/core", purpose: "Paste design system — the React component library for building Twilio UX"}
+  - {name: "@twilio-paste/icons", purpose: "Paste icon set, shipped alongside @twilio-paste/core"}
+
+families:
+  realtime_media_data:
+    description: >-
+      Client-side SDKs that hold a live WebRTC/websocket connection to Twilio and
+      are authenticated with a short-lived Access Token minted by your server.
+      These render/stream media and data directly in the browser or mobile app.
+    components:
+      - name: Voice JavaScript SDK
+        library: "@twilio/voice-sdk"
+        install: "npm install @twilio/voice-sdk"
+        import: "import { Device } from '@twilio/voice-sdk';"
+        classes: [Device, Call]
+        cdn: none (npm-only since 2.0; legacy v1.x twilio-client.js was CDN-hosted at sdk.twilio.com/js/client/)
+        description: WebRTC voice in the browser — Device manages the softphone registration/connection, Call represents an individual call. 2.1+ supports Twilio Regions.
+      - name: Video JavaScript SDK
+        library: twilio-video
+        install: "npm install --save twilio-video"
+        import: "const Video = require('twilio-video');  // or Twilio.Video via CDN"
+        cdn: https://sdk.twilio.com/js/video/releases/2.34.0/twilio-video.min.js
+        description: Multi-party WebRTC video rooms; exposes an isSupported flag to feature-detect the browser before connecting. (2.34.0 is the release referenced in the current docs.)
+      - name: Sync JavaScript SDK
+        library: twilio-sync
+        install: "npm install --save twilio-sync"
+        import: "const { SyncClient } = require('twilio-sync');  // or Twilio.Sync via CDN"
+        classes: [SyncClient]
+        cdn: https://sdk.twilio.com/js/sync/releases/3.0.1/twilio-sync.min.js  # also aliased as //sdk.twilio.com/js/sync/v3.2/twilio-sync.min.js
+        description: Real-time state synchronization (documents, lists, maps, message streams) shared across clients; construct SyncClient(token).
+      - name: Conversations JavaScript SDK
+        library: "@twilio/conversations"
+        install: "npm install --save @twilio/conversations"
+        import: "import { Client } from '@twilio/conversations';  // or Twilio.Conversations via CDN"
+        classes: [Client, Conversation]
+        cdn: https://sdk.twilio.com/js/conversations/releases/  # versioned bundles + SRI, e.g. .../2.1.0/ and 3.0.0
+        description: Omnichannel (chat/SMS/WhatsApp) messaging client; subscribe to the 'initialized' event before use. CDN bundles support Subresource Integrity pinning.
+
+  flex_ui:
+    description: >-
+      React UI component library for the Twilio Flex cloud contact center. Ships
+      the full agent desktop and composable pieces, and provides a high-level API
+      over the bundled Voice JS SDK, Programmable Chat/Conversations, and
+      TaskRouter. Distributed on npm with semantic versioning; accounts can also
+      run Twilio-hosted Flex UI with automatic minor-version updates.
+    components:
+      - name: Flex UI
+        library: "@twilio/flex-ui"
+        description: The full React contact-center UI plus component-level building blocks; wraps bundled SDKs (Voice, messaging, TaskRouter). Extended via Flex Plugins.
+      - name: Flex Webchat UI (legacy 2.x)
+        library: "@twilio/flex-webchat-ui"
+        version_note: "2.9.4 referenced; Webchat 2.0 is EOL (built on Flex UI 1.x legacy messaging) — migrate to Webchat 3.x on current Flex UI."
+        description: Composable, customizable end-customer web chat widget for Flex.
+
+  paste_design_system:
+    description: >-
+      Twilio's open-source design system for building consistent, accessible
+      customer experiences. React component library plus design tokens and icons.
+      Not tied to a single Twilio API — it's the UX foundation used across Twilio
+      products (including Flex). Requires wrapping the app in a Paste theme
+      provider.
+    components:
+      - name: Paste Core
+        library: "@twilio-paste/core"
+        install: "npm i @twilio-paste/core @twilio-paste/icons"
+        home: https://paste.twilio.design/
+        source: https://github.com/twilio-labs/paste
+        description: 80+ production-ready, accessible React components. Components are "included, not bundled" — sub-packages are individually importable so bundles stay lean (auto tree-shaking). Requires a Paste theme provider at the app root.
+      - name: Paste Icons
+        library: "@twilio-paste/icons"
+        description: The Paste icon set, installed alongside Core.
+
+gaps:
+  - Voice JS SDK 2.x is npm-only; Twilio does not publish a CDN loader for it (only the retired v1.x twilio-client.js). Captured the npm package and the historical v1.x CDN path rather than inventing a v2 CDN URL.
+  - Exact "latest" version numbers drift; versions recorded here are the ones stated on the referenced Twilio docs/npm pages at capture time (e.g. Video 2.34.0, Sync 3.0.1/v3.2, Conversations 2.1.0/3.0.0, Flex Webchat 2.9.4) and are noted as observed rather than asserted as current.

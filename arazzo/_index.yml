@@ -1,0 +1,121 @@
+# Catalog of Twilio native Arazzo workflows in this directory.
+# Runnable, forkable multi-step workflows over Twilio's own OpenAPI (../openapi/).
+# Example inputs use Twilio magic test numbers so a fork runs in test mode; see ../sandbox/.
+- file: twilio-conference-find-and-add-participant-workflow.yml
+  workflowId: find-and-add-participant
+  title: Twilio Find an In-Progress Conference and Add a Participant
+  summary: List in-progress conferences, fetch a matching one by SID, then dial a new participant into
+    it.
+- file: twilio-conversation-reply-and-track-receipts-workflow.yml
+  workflowId: conversation-reply-and-track-receipts
+  title: Twilio Reply to a Conversation and Track Delivery Receipts
+  summary: Confirm a conversation exists, post a reply message, then list the per-channel delivery receipts.
+- file: twilio-create-and-confirm-queue-workflow.yml
+  workflowId: create-and-confirm-queue
+  title: Twilio Create a Call Queue and Confirm It
+  summary: Create a voice call queue with a size limit, then fetch it back to confirm its configuration.
+- file: twilio-create-conversation-add-participant-send-message-workflow.yml
+  workflowId: create-conversation-add-participant-send-message
+  title: Twilio Create a Conversation, Add a Participant, and Send a Message
+  summary: Stand up a Conversations thread, attach an SMS participant by address, and post the first message.
+- file: twilio-create-conversation-with-webhook-workflow.yml
+  workflowId: create-conversation-with-webhook
+  title: Twilio Create a Conversation and Attach a Scoped Webhook
+  summary: Create a Conversations thread, then attach a conversation-scoped webhook that targets your
+    service.
+- file: twilio-create-video-room-workflow.yml
+  workflowId: create-video-room
+  title: Twilio Create a Video Room
+  summary: Create a Twilio Video room, then fetch it so a client can join.
+- file: twilio-end-active-call-workflow.yml
+  workflowId: end-active-call
+  title: Twilio Inspect a Call and Hang It Up If Live
+  summary: Fetch a call by SID and, when it is still in progress, update it to completed to end the call.
+- file: twilio-lookup-phone-number-workflow.yml
+  workflowId: lookup-phone-number
+  title: Twilio Look Up a Phone Number
+  summary: Look up a phone number to fetch carrier, line type, and caller name intelligence before using
+    it.
+- file: twilio-lookup-then-send-message-workflow.yml
+  workflowId: lookup-then-send-message
+  title: Twilio Validate a Number then Send a Message
+  summary: Look up a phone number for validity and line type, then send an SMS only when the number is
+    valid.
+- file: twilio-lookup-then-start-verification-workflow.yml
+  workflowId: lookup-then-start-verification
+  title: Twilio Validate a Number then Start a Verification
+  summary: Look up a phone number, and only when it is a valid mobile number start a Verify verification.
+- file: twilio-make-call-track-status-workflow.yml
+  workflowId: make-call-track-status
+  title: Twilio Make a Call and Track Its Status
+  summary: Place an outbound call with a TwiML URL, then fetch the call resource to follow its progress.
+- file: twilio-provision-messaging-service-add-number-workflow.yml
+  workflowId: provision-messaging-service-add-number
+  title: Twilio Provision a Messaging Service and Attach a Sender Number
+  summary: Create a messaging service, attach a phone number to its sender pool, then fetch the service
+    back.
+- file: twilio-record-active-call-workflow.yml
+  workflowId: record-active-call
+  title: Twilio Place a Call and Record It
+  summary: Start an outbound call, begin recording the in-progress call, then fetch the recording resource.
+- file: twilio-schedule-and-cancel-message-workflow.yml
+  workflowId: schedule-and-cancel-message
+  title: Twilio Schedule a Message and Cancel It Before Send
+  summary: Schedule a future message via a messaging service, then cancel it while it is still scheduled.
+- file: twilio-search-and-buy-number-workflow.yml
+  workflowId: search-and-buy-number
+  title: Twilio Search and Buy a Number
+  summary: Discover phone number orders, provision (host) a number, then confirm the order.
+- file: twilio-send-and-redact-message-workflow.yml
+  workflowId: send-and-redact-message
+  title: Twilio Send a Message and Redact Its Body
+  summary: Send an SMS, then redact the stored message body by updating it to an empty string for privacy.
+- file: twilio-send-message-track-status-workflow.yml
+  workflowId: send-message-track-status
+  title: Twilio Send a Message and Track Delivery Status
+  summary: Send an SMS/MMS and poll the message resource until it reaches a terminal delivery status.
+- file: twilio-send-mms-and-list-media-workflow.yml
+  workflowId: send-mms-and-list-media
+  title: Twilio Send an MMS and List Its Media
+  summary: Send an MMS with a media URL, fetch the message back, then list the media attached to it.
+- file: twilio-send-via-messaging-service-workflow.yml
+  workflowId: send-via-messaging-service
+  title: Twilio Send via Messaging Service
+  summary: Create a messaging service, then send a message through it using the sender-pool pattern.
+- file: twilio-studio-create-flow-and-execute-workflow.yml
+  workflowId: create-flow-and-execute
+  title: Twilio Studio Create a Flow and Run an Execution
+  summary: Publish a new Studio Flow from a definition, then trigger an execution of it for a contact.
+- file: twilio-studio-trigger-execution-track-steps-workflow.yml
+  workflowId: trigger-execution-track-steps
+  title: Twilio Studio Trigger a Flow Execution and Track Its Steps
+  summary: Start a Studio Flow execution for a contact, fetch the execution, and list the steps it traversed.
+- file: twilio-sync-document-lifecycle-workflow.yml
+  workflowId: sync-document-lifecycle
+  title: Twilio Sync Document Lifecycle
+  summary: Create a Sync Service, add a Document to it, then update the Document's data.
+- file: twilio-taskrouter-workspace-and-task-workflow.yml
+  workflowId: taskrouter-workspace-and-task
+  title: Twilio Create a TaskRouter Workspace and Task
+  summary: Create a TaskRouter Workspace, then create a Task inside it for routing.
+- file: twilio-trigger-studio-execution-workflow.yml
+  workflowId: trigger-studio-execution
+  title: Twilio Trigger a Studio Flow Execution
+  summary: Trigger an execution of a published Studio Flow for a contact, then fetch the execution status.
+- file: twilio-verify-phone-number-workflow.yml
+  workflowId: verify-phone-number
+  title: Twilio Verify a Phone Number
+  summary: Create a Verify service, start a verification to a phone number, then check the code to confirm
+    it.
+- file: twilio-verify-provision-service-and-verify-workflow.yml
+  workflowId: provision-service-and-verify
+  title: Twilio Verify Provision a Service and Run a Verification
+  summary: Create a Verify service, start a verification on it, and check the supplied code.
+- file: twilio-verify-start-and-check-workflow.yml
+  workflowId: start-and-check-verification
+  title: Twilio Verify Start and Check a Verification
+  summary: Start a Verify verification over a channel, then check a user-supplied code against it.
+- file: twilio-verify-start-poll-and-cancel-workflow.yml
+  workflowId: start-poll-and-cancel-verification
+  title: Twilio Verify Start, Poll, and Cancel a Verification
+  summary: Start a verification, fetch it to read its status, and cancel it if it is still pending.

@@ -1,0 +1,89 @@
+arazzo: 1.0.1
+info:
+  title: Twilio Create a TaskRouter Workspace and Task
+  summary: Create a TaskRouter Workspace, then create a Task inside it for routing.
+  description: >-
+    A TaskRouter provisioning pattern. The workflow creates a new TaskRouter
+    Workspace with a friendly name (seeded with the FIFO template so a default
+    Workflow and TaskQueue exist for routing), then creates a Task inside that
+    Workspace, passing the Workspace SID returned by the first step. The new
+    Task carries a URL-encoded JSON attributes string that TaskRouter uses to
+    match it to a Workflow target and route it to a Worker. Every step spells
+    out its request inline so the flow can be read and executed without opening
+    the underlying OpenAPI description.
+  version: 1.0.0
+sourceDescriptions:
+- name: taskRouterApi
+  url: ../openapi/task-router-openapi-original.yml
+  type: openapi
+workflows:
+- workflowId: taskrouter-workspace-and-task
+  summary: Provision a TaskRouter Workspace and route a Task through it.
+  description: >-
+    Creates a TaskRouter Workspace, then creates a Task within that Workspace
+    using the returned Workspace SID.
+  inputs:
+    type: object
+    required:
+    - friendlyName
+    properties:
+      friendlyName:
+        type: string
+        description: Descriptive name for the Workspace (up to 64 characters).
+      template:
+        type: string
+        description: >-
+          Optional template to pre-configure the Workspace. Can be NONE or FIFO.
+          FIFO seeds a default Workflow and TaskQueue so new Tasks can route.
+      attributes:
+        type: string
+        description: >-
+          A URL-encoded JSON string of Task attributes used by the Workflow to
+          route the Task, e.g. {"task_type":"call","customer_ticket_number":"12345"}.
+      priority:
+        type: integer
+        description: Optional priority to assign the new Task, overriding the default.
+      timeout:
+        type: integer
+        description: >-
+          Optional seconds the Task can live before being assigned. Default is
+          86400 (24 hours).
+  steps:
+  - stepId: createWorkspace
+    description: >-
+      Create the TaskRouter Workspace with the supplied friendly name and template.
+    operationId: CreateWorkspace
+    requestBody:
+      contentType: application/x-www-form-urlencoded
+      payload:
+        FriendlyName: $inputs.friendlyName
+        Template: $inputs.template
+    successCriteria:
+    - condition: $statusCode == 201
+    outputs:
+      workspaceSid: $response.body#/sid
+      workspaceName: $response.body#/friendly_name
+  - stepId: createTask
+    description: >-
+      Create a Task inside the new Workspace so TaskRouter can route it.
+    operationId: CreateTask
+    parameters:
+    - name: WorkspaceSid
+      in: path
+      value: $steps.createWorkspace.outputs.workspaceSid
+    requestBody:
+      contentType: application/x-www-form-urlencoded
+      payload:
+        Attributes: $inputs.attributes
+        Priority: $inputs.priority
+        Timeout: $inputs.timeout
+    successCriteria:
+    - condition: $statusCode == 201
+    outputs:
+      taskSid: $response.body#/sid
+      assignmentStatus: $response.body#/assignment_status
+      workflowSid: $response.body#/workflow_sid
+  outputs:
+    workspaceSid: $steps.createWorkspace.outputs.workspaceSid
+    taskSid: $steps.createTask.outputs.taskSid
+    assignmentStatus: $steps.createTask.outputs.assignmentStatus

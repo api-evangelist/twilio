@@ -1,0 +1,93 @@
+generated: '2026-07-14'
+method: searched|derived
+source: >-
+  Derived from the resource relationships in openapi/*.yml (the `pattern:
+  ^XX[0-9a-fA-F]{32}$` SID regexes and the *_sid reference fields such as
+  account_sid, service_sid, workspace_sid, conversation_sid, participant_sid,
+  task_sid, messaging_service_sid, message_sid, call_sid) cross-checked against
+  Twilio's own SID prefix glossary (twilio.com/docs/glossary/what-is-a-sid).
+  Two-letter prefixes AC, PN, CA, RE, MG, VA, VE, CH, MB, IM, US, WS, WT, WK,
+  WQ, WW, WA, IS, ET, MP, ES are confirmed directly in the OpenAPI `pattern`
+  constraints; SM/MM (Message) and TR (Transcription) are confirmed from the
+  Twilio SID docs (those v2010 resources are not carried as standalone schemas
+  in this repo's OpenAPI set). Captures the core entity-relationship graph
+  behind the programmable messaging/voice/verify/conversations/taskrouter/sync
+  domains. The visual render lives in subway/twilio-subway-map.svg; this is the
+  machine-readable graph.
+docs: https://www.twilio.com/docs
+notation: >-
+  relationships use has_one / has_many / belongs_to with the reference (SID)
+  field name; direction is from the entity that owns the reference. Every
+  resource SID is a 34-character string: a two-letter prefix plus 32 hex digits.
+
+entities:
+  - {name: Account, id_prefix: AC, domain: iam, description: A Twilio account or subaccount (subaccounts share the AC prefix and nest under a parent account).}
+  - {name: IncomingPhoneNumber, id_prefix: PN, domain: numbers, description: A phone number provisioned to an account for voice/messaging.}
+  - {name: Message, id_prefix: SM, alt_prefix: MM, domain: messaging, description: An SMS (SM) or MMS (MM) message sent or received on the Programmable Messaging API.}
+  - {name: Call, id_prefix: CA, domain: voice, description: A voice call placed to or received on the Programmable Voice API.}
+  - {name: Recording, id_prefix: RE, domain: voice, description: A recording of a call or conference.}
+  - {name: Transcription, id_prefix: TR, domain: voice, description: A text transcription of a recording (prefix per Twilio SID docs).}
+  - {name: MessagingService, id_prefix: MG, domain: messaging, description: A messaging service that pools sender phone numbers and applies routing/compliance features.}
+  - {name: VerifyService, id_prefix: VA, domain: verify, description: A Verify service configuring channels and settings for OTP verification.}
+  - {name: Verification, id_prefix: VE, domain: verify, description: A single verification (OTP) attempt started under a Verify service.}
+  - {name: VerificationCheck, id_prefix: null, domain: verify, description: The act of checking a code against a Verification; a verify action that returns approved/pending status and has no standalone SID.}
+  - {name: Conversation, id_prefix: CH, domain: conversations, description: A multi-party, multi-channel conversation.}
+  - {name: ConversationParticipant, id_prefix: MB, domain: conversations, description: A participant in a conversation, bound to an SMS/WhatsApp/chat address.}
+  - {name: ConversationMessage, id_prefix: IM, domain: conversations, description: A message posted within a conversation.}
+  - {name: ConversationUser, id_prefix: US, domain: conversations, description: A chat user identity that can join conversations.}
+  - {name: Workspace, id_prefix: WS, domain: taskrouter, description: A TaskRouter workspace containing tasks, workers, queues and workflows.}
+  - {name: Task, id_prefix: WT, domain: taskrouter, description: A unit of work routed by TaskRouter within a workspace.}
+  - {name: Worker, id_prefix: WK, domain: taskrouter, description: An agent/resource that consumes tasks in a workspace.}
+  - {name: TaskQueue, id_prefix: WQ, domain: taskrouter, description: A queue that groups tasks for eligible workers.}
+  - {name: Workflow, id_prefix: WW, domain: taskrouter, description: Rules that route tasks into task queues.}
+  - {name: Activity, id_prefix: WA, domain: taskrouter, description: A worker availability state (e.g. Available, Busy) within a workspace.}
+  - {name: SyncService, id_prefix: IS, domain: sync, description: A Sync service namespace for real-time state objects.}
+  - {name: SyncDocument, id_prefix: ET, domain: sync, description: A single JSON document synchronized across clients (prefix per Twilio SID docs).}
+  - {name: SyncMap, id_prefix: MP, domain: sync, description: A key/value map object within a Sync service.}
+  - {name: SyncList, id_prefix: ES, domain: sync, description: An ordered list object within a Sync service.}
+
+relationships:
+  # Account is the root tenant; nearly every resource carries account_sid.
+  - {from: Account, to: Account, kind: has_many, via: account_sid, note: subaccounts nest under a parent account}
+  - {from: Account, to: IncomingPhoneNumber, kind: has_many, via: account_sid}
+  - {from: Account, to: Message, kind: has_many, via: account_sid}
+  - {from: Account, to: Call, kind: has_many, via: account_sid}
+  - {from: Account, to: MessagingService, kind: has_many, via: account_sid}
+  # Numbers and messaging
+  - {from: MessagingService, to: IncomingPhoneNumber, kind: has_many, via: messaging_service_sid, note: numbers added to the service sender pool}
+  - {from: Message, to: MessagingService, kind: belongs_to, via: messaging_service_sid}
+  - {from: Message, to: IncomingPhoneNumber, kind: belongs_to, via: from, note: sender number}
+  # Voice
+  - {from: Call, to: Recording, kind: has_many, via: call_sid}
+  - {from: Recording, to: Transcription, kind: has_many, via: recording_sid}
+  - {from: Recording, to: Call, kind: belongs_to, via: call_sid}
+  # Verify
+  - {from: VerifyService, to: Verification, kind: has_many, via: service_sid}
+  - {from: Verification, to: VerifyService, kind: belongs_to, via: service_sid}
+  - {from: VerificationCheck, to: Verification, kind: belongs_to, via: service_sid, note: check acts against a verification under the service; no own SID}
+  # Conversations
+  - {from: Conversation, to: ConversationParticipant, kind: has_many, via: conversation_sid}
+  - {from: Conversation, to: ConversationMessage, kind: has_many, via: conversation_sid}
+  - {from: ConversationParticipant, to: Conversation, kind: belongs_to, via: conversation_sid}
+  - {from: ConversationMessage, to: Conversation, kind: belongs_to, via: conversation_sid}
+  - {from: ConversationMessage, to: ConversationParticipant, kind: belongs_to, via: participant_sid}
+  - {from: ConversationUser, to: ConversationParticipant, kind: has_many, via: identity, note: a chat user identity binds to participants}
+  # TaskRouter
+  - {from: Workspace, to: Task, kind: has_many, via: workspace_sid}
+  - {from: Workspace, to: Worker, kind: has_many, via: workspace_sid}
+  - {from: Workspace, to: TaskQueue, kind: has_many, via: workspace_sid}
+  - {from: Workspace, to: Workflow, kind: has_many, via: workspace_sid}
+  - {from: Workspace, to: Activity, kind: has_many, via: workspace_sid}
+  - {from: Task, to: Workspace, kind: belongs_to, via: workspace_sid}
+  - {from: Task, to: Workflow, kind: belongs_to, via: workflow_sid}
+  - {from: Task, to: TaskQueue, kind: belongs_to, via: task_queue_sid}
+  - {from: Worker, to: Activity, kind: belongs_to, via: activity_sid}
+  - {from: Workflow, to: TaskQueue, kind: has_many, via: task_queue_sid, note: routing rules target queues}
+  # Sync
+  - {from: SyncService, to: SyncDocument, kind: has_many, via: service_sid}
+  - {from: SyncService, to: SyncMap, kind: has_many, via: service_sid}
+  - {from: SyncService, to: SyncList, kind: has_many, via: service_sid}
+  - {from: SyncDocument, to: SyncService, kind: belongs_to, via: service_sid}
+
+interchange_hubs: [Account, MessagingService, VerifyService, Workspace, SyncService]
+visual: subway/twilio-subway-map.svg

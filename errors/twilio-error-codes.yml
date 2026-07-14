@@ -1,0 +1,203 @@
+generated: '2026-07-14'
+method: searched
+source: https://www.twilio.com/docs/api/errors
+description: >-
+  Twilio's numeric Error and Warning Dictionary — the platform-wide error code
+  registry Twilio returns in REST API responses, in the Console Debugger, and in
+  message/call StatusCallback events. Twilio assigns every failure a stable code
+  (mostly 5-digit, plus the bare HTTP codes) organized into ranges by product
+  area: 2xxxx authentication/account/resource management, 1xxxx + 3xxxx messaging
+  validation and delivery, 11xxx/13xxx voice & TwiML, 60xxx/68xxx Verify, and
+  63xxx Channels/WhatsApp. This artifact captures the common, high-signal codes
+  per product with each code's title, cause, and log level — NOT the full 1000+
+  dictionary. Every code has its own page at
+  https://www.twilio.com/docs/api/errors/<code>.
+docs: https://www.twilio.com/docs/api/errors
+
+# The REST error envelope. On a failed request Twilio returns an exception object
+# (JSON or XML) carrying the numeric code plus a human message, a link to the
+# error's dictionary page, and the HTTP status. The same numeric code also
+# surfaces as the ErrorCode field in message/call status callbacks and in the
+# Console Debugger. Confirmed at https://www.twilio.com/docs/usage/twilios-response
+envelope:
+  fields:
+    code: >-
+      Twilio-specific numeric error code from this dictionary; present when
+      available. Maps to https://www.twilio.com/docs/api/errors/<code>.
+    message: Human-readable description of the error.
+    more_info: URL to the error's page in the Error and Warning Dictionary.
+    status: HTTP status code of the response (e.g. 400, 401, 404, 429).
+  example:
+    code: 21211
+    message: "Invalid 'To' Phone Number"
+    more_info: https://www.twilio.com/docs/api/errors/21211
+    status: 400
+
+# Documented numeric ranges → product domain. Partial map: Twilio lists ranges up
+# through 90000-99999 and 180000-189999 on the dictionary landing page; only the
+# ranges confirmed against Twilio docs are enumerated here. GAP: the 40000/50000/
+# 70000/80000/90000 ranges are published but were not detailed at capture time.
+code_ranges:
+  - {range: 00000-09999, domain: General HTTP status errors (400/403/404/410/503)}
+  - {range: 10000-19999, domain: Account, voice, and messaging (TwiML) validation}
+  - {range: 20000-29999, domain: Authentication, permissions, and REST resource management}
+  - {range: 30000-39999, domain: Messaging delivery and domain/registration configuration}
+  - {range: 60000-60999, domain: Verify v2 (verification, factors, SNA, lookup/delivery)}
+  - {range: 63000-63999, domain: Channels — WhatsApp, Facebook Messenger, and other conversational senders}
+  - {range: 68000-68999, domain: Verify v2 WhatsApp channel}
+
+# Representative high-signal codes per product. Each entry: numeric code, the
+# exact title Twilio publishes, the cause/description, the log level Twilio
+# assigns (error/warning/notice — all captured here are error), and product area.
+# more_info for any code = https://www.twilio.com/docs/api/errors/<code>.
+error_codes:
+
+  # --- General HTTP (00000-09999) ---
+  - code: 400
+    message: Bad Request
+    cause: >-
+      The request was malformed or contained invalid/missing parameters; the
+      body typically also carries a specific Twilio numeric code explaining why.
+    log_level: error
+    product: API
+    http_status: 400
+
+  # --- Account / TwiML validation (10000-19999) ---
+  - code: 10001
+    message: Account is not active
+    cause: The account associated with the request is not in an active state.
+    log_level: error
+    product: Account
+  - code: 11200
+    message: HTTP retrieval failure
+    cause: >-
+      Twilio could not retrieve a successful (2xx) response from a configured
+      webhook/TwiML or status-callback URL — non-2xx status, connection failure,
+      timeout, redirect, auth challenge, wrong Content-Type, or private IP.
+    log_level: error
+    product: Voice, Messaging
+  - code: 13224
+    message: "Dial: Twilio does not support calling this number or the number is invalid"
+    cause: >-
+      A <Dial> request targeted a destination Twilio cannot route or that is not
+      a valid callable number — missing E.164 formatting, invalid country/area
+      code, or an unsupported premium/shared-cost number.
+    log_level: error
+    product: Voice (TwiML)
+
+  # --- Authentication / resource management (20000-29999) ---
+  - code: 20003
+    message: Permission Denied
+    cause: >-
+      Credentials are incorrect, expired, deleted, scoped to the wrong account,
+      or lack access to the requested resource (e.g. test credentials against
+      live resources, subaccount/main-account mismatch, region-mismatched keys).
+    log_level: error
+    product: API, IAM
+    http_status: 401
+  - code: 20404
+    message: Not Found
+    cause: >-
+      The requested resource could not be located — a non-existent or deleted
+      SID, malformed path, wrong resource name/casing, or a request to the wrong
+      product base URL.
+    log_level: error
+    product: API
+    http_status: 404
+  - code: 20429
+    message: Too Many Requests
+    cause: >-
+      Account activity exceeded allowed concurrency to Twilio's REST API (HTTP
+      429). Requests receiving 429 are not processed but are safe to retry with
+      exponential backoff; monitor the Twilio-Concurrent-Requests header.
+    log_level: error
+    product: API
+    http_status: 429
+
+  # --- Messaging validation (21xxx) ---
+  - code: 21211
+    message: "Invalid 'To' Phone Number"
+    cause: >-
+      The To number is not valid E.164 (missing +/country code, contains
+      punctuation/spaces, local format, To equals From, or an unreachable
+      short code / alphanumeric sender).
+    log_level: error
+    product: Messaging
+    http_status: 400
+  - code: 21610
+    message: Attempt to send to unsubscribed recipient
+    cause: >-
+      The recipient opted out (replied STOP) from your Twilio number, Channels
+      sender, or Messaging Service and cannot be messaged until they reply START.
+    log_level: error
+    product: Messaging
+
+  # --- Messaging delivery (30xxx) ---
+  - code: 30001
+    message: Queue overflow
+    cause: The message queue for the sending number/service overflowed.
+    log_level: error
+    product: Messaging
+  - code: 30003
+    message: Unreachable destination handset
+    cause: >-
+      The destination handset is unavailable on the carrier network — powered
+      off, no service, cannot receive SMS, or otherwise temporarily unreachable.
+    log_level: error
+    product: Messaging
+  - code: 30005
+    message: Unknown destination handset
+    cause: >-
+      The destination number is unrecognized and potentially no longer active;
+      the status originates from a carrier partner and is relayed by Twilio.
+    log_level: error
+    product: Messaging
+  - code: 30006
+    message: Landline or unreachable carrier
+    cause: >-
+      The destination cannot receive the message — it is a landline, or a short
+      code sender cannot reach the destination carrier.
+    log_level: error
+    product: Messaging
+  - code: 30007
+    message: Message filtered
+    cause: >-
+      The message was blocked by Twilio (Messaging/Acceptable Use Policy — spam,
+      phishing, fraud) or filtered by a wireless carrier; status becomes
+      Undelivered.
+    log_level: error
+    product: Messaging
+  - code: 30034
+    message: US A2P 10DLC - Message from an Unregistered Number
+    cause: >-
+      A message to a U.S. number was sent from a +1 10DLC number lacking an
+      approved A2P 10DLC Campaign association, or the number is missing from the
+      Messaging Service Sender Pool / registration is incomplete.
+    log_level: error
+    product: Messaging
+
+  # --- Channels / WhatsApp (63xxx) ---
+  - code: 63016
+    message: "Outside messaging window. For WhatsApp, use a Message Template instead"
+    cause: >-
+      A free-form message was sent after the channel's session window expired.
+      Business-initiated WhatsApp messages beyond the 24-hour customer service
+      window must use an approved template via ContentSid + ContentVariables.
+    log_level: error
+    product: Channels (WhatsApp / Messenger)
+
+  # --- Verify v2 (60xxx / 68xxx) ---
+  - {code: 60200, message: Invalid parameter, cause: A parameter supplied to the Verify request is invalid., log_level: error, product: Verify}
+  - {code: 60202, message: Max check attempts reached, cause: The maximum number of verification check attempts for this verification was reached., log_level: error, product: Verify}
+  - {code: 60204, message: Service does not support this feature, cause: The Verify Service is not configured to support the requested feature., log_level: error, product: Verify}
+  - {code: 60301, message: Entity already exists, cause: The entity being created for TOTP/Push already exists., log_level: error, product: Verify}
+  - {code: 60323, message: Challenge expired, cause: The verification challenge has expired and can no longer be completed., log_level: error, product: Verify}
+  - {code: 60390, message: Factor not found, cause: The authentication factor referenced does not exist., log_level: error, product: Verify}
+  - {code: 60401, message: Network Error, cause: A network-level error occurred while processing the verification., log_level: error, product: Verify}
+  - {code: 60403, message: Storage Error, cause: A storage-level error occurred while processing the verification., log_level: error, product: Verify}
+  - {code: 60422, message: Contact not found, cause: The contact referenced for verification could not be found., log_level: error, product: Verify}
+  - {code: 60500, message: SNA Phone Number Mismatch, cause: The Silent Network Auth phone number did not match the number under verification., log_level: error, product: Verify (SNA)}
+  - {code: 60531, message: SNA Carrier Not Detected, cause: The carrier could not be detected for the Silent Network Auth challenge., log_level: error, product: Verify (SNA)}
+  - {code: 60600, message: Unprovisioned or out of coverage, cause: The destination number is unprovisioned or out of coverage for delivery., log_level: error, product: Verify}
+  - {code: 60610, message: Phone number outside of coverage, cause: The phone number is outside of the supported delivery coverage area., log_level: error, product: Verify}
+  - {code: 68008, message: Verify WhatsApp channel not configured, cause: The Verify Service's WhatsApp channel has not been configured., log_level: error, product: Verify (WhatsApp)}

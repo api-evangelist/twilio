@@ -1,0 +1,111 @@
+generated: '2026-07-14'
+method: searched
+source: https://www.twilio.com/en-us/changelog
+description: >-
+  Structured capture of Twilio's product changelog. Unlike date-versioned APIs,
+  Twilio does NOT cut a single global dated API version that clients pin via a
+  header. Instead the legacy core REST API is fixed at the path version
+  /2010-04-01, each product API is versioned independently by subdomain and a
+  /vN path (e.g. messaging.twilio.com/v1, verify.twilio.com/v2), and behavioral
+  changes, deprecations, and effective dates are communicated through the dated
+  changelog. This artifact records the recent changelog window and the
+  versioning approach; the live changelog is the source of truth.
+docs: https://www.twilio.com/en-us/changelog
+versioning:
+  scheme: per-product path versioning (no global dated API version or version-pinning header)
+  core_rest_api:
+    base_url: https://api.twilio.com/2010-04-01
+    detail: >-
+      The core Twilio REST API is served over HTTPS and carries its version in
+      the URL path. 2010-04-01 is the current path version; the earlier
+      2008-08-01 version is legacy. Derived from openapi/ and twilio.com/docs/iam/api.
+  product_apis:
+    pattern: https://<product>.twilio.com/v<N>
+    examples:
+      - messaging.twilio.com/v1
+      - verify.twilio.com/v2
+      - voice.twilio.com/v1
+    detail: >-
+      Product APIs each live on their own subdomain and advance their /vN path
+      version independently. Derived from the server URLs and paths in
+      /Users/kinlane/GitHub/all/twilio/openapi/.
+  client_libraries:
+    scheme: semantic versioning (helper libraries, released independently of the API)
+    example: twilio-node 6.0.0 raised the minimum Node.js engine from >=14 to >=20
+    source: https://github.com/twilio/twilio-node/blob/main/CHANGES.md
+  change_communication: >-
+    Breaking changes and deprecations are announced ahead of time in the dated
+    changelog with an effective date, rather than by minting a new pinned API
+    version. Filter facets on the changelog include product (50+ areas such as
+    Voice, Messaging, Flex, Segment, Serverless) and type (breaking change,
+    deprecation, new feature, announcement).
+gap: >-
+  Twilio does not publish a single machine-readable "current API version"
+  string the way header-pinned date-versioned APIs do, and the changelog is not
+  offered as a structured feed on this page. Entries below are transcribed from
+  the human-readable changelog; there is no per-entry stable version identifier.
+entries:
+  - date: '2026-07-09'
+    product_area: RCS Messaging
+    type: breaking
+    highlight: >-
+      Error code returned when an RCS message cannot be delivered to an
+      unreachable end-user device changes from 30036 to 30046 (effective
+      2026-08-10), giving a more accurate delivery signal.
+  - date: '2026-07-08'
+    product_area: Voice API (Conferences)
+    type: change
+    highlight: Conference list endpoint rollout extended.
+  - date: '2026-07-08'
+    product_area: Serverless (Functions)
+    type: addition
+    highlight: Node.js v24 available as a build runtime for Twilio Functions, selectable in the Console Dependencies tab.
+  - date: '2026-07-07'
+    product_area: Messaging (WhatsApp)
+    type: addition
+    highlight: >-
+      WhatsApp Usernames supported on the Twilio Platform and Messaging APIs,
+      optionally masking a user's personal phone number.
+  - date: '2026-07-07'
+    product_area: Voice (Branded Calling)
+    type: addition
+    highlight: Branded Calling for non-US regions enters Public Beta.
+  - date: '2026-07-07'
+    product_area: Messaging (A2P 10DLC)
+    type: addition
+    highlight: Email notifications added for A2P 10DLC campaign registrations.
+  - date: '2026-07-03'
+    product_area: IAM / Organizations
+    type: addition
+    highlight: OAuth 2.0 client-credentials flow for Organization API access reaches GA.
+  - date: '2026-07-02'
+    product_area: Interconnect (SIP)
+    type: deprecation
+    highlight: Upcoming changes to Interconnect SIP signaling IP addresses announced.
+  - date: '2026-07-01'
+    product_area: Voice Insights
+    type: deprecation
+    highlight: >-
+      conference_participant field removed from the Call Summary REST API and
+      Event Streams (effective 2026-08-01) due to limited accuracy in complex
+      conference flows.
+  - date: '2026-06-30'
+    product_area: Consent Management API
+    type: addition
+    highlight: >-
+      Consent Management API reaches GA and, as of 2026-06-30, supports
+      healthcare use cases with protected health information (PHI) for
+      HIPAA-subject organizations.
+related_client_library_changes:
+  note: >-
+    Helper-library breaking changes surfaced via the changelog and library
+    CHANGES files, versioned separately from the API itself.
+  items:
+    - Twilio-Sandbox-Mode request header removed from Branded Calls endpoints.
+    - Verify version removed from the preview subdomain.
+    - highrisk_special_prefixes path parameter renamed from parent_iso_code to iso_code.
+    - TwiML Say verb adds SSML support; message body becomes optional.
+    - >-
+      TwiML Dial behavior change — with a Dial action URL, Twilio requests the
+      action callback when the parent call is transferred to new TwiML;
+      without one, the parent call continues to the next verb.

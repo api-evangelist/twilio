@@ -1,0 +1,99 @@
+arazzo: 1.0.1
+info:
+  title: Twilio Send via Messaging Service
+  summary: Create a messaging service, then send a message through it using the sender-pool pattern.
+  description: >-
+    The recommended Twilio sender-pool messaging pattern. The workflow first
+    creates a new messaging service with a friendly name and optional inbound
+    webhook, captures the returned messaging service SID (starts with MG), and
+    then sends an SMS or MMS through that service by passing its SID as the
+    MessagingServiceSid on the message create call. Sending through a messaging
+    service lets Twilio pick the best sender from the pool, apply sticky sender
+    and scaler behavior, and manage compliance at scale instead of pinning a
+    single From number. Every step spells out its request inline so the flow can
+    be read and executed without opening the underlying OpenAPI description, and
+    the example inputs use Twilio magic test values so a fork runs in test mode.
+  version: 1.0.0
+sourceDescriptions:
+- name: messagingApi
+  url: ../openapi/twilio-messaging-openapi.yml
+  type: openapi
+workflows:
+- workflowId: send-via-messaging-service
+  summary: Create a messaging service and send a message through its sender pool.
+  description: >-
+    Creates a messaging service, then sends a message by referencing the new
+    service's SID as the MessagingServiceSid, letting Twilio select a sender
+    from the pool rather than a fixed From number.
+  inputs:
+    type: object
+    required:
+    - accountSid
+    - friendlyName
+    - to
+    - body
+    properties:
+      accountSid:
+        type: string
+        description: The Twilio account SID (starts with AC) that owns the message.
+        example: ACXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+      friendlyName:
+        type: string
+        description: Descriptive name for the messaging service.
+        example: Sender Pool Demo
+      inboundRequestUrl:
+        type: string
+        description: Optional webhook URL for inbound messages to the service.
+        example: https://example.com/twilio/inbound
+      to:
+        type: string
+        description: Recipient phone number in E.164 format.
+        example: '+15005550006'
+      body:
+        type: string
+        description: The text content of the message (up to 1600 characters).
+        example: Sent through a Twilio messaging service sender pool.
+      statusCallback:
+        type: string
+        description: Optional URL for asynchronous status callbacks.
+        example: https://example.com/twilio/status
+  steps:
+  - stepId: createService
+    description: >-
+      Create the messaging service that will own the sender pool and route the
+      outbound message.
+    operationId: createMessagingService
+    requestBody:
+      contentType: application/x-www-form-urlencoded
+      payload:
+        FriendlyName: $inputs.friendlyName
+        InboundRequestUrl: $inputs.inboundRequestUrl
+    successCriteria:
+    - condition: $statusCode == 201
+    outputs:
+      serviceSid: $response.body#/sid
+  - stepId: sendMessage
+    description: >-
+      Send the message through the messaging service by passing its SID as the
+      MessagingServiceSid, letting Twilio select a sender from the pool.
+    operationId: createMessage
+    parameters:
+    - name: AccountSid
+      in: path
+      value: $inputs.accountSid
+    requestBody:
+      contentType: application/x-www-form-urlencoded
+      payload:
+        To: $inputs.to
+        Body: $inputs.body
+        MessagingServiceSid: $steps.createService.outputs.serviceSid
+        StatusCallback: $inputs.statusCallback
+    successCriteria:
+    - condition: $statusCode == 201
+    outputs:
+      messageSid: $response.body#/sid
+      status: $response.body#/status
+  outputs:
+    serviceSid: $steps.createService.outputs.serviceSid
+    messageSid: $steps.sendMessage.outputs.messageSid
+    status: $steps.sendMessage.outputs.status

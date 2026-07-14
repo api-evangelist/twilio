@@ -1,0 +1,112 @@
+arazzo: 1.0.1
+info:
+  title: Twilio Verify a Phone Number
+  summary: Create a Verify service, start a verification to a phone number, then check the code to confirm it.
+  description: >-
+    The end-to-end Twilio Verify happy path. The workflow provisions a Verify
+    service to configure verification behavior, starts a verification that sends
+    a one-time code to the target phone number over the chosen channel, and then
+    checks the code the user entered to confirm ownership of the number. Each
+    step spells out its request inline so the flow can be read and executed
+    without opening the underlying OpenAPI description. Example inputs use
+    Twilio's magic test phone number so a fork can run against test credentials.
+  version: 1.0.0
+sourceDescriptions:
+- name: verifyApi
+  url: ../openapi/twilio-verify-openapi.yml
+  type: openapi
+workflows:
+- workflowId: verify-phone-number
+  summary: Create a Verify service, send a verification, and confirm the code.
+  description: >-
+    Provisions a Verify service, starts a verification to the supplied phone
+    number, and checks the user-entered code, ending in an approved
+    verification.
+  inputs:
+    type: object
+    required:
+    - friendlyName
+    - phoneNumber
+    - channel
+    - code
+    properties:
+      friendlyName:
+        type: string
+        description: Human-readable name for the Verify service, shown in verification messages.
+        default: My Verify Service
+      phoneNumber:
+        type: string
+        description: The phone number to verify, in E.164 format. Example uses Twilio's magic test number.
+        default: '+15005550006'
+      channel:
+        type: string
+        description: Delivery channel - one of sms, call, email, whatsapp, or sna.
+        default: sms
+      code:
+        type: string
+        description: The one-time verification code the user received and entered.
+        default: '123456'
+  steps:
+  - stepId: createService
+    description: >-
+      Create (provision) a Verify service to configure verification behavior
+      such as code length and branding.
+    operationId: createService
+    requestBody:
+      contentType: application/x-www-form-urlencoded
+      payload:
+        FriendlyName: $inputs.friendlyName
+    successCriteria:
+    - condition: $statusCode == 201
+    outputs:
+      serviceSid: $response.body#/sid
+      friendlyName: $response.body#/friendly_name
+  - stepId: startVerification
+    description: >-
+      Start a verification on the newly created service, sending a one-time code
+      to the target phone number over the chosen channel.
+    operationId: createVerification
+    parameters:
+    - name: ServiceSid
+      in: path
+      value: $steps.createService.outputs.serviceSid
+    requestBody:
+      contentType: application/x-www-form-urlencoded
+      payload:
+        To: $inputs.phoneNumber
+        Channel: $inputs.channel
+    successCriteria:
+    - condition: $statusCode == 201
+    - context: $response.body
+      condition: $.status == "pending"
+      type: jsonpath
+    outputs:
+      verificationSid: $response.body#/sid
+      status: $response.body#/status
+  - stepId: checkVerification
+    description: >-
+      Check the code the user entered against the pending verification to
+      confirm ownership of the phone number.
+    operationId: createVerificationCheck
+    parameters:
+    - name: ServiceSid
+      in: path
+      value: $steps.createService.outputs.serviceSid
+    requestBody:
+      contentType: application/x-www-form-urlencoded
+      payload:
+        To: $inputs.phoneNumber
+        Code: $inputs.code
+    successCriteria:
+    - condition: $statusCode == 200
+    - context: $response.body
+      condition: $.status == "approved"
+      type: jsonpath
+    outputs:
+      checkStatus: $response.body#/status
+      valid: $response.body#/valid
+  outputs:
+    serviceSid: $steps.createService.outputs.serviceSid
+    verificationSid: $steps.startVerification.outputs.verificationSid
+    status: $steps.checkVerification.outputs.checkStatus
+    valid: $steps.checkVerification.outputs.valid

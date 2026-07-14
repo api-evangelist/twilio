@@ -1,0 +1,182 @@
+generated: '2026-07-14'
+method: searched
+source: >-
+  https://www.twilio.com/docs/usage/api — the cross-cutting request/response
+  conventions that apply across every Twilio product API (not any single
+  operation). Grounded in Twilio's own docs (twilio.com/docs) and derived from
+  the product OpenAPI definitions already in this repo's openapi/ directory
+  (form-urlencoded consumes, the meta pagination object, PageSize/Page/PageToken
+  params, and the accountSid_authToken HTTP basic security scheme).
+description: >-
+  How Twilio's REST APIs behave across every operation and product: HTTP basic
+  authentication, form-urlencoded requests and JSON responses, list pagination,
+  the date-versioned classic base path versus the newer per-product /v1//v2/
+  hosts, subaccount scoping through the Account SID in the URL, the error
+  envelope, and rate-limit signaling. These are the developer-experience /
+  runtime-semantics conventions that OpenAPI does not fully express.
+
+base_url: https://api.twilio.com
+api_style: REST over HTTPS, form-encoded requests, JSON responses (XML/CSV also available on the classic API)
+
+base_path_versioning:
+  scheme: >-
+    Two coexisting conventions. The original "classic" API is served under a
+    single date-stamped path; each newer product API is served from its own
+    subdomain with a numeric version segment.
+  classic:
+    host: https://api.twilio.com
+    path_prefix: /2010-04-01
+    note: >-
+      The date is a fixed, historical path segment (the release date of the
+      original API), NOT a version you change over time. Core telephony,
+      messaging, and account resources live here, e.g.
+      /2010-04-01/Accounts/{AccountSid}/Messages.json
+  product_apis:
+    scheme: per-product subdomain plus a numeric version segment (/v1 or /v2)
+    examples:
+      - https://messaging.twilio.com/v1
+      - https://accounts.twilio.com/v1
+      - https://verify.twilio.com/v2
+      - https://lookups.twilio.com/v2
+    note: >-
+      Derived from the servers[] entries across this repo's openapi/*.yml files;
+      most product OpenAPI definitions list both the classic
+      https://api.twilio.com/2010-04-01 host and their own /v1 (or /v2) host.
+  docs: https://www.twilio.com/docs/usage/api
+
+authentication:
+  scheme: HTTP Basic over HTTPS (base64 of "username:password" in the Authorization header)
+  credential_options:
+    - name: Account SID + Auth Token
+      username: Account SID (AC...)
+      password: Auth Token
+      note: Simplest; recommended by Twilio for local testing rather than production.
+    - name: API Key + Secret
+      username: API Key SID (SK...)
+      password: API Key secret
+      note: >-
+        Recommended for production — keys can be revoked independently without
+        rotating the account Auth Token.
+  api_key_sid_pattern: '^SK[0-9a-fA-F]{32}$'
+  api_key_types: [Main, Standard, Restricted (v1 only)]
+  openapi_security_scheme: accountSid_authToken (type http, scheme basic)
+  docs: https://www.twilio.com/docs/usage/requests-to-twilio
+  detail: authentication/twilio-authentication.yml
+
+request_encoding:
+  content_type: application/x-www-form-urlencoded
+  also_accepted: multipart/form-data (for binary/media uploads)
+  note: >-
+    Twilio APIs expect request bodies to be form-encoded, not JSON. Parameters
+    are sent as form fields on POST/PUT.
+  docs: https://www.twilio.com/docs/usage/requests-to-twilio
+
+response_format:
+  default: JSON
+  classic_alternatives: [XML (via .xml), CSV (via .csv)]
+  mechanism: >-
+    On the classic /2010-04-01 API the format is selected by the resource URL
+    suffix (e.g. Messages.json vs Messages.xml). Newer product APIs return JSON.
+  docs: https://www.twilio.com/docs/usage/twilios-response
+
+subaccount_scoping:
+  mechanism: >-
+    The Account SID appears as a path segment on account-scoped resources; the
+    SID in the path selects which (sub)account the resource belongs to.
+  path_shape: /2010-04-01/Accounts/{AccountSid}/<Resource>.json
+  account_sid_prefix: 'AC'
+  access_rule: >-
+    Main-account credentials (Auth Token or API Key) reach main-account
+    resources only; access to a subaccount's resources requires that
+    subaccount's Auth Token or an API Key created at the subaccount level. A
+    compromised subaccount credential is limited to that subaccount.
+  docs: https://www.twilio.com/docs/iam/api/subaccounts
+
+pagination:
+  style: page-based (with an opaque page token for deep/forward paging)
+  request_params:
+    PageSize:
+      description: How many resources to return in each list page.
+      default: 50
+      max: 1000
+      note: >-
+        Docs state a default of 50; the classic API caps at 1000. (Some product
+        OpenAPI definitions in openapi/ document maximum 1000, minimum 1.)
+    Page:
+      description: Zero-indexed page number to retrieve.
+    PageToken:
+      description: Opaque page token supplied by the API to fetch the next page.
+  classic_response_fields:
+    note: >-
+      Classic /2010-04-01 list responses embed navigation as *_uri fields
+      alongside the resource-named array.
+    fields:
+      - uri            # URI of the current page
+      - first_page_uri
+      - next_page_uri
+      - previous_page_uri
+      - page           # zero-indexed
+      - page_size
+      - '<resource>'   # array keyed by the plural resource name (e.g. "messages")
+  product_response_meta:
+    note: >-
+      Newer product APIs return results under a data-style array plus a `meta`
+      object. Derived from the ListXxxResponse schemas in this repo's
+      openapi/*.yml (e.g. messaging-openapi-original.yml).
+    meta_fields:
+      - first_page_url
+      - next_page_url        # nullable
+      - previous_page_url    # nullable
+      - page
+      - page_size
+      - url
+      - key                  # name of the array field carrying the results
+  docs: https://www.twilio.com/docs/usage/twilios-response
+
+error_envelope:
+  media_type: application/json
+  rfc9457: false
+  shape: '{ "code", "message", "more_info", "status" }'
+  fields:
+    status: The HTTP status code for the exception.
+    message: A detailed, human-readable description of the exception.
+    code: A Twilio-specific numeric error code identifying the problem (optional).
+    more_info: A URL to the Twilio documentation page for that error code (optional).
+  xml_note: On XML responses the same fields are wrapped in a <TwilioResponse> element.
+  common_statuses:
+    '200': OK
+    '201': Created
+    '401': Unauthorized — invalid or missing credentials
+    '404': Not Found
+    '429': Too Many Requests — Twilio API concurrency limit reached
+    '500': Internal Server Error
+    '503': Service Unavailable
+  docs: https://www.twilio.com/docs/usage/twilios-response
+
+rate_limits:
+  signal_status: 429
+  meaning: >-
+    A 429 Too Many Requests indicates the account has reached Twilio's API
+    concurrency limit. Twilio publishes concurrency limits rather than a fixed
+    requests-per-second quota, and does not document a standard
+    Retry-After / X-RateLimit header set on this page.
+  gap: >-
+    Twilio's public "API responses" doc does not enumerate rate-limit response
+    headers (e.g. Retry-After or X-RateLimit-*); it only documents the 429
+    status and its concurrency-limit meaning.
+  docs: https://www.twilio.com/docs/usage/twilios-response
+
+other_conventions:
+  - name: SIDs
+    detail: >-
+      Resources are identified by 34-character string SIDs with a two-letter
+      type prefix (AC = Account, SK = API Key, SM/MM = Message, etc.).
+  - name: Idempotency
+    detail: >-
+      Twilio does not document a general-purpose idempotency-key header for the
+      REST API on its request/response docs; capture noted as a gap rather than
+      inventing a mechanism.
+  - name: SDKs and CLI
+    detail: >-
+      Twilio ships official server-side helper libraries and the `twilio` CLI;
+      both wrap these same HTTP basic + form-encoded conventions.

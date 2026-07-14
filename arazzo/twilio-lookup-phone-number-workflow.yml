@@ -1,0 +1,75 @@
+arazzo: 1.0.1
+info:
+  title: Twilio Look Up a Phone Number
+  summary: Look up a phone number to fetch carrier, line type, and caller name intelligence before using it.
+  description: >-
+    A pre-flight enrichment pattern that gathers intelligence about a phone
+    number before it is used for messaging, calling, or verification. The
+    workflow runs a single Lookup against the supplied number and requests the
+    line type intelligence and caller name data packages, returning the carrier
+    name, line type (mobile, landline, VoIP, and so on), and the registered
+    caller name (CNAM) alongside the validity flag and national format. The step
+    spells out its request inline so the flow can be read and executed without
+    opening the underlying OpenAPI description.
+  version: 1.0.0
+sourceDescriptions:
+- name: lookupApi
+  url: ../openapi/twilio-lookup-openapi.yml
+  type: openapi
+workflows:
+- workflowId: lookup-phone-number
+  summary: Fetch carrier, line type, and caller name for a phone number.
+  description: >-
+    Queries the Lookup API for a single phone number, requesting the line type
+    intelligence and caller name data packages, and surfaces the carrier, line
+    type, and caller identity so downstream systems can decide whether and how
+    to use the number.
+  inputs:
+    type: object
+    required:
+    - phoneNumber
+    properties:
+      phoneNumber:
+        type: string
+        description: >-
+          The phone number to look up, in E.164 format. Defaults to a Twilio
+          test number so a fork runs against safe data.
+        default: '+15005550006'
+      fields:
+        type: string
+        description: >-
+          Comma-separated Lookup data packages to return. Defaults to the
+          packages needed for carrier, line type, and caller name.
+        default: line_type_intelligence,caller_name,validation
+  steps:
+  - stepId: lookupNumber
+    description: >-
+      Query the Lookup API for the line type intelligence and caller name data
+      packages on the supplied phone number.
+    operationId: fetchPhoneNumber
+    parameters:
+    - name: PhoneNumber
+      in: path
+      value: $inputs.phoneNumber
+    - name: Fields
+      in: query
+      value: $inputs.fields
+    successCriteria:
+    - condition: $statusCode == 200
+    outputs:
+      phoneNumber: $response.body#/phone_number
+      countryCode: $response.body#/country_code
+      nationalFormat: $response.body#/national_format
+      valid: $response.body#/valid
+      lineType: $response.body#/line_type_intelligence/type
+      carrierName: $response.body#/line_type_intelligence/carrier_name
+      mobileCountryCode: $response.body#/line_type_intelligence/mobile_country_code
+      mobileNetworkCode: $response.body#/line_type_intelligence/mobile_network_code
+      callerName: $response.body#/caller_name/caller_name
+      callerType: $response.body#/caller_name/caller_type
+  outputs:
+    valid: $steps.lookupNumber.outputs.valid
+    lineType: $steps.lookupNumber.outputs.lineType
+    carrierName: $steps.lookupNumber.outputs.carrierName
+    callerName: $steps.lookupNumber.outputs.callerName
+    callerType: $steps.lookupNumber.outputs.callerType

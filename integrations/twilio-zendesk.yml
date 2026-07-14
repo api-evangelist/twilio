@@ -1,0 +1,78 @@
+arazzo: 1.0.1
+info:
+  title: Open a Zendesk ticket from an inbound Twilio message
+  summary: Turn an inbound Twilio message into a Zendesk support ticket.
+  description: >-
+    Fetch a specific Twilio message by its SID, then create a Zendesk support
+    ticket that captures the sender and message body as the ticket subject and
+    first comment. This lets inbound SMS or messaging traffic on Twilio be
+    triaged and tracked inside Zendesk Support.
+  version: 1.0.0
+sourceDescriptions:
+  - name: twilio
+    url: https://raw.githubusercontent.com/api-evangelist/twilio/refs/heads/main/openapi/twilio-messaging-openapi.yml
+    type: openapi
+  - name: zendesk
+    url: https://raw.githubusercontent.com/api-evangelist/zendesk/refs/heads/main/openapi/tickets-openapi-original.yml
+    type: openapi
+workflows:
+  - workflowId: open-zendesk-ticket-from-twilio-message
+    summary: Create a Zendesk ticket from an inbound Twilio message.
+    description: >-
+      Retrieve a Twilio message by its SID, then open a Zendesk Support ticket
+      whose subject and first comment carry the sender and body of that message.
+    inputs:
+      type: object
+      required:
+        - AccountSid
+        - MessageSid
+      properties:
+        AccountSid:
+          type: string
+          description: The Twilio Account SID that owns the message (e.g. ACxxxx).
+        MessageSid:
+          type: string
+          description: The SID of the Twilio message to fetch (e.g. SMxxxx).
+        subjectPrefix:
+          type: string
+          description: Prefix for the created Zendesk ticket subject.
+          default: 'Inbound Twilio message from'
+    steps:
+      - stepId: fetch-twilio-message
+        description: Fetch the inbound Twilio message to capture its sender and body.
+        operationId: $sourceDescriptions.twilio.fetchMessage
+        parameters:
+          - name: AccountSid
+            in: path
+            value: $inputs.AccountSid
+          - name: MessageSid
+            in: path
+            value: $inputs.MessageSid
+        successCriteria:
+          - condition: $statusCode == 200
+        outputs:
+          messageSid: $response.body#/sid
+          from: $response.body#/from
+          to: $response.body#/to
+          body: $response.body#/body
+      - stepId: create-zendesk-ticket
+        description: Open a Zendesk ticket capturing the Twilio sender and message body.
+        operationId: $sourceDescriptions.zendesk.CreateTicket
+        requestBody:
+          contentType: application/json
+          payload:
+            ticket:
+              subject: $steps.fetch-twilio-message.outputs.from
+              comment:
+                body: $steps.fetch-twilio-message.outputs.body
+        successCriteria:
+          - condition: $statusCode == 201
+        outputs:
+          ticketId: $response.body#/ticket/id
+          ticketUrl: $response.body#/ticket/url
+          ticketStatus: $response.body#/ticket/status
+    outputs:
+      messageSid: $steps.fetch-twilio-message.outputs.messageSid
+      from: $steps.fetch-twilio-message.outputs.from
+      ticketId: $steps.create-zendesk-ticket.outputs.ticketId
+      ticketUrl: $steps.create-zendesk-ticket.outputs.ticketUrl

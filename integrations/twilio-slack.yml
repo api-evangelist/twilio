@@ -1,0 +1,85 @@
+arazzo: 1.0.1
+info:
+  title: Post an inbound Twilio message to Slack
+  summary: Fetch a Twilio message and post its contents to a Slack channel.
+  description: >-
+    Retrieve a specific Twilio message by its SID and relay the sender and body
+    into a Slack channel as a chat message. This lets teams surface inbound SMS
+    and MMS traffic from Twilio directly into Slack for triage and response
+    without leaving their workspace.
+  version: 1.0.0
+sourceDescriptions:
+  - name: twilio
+    url: https://raw.githubusercontent.com/api-evangelist/twilio/refs/heads/main/openapi/twilio-messaging-openapi.yml
+    type: openapi
+  - name: slack
+    url: https://raw.githubusercontent.com/api-evangelist/slack/refs/heads/main/openapi/slack-chat-openapi.yml
+    type: openapi
+workflows:
+  - workflowId: twilio-message-to-slack-channel
+    summary: Fetch a Twilio message and post its contents to a Slack channel.
+    description: >-
+      Fetch a Twilio message resource by its SID under the given account, then
+      post its from-number and body text into a Slack channel using the Chat
+      API.
+    inputs:
+      type: object
+      required:
+        - accountSid
+        - messageSid
+        - slackToken
+        - slackChannel
+      properties:
+        accountSid:
+          type: string
+          description: The Twilio Account SID that owns the message (e.g. ACxxxx).
+        messageSid:
+          type: string
+          description: The SID of the Twilio message to fetch (e.g. SMxxxx).
+        slackToken:
+          type: string
+          description: Slack bot/user token with the chat:write scope.
+        slackChannel:
+          type: string
+          description: Slack channel ID or name to post the message into.
+    steps:
+      - stepId: fetch-twilio-message
+        description: Retrieve the Twilio message to relay by its SID.
+        operationId: $sourceDescriptions.twilio.fetchMessage
+        parameters:
+          - name: AccountSid
+            in: path
+            value: $inputs.accountSid
+          - name: MessageSid
+            in: path
+            value: $inputs.messageSid
+        successCriteria:
+          - condition: $statusCode == 200
+        outputs:
+          messageSid: $response.body#/sid
+          from: $response.body#/from
+          to: $response.body#/to
+          body: $response.body#/body
+      - stepId: post-to-slack
+        description: Post the fetched Twilio message contents into a Slack channel.
+        operationId: $sourceDescriptions.slack.postChatPostmessage
+        parameters:
+          - name: token
+            in: header
+            value: $inputs.slackToken
+        requestBody:
+          contentType: application/x-www-form-urlencoded
+          payload:
+            channel: $inputs.slackChannel
+            text: $steps.fetch-twilio-message.outputs.body
+        successCriteria:
+          - condition: $statusCode == 200
+        outputs:
+          ok: $response.body#/ok
+          channel: $response.body#/channel
+          ts: $response.body#/ts
+    outputs:
+      messageSid: $steps.fetch-twilio-message.outputs.messageSid
+      from: $steps.fetch-twilio-message.outputs.from
+      slackChannel: $steps.post-to-slack.outputs.channel
+      slackTs: $steps.post-to-slack.outputs.ts

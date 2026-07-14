@@ -1,0 +1,119 @@
+generated: '2026-07-14'
+method: searched
+source: https://www.twilio.com/docs/twilio-cli
+description: >-
+  The Twilio CLI (twilio-cli) command surface — the developer-tooling layer that
+  sits over the Twilio REST APIs. Captured from twilio.com/docs/twilio-cli
+  (quickstart, general usage, profiles, plugins) and honestly derived from the
+  Twilio product OpenAPI already in openapi/. The CLI is an oclif-based tool: its
+  `api` topic is auto-generated from Twilio's OpenAPI, so the api:<domain>
+  subtopics mirror the product specs in this repo's openapi/ directory. The
+  binary itself is normally catalogued under packages/; this artifact enumerates
+  its command/topic surface (login/profiles, api:core:*, phone-numbers, debugger,
+  plugins, and the serverless/flex/watch plugin commands).
+docs: https://www.twilio.com/docs/twilio-cli
+repo: https://github.com/twilio/twilio-cli
+install:
+  # npm package name is `twilio-cli` (there is no @twilio/cli scoped package).
+  npm: npm install -g twilio-cli
+  homebrew: brew tap twilio/brew && brew install twilio
+  scoop: scoop bucket add twilio-scoop https://github.com/twilio/scoop-twilio-cli && scoop install twilio
+  apt: echo 'deb https://twilio-cli-prod.s3.amazonaws.com/apt/ /' | sudo tee /etc/apt/sources.list.d/twilio.list && sudo apt update && sudo apt install -y twilio
+  docker: docker run -it --rm twilio/twilio-cli bash
+commands:
+  auth_profiles:
+    - {name: login, description: 'Log in with your Account SID and Auth Token; creates and stores an API Key locally. Alias for profiles:create.'}
+    - {name: 'profiles:create', description: Create a new named profile (credentials for one Twilio account/subaccount).}
+    - {name: 'profiles:list', description: Display all local profiles and identify the active one.}
+    - {name: 'profiles:use', description: Set a profile as the active one for subsequent commands.}
+    - {name: 'profiles:update', description: Modify an existing profile.}
+    - {name: 'profiles:remove', description: Delete a stored profile.}
+  config:
+    - {name: config, description: Manage high-level Twilio CLI configuration (edge/region, output format, and other defaults).}
+  api:
+    # `api:core` targets the classic api.twilio.com REST API (accounts, messages,
+    # calls, recordings, incoming phone numbers, etc.). Verified example commands:
+    - {name: 'api:core:messages:create', description: 'Send an SMS/MMS message (Programmable Messaging). Verified quickstart command.'}
+    - {name: 'api:core:messages:list', description: Retrieve sent/received messages.}
+    - {name: 'api:core:calls:create', description: Place an outbound voice call (Programmable Voice).}
+    - {name: 'api:core:incoming-phone-numbers:create', description: Purchase / provision a Twilio phone number on the account.}
+    - {name: 'api:core:accounts:list', description: List accounts and subaccounts.}
+    - {name: api, description: 'Advanced access to ALL Twilio product APIs; the topic is auto-generated from Twilio''s OpenAPI. Subtopics mirror the product specs in this repo''s openapi/ (see api_subtopics below). Discover with `twilio api -h`.'}
+  api_subtopics:
+    # Derived from the Twilio product OpenAPI present in openapi/. Each product
+    # domain surfaces as `twilio api:<domain>:<resource>:<action>`. These are the
+    # published Twilio products; the CLI generates a subtopic per API subdomain.
+    - {name: 'api:core', description: 'Core api.twilio.com — messaging, voice, accounts, recordings, incoming phone numbers.'}
+    - {name: 'api:messaging', description: Programmable Messaging services, senders, and campaigns.}
+    - {name: 'api:numbers', description: Phone number provisioning, porting, regulatory bundles.}
+    - {name: 'api:conversations', description: Conversations API (omnichannel messaging).}
+    - {name: 'api:serverless', description: Twilio Functions & Assets service resources.}
+    - {name: 'api:studio', description: Studio flows and executions.}
+    - {name: 'api:sync', description: Sync services, documents, lists, maps.}
+    - {name: 'api:taskrouter', description: TaskRouter workspaces, workers, queues.}
+    - {name: 'api:trunking', description: Elastic SIP Trunking.}
+    - {name: 'api:proxy', description: Proxy masked-communication sessions.}
+    - {name: 'api:notify', description: Notify multi-channel notifications.}
+    - {name: 'api:insights', description: Voice Insights call summaries and metrics.}
+    - {name: 'api:monitor', description: Monitor events and alerts (audit log).}
+    - {name: 'api:pricing', description: Pricing for voice, messaging, and phone numbers.}
+    - {name: 'api:events', description: Event Streams sinks and subscriptions.}
+    - {name: 'api:supersim', description: Super SIM fleets and SIMs (IoT).}
+    - {name: 'api:microvisor', description: Microvisor devices and apps (IoT).}
+    - {name: 'api:intelligence', description: Voice Intelligence transcripts and operators.}
+    - {name: 'api:content', description: Content API message templates.}
+    - {name: 'api:media', description: Media processors and recordings.}
+    - {name: 'api:bulkexports', description: Bulk Exports jobs and days.}
+    - {name: 'api:routes', description: Phone Number and SIP interconnect routing (Interconnect).}
+    - {name: 'api:frontline', description: Frontline user and configuration resources.}
+    - {name: 'api:accounts', description: Accounts, auth tokens, and secondary auth.}
+  phone_numbers:
+    - {name: 'phone-numbers:list', description: 'List the phone numbers on your account (friendlier wrapper over api:core:incoming-phone-numbers). Verified quickstart command.'}
+    - {name: 'phone-numbers:update', description: Update a phone number's configuration (voice/SMS webhook URLs, friendly name).}
+  debugger:
+    - {name: 'debugger:logs:list', description: Show the list of log/error events (debugger alerts) generated for the account.}
+  email:
+    - {name: email, description: 'Send email via the integrated SendGrid tooling (email:send subcommand). Topic present in CLI; requires SendGrid API key configuration.'}
+  feedback:
+    - {name: feedback, description: Submit feedback about the Twilio CLI to Twilio.}
+  plugins:
+    - {name: 'plugins:install', description: 'Install a CLI plugin, e.g. `twilio plugins:install @twilio-labs/plugin-serverless`.'}
+    - {name: 'plugins:list', description: List installed plugins.}
+    - {name: 'plugins:update', description: Update installed plugins.}
+    - {name: 'plugins:uninstall', description: Remove an installed plugin.}
+  official_plugins:
+    # Installed on demand via `twilio plugins:install <package>`; not bundled.
+    - {name: '@twilio-labs/plugin-serverless', description: 'Serverless Toolkit — locally develop, debug, and deploy Twilio Functions & Assets (serverless:init/start/deploy/logs).'}
+    - {name: '@twilio-labs/plugin-assets', description: Upload and manage static assets on Twilio's serverless infrastructure.}
+    - {name: '@twilio-labs/plugin-webhook', description: Emulate webhook events to validate applications and TwiML Bins locally.}
+    - {name: '@twilio-labs/plugin-watch', description: Watch debugger alerts, voice calls, and messages in real time as they arrive.}
+    - {name: '@twilio-labs/plugin-token', description: Generate access tokens for client-side SDKs (e.g. chat/voice).}
+    - {name: '@twilio-labs/plugin-flex', description: Create, build, and deploy Twilio Flex plugins.}
+key_flows:
+  send_sms:
+    command: twilio api:core:messages:create --from +15017122661 --to +15558675310 --body "Hello from CLI"
+    description: 'Sends an SMS via Programmable Messaging using the active profile''s credentials. Verified from the CLI quickstart.'
+  list_phone_numbers:
+    command: twilio phone-numbers:list
+    description: 'Lists the phone numbers on the active account. Verified from the CLI quickstart.'
+  local_serverless:
+    command: twilio serverless:init my-app && cd my-app && twilio serverless:start
+    description: 'Scaffold and run Twilio Functions & Assets locally (via @twilio-labs/plugin-serverless), then `twilio serverless:deploy` to publish.'
+  redirect_webhooks:
+    command: twilio phone-numbers:update <PN_SID> --sms-url http://localhost:1337/sms
+    description: 'Point a number''s webhook at a local dev endpoint; commonly paired with an ngrok/tunnel for local development.'
+gaps:
+  # Honest gaps — captured per the no-fabrication rule rather than invented.
+  autopilot: >-
+    The task requested an autopilot command group, but Twilio Autopilot reached
+    end-of-support on 2023-02-25 and full end-of-life on 2023-08-25; its APIs no
+    longer function and it is not part of the current CLI surface. An autopilot
+    OpenAPI (autopilot-openapi-original.yml) remains in openapi/ only as a
+    historical artifact. No autopilot commands are captured.
+  messaging_top_level: >-
+    There is no dedicated top-level `messaging` topic; messaging is reached via
+    api:core:messages:* and api:messaging:*. Captured accordingly.
+  exact_subcommand_flags: >-
+    Full per-command flag lists are auto-generated from OpenAPI and best obtained
+    live via `twilio <command> -h`; only verified/representative commands are
+    enumerated here.
