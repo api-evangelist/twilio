@@ -1,0 +1,60 @@
+generated: '2026-07-17'
+method: searched
+status: published
+source: https://www.twilio.com/docs/ai/mcp
+description: >-
+  Twilio publishes two official Model Context Protocol (MCP) servers. A hosted,
+  read-only documentation/discovery server (twilio-docs) that needs no account,
+  and an executing server (@twilio-alpha/mcp / twilio-labs/mcp) that exposes
+  Twilio's full REST API surface (1,800+ endpoints across 30+ products) as MCP
+  tools using your Account SID + API Key credentials. Pair with the official
+  Twilio Agent Skills (skills/) for the "which product / how to build" layer.
+docs:
+  - https://www.twilio.com/docs/ai/mcp
+  - https://www.twilio.com/en-us/blog/developers/introducing-twilio-mcp-skills
+servers:
+  - name: twilio-docs
+    kind: hosted-remote
+    transport: http
+    url: https://mcp.twilio.com/docs
+    auth: none
+    read_only: true
+    description: >-
+      Remote MCP server indexing Twilio's public API specifications and docs.
+      No Twilio account or API keys required; does not execute API calls.
+    install:
+      claude: claude mcp add --transport http twilio-docs https://mcp.twilio.com/docs
+    tools:
+      - name: twilio__search
+        description: >-
+          Takes a natural-language query and returns ranked API operations,
+          documentation articles, and IDs.
+      - name: twilio__retrieve
+        description: >-
+          Takes one or more API IDs from search results and returns full
+          parameter schemas and response schemas.
+    surface: 1800+ endpoints across 30+ products
+  - name: twilio-alpha-mcp
+    kind: local-npm
+    transport: stdio
+    package: "@twilio-alpha/mcp"
+    registry: npm
+    npm: https://www.npmjs.com/package/@twilio-alpha/mcp
+    repo: https://github.com/twilio-labs/mcp
+    auth: Account SID + API Key SID + API Key Secret
+    read_only: false
+    description: >-
+      OpenAPI-to-MCP tool generator that exposes all of Twilio's API as MCP
+      tools and can execute API calls on your behalf. Tools are generated from
+      Twilio's OpenAPI specifications; scope with a services/tags filter to
+      avoid overloading the agent's tool list.
+    install: npm i @twilio-alpha/mcp
+    run: npx -y @twilio-alpha/mcp --account-sid AC... --api-key SK... --api-secret ...
+    surface: 1400+ API endpoints generated from Twilio OpenAPI specs
+tool_generation:
+  note: >-
+    The executing server derives one MCP tool per Twilio API operation from the
+    provider's OpenAPI. The operations captured in this repo's arazzo/ workflows
+    and skills/ (send-message, lookup, verify start/check, create-call,
+    create-conference, create-video-room, sendgrid mail send) are representative
+    of the tool surface.

@@ -1,0 +1,35 @@
+overlay: 1.0.0
+info:
+  title: API Evangelist enhancements for Twilio Messaging API
+  version: 1.0.0
+extends: openapi/twilio-messaging-openapi.yml
+x-provenance:
+  generated: '2026-07-17'
+  method: generated
+  note: >-
+    Non-destructive overlay capturing API Evangelist enrichment metadata for this
+    Twilio spec. Applied on top of the harvested OpenAPI; the original spec is
+    never mutated. Cross-links the runtime-semantics artifacts derived in this
+    repo (conventions, authentication, errors, lifecycle) and the agent surface
+    (MCP server + Agent Skills) Twilio publishes.
+actions:
+  - target: $.info
+    update:
+      x-apievangelist-enriched: true
+      x-apievangelist-artifacts:
+        conventions: conventions/twilio-conventions.yml
+        authentication: authentication/twilio-authentication.yml
+        errors: errors/twilio-error-codes.yml
+        lifecycle: lifecycle/twilio-lifecycle.yml
+        conformance: conformance/twilio-conformance.yml
+        mcp: mcp/twilio-mcp.yml
+        skills: skills/_index.yml
+      x-agent-ready:
+        mcp_server: https://mcp.twilio.com/docs
+        agent_skills: https://github.com/twilio/ai
+  - target: $.components.securitySchemes
+    update:
+      x-apievangelist-auth-note: >-
+        Twilio authenticates with HTTP Basic — Account SID + Auth Token, or an
+        API Key SID (SK...) + secret (preferred for production). See
+        authentication/twilio-authentication.yml.

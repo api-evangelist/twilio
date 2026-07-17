@@ -1,0 +1,27 @@
+generated: '2026-07-17'
+method: probed
+source: live probe of /.well-known/* on Twilio hosts (2026-07-17)
+description: >-
+  Probe of the /.well-known/ discovery surface on Twilio's primary hosts. Twilio
+  does not publish machine-readable discovery documents at these paths — every
+  probed path returned 404. Absence is recorded as valid data; no WellKnown
+  rating pointer is emitted because no catalog was found. Twilio's OAuth/OIDC is
+  product-scoped (not a single authorization server) and it uses HTTP Basic
+  (Account SID + Auth Token / API Key) for the REST API rather than OIDC
+  discovery. Security-contact discovery lives at the pages captured in
+  security/twilio-vulnerability-disclosure.yml, not in /.well-known/security.txt.
+hosts:
+  - host: https://www.twilio.com
+    documents:
+      - {path: /.well-known/security.txt, status: 404}
+      - {path: /.well-known/openid-configuration, status: 404}
+      - {path: /.well-known/oauth-authorization-server, status: 404}
+      - {path: /.well-known/api-catalog, status: 404}
+      - {path: /.well-known/ai-plugin.json, status: 404}
+  - host: https://api.twilio.com
+    documents:
+      - {path: /.well-known/security.txt, status: 404}
+      - {path: /.well-known/openid-configuration, status: 404}
+      - {path: /.well-known/oauth-authorization-server, status: 404}
+      - {path: /.well-known/api-catalog, status: 404}
+      - {path: /.well-known/ai-plugin.json, status: 404}

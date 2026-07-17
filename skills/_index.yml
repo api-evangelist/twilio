@@ -1,0 +1,60 @@
+generated: '2026-07-17'
+method: searched
+source: https://github.com/twilio/ai/tree/main/skills
+docs: https://www.twilio.com/docs/ai/skills
+description: >-
+  Official Twilio Agent Skills (SKILL.md, the open Agent Skills standard)
+  published by Twilio at github.com/twilio/ai. Skills are structured packages of
+  product knowledge that guide an AI coding agent to the right Twilio approach;
+  the Twilio MCP server (see mcp/twilio-mcp.yml) then supplies the precise API
+  details. Twilio publishes ~48 skills across the twilio/ and sendgrid/ product
+  families; a marquee subset that mirrors this repo's arazzo/ workflows is
+  captured here verbatim. Install the full set via the Claude/Cursor plugin
+  `twilio-developer-kit` or `git clone https://github.com/twilio/ai`.
+install:
+  claude: claude plugin install twilio-developer-kit
+  cursor: /add-plugin twilio-developer-kit
+  manual: git clone https://github.com/twilio/ai.git && cp -r ai/skills/ ~/.agents/skills/
+skills:
+  - file: twilio-sms-send-message.md
+    name: twilio-sms-send-message
+    product: Messaging
+    api: openapi/messaging-openapi-original.yml
+    source: https://github.com/twilio/ai/blob/main/skills/twilio/twilio-sms-send-message/SKILL.md
+    summary: SMS/MMS deep-dive — error codes, message filtering, MMS media support, SMS pumping indicators.
+  - file: twilio-lookup-phone-intelligence.md
+    name: twilio-lookup-phone-intelligence
+    product: Lookup
+    api: openapi/twilio-lookup-openapi.yml
+    source: https://github.com/twilio/ai/blob/main/skills/twilio/twilio-lookup-phone-intelligence/SKILL.md
+    summary: Validate and enrich phone numbers — line type, carrier, SIM-swap, fraud/risk data packages.
+  - file: twilio-identity-verification-advisor.md
+    name: twilio-identity-verification-advisor
+    product: Verify
+    api: openapi/verify-openapi-original.yml
+    source: https://github.com/twilio/ai/blob/main/skills/twilio/twilio-identity-verification-advisor/SKILL.md
+    summary: Choose and implement an OTP / identity-verification approach with the Verify API.
+  - file: twilio-conference-calls.md
+    name: twilio-conference-calls
+    product: Voice
+    api: openapi/voice-openapi-original.yml
+    source: https://github.com/twilio/ai/blob/main/skills/twilio/twilio-conference-calls/SKILL.md
+    summary: Build and control conference calls, participants, and coaching/whisper with Programmable Voice.
+  - file: twilio-security-api-auth.md
+    name: twilio-security-api-auth
+    product: Account Security / IAM
+    api: authentication/twilio-authentication.yml
+    source: https://github.com/twilio/ai/blob/main/skills/twilio/twilio-security-api-auth/SKILL.md
+    summary: Authenticate to Twilio correctly — Account SID + Auth Token vs API Key/Secret, credential hygiene.
+  - file: twilio-sendgrid-email-send.md
+    name: twilio-sendgrid-email-send
+    product: SendGrid Email
+    api: openapi/twilio-sendgrid-openapi.yml
+    source: https://github.com/twilio/ai/blob/main/skills/sendgrid/twilio-sendgrid-email-send/SKILL.md
+    summary: Send transactional and bulk email via the SendGrid v3 Mail Send API (templates, scheduling, attachments).
+full_catalog:
+  note: >-
+    Twilio publishes ~48 skills; the full set is at github.com/twilio/ai/skills.
+    Families — Setup, Planner/Advisor, Product, Guardrail (security/compliance).
+  twilio_family_count: 40
+  sendgrid_family_count: 8

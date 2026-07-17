@@ -1,0 +1,56 @@
+generated: '2026-07-17'
+method: searched
+source: https://www.twilio.com/docs/sync/versioning-and-support-lifecycle
+description: >-
+  Twilio's API versioning, support-lifecycle, deprecation, status, and SLA
+  posture. Twilio runs a "classic" date-stamped API (/2010-04-01) plus
+  per-product APIs versioned with a numeric /v1 or /v2 segment. Products move
+  through a documented four-stage lifecycle (Latest -> Support -> Deprecated ->
+  End of Life), and end-of-life is announced through dated changelog notices.
+versioning:
+  scheme: >-
+    Classic API served under a fixed historical date path (/2010-04-01); each
+    newer product API served from its own subdomain with a numeric version
+    segment (/v1 or /v2).
+  classic_path: /2010-04-01
+  product_versions: [v1, v2]
+  docs: https://www.twilio.com/docs/usage/api
+support_lifecycle:
+  policy_url: https://www.twilio.com/docs/sync/versioning-and-support-lifecycle
+  stages:
+    - name: Latest
+      detail: Most recent major version, full support and new features.
+    - name: Support
+      detail: 12 months of limited support (bug and security fixes only).
+    - name: Deprecated
+      detail: No further updates provided.
+    - name: End of Life (EOL)
+      detail: >-
+        12 months after deprecation; continued operation not guaranteed and
+        Twilio may modify supporting systems without prior notification.
+deprecation:
+  policy_url: https://www.twilio.com/docs/sync/versioning-and-support-lifecycle
+  mechanism: >-
+    Deprecation and end-of-life are announced via dated changelog EOL notices
+    (e.g. Programmable Video, Twilio Live, Programmable Chat, Notify, 2008 API,
+    2010 API Explorer). Twilio does not document RFC 8594 Sunset/Deprecation
+    response headers on the REST API.
+  sunset_header: false
+  changelog: https://www.twilio.com/en-us/changelog
+  examples:
+    - {product: Programmable Video, url: https://www.twilio.com/en-us/changelog}
+    - {product: Twilio Live, url: https://www.twilio.com/en-us/changelog/twilio-live-end-of-life}
+    - {product: Programmable Chat, url: https://www.twilio.com/en-us/changelog/programmable-chat-end-of-life-notice}
+    - {product: Notify API, url: https://www.twilio.com/en-us/changelog/notify-api-eol-notice}
+status_page: https://status.twilio.com/
+sla:
+  note: >-
+    Twilio publishes SLAs / uptime commitments through enterprise agreements and
+    the status page; a single public uptime-target percentage is not documented
+    on the versioning-and-support-lifecycle page.
+  status_history: https://status.twilio.com/
+deprecated_operations:
+  note: >-
+    No operations in this repo's openapi/ are flagged deprecated:true; whole
+    products (Autopilot, IP Messaging/Chat, Frontline legacy, Notify) have been
+    or are being sunset at the product level via the changelog above.
