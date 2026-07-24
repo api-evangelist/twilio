@@ -1,0 +1,618 @@
+openapi: 3.0.1
+info:
+  title: Twilio - Accounts A2p Video API
+  description: This is the public Twilio REST API.
+  termsOfService: https://www.twilio.com/legal/tos
+  contact:
+    name: Twilio Support
+    url: https://support.twilio.com
+    email: support@twilio.com
+  license:
+    name: Apache 2.0
+    url: https://www.apache.org/licenses/LICENSE-2.0.html
+  version: 1.52.0
+servers:
+- url: https://accounts.twilio.com
+tags:
+- name: Video
+paths:
+  /v1/Video/Rooms/{RoomSid}/Participants/{ParticipantSid}:
+    servers:
+    - url: https://insights.twilio.com
+    description: 'TODO: Resource-level docs'
+    x-twilio:
+      defaultOutputProperties:
+      - participant_sid
+      pathType: instance
+      parent: /Video/Rooms/{RoomSid}
+    get:
+      description: Get Video Log Analyzer data for a Room Participant.
+      tags:
+      - Video
+      parameters:
+      - name: RoomSid
+        in: path
+        description: The SID of the Room resource.
+        schema:
+          type: string
+        required: true
+      - name: ParticipantSid
+        in: path
+        description: The SID of the Participant resource.
+        schema:
+          type: string
+        required: true
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/insights.v1.video_room_summary.video_participant_summary'
+          description: OK
+      security:
+      - accountSid_authToken: []
+      operationId: FetchVideoParticipantSummary
+      x-maturity:
+      - Beta
+  /v1/Video/Rooms/{RoomSid}/Participants:
+    servers:
+    - url: https://insights.twilio.com
+    description: 'TODO: Resource-level docs'
+    x-twilio:
+      defaultOutputProperties:
+      - participant_sid
+      pathType: list
+      parent: /Video/Rooms/{RoomSid}
+    get:
+      description: Get a list of room participants.
+      tags:
+      - Video
+      parameters:
+      - name: RoomSid
+        in: path
+        description: The SID of the Room resource.
+        schema:
+          type: string
+        required: true
+      - name: PageSize
+        in: query
+        description: How many resources to return in each list page. The default is 50, and the maximum is 1000.
+        schema:
+          type: integer
+          minimum: 1
+          maximum: 1000
+      - name: Page
+        in: query
+        description: The page index. This value is simply for client state.
+        schema:
+          type: integer
+          minimum: 0
+      - name: PageToken
+        in: query
+        description: The page token. This is provided by the API.
+        schema:
+          type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ListVideoParticipantSummaryResponse'
+          description: OK
+      security:
+      - accountSid_authToken: []
+      operationId: ListVideoParticipantSummary
+      x-maturity:
+      - Beta
+  /v1/Video/Rooms/{RoomSid}:
+    servers:
+    - url: https://insights.twilio.com
+    description: 'TODO: Resource-level docs'
+    x-twilio:
+      defaultOutputProperties:
+      - room_sid
+      - create_time
+      pathType: instance
+      dependentProperties:
+        participants:
+          mapping:
+            room_sid: room_sid
+          resource_url: /v1/Video/Rooms/{room_sid}/Participants
+    get:
+      description: Get Video Log Analyzer data for a Room.
+      tags:
+      - Video
+      parameters:
+      - name: RoomSid
+        in: path
+        description: The SID of the Room resource.
+        schema:
+          type: string
+        required: true
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/insights.v1.video_room_summary'
+          description: OK
+      security:
+      - accountSid_authToken: []
+      operationId: FetchVideoRoomSummary
+      x-maturity:
+      - Beta
+  /v1/Video/Rooms:
+    servers:
+    - url: https://insights.twilio.com
+    description: 'TODO: Resource-level docs'
+    x-twilio:
+      defaultOutputProperties:
+      - room_sid
+      - create_time
+      pathType: list
+      dependentProperties:
+        participants:
+          mapping:
+            room_sid: room_sid
+          resource_url: /v1/Video/Rooms/{room_sid}/Participants
+    get:
+      description: Get a list of Programmable Video Rooms.
+      tags:
+      - Video
+      parameters:
+      - name: RoomType
+        in: query
+        description: Type of room. Can be `go`, `peer_to_peer`, `group`, or `group_small`.
+        schema:
+          type: array
+          items:
+            type: string
+            $ref: '#/components/schemas/video_room_summary_enum_room_type'
+      - name: Codec
+        in: query
+        description: Codecs used by participants in the room. Can be `VP8`, `H264`, or `VP9`.
+        schema:
+          type: array
+          items:
+            type: string
+            $ref: '#/components/schemas/video_room_summary_enum_codec'
+      - name: RoomName
+        in: query
+        description: Room friendly name.
+        schema:
+          type: string
+      - name: CreatedAfter
+        in: query
+        description: Only read rooms that started on or after this ISO 8601 timestamp.
+        schema:
+          type: string
+          format: date-time
+      - name: CreatedBefore
+        in: query
+        description: Only read rooms that started before this ISO 8601 timestamp.
+        schema:
+          type: string
+          format: date-time
+      - name: PageSize
+        in: query
+        description: How many resources to return in each list page. The default is 50, and the maximum is 1000.
+        schema:
+          type: integer
+          minimum: 1
+          maximum: 1000
+      - name: Page
+        in: query
+        description: The page index. This value is simply for client state.
+        schema:
+          type: integer
+          minimum: 0
+      - name: PageToken
+        in: query
+        description: The page token. This is provided by the API.
+        schema:
+          type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ListVideoRoomSummaryResponse'
+          description: OK
+      security:
+      - accountSid_authToken: []
+      operationId: ListVideoRoomSummary
+      x-maturity:
+      - Beta
+components:
+  schemas:
+    video_room_summary_enum_codec:
+      type: string
+      enum:
+      - VP8
+      - H264
+      - VP9
+    video_room_summary_enum_edge_location:
+      type: string
+      enum:
+      - ashburn
+      - dublin
+      - frankfurt
+      - singapore
+      - sydney
+      - sao_paulo
+      - roaming
+      - umatilla
+      - tokyo
+    video_room_summary_enum_created_method:
+      type: string
+      enum:
+      - sdk
+      - ad_hoc
+      - api
+    insights.v1.video_room_summary.video_participant_summary:
+      type: object
+      properties:
+        participant_sid:
+          type: string
+          minLength: 34
+          maxLength: 34
+          pattern: ^PA[0-9a-fA-F]{32}$
+          nullable: true
+          description: Unique identifier for the participant.
+        participant_identity:
+          type: string
+          nullable: true
+          description: The application-defined string that uniquely identifies the participant within a Room.
+        join_time:
+          type: string
+          format: date-time
+          nullable: true
+          description: When the participant joined the room.
+        leave_time:
+          type: string
+          format: date-time
+          nullable: true
+          description: When the participant left the room.
+        duration_sec:
+          type: integer
+          format: int64
+          nullable: true
+          description: Amount of time in seconds the participant was in the room.
+        account_sid:
+          type: string
+          minLength: 34
+          maxLength: 34
+          pattern: ^AC[0-9a-fA-F]{32}$
+          nullable: true
+          description: Account SID associated with the room.
+        room_sid:
+          type: string
+          minLength: 34
+          maxLength: 34
+          pattern: ^RM[0-9a-fA-F]{32}$
+          nullable: true
+          description: Unique identifier for the room.
+        status:
+          type: string
+          $ref: '#/components/schemas/video_participant_summary_enum_room_status'
+          nullable: true
+          description: Status of the room. Can be `in_progress` or `completed`.
+        codecs:
+          type: array
+          items:
+            type: string
+            $ref: '#/components/schemas/video_participant_summary_enum_codec'
+          nullable: true
+          description: Codecs detected from the participant. Can be `VP8`, `H264`, or `VP9`.
+        end_reason:
+          type: string
+          nullable: true
+          description: Reason the participant left the room. See [the list of possible values here](https://www.twilio.com/docs/video/troubleshooting/video-log-analyzer-api#end_reason).
+        error_code:
+          type: integer
+          nullable: true
+          description: Errors encountered by the participant.
+        error_code_url:
+          type: string
+          nullable: true
+          description: Twilio error code dictionary link.
+        media_region:
+          type: string
+          $ref: '#/components/schemas/video_participant_summary_enum_twilio_realm'
+          nullable: true
+          description: Twilio media region the participant connected to. See [the list of possible media servers here](https://www.twilio.com/docs/video/ip-addresses).
+        properties:
+          nullable: true
+          description: Object containing information about the participant's data from the room. See [below](https://www.twilio.com/docs/video/troubleshooting/video-log-analyzer-api#properties) for more information.
+        edge_location:
+          type: string
+          $ref: '#/components/schemas/video_participant_summary_enum_edge_location'
+          nullable: true
+          description: Name of the edge location the participant connected to. See [the list of public edge locations](https://www.twilio.com/docs/global-infrastructure/edge-locations#public-edge-locations) for the possible values.
+        publisher_info:
+          nullable: true
+          description: Object containing information about the SDK name and version. See [below](https://www.twilio.com/docs/video/troubleshooting/video-log-analyzer-api#publisher_info) for more information.
+        url:
+          type: string
+          format: uri
+          nullable: true
+          description: URL of the participant resource.
+    video_participant_summary_enum_room_status:
+      type: string
+      enum:
+      - in_progress
+      - completed
+    video_room_summary_enum_processing_state:
+      type: string
+      enum:
+      - complete
+      - in_progress
+    insights.v1.video_room_summary:
+      type: object
+      properties:
+        account_sid:
+          type: string
+          minLength: 34
+          maxLength: 34
+          pattern: ^AC[0-9a-fA-F]{32}$
+          nullable: true
+          description: Account SID associated with this room.
+        room_sid:
+          type: string
+          minLength: 34
+          maxLength: 34
+          pattern: ^RM[0-9a-fA-F]{32}$
+          nullable: true
+          description: Unique identifier for the room.
+        room_name:
+          type: string
+          nullable: true
+          description: Room friendly name.
+        create_time:
+          type: string
+          format: date-time
+          nullable: true
+          description: Creation time of the room.
+        end_time:
+          type: string
+          format: date-time
+          nullable: true
+          description: End time for the room.
+        room_type:
+          type: string
+          $ref: '#/components/schemas/video_room_summary_enum_room_type'
+          nullable: true
+          description: Type of room. Can be `go`, `peer_to_peer`, `group`, or `group_small`.
+        room_status:
+          type: string
+          $ref: '#/components/schemas/video_room_summary_enum_room_status'
+          nullable: true
+          description: Status of the room. Can be `in_progress` or `completed`.
+        status_callback:
+          type: string
+          format: uri
+          nullable: true
+          description: Webhook provided for status callbacks.
+        status_callback_method:
+          type: string
+          format: http-method
+          enum:
+          - HEAD
+          - GET
+          - POST
+          - PATCH
+          - PUT
+          - DELETE
+          nullable: true
+          description: HTTP method provided for status callback URL.
+        created_method:
+          type: string
+          $ref: '#/components/schemas/video_room_summary_enum_created_method'
+          nullable: true
+          description: How the room was created. Can be `sdk`, `ad_hoc`, or `api`.
+        end_reason:
+          type: string
+          $ref: '#/components/schemas/video_room_summary_enum_end_reason'
+          nullable: true
+          description: Reason the room ended. Can be `room_ended_via_api` or `timeout`.
+        max_participants:
+          type: integer
+          nullable: true
+          description: Max number of total participants allowed by the application settings.
+        unique_participants:
+          type: integer
+          nullable: true
+          description: Number of participants. May include duplicate identities for participants who left and rejoined.
+        unique_participant_identities:
+          type: integer
+          nullable: true
+          description: Unique number of participant identities.
+        concurrent_participants:
+          type: integer
+          nullable: true
+          description: Actual number of concurrent participants.
+        max_concurrent_participants:
+          type: integer
+          nullable: true
+          description: Maximum number of participants allowed in the room at the same time allowed by the application settings.
+        codecs:
+          type: array
+          items:
+            type: string
+            $ref: '#/components/schemas/video_room_summary_enum_codec'
+          nullable: true
+          description: Codecs used by participants in the room. Can be `VP8`, `H264`, or `VP9`.
+        media_region:
+          type: string
+          $ref: '#/components/schemas/video_room_summary_enum_twilio_realm'
+          nullable: true
+          description: Region of Twilio media servers for the room. See [the list of possible media servers here](https://www.twilio.com/docs/video/ip-addresses).
+        duration_sec:
+          type: integer
+          format: int64
+          nullable: true
+          description: Total room duration from create time to end time.
+        total_participant_duration_sec:
+          type: integer
+          format: int64
+          nullable: true
+          description: Combined amount of participant time in the room.
+        total_recording_duration_sec:
+          type: integer
+          format: int64
+          nullable: true
+          description: Combined amount of recorded seconds for participants in the room.
+        processing_state:
+          type: string
+          $ref: '#/components/schemas/video_room_summary_enum_processing_state'
+          nullable: true
+          description: Video Log Analyzer resource state. Will be either `in-progress` or `complete`. `in-progress` indicates that more details may be appended to the resource. `complete` indicates no further information will be added.
+        recording_enabled:
+          type: boolean
+          nullable: true
+          description: Boolean indicating if recording is enabled for the room.
+        edge_location:
+          type: string
+          $ref: '#/components/schemas/video_room_summary_enum_edge_location'
+          nullable: true
+          description: Edge location of Twilio media servers for the room. See [the list of public edge locations](https://www.twilio.com/docs/global-infrastructure/edge-locations#public-edge-locations) for the possible values.
+        url:
+          type: string
+          format: uri
+          nullable: true
+          description: URL for the room resource.
+        links:
+          type: object
+          format: uri-map
+          nullable: true
+          description: Room subresources.
+    video_participant_summary_enum_codec:
+      type: string
+      enum:
+      - VP8
+      - H264
+      - VP9
+    video_room_summary_enum_room_type:
+      type: string
+      enum:
+      - go
+      - peer_to_peer
+      - group
+      - group_small
+    ListVideoRoomSummaryResponse:
+      type: object
+      properties:
+        rooms:
+          type: array
+          items:
+            $ref: '#/components/schemas/insights.v1.video_room_summary'
+        meta:
+          type: object
+          properties:
+            first_page_url:
+              type: string
+              format: uri
+            next_page_url:
+              type: string
+              format: uri
+              nullable: true
+            page:
+              type: integer
+            page_size:
+              type: integer
+            previous_page_url:
+              type: string
+              format: uri
+              nullable: true
+            url:
+              type: string
+              format: uri
+            key:
+              type: string
+    ListVideoParticipantSummaryResponse:
+      type: object
+      properties:
+        participants:
+          type: array
+          items:
+            $ref: '#/components/schemas/insights.v1.video_room_summary.video_participant_summary'
+        meta:
+          type: object
+          properties:
+            first_page_url:
+              type: string
+              format: uri
+            next_page_url:
+              type: string
+              format: uri
+              nullable: true
+            page:
+              type: integer
+            page_size:
+              type: integer
+            previous_page_url:
+              type: string
+              format: uri
+              nullable: true
+            url:
+              type: string
+              format: uri
+            key:
+              type: string
+    video_participant_summary_enum_twilio_realm:
+      type: string
+      enum:
+      - us1
+      - us2
+      - au1
+      - br1
+      - ie1
+      - jp1
+      - sg1
+      - in1
+      - de1
+      - gll
+    video_room_summary_enum_room_status:
+      type: string
+      enum:
+      - in_progress
+      - completed
+    video_room_summary_enum_twilio_realm:
+      type: string
+      enum:
+      - us1
+      - us2
+      - au1
+      - br1
+      - ie1
+      - jp1
+      - sg1
+      - in1
+      - de1
+      - gll
+    video_room_summary_enum_end_reason:
+      type: string
+      enum:
+      - room_ended_via_api
+      - timeout
+    video_participant_summary_enum_edge_location:
+      type: string
+      enum:
+      - ashburn
+      - dublin
+      - frankfurt
+      - singapore
+      - sydney
+      - sao_paulo
+      - roaming
+      - umatilla
+      - tokyo
+  securitySchemes:
+    accountSid_authToken:
+      type: http
+      scheme: basic
+x-maturity:
+- name: GA
+  description: This product is Generally Available.
+- name: Beta
+  description: PLEASE NOTE that this is a Beta product that is subject to change. Use it with caution.

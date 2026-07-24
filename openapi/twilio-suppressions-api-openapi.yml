@@ -1,0 +1,165 @@
+openapi: 3.0.1
+info:
+  title: Twilio - Accounts A2p Suppressions API
+  description: This is the public Twilio REST API.
+  termsOfService: https://www.twilio.com/legal/tos
+  contact:
+    name: Twilio Support
+    url: https://support.twilio.com
+    email: support@twilio.com
+  license:
+    name: Apache 2.0
+    url: https://www.apache.org/licenses/LICENSE-2.0.html
+  version: 1.52.0
+servers:
+- url: https://accounts.twilio.com
+tags:
+- name: Suppressions
+  description: Manage email suppressions and bounces
+paths:
+  /suppression/bounces:
+    get:
+      operationId: listBounces
+      summary: Twilio List Bounced Emails
+      tags:
+      - Suppressions
+      parameters:
+      - name: start_time
+        in: query
+        schema:
+          type: integer
+          description: Start of date range (Unix timestamp)
+      - name: end_time
+        in: query
+        schema:
+          type: integer
+      - name: limit
+        in: query
+        schema:
+          type: integer
+          default: 500
+      - name: offset
+        in: query
+        schema:
+          type: integer
+          default: 0
+      responses:
+        '200':
+          description: List of bounces
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Bounce'
+    delete:
+      operationId: deleteBounces
+      summary: Twilio Delete Bounces
+      tags:
+      - Suppressions
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                delete_all:
+                  type: boolean
+                emails:
+                  type: array
+                  items:
+                    type: string
+                    format: email
+      responses:
+        '204':
+          description: Bounces deleted
+  /suppression/blocks:
+    get:
+      operationId: listBlocks
+      summary: Twilio List Blocked Emails
+      tags:
+      - Suppressions
+      parameters:
+      - name: start_time
+        in: query
+        schema:
+          type: integer
+      - name: end_time
+        in: query
+        schema:
+          type: integer
+      - name: limit
+        in: query
+        schema:
+          type: integer
+          default: 500
+      responses:
+        '200':
+          description: List of blocks
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Block'
+  /suppression/unsubscribes:
+    get:
+      operationId: listGlobalUnsubscribes
+      summary: Twilio List Global Unsubscribes
+      tags:
+      - Suppressions
+      parameters:
+      - name: start_time
+        in: query
+        schema:
+          type: integer
+      - name: end_time
+        in: query
+        schema:
+          type: integer
+      - name: limit
+        in: query
+        schema:
+          type: integer
+          default: 500
+      responses:
+        '200':
+          description: List of global unsubscribes
+components:
+  schemas:
+    Bounce:
+      type: object
+      properties:
+        email:
+          type: string
+          format: email
+        status:
+          type: string
+          description: SMTP status code
+        reason:
+          type: string
+          description: Bounce reason from the receiving server
+        created:
+          type: integer
+          description: Unix timestamp when the bounce occurred
+    Block:
+      type: object
+      properties:
+        email:
+          type: string
+          format: email
+        status:
+          type: string
+        reason:
+          type: string
+        created:
+          type: integer
+  securitySchemes:
+    accountSid_authToken:
+      type: http
+      scheme: basic
+x-maturity:
+- name: GA
+  description: This product is Generally Available.
+- name: Beta
+  description: PLEASE NOTE that this is a Beta product that is subject to change. Use it with caution.

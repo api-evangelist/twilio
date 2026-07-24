@@ -1,0 +1,578 @@
+openapi: 3.0.1
+info:
+  title: Twilio - Accounts A2p LinkShortening API
+  description: This is the public Twilio REST API.
+  termsOfService: https://www.twilio.com/legal/tos
+  contact:
+    name: Twilio Support
+    url: https://support.twilio.com
+    email: support@twilio.com
+  license:
+    name: Apache 2.0
+    url: https://www.apache.org/licenses/LICENSE-2.0.html
+  version: 1.52.0
+servers:
+- url: https://accounts.twilio.com
+tags:
+- name: LinkShortening
+paths:
+  /v1/LinkShortening/Domains/{DomainSid}/Certificate:
+    servers:
+    - url: https://messaging.twilio.com
+    description: 'TODO: Resource-level docs'
+    x-twilio:
+      defaultOutputProperties:
+      - certificate_sid
+      - domain_name
+      - domain_sid
+      - date_expires
+      - date_created
+      - date_updated
+      - url
+      pathType: instance
+      mountName: domain_certs
+      className: domain_certs
+    post:
+      description: ''
+      tags:
+      - LinkShortening
+      parameters:
+      - name: DomainSid
+        in: path
+        description: Unique string used to identify the domain that this certificate should be associated with.
+        schema:
+          type: string
+          minLength: 34
+          maxLength: 34
+          pattern: ^DN[0-9a-fA-F]{32}$
+        required: true
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/messaging.v1.domain_cert_v4'
+          description: OK
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/messaging.v1.domain_cert_v4'
+          description: Created
+      security:
+      - accountSid_authToken: []
+      operationId: UpdateDomainCertV4
+      x-maturity:
+      - Beta
+      requestBody:
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/UpdateDomainCertV4Request'
+    get:
+      description: ''
+      tags:
+      - LinkShortening
+      parameters:
+      - name: DomainSid
+        in: path
+        description: Unique string used to identify the domain that this certificate should be associated with.
+        schema:
+          type: string
+          minLength: 34
+          maxLength: 34
+          pattern: ^DN[0-9a-fA-F]{32}$
+        required: true
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/messaging.v1.domain_cert_v4'
+          description: OK
+      security:
+      - accountSid_authToken: []
+      operationId: FetchDomainCertV4
+      x-maturity:
+      - Beta
+    delete:
+      description: ''
+      tags:
+      - LinkShortening
+      parameters:
+      - name: DomainSid
+        in: path
+        description: Unique string used to identify the domain that this certificate should be associated with.
+        schema:
+          type: string
+          minLength: 34
+          maxLength: 34
+          pattern: ^DN[0-9a-fA-F]{32}$
+        required: true
+      responses:
+        '204':
+          description: The resource was deleted successfully.
+      security:
+      - accountSid_authToken: []
+      operationId: DeleteDomainCertV4
+      x-maturity:
+      - Beta
+  /v1/LinkShortening/Domains/{DomainSid}/Config:
+    servers:
+    - url: https://messaging.twilio.com
+    description: 'TODO: Resource-level docs'
+    x-twilio:
+      defaultOutputProperties:
+      - config_sid
+      - fallback_url
+      - callback_url
+      - continue_on_failure
+      - date_created
+      - date_updated
+      - url
+      - disable_https
+      pathType: instance
+      mountName: domain_config
+    post:
+      description: ''
+      tags:
+      - LinkShortening
+      parameters:
+      - name: DomainSid
+        in: path
+        description: Unique string used to identify the domain that this config should be associated with.
+        schema:
+          type: string
+          minLength: 34
+          maxLength: 34
+          pattern: ^DN[0-9a-fA-F]{32}$
+        required: true
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/messaging.v1.domain_config'
+          description: OK
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/messaging.v1.domain_config'
+          description: Created
+      security:
+      - accountSid_authToken: []
+      operationId: UpdateDomainConfig
+      x-maturity:
+      - Beta
+      requestBody:
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/UpdateDomainConfigRequest'
+    get:
+      description: ''
+      tags:
+      - LinkShortening
+      parameters:
+      - name: DomainSid
+        in: path
+        description: Unique string used to identify the domain that this config should be associated with.
+        schema:
+          type: string
+          minLength: 34
+          maxLength: 34
+          pattern: ^DN[0-9a-fA-F]{32}$
+        required: true
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/messaging.v1.domain_config'
+          description: OK
+      security:
+      - accountSid_authToken: []
+      operationId: FetchDomainConfig
+      x-maturity:
+      - Beta
+  /v1/LinkShortening/MessagingService/{MessagingServiceSid}/DomainConfig:
+    servers:
+    - url: https://messaging.twilio.com
+    description: 'TODO: Resource-level docs'
+    x-twilio:
+      defaultOutputProperties:
+      - domain_sid
+      - config_sid
+      - fallback_url
+      - callback_url
+      - continue_on_failure
+      - date_created
+      - date_updated
+      - url
+      - messaging_service_sid
+      pathType: instance
+      mountName: domain_config_messaging_service
+    get:
+      description: ''
+      tags:
+      - LinkShortening
+      parameters:
+      - name: MessagingServiceSid
+        in: path
+        description: Unique string used to identify the Messaging service that this domain should be associated with.
+        schema:
+          type: string
+          minLength: 34
+          maxLength: 34
+          pattern: ^MG[0-9a-fA-F]{32}$
+        required: true
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/messaging.v1.domain_config_messaging_service'
+          description: OK
+      security:
+      - accountSid_authToken: []
+      operationId: FetchDomainConfigMessagingService
+      x-maturity:
+      - Beta
+  /v1/LinkShortening/Domains/{DomainSid}/MessagingServices/{MessagingServiceSid}:
+    servers:
+    - url: https://messaging.twilio.com
+    description: 'TODO: Resource-level docs'
+    x-twilio:
+      defaultOutputProperties:
+      - messaging_service_sid
+      - domain_sid
+      - url
+      pathType: instance
+      mountName: linkshortening_messaging_service
+    post:
+      description: ''
+      tags:
+      - LinkShortening
+      parameters:
+      - name: DomainSid
+        in: path
+        description: The domain SID to associate with a messaging service. With URL shortening enabled, links in messages sent with the associated messaging service will be shortened to the provided domain
+        schema:
+          type: string
+          minLength: 34
+          maxLength: 34
+          pattern: ^DN[0-9a-fA-F]{32}$
+        required: true
+      - name: MessagingServiceSid
+        in: path
+        description: A messaging service SID to associate with a domain. With URL shortening enabled, links in messages sent with the provided messaging service will be shortened to the associated domain
+        schema:
+          type: string
+          minLength: 34
+          maxLength: 34
+          pattern: ^MG[0-9a-fA-F]{32}$
+        required: true
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/messaging.v1.linkshortening_messaging_service'
+          description: Created
+      security:
+      - accountSid_authToken: []
+      operationId: CreateLinkshorteningMessagingService
+      x-maturity:
+      - Beta
+    delete:
+      description: ''
+      tags:
+      - LinkShortening
+      parameters:
+      - name: DomainSid
+        in: path
+        description: The domain SID to dissociate from a messaging service. With URL shortening enabled, links in messages sent with the associated messaging service will be shortened to the provided domain
+        schema:
+          type: string
+          minLength: 34
+          maxLength: 34
+          pattern: ^DN[0-9a-fA-F]{32}$
+        required: true
+      - name: MessagingServiceSid
+        in: path
+        description: A messaging service SID to dissociate from a domain. With URL shortening enabled, links in messages sent with the provided messaging service will be shortened to the associated domain
+        schema:
+          type: string
+          minLength: 34
+          maxLength: 34
+          pattern: ^MG[0-9a-fA-F]{32}$
+        required: true
+      responses:
+        '204':
+          description: The resource was deleted successfully.
+      security:
+      - accountSid_authToken: []
+      operationId: DeleteLinkshorteningMessagingService
+      x-maturity:
+      - Beta
+  /v1/LinkShortening/MessagingServices/{MessagingServiceSid}/Domain:
+    servers:
+    - url: https://messaging.twilio.com
+    description: 'TODO: Resource-level docs'
+    x-twilio:
+      defaultOutputProperties:
+      - domain_sid
+      - messaging_service_sid
+      - url
+      pathType: instance
+      mountName: linkshortening_messaging_service_domain_association
+    get:
+      description: ''
+      tags:
+      - LinkShortening
+      parameters:
+      - name: MessagingServiceSid
+        in: path
+        description: Unique string used to identify the Messaging service that this domain should be associated with.
+        schema:
+          type: string
+          minLength: 34
+          maxLength: 34
+          pattern: ^MG[0-9a-fA-F]{32}$
+        required: true
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/messaging.v1.linkshortening_messaging_service_domain_association'
+          description: OK
+      security:
+      - accountSid_authToken: []
+      operationId: FetchLinkshorteningMessagingServiceDomainAssociation
+      x-maturity:
+      - Beta
+components:
+  schemas:
+    messaging.v1.domain_config:
+      type: object
+      properties:
+        domain_sid:
+          type: string
+          minLength: 34
+          maxLength: 34
+          pattern: ^DN[0-9a-fA-F]{32}$
+          nullable: true
+          description: The unique string that we created to identify the Domain resource.
+        config_sid:
+          type: string
+          minLength: 34
+          maxLength: 34
+          pattern: ^ZK[0-9a-fA-F]{32}$
+          nullable: true
+          description: The unique string that we created to identify the Domain config (prefix ZK).
+        fallback_url:
+          type: string
+          format: uri
+          nullable: true
+          description: Any requests we receive to this domain that do not match an existing shortened message will be redirected to the fallback url. These will likely be either expired messages, random misdirected traffic, or intentional scraping.
+        callback_url:
+          type: string
+          format: uri
+          nullable: true
+          description: URL to receive click events to your webhook whenever the recipients click on the shortened links.
+        continue_on_failure:
+          type: boolean
+          nullable: true
+          description: Boolean field to set customer delivery preference when there is a failure in linkShortening service
+        date_created:
+          type: string
+          format: date-time
+          nullable: true
+          description: Date this Domain Config was created.
+        date_updated:
+          type: string
+          format: date-time
+          nullable: true
+          description: Date that this Domain Config was last updated.
+        url:
+          type: string
+          format: uri
+          nullable: true
+        disable_https:
+          type: boolean
+          nullable: true
+          description: Customer's choice to send links with/without "https://" attached to shortened url. If true, messages will not be sent with https:// at the beginning of the url. If false, messages will be sent with https:// at the beginning of the url. False is the default behavior if it is not specified.
+    messaging.v1.linkshortening_messaging_service_domain_association:
+      type: object
+      properties:
+        domain_sid:
+          type: string
+          minLength: 34
+          maxLength: 34
+          pattern: ^DN[0-9a-fA-F]{32}$
+          nullable: true
+          description: The unique string that we created to identify the Domain resource.
+        messaging_service_sid:
+          type: string
+          minLength: 34
+          maxLength: 34
+          pattern: ^MG[0-9a-fA-F]{32}$
+          nullable: true
+          description: The unique string that identifies the messaging service
+        url:
+          type: string
+          format: uri
+          nullable: true
+    messaging.v1.domain_cert_v4:
+      type: object
+      properties:
+        domain_sid:
+          type: string
+          minLength: 34
+          maxLength: 34
+          pattern: ^DN[0-9a-fA-F]{32}$
+          nullable: true
+          description: The unique string that we created to identify the Domain resource.
+        date_updated:
+          type: string
+          format: date-time
+          nullable: true
+          description: Date that this Domain was last updated.
+        date_expires:
+          type: string
+          format: date-time
+          nullable: true
+          description: Date that the private certificate associated with this domain expires. You will need to update the certificate before that date to ensure your shortened links will continue to work.
+        date_created:
+          type: string
+          format: date-time
+          nullable: true
+          description: Date that this Domain was registered to the Twilio platform to create a new Domain object.
+        domain_name:
+          type: string
+          format: uri
+          nullable: true
+          description: Full url path for this domain.
+        certificate_sid:
+          type: string
+          minLength: 34
+          maxLength: 34
+          pattern: ^CW[0-9a-fA-F]{32}$
+          nullable: true
+          description: The unique string that we created to identify this Certificate resource.
+        url:
+          type: string
+          format: uri
+          nullable: true
+        cert_in_validation:
+          nullable: true
+          description: Optional JSON field describing the status and upload date of a new certificate in the process of validation
+    messaging.v1.domain_config_messaging_service:
+      type: object
+      properties:
+        domain_sid:
+          type: string
+          minLength: 34
+          maxLength: 34
+          pattern: ^DN[0-9a-fA-F]{32}$
+          nullable: true
+          description: The unique string that we created to identify the Domain resource.
+        config_sid:
+          type: string
+          minLength: 34
+          maxLength: 34
+          pattern: ^ZK[0-9a-fA-F]{32}$
+          nullable: true
+          description: The unique string that we created to identify the Domain config (prefix ZK).
+        messaging_service_sid:
+          type: string
+          minLength: 34
+          maxLength: 34
+          pattern: ^MG[0-9a-fA-F]{32}$
+          nullable: true
+          description: The unique string that identifies the messaging service
+        fallback_url:
+          type: string
+          format: uri
+          nullable: true
+          description: Any requests we receive to this domain that do not match an existing shortened message will be redirected to the fallback url. These will likely be either expired messages, random misdirected traffic, or intentional scraping.
+        callback_url:
+          type: string
+          format: uri
+          nullable: true
+          description: URL to receive click events to your webhook whenever the recipients click on the shortened links.
+        continue_on_failure:
+          type: boolean
+          nullable: true
+          description: Boolean field to set customer delivery preference when there is a failure in linkShortening service
+        date_created:
+          type: string
+          format: date-time
+          nullable: true
+          description: Date this Domain Config was created.
+        date_updated:
+          type: string
+          format: date-time
+          nullable: true
+          description: Date that this Domain Config was last updated.
+        url:
+          type: string
+          format: uri
+          nullable: true
+    UpdateDomainCertV4Request:
+      type: object
+      required:
+      - TlsCert
+      properties:
+        TlsCert:
+          type: string
+          description: 'Contains the full TLS certificate and private for this domain in PEM format: https://en.wikipedia.org/wiki/Privacy-Enhanced_Mail. Twilio uses this information to process HTTPS traffic sent to your domain.'
+    UpdateDomainConfigRequest:
+      type: object
+      properties:
+        FallbackUrl:
+          type: string
+          format: uri
+          description: Any requests we receive to this domain that do not match an existing shortened message will be redirected to the fallback url. These will likely be either expired messages, random misdirected traffic, or intentional scraping.
+        CallbackUrl:
+          type: string
+          format: uri
+          description: URL to receive click events to your webhook whenever the recipients click on the shortened links
+        ContinueOnFailure:
+          type: boolean
+          description: Boolean field to set customer delivery preference when there is a failure in linkShortening service
+        DisableHttps:
+          type: boolean
+          description: Customer's choice to send links with/without "https://" attached to shortened url. If true, messages will not be sent with https:// at the beginning of the url. If false, messages will be sent with https:// at the beginning of the url. False is the default behavior if it is not specified.
+    messaging.v1.linkshortening_messaging_service:
+      type: object
+      properties:
+        domain_sid:
+          type: string
+          minLength: 34
+          maxLength: 34
+          pattern: ^DN[0-9a-fA-F]{32}$
+          nullable: true
+          description: The unique string identifies the domain resource
+        messaging_service_sid:
+          type: string
+          minLength: 34
+          maxLength: 34
+          pattern: ^MG[0-9a-fA-F]{32}$
+          nullable: true
+          description: The unique string that identifies the messaging service
+        url:
+          type: string
+          format: uri
+          nullable: true
+  securitySchemes:
+    accountSid_authToken:
+      type: http
+      scheme: basic
+x-maturity:
+- name: GA
+  description: This product is Generally Available.
+- name: Beta
+  description: PLEASE NOTE that this is a Beta product that is subject to change. Use it with caution.

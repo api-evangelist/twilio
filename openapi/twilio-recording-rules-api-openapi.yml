@@ -1,0 +1,106 @@
+openapi: 3.0.1
+info:
+  title: Twilio - Accounts A2p Recording Rules API
+  description: This is the public Twilio REST API.
+  termsOfService: https://www.twilio.com/legal/tos
+  contact:
+    name: Twilio Support
+    url: https://support.twilio.com
+    email: support@twilio.com
+  license:
+    name: Apache 2.0
+    url: https://www.apache.org/licenses/LICENSE-2.0.html
+  version: 1.52.0
+servers:
+- url: https://accounts.twilio.com
+tags:
+- name: Recording Rules
+  description: Manage recording rules for rooms
+paths:
+  /Rooms/{RoomSid}/RecordingRules:
+    get:
+      operationId: fetchRecordingRules
+      summary: Twilio Fetch Recording Rules
+      tags:
+      - Recording Rules
+      parameters:
+      - $ref: '#/components/parameters/RoomSid'
+      responses:
+        '200':
+          description: Recording rules
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RecordingRules'
+    post:
+      operationId: updateRecordingRules
+      summary: Twilio Update Recording Rules
+      description: Update the recording rules for a room to control which tracks are recorded.
+      tags:
+      - Recording Rules
+      parameters:
+      - $ref: '#/components/parameters/RoomSid'
+      requestBody:
+        required: true
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              type: object
+              properties:
+                Rules:
+                  type: string
+                  description: JSON array of recording rules
+      responses:
+        '200':
+          description: Recording rules updated
+components:
+  parameters:
+    RoomSid:
+      name: RoomSid
+      in: path
+      required: true
+      description: The SID or unique name of the room
+      schema:
+        type: string
+  schemas:
+    RecordingRules:
+      type: object
+      properties:
+        room_sid:
+          type: string
+        rules:
+          type: array
+          items:
+            type: object
+            properties:
+              type:
+                type: string
+                enum:
+                - include
+                - exclude
+              all:
+                type: boolean
+              kind:
+                type: string
+                enum:
+                - audio
+                - video
+              publisher:
+                type: string
+              track:
+                type: string
+        date_created:
+          type: string
+          format: date-time
+        date_updated:
+          type: string
+          format: date-time
+  securitySchemes:
+    accountSid_authToken:
+      type: http
+      scheme: basic
+x-maturity:
+- name: GA
+  description: This product is Generally Available.
+- name: Beta
+  description: PLEASE NOTE that this is a Beta product that is subject to change. Use it with caution.

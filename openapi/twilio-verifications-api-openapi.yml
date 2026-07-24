@@ -1,0 +1,231 @@
+openapi: 3.0.1
+info:
+  title: Twilio - Accounts A2p Verifications API
+  description: This is the public Twilio REST API.
+  termsOfService: https://www.twilio.com/legal/tos
+  contact:
+    name: Twilio Support
+    url: https://support.twilio.com
+    email: support@twilio.com
+  license:
+    name: Apache 2.0
+    url: https://www.apache.org/licenses/LICENSE-2.0.html
+  version: 1.52.0
+servers:
+- url: https://accounts.twilio.com
+tags:
+- name: Verifications
+  description: Send and manage verification codes
+paths:
+  /Services/{ServiceSid}/Verifications:
+    post:
+      operationId: createVerification
+      summary: Twilio Start a Verification
+      description: Send a verification code to a user via SMS, voice call, email, WhatsApp, or SNA. The code is automatically generated and sent.
+      tags:
+      - Verifications
+      parameters:
+      - $ref: '#/components/parameters/ServiceSid'
+      requestBody:
+        required: true
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/CreateVerificationRequest'
+      responses:
+        '201':
+          description: Verification created and code sent
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Verification'
+        '400':
+          description: Invalid request
+        '429':
+          description: Rate limit exceeded
+  /Services/{ServiceSid}/Verifications/{VerificationSid}:
+    get:
+      operationId: fetchVerification
+      summary: Twilio Fetch a Verification
+      tags:
+      - Verifications
+      parameters:
+      - $ref: '#/components/parameters/ServiceSid'
+      - name: VerificationSid
+        in: path
+        required: true
+        schema:
+          type: string
+          pattern: ^VE[0-9a-fA-F]{32}$
+      responses:
+        '200':
+          description: Verification details
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Verification'
+    post:
+      operationId: updateVerification
+      summary: Twilio Update a Verification
+      description: Cancel a pending verification or mark it as approved.
+      tags:
+      - Verifications
+      parameters:
+      - $ref: '#/components/parameters/ServiceSid'
+      - name: VerificationSid
+        in: path
+        required: true
+        schema:
+          type: string
+          pattern: ^VE[0-9a-fA-F]{32}$
+      requestBody:
+        required: true
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              type: object
+              required:
+              - Status
+              properties:
+                Status:
+                  type: string
+                  enum:
+                  - canceled
+                  - approved
+      responses:
+        '200':
+          description: Verification updated
+components:
+  schemas:
+    CreateVerificationRequest:
+      type: object
+      required:
+      - To
+      - Channel
+      properties:
+        To:
+          type: string
+          description: Phone number (E.164) or email address to verify
+        Channel:
+          type: string
+          enum:
+          - sms
+          - call
+          - email
+          - whatsapp
+          - sna
+          description: Channel to use for delivery
+        CustomFriendlyName:
+          type: string
+          description: Custom name shown in the verification message
+        CustomMessage:
+          type: string
+          description: Custom message for SMS verification
+        SendDigits:
+          type: string
+          description: DTMF digits to play before the code (call channel)
+        Locale:
+          type: string
+          description: Locale for the verification message (e.g., en)
+        CustomCode:
+          type: string
+          description: Custom verification code (requires custom code enabled)
+        Amount:
+          type: string
+          description: Amount for PSD2 verification
+        Payee:
+          type: string
+          description: Payee for PSD2 verification
+        RateLimits:
+          type: string
+          description: JSON object of rate limit key-value pairs
+        TemplateSid:
+          type: string
+          description: SID of a custom template
+        TemplateCustomSubstitutions:
+          type: string
+          description: JSON object of template substitution variables
+    Verification:
+      type: object
+      properties:
+        sid:
+          type: string
+          pattern: ^VE[0-9a-fA-F]{32}$
+          description: Unique identifier for the verification
+        service_sid:
+          type: string
+          pattern: ^VA[0-9a-fA-F]{32}$
+        account_sid:
+          type: string
+          pattern: ^AC[0-9a-fA-F]{32}$
+        to:
+          type: string
+          description: Phone number or email being verified
+        channel:
+          type: string
+          enum:
+          - sms
+          - call
+          - email
+          - whatsapp
+          - sna
+          description: Verification channel used
+        status:
+          type: string
+          enum:
+          - pending
+          - approved
+          - canceled
+          - max_attempts_reached
+          - deleted
+          - failed
+          - expired
+          description: Current verification status
+        valid:
+          type: boolean
+          description: Whether the verification was successful
+        lookup:
+          type: object
+          description: Lookup information for the phone number
+          properties:
+            carrier:
+              type: object
+        send_code_attempts:
+          type: array
+          items:
+            type: object
+            properties:
+              attempt_sid:
+                type: string
+              channel:
+                type: string
+              time:
+                type: string
+                format: date-time
+        date_created:
+          type: string
+          format: date-time
+        date_updated:
+          type: string
+          format: date-time
+        url:
+          type: string
+          format: uri
+  parameters:
+    ServiceSid:
+      name: ServiceSid
+      in: path
+      required: true
+      description: The SID of the Verify service
+      schema:
+        type: string
+        pattern: ^VA[0-9a-fA-F]{32}$
+  securitySchemes:
+    accountSid_authToken:
+      type: http
+      scheme: basic
+x-maturity:
+- name: GA
+  description: This product is Generally Available.
+- name: Beta
+  description: PLEASE NOTE that this is a Beta product that is subject to change. Use it with caution.

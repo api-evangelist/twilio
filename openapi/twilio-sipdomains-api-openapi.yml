@@ -1,0 +1,135 @@
+openapi: 3.0.1
+info:
+  title: Twilio - Accounts A2p SipDomains API
+  description: This is the public Twilio REST API.
+  termsOfService: https://www.twilio.com/legal/tos
+  contact:
+    name: Twilio Support
+    url: https://support.twilio.com
+    email: support@twilio.com
+  license:
+    name: Apache 2.0
+    url: https://www.apache.org/licenses/LICENSE-2.0.html
+  version: 1.52.0
+servers:
+- url: https://accounts.twilio.com
+tags:
+- name: SipDomains
+paths:
+  /v2/SipDomains/{SipDomain}:
+    servers:
+    - url: https://routes.twilio.com
+    description: 'TODO: Resource-level docs'
+    x-twilio:
+      defaultOutputProperties:
+      - sid
+      - friendly_name
+      - date_created
+      pathType: instance
+    post:
+      description: ''
+      tags:
+      - SipDomains
+      parameters:
+      - name: SipDomain
+        in: path
+        description: ''
+        schema:
+          type: string
+        required: true
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/routes.v2.sip_domain'
+          description: OK
+      security:
+      - accountSid_authToken: []
+      operationId: UpdateSipDomain
+      x-maturity:
+      - GA
+      requestBody:
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/UpdateSipDomainRequest'
+    get:
+      description: ''
+      tags:
+      - SipDomains
+      parameters:
+      - name: SipDomain
+        in: path
+        description: ''
+        schema:
+          type: string
+        required: true
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/routes.v2.sip_domain'
+          description: OK
+      security:
+      - accountSid_authToken: []
+      operationId: FetchSipDomain
+      x-maturity:
+      - GA
+components:
+  schemas:
+    routes.v2.sip_domain:
+      type: object
+      properties:
+        sip_domain:
+          type: string
+          nullable: true
+        url:
+          type: string
+          format: uri
+          nullable: true
+        sid:
+          type: string
+          minLength: 34
+          maxLength: 34
+          pattern: ^QQ[0-9a-fA-F]{32}$
+          nullable: true
+        account_sid:
+          type: string
+          minLength: 34
+          maxLength: 34
+          pattern: ^AC[0-9a-fA-F]{32}$
+          nullable: true
+        friendly_name:
+          type: string
+          nullable: true
+        voice_region:
+          type: string
+          nullable: true
+        date_created:
+          type: string
+          format: date-time
+          nullable: true
+        date_updated:
+          type: string
+          format: date-time
+          nullable: true
+    UpdateSipDomainRequest:
+      type: object
+      properties:
+        VoiceRegion:
+          type: string
+          description: ''
+        FriendlyName:
+          type: string
+          description: ''
+  securitySchemes:
+    accountSid_authToken:
+      type: http
+      scheme: basic
+x-maturity:
+- name: GA
+  description: This product is Generally Available.
+- name: Beta
+  description: PLEASE NOTE that this is a Beta product that is subject to change. Use it with caution.

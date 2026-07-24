@@ -1,0 +1,719 @@
+openapi: 3.0.1
+info:
+  title: Twilio - Accounts A2p Configuration API
+  description: This is the public Twilio REST API.
+  termsOfService: https://www.twilio.com/legal/tos
+  contact:
+    name: Twilio Support
+    url: https://support.twilio.com
+    email: support@twilio.com
+  license:
+    name: Apache 2.0
+    url: https://www.apache.org/licenses/LICENSE-2.0.html
+  version: 1.52.0
+servers:
+- url: https://accounts.twilio.com
+tags:
+- name: Configuration
+paths:
+  /v1/Configuration:
+    servers:
+    - url: https://conversations.twilio.com
+    description: The Configuration resource manages a set of account-level settings applicable to the Conversations API.
+    x-twilio:
+      defaultOutputProperties:
+      - account_sid
+      - default_chat_service_sid
+      - default_messaging_service_sid
+      pathType: instance
+    get:
+      description: Fetch the global configuration of conversations on your account
+      tags:
+      - Configuration
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/conversations.v1.configuration'
+          description: OK
+      security:
+      - accountSid_authToken: []
+      operationId: FetchConfiguration
+      x-maturity:
+      - GA
+    post:
+      description: Update the global configuration of conversations on your account
+      tags:
+      - Configuration
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/conversations.v1.configuration'
+          description: OK
+      security:
+      - accountSid_authToken: []
+      operationId: UpdateConfiguration
+      x-maturity:
+      - GA
+      requestBody:
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/UpdateConfigurationRequest'
+  /v1/Configuration/Addresses:
+    servers:
+    - url: https://conversations.twilio.com
+    description: Address Configuration resource manages the configurations related to a unique address within Conversations
+    x-twilio:
+      defaultOutputProperties:
+      - sid
+      - type
+      - address
+      - friendly_name
+      pathType: list
+      mountName: address_configurations
+    get:
+      description: Retrieve a list of address configurations for an account
+      tags:
+      - Configuration
+      parameters:
+      - name: Type
+        in: query
+        description: 'Filter the address configurations by its type. This value can be one of: `whatsapp`, `sms`.'
+        schema:
+          type: string
+      - name: PageSize
+        in: query
+        description: How many resources to return in each list page. The default is 50, and the maximum is 1000.
+        schema:
+          type: integer
+          minimum: 1
+          maximum: 1000
+      - name: Page
+        in: query
+        description: The page index. This value is simply for client state.
+        schema:
+          type: integer
+          minimum: 0
+      - name: PageToken
+        in: query
+        description: The page token. This is provided by the API.
+        schema:
+          type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ListConfigurationAddressResponse'
+          description: OK
+      security:
+      - accountSid_authToken: []
+      operationId: ListConfigurationAddress
+      x-maturity:
+      - GA
+    post:
+      description: Create a new address configuration
+      tags:
+      - Configuration
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/conversations.v1.configuration_address'
+          description: Created
+      security:
+      - accountSid_authToken: []
+      operationId: CreateConfigurationAddress
+      x-maturity:
+      - GA
+      requestBody:
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/CreateConfigurationAddressRequest'
+  /v1/Configuration/Addresses/{Sid}:
+    servers:
+    - url: https://conversations.twilio.com
+    description: Address Configuration resource manages the configurations related to a unique address within Conversations
+    x-twilio:
+      defaultOutputProperties:
+      - sid
+      - type
+      - address
+      - friendly_name
+      pathType: instance
+      mountName: address_configurations
+    get:
+      description: 'Fetch an address configuration '
+      tags:
+      - Configuration
+      parameters:
+      - name: Sid
+        in: path
+        description: The SID of the Address Configuration resource. This value can be either the `sid` or the `address` of the configuration
+        schema:
+          type: string
+        required: true
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/conversations.v1.configuration_address'
+          description: OK
+      security:
+      - accountSid_authToken: []
+      operationId: FetchConfigurationAddress
+      x-maturity:
+      - GA
+    post:
+      description: Update an existing address configuration
+      tags:
+      - Configuration
+      parameters:
+      - name: Sid
+        in: path
+        description: The SID of the Address Configuration resource. This value can be either the `sid` or the `address` of the configuration
+        schema:
+          type: string
+        required: true
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/conversations.v1.configuration_address'
+          description: OK
+      security:
+      - accountSid_authToken: []
+      operationId: UpdateConfigurationAddress
+      x-maturity:
+      - GA
+      requestBody:
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/UpdateConfigurationAddressRequest'
+    delete:
+      description: Remove an existing address configuration
+      tags:
+      - Configuration
+      parameters:
+      - name: Sid
+        in: path
+        description: The SID of the Address Configuration resource. This value can be either the `sid` or the `address` of the configuration
+        schema:
+          type: string
+        required: true
+      responses:
+        '204':
+          description: The resource was deleted successfully.
+      security:
+      - accountSid_authToken: []
+      operationId: DeleteConfigurationAddress
+      x-maturity:
+      - GA
+  /v1/Configuration/Webhooks:
+    servers:
+    - url: https://conversations.twilio.com
+    description: A Webhook resource manages a service-level set of callback URLs and their configuration for receiving all conversation events.
+    x-twilio:
+      defaultOutputProperties:
+      - target
+      - method
+      - pre_webhook_url
+      - post_webhook_url
+      pathType: instance
+      parent: /Configuration
+    get:
+      description: ''
+      tags:
+      - Configuration
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/conversations.v1.configuration.configuration_webhook'
+          description: OK
+      security:
+      - accountSid_authToken: []
+      operationId: FetchConfigurationWebhook
+      x-maturity:
+      - GA
+    post:
+      description: ''
+      tags:
+      - Configuration
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/conversations.v1.configuration.configuration_webhook'
+          description: OK
+      security:
+      - accountSid_authToken: []
+      operationId: UpdateConfigurationWebhook
+      x-maturity:
+      - GA
+      requestBody:
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/UpdateConfigurationWebhookRequest'
+  /Configuration:
+    get:
+      operationId: fetchConfiguration
+      summary: Twilio Fetch Flex Configuration
+      description: Retrieve the current Flex configuration including UI attributes, enabled channels, and runtime settings.
+      tags:
+      - Configuration
+      parameters:
+      - name: UiVersion
+        in: query
+        description: The Flex UI version to fetch configuration for
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Flex configuration
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/FlexConfiguration'
+        '401':
+          description: Unauthorized
+    post:
+      operationId: updateConfiguration
+      summary: Twilio Update Flex Configuration
+      description: Update the Flex configuration settings.
+      tags:
+      - Configuration
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateFlexConfigurationRequest'
+      responses:
+        '200':
+          description: Configuration updated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/FlexConfiguration'
+        '400':
+          description: Invalid request
+components:
+  schemas:
+    configuration_webhook_enum_target:
+      type: string
+      enum:
+      - webhook
+      - flex
+    CreateConfigurationAddressRequest:
+      type: object
+      required:
+      - Type
+      - Address
+      properties:
+        Type:
+          type: string
+          $ref: '#/components/schemas/configuration_address_enum_type'
+          description: Type of Address. Value can be `whatsapp` or `sms`.
+        Address:
+          type: string
+          description: The unique address to be configured. The address can be a whatsapp address or phone number
+        FriendlyName:
+          type: string
+          description: The human-readable name of this configuration, limited to 256 characters. Optional.
+        AutoCreation.Enabled:
+          type: boolean
+          description: Enable/Disable auto-creating conversations for messages to this address
+        AutoCreation.Type:
+          type: string
+          $ref: '#/components/schemas/configuration_address_enum_auto_creation_type'
+          description: Type of Auto Creation. Value can be one of `webhook`, `studio` or `default`. `default` creates a new Conversation under the default Conversation service, without a webhook or Studio integration.
+        AutoCreation.ConversationServiceSid:
+          type: string
+          minLength: 34
+          maxLength: 34
+          pattern: ^IS[0-9a-fA-F]{32}$
+          description: Conversation Service for the auto-created conversation. If not set, the conversation is created in the default service.
+        AutoCreation.WebhookUrl:
+          type: string
+          description: For type `webhook`, the url for the webhook request.
+        AutoCreation.WebhookMethod:
+          type: string
+          $ref: '#/components/schemas/configuration_address_enum_method'
+          description: For type `webhook`, the HTTP method to be used when sending a webhook request.
+        AutoCreation.WebhookFilters:
+          type: array
+          items:
+            type: string
+          description: 'The list of events, firing webhook event for this Conversation. Values can be any of the following: `onMessageAdded`, `onMessageUpdated`, `onMessageRemoved`, `onConversationUpdated`, `onConversationStateUpdated`, `onConversationRemoved`, `onParticipantAdded`, `onParticipantUpdated`, `onParticipantRemoved`, `onDeliveryUpdated`'
+        AutoCreation.StudioFlowSid:
+          type: string
+          minLength: 34
+          maxLength: 34
+          pattern: ^FW[0-9a-fA-F]{32}$
+          description: For type `studio`, the studio flow SID where the webhook should be sent to.
+        AutoCreation.StudioRetryCount:
+          type: integer
+          description: For type `studio`, number of times to retry the webhook request
+        AddressCountry:
+          type: string
+          description: An ISO 3166-1 alpha-2n country code which the address belongs to. This is currently only applicable to short code addresses.
+    conversations.v1.configuration.configuration_webhook:
+      type: object
+      properties:
+        account_sid:
+          type: string
+          minLength: 34
+          maxLength: 34
+          pattern: ^AC[0-9a-fA-F]{32}$
+          nullable: true
+          description: The unique ID of the [Account](https://www.twilio.com/docs/iam/api/account) responsible for this conversation.
+        method:
+          type: string
+          $ref: '#/components/schemas/configuration_webhook_enum_method'
+          nullable: true
+          description: The HTTP method to be used when sending a webhook request.
+        filters:
+          type: array
+          items:
+            type: string
+          nullable: true
+          description: 'The list of webhook event triggers that are enabled for this Service: `onMessageAdded`, `onMessageUpdated`, `onMessageRemoved`, `onConversationUpdated`, `onConversationRemoved`, `onParticipantAdded`, `onParticipantUpdated`, `onParticipantRemoved`'
+        pre_webhook_url:
+          type: string
+          nullable: true
+          description: The absolute url the pre-event webhook request should be sent to.
+        post_webhook_url:
+          type: string
+          nullable: true
+          description: The absolute url the post-event webhook request should be sent to.
+        target:
+          type: string
+          $ref: '#/components/schemas/configuration_webhook_enum_target'
+          nullable: true
+          description: The routing target of the webhook. Can be ordinary or route internally to Flex
+        url:
+          type: string
+          format: uri
+          nullable: true
+          description: An absolute API resource API resource URL for this webhook.
+    UpdateConfigurationRequest:
+      type: object
+      properties:
+        DefaultChatServiceSid:
+          type: string
+          minLength: 34
+          maxLength: 34
+          pattern: ^IS[0-9a-fA-F]{32}$
+          description: The SID of the default [Conversation Service](https://www.twilio.com/docs/conversations/api/service-resource) to use when creating a conversation.
+        DefaultMessagingServiceSid:
+          type: string
+          minLength: 34
+          maxLength: 34
+          pattern: ^MG[0-9a-fA-F]{32}$
+          description: The SID of the default [Messaging Service](https://www.twilio.com/docs/messaging/api/service-resource) to use when creating a conversation.
+        DefaultInactiveTimer:
+          type: string
+          description: Default ISO8601 duration when conversation will be switched to `inactive` state. Minimum value for this timer is 1 minute.
+        DefaultClosedTimer:
+          type: string
+          description: Default ISO8601 duration when conversation will be switched to `closed` state. Minimum value for this timer is 10 minutes.
+    conversations.v1.configuration_address:
+      type: object
+      properties:
+        sid:
+          type: string
+          minLength: 34
+          maxLength: 34
+          pattern: ^IG[0-9a-fA-F]{32}$
+          nullable: true
+          description: A 34 character string that uniquely identifies this resource.
+        account_sid:
+          type: string
+          minLength: 34
+          maxLength: 34
+          pattern: ^AC[0-9a-fA-F]{32}$
+          nullable: true
+          description: The unique ID of the [Account](https://www.twilio.com/docs/iam/api/account) the address belongs to
+        type:
+          type: string
+          nullable: true
+          description: Type of Address, value can be `whatsapp` or `sms`.
+        address:
+          type: string
+          nullable: true
+          description: The unique address to be configured. The address can be a whatsapp address or phone number
+          x-twilio:
+            pii:
+              handling: standard
+              deleteSla: 30
+        friendly_name:
+          type: string
+          nullable: true
+          description: The human-readable name of this configuration, limited to 256 characters. Optional.
+        auto_creation:
+          nullable: true
+          description: Auto Creation configuration for the address.
+        date_created:
+          type: string
+          format: date-time
+          nullable: true
+          description: The date that this resource was created.
+        date_updated:
+          type: string
+          format: date-time
+          nullable: true
+          description: The date that this resource was last updated.
+        url:
+          type: string
+          format: uri
+          nullable: true
+          description: An absolute API resource URL for this address configuration.
+        address_country:
+          type: string
+          nullable: true
+          description: An ISO 3166-1 alpha-2n country code which the address belongs to. This is currently only applicable to short code addresses.
+    FlexConfiguration:
+      type: object
+      properties:
+        account_sid:
+          type: string
+          pattern: ^AC[0-9a-fA-F]{32}$
+        status:
+          type: string
+          enum:
+          - ok
+          - inDeployment
+          - notDeployed
+        task_router_workspace_sid:
+          type: string
+        chat_service_instance_sid:
+          type: string
+        flex_service_instance_sid:
+          type: string
+        ui_language:
+          type: string
+        ui_attributes:
+          type: object
+          description: Custom UI configuration attributes
+        ui_dependencies:
+          type: object
+        ui_version:
+          type: string
+        flex_url:
+          type: string
+          format: uri
+        flex_insights_hr:
+          type: object
+        flex_insights_drilldown:
+          type: boolean
+        channel_configs:
+          type: array
+          items:
+            type: object
+        runtime_domain:
+          type: string
+        messaging_service_instance_sid:
+          type: string
+        serverless_service_sids:
+          type: array
+          items:
+            type: string
+        date_created:
+          type: string
+          format: date-time
+        date_updated:
+          type: string
+          format: date-time
+        url:
+          type: string
+          format: uri
+    UpdateConfigurationWebhookRequest:
+      type: object
+      properties:
+        Method:
+          type: string
+          description: The HTTP method to be used when sending a webhook request.
+        Filters:
+          type: array
+          items:
+            type: string
+          description: 'The list of webhook event triggers that are enabled for this Service: `onMessageAdded`, `onMessageUpdated`, `onMessageRemoved`, `onConversationUpdated`, `onConversationRemoved`, `onParticipantAdded`, `onParticipantUpdated`, `onParticipantRemoved`'
+        PreWebhookUrl:
+          type: string
+          description: The absolute url the pre-event webhook request should be sent to.
+        PostWebhookUrl:
+          type: string
+          description: The absolute url the post-event webhook request should be sent to.
+        Target:
+          type: string
+          $ref: '#/components/schemas/configuration_webhook_enum_target'
+          description: The routing target of the webhook.
+    configuration_address_enum_type:
+      type: string
+      enum:
+      - sms
+      - whatsapp
+      - messenger
+      - gbm
+      - email
+    conversations.v1.configuration:
+      type: object
+      properties:
+        account_sid:
+          type: string
+          minLength: 34
+          maxLength: 34
+          pattern: ^AC[0-9a-fA-F]{32}$
+          nullable: true
+          description: The SID of the [Account](https://www.twilio.com/docs/iam/api/account) responsible for this configuration.
+        default_chat_service_sid:
+          type: string
+          minLength: 34
+          maxLength: 34
+          pattern: ^IS[0-9a-fA-F]{32}$
+          nullable: true
+          description: The SID of the default [Conversation Service](https://www.twilio.com/docs/conversations/api/service-resource) used when creating a conversation.
+        default_messaging_service_sid:
+          type: string
+          minLength: 34
+          maxLength: 34
+          pattern: ^MG[0-9a-fA-F]{32}$
+          nullable: true
+          description: The SID of the default [Messaging Service](https://www.twilio.com/docs/messaging/api/service-resource) used when creating a conversation.
+        default_inactive_timer:
+          type: string
+          nullable: true
+          description: Default ISO8601 duration when conversation will be switched to `inactive` state. Minimum value for this timer is 1 minute.
+        default_closed_timer:
+          type: string
+          nullable: true
+          description: Default ISO8601 duration when conversation will be switched to `closed` state. Minimum value for this timer is 10 minutes.
+        url:
+          type: string
+          format: uri
+          nullable: true
+          description: An absolute API resource URL for this global configuration.
+        links:
+          type: object
+          format: uri-map
+          nullable: true
+          description: Contains absolute API resource URLs to access the webhook and default service configurations.
+    configuration_webhook_enum_method:
+      type: string
+      enum:
+      - GET
+      - POST
+    UpdateConfigurationAddressRequest:
+      type: object
+      properties:
+        FriendlyName:
+          type: string
+          description: The human-readable name of this configuration, limited to 256 characters. Optional.
+        AutoCreation.Enabled:
+          type: boolean
+          description: Enable/Disable auto-creating conversations for messages to this address
+        AutoCreation.Type:
+          type: string
+          $ref: '#/components/schemas/configuration_address_enum_auto_creation_type'
+          description: Type of Auto Creation. Value can be one of `webhook`, `studio` or `default`.
+        AutoCreation.ConversationServiceSid:
+          type: string
+          minLength: 34
+          maxLength: 34
+          pattern: ^IS[0-9a-fA-F]{32}$
+          description: Conversation Service for the auto-created conversation. If not set, the conversation is created in the default service.
+        AutoCreation.WebhookUrl:
+          type: string
+          description: For type `webhook`, the url for the webhook request.
+        AutoCreation.WebhookMethod:
+          type: string
+          $ref: '#/components/schemas/configuration_address_enum_method'
+          description: For type `webhook`, the HTTP method to be used when sending a webhook request.
+        AutoCreation.WebhookFilters:
+          type: array
+          items:
+            type: string
+          description: 'The list of events, firing webhook event for this Conversation. Values can be any of the following: `onMessageAdded`, `onMessageUpdated`, `onMessageRemoved`, `onConversationUpdated`, `onConversationStateUpdated`, `onConversationRemoved`, `onParticipantAdded`, `onParticipantUpdated`, `onParticipantRemoved`, `onDeliveryUpdated`'
+        AutoCreation.StudioFlowSid:
+          type: string
+          minLength: 34
+          maxLength: 34
+          pattern: ^FW[0-9a-fA-F]{32}$
+          description: For type `studio`, the studio flow SID where the webhook should be sent to.
+        AutoCreation.StudioRetryCount:
+          type: integer
+          description: For type `studio`, number of times to retry the webhook request
+    configuration_address_enum_method:
+      type: string
+      enum:
+      - GET
+      - POST
+    UpdateFlexConfigurationRequest:
+      type: object
+      properties:
+        ui_attributes:
+          type: object
+        ui_language:
+          type: string
+        ui_version:
+          type: string
+        runtime_domain:
+          type: string
+    ListConfigurationAddressResponse:
+      type: object
+      properties:
+        address_configurations:
+          type: array
+          items:
+            $ref: '#/components/schemas/conversations.v1.configuration_address'
+        meta:
+          type: object
+          properties:
+            first_page_url:
+              type: string
+              format: uri
+            next_page_url:
+              type: string
+              format: uri
+              nullable: true
+            page:
+              type: integer
+            page_size:
+              type: integer
+            previous_page_url:
+              type: string
+              format: uri
+              nullable: true
+            url:
+              type: string
+              format: uri
+            key:
+              type: string
+    configuration_address_enum_auto_creation_type:
+      type: string
+      enum:
+      - webhook
+      - studio
+      - default
+  securitySchemes:
+    accountSid_authToken:
+      type: http
+      scheme: basic
+x-maturity:
+- name: GA
+  description: This product is Generally Available.
+- name: Beta
+  description: PLEASE NOTE that this is a Beta product that is subject to change. Use it with caution.

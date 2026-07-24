@@ -1,0 +1,106 @@
+openapi: 3.0.1
+info:
+  title: Twilio - Accounts A2p Factors API
+  description: This is the public Twilio REST API.
+  termsOfService: https://www.twilio.com/legal/tos
+  contact:
+    name: Twilio Support
+    url: https://support.twilio.com
+    email: support@twilio.com
+  license:
+    name: Apache 2.0
+    url: https://www.apache.org/licenses/LICENSE-2.0.html
+  version: 1.52.0
+servers:
+- url: https://accounts.twilio.com
+tags:
+- name: Factors
+  description: Manage authentication factors (TOTP, push)
+paths:
+  /Services/{ServiceSid}/Entities/{Identity}/Factors:
+    get:
+      operationId: listFactors
+      summary: Twilio List Factors for an Entity
+      tags:
+      - Factors
+      parameters:
+      - $ref: '#/components/parameters/ServiceSid'
+      - name: Identity
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: List of factors
+    post:
+      operationId: createFactor
+      summary: Twilio Create a Factor
+      description: Create a new authentication factor (TOTP or push) for an entity.
+      tags:
+      - Factors
+      parameters:
+      - $ref: '#/components/parameters/ServiceSid'
+      - name: Identity
+        in: path
+        required: true
+        schema:
+          type: string
+      requestBody:
+        required: true
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              type: object
+              required:
+              - FriendlyName
+              - FactorType
+              properties:
+                FriendlyName:
+                  type: string
+                FactorType:
+                  type: string
+                  enum:
+                  - totp
+                  - push
+                Binding.Alg:
+                  type: string
+                  enum:
+                  - sha1
+                  - sha256
+                  - sha512
+                Binding.CodeLength:
+                  type: integer
+                  enum:
+                  - 6
+                  - 8
+                Binding.TimeStep:
+                  type: integer
+                Config.NotificationPlatform:
+                  type: string
+                  enum:
+                  - fcm
+                  - apn
+                  - none
+      responses:
+        '201':
+          description: Factor created
+components:
+  parameters:
+    ServiceSid:
+      name: ServiceSid
+      in: path
+      required: true
+      description: The SID of the Verify service
+      schema:
+        type: string
+        pattern: ^VA[0-9a-fA-F]{32}$
+  securitySchemes:
+    accountSid_authToken:
+      type: http
+      scheme: basic
+x-maturity:
+- name: GA
+  description: This product is Generally Available.
+- name: Beta
+  description: PLEASE NOTE that this is a Beta product that is subject to change. Use it with caution.

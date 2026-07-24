@@ -1,0 +1,218 @@
+openapi: 3.0.1
+info:
+  title: Twilio - A2p Accounts API
+  description: This is the public Twilio REST API.
+  termsOfService: https://www.twilio.com/legal/tos
+  contact:
+    name: Twilio Support
+    url: https://support.twilio.com
+    email: support@twilio.com
+  license:
+    name: Apache 2.0
+    url: https://www.apache.org/licenses/LICENSE-2.0.html
+  version: 1.52.0
+servers:
+- url: https://accounts.twilio.com
+tags:
+- name: Accounts
+  description: Manage Twilio accounts and subaccounts
+paths:
+  /Accounts.json:
+    get:
+      operationId: listAccounts
+      summary: Twilio List Accounts
+      description: Retrieve a list of subaccounts belonging to the main account.
+      tags:
+      - Accounts
+      parameters:
+      - name: FriendlyName
+        in: query
+        description: Filter by friendly name
+        schema:
+          type: string
+      - name: Status
+        in: query
+        description: Filter by account status
+        schema:
+          type: string
+          enum:
+          - active
+          - suspended
+          - closed
+      - name: PageSize
+        in: query
+        schema:
+          type: integer
+          minimum: 1
+          maximum: 1000
+      responses:
+        '200':
+          description: List of accounts
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AccountList'
+        '401':
+          description: Unauthorized
+    post:
+      operationId: createAccount
+      summary: Twilio Create a Subaccount
+      description: Create a new subaccount under the main account.
+      tags:
+      - Accounts
+      requestBody:
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              type: object
+              properties:
+                FriendlyName:
+                  type: string
+                  description: Human-readable name for the subaccount
+      responses:
+        '201':
+          description: Subaccount created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Account'
+        '400':
+          description: Invalid request
+        '401':
+          description: Unauthorized
+  /Accounts/{AccountSid}.json:
+    get:
+      operationId: fetchAccount
+      summary: Twilio Fetch an Account
+      description: Retrieve details for a specific account or subaccount.
+      tags:
+      - Accounts
+      parameters:
+      - $ref: '#/components/parameters/AccountSid'
+      responses:
+        '200':
+          description: Account details
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Account'
+        '401':
+          description: Unauthorized
+        '404':
+          description: Account not found
+    post:
+      operationId: updateAccount
+      summary: Twilio Update an Account
+      description: Update account properties such as friendly name or status.
+      tags:
+      - Accounts
+      parameters:
+      - $ref: '#/components/parameters/AccountSid'
+      requestBody:
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              type: object
+              properties:
+                FriendlyName:
+                  type: string
+                Status:
+                  type: string
+                  enum:
+                  - active
+                  - suspended
+                  - closed
+      responses:
+        '200':
+          description: Account updated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Account'
+        '401':
+          description: Unauthorized
+        '404':
+          description: Account not found
+components:
+  schemas:
+    Account:
+      type: object
+      properties:
+        sid:
+          type: string
+          pattern: ^AC[0-9a-fA-F]{32}$
+          description: Unique identifier for the account
+        friendly_name:
+          type: string
+          description: Human-readable account name
+        status:
+          type: string
+          enum:
+          - active
+          - suspended
+          - closed
+          description: Current account status
+        type:
+          type: string
+          enum:
+          - Trial
+          - Full
+          description: Account type
+        auth_token:
+          type: string
+          description: Primary authentication token
+        owner_account_sid:
+          type: string
+          description: SID of the parent account
+        date_created:
+          type: string
+          format: date-time
+        date_updated:
+          type: string
+          format: date-time
+        uri:
+          type: string
+        subresource_uris:
+          type: object
+          properties:
+            calls:
+              type: string
+            messages:
+              type: string
+            recordings:
+              type: string
+            keys:
+              type: string
+    AccountList:
+      type: object
+      properties:
+        accounts:
+          type: array
+          items:
+            $ref: '#/components/schemas/Account'
+        first_page_uri:
+          type: string
+        next_page_uri:
+          type: string
+        page:
+          type: integer
+        page_size:
+          type: integer
+  parameters:
+    AccountSid:
+      name: AccountSid
+      in: path
+      required: true
+      description: The unique identifier of the Twilio account
+      schema:
+        type: string
+        pattern: ^AC[0-9a-fA-F]{32}$
+  securitySchemes:
+    accountSid_authToken:
+      type: http
+      scheme: basic
+x-maturity:
+- name: GA
+  description: This product is Generally Available.
+- name: Beta
+  description: PLEASE NOTE that this is a Beta product that is subject to change. Use it with caution.

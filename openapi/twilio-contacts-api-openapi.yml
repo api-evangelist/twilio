@@ -1,0 +1,208 @@
+openapi: 3.0.1
+info:
+  title: Twilio - Accounts A2p Contacts API
+  description: This is the public Twilio REST API.
+  termsOfService: https://www.twilio.com/legal/tos
+  contact:
+    name: Twilio Support
+    url: https://support.twilio.com
+    email: support@twilio.com
+  license:
+    name: Apache 2.0
+    url: https://www.apache.org/licenses/LICENSE-2.0.html
+  version: 1.52.0
+servers:
+- url: https://accounts.twilio.com
+tags:
+- name: Contacts
+  description: Manage marketing contacts
+paths:
+  /marketing/contacts:
+    get:
+      operationId: listContacts
+      summary: Twilio List Marketing Contacts
+      description: Retrieve a paginated list of marketing contacts.
+      tags:
+      - Contacts
+      responses:
+        '200':
+          description: List of contacts
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ContactList'
+    put:
+      operationId: upsertContacts
+      summary: Twilio Add or Update Contacts
+      description: Add new contacts or update existing ones. Contacts are matched by email address.
+      tags:
+      - Contacts
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                list_ids:
+                  type: array
+                  items:
+                    type: string
+                    format: uuid
+                  description: List IDs to add contacts to
+                contacts:
+                  type: array
+                  items:
+                    $ref: '#/components/schemas/ContactRequest'
+                  maxItems: 30000
+      responses:
+        '202':
+          description: Contacts accepted for processing
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  job_id:
+                    type: string
+    delete:
+      operationId: deleteContacts
+      summary: Twilio Delete Contacts
+      tags:
+      - Contacts
+      parameters:
+      - name: ids
+        in: query
+        required: true
+        description: Comma-separated contact IDs
+        schema:
+          type: string
+      responses:
+        '202':
+          description: Contacts deletion accepted
+  /marketing/contacts/search:
+    post:
+      operationId: searchContacts
+      summary: Twilio Search Contacts
+      description: Search contacts using SGQL (SendGrid Query Language).
+      tags:
+      - Contacts
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+              - query
+              properties:
+                query:
+                  type: string
+                  description: SGQL query string
+      responses:
+        '200':
+          description: Search results
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ContactList'
+components:
+  schemas:
+    Contact:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        email:
+          type: string
+          format: email
+        first_name:
+          type: string
+        last_name:
+          type: string
+        phone_number:
+          type: string
+        address_line_1:
+          type: string
+        address_line_2:
+          type: string
+        city:
+          type: string
+        state_province_region:
+          type: string
+        postal_code:
+          type: string
+        country:
+          type: string
+        alternate_emails:
+          type: array
+          items:
+            type: string
+        list_ids:
+          type: array
+          items:
+            type: string
+        custom_fields:
+          type: object
+        created_at:
+          type: string
+          format: date-time
+        updated_at:
+          type: string
+          format: date-time
+    ContactRequest:
+      type: object
+      required:
+      - email
+      properties:
+        email:
+          type: string
+          format: email
+        first_name:
+          type: string
+        last_name:
+          type: string
+        address_line_1:
+          type: string
+        address_line_2:
+          type: string
+        city:
+          type: string
+        state_province_region:
+          type: string
+        postal_code:
+          type: string
+        country:
+          type: string
+        phone_number:
+          type: string
+        alternate_emails:
+          type: array
+          items:
+            type: string
+            format: email
+          maxItems: 5
+        custom_fields:
+          type: object
+          additionalProperties: true
+    ContactList:
+      type: object
+      properties:
+        result:
+          type: array
+          items:
+            $ref: '#/components/schemas/Contact'
+        contact_count:
+          type: integer
+        _metadata:
+          type: object
+  securitySchemes:
+    accountSid_authToken:
+      type: http
+      scheme: basic
+x-maturity:
+- name: GA
+  description: This product is Generally Available.
+- name: Beta
+  description: PLEASE NOTE that this is a Beta product that is subject to change. Use it with caution.

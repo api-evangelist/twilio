@@ -1,0 +1,179 @@
+openapi: 3.0.1
+info:
+  title: Twilio - Accounts A2p Networks API
+  description: This is the public Twilio REST API.
+  termsOfService: https://www.twilio.com/legal/tos
+  contact:
+    name: Twilio Support
+    url: https://support.twilio.com
+    email: support@twilio.com
+  license:
+    name: Apache 2.0
+    url: https://www.apache.org/licenses/LICENSE-2.0.html
+  version: 1.52.0
+servers:
+- url: https://accounts.twilio.com
+tags:
+- name: Networks
+paths:
+  /v1/Networks/{Sid}:
+    servers:
+    - url: https://supersim.twilio.com
+    description: Mobile operator networks to which Super SIMs can connect
+    x-twilio:
+      defaultOutputProperties:
+      - sid
+      pathType: instance
+    get:
+      description: Fetch a Network resource.
+      tags:
+      - Networks
+      parameters:
+      - name: Sid
+        in: path
+        description: The SID of the Network resource to fetch.
+        schema:
+          type: string
+          minLength: 34
+          maxLength: 34
+          pattern: ^HW[0-9a-fA-F]{32}$
+        required: true
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/supersim.v1.network'
+          description: OK
+      security:
+      - accountSid_authToken: []
+      operationId: FetchNetwork
+      x-maturity:
+      - Beta
+  /v1/Networks:
+    servers:
+    - url: https://supersim.twilio.com
+    description: Mobile operator networks to which Super SIMs can connect
+    x-twilio:
+      defaultOutputProperties:
+      - sid
+      pathType: list
+    get:
+      description: Retrieve a list of Network resources.
+      tags:
+      - Networks
+      parameters:
+      - name: IsoCountry
+        in: query
+        description: The [ISO country code](https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2) of the Network resources to read.
+        schema:
+          type: string
+      - name: Mcc
+        in: query
+        description: The 'mobile country code' of a country. Network resources with this `mcc` in their `identifiers` will be read.
+        schema:
+          type: string
+      - name: Mnc
+        in: query
+        description: The 'mobile network code' of a mobile operator network. Network resources with this `mnc` in their `identifiers` will be read.
+        schema:
+          type: string
+      - name: PageSize
+        in: query
+        description: How many resources to return in each list page. The default is 50, and the maximum is 1000.
+        schema:
+          type: integer
+          minimum: 1
+          maximum: 1000
+      - name: Page
+        in: query
+        description: The page index. This value is simply for client state.
+        schema:
+          type: integer
+          minimum: 0
+      - name: PageToken
+        in: query
+        description: The page token. This is provided by the API.
+        schema:
+          type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ListNetworkResponse'
+          description: OK
+      security:
+      - accountSid_authToken: []
+      operationId: ListNetwork
+      x-maturity:
+      - Beta
+components:
+  schemas:
+    ListNetworkResponse:
+      type: object
+      properties:
+        networks:
+          type: array
+          items:
+            $ref: '#/components/schemas/supersim.v1.network'
+        meta:
+          type: object
+          properties:
+            first_page_url:
+              type: string
+              format: uri
+            next_page_url:
+              type: string
+              format: uri
+              nullable: true
+            page:
+              type: integer
+            page_size:
+              type: integer
+            previous_page_url:
+              type: string
+              format: uri
+              nullable: true
+            url:
+              type: string
+              format: uri
+            key:
+              type: string
+    supersim.v1.network:
+      type: object
+      properties:
+        sid:
+          type: string
+          minLength: 34
+          maxLength: 34
+          pattern: ^HW[0-9a-fA-F]{32}$
+          nullable: true
+          description: The unique string that we created to identify the Network resource.
+        friendly_name:
+          type: string
+          nullable: true
+          description: A human readable identifier of this resource.
+        url:
+          type: string
+          format: uri
+          nullable: true
+          description: The absolute URL of the Network resource.
+        iso_country:
+          type: string
+          nullable: true
+          description: The [ISO country code](https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2) of the Network resource.
+        identifiers:
+          type: array
+          items: {}
+          nullable: true
+          description: Array of objects identifying the [MCC-MNCs](https://en.wikipedia.org/wiki/Mobile_country_code) that are included in the Network resource.
+  securitySchemes:
+    accountSid_authToken:
+      type: http
+      scheme: basic
+x-maturity:
+- name: GA
+  description: This product is Generally Available.
+- name: Beta
+  description: PLEASE NOTE that this is a Beta product that is subject to change. Use it with caution.

@@ -1,0 +1,338 @@
+openapi: 3.0.1
+info:
+  title: Twilio - Accounts A2p MediaProcessors API
+  description: This is the public Twilio REST API.
+  termsOfService: https://www.twilio.com/legal/tos
+  contact:
+    name: Twilio Support
+    url: https://support.twilio.com
+    email: support@twilio.com
+  license:
+    name: Apache 2.0
+    url: https://www.apache.org/licenses/LICENSE-2.0.html
+  version: 1.52.0
+servers:
+- url: https://accounts.twilio.com
+tags:
+- name: MediaProcessors
+paths:
+  /v1/MediaProcessors:
+    servers:
+    - url: https://media.twilio.com
+    description: A MediaProcessor resource provides the ability to capture content from a web application with a Twilio Media Extension to create a livestream.
+    x-twilio:
+      defaultOutputProperties:
+      - sid
+      - status
+      - extension
+      - extension_context
+      pathType: list
+      mountName: media_processor
+    post:
+      description: ''
+      tags:
+      - MediaProcessors
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/media.v1.media_processor'
+          description: Created
+      security:
+      - accountSid_authToken: []
+      operationId: CreateMediaProcessor
+      x-maturity:
+      - GA
+      requestBody:
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/CreateMediaProcessorRequest'
+    get:
+      description: Returns a list of MediaProcessors.
+      tags:
+      - MediaProcessors
+      parameters:
+      - name: Order
+        in: query
+        description: 'The sort order of the list by `date_created`. Can be: `asc` (ascending) or `desc` (descending) with `desc` as the default.'
+        schema:
+          type: string
+          $ref: '#/components/schemas/media_processor_enum_order'
+      - name: Status
+        in: query
+        description: Status to filter by, with possible values `started`, `ended` or `failed`.
+        schema:
+          type: string
+          $ref: '#/components/schemas/media_processor_enum_status'
+      - name: PageSize
+        in: query
+        description: How many resources to return in each list page. The default is 50, and the maximum is 1000.
+        schema:
+          type: integer
+          minimum: 1
+          maximum: 1000
+      - name: Page
+        in: query
+        description: The page index. This value is simply for client state.
+        schema:
+          type: integer
+          minimum: 0
+      - name: PageToken
+        in: query
+        description: The page token. This is provided by the API.
+        schema:
+          type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ListMediaProcessorResponse'
+          description: OK
+      security:
+      - accountSid_authToken: []
+      operationId: ListMediaProcessor
+      x-maturity:
+      - GA
+  /v1/MediaProcessors/{Sid}:
+    servers:
+    - url: https://media.twilio.com
+    description: A MediaProcessor resource provides the ability to capture content from a web application with a Twilio Media Extension to create a livestream.
+    x-twilio:
+      defaultOutputProperties:
+      - sid
+      - status
+      - extension
+      - extension_context
+      pathType: instance
+      mountName: media_processor
+    get:
+      description: Returns a single MediaProcessor resource identified by a SID.
+      tags:
+      - MediaProcessors
+      parameters:
+      - name: Sid
+        in: path
+        description: The SID of the MediaProcessor resource to fetch.
+        schema:
+          type: string
+          minLength: 34
+          maxLength: 34
+          pattern: ^ZX[0-9a-fA-F]{32}$
+        required: true
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/media.v1.media_processor'
+          description: OK
+      security:
+      - accountSid_authToken: []
+      operationId: FetchMediaProcessor
+      x-maturity:
+      - GA
+    post:
+      description: Updates a MediaProcessor resource identified by a SID.
+      tags:
+      - MediaProcessors
+      parameters:
+      - name: Sid
+        in: path
+        description: The SID of the MediaProcessor resource to update.
+        schema:
+          type: string
+          minLength: 34
+          maxLength: 34
+          pattern: ^ZX[0-9a-fA-F]{32}$
+        required: true
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/media.v1.media_processor'
+          description: OK
+      security:
+      - accountSid_authToken: []
+      operationId: UpdateMediaProcessor
+      x-maturity:
+      - GA
+      requestBody:
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/UpdateMediaProcessorRequest'
+components:
+  schemas:
+    media.v1.media_processor:
+      type: object
+      properties:
+        account_sid:
+          type: string
+          minLength: 34
+          maxLength: 34
+          pattern: ^AC[0-9a-fA-F]{32}$
+          nullable: true
+          description: The SID of the [Account](https://www.twilio.com/docs/iam/api/account) that created the MediaProcessor resource.
+        sid:
+          type: string
+          minLength: 34
+          maxLength: 34
+          pattern: ^ZX[0-9a-fA-F]{32}$
+          nullable: true
+          description: The unique string generated to identify the MediaProcessor resource.
+        date_created:
+          type: string
+          format: date-time
+          nullable: true
+          description: The date and time in GMT when the resource was created specified in [ISO 8601](https://en.wikipedia.org/wiki/ISO_8601) format.
+        date_updated:
+          type: string
+          format: date-time
+          nullable: true
+          description: The date and time in GMT when the resource was last updated specified in [ISO 8601](https://en.wikipedia.org/wiki/ISO_8601) format.
+        extension:
+          type: string
+          nullable: true
+          description: 'The [Media Extension](/docs/live/media-extensions-overview) name or URL. Ex: `video-composer-v2`'
+          x-twilio:
+            pii:
+              handling: standard
+              deleteSla: 30
+        extension_context:
+          type: string
+          nullable: true
+          description: The context of the Media Extension, represented as a JSON dictionary. See the documentation for the specific [Media Extension](/docs/live/media-extensions-overview) you are using for more information about the context to send.
+        status:
+          type: string
+          $ref: '#/components/schemas/media_processor_enum_status'
+          nullable: true
+          description: 'The status of the MediaProcessor. Can be: `started`, `ended` or `failed`.'
+        url:
+          type: string
+          format: uri
+          nullable: true
+          description: The absolute URL of the resource.
+        ended_reason:
+          type: string
+          nullable: true
+          description: The reason why a MediaProcessor ended. When a MediaProcessor is in progress, will be `null`. When a MediaProcessor is completed, can be `ended-via-api`, `max-duration-exceeded`, `error-loading-extension`, `error-streaming-media` or `internal-service-error`. See [ended reasons](/docs/live/api/mediaprocessors#mediaprocessor-ended-reason-values) for more details.
+        status_callback:
+          type: string
+          format: uri
+          nullable: true
+          description: The URL to which Twilio will send asynchronous webhook requests for every MediaProcessor event. See [Status Callbacks](/docs/live/api/status-callbacks) for details.
+        status_callback_method:
+          type: string
+          format: http-method
+          enum:
+          - HEAD
+          - GET
+          - POST
+          - PATCH
+          - PUT
+          - DELETE
+          nullable: true
+          description: The HTTP method Twilio should use to call the `status_callback` URL. Can be `POST` or `GET` and the default is `POST`.
+        max_duration:
+          type: integer
+          nullable: true
+          description: The maximum time, in seconds, that the MediaProcessor can run before automatically ends. The default value is 300 seconds, and the maximum value is 90000 seconds. Once this maximum duration is reached, Twilio will end the MediaProcessor, regardless of whether media is still streaming.
+    UpdateMediaProcessorRequest:
+      type: object
+      required:
+      - Status
+      properties:
+        Status:
+          type: string
+          $ref: '#/components/schemas/media_processor_enum_update_status'
+          description: The status of the MediaProcessor. Can be `ended`.
+    media_processor_enum_status:
+      type: string
+      enum:
+      - failed
+      - started
+      - ended
+    ListMediaProcessorResponse:
+      type: object
+      properties:
+        media_processors:
+          type: array
+          items:
+            $ref: '#/components/schemas/media.v1.media_processor'
+        meta:
+          type: object
+          properties:
+            first_page_url:
+              type: string
+              format: uri
+            next_page_url:
+              type: string
+              format: uri
+              nullable: true
+            page:
+              type: integer
+            page_size:
+              type: integer
+            previous_page_url:
+              type: string
+              format: uri
+              nullable: true
+            url:
+              type: string
+              format: uri
+            key:
+              type: string
+    media_processor_enum_update_status:
+      type: string
+      enum:
+      - ended
+    media_processor_enum_order:
+      type: string
+      enum:
+      - asc
+      - desc
+    CreateMediaProcessorRequest:
+      type: object
+      required:
+      - Extension
+      - ExtensionContext
+      properties:
+        Extension:
+          type: string
+          description: 'The [Media Extension](/docs/live/media-extensions-overview) name or URL. Ex: `video-composer-v2`'
+        ExtensionContext:
+          type: string
+          description: The context of the Media Extension, represented as a JSON dictionary. See the documentation for the specific [Media Extension](/docs/live/media-extensions-overview) you are using for more information about the context to send.
+        ExtensionEnvironment:
+          description: User-defined environment variables for the Media Extension, represented as a JSON dictionary of key/value strings. See the documentation for the specific [Media Extension](/docs/live/media-extensions-overview) you are using for more information about whether you need to provide this.
+        StatusCallback:
+          type: string
+          format: uri
+          description: The URL to which Twilio will send asynchronous webhook requests for every MediaProcessor event. See [Status Callbacks](/docs/live/api/status-callbacks) for details.
+        StatusCallbackMethod:
+          type: string
+          format: http-method
+          enum:
+          - HEAD
+          - GET
+          - POST
+          - PATCH
+          - PUT
+          - DELETE
+          description: The HTTP method Twilio should use to call the `status_callback` URL. Can be `POST` or `GET` and the default is `POST`.
+        MaxDuration:
+          type: integer
+          description: The maximum time, in seconds, that the MediaProcessor can run before automatically ends. The default value is 300 seconds, and the maximum value is 90000 seconds. Once this maximum duration is reached, Twilio will end the MediaProcessor, regardless of whether media is still streaming.
+  securitySchemes:
+    accountSid_authToken:
+      type: http
+      scheme: basic
+x-maturity:
+- name: GA
+  description: This product is Generally Available.
+- name: Beta
+  description: PLEASE NOTE that this is a Beta product that is subject to change. Use it with caution.

@@ -1,0 +1,67 @@
+openapi: 3.0.1
+info:
+  title: Twilio - Accounts A2p Insights API
+  description: This is the public Twilio REST API.
+  termsOfService: https://www.twilio.com/legal/tos
+  contact:
+    name: Twilio Support
+    url: https://support.twilio.com
+    email: support@twilio.com
+  license:
+    name: Apache 2.0
+    url: https://www.apache.org/licenses/LICENSE-2.0.html
+  version: 1.52.0
+servers:
+- url: https://accounts.twilio.com
+tags:
+- name: Insights
+  description: Access Flex Insights questionnaires and assessments
+paths:
+  /Insights/QualityManagement/Questionnaires:
+    get:
+      operationId: listQuestionnaires
+      summary: Twilio List Questionnaires
+      tags:
+      - Insights
+      parameters:
+      - name: Token
+        in: header
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: List of questionnaires
+    post:
+      operationId: createQuestionnaire
+      summary: Twilio Create a Questionnaire
+      tags:
+      - Insights
+      requestBody:
+        required: true
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              type: object
+              required:
+              - Name
+              properties:
+                Name:
+                  type: string
+                Description:
+                  type: string
+                Active:
+                  type: boolean
+      responses:
+        '201':
+          description: Questionnaire created
+components:
+  securitySchemes:
+    accountSid_authToken:
+      type: http
+      scheme: basic
+x-maturity:
+- name: GA
+  description: This product is Generally Available.
+- name: Beta
+  description: PLEASE NOTE that this is a Beta product that is subject to change. Use it with caution.

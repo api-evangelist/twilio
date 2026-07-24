@@ -1,0 +1,342 @@
+openapi: 3.0.1
+info:
+  title: Twilio - Accounts A2p Commands API
+  description: This is the public Twilio REST API.
+  termsOfService: https://www.twilio.com/legal/tos
+  contact:
+    name: Twilio Support
+    url: https://support.twilio.com
+    email: support@twilio.com
+  license:
+    name: Apache 2.0
+    url: https://www.apache.org/licenses/LICENSE-2.0.html
+  version: 1.52.0
+servers:
+- url: https://accounts.twilio.com
+tags:
+- name: Commands
+paths:
+  /v1/Commands/{Sid}:
+    servers:
+    - url: https://wireless.twilio.com
+    description: Machine-to-machine commands sent to/from devices
+    x-twilio:
+      defaultOutputProperties:
+      - sid
+      - command_mode
+      - transport
+      - status
+      - direction
+      - date_created
+      pathType: instance
+    get:
+      description: Fetch a Command instance from your account.
+      tags:
+      - Commands
+      parameters:
+      - name: Sid
+        in: path
+        description: The SID of the Command resource to fetch.
+        schema:
+          type: string
+          minLength: 34
+          maxLength: 34
+          pattern: ^DC[0-9a-fA-F]{32}$
+        required: true
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/wireless.v1.command'
+          description: OK
+      security:
+      - accountSid_authToken: []
+      operationId: FetchCommand
+      x-maturity:
+      - GA
+    delete:
+      description: Delete a Command instance from your account.
+      tags:
+      - Commands
+      parameters:
+      - name: Sid
+        in: path
+        description: The SID of the Command resource to delete.
+        schema:
+          type: string
+          minLength: 34
+          maxLength: 34
+          pattern: ^DC[0-9a-fA-F]{32}$
+        required: true
+      responses:
+        '204':
+          description: The resource was deleted successfully.
+      security:
+      - accountSid_authToken: []
+      operationId: DeleteCommand
+      x-maturity:
+      - GA
+  /v1/Commands:
+    servers:
+    - url: https://wireless.twilio.com
+    description: Machine-to-machine commands sent to/from devices
+    x-twilio:
+      defaultOutputProperties:
+      - sid
+      - command_mode
+      - transport
+      - status
+      - direction
+      - date_created
+      pathType: list
+    get:
+      description: Retrieve a list of Commands from your account.
+      tags:
+      - Commands
+      parameters:
+      - name: Sim
+        in: query
+        description: The `sid` or `unique_name` of the [Sim resources](https://www.twilio.com/docs/iot/wireless/api/sim-resource) to read.
+        schema:
+          type: string
+      - name: Status
+        in: query
+        description: 'The status of the resources to read. Can be: `queued`, `sent`, `delivered`, `received`, or `failed`.'
+        schema:
+          type: string
+          $ref: '#/components/schemas/command_enum_status'
+      - name: Direction
+        in: query
+        description: Only return Commands with this direction value.
+        schema:
+          type: string
+          $ref: '#/components/schemas/command_enum_direction'
+      - name: Transport
+        in: query
+        description: 'Only return Commands with this transport value. Can be: `sms` or `ip`.'
+        schema:
+          type: string
+          $ref: '#/components/schemas/command_enum_transport'
+      - name: PageSize
+        in: query
+        description: How many resources to return in each list page. The default is 50, and the maximum is 1000.
+        schema:
+          type: integer
+          minimum: 1
+          maximum: 1000
+      - name: Page
+        in: query
+        description: The page index. This value is simply for client state.
+        schema:
+          type: integer
+          minimum: 0
+      - name: PageToken
+        in: query
+        description: The page token. This is provided by the API.
+        schema:
+          type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ListCommandResponse'
+          description: OK
+      security:
+      - accountSid_authToken: []
+      operationId: ListCommand
+      x-maturity:
+      - GA
+    post:
+      description: Send a Command to a Sim.
+      tags:
+      - Commands
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/wireless.v1.command'
+          description: Created
+      security:
+      - accountSid_authToken: []
+      operationId: CreateCommand
+      x-maturity:
+      - GA
+      requestBody:
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/CreateCommandRequest'
+components:
+  schemas:
+    command_enum_transport:
+      type: string
+      enum:
+      - sms
+      - ip
+    CreateCommandRequest:
+      type: object
+      required:
+      - Command
+      properties:
+        Command:
+          type: string
+          description: The message body of the Command. Can be plain text in text mode or a Base64 encoded byte string in binary mode.
+        Sim:
+          type: string
+          description: The `sid` or `unique_name` of the [SIM](https://www.twilio.com/docs/iot/wireless/api/sim-resource) to send the Command to.
+        CallbackMethod:
+          type: string
+          format: http-method
+          enum:
+          - HEAD
+          - GET
+          - POST
+          - PATCH
+          - PUT
+          - DELETE
+          description: 'The HTTP method we use to call `callback_url`. Can be: `POST` or `GET`, and the default is `POST`.'
+        CallbackUrl:
+          type: string
+          format: uri
+          description: The URL we call using the `callback_url` when the Command has finished sending, whether the command was delivered or it failed.
+        CommandMode:
+          type: string
+          $ref: '#/components/schemas/command_enum_command_mode'
+          description: 'The mode to use when sending the SMS message. Can be: `text` or `binary`. The default SMS mode is `text`.'
+        IncludeSid:
+          type: string
+          description: 'Whether to include the SID of the command in the message body. Can be: `none`, `start`, or `end`, and the default behavior is `none`. When sending a Command to a SIM in text mode, we can automatically include the SID of the Command in the message body, which could be used to ensure that the device does not process the same Command more than once.  A value of `start` will prepend the message with the Command SID, and `end` will append it to the end, separating the Command SID from the message body with a space. The length of the Command SID is included in the 160 character limit so the SMS body must be 128 characters or less before the Command SID is included.'
+        DeliveryReceiptRequested:
+          type: boolean
+          description: Whether to request delivery receipt from the recipient. For Commands that request delivery receipt, the Command state transitions to 'delivered' once the server has received a delivery receipt from the device. The default value is `true`.
+    command_enum_direction:
+      type: string
+      enum:
+      - from_sim
+      - to_sim
+    command_enum_status:
+      type: string
+      enum:
+      - queued
+      - sent
+      - delivered
+      - received
+      - failed
+    command_enum_command_mode:
+      type: string
+      enum:
+      - text
+      - binary
+    ListCommandResponse:
+      type: object
+      properties:
+        commands:
+          type: array
+          items:
+            $ref: '#/components/schemas/wireless.v1.command'
+        meta:
+          type: object
+          properties:
+            first_page_url:
+              type: string
+              format: uri
+            next_page_url:
+              type: string
+              format: uri
+              nullable: true
+            page:
+              type: integer
+            page_size:
+              type: integer
+            previous_page_url:
+              type: string
+              format: uri
+              nullable: true
+            url:
+              type: string
+              format: uri
+            key:
+              type: string
+    wireless.v1.command:
+      type: object
+      properties:
+        sid:
+          type: string
+          minLength: 34
+          maxLength: 34
+          pattern: ^DC[0-9a-fA-F]{32}$
+          nullable: true
+          description: The unique string that we created to identify the Command resource.
+        account_sid:
+          type: string
+          minLength: 34
+          maxLength: 34
+          pattern: ^AC[0-9a-fA-F]{32}$
+          nullable: true
+          description: The SID of the [Account](https://www.twilio.com/docs/iam/api/account) that created the Command resource.
+        sim_sid:
+          type: string
+          minLength: 34
+          maxLength: 34
+          pattern: ^DE[0-9a-fA-F]{32}$
+          nullable: true
+          description: The SID of the [Sim resource](https://www.twilio.com/docs/iot/wireless/api/sim-resource) that the Command was sent to or from.
+        command:
+          type: string
+          nullable: true
+          description: The message being sent to or from the SIM. For text mode messages, this can be up to 160 characters. For binary mode messages, this is a series of up to 140 bytes of data encoded using base64.
+          x-twilio:
+            pii:
+              handling: standard
+              deleteSla: 30
+        command_mode:
+          type: string
+          $ref: '#/components/schemas/command_enum_command_mode'
+          nullable: true
+          description: 'The mode used to send the SMS message. Can be: `text` or `binary`. The default SMS mode is `text`.'
+        transport:
+          type: string
+          $ref: '#/components/schemas/command_enum_transport'
+          nullable: true
+          description: 'The type of transport used. Can be: `sms` or `ip`.'
+        delivery_receipt_requested:
+          type: boolean
+          nullable: true
+          description: Whether to request a delivery receipt.
+        status:
+          type: string
+          $ref: '#/components/schemas/command_enum_status'
+          nullable: true
+          description: 'The status of the Command. Can be: `queued`, `sent`, `delivered`, `received`, or `failed`. See [Status Values](https://www.twilio.com/docs/iot/wireless/api/command-resource#status-values) for a description of each state.'
+        direction:
+          type: string
+          $ref: '#/components/schemas/command_enum_direction'
+          nullable: true
+          description: The direction of the Command. Can be `to_sim` or `from_sim`. The value of `to_sim` is synonymous with the term `mobile terminated`, and `from_sim` is synonymous with the term `mobile originated`.
+        date_created:
+          type: string
+          format: date-time
+          nullable: true
+          description: The date and time in GMT when the resource was created specified in [ISO 8601](https://www.iso.org/iso-8601-date-and-time-format.html) format.
+        date_updated:
+          type: string
+          format: date-time
+          nullable: true
+          description: The date and time in GMT when the resource was last updated specified in [ISO 8601](https://www.iso.org/iso-8601-date-and-time-format.html) format.
+        url:
+          type: string
+          format: uri
+          nullable: true
+          description: The absolute URL of the resource.
+  securitySchemes:
+    accountSid_authToken:
+      type: http
+      scheme: basic
+x-maturity:
+- name: GA
+  description: This product is Generally Available.
+- name: Beta
+  description: PLEASE NOTE that this is a Beta product that is subject to change. Use it with caution.

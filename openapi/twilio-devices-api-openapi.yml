@@ -1,0 +1,743 @@
+openapi: 3.0.1
+info:
+  title: Twilio - Accounts A2p Devices API
+  description: This is the public Twilio REST API.
+  termsOfService: https://www.twilio.com/legal/tos
+  contact:
+    name: Twilio Support
+    url: https://support.twilio.com
+    email: support@twilio.com
+  license:
+    name: Apache 2.0
+    url: https://www.apache.org/licenses/LICENSE-2.0.html
+  version: 1.52.0
+servers:
+- url: https://accounts.twilio.com
+tags:
+- name: Devices
+paths:
+  /v1/Devices:
+    servers:
+    - url: https://microvisor.twilio.com
+    description: 'TODO: Resource-level docs'
+    x-twilio:
+      defaultOutputProperties:
+      - sid
+      - unique_name
+      pathType: list
+      dependentProperties:
+        device_configs:
+          mapping:
+            device_sid: sid
+          resource_url: /v1/Devices/{device_sid}/Configs
+        device_secrets:
+          mapping:
+            device_sid: sid
+          resource_url: /v1/Devices/{device_sid}/Secrets
+    get:
+      description: Retrieve a list of all Devices registered with the Account.
+      tags:
+      - Devices
+      parameters:
+      - name: PageSize
+        in: query
+        description: How many resources to return in each list page. The default is 50, and the maximum is 1000.
+        schema:
+          type: integer
+          minimum: 1
+          maximum: 1000
+      - name: Page
+        in: query
+        description: The page index. This value is simply for client state.
+        schema:
+          type: integer
+          minimum: 0
+      - name: PageToken
+        in: query
+        description: The page token. This is provided by the API.
+        schema:
+          type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ListDeviceResponse'
+          description: OK
+      security:
+      - accountSid_authToken: []
+      operationId: ListDevice
+      x-maturity:
+      - Preview
+  /v1/Devices/{Sid}:
+    servers:
+    - url: https://microvisor.twilio.com
+    description: 'TODO: Resource-level docs'
+    x-twilio:
+      defaultOutputProperties:
+      - sid
+      - unique_name
+      pathType: instance
+      dependentProperties:
+        device_configs:
+          mapping:
+            device_sid: sid
+          resource_url: /v1/Devices/{device_sid}/Configs
+        device_secrets:
+          mapping:
+            device_sid: sid
+          resource_url: /v1/Devices/{device_sid}/Secrets
+    get:
+      description: Fetch a specific Device.
+      tags:
+      - Devices
+      parameters:
+      - name: Sid
+        in: path
+        description: A 34-character string that uniquely identifies this Device.
+        schema:
+          type: string
+        required: true
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/microvisor.v1.device'
+          description: OK
+      security:
+      - accountSid_authToken: []
+      operationId: FetchDevice
+      x-maturity:
+      - Preview
+    post:
+      description: Update a specific Device.
+      tags:
+      - Devices
+      parameters:
+      - name: Sid
+        in: path
+        description: A 34-character string that uniquely identifies this Device.
+        schema:
+          type: string
+        required: true
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/microvisor.v1.device'
+          description: OK
+      security:
+      - accountSid_authToken: []
+      operationId: UpdateDevice
+      x-maturity:
+      - Preview
+      requestBody:
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/UpdateDeviceRequest'
+  /v1/Devices/{DeviceSid}/Configs:
+    servers:
+    - url: https://microvisor.twilio.com
+    description: 'TODO: Resource-level docs'
+    x-twilio:
+      defaultOutputProperties: []
+      pathType: list
+      parent: /Devices/{Sid}
+      mountName: device_configs
+    get:
+      description: Retrieve a list of all Configs for a Device.
+      tags:
+      - Devices
+      parameters:
+      - name: DeviceSid
+        in: path
+        description: A 34-character string that uniquely identifies the Device.
+        schema:
+          type: string
+        required: true
+      - name: PageSize
+        in: query
+        description: How many resources to return in each list page. The default is 50, and the maximum is 1000.
+        schema:
+          type: integer
+          minimum: 1
+          maximum: 1000
+      - name: Page
+        in: query
+        description: The page index. This value is simply for client state.
+        schema:
+          type: integer
+          minimum: 0
+      - name: PageToken
+        in: query
+        description: The page token. This is provided by the API.
+        schema:
+          type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ListDeviceConfigResponse'
+          description: OK
+      security:
+      - accountSid_authToken: []
+      operationId: ListDeviceConfig
+      x-maturity:
+      - Preview
+    post:
+      description: Create a config for a Microvisor Device.
+      tags:
+      - Devices
+      parameters:
+      - name: DeviceSid
+        in: path
+        description: A 34-character string that uniquely identifies the Device.
+        schema:
+          type: string
+        required: true
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/microvisor.v1.device.device_config'
+          description: Created
+      security:
+      - accountSid_authToken: []
+      operationId: CreateDeviceConfig
+      x-maturity:
+      - Preview
+      requestBody:
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/CreateDeviceConfigRequest'
+  /v1/Devices/{DeviceSid}/Configs/{Key}:
+    servers:
+    - url: https://microvisor.twilio.com
+    description: 'TODO: Resource-level docs'
+    x-twilio:
+      defaultOutputProperties: []
+      pathType: instance
+      parent: /Devices/{Sid}
+      mountName: device_configs
+    get:
+      description: Retrieve a Config for a Device.
+      tags:
+      - Devices
+      parameters:
+      - name: DeviceSid
+        in: path
+        description: A 34-character string that uniquely identifies the Device.
+        schema:
+          type: string
+        required: true
+      - name: Key
+        in: path
+        description: The config key; up to 100 characters.
+        schema:
+          type: string
+        required: true
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/microvisor.v1.device.device_config'
+          description: OK
+      security:
+      - accountSid_authToken: []
+      operationId: FetchDeviceConfig
+      x-maturity:
+      - Preview
+    post:
+      description: Update a config for a Microvisor Device.
+      tags:
+      - Devices
+      parameters:
+      - name: DeviceSid
+        in: path
+        description: A 34-character string that uniquely identifies the Device.
+        schema:
+          type: string
+        required: true
+      - name: Key
+        in: path
+        description: The config key; up to 100 characters.
+        schema:
+          type: string
+        required: true
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/microvisor.v1.device.device_config'
+          description: OK
+      security:
+      - accountSid_authToken: []
+      operationId: UpdateDeviceConfig
+      x-maturity:
+      - Preview
+      requestBody:
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/UpdateDeviceConfigRequest'
+    delete:
+      description: Delete a config for a Microvisor Device.
+      tags:
+      - Devices
+      parameters:
+      - name: DeviceSid
+        in: path
+        description: A 34-character string that uniquely identifies the Device.
+        schema:
+          type: string
+        required: true
+      - name: Key
+        in: path
+        description: The config key; up to 100 characters.
+        schema:
+          type: string
+        required: true
+      responses:
+        '204':
+          description: The resource was deleted successfully.
+      security:
+      - accountSid_authToken: []
+      operationId: DeleteDeviceConfig
+      x-maturity:
+      - Preview
+  /v1/Devices/{DeviceSid}/Secrets:
+    servers:
+    - url: https://microvisor.twilio.com
+    description: 'TODO: Resource-level docs'
+    x-twilio:
+      defaultOutputProperties: []
+      pathType: list
+      parent: /Devices/{Sid}
+      mountName: device_secrets
+    get:
+      description: Retrieve a list of all Secrets for a Device.
+      tags:
+      - Devices
+      parameters:
+      - name: DeviceSid
+        in: path
+        description: A 34-character string that uniquely identifies the Device.
+        schema:
+          type: string
+        required: true
+      - name: PageSize
+        in: query
+        description: How many resources to return in each list page. The default is 50, and the maximum is 1000.
+        schema:
+          type: integer
+          minimum: 1
+          maximum: 1000
+      - name: Page
+        in: query
+        description: The page index. This value is simply for client state.
+        schema:
+          type: integer
+          minimum: 0
+      - name: PageToken
+        in: query
+        description: The page token. This is provided by the API.
+        schema:
+          type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ListDeviceSecretResponse'
+          description: OK
+      security:
+      - accountSid_authToken: []
+      operationId: ListDeviceSecret
+      x-maturity:
+      - Preview
+    post:
+      description: Create a secret for a Microvisor Device.
+      tags:
+      - Devices
+      parameters:
+      - name: DeviceSid
+        in: path
+        description: A 34-character string that uniquely identifies the Device.
+        schema:
+          type: string
+        required: true
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/microvisor.v1.device.device_secret'
+          description: Created
+      security:
+      - accountSid_authToken: []
+      operationId: CreateDeviceSecret
+      x-maturity:
+      - Preview
+      requestBody:
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/CreateDeviceSecretRequest'
+  /v1/Devices/{DeviceSid}/Secrets/{Key}:
+    servers:
+    - url: https://microvisor.twilio.com
+    description: 'TODO: Resource-level docs'
+    x-twilio:
+      defaultOutputProperties: []
+      pathType: instance
+      parent: /Devices/{Sid}
+      mountName: device_secrets
+    get:
+      description: Retrieve a Secret for a Device.
+      tags:
+      - Devices
+      parameters:
+      - name: DeviceSid
+        in: path
+        description: A 34-character string that uniquely identifies the Device.
+        schema:
+          type: string
+        required: true
+      - name: Key
+        in: path
+        description: The secret key; up to 100 characters.
+        schema:
+          type: string
+        required: true
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/microvisor.v1.device.device_secret'
+          description: OK
+      security:
+      - accountSid_authToken: []
+      operationId: FetchDeviceSecret
+      x-maturity:
+      - Preview
+    post:
+      description: Update a secret for a Microvisor Device.
+      tags:
+      - Devices
+      parameters:
+      - name: DeviceSid
+        in: path
+        description: A 34-character string that uniquely identifies the Device.
+        schema:
+          type: string
+        required: true
+      - name: Key
+        in: path
+        description: The secret key; up to 100 characters.
+        schema:
+          type: string
+        required: true
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/microvisor.v1.device.device_secret'
+          description: OK
+      security:
+      - accountSid_authToken: []
+      operationId: UpdateDeviceSecret
+      x-maturity:
+      - Preview
+      requestBody:
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/UpdateDeviceSecretRequest'
+    delete:
+      description: Delete a secret for a Microvisor Device.
+      tags:
+      - Devices
+      parameters:
+      - name: DeviceSid
+        in: path
+        description: A 34-character string that uniquely identifies the Device.
+        schema:
+          type: string
+        required: true
+      - name: Key
+        in: path
+        description: The secret key; up to 100 characters.
+        schema:
+          type: string
+        required: true
+      responses:
+        '204':
+          description: The resource was deleted successfully.
+      security:
+      - accountSid_authToken: []
+      operationId: DeleteDeviceSecret
+      x-maturity:
+      - Preview
+components:
+  schemas:
+    microvisor.v1.device.device_secret:
+      type: object
+      properties:
+        device_sid:
+          type: string
+          minLength: 34
+          maxLength: 34
+          pattern: ^UV[0-9a-fA-F]{32}$
+          nullable: true
+          description: A 34-character string that uniquely identifies the parent Device.
+        key:
+          type: string
+          nullable: true
+          description: The secret key; up to 100 characters.
+        date_rotated:
+          type: string
+          format: date-time
+          nullable: true
+        url:
+          type: string
+          format: uri
+          nullable: true
+          description: The absolute URL of the Secret.
+    ListDeviceResponse:
+      type: object
+      properties:
+        devices:
+          type: array
+          items:
+            $ref: '#/components/schemas/microvisor.v1.device'
+        meta:
+          type: object
+          properties:
+            first_page_url:
+              type: string
+              format: uri
+            next_page_url:
+              type: string
+              format: uri
+              nullable: true
+            page:
+              type: integer
+            page_size:
+              type: integer
+            previous_page_url:
+              type: string
+              format: uri
+              nullable: true
+            url:
+              type: string
+              format: uri
+            key:
+              type: string
+    ListDeviceConfigResponse:
+      type: object
+      properties:
+        configs:
+          type: array
+          items:
+            $ref: '#/components/schemas/microvisor.v1.device.device_config'
+        meta:
+          type: object
+          properties:
+            first_page_url:
+              type: string
+              format: uri
+            next_page_url:
+              type: string
+              format: uri
+              nullable: true
+            page:
+              type: integer
+            page_size:
+              type: integer
+            previous_page_url:
+              type: string
+              format: uri
+              nullable: true
+            url:
+              type: string
+              format: uri
+            key:
+              type: string
+    microvisor.v1.device:
+      type: object
+      properties:
+        sid:
+          type: string
+          minLength: 34
+          maxLength: 34
+          pattern: ^UV[0-9a-fA-F]{32}$
+          nullable: true
+          description: A 34-character string that uniquely identifies this Device.
+        unique_name:
+          type: string
+          nullable: true
+          description: A developer-defined string that uniquely identifies the Device. This value must be unique for all Devices on this Account. The `unique_name` value may be used as an alternative to the `sid` in the URL path to address the resource.
+        account_sid:
+          type: string
+          minLength: 34
+          maxLength: 34
+          pattern: ^AC[0-9a-fA-F]{32}$
+          nullable: true
+          description: The unique SID identifier of the Account.
+        app:
+          nullable: true
+          description: Information about the target App and the App reported by this Device. Contains the properties `target_sid`, `date_targeted`, `update_status` (one of `up-to-date`, `pending` and `error`), `update_error_code`, `reported_sid` and `date_reported`.
+        logging:
+          nullable: true
+          description: Object specifying whether application logging is enabled for this Device. Contains the properties `enabled` and `date_expires`.
+        date_created:
+          type: string
+          format: date-time
+          nullable: true
+          description: The date that this Device was created, given in [ISO 8601](https://en.wikipedia.org/wiki/ISO_8601) format.
+        date_updated:
+          type: string
+          format: date-time
+          nullable: true
+          description: The date that this Device was last updated, given in [ISO 8601](https://en.wikipedia.org/wiki/ISO_8601) format.
+        url:
+          type: string
+          format: uri
+          nullable: true
+          description: The URL of this resource.
+        links:
+          type: object
+          format: uri-map
+          nullable: true
+          description: The absolute URLs of related resources.
+    UpdateDeviceSecretRequest:
+      type: object
+      required:
+      - Value
+      properties:
+        Value:
+          type: string
+          description: The secret value; up to 4096 characters.
+    UpdateDeviceConfigRequest:
+      type: object
+      required:
+      - Value
+      properties:
+        Value:
+          type: string
+          description: The config value; up to 4096 characters.
+    UpdateDeviceRequest:
+      type: object
+      properties:
+        UniqueName:
+          type: string
+          description: A unique and addressable name to be assigned to this Device by the developer. It may be used in place of the Device SID.
+        TargetApp:
+          type: string
+          description: The SID or unique name of the App to be targeted to the Device.
+        LoggingEnabled:
+          type: boolean
+          description: A Boolean flag specifying whether to enable application logging. Logs will be enabled or extended for 24 hours.
+        RestartApp:
+          type: boolean
+          description: Set to true to restart the App running on the Device.
+    CreateDeviceConfigRequest:
+      type: object
+      required:
+      - Key
+      - Value
+      properties:
+        Key:
+          type: string
+          description: The config key; up to 100 characters.
+        Value:
+          type: string
+          description: The config value; up to 4096 characters.
+    ListDeviceSecretResponse:
+      type: object
+      properties:
+        secrets:
+          type: array
+          items:
+            $ref: '#/components/schemas/microvisor.v1.device.device_secret'
+        meta:
+          type: object
+          properties:
+            first_page_url:
+              type: string
+              format: uri
+            next_page_url:
+              type: string
+              format: uri
+              nullable: true
+            page:
+              type: integer
+            page_size:
+              type: integer
+            previous_page_url:
+              type: string
+              format: uri
+              nullable: true
+            url:
+              type: string
+              format: uri
+            key:
+              type: string
+    microvisor.v1.device.device_config:
+      type: object
+      properties:
+        device_sid:
+          type: string
+          minLength: 34
+          maxLength: 34
+          pattern: ^UV[0-9a-fA-F]{32}$
+          nullable: true
+          description: A 34-character string that uniquely identifies the parent Device.
+        key:
+          type: string
+          nullable: true
+          description: The config key; up to 100 characters.
+        value:
+          type: string
+          nullable: true
+          description: The config value; up to 4096 characters.
+        date_updated:
+          type: string
+          format: date-time
+          nullable: true
+        url:
+          type: string
+          format: uri
+          nullable: true
+          description: The absolute URL of the Config.
+    CreateDeviceSecretRequest:
+      type: object
+      required:
+      - Key
+      - Value
+      properties:
+        Key:
+          type: string
+          description: The secret key; up to 100 characters.
+        Value:
+          type: string
+          description: The secret value; up to 4096 characters.
+  securitySchemes:
+    accountSid_authToken:
+      type: http
+      scheme: basic
+x-maturity:
+- name: GA
+  description: This product is Generally Available.
+- name: Beta
+  description: PLEASE NOTE that this is a Beta product that is subject to change. Use it with caution.

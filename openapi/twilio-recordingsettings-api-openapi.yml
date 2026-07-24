@@ -1,0 +1,154 @@
+openapi: 3.0.1
+info:
+  title: Twilio - Accounts A2p RecordingSettings API
+  description: This is the public Twilio REST API.
+  termsOfService: https://www.twilio.com/legal/tos
+  contact:
+    name: Twilio Support
+    url: https://support.twilio.com
+    email: support@twilio.com
+  license:
+    name: Apache 2.0
+    url: https://www.apache.org/licenses/LICENSE-2.0.html
+  version: 1.52.0
+servers:
+- url: https://accounts.twilio.com
+tags:
+- name: RecordingSettings
+paths:
+  /v1/RecordingSettings/Default:
+    servers:
+    - url: https://video.twilio.com
+    description: Recording settings
+    x-twilio:
+      defaultOutputProperties:
+      - friendly_name
+      - aws_storage_enabled
+      - encryption_enabled
+      pathType: instance
+      mountName: recording_settings
+      className: recording_settings
+    get:
+      description: ''
+      tags:
+      - RecordingSettings
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/video.v1.recording_settings'
+          description: OK
+      security:
+      - accountSid_authToken: []
+      operationId: FetchRecordingSettings
+      x-maturity:
+      - GA
+    post:
+      description: ''
+      tags:
+      - RecordingSettings
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/video.v1.recording_settings'
+          description: Created
+      security:
+      - accountSid_authToken: []
+      operationId: CreateRecordingSettings
+      x-maturity:
+      - GA
+      requestBody:
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/CreateRecordingSettingsRequest'
+components:
+  schemas:
+    video.v1.recording_settings:
+      type: object
+      properties:
+        account_sid:
+          type: string
+          minLength: 34
+          maxLength: 34
+          pattern: ^AC[0-9a-fA-F]{32}$
+          nullable: true
+          description: The SID of the [Account](https://www.twilio.com/docs/iam/api/account) that created the RecordingSettings resource.
+        friendly_name:
+          type: string
+          nullable: true
+          description: The string that you assigned to describe the resource and show the user in the console
+        aws_credentials_sid:
+          type: string
+          minLength: 34
+          maxLength: 34
+          pattern: ^CR[0-9a-fA-F]{32}$
+          nullable: true
+          description: The SID of the stored Credential resource.
+        aws_s3_url:
+          type: string
+          format: uri
+          nullable: true
+          description: The URL of the AWS S3 bucket where the recordings are stored. We only support DNS-compliant URLs like `https://documentation-example-twilio-bucket/recordings`, where `recordings` is the path in which you want the recordings to be stored. This URL accepts only URI-valid characters, as described in the <a href='https://tools.ietf.org/html/rfc3986#section-2'>RFC 3986</a>.
+        aws_storage_enabled:
+          type: boolean
+          nullable: true
+          description: Whether all recordings are written to the `aws_s3_url`. When `false`, all recordings are stored in our cloud.
+        encryption_key_sid:
+          type: string
+          minLength: 34
+          maxLength: 34
+          pattern: ^CR[0-9a-fA-F]{32}$
+          nullable: true
+          description: The SID of the Public Key resource used for encryption.
+        encryption_enabled:
+          type: boolean
+          nullable: true
+          description: Whether all recordings are stored in an encrypted form. The default is `false`.
+        url:
+          type: string
+          format: uri
+          nullable: true
+          description: The absolute URL of the resource.
+    CreateRecordingSettingsRequest:
+      type: object
+      required:
+      - FriendlyName
+      properties:
+        FriendlyName:
+          type: string
+          description: A descriptive string that you create to describe the resource and be shown to users in the console
+        AwsCredentialsSid:
+          type: string
+          minLength: 34
+          maxLength: 34
+          pattern: ^CR[0-9a-fA-F]{32}$
+          description: The SID of the stored Credential resource.
+        EncryptionKeySid:
+          type: string
+          minLength: 34
+          maxLength: 34
+          pattern: ^CR[0-9a-fA-F]{32}$
+          description: The SID of the Public Key resource to use for encryption.
+        AwsS3Url:
+          type: string
+          format: uri
+          description: The URL of the AWS S3 bucket where the recordings should be stored. We only support DNS-compliant URLs like `https://documentation-example-twilio-bucket/recordings`, where `recordings` is the path in which you want the recordings to be stored. This URL accepts only URI-valid characters, as described in the <a href='https://tools.ietf.org/html/rfc3986#section-2'>RFC 3986</a>.
+        AwsStorageEnabled:
+          type: boolean
+          description: Whether all recordings should be written to the `aws_s3_url`. When `false`, all recordings are stored in our cloud.
+        EncryptionEnabled:
+          type: boolean
+          description: Whether all recordings should be stored in an encrypted form. The default is `false`.
+  securitySchemes:
+    accountSid_authToken:
+      type: http
+      scheme: basic
+x-maturity:
+- name: GA
+  description: This product is Generally Available.
+- name: Beta
+  description: PLEASE NOTE that this is a Beta product that is subject to change. Use it with caution.

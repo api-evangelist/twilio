@@ -1,0 +1,101 @@
+openapi: 3.0.1
+info:
+  title: Twilio - Accounts A2p Short Codes API
+  description: This is the public Twilio REST API.
+  termsOfService: https://www.twilio.com/legal/tos
+  contact:
+    name: Twilio Support
+    url: https://support.twilio.com
+    email: support@twilio.com
+  license:
+    name: Apache 2.0
+    url: https://www.apache.org/licenses/LICENSE-2.0.html
+  version: 1.52.0
+servers:
+- url: https://accounts.twilio.com
+tags:
+- name: Short Codes
+  description: Manage short codes for messaging services
+paths:
+  /Services/{ServiceSid}/ShortCodes:
+    get:
+      operationId: listShortCodes
+      summary: Twilio List Short Codes in a Messaging Service
+      tags:
+      - Short Codes
+      parameters:
+      - $ref: '#/components/parameters/ServiceSid'
+      responses:
+        '200':
+          description: List of short codes
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  short_codes:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/ShortCode'
+    post:
+      operationId: addShortCode
+      summary: Twilio Add a Short Code to a Messaging Service
+      tags:
+      - Short Codes
+      parameters:
+      - $ref: '#/components/parameters/ServiceSid'
+      requestBody:
+        required: true
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              type: object
+              required:
+              - ShortCodeSid
+              properties:
+                ShortCodeSid:
+                  type: string
+                  description: SID of the short code to add
+                  pattern: ^SC[0-9a-fA-F]{32}$
+      responses:
+        '201':
+          description: Short code added
+        '400':
+          description: Invalid request
+components:
+  parameters:
+    ServiceSid:
+      name: ServiceSid
+      in: path
+      required: true
+      description: The unique identifier of the messaging service
+      schema:
+        type: string
+        pattern: ^MG[0-9a-fA-F]{32}$
+  schemas:
+    ShortCode:
+      type: object
+      properties:
+        sid:
+          type: string
+          pattern: ^SC[0-9a-fA-F]{32}$
+        short_code:
+          type: string
+        country_code:
+          type: string
+        capabilities:
+          type: array
+          items:
+            type: string
+        date_created:
+          type: string
+          format: date-time
+  securitySchemes:
+    accountSid_authToken:
+      type: http
+      scheme: basic
+x-maturity:
+- name: GA
+  description: This product is Generally Available.
+- name: Beta
+  description: PLEASE NOTE that this is a Beta product that is subject to change. Use it with caution.

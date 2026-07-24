@@ -1,0 +1,275 @@
+openapi: 3.0.1
+info:
+  title: Twilio - Accounts A2p SmsCommands API
+  description: This is the public Twilio REST API.
+  termsOfService: https://www.twilio.com/legal/tos
+  contact:
+    name: Twilio Support
+    url: https://support.twilio.com
+    email: support@twilio.com
+  license:
+    name: Apache 2.0
+    url: https://www.apache.org/licenses/LICENSE-2.0.html
+  version: 1.52.0
+servers:
+- url: https://accounts.twilio.com
+tags:
+- name: SmsCommands
+paths:
+  /v1/SmsCommands:
+    servers:
+    - url: https://supersim.twilio.com
+    description: Machine-to-machine SMS Commands sent to/from SIMs
+    x-twilio:
+      defaultOutputProperties:
+      - sid
+      - status
+      - date_created
+      pathType: list
+    post:
+      description: Send SMS Command to a Sim.
+      tags:
+      - SmsCommands
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/supersim.v1.sms_command'
+          description: Created
+      security:
+      - accountSid_authToken: []
+      operationId: CreateSmsCommand
+      x-maturity:
+      - Beta
+      requestBody:
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/CreateSmsCommandRequest'
+    get:
+      description: Retrieve a list of SMS Commands from your account.
+      tags:
+      - SmsCommands
+      parameters:
+      - name: Sim
+        in: query
+        description: The SID or unique name of the Sim resource that SMS Command was sent to or from.
+        schema:
+          type: string
+      - name: Status
+        in: query
+        description: 'The status of the SMS Command. Can be: `queued`, `sent`, `delivered`, `received` or `failed`. See the [SMS Command Status Values](https://www.twilio.com/docs/iot/supersim/api/smscommand-resource#status-values) for a description of each.'
+        schema:
+          type: string
+          $ref: '#/components/schemas/sms_command_enum_status'
+      - name: Direction
+        in: query
+        description: The direction of the SMS Command. Can be `to_sim` or `from_sim`. The value of `to_sim` is synonymous with the term `mobile terminated`, and `from_sim` is synonymous with the term `mobile originated`.
+        schema:
+          type: string
+          $ref: '#/components/schemas/sms_command_enum_direction'
+      - name: PageSize
+        in: query
+        description: How many resources to return in each list page. The default is 50, and the maximum is 1000.
+        schema:
+          type: integer
+          minimum: 1
+          maximum: 1000
+      - name: Page
+        in: query
+        description: The page index. This value is simply for client state.
+        schema:
+          type: integer
+          minimum: 0
+      - name: PageToken
+        in: query
+        description: The page token. This is provided by the API.
+        schema:
+          type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ListSmsCommandResponse'
+          description: OK
+      security:
+      - accountSid_authToken: []
+      operationId: ListSmsCommand
+      x-maturity:
+      - Beta
+  /v1/SmsCommands/{Sid}:
+    servers:
+    - url: https://supersim.twilio.com
+    description: Machine-to-machine SMS Commands sent to/from SIMs
+    x-twilio:
+      defaultOutputProperties:
+      - sid
+      - status
+      - date_created
+      pathType: instance
+    get:
+      description: Fetch SMS Command instance from your account.
+      tags:
+      - SmsCommands
+      parameters:
+      - name: Sid
+        in: path
+        description: The SID of the SMS Command resource to fetch.
+        schema:
+          type: string
+          minLength: 34
+          maxLength: 34
+          pattern: ^HC[0-9a-fA-F]{32}$
+        required: true
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/supersim.v1.sms_command'
+          description: OK
+      security:
+      - accountSid_authToken: []
+      operationId: FetchSmsCommand
+      x-maturity:
+      - Beta
+components:
+  schemas:
+    sms_command_enum_status:
+      type: string
+      enum:
+      - queued
+      - sent
+      - delivered
+      - received
+      - failed
+    supersim.v1.sms_command:
+      type: object
+      properties:
+        sid:
+          type: string
+          minLength: 34
+          maxLength: 34
+          pattern: ^HC[0-9a-fA-F]{32}$
+          nullable: true
+          description: The unique string that we created to identify the SMS Command resource.
+        account_sid:
+          type: string
+          minLength: 34
+          maxLength: 34
+          pattern: ^AC[0-9a-fA-F]{32}$
+          nullable: true
+          description: The SID of the [Account](https://www.twilio.com/docs/iam/api/account) that created the SMS Command resource.
+        sim_sid:
+          type: string
+          minLength: 34
+          maxLength: 34
+          pattern: ^HS[0-9a-fA-F]{32}$
+          nullable: true
+          description: The SID of the [SIM](https://www.twilio.com/docs/iot/supersim/api/sim-resource) that this SMS Command was sent to or from.
+        payload:
+          type: string
+          nullable: true
+          description: The message body of the SMS Command sent to or from the SIM. For text mode messages, this can be up to 160 characters.
+          x-twilio:
+            pii:
+              handling: standard
+              deleteSla: 30
+        status:
+          type: string
+          $ref: '#/components/schemas/sms_command_enum_status'
+          nullable: true
+          description: 'The status of the SMS Command. Can be: `queued`, `sent`, `delivered`, `received` or `failed`. See the [SMS Command Status Values](https://www.twilio.com/docs/iot/supersim/api/smscommand-resource#status-values) for a description of each.'
+        direction:
+          type: string
+          $ref: '#/components/schemas/sms_command_enum_direction'
+          nullable: true
+          description: The direction of the SMS Command. Can be `to_sim` or `from_sim`. The value of `to_sim` is synonymous with the term `mobile terminated`, and `from_sim` is synonymous with the term `mobile originated`.
+        date_created:
+          type: string
+          format: date-time
+          nullable: true
+          description: The date and time in GMT when the resource was created specified in [ISO 8601](https://en.wikipedia.org/wiki/ISO_8601) format.
+        date_updated:
+          type: string
+          format: date-time
+          nullable: true
+          description: The date and time in GMT when the resource was last updated specified in [ISO 8601](https://en.wikipedia.org/wiki/ISO_8601) format.
+        url:
+          type: string
+          format: uri
+          nullable: true
+          description: The absolute URL of the SMS Command resource.
+    CreateSmsCommandRequest:
+      type: object
+      required:
+      - Sim
+      - Payload
+      properties:
+        Sim:
+          type: string
+          description: The `sid` or `unique_name` of the [SIM](https://www.twilio.com/docs/iot/supersim/api/sim-resource) to send the SMS Command to.
+        Payload:
+          type: string
+          description: The message body of the SMS Command.
+        CallbackMethod:
+          type: string
+          format: http-method
+          enum:
+          - HEAD
+          - GET
+          - POST
+          - PATCH
+          - PUT
+          - DELETE
+          description: 'The HTTP method we should use to call `callback_url`. Can be: `GET` or `POST` and the default is POST.'
+        CallbackUrl:
+          type: string
+          format: uri
+          description: The URL we should call using the `callback_method` after we have sent the command.
+    sms_command_enum_direction:
+      type: string
+      enum:
+      - to_sim
+      - from_sim
+    ListSmsCommandResponse:
+      type: object
+      properties:
+        sms_commands:
+          type: array
+          items:
+            $ref: '#/components/schemas/supersim.v1.sms_command'
+        meta:
+          type: object
+          properties:
+            first_page_url:
+              type: string
+              format: uri
+            next_page_url:
+              type: string
+              format: uri
+              nullable: true
+            page:
+              type: integer
+            page_size:
+              type: integer
+            previous_page_url:
+              type: string
+              format: uri
+              nullable: true
+            url:
+              type: string
+              format: uri
+            key:
+              type: string
+  securitySchemes:
+    accountSid_authToken:
+      type: http
+      scheme: basic
+x-maturity:
+- name: GA
+  description: This product is Generally Available.
+- name: Beta
+  description: PLEASE NOTE that this is a Beta product that is subject to change. Use it with caution.

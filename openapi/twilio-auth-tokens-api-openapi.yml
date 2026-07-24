@@ -1,0 +1,102 @@
+openapi: 3.0.1
+info:
+  title: Twilio - Accounts A2p Auth Tokens API
+  description: This is the public Twilio REST API.
+  termsOfService: https://www.twilio.com/legal/tos
+  contact:
+    name: Twilio Support
+    url: https://support.twilio.com
+    email: support@twilio.com
+  license:
+    name: Apache 2.0
+    url: https://www.apache.org/licenses/LICENSE-2.0.html
+  version: 1.52.0
+servers:
+- url: https://accounts.twilio.com
+tags:
+- name: Auth Tokens
+  description: Manage primary and secondary auth tokens
+paths:
+  /AuthTokens/Promote:
+    post:
+      operationId: promoteAuthToken
+      summary: Twilio Promote Secondary Auth Token
+      description: Promote the secondary auth token to primary. The old primary token will be invalidated immediately.
+      tags:
+      - Auth Tokens
+      responses:
+        '200':
+          description: Auth token promoted
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AuthTokenPromotion'
+  /AuthTokens/Secondary:
+    post:
+      operationId: createSecondaryAuthToken
+      summary: Twilio Create a Secondary Auth Token
+      description: Create a secondary auth token for the account. Use this to rotate auth tokens without downtime.
+      tags:
+      - Auth Tokens
+      responses:
+        '201':
+          description: Secondary auth token created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SecondaryAuthToken'
+    delete:
+      operationId: deleteSecondaryAuthToken
+      summary: Twilio Delete the Secondary Auth Token
+      tags:
+      - Auth Tokens
+      responses:
+        '204':
+          description: Secondary auth token deleted
+components:
+  schemas:
+    SecondaryAuthToken:
+      type: object
+      properties:
+        account_sid:
+          type: string
+          pattern: ^AC[0-9a-fA-F]{32}$
+        secondary_auth_token:
+          type: string
+          description: The secondary auth token
+        date_created:
+          type: string
+          format: date-time
+        date_updated:
+          type: string
+          format: date-time
+        url:
+          type: string
+          format: uri
+    AuthTokenPromotion:
+      type: object
+      properties:
+        account_sid:
+          type: string
+          pattern: ^AC[0-9a-fA-F]{32}$
+        auth_token:
+          type: string
+          description: The new primary auth token
+        date_created:
+          type: string
+          format: date-time
+        date_updated:
+          type: string
+          format: date-time
+        url:
+          type: string
+          format: uri
+  securitySchemes:
+    accountSid_authToken:
+      type: http
+      scheme: basic
+x-maturity:
+- name: GA
+  description: This product is Generally Available.
+- name: Beta
+  description: PLEASE NOTE that this is a Beta product that is subject to change. Use it with caution.

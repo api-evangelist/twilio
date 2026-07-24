@@ -1,0 +1,72 @@
+openapi: 3.0.1
+info:
+  title: Twilio - Accounts A2p Entities API
+  description: This is the public Twilio REST API.
+  termsOfService: https://www.twilio.com/legal/tos
+  contact:
+    name: Twilio Support
+    url: https://support.twilio.com
+    email: support@twilio.com
+  license:
+    name: Apache 2.0
+    url: https://www.apache.org/licenses/LICENSE-2.0.html
+  version: 1.52.0
+servers:
+- url: https://accounts.twilio.com
+tags:
+- name: Entities
+  description: Manage end-user entities for TOTP and push
+paths:
+  /Services/{ServiceSid}/Entities:
+    get:
+      operationId: listEntities
+      summary: Twilio List Entities
+      tags:
+      - Entities
+      parameters:
+      - $ref: '#/components/parameters/ServiceSid'
+      responses:
+        '200':
+          description: List of entities
+    post:
+      operationId: createEntity
+      summary: Twilio Create an Entity
+      description: Create a new entity representing an end user for TOTP or push authentication.
+      tags:
+      - Entities
+      parameters:
+      - $ref: '#/components/parameters/ServiceSid'
+      requestBody:
+        required: true
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              type: object
+              required:
+              - Identity
+              properties:
+                Identity:
+                  type: string
+                  description: Unique identity of the end user
+      responses:
+        '201':
+          description: Entity created
+components:
+  parameters:
+    ServiceSid:
+      name: ServiceSid
+      in: path
+      required: true
+      description: The SID of the Verify service
+      schema:
+        type: string
+        pattern: ^VA[0-9a-fA-F]{32}$
+  securitySchemes:
+    accountSid_authToken:
+      type: http
+      scheme: basic
+x-maturity:
+- name: GA
+  description: This product is Generally Available.
+- name: Beta
+  description: PLEASE NOTE that this is a Beta product that is subject to change. Use it with caution.

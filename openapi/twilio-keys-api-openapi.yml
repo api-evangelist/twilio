@@ -1,0 +1,193 @@
+openapi: 3.0.1
+info:
+  title: Twilio - Accounts A2p Keys API
+  description: This is the public Twilio REST API.
+  termsOfService: https://www.twilio.com/legal/tos
+  contact:
+    name: Twilio Support
+    url: https://support.twilio.com
+    email: support@twilio.com
+  license:
+    name: Apache 2.0
+    url: https://www.apache.org/licenses/LICENSE-2.0.html
+  version: 1.52.0
+servers:
+- url: https://accounts.twilio.com
+tags:
+- name: Keys
+  description: Manage API keys for authentication
+paths:
+  /Accounts/{AccountSid}/Keys.json:
+    get:
+      operationId: listKeys
+      summary: Twilio List Api Keys
+      description: Retrieve a list of API keys for the account.
+      tags:
+      - Keys
+      parameters:
+      - $ref: '#/components/parameters/AccountSid'
+      responses:
+        '200':
+          description: List of API keys
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/KeyList'
+        '401':
+          description: Unauthorized
+    post:
+      operationId: createKey
+      summary: Twilio Create an Api Key
+      description: Create a new API key for authentication. The secret is only returned once upon creation.
+      tags:
+      - Keys
+      parameters:
+      - $ref: '#/components/parameters/AccountSid'
+      requestBody:
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              type: object
+              properties:
+                FriendlyName:
+                  type: string
+                  description: Descriptive name for the API key
+                AccountSid:
+                  type: string
+                  description: Account SID to scope the key to
+      responses:
+        '201':
+          description: API key created (secret returned only once)
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NewKey'
+        '401':
+          description: Unauthorized
+  /Accounts/{AccountSid}/Keys/{KeySid}.json:
+    get:
+      operationId: fetchKey
+      summary: Twilio Fetch an Api Key
+      tags:
+      - Keys
+      parameters:
+      - $ref: '#/components/parameters/AccountSid'
+      - name: KeySid
+        in: path
+        required: true
+        schema:
+          type: string
+          pattern: ^SK[0-9a-fA-F]{32}$
+      responses:
+        '200':
+          description: API key details
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Key'
+        '404':
+          description: Key not found
+    post:
+      operationId: updateKey
+      summary: Twilio Update an Api Key
+      tags:
+      - Keys
+      parameters:
+      - $ref: '#/components/parameters/AccountSid'
+      - name: KeySid
+        in: path
+        required: true
+        schema:
+          type: string
+          pattern: ^SK[0-9a-fA-F]{32}$
+      requestBody:
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              type: object
+              properties:
+                FriendlyName:
+                  type: string
+      responses:
+        '200':
+          description: Key updated
+    delete:
+      operationId: deleteKey
+      summary: Twilio Delete an Api Key
+      tags:
+      - Keys
+      parameters:
+      - $ref: '#/components/parameters/AccountSid'
+      - name: KeySid
+        in: path
+        required: true
+        schema:
+          type: string
+          pattern: ^SK[0-9a-fA-F]{32}$
+      responses:
+        '204':
+          description: Key deleted
+components:
+  schemas:
+    Key:
+      type: object
+      properties:
+        sid:
+          type: string
+          pattern: ^SK[0-9a-fA-F]{32}$
+          description: Unique identifier for the API key
+        friendly_name:
+          type: string
+        date_created:
+          type: string
+          format: date-time
+        date_updated:
+          type: string
+          format: date-time
+    KeyList:
+      type: object
+      properties:
+        keys:
+          type: array
+          items:
+            $ref: '#/components/schemas/Key'
+        first_page_uri:
+          type: string
+        next_page_uri:
+          type: string
+        page:
+          type: integer
+        page_size:
+          type: integer
+    NewKey:
+      type: object
+      properties:
+        sid:
+          type: string
+          pattern: ^SK[0-9a-fA-F]{32}$
+        friendly_name:
+          type: string
+        secret:
+          type: string
+          description: API key secret (returned only at creation)
+        date_created:
+          type: string
+          format: date-time
+  parameters:
+    AccountSid:
+      name: AccountSid
+      in: path
+      required: true
+      description: The unique identifier of the Twilio account
+      schema:
+        type: string
+        pattern: ^AC[0-9a-fA-F]{32}$
+  securitySchemes:
+    accountSid_authToken:
+      type: http
+      scheme: basic
+x-maturity:
+- name: GA
+  description: This product is Generally Available.
+- name: Beta
+  description: PLEASE NOTE that this is a Beta product that is subject to change. Use it with caution.

@@ -1,0 +1,114 @@
+openapi: 3.0.1
+info:
+  title: Twilio - Accounts A2p Stats API
+  description: This is the public Twilio REST API.
+  termsOfService: https://www.twilio.com/legal/tos
+  contact:
+    name: Twilio Support
+    url: https://support.twilio.com
+    email: support@twilio.com
+  license:
+    name: Apache 2.0
+    url: https://www.apache.org/licenses/LICENSE-2.0.html
+  version: 1.52.0
+servers:
+- url: https://accounts.twilio.com
+tags:
+- name: Stats
+  description: Retrieve email analytics and statistics
+paths:
+  /stats:
+    get:
+      operationId: fetchGlobalStats
+      summary: Twilio Fetch Global Email Stats
+      description: Retrieve aggregate email statistics including requests, deliveries, opens, clicks, bounces, and more.
+      tags:
+      - Stats
+      parameters:
+      - name: start_date
+        in: query
+        required: true
+        description: Start date (YYYY-MM-DD)
+        schema:
+          type: string
+          format: date
+      - name: end_date
+        in: query
+        description: End date (YYYY-MM-DD)
+        schema:
+          type: string
+          format: date
+      - name: aggregated_by
+        in: query
+        schema:
+          type: string
+          enum:
+          - day
+          - week
+          - month
+      responses:
+        '200':
+          description: Email statistics
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/StatEntry'
+components:
+  schemas:
+    StatEntry:
+      type: object
+      properties:
+        date:
+          type: string
+          format: date
+        stats:
+          type: array
+          items:
+            type: object
+            properties:
+              metrics:
+                type: object
+                properties:
+                  requests:
+                    type: integer
+                  delivered:
+                    type: integer
+                  opens:
+                    type: integer
+                  unique_opens:
+                    type: integer
+                  clicks:
+                    type: integer
+                  unique_clicks:
+                    type: integer
+                  bounces:
+                    type: integer
+                  bounce_drops:
+                    type: integer
+                  spam_reports:
+                    type: integer
+                  spam_report_drops:
+                    type: integer
+                  unsubscribes:
+                    type: integer
+                  unsubscribe_drops:
+                    type: integer
+                  invalid_emails:
+                    type: integer
+                  blocks:
+                    type: integer
+                  deferred:
+                    type: integer
+                  processed:
+                    type: integer
+  securitySchemes:
+    accountSid_authToken:
+      type: http
+      scheme: basic
+x-maturity:
+- name: GA
+  description: This product is Generally Available.
+- name: Beta
+  description: PLEASE NOTE that this is a Beta product that is subject to change. Use it with caution.

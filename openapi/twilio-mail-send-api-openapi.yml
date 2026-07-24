@@ -1,0 +1,222 @@
+openapi: 3.0.1
+info:
+  title: Twilio - Accounts A2p Mail Send API
+  description: This is the public Twilio REST API.
+  termsOfService: https://www.twilio.com/legal/tos
+  contact:
+    name: Twilio Support
+    url: https://support.twilio.com
+    email: support@twilio.com
+  license:
+    name: Apache 2.0
+    url: https://www.apache.org/licenses/LICENSE-2.0.html
+  version: 1.52.0
+servers:
+- url: https://accounts.twilio.com
+tags:
+- name: Mail Send
+  description: Send email messages
+paths:
+  /mail/send:
+    post:
+      operationId: sendEmail
+      summary: Twilio Send an Email
+      description: Send an email message to one or more recipients. Supports personalizations, dynamic templates, attachments, categories, and scheduling.
+      tags:
+      - Mail Send
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SendEmailRequest'
+      responses:
+        '202':
+          description: Email accepted for delivery
+        '400':
+          description: Invalid request
+        '401':
+          description: Unauthorized
+        '413':
+          description: Payload too large
+        '429':
+          description: Rate limit exceeded
+components:
+  schemas:
+    SendEmailRequest:
+      type: object
+      required:
+      - personalizations
+      - from
+      properties:
+        personalizations:
+          type: array
+          items:
+            $ref: '#/components/schemas/Personalization'
+          minItems: 1
+          maxItems: 1000
+          description: Recipients and per-recipient settings
+        from:
+          $ref: '#/components/schemas/EmailAddress'
+        reply_to:
+          $ref: '#/components/schemas/EmailAddress'
+        reply_to_list:
+          type: array
+          items:
+            $ref: '#/components/schemas/EmailAddress'
+          maxItems: 1000
+        subject:
+          type: string
+          description: Global subject line
+        content:
+          type: array
+          items:
+            type: object
+            required:
+            - type
+            - value
+            properties:
+              type:
+                type: string
+                description: MIME type (text/plain or text/html)
+              value:
+                type: string
+                description: Content body
+        attachments:
+          type: array
+          items:
+            $ref: '#/components/schemas/Attachment'
+        template_id:
+          type: string
+          description: ID of a dynamic template to use
+        headers:
+          type: object
+          additionalProperties:
+            type: string
+        categories:
+          type: array
+          items:
+            type: string
+          maxItems: 10
+          description: Categories for tracking (max 10)
+        send_at:
+          type: integer
+          description: Unix timestamp for scheduled send (up to 72 hours)
+        batch_id:
+          type: string
+          description: Batch ID for grouping scheduled sends
+        asm:
+          type: object
+          properties:
+            group_id:
+              type: integer
+              description: Unsubscribe group ID
+            groups_to_display:
+              type: array
+              items:
+                type: integer
+              maxItems: 25
+        ip_pool_name:
+          type: string
+          description: Name of the IP pool for sending
+        tracking_settings:
+          type: object
+          properties:
+            click_tracking:
+              type: object
+              properties:
+                enable:
+                  type: boolean
+                enable_text:
+                  type: boolean
+            open_tracking:
+              type: object
+              properties:
+                enable:
+                  type: boolean
+                substitution_tag:
+                  type: string
+            subscription_tracking:
+              type: object
+              properties:
+                enable:
+                  type: boolean
+    EmailAddress:
+      type: object
+      required:
+      - email
+      properties:
+        email:
+          type: string
+          format: email
+        name:
+          type: string
+    Attachment:
+      type: object
+      required:
+      - content
+      - filename
+      properties:
+        content:
+          type: string
+          description: Base64 encoded attachment content
+        filename:
+          type: string
+        type:
+          type: string
+          description: MIME type of the attachment
+        disposition:
+          type: string
+          enum:
+          - inline
+          - attachment
+          default: attachment
+        content_id:
+          type: string
+          description: Content ID for inline attachments
+    Personalization:
+      type: object
+      required:
+      - to
+      properties:
+        to:
+          type: array
+          items:
+            $ref: '#/components/schemas/EmailAddress'
+          minItems: 1
+        cc:
+          type: array
+          items:
+            $ref: '#/components/schemas/EmailAddress'
+        bcc:
+          type: array
+          items:
+            $ref: '#/components/schemas/EmailAddress'
+        subject:
+          type: string
+        headers:
+          type: object
+          additionalProperties:
+            type: string
+        substitutions:
+          type: object
+          additionalProperties:
+            type: string
+        dynamic_template_data:
+          type: object
+          description: Dynamic template handlebars data
+        custom_args:
+          type: object
+          additionalProperties:
+            type: string
+        send_at:
+          type: integer
+  securitySchemes:
+    accountSid_authToken:
+      type: http
+      scheme: basic
+x-maturity:
+- name: GA
+  description: This product is Generally Available.
+- name: Beta
+  description: PLEASE NOTE that this is a Beta product that is subject to change. Use it with caution.

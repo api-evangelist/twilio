@@ -1,0 +1,108 @@
+openapi: 3.0.1
+info:
+  title: Twilio - Accounts A2p Challenges API
+  description: This is the public Twilio REST API.
+  termsOfService: https://www.twilio.com/legal/tos
+  contact:
+    name: Twilio Support
+    url: https://support.twilio.com
+    email: support@twilio.com
+  license:
+    name: Apache 2.0
+    url: https://www.apache.org/licenses/LICENSE-2.0.html
+  version: 1.52.0
+servers:
+- url: https://accounts.twilio.com
+tags:
+- name: Challenges
+  description: Manage push authentication challenges
+paths:
+  /Services/{ServiceSid}/Entities/{Identity}/Challenges:
+    get:
+      operationId: listChallenges
+      summary: Twilio List Challenges for an Entity
+      tags:
+      - Challenges
+      parameters:
+      - $ref: '#/components/parameters/ServiceSid'
+      - name: Identity
+        in: path
+        required: true
+        schema:
+          type: string
+      - name: FactorSid
+        in: query
+        schema:
+          type: string
+          pattern: ^YF[0-9a-fA-F]{32}$
+      - name: Status
+        in: query
+        schema:
+          type: string
+          enum:
+          - pending
+          - expired
+          - approved
+          - denied
+      responses:
+        '200':
+          description: List of challenges
+    post:
+      operationId: createChallenge
+      summary: Twilio Create a Challenge
+      description: Create a new push authentication challenge for an entity.
+      tags:
+      - Challenges
+      parameters:
+      - $ref: '#/components/parameters/ServiceSid'
+      - name: Identity
+        in: path
+        required: true
+        schema:
+          type: string
+      requestBody:
+        required: true
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              type: object
+              required:
+              - FactorSid
+              properties:
+                FactorSid:
+                  type: string
+                  pattern: ^YF[0-9a-fA-F]{32}$
+                ExpirationDate:
+                  type: string
+                  format: date-time
+                Details.Message:
+                  type: string
+                  description: Message to display in the push notification
+                Details.Fields:
+                  type: string
+                  description: JSON array of label/value pairs for context
+                HiddenDetails:
+                  type: string
+                  description: JSON object with hidden challenge details
+      responses:
+        '201':
+          description: Challenge created
+components:
+  parameters:
+    ServiceSid:
+      name: ServiceSid
+      in: path
+      required: true
+      description: The SID of the Verify service
+      schema:
+        type: string
+        pattern: ^VA[0-9a-fA-F]{32}$
+  securitySchemes:
+    accountSid_authToken:
+      type: http
+      scheme: basic
+x-maturity:
+- name: GA
+  description: This product is Generally Available.
+- name: Beta
+  description: PLEASE NOTE that this is a Beta product that is subject to change. Use it with caution.

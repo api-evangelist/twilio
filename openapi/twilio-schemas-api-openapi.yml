@@ -1,0 +1,240 @@
+openapi: 3.0.1
+info:
+  title: Twilio - Accounts A2p Schemas API
+  description: This is the public Twilio REST API.
+  termsOfService: https://www.twilio.com/legal/tos
+  contact:
+    name: Twilio Support
+    url: https://support.twilio.com
+    email: support@twilio.com
+  license:
+    name: Apache 2.0
+    url: https://www.apache.org/licenses/LICENSE-2.0.html
+  version: 1.52.0
+servers:
+- url: https://accounts.twilio.com
+tags:
+- name: Schemas
+paths:
+  /v1/Schemas/{Id}:
+    servers:
+    - url: https://events.twilio.com
+    description: Versioned Schema definitions for Event Types
+    x-twilio:
+      defaultOutputProperties:
+      - id
+      pathType: instance
+      dependentProperties:
+        versions:
+          mapping:
+            id: id
+          resource_url: /v1/Schemas/{id}/Versions
+    get:
+      description: Fetch a specific schema with its nested versions.
+      tags:
+      - Schemas
+      parameters:
+      - name: Id
+        in: path
+        description: The unique identifier of the schema. Each schema can have multiple versions, that share the same id.
+        schema:
+          type: string
+        required: true
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/events.v1.schema'
+          description: OK
+      security:
+      - accountSid_authToken: []
+      operationId: FetchSchema
+      x-maturity:
+      - GA
+  /v1/Schemas/{Id}/Versions:
+    servers:
+    - url: https://events.twilio.com
+    description: Version of the Schema
+    x-twilio:
+      defaultOutputProperties:
+      - id
+      - schema_version
+      - date_created
+      pathType: list
+      parent: /Schemas/{Id}
+      className: schema_version
+    get:
+      description: Retrieve a paginated list of versions of the schema.
+      tags:
+      - Schemas
+      parameters:
+      - name: Id
+        in: path
+        description: The unique identifier of the schema. Each schema can have multiple versions, that share the same id.
+        schema:
+          type: string
+        required: true
+      - name: PageSize
+        in: query
+        description: How many resources to return in each list page. The default is 50, and the maximum is 1000.
+        schema:
+          type: integer
+          minimum: 1
+          maximum: 1000
+      - name: Page
+        in: query
+        description: The page index. This value is simply for client state.
+        schema:
+          type: integer
+          minimum: 0
+      - name: PageToken
+        in: query
+        description: The page token. This is provided by the API.
+        schema:
+          type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ListSchemaVersionResponse'
+          description: OK
+      security:
+      - accountSid_authToken: []
+      operationId: ListSchemaVersion
+      x-maturity:
+      - GA
+  /v1/Schemas/{Id}/Versions/{SchemaVersion}:
+    servers:
+    - url: https://events.twilio.com
+    description: Version of the Schema
+    x-twilio:
+      defaultOutputProperties:
+      - id
+      - schema_version
+      - date_created
+      pathType: instance
+      parent: /Schemas/{Id}
+      className: schema_version
+    get:
+      description: Fetch a specific schema and version.
+      tags:
+      - Schemas
+      parameters:
+      - name: Id
+        in: path
+        description: The unique identifier of the schema. Each schema can have multiple versions, that share the same id.
+        schema:
+          type: string
+        required: true
+      - name: SchemaVersion
+        in: path
+        description: The version of the schema
+        schema:
+          type: integer
+        required: true
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/events.v1.schema.schema_version'
+          description: OK
+      security:
+      - accountSid_authToken: []
+      operationId: FetchSchemaVersion
+      x-maturity:
+      - GA
+components:
+  schemas:
+    ListSchemaVersionResponse:
+      type: object
+      properties:
+        schema_versions:
+          type: array
+          items:
+            $ref: '#/components/schemas/events.v1.schema.schema_version'
+        meta:
+          type: object
+          properties:
+            first_page_url:
+              type: string
+              format: uri
+            next_page_url:
+              type: string
+              format: uri
+              nullable: true
+            page:
+              type: integer
+            page_size:
+              type: integer
+            previous_page_url:
+              type: string
+              format: uri
+              nullable: true
+            url:
+              type: string
+              format: uri
+            key:
+              type: string
+    events.v1.schema:
+      type: object
+      properties:
+        id:
+          type: string
+          nullable: true
+          description: The unique identifier of the schema. Each schema can have multiple versions, that share the same id.
+        url:
+          type: string
+          format: uri
+          nullable: true
+          description: The URL of this resource.
+        links:
+          type: object
+          format: uri-map
+          nullable: true
+          description: Contains a dictionary of URL links to nested resources of this schema.
+        latest_version_date_created:
+          type: string
+          format: date-time
+          nullable: true
+          description: The date that the latest schema version was created, given in ISO 8601 format.
+        latest_version:
+          type: integer
+          nullable: true
+          description: The latest version published of this schema.
+    events.v1.schema.schema_version:
+      type: object
+      properties:
+        id:
+          type: string
+          nullable: true
+          description: The unique identifier of the schema. Each schema can have multiple versions, that share the same id.
+        schema_version:
+          type: integer
+          nullable: true
+          description: The version of this schema.
+        date_created:
+          type: string
+          format: date-time
+          nullable: true
+          description: The date the schema version was created, given in ISO 8601 format.
+        url:
+          type: string
+          format: uri
+          nullable: true
+          description: The URL of this resource.
+        raw:
+          type: string
+          format: uri
+          nullable: true
+  securitySchemes:
+    accountSid_authToken:
+      type: http
+      scheme: basic
+x-maturity:
+- name: GA
+  description: This product is Generally Available.
+- name: Beta
+  description: PLEASE NOTE that this is a Beta product that is subject to change. Use it with caution.

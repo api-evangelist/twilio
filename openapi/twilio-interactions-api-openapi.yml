@@ -1,0 +1,207 @@
+openapi: 3.0.1
+info:
+  title: Twilio - Accounts A2p Interactions API
+  description: This is the public Twilio REST API.
+  termsOfService: https://www.twilio.com/legal/tos
+  contact:
+    name: Twilio Support
+    url: https://support.twilio.com
+    email: support@twilio.com
+  license:
+    name: Apache 2.0
+    url: https://www.apache.org/licenses/LICENSE-2.0.html
+  version: 1.52.0
+servers:
+- url: https://accounts.twilio.com
+tags:
+- name: Interactions
+  description: Manage customer interactions
+paths:
+  /Interactions:
+    post:
+      operationId: createInteraction
+      summary: Twilio Create an Interaction
+      description: Create a new customer interaction. An interaction represents a complete customer engagement that may span multiple channels.
+      tags:
+      - Interactions
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateInteractionRequest'
+      responses:
+        '201':
+          description: Interaction created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Interaction'
+  /Interactions/{InteractionSid}:
+    get:
+      operationId: fetchInteraction
+      summary: Twilio Fetch an Interaction
+      tags:
+      - Interactions
+      parameters:
+      - name: InteractionSid
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Interaction details
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Interaction'
+  /Interactions/{InteractionSid}/Channels:
+    get:
+      operationId: listInteractionChannels
+      summary: Twilio List Interaction Channels
+      tags:
+      - Interactions
+      parameters:
+      - name: InteractionSid
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: List of interaction channels
+  /Interactions/{InteractionSid}/Channels/{ChannelSid}:
+    get:
+      operationId: fetchInteractionChannel
+      summary: Twilio Fetch an Interaction Channel
+      tags:
+      - Interactions
+      parameters:
+      - name: InteractionSid
+        in: path
+        required: true
+        schema:
+          type: string
+      - name: ChannelSid
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Interaction channel details
+    post:
+      operationId: updateInteractionChannel
+      summary: Twilio Update an Interaction Channel
+      description: Update the status or routing of an interaction channel.
+      tags:
+      - Interactions
+      parameters:
+      - name: InteractionSid
+        in: path
+        required: true
+        schema:
+          type: string
+      - name: ChannelSid
+        in: path
+        required: true
+        schema:
+          type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                status:
+                  type: string
+                  enum:
+                  - closed
+                  - wrapup
+                routing:
+                  type: object
+      responses:
+        '200':
+          description: Interaction channel updated
+components:
+  schemas:
+    CreateInteractionRequest:
+      type: object
+      required:
+      - channel
+      - routing
+      properties:
+        channel:
+          type: object
+          required:
+          - type
+          - initiated_by
+          - properties
+          properties:
+            type:
+              type: string
+              enum:
+              - sms
+              - voice
+              - email
+              - chat
+              - whatsapp
+              - facebook
+              - gbm
+            initiated_by:
+              type: string
+              enum:
+              - agent
+              - customer
+            properties:
+              type: object
+        routing:
+          type: object
+          required:
+          - properties
+          properties:
+            properties:
+              type: object
+              properties:
+                workspace_sid:
+                  type: string
+                workflow_sid:
+                  type: string
+                task_channel_unique_name:
+                  type: string
+                attributes:
+                  type: object
+    Interaction:
+      type: object
+      properties:
+        sid:
+          type: string
+        account_sid:
+          type: string
+          pattern: ^AC[0-9a-fA-F]{32}$
+        channel:
+          type: object
+        routing:
+          type: object
+        date_created:
+          type: string
+          format: date-time
+        date_updated:
+          type: string
+          format: date-time
+        url:
+          type: string
+          format: uri
+        links:
+          type: object
+  securitySchemes:
+    accountSid_authToken:
+      type: http
+      scheme: basic
+x-maturity:
+- name: GA
+  description: This product is Generally Available.
+- name: Beta
+  description: PLEASE NOTE that this is a Beta product that is subject to change. Use it with caution.

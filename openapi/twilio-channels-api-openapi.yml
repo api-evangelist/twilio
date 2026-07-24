@@ -1,0 +1,188 @@
+openapi: 3.0.1
+info:
+  title: Twilio - Accounts A2p Channels API
+  description: This is the public Twilio REST API.
+  termsOfService: https://www.twilio.com/legal/tos
+  contact:
+    name: Twilio Support
+    url: https://support.twilio.com
+    email: support@twilio.com
+  license:
+    name: Apache 2.0
+    url: https://www.apache.org/licenses/LICENSE-2.0.html
+  version: 1.52.0
+servers:
+- url: https://accounts.twilio.com
+tags:
+- name: Channels
+  description: Manage Flex communication channels
+paths:
+  /Channels:
+    get:
+      operationId: listChannels
+      summary: Twilio List Flex Channels
+      description: Retrieve a list of Flex channels.
+      tags:
+      - Channels
+      parameters:
+      - name: PageSize
+        in: query
+        schema:
+          type: integer
+          minimum: 1
+          maximum: 100
+      responses:
+        '200':
+          description: List of channels
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ChannelList'
+    post:
+      operationId: createChannel
+      summary: Twilio Create a Flex Channel
+      description: Create a new Flex channel for handling a customer interaction.
+      tags:
+      - Channels
+      requestBody:
+        required: true
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/CreateChannelRequest'
+      responses:
+        '201':
+          description: Channel created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/FlexChannel'
+        '400':
+          description: Invalid request
+  /Channels/{ChannelSid}:
+    get:
+      operationId: fetchChannel
+      summary: Twilio Fetch a Flex Channel
+      tags:
+      - Channels
+      parameters:
+      - name: ChannelSid
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Channel details
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/FlexChannel'
+        '404':
+          description: Channel not found
+    delete:
+      operationId: deleteChannel
+      summary: Twilio Delete a Flex Channel
+      tags:
+      - Channels
+      parameters:
+      - name: ChannelSid
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        '204':
+          description: Channel deleted
+components:
+  schemas:
+    PaginationMeta:
+      type: object
+      properties:
+        page:
+          type: integer
+        page_size:
+          type: integer
+        first_page_url:
+          type: string
+          format: uri
+        previous_page_url:
+          type: string
+          format: uri
+        next_page_url:
+          type: string
+          format: uri
+        url:
+          type: string
+          format: uri
+        key:
+          type: string
+    CreateChannelRequest:
+      type: object
+      required:
+      - FlexFlowSid
+      - Identity
+      - ChatUserFriendlyName
+      - ChatFriendlyName
+      properties:
+        FlexFlowSid:
+          type: string
+        Identity:
+          type: string
+        ChatUserFriendlyName:
+          type: string
+        ChatFriendlyName:
+          type: string
+        Target:
+          type: string
+        ChatUniqueName:
+          type: string
+        PreEngagementData:
+          type: string
+        TaskSid:
+          type: string
+        TaskAttributes:
+          type: string
+        LongLived:
+          type: boolean
+    FlexChannel:
+      type: object
+      properties:
+        sid:
+          type: string
+        account_sid:
+          type: string
+          pattern: ^AC[0-9a-fA-F]{32}$
+        flex_flow_sid:
+          type: string
+        user_sid:
+          type: string
+        task_sid:
+          type: string
+        date_created:
+          type: string
+          format: date-time
+        date_updated:
+          type: string
+          format: date-time
+        url:
+          type: string
+          format: uri
+    ChannelList:
+      type: object
+      properties:
+        flex_chat_channels:
+          type: array
+          items:
+            $ref: '#/components/schemas/FlexChannel'
+        meta:
+          $ref: '#/components/schemas/PaginationMeta'
+  securitySchemes:
+    accountSid_authToken:
+      type: http
+      scheme: basic
+x-maturity:
+- name: GA
+  description: This product is Generally Available.
+- name: Beta
+  description: PLEASE NOTE that this is a Beta product that is subject to change. Use it with caution.

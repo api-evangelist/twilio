@@ -1,0 +1,589 @@
+openapi: 3.0.1
+info:
+  title: Twilio - Accounts A2p Subscriptions API
+  description: This is the public Twilio REST API.
+  termsOfService: https://www.twilio.com/legal/tos
+  contact:
+    name: Twilio Support
+    url: https://support.twilio.com
+    email: support@twilio.com
+  license:
+    name: Apache 2.0
+    url: https://www.apache.org/licenses/LICENSE-2.0.html
+  version: 1.52.0
+servers:
+- url: https://accounts.twilio.com
+tags:
+- name: Subscriptions
+paths:
+  /v1/Subscriptions/{SubscriptionSid}/SubscribedEvents:
+    servers:
+    - url: https://events.twilio.com
+    description: Event subscribed to in the parent Subscription
+    x-twilio:
+      defaultOutputProperties:
+      - type
+      - schema_version
+      - account_sid
+      - subscription_sid
+      pathType: list
+      parent: /Subscriptions/{Sid}
+    get:
+      description: Retrieve a list of all Subscribed Event types for a Subscription.
+      tags:
+      - Subscriptions
+      parameters:
+      - name: SubscriptionSid
+        in: path
+        description: The unique SID identifier of the Subscription.
+        schema:
+          type: string
+          minLength: 34
+          maxLength: 34
+          pattern: ^DF[0-9a-fA-F]{32}$
+        required: true
+      - name: PageSize
+        in: query
+        description: How many resources to return in each list page. The default is 50, and the maximum is 1000.
+        schema:
+          type: integer
+          minimum: 1
+          maximum: 1000
+      - name: Page
+        in: query
+        description: The page index. This value is simply for client state.
+        schema:
+          type: integer
+          minimum: 0
+      - name: PageToken
+        in: query
+        description: The page token. This is provided by the API.
+        schema:
+          type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ListSubscribedEventResponse'
+          description: OK
+      security:
+      - accountSid_authToken: []
+      operationId: ListSubscribedEvent
+      x-maturity:
+      - GA
+    post:
+      description: Add an event type to a Subscription.
+      tags:
+      - Subscriptions
+      parameters:
+      - name: SubscriptionSid
+        in: path
+        description: The unique SID identifier of the Subscription.
+        schema:
+          type: string
+          minLength: 34
+          maxLength: 34
+          pattern: ^DF[0-9a-fA-F]{32}$
+        required: true
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/events.v1.subscription.subscribed_event'
+          description: Created
+      security:
+      - accountSid_authToken: []
+      operationId: CreateSubscribedEvent
+      x-maturity:
+      - GA
+      requestBody:
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/CreateSubscribedEventRequest'
+  /v1/Subscriptions/{SubscriptionSid}/SubscribedEvents/{Type}:
+    servers:
+    - url: https://events.twilio.com
+    description: Event subscribed to in the parent Subscription
+    x-twilio:
+      defaultOutputProperties:
+      - type
+      - schema_version
+      - account_sid
+      - subscription_sid
+      pathType: instance
+      parent: /Subscriptions/{Sid}
+    get:
+      description: Read an Event for a Subscription.
+      tags:
+      - Subscriptions
+      parameters:
+      - name: SubscriptionSid
+        in: path
+        description: The unique SID identifier of the Subscription.
+        schema:
+          type: string
+          minLength: 34
+          maxLength: 34
+          pattern: ^DF[0-9a-fA-F]{32}$
+        required: true
+      - name: Type
+        in: path
+        description: Type of event being subscribed to.
+        schema:
+          type: string
+        required: true
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/events.v1.subscription.subscribed_event'
+          description: OK
+      security:
+      - accountSid_authToken: []
+      operationId: FetchSubscribedEvent
+      x-maturity:
+      - GA
+    post:
+      description: Update an Event for a Subscription.
+      tags:
+      - Subscriptions
+      parameters:
+      - name: SubscriptionSid
+        in: path
+        description: The unique SID identifier of the Subscription.
+        schema:
+          type: string
+          minLength: 34
+          maxLength: 34
+          pattern: ^DF[0-9a-fA-F]{32}$
+        required: true
+      - name: Type
+        in: path
+        description: Type of event being subscribed to.
+        schema:
+          type: string
+        required: true
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/events.v1.subscription.subscribed_event'
+          description: OK
+      security:
+      - accountSid_authToken: []
+      operationId: UpdateSubscribedEvent
+      x-maturity:
+      - GA
+      requestBody:
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/UpdateSubscribedEventRequest'
+    delete:
+      description: Remove an event type from a Subscription.
+      tags:
+      - Subscriptions
+      parameters:
+      - name: SubscriptionSid
+        in: path
+        description: The unique SID identifier of the Subscription.
+        schema:
+          type: string
+          minLength: 34
+          maxLength: 34
+          pattern: ^DF[0-9a-fA-F]{32}$
+        required: true
+      - name: Type
+        in: path
+        description: Type of event being subscribed to.
+        schema:
+          type: string
+        required: true
+      responses:
+        '204':
+          description: The resource was deleted successfully.
+      security:
+      - accountSid_authToken: []
+      operationId: DeleteSubscribedEvent
+      x-maturity:
+      - GA
+  /v1/Subscriptions:
+    servers:
+    - url: https://events.twilio.com
+    description: Subscription to send Event Types to a Sink
+    x-twilio:
+      defaultOutputProperties:
+      - account_sid
+      - sid
+      - sink_sid
+      - date_created
+      - date_updated
+      pathType: list
+      dependentProperties:
+        subscribed_events:
+          mapping:
+            subscription_sid: sid
+          resource_url: /v1/Subscriptions/{subscription_sid}/SubscribedEvents
+    get:
+      description: Retrieve a paginated list of Subscriptions belonging to the account used to make the request.
+      tags:
+      - Subscriptions
+      parameters:
+      - name: SinkSid
+        in: query
+        description: The SID of the sink that the list of Subscriptions should be filtered by.
+        schema:
+          type: string
+          minLength: 34
+          maxLength: 34
+          pattern: ^DG[0-9a-fA-F]{32}$
+      - name: PageSize
+        in: query
+        description: How many resources to return in each list page. The default is 50, and the maximum is 1000.
+        schema:
+          type: integer
+          minimum: 1
+          maximum: 1000
+      - name: Page
+        in: query
+        description: The page index. This value is simply for client state.
+        schema:
+          type: integer
+          minimum: 0
+      - name: PageToken
+        in: query
+        description: The page token. This is provided by the API.
+        schema:
+          type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ListSubscriptionResponse'
+          description: OK
+      security:
+      - accountSid_authToken: []
+      operationId: ListSubscription
+      x-maturity:
+      - GA
+    post:
+      description: Create a new Subscription.
+      tags:
+      - Subscriptions
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/events.v1.subscription'
+          description: Created
+      security:
+      - accountSid_authToken: []
+      operationId: CreateSubscription
+      x-maturity:
+      - GA
+      requestBody:
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/CreateSubscriptionRequest'
+  /v1/Subscriptions/{Sid}:
+    servers:
+    - url: https://events.twilio.com
+    description: Subscription to send Event Types to a Sink
+    x-twilio:
+      defaultOutputProperties:
+      - account_sid
+      - sid
+      - sink_sid
+      - date_created
+      - date_updated
+      pathType: instance
+      dependentProperties:
+        subscribed_events:
+          mapping:
+            subscription_sid: sid
+          resource_url: /v1/Subscriptions/{subscription_sid}/SubscribedEvents
+    get:
+      description: Fetch a specific Subscription.
+      tags:
+      - Subscriptions
+      parameters:
+      - name: Sid
+        in: path
+        description: A 34 character string that uniquely identifies this Subscription.
+        schema:
+          type: string
+          minLength: 34
+          maxLength: 34
+          pattern: ^DF[0-9a-fA-F]{32}$
+        required: true
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/events.v1.subscription'
+          description: OK
+      security:
+      - accountSid_authToken: []
+      operationId: FetchSubscription
+      x-maturity:
+      - GA
+    post:
+      description: Update a Subscription.
+      tags:
+      - Subscriptions
+      parameters:
+      - name: Sid
+        in: path
+        description: A 34 character string that uniquely identifies this Subscription.
+        schema:
+          type: string
+          minLength: 34
+          maxLength: 34
+          pattern: ^DF[0-9a-fA-F]{32}$
+        required: true
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/events.v1.subscription'
+          description: OK
+      security:
+      - accountSid_authToken: []
+      operationId: UpdateSubscription
+      x-maturity:
+      - GA
+      requestBody:
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/UpdateSubscriptionRequest'
+    delete:
+      description: Delete a specific Subscription.
+      tags:
+      - Subscriptions
+      parameters:
+      - name: Sid
+        in: path
+        description: A 34 character string that uniquely identifies this Subscription.
+        schema:
+          type: string
+          minLength: 34
+          maxLength: 34
+          pattern: ^DF[0-9a-fA-F]{32}$
+        required: true
+      responses:
+        '204':
+          description: The resource was deleted successfully.
+      security:
+      - accountSid_authToken: []
+      operationId: DeleteSubscription
+      x-maturity:
+      - GA
+components:
+  schemas:
+    events.v1.subscription.subscribed_event:
+      type: object
+      properties:
+        account_sid:
+          type: string
+          minLength: 34
+          maxLength: 34
+          pattern: ^AC[0-9a-fA-F]{32}$
+          nullable: true
+          description: The unique SID identifier of the Account.
+        type:
+          type: string
+          nullable: true
+          description: Type of event being subscribed to.
+        schema_version:
+          type: integer
+          nullable: true
+          description: The schema version that the Subscription should use.
+        subscription_sid:
+          type: string
+          minLength: 34
+          maxLength: 34
+          pattern: ^DF[0-9a-fA-F]{32}$
+          nullable: true
+          description: The unique SID identifier of the Subscription.
+        url:
+          type: string
+          format: uri
+          nullable: true
+          description: The URL of this resource.
+    ListSubscriptionResponse:
+      type: object
+      properties:
+        subscriptions:
+          type: array
+          items:
+            $ref: '#/components/schemas/events.v1.subscription'
+        meta:
+          type: object
+          properties:
+            first_page_url:
+              type: string
+              format: uri
+            next_page_url:
+              type: string
+              format: uri
+              nullable: true
+            page:
+              type: integer
+            page_size:
+              type: integer
+            previous_page_url:
+              type: string
+              format: uri
+              nullable: true
+            url:
+              type: string
+              format: uri
+            key:
+              type: string
+    CreateSubscriptionRequest:
+      type: object
+      required:
+      - Description
+      - SinkSid
+      - Types
+      properties:
+        Description:
+          type: string
+          description: A human readable description for the Subscription **This value should not contain PII.**
+        SinkSid:
+          type: string
+          minLength: 34
+          maxLength: 34
+          pattern: ^DG[0-9a-fA-F]{32}$
+          description: The SID of the sink that events selected by this subscription should be sent to. Sink must be active for the subscription to be created.
+        Types:
+          type: array
+          items: {}
+          description: An array of objects containing the subscribed Event Types
+    ListSubscribedEventResponse:
+      type: object
+      properties:
+        types:
+          type: array
+          items:
+            $ref: '#/components/schemas/events.v1.subscription.subscribed_event'
+        meta:
+          type: object
+          properties:
+            first_page_url:
+              type: string
+              format: uri
+            next_page_url:
+              type: string
+              format: uri
+              nullable: true
+            page:
+              type: integer
+            page_size:
+              type: integer
+            previous_page_url:
+              type: string
+              format: uri
+              nullable: true
+            url:
+              type: string
+              format: uri
+            key:
+              type: string
+    UpdateSubscribedEventRequest:
+      type: object
+      properties:
+        SchemaVersion:
+          type: integer
+          description: The schema version that the Subscription should use.
+    CreateSubscribedEventRequest:
+      type: object
+      required:
+      - Type
+      properties:
+        Type:
+          type: string
+          description: Type of event being subscribed to.
+        SchemaVersion:
+          type: integer
+          description: The schema version that the Subscription should use.
+    UpdateSubscriptionRequest:
+      type: object
+      properties:
+        Description:
+          type: string
+          description: A human readable description for the Subscription.
+        SinkSid:
+          type: string
+          minLength: 34
+          maxLength: 34
+          pattern: ^DG[0-9a-fA-F]{32}$
+          description: The SID of the sink that events selected by this subscription should be sent to. Sink must be active for the subscription to be created.
+    events.v1.subscription:
+      type: object
+      properties:
+        account_sid:
+          type: string
+          minLength: 34
+          maxLength: 34
+          pattern: ^AC[0-9a-fA-F]{32}$
+          nullable: true
+          description: The unique SID identifier of the Account.
+        sid:
+          type: string
+          minLength: 34
+          maxLength: 34
+          pattern: ^DF[0-9a-fA-F]{32}$
+          nullable: true
+          description: A 34 character string that uniquely identifies this Subscription.
+        date_created:
+          type: string
+          format: date-time
+          nullable: true
+          description: The date that this Subscription was created, given in ISO 8601 format.
+        date_updated:
+          type: string
+          format: date-time
+          nullable: true
+          description: The date that this Subscription was updated, given in ISO 8601 format.
+        description:
+          type: string
+          nullable: true
+          description: A human readable description for the Subscription
+        sink_sid:
+          type: string
+          minLength: 34
+          maxLength: 34
+          pattern: ^DG[0-9a-fA-F]{32}$
+          nullable: true
+          description: The SID of the sink that events selected by this subscription should be sent to. Sink must be active for the subscription to be created.
+        url:
+          type: string
+          format: uri
+          nullable: true
+          description: The URL of this resource.
+        links:
+          type: object
+          format: uri-map
+          nullable: true
+          description: Contains a dictionary of URL links to nested resources of this Subscription.
+  securitySchemes:
+    accountSid_authToken:
+      type: http
+      scheme: basic
+x-maturity:
+- name: GA
+  description: This product is Generally Available.
+- name: Beta
+  description: PLEASE NOTE that this is a Beta product that is subject to change. Use it with caution.

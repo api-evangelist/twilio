@@ -1,0 +1,127 @@
+openapi: 3.0.1
+info:
+  title: Twilio - Accounts A2p Verification Checks API
+  description: This is the public Twilio REST API.
+  termsOfService: https://www.twilio.com/legal/tos
+  contact:
+    name: Twilio Support
+    url: https://support.twilio.com
+    email: support@twilio.com
+  license:
+    name: Apache 2.0
+    url: https://www.apache.org/licenses/LICENSE-2.0.html
+  version: 1.52.0
+servers:
+- url: https://accounts.twilio.com
+tags:
+- name: Verification Checks
+  description: Check verification codes
+paths:
+  /Services/{ServiceSid}/VerificationCheck:
+    post:
+      operationId: createVerificationCheck
+      summary: Twilio Check a Verification Code
+      description: Check whether a user-provided code matches the verification code that was sent. Returns approved if the code is correct.
+      tags:
+      - Verification Checks
+      parameters:
+      - $ref: '#/components/parameters/ServiceSid'
+      requestBody:
+        required: true
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/CreateVerificationCheckRequest'
+      responses:
+        '200':
+          description: Verification check result
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/VerificationCheck'
+        '404':
+          description: Verification not found or expired
+components:
+  schemas:
+    VerificationCheck:
+      type: object
+      properties:
+        sid:
+          type: string
+          pattern: ^VE[0-9a-fA-F]{32}$
+        service_sid:
+          type: string
+          pattern: ^VA[0-9a-fA-F]{32}$
+        account_sid:
+          type: string
+          pattern: ^AC[0-9a-fA-F]{32}$
+        to:
+          type: string
+        channel:
+          type: string
+          enum:
+          - sms
+          - call
+          - email
+          - whatsapp
+          - sna
+        status:
+          type: string
+          enum:
+          - pending
+          - approved
+          - canceled
+          - max_attempts_reached
+          - deleted
+          - failed
+          - expired
+        valid:
+          type: boolean
+          description: Whether the provided code was correct
+        amount:
+          type: string
+        payee:
+          type: string
+        date_created:
+          type: string
+          format: date-time
+        date_updated:
+          type: string
+          format: date-time
+    CreateVerificationCheckRequest:
+      type: object
+      properties:
+        Code:
+          type: string
+          description: The verification code entered by the user
+        To:
+          type: string
+          description: Phone number or email being verified
+        VerificationSid:
+          type: string
+          description: SID of the verification (alternative to To)
+          pattern: ^VE[0-9a-fA-F]{32}$
+        Amount:
+          type: string
+          description: Amount for PSD2 verification check
+        Payee:
+          type: string
+          description: Payee for PSD2 verification check
+  parameters:
+    ServiceSid:
+      name: ServiceSid
+      in: path
+      required: true
+      description: The SID of the Verify service
+      schema:
+        type: string
+        pattern: ^VA[0-9a-fA-F]{32}$
+  securitySchemes:
+    accountSid_authToken:
+      type: http
+      scheme: basic
+x-maturity:
+- name: GA
+  description: This product is Generally Available.
+- name: Beta
+  description: PLEASE NOTE that this is a Beta product that is subject to change. Use it with caution.

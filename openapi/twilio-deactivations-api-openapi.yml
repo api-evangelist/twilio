@@ -1,0 +1,69 @@
+openapi: 3.0.1
+info:
+  title: Twilio - Accounts A2p Deactivations API
+  description: This is the public Twilio REST API.
+  termsOfService: https://www.twilio.com/legal/tos
+  contact:
+    name: Twilio Support
+    url: https://support.twilio.com
+    email: support@twilio.com
+  license:
+    name: Apache 2.0
+    url: https://www.apache.org/licenses/LICENSE-2.0.html
+  version: 1.52.0
+servers:
+- url: https://accounts.twilio.com
+tags:
+- name: Deactivations
+paths:
+  /v1/Deactivations:
+    servers:
+    - url: https://messaging.twilio.com
+    description: A Deactivation resource to retrieve a list of United States phone numbers that have been deactivated by mobile carriers on a specific date.
+    x-twilio:
+      defaultOutputProperties:
+      - redirect_to
+      pathType: instance
+      className: deactivations
+    get:
+      description: Fetch a list of all United States numbers that have been deactivated on a specific date.
+      tags:
+      - Deactivations
+      parameters:
+      - name: Date
+        in: query
+        description: The request will return a list of all United States Phone Numbers that were deactivated on the day specified by this parameter. This date should be specified in YYYY-MM-DD format.
+        schema:
+          type: string
+          format: date
+      responses:
+        '307':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/messaging.v1.deactivation'
+          description: Temporary Redirect
+      security:
+      - accountSid_authToken: []
+      operationId: FetchDeactivation
+      x-maturity:
+      - GA
+components:
+  schemas:
+    messaging.v1.deactivation:
+      type: object
+      properties:
+        redirect_to:
+          type: string
+          format: uri
+          nullable: true
+          description: Returns an authenticated url that redirects to a file containing the deactivated numbers for the requested day. This url is valid for up to two minutes.
+  securitySchemes:
+    accountSid_authToken:
+      type: http
+      scheme: basic
+x-maturity:
+- name: GA
+  description: This product is Generally Available.
+- name: Beta
+  description: PLEASE NOTE that this is a Beta product that is subject to change. Use it with caution.

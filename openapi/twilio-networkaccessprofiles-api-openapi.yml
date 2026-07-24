@@ -1,0 +1,481 @@
+openapi: 3.0.1
+info:
+  title: Twilio - Accounts A2p NetworkAccessProfiles API
+  description: This is the public Twilio REST API.
+  termsOfService: https://www.twilio.com/legal/tos
+  contact:
+    name: Twilio Support
+    url: https://support.twilio.com
+    email: support@twilio.com
+  license:
+    name: Apache 2.0
+    url: https://www.apache.org/licenses/LICENSE-2.0.html
+  version: 1.52.0
+servers:
+- url: https://accounts.twilio.com
+tags:
+- name: NetworkAccessProfiles
+paths:
+  /v1/NetworkAccessProfiles:
+    servers:
+    - url: https://supersim.twilio.com
+    description: 'TODO: Resource-level docs'
+    x-twilio:
+      defaultOutputProperties:
+      - sid
+      - unique_name
+      - fleets_count
+      pathType: list
+      dependentProperties:
+        networks:
+          mapping:
+            network_access_profile_sid: sid
+          resource_url: /v1/NetworkAccessProfiles/{network_access_profile_sid}/Networks
+    post:
+      description: Create a new Network Access Profile
+      tags:
+      - NetworkAccessProfiles
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/supersim.v1.network_access_profile'
+          description: Created
+      security:
+      - accountSid_authToken: []
+      operationId: CreateNetworkAccessProfile
+      x-maturity:
+      - Beta
+      requestBody:
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/CreateNetworkAccessProfileRequest'
+    get:
+      description: Retrieve a list of Network Access Profiles from your account.
+      tags:
+      - NetworkAccessProfiles
+      parameters:
+      - name: PageSize
+        in: query
+        description: How many resources to return in each list page. The default is 50, and the maximum is 1000.
+        schema:
+          type: integer
+          minimum: 1
+          maximum: 1000
+      - name: Page
+        in: query
+        description: The page index. This value is simply for client state.
+        schema:
+          type: integer
+          minimum: 0
+      - name: PageToken
+        in: query
+        description: The page token. This is provided by the API.
+        schema:
+          type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ListNetworkAccessProfileResponse'
+          description: OK
+      security:
+      - accountSid_authToken: []
+      operationId: ListNetworkAccessProfile
+      x-maturity:
+      - Beta
+  /v1/NetworkAccessProfiles/{Sid}:
+    servers:
+    - url: https://supersim.twilio.com
+    description: 'TODO: Resource-level docs'
+    x-twilio:
+      defaultOutputProperties:
+      - sid
+      - unique_name
+      - fleets_count
+      pathType: instance
+      dependentProperties:
+        networks:
+          mapping:
+            network_access_profile_sid: sid
+          resource_url: /v1/NetworkAccessProfiles/{network_access_profile_sid}/Networks
+    get:
+      description: Fetch a Network Access Profile instance from your account.
+      tags:
+      - NetworkAccessProfiles
+      parameters:
+      - name: Sid
+        in: path
+        description: The SID of the Network Access Profile resource to fetch.
+        schema:
+          type: string
+        required: true
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/supersim.v1.network_access_profile'
+          description: OK
+      security:
+      - accountSid_authToken: []
+      operationId: FetchNetworkAccessProfile
+      x-maturity:
+      - Beta
+    post:
+      description: Updates the given properties of a Network Access Profile in your account.
+      tags:
+      - NetworkAccessProfiles
+      parameters:
+      - name: Sid
+        in: path
+        description: The SID of the Network Access Profile to update.
+        schema:
+          type: string
+        required: true
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/supersim.v1.network_access_profile'
+          description: OK
+      security:
+      - accountSid_authToken: []
+      operationId: UpdateNetworkAccessProfile
+      x-maturity:
+      - Beta
+      requestBody:
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/UpdateNetworkAccessProfileRequest'
+  /v1/NetworkAccessProfiles/{NetworkAccessProfileSid}/Networks:
+    servers:
+    - url: https://supersim.twilio.com
+    description: Mobile operator networks which Network Access Profiles allow access to
+    x-twilio:
+      defaultOutputProperties:
+      - sid
+      pathType: list
+      parent: /NetworkAccessProfiles/{Sid}
+      className: network_access_profile_network
+    get:
+      description: Retrieve a list of Network Access Profile resource's Network resource.
+      tags:
+      - NetworkAccessProfiles
+      parameters:
+      - name: NetworkAccessProfileSid
+        in: path
+        description: The unique string that identifies the Network Access Profile resource.
+        schema:
+          type: string
+        required: true
+      - name: PageSize
+        in: query
+        description: How many resources to return in each list page. The default is 50, and the maximum is 1000.
+        schema:
+          type: integer
+          minimum: 1
+          maximum: 1000
+      - name: Page
+        in: query
+        description: The page index. This value is simply for client state.
+        schema:
+          type: integer
+          minimum: 0
+      - name: PageToken
+        in: query
+        description: The page token. This is provided by the API.
+        schema:
+          type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ListNetworkAccessProfileNetworkResponse'
+          description: OK
+      security:
+      - accountSid_authToken: []
+      operationId: ListNetworkAccessProfileNetwork
+      x-maturity:
+      - Beta
+    post:
+      description: Add a Network resource to the Network Access Profile resource.
+      tags:
+      - NetworkAccessProfiles
+      parameters:
+      - name: NetworkAccessProfileSid
+        in: path
+        description: The unique string that identifies the Network Access Profile resource.
+        schema:
+          type: string
+        required: true
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/supersim.v1.network_access_profile.network_access_profile_network'
+          description: Created
+      security:
+      - accountSid_authToken: []
+      operationId: CreateNetworkAccessProfileNetwork
+      x-maturity:
+      - Beta
+      requestBody:
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/CreateNetworkAccessProfileNetworkRequest'
+  /v1/NetworkAccessProfiles/{NetworkAccessProfileSid}/Networks/{Sid}:
+    servers:
+    - url: https://supersim.twilio.com
+    description: Mobile operator networks which Network Access Profiles allow access to
+    x-twilio:
+      defaultOutputProperties:
+      - sid
+      pathType: instance
+      parent: /NetworkAccessProfiles/{Sid}
+      className: network_access_profile_network
+    delete:
+      description: Remove a Network resource from the Network Access Profile resource's.
+      tags:
+      - NetworkAccessProfiles
+      parameters:
+      - name: NetworkAccessProfileSid
+        in: path
+        description: The unique string that identifies the Network Access Profile resource.
+        schema:
+          type: string
+          minLength: 34
+          maxLength: 34
+          pattern: ^HA[0-9a-fA-F]{32}$
+        required: true
+      - name: Sid
+        in: path
+        description: The SID of the Network resource to be removed from the Network Access Profile resource.
+        schema:
+          type: string
+          minLength: 34
+          maxLength: 34
+          pattern: ^HW[0-9a-fA-F]{32}$
+        required: true
+      responses:
+        '204':
+          description: The resource was deleted successfully.
+      security:
+      - accountSid_authToken: []
+      operationId: DeleteNetworkAccessProfileNetwork
+      x-maturity:
+      - Beta
+    get:
+      description: Fetch a Network Access Profile resource's Network resource.
+      tags:
+      - NetworkAccessProfiles
+      parameters:
+      - name: NetworkAccessProfileSid
+        in: path
+        description: The unique string that identifies the Network Access Profile resource.
+        schema:
+          type: string
+        required: true
+      - name: Sid
+        in: path
+        description: The SID of the Network resource to fetch.
+        schema:
+          type: string
+          minLength: 34
+          maxLength: 34
+          pattern: ^HW[0-9a-fA-F]{32}$
+        required: true
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/supersim.v1.network_access_profile.network_access_profile_network'
+          description: OK
+      security:
+      - accountSid_authToken: []
+      operationId: FetchNetworkAccessProfileNetwork
+      x-maturity:
+      - Beta
+components:
+  schemas:
+    ListNetworkAccessProfileResponse:
+      type: object
+      properties:
+        network_access_profiles:
+          type: array
+          items:
+            $ref: '#/components/schemas/supersim.v1.network_access_profile'
+        meta:
+          type: object
+          properties:
+            first_page_url:
+              type: string
+              format: uri
+            next_page_url:
+              type: string
+              format: uri
+              nullable: true
+            page:
+              type: integer
+            page_size:
+              type: integer
+            previous_page_url:
+              type: string
+              format: uri
+              nullable: true
+            url:
+              type: string
+              format: uri
+            key:
+              type: string
+    CreateNetworkAccessProfileNetworkRequest:
+      type: object
+      required:
+      - Network
+      properties:
+        Network:
+          type: string
+          minLength: 34
+          maxLength: 34
+          pattern: ^HW[0-9a-fA-F]{32}$
+          description: The SID of the Network resource to be added to the Network Access Profile resource.
+    CreateNetworkAccessProfileRequest:
+      type: object
+      properties:
+        UniqueName:
+          type: string
+          description: An application-defined string that uniquely identifies the resource. It can be used in place of the resource's `sid` in the URL to address the resource.
+        Networks:
+          type: array
+          items:
+            type: string
+          description: List of Network SIDs that this Network Access Profile will allow connections to.
+    ListNetworkAccessProfileNetworkResponse:
+      type: object
+      properties:
+        networks:
+          type: array
+          items:
+            $ref: '#/components/schemas/supersim.v1.network_access_profile.network_access_profile_network'
+        meta:
+          type: object
+          properties:
+            first_page_url:
+              type: string
+              format: uri
+            next_page_url:
+              type: string
+              format: uri
+              nullable: true
+            page:
+              type: integer
+            page_size:
+              type: integer
+            previous_page_url:
+              type: string
+              format: uri
+              nullable: true
+            url:
+              type: string
+              format: uri
+            key:
+              type: string
+    UpdateNetworkAccessProfileRequest:
+      type: object
+      properties:
+        UniqueName:
+          type: string
+          description: The new unique name of the Network Access Profile.
+    supersim.v1.network_access_profile:
+      type: object
+      properties:
+        sid:
+          type: string
+          minLength: 34
+          maxLength: 34
+          pattern: ^HA[0-9a-fA-F]{32}$
+          nullable: true
+          description: The unique string that identifies the Network Access Profile resource.
+        unique_name:
+          type: string
+          nullable: true
+          description: An application-defined string that uniquely identifies the resource. It can be used in place of the resource's `sid` in the URL to address the resource.
+        account_sid:
+          type: string
+          minLength: 34
+          maxLength: 34
+          pattern: ^AC[0-9a-fA-F]{32}$
+          nullable: true
+          description: The SID of the [Account](https://www.twilio.com/docs/iam/api/account) that the Network Access Profile belongs to.
+        date_created:
+          type: string
+          format: date-time
+          nullable: true
+          description: The date and time in GMT when the resource was created specified in [ISO 8601](https://en.wikipedia.org/wiki/ISO_8601) format.
+        date_updated:
+          type: string
+          format: date-time
+          nullable: true
+          description: The date and time in GMT when the resource was last updated specified in [ISO 8601](https://en.wikipedia.org/wiki/ISO_8601) format.
+        url:
+          type: string
+          format: uri
+          nullable: true
+          description: The absolute URL of the Network Access Profile resource.
+        links:
+          type: object
+          format: uri-map
+          nullable: true
+    supersim.v1.network_access_profile.network_access_profile_network:
+      type: object
+      properties:
+        sid:
+          type: string
+          minLength: 34
+          maxLength: 34
+          pattern: ^HW[0-9a-fA-F]{32}$
+          nullable: true
+          description: The unique string that identifies the Network resource.
+        network_access_profile_sid:
+          type: string
+          minLength: 34
+          maxLength: 34
+          pattern: ^HA[0-9a-fA-F]{32}$
+          nullable: true
+          description: The unique string that identifies the Network resource's Network Access Profile resource.
+        friendly_name:
+          type: string
+          nullable: true
+          description: A human readable identifier of the Network this resource refers to.
+        iso_country:
+          type: string
+          nullable: true
+          description: The [ISO country code](https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2) of the Network resource.
+        identifiers:
+          type: array
+          items: {}
+          nullable: true
+          description: Array of objects identifying the [MCC-MNCs](https://en.wikipedia.org/wiki/Mobile_country_code) that are included in the Network resource.
+        url:
+          type: string
+          format: uri
+          nullable: true
+          description: The absolute URL of the Network resource.
+  securitySchemes:
+    accountSid_authToken:
+      type: http
+      scheme: basic
+x-maturity:
+- name: GA
+  description: This product is Generally Available.
+- name: Beta
+  description: PLEASE NOTE that this is a Beta product that is subject to change. Use it with caution.

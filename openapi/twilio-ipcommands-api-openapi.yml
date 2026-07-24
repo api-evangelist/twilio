@@ -1,0 +1,315 @@
+openapi: 3.0.1
+info:
+  title: Twilio - Accounts A2p IpCommands API
+  description: This is the public Twilio REST API.
+  termsOfService: https://www.twilio.com/legal/tos
+  contact:
+    name: Twilio Support
+    url: https://support.twilio.com
+    email: support@twilio.com
+  license:
+    name: Apache 2.0
+    url: https://www.apache.org/licenses/LICENSE-2.0.html
+  version: 1.52.0
+servers:
+- url: https://accounts.twilio.com
+tags:
+- name: IpCommands
+paths:
+  /v1/IpCommands:
+    servers:
+    - url: https://supersim.twilio.com
+    description: Machine-to-machine IP Commands sent to/from Super SIMs
+    x-twilio:
+      defaultOutputProperties:
+      - sid
+      - status
+      - date_created
+      pathType: list
+    post:
+      description: Send an IP Command to a Super SIM.
+      tags:
+      - IpCommands
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/supersim.v1.ip_command'
+          description: Created
+      security:
+      - accountSid_authToken: []
+      operationId: CreateIpCommand
+      x-maturity:
+      - Beta
+      requestBody:
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/CreateIpCommandRequest'
+    get:
+      description: Retrieve a list of IP Commands from your account.
+      tags:
+      - IpCommands
+      parameters:
+      - name: Sim
+        in: query
+        description: The SID or unique name of the Sim resource that IP Command was sent to or from.
+        schema:
+          type: string
+      - name: SimIccid
+        in: query
+        description: The ICCID of the Sim resource that IP Command was sent to or from.
+        schema:
+          type: string
+      - name: Status
+        in: query
+        description: 'The status of the IP Command. Can be: `queued`, `sent`, `received` or `failed`. See the [IP Command Status Values](https://www.twilio.com/docs/iot/supersim/api/ipcommand-resource#status-values) for a description of each.'
+        schema:
+          type: string
+          $ref: '#/components/schemas/ip_command_enum_status'
+      - name: Direction
+        in: query
+        description: The direction of the IP Command. Can be `to_sim` or `from_sim`. The value of `to_sim` is synonymous with the term `mobile terminated`, and `from_sim` is synonymous with the term `mobile originated`.
+        schema:
+          type: string
+          $ref: '#/components/schemas/ip_command_enum_direction'
+      - name: PageSize
+        in: query
+        description: How many resources to return in each list page. The default is 50, and the maximum is 1000.
+        schema:
+          type: integer
+          minimum: 1
+          maximum: 1000
+      - name: Page
+        in: query
+        description: The page index. This value is simply for client state.
+        schema:
+          type: integer
+          minimum: 0
+      - name: PageToken
+        in: query
+        description: The page token. This is provided by the API.
+        schema:
+          type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ListIpCommandResponse'
+          description: OK
+      security:
+      - accountSid_authToken: []
+      operationId: ListIpCommand
+      x-maturity:
+      - Beta
+  /v1/IpCommands/{Sid}:
+    servers:
+    - url: https://supersim.twilio.com
+    description: Machine-to-machine IP Commands sent to/from Super SIMs
+    x-twilio:
+      defaultOutputProperties:
+      - sid
+      - status
+      - date_created
+      pathType: instance
+    get:
+      description: Fetch IP Command instance from your account.
+      tags:
+      - IpCommands
+      parameters:
+      - name: Sid
+        in: path
+        description: The SID of the IP Command resource to fetch.
+        schema:
+          type: string
+          minLength: 34
+          maxLength: 34
+          pattern: ^HG[0-9a-fA-F]{32}$
+        required: true
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/supersim.v1.ip_command'
+          description: OK
+      security:
+      - accountSid_authToken: []
+      operationId: FetchIpCommand
+      x-maturity:
+      - Beta
+components:
+  schemas:
+    ip_command_enum_status:
+      type: string
+      enum:
+      - queued
+      - sent
+      - received
+      - failed
+    ip_command_enum_direction:
+      type: string
+      enum:
+      - to_sim
+      - from_sim
+    CreateIpCommandRequest:
+      type: object
+      required:
+      - Sim
+      - Payload
+      - DevicePort
+      properties:
+        Sim:
+          type: string
+          description: The `sid` or `unique_name` of the [Super SIM](https://www.twilio.com/docs/iot/supersim/api/sim-resource) to send the IP Command to.
+        Payload:
+          type: string
+          description: The data that will be sent to the device. The payload cannot exceed 1300 bytes. If the PayloadType is set to text, the payload is encoded in UTF-8. If PayloadType is set to binary, the payload is encoded in Base64.
+        DevicePort:
+          type: integer
+          description: The device port to which the IP Command will be sent.
+        PayloadType:
+          type: string
+          $ref: '#/components/schemas/ip_command_enum_payload_type'
+          description: Indicates how the payload is encoded. Either `text` or `binary`. Defaults to `text`.
+        CallbackUrl:
+          type: string
+          format: uri
+          description: The URL we should call using the `callback_method` after we have sent the IP Command.
+        CallbackMethod:
+          type: string
+          format: http-method
+          enum:
+          - HEAD
+          - GET
+          - POST
+          - PATCH
+          - PUT
+          - DELETE
+          description: The HTTP method we should use to call `callback_url`. Can be `GET` or `POST`, and the default is `POST`.
+    ListIpCommandResponse:
+      type: object
+      properties:
+        ip_commands:
+          type: array
+          items:
+            $ref: '#/components/schemas/supersim.v1.ip_command'
+        meta:
+          type: object
+          properties:
+            first_page_url:
+              type: string
+              format: uri
+            next_page_url:
+              type: string
+              format: uri
+              nullable: true
+            page:
+              type: integer
+            page_size:
+              type: integer
+            previous_page_url:
+              type: string
+              format: uri
+              nullable: true
+            url:
+              type: string
+              format: uri
+            key:
+              type: string
+    supersim.v1.ip_command:
+      type: object
+      properties:
+        sid:
+          type: string
+          minLength: 34
+          maxLength: 34
+          pattern: ^HG[0-9a-fA-F]{32}$
+          nullable: true
+          description: The unique string that we created to identify the IP Command resource.
+        account_sid:
+          type: string
+          minLength: 34
+          maxLength: 34
+          pattern: ^AC[0-9a-fA-F]{32}$
+          nullable: true
+          description: The SID of the [Account](https://www.twilio.com/docs/iam/api/account) that created the IP Command resource.
+        sim_sid:
+          type: string
+          minLength: 34
+          maxLength: 34
+          pattern: ^HS[0-9a-fA-F]{32}$
+          nullable: true
+          description: The SID of the [Super SIM](https://www.twilio.com/docs/iot/supersim/api/sim-resource) that this IP Command was sent to or from.
+        sim_iccid:
+          type: string
+          nullable: true
+          description: The [ICCID](https://en.wikipedia.org/wiki/Subscriber_identity_module#ICCID) of the [Super SIM](https://www.twilio.com/docs/iot/supersim/api/sim-resource) that this IP Command was sent to or from.
+        status:
+          type: string
+          $ref: '#/components/schemas/ip_command_enum_status'
+          nullable: true
+          description: 'The delivery status of the IP Command. This is one of the following: “queued”, “sent”, “failed” or “received”.'
+        direction:
+          type: string
+          $ref: '#/components/schemas/ip_command_enum_direction'
+          nullable: true
+          description: Either `to_sim` or `from_sim`. Indicates whether the IP Command resource was sent from or to the Super SIM.
+        device_ip:
+          type: string
+          nullable: true
+          description: The IP address of the device that the IP Command was sent to or received from. For an IP Command sent to a Super SIM, `device_ip` starts out as `null`, and once the IP Command is “sent”, the `device_ip` will be filled out. An IP Command sent from a Super SIM have its `device_ip` always set.
+        device_port:
+          type: integer
+          nullable: true
+          description: For an IP Command sent to a Super SIM, it would be the destination port of the IP message. For an IP Command sent from a Super SIM, it would be the source port of the IP message.
+        payload_type:
+          type: string
+          $ref: '#/components/schemas/ip_command_enum_payload_type'
+          nullable: true
+          description: Either “text” or “binary”. For an IP Command sent to a Super SIM, `payload_type` is configurable. For an IP Command sent from a Super SIM, `payload_type` is always “binary”.
+        payload:
+          type: string
+          nullable: true
+          description: 'The payload that is carried in the IP/UDP message. The payload can be encoded in either text or binary format. For text payload, UTF-8 encoding must be used.
+
+
+            For an IP Command sent to a Super SIM, the payload is appended to the IP/UDP message “as is”. The payload should not exceed 1300 bytes.
+
+
+            For an IP Command sent from a Super SIM, the payload from the received IP/UDP message is extracted and sent in binary encoding. For an IP Command sent from a Super SIM, the payload should not exceed 1300 bytes. If it is larger than 1300 bytes, there might be fragmentation on the upstream and the message may appear truncated.'
+          x-twilio:
+            pii:
+              handling: standard
+              deleteSla: 30
+        date_created:
+          type: string
+          format: date-time
+          nullable: true
+          description: The date and time in GMT when the resource was created specified in [ISO 8601](https://en.wikipedia.org/wiki/ISO_8601) format.
+        date_updated:
+          type: string
+          format: date-time
+          nullable: true
+          description: The date and time in GMT when the resource was last updated specified in [ISO 8601](https://en.wikipedia.org/wiki/ISO_8601) format.
+        url:
+          type: string
+          format: uri
+          nullable: true
+          description: The absolute URL of the IP Command resource.
+    ip_command_enum_payload_type:
+      type: string
+      enum:
+      - text
+      - binary
+  securitySchemes:
+    accountSid_authToken:
+      type: http
+      scheme: basic
+x-maturity:
+- name: GA
+  description: This product is Generally Available.
+- name: Beta
+  description: PLEASE NOTE that this is a Beta product that is subject to change. Use it with caution.

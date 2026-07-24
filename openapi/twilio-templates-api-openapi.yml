@@ -1,0 +1,378 @@
+openapi: 3.0.1
+info:
+  title: Twilio - Accounts A2p Templates API
+  description: This is the public Twilio REST API.
+  termsOfService: https://www.twilio.com/legal/tos
+  contact:
+    name: Twilio Support
+    url: https://support.twilio.com
+    email: support@twilio.com
+  license:
+    name: Apache 2.0
+    url: https://www.apache.org/licenses/LICENSE-2.0.html
+  version: 1.52.0
+servers:
+- url: https://accounts.twilio.com
+tags:
+- name: Templates
+  description: Manage dynamic email templates
+paths:
+  /templates:
+    get:
+      operationId: listTemplates
+      summary: Twilio List Email Templates
+      description: Retrieve all transactional or dynamic templates.
+      tags:
+      - Templates
+      parameters:
+      - name: generations
+        in: query
+        description: Filter by template generation
+        schema:
+          type: string
+          enum:
+          - legacy
+          - dynamic
+      - name: page_size
+        in: query
+        schema:
+          type: integer
+          minimum: 1
+          maximum: 200
+      responses:
+        '200':
+          description: List of templates
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TemplateList'
+    post:
+      operationId: createTemplate
+      summary: Twilio Create an Email Template
+      tags:
+      - Templates
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+              - name
+              properties:
+                name:
+                  type: string
+                  description: Template name (max 100 characters)
+                  maxLength: 100
+                generation:
+                  type: string
+                  enum:
+                  - legacy
+                  - dynamic
+                  default: dynamic
+      responses:
+        '201':
+          description: Template created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Template'
+  /templates/{template_id}:
+    get:
+      operationId: fetchTemplate
+      summary: Twilio Fetch a Template
+      tags:
+      - Templates
+      parameters:
+      - name: template_id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+      responses:
+        '200':
+          description: Template details
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Template'
+        '404':
+          description: Template not found
+    patch:
+      operationId: updateTemplate
+      summary: Twilio Update a Template
+      tags:
+      - Templates
+      parameters:
+      - name: template_id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                  maxLength: 100
+      responses:
+        '200':
+          description: Template updated
+    delete:
+      operationId: deleteTemplate
+      summary: Twilio Delete a Template
+      tags:
+      - Templates
+      parameters:
+      - name: template_id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+      responses:
+        '204':
+          description: Template deleted
+  /templates/{template_id}/versions:
+    post:
+      operationId: createTemplateVersion
+      summary: Twilio Create a Template Version
+      tags:
+      - Templates
+      parameters:
+      - name: template_id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateTemplateVersionRequest'
+      responses:
+        '201':
+          description: Template version created
+  /v2/Templates:
+    servers:
+    - url: https://verify.twilio.com
+    description: 'TODO: Resource-level docs'
+    x-twilio:
+      defaultOutputProperties:
+      - sid
+      - friendly_name
+      pathType: list
+    get:
+      description: List all the available templates for a given Account.
+      tags:
+      - Templates
+      parameters:
+      - name: FriendlyName
+        in: query
+        description: String filter used to query templates with a given friendly name.
+        schema:
+          type: string
+      - name: PageSize
+        in: query
+        description: How many resources to return in each list page. The default is 50, and the maximum is 1000.
+        schema:
+          type: integer
+          minimum: 1
+          maximum: 1000
+      - name: Page
+        in: query
+        description: The page index. This value is simply for client state.
+        schema:
+          type: integer
+          minimum: 0
+      - name: PageToken
+        in: query
+        description: The page token. This is provided by the API.
+        schema:
+          type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ListVerificationTemplateResponse'
+          description: OK
+      security:
+      - accountSid_authToken: []
+      operationId: ListVerificationTemplate
+      x-maturity:
+      - GA
+components:
+  schemas:
+    ListVerificationTemplateResponse:
+      type: object
+      properties:
+        templates:
+          type: array
+          items:
+            $ref: '#/components/schemas/verify.v2.verification_template'
+        meta:
+          type: object
+          properties:
+            first_page_url:
+              type: string
+              format: uri
+            next_page_url:
+              type: string
+              format: uri
+              nullable: true
+            page:
+              type: integer
+            page_size:
+              type: integer
+            previous_page_url:
+              type: string
+              format: uri
+              nullable: true
+            url:
+              type: string
+              format: uri
+            key:
+              type: string
+    Template:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        name:
+          type: string
+        generation:
+          type: string
+          enum:
+          - legacy
+          - dynamic
+        updated_at:
+          type: string
+          format: date-time
+        versions:
+          type: array
+          items:
+            $ref: '#/components/schemas/TemplateVersion'
+    CreateTemplateVersionRequest:
+      type: object
+      required:
+      - name
+      - subject
+      properties:
+        name:
+          type: string
+          maxLength: 100
+        subject:
+          type: string
+        html_content:
+          type: string
+        plain_content:
+          type: string
+        active:
+          type: integer
+          enum:
+          - 0
+          - 1
+        editor:
+          type: string
+          enum:
+          - code
+          - design
+        generate_plain_content:
+          type: boolean
+          default: true
+        test_data:
+          type: string
+          description: JSON test data for template preview
+    TemplateVersion:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        template_id:
+          type: string
+          format: uuid
+        name:
+          type: string
+        subject:
+          type: string
+        html_content:
+          type: string
+        plain_content:
+          type: string
+        active:
+          type: integer
+          enum:
+          - 0
+          - 1
+        editor:
+          type: string
+          enum:
+          - code
+          - design
+        generate_plain_content:
+          type: boolean
+        updated_at:
+          type: string
+          format: date-time
+    verify.v2.verification_template:
+      type: object
+      properties:
+        sid:
+          type: string
+          minLength: 34
+          maxLength: 34
+          pattern: ^HJ[0-9a-fA-F]{32}$
+          nullable: true
+          description: A 34 character string that uniquely identifies a Verification Template.
+        account_sid:
+          type: string
+          minLength: 34
+          maxLength: 34
+          pattern: ^AC[0-9a-fA-F]{32}$
+          nullable: true
+          description: The unique SID identifier of the Account.
+        friendly_name:
+          type: string
+          nullable: true
+          description: A descriptive string that you create to describe a Template. It can be up to 32 characters long.
+        channels:
+          type: array
+          items:
+            type: string
+          nullable: true
+          description: 'A list of channels that support the Template. Can include: sms, voice.'
+        translations:
+          nullable: true
+          description: An object that contains the different translations of the template. Every translation is identified by the language short name and contains its respective information as the approval status, text and created/modified date.
+    TemplateList:
+      type: object
+      properties:
+        result:
+          type: array
+          items:
+            $ref: '#/components/schemas/Template'
+        _metadata:
+          type: object
+          properties:
+            count:
+              type: integer
+  securitySchemes:
+    accountSid_authToken:
+      type: http
+      scheme: basic
+x-maturity:
+- name: GA
+  description: This product is Generally Available.
+- name: Beta
+  description: PLEASE NOTE that this is a Beta product that is subject to change. Use it with caution.

@@ -1,0 +1,404 @@
+openapi: 3.0.1
+info:
+  title: Twilio - Accounts A2p Calls API
+  description: This is the public Twilio REST API.
+  termsOfService: https://www.twilio.com/legal/tos
+  contact:
+    name: Twilio Support
+    url: https://support.twilio.com
+    email: support@twilio.com
+  license:
+    name: Apache 2.0
+    url: https://www.apache.org/licenses/LICENSE-2.0.html
+  version: 1.52.0
+servers:
+- url: https://accounts.twilio.com
+tags:
+- name: Calls
+  description: Initiate, manage, and monitor voice calls
+paths:
+  /Accounts/{AccountSid}/Calls.json:
+    get:
+      operationId: listCalls
+      summary: Twilio List Calls
+      description: Retrieve a list of calls made to and from your account. Results are sorted by DateUpdated descending.
+      tags:
+      - Calls
+      parameters:
+      - $ref: '#/components/parameters/AccountSid'
+      - name: To
+        in: query
+        description: Filter by the phone number that received the call
+        schema:
+          type: string
+      - name: From
+        in: query
+        description: Filter by the phone number that initiated the call
+        schema:
+          type: string
+      - name: Status
+        in: query
+        description: Filter by call status
+        schema:
+          type: string
+          enum:
+          - queued
+          - ringing
+          - in-progress
+          - canceled
+          - completed
+          - failed
+          - busy
+          - no-answer
+      - name: StartTime
+        in: query
+        description: Filter by start time (YYYY-MM-DD)
+        schema:
+          type: string
+          format: date
+      - name: EndTime
+        in: query
+        description: Filter by end time (YYYY-MM-DD)
+        schema:
+          type: string
+          format: date
+      - name: PageSize
+        in: query
+        schema:
+          type: integer
+          minimum: 1
+          maximum: 1000
+          default: 50
+      responses:
+        '200':
+          description: List of calls
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CallList'
+        '401':
+          description: Unauthorized
+    post:
+      operationId: createCall
+      summary: Twilio Make a Call
+      description: Initiate a new outbound phone call. Provide a TwiML URL or ApplicationSid to control the call flow, along with the To and From phone numbers.
+      tags:
+      - Calls
+      parameters:
+      - $ref: '#/components/parameters/AccountSid'
+      requestBody:
+        required: true
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/CreateCallRequest'
+      responses:
+        '201':
+          description: Call initiated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Call'
+        '400':
+          description: Invalid request parameters
+        '401':
+          description: Unauthorized
+  /Accounts/{AccountSid}/Calls/{CallSid}.json:
+    get:
+      operationId: fetchCall
+      summary: Twilio Fetch a Call
+      description: Retrieve details of a specific call by its SID.
+      tags:
+      - Calls
+      parameters:
+      - $ref: '#/components/parameters/AccountSid'
+      - $ref: '#/components/parameters/CallSid'
+      responses:
+        '200':
+          description: Call details
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Call'
+        '401':
+          description: Unauthorized
+        '404':
+          description: Call not found
+    post:
+      operationId: updateCall
+      summary: Twilio Modify a Live Call
+      description: Modify an in-progress call. Redirect to a new TwiML URL, end the call, or put the caller on hold.
+      tags:
+      - Calls
+      parameters:
+      - $ref: '#/components/parameters/AccountSid'
+      - $ref: '#/components/parameters/CallSid'
+      requestBody:
+        required: true
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/UpdateCallRequest'
+      responses:
+        '200':
+          description: Call updated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Call'
+        '401':
+          description: Unauthorized
+        '404':
+          description: Call not found
+    delete:
+      operationId: deleteCall
+      summary: Twilio Delete a Call Record
+      description: Delete a call record from your account.
+      tags:
+      - Calls
+      parameters:
+      - $ref: '#/components/parameters/AccountSid'
+      - $ref: '#/components/parameters/CallSid'
+      responses:
+        '204':
+          description: Call record deleted
+        '401':
+          description: Unauthorized
+        '404':
+          description: Call not found
+components:
+  parameters:
+    AccountSid:
+      name: AccountSid
+      in: path
+      required: true
+      description: The unique identifier of the Twilio account
+      schema:
+        type: string
+        pattern: ^AC[0-9a-fA-F]{32}$
+    CallSid:
+      name: CallSid
+      in: path
+      required: true
+      description: The unique identifier of the call
+      schema:
+        type: string
+        pattern: ^CA[0-9a-fA-F]{32}$
+  schemas:
+    Call:
+      type: object
+      properties:
+        sid:
+          type: string
+          pattern: ^CA[0-9a-fA-F]{32}$
+          description: Unique identifier for the call
+        account_sid:
+          type: string
+          pattern: ^AC[0-9a-fA-F]{32}$
+        parent_call_sid:
+          type: string
+          description: SID of the parent call (for child legs)
+        to:
+          type: string
+          description: Phone number or SIP URI that received the call
+        to_formatted:
+          type: string
+          description: Formatted version of the To number
+        from:
+          type: string
+          description: Phone number or client ID that made the call
+        from_formatted:
+          type: string
+          description: Formatted version of the From number
+        phone_number_sid:
+          type: string
+          description: SID of the incoming phone number
+        status:
+          type: string
+          enum:
+          - queued
+          - ringing
+          - in-progress
+          - canceled
+          - completed
+          - failed
+          - busy
+          - no-answer
+          description: Current status of the call
+        direction:
+          type: string
+          enum:
+          - inbound
+          - outbound-api
+          - outbound-dial
+          description: Direction of the call
+        price:
+          type: string
+          description: Price of the call
+        price_unit:
+          type: string
+          description: Currency unit for the price
+        duration:
+          type: string
+          description: Duration of the call in seconds
+        start_time:
+          type: string
+          format: date-time
+          description: When the call started
+        end_time:
+          type: string
+          format: date-time
+          description: When the call ended
+        date_created:
+          type: string
+          format: date-time
+        date_updated:
+          type: string
+          format: date-time
+        answered_by:
+          type: string
+          enum:
+          - human
+          - machine
+          description: Whether the call was answered by a human or machine
+        caller_name:
+          type: string
+          description: Caller name if available via CNAM lookup
+        forwarded_from:
+          type: string
+          description: Number that forwarded the call
+        group_sid:
+          type: string
+          description: SID that identifies the call group
+        uri:
+          type: string
+        api_version:
+          type: string
+        subresource_uris:
+          type: object
+          properties:
+            recordings:
+              type: string
+            notifications:
+              type: string
+    CreateCallRequest:
+      type: object
+      required:
+      - To
+      - From
+      properties:
+        To:
+          type: string
+          description: Phone number, SIP URI, or client identifier to call
+        From:
+          type: string
+          description: Twilio phone number or verified caller ID
+        Url:
+          type: string
+          format: uri
+          description: TwiML URL for call instructions
+        ApplicationSid:
+          type: string
+          description: SID of the TwiML application to handle the call
+          pattern: ^AP[0-9a-fA-F]{32}$
+        Method:
+          type: string
+          enum:
+          - GET
+          - POST
+          default: POST
+        StatusCallback:
+          type: string
+          format: uri
+          description: URL for call status webhooks
+        StatusCallbackMethod:
+          type: string
+          enum:
+          - GET
+          - POST
+        StatusCallbackEvent:
+          type: array
+          items:
+            type: string
+            enum:
+            - initiated
+            - ringing
+            - answered
+            - completed
+        Timeout:
+          type: integer
+          description: Ring timeout in seconds
+          default: 60
+        Record:
+          type: boolean
+          description: Whether to record the call
+          default: false
+        RecordingChannels:
+          type: string
+          enum:
+          - mono
+          - dual
+        RecordingStatusCallback:
+          type: string
+          format: uri
+        MachineDetection:
+          type: string
+          enum:
+          - Enable
+          - DetectMessageEnd
+          description: Enable answering machine detection
+        Twiml:
+          type: string
+          description: Inline TwiML instructions for the call
+        CallerId:
+          type: string
+          description: Caller ID to display on outbound call
+    UpdateCallRequest:
+      type: object
+      properties:
+        Url:
+          type: string
+          format: uri
+          description: Redirect the call to a new TwiML URL
+        Method:
+          type: string
+          enum:
+          - GET
+          - POST
+        Status:
+          type: string
+          enum:
+          - canceled
+          - completed
+          description: Set to completed to end the call
+        Twiml:
+          type: string
+          description: Inline TwiML to redirect the call
+    CallList:
+      type: object
+      properties:
+        calls:
+          type: array
+          items:
+            $ref: '#/components/schemas/Call'
+        first_page_uri:
+          type: string
+        next_page_uri:
+          type: string
+        previous_page_uri:
+          type: string
+        page:
+          type: integer
+        page_size:
+          type: integer
+        uri:
+          type: string
+  securitySchemes:
+    accountSid_authToken:
+      type: http
+      scheme: basic
+x-maturity:
+- name: GA
+  description: This product is Generally Available.
+- name: Beta
+  description: PLEASE NOTE that this is a Beta product that is subject to change. Use it with caution.

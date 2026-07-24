@@ -1,0 +1,84 @@
+openapi: 3.0.1
+info:
+  title: Twilio - Accounts A2p Forms API
+  description: This is the public Twilio REST API.
+  termsOfService: https://www.twilio.com/legal/tos
+  contact:
+    name: Twilio Support
+    url: https://support.twilio.com
+    email: support@twilio.com
+  license:
+    name: Apache 2.0
+    url: https://www.apache.org/licenses/LICENSE-2.0.html
+  version: 1.52.0
+servers:
+- url: https://accounts.twilio.com
+tags:
+- name: Forms
+paths:
+  /v2/Forms/{FormType}:
+    servers:
+    - url: https://verify.twilio.com
+    description: 'TODO: Resource-level docs'
+    x-twilio:
+      defaultOutputProperties:
+      - form_type
+      pathType: instance
+    get:
+      description: Fetch the forms for a specific Form Type.
+      tags:
+      - Forms
+      parameters:
+      - name: FormType
+        in: path
+        description: The Type of this Form. Currently only `form-push` is supported.
+        schema:
+          type: string
+          $ref: '#/components/schemas/form_enum_form_types'
+        required: true
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/verify.v2.form'
+          description: OK
+      security:
+      - accountSid_authToken: []
+      operationId: FetchForm
+      x-maturity:
+      - Beta
+components:
+  schemas:
+    form_enum_form_types:
+      type: string
+      enum:
+      - form-push
+    verify.v2.form:
+      type: object
+      properties:
+        form_type:
+          type: string
+          $ref: '#/components/schemas/form_enum_form_types'
+          nullable: true
+          description: The Type of this Form. Currently only `form-push` is supported.
+        forms:
+          nullable: true
+          description: Object that contains the available forms for this type. This available forms are given in the standard [JSON Schema](https://json-schema.org/) format
+        form_meta:
+          nullable: true
+          description: Additional information for the available forms for this type. E.g. The separator string used for `binding` in a Factor push.
+        url:
+          type: string
+          format: uri
+          nullable: true
+          description: The URL to access the forms for this type.
+  securitySchemes:
+    accountSid_authToken:
+      type: http
+      scheme: basic
+x-maturity:
+- name: GA
+  description: This product is Generally Available.
+- name: Beta
+  description: PLEASE NOTE that this is a Beta product that is subject to change. Use it with caution.

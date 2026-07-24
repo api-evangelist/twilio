@@ -1,0 +1,70 @@
+openapi: 3.0.1
+info:
+  title: Twilio - Accounts A2p Plugins API
+  description: This is the public Twilio REST API.
+  termsOfService: https://www.twilio.com/legal/tos
+  contact:
+    name: Twilio Support
+    url: https://support.twilio.com
+    email: support@twilio.com
+  license:
+    name: Apache 2.0
+    url: https://www.apache.org/licenses/LICENSE-2.0.html
+  version: 1.52.0
+servers:
+- url: https://accounts.twilio.com
+tags:
+- name: Plugins
+  description: Manage Flex plugins
+paths:
+  /PluginService/Plugins:
+    get:
+      operationId: listPlugins
+      summary: Twilio List Flex Plugins
+      tags:
+      - Plugins
+      parameters:
+      - name: FlexMetadata
+        in: header
+        schema:
+          type: string
+      - name: PageSize
+        in: query
+        schema:
+          type: integer
+      responses:
+        '200':
+          description: List of plugins
+    post:
+      operationId: createPlugin
+      summary: Twilio Create a Flex Plugin
+      tags:
+      - Plugins
+      requestBody:
+        required: true
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              type: object
+              required:
+              - UniqueName
+              properties:
+                UniqueName:
+                  type: string
+                FriendlyName:
+                  type: string
+                Description:
+                  type: string
+      responses:
+        '201':
+          description: Plugin created
+components:
+  securitySchemes:
+    accountSid_authToken:
+      type: http
+      scheme: basic
+x-maturity:
+- name: GA
+  description: This product is Generally Available.
+- name: Beta
+  description: PLEASE NOTE that this is a Beta product that is subject to change. Use it with caution.

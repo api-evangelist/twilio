@@ -1,0 +1,65 @@
+openapi: 3.0.1
+info:
+  title: Twilio - Accounts A2p Archives API
+  description: This is the public Twilio REST API.
+  termsOfService: https://www.twilio.com/legal/tos
+  contact:
+    name: Twilio Support
+    url: https://support.twilio.com
+    email: support@twilio.com
+  license:
+    name: Apache 2.0
+    url: https://www.apache.org/licenses/LICENSE-2.0.html
+  version: 1.52.0
+servers:
+- url: https://accounts.twilio.com
+tags:
+- name: Archives
+paths:
+  /v1/Archives/{Date}/Calls/{Sid}:
+    servers:
+    - url: https://voice.twilio.com
+    description: 'TODO: Resource-level docs'
+    x-twilio:
+      defaultOutputProperties: []
+      pathType: instance
+      mountName: archived_calls
+    delete:
+      description: 'Delete an archived call record from Bulk Export. Note: this does not also delete the record from the Voice API.'
+      tags:
+      - Archives
+      parameters:
+      - name: Date
+        in: path
+        description: The date of the Call in UTC.
+        schema:
+          type: string
+          format: date
+        required: true
+      - name: Sid
+        in: path
+        description: The Twilio-provided Call SID that uniquely identifies the Call resource to delete
+        schema:
+          type: string
+          minLength: 34
+          maxLength: 34
+          pattern: ^CA[0-9a-fA-F]{32}$
+        required: true
+      responses:
+        '204':
+          description: The resource was deleted successfully.
+      security:
+      - accountSid_authToken: []
+      operationId: DeleteArchivedCall
+      x-maturity:
+      - Beta
+components:
+  securitySchemes:
+    accountSid_authToken:
+      type: http
+      scheme: basic
+x-maturity:
+- name: GA
+  description: This product is Generally Available.
+- name: Beta
+  description: PLEASE NOTE that this is a Beta product that is subject to change. Use it with caution.

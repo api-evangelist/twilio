@@ -1,0 +1,190 @@
+openapi: 3.0.1
+info:
+  title: Twilio - Accounts A2p Queues API
+  description: This is the public Twilio REST API.
+  termsOfService: https://www.twilio.com/legal/tos
+  contact:
+    name: Twilio Support
+    url: https://support.twilio.com
+    email: support@twilio.com
+  license:
+    name: Apache 2.0
+    url: https://www.apache.org/licenses/LICENSE-2.0.html
+  version: 1.52.0
+servers:
+- url: https://accounts.twilio.com
+tags:
+- name: Queues
+  description: Manage call queues
+paths:
+  /Accounts/{AccountSid}/Queues.json:
+    get:
+      operationId: listQueues
+      summary: Twilio List Call Queues
+      tags:
+      - Queues
+      parameters:
+      - $ref: '#/components/parameters/AccountSid'
+      responses:
+        '200':
+          description: List of queues
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/QueueList'
+    post:
+      operationId: createQueue
+      summary: Twilio Create a Call Queue
+      tags:
+      - Queues
+      parameters:
+      - $ref: '#/components/parameters/AccountSid'
+      requestBody:
+        required: true
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              type: object
+              required:
+              - FriendlyName
+              properties:
+                FriendlyName:
+                  type: string
+                  description: Descriptive name for the queue
+                MaxSize:
+                  type: integer
+                  description: Maximum number of calls in the queue
+                  default: 1000
+      responses:
+        '201':
+          description: Queue created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Queue'
+  /Accounts/{AccountSid}/Queues/{QueueSid}.json:
+    get:
+      operationId: fetchQueue
+      summary: Twilio Fetch a Queue
+      tags:
+      - Queues
+      parameters:
+      - $ref: '#/components/parameters/AccountSid'
+      - name: QueueSid
+        in: path
+        required: true
+        schema:
+          type: string
+          pattern: ^QU[0-9a-fA-F]{32}$
+      responses:
+        '200':
+          description: Queue details
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Queue'
+    post:
+      operationId: updateQueue
+      summary: Twilio Update a Queue
+      tags:
+      - Queues
+      parameters:
+      - $ref: '#/components/parameters/AccountSid'
+      - name: QueueSid
+        in: path
+        required: true
+        schema:
+          type: string
+          pattern: ^QU[0-9a-fA-F]{32}$
+      requestBody:
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              type: object
+              properties:
+                FriendlyName:
+                  type: string
+                MaxSize:
+                  type: integer
+      responses:
+        '200':
+          description: Queue updated
+    delete:
+      operationId: deleteQueue
+      summary: Twilio Delete a Queue
+      tags:
+      - Queues
+      parameters:
+      - $ref: '#/components/parameters/AccountSid'
+      - name: QueueSid
+        in: path
+        required: true
+        schema:
+          type: string
+          pattern: ^QU[0-9a-fA-F]{32}$
+      responses:
+        '204':
+          description: Queue deleted
+components:
+  schemas:
+    QueueList:
+      type: object
+      properties:
+        queues:
+          type: array
+          items:
+            $ref: '#/components/schemas/Queue'
+        first_page_uri:
+          type: string
+        next_page_uri:
+          type: string
+        page:
+          type: integer
+        page_size:
+          type: integer
+    Queue:
+      type: object
+      properties:
+        sid:
+          type: string
+          pattern: ^QU[0-9a-fA-F]{32}$
+        account_sid:
+          type: string
+          pattern: ^AC[0-9a-fA-F]{32}$
+        friendly_name:
+          type: string
+        current_size:
+          type: integer
+          description: Number of calls currently in the queue
+        max_size:
+          type: integer
+          description: Maximum number of calls in the queue
+        average_wait_time:
+          type: integer
+          description: Average wait time in seconds
+        date_created:
+          type: string
+          format: date-time
+        date_updated:
+          type: string
+          format: date-time
+        uri:
+          type: string
+  parameters:
+    AccountSid:
+      name: AccountSid
+      in: path
+      required: true
+      description: The unique identifier of the Twilio account
+      schema:
+        type: string
+        pattern: ^AC[0-9a-fA-F]{32}$
+  securitySchemes:
+    accountSid_authToken:
+      type: http
+      scheme: basic
+x-maturity:
+- name: GA
+  description: This product is Generally Available.
+- name: Beta
+  description: PLEASE NOTE that this is a Beta product that is subject to change. Use it with caution.

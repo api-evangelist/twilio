@@ -1,0 +1,281 @@
+openapi: 3.0.1
+info:
+  title: Twilio - Accounts A2p ComplianceInquiries API
+  description: This is the public Twilio REST API.
+  termsOfService: https://www.twilio.com/legal/tos
+  contact:
+    name: Twilio Support
+    url: https://support.twilio.com
+    email: support@twilio.com
+  license:
+    name: Apache 2.0
+    url: https://www.apache.org/licenses/LICENSE-2.0.html
+  version: 1.52.0
+servers:
+- url: https://accounts.twilio.com
+tags:
+- name: ComplianceInquiries
+paths:
+  /v1/ComplianceInquiries/Customers/Initialize:
+    servers:
+    - url: https://trusthub.twilio.com
+    description: 'TODO: Resource-level docs'
+    x-twilio:
+      defaultOutputProperties:
+      - inquiry_id
+      - session_token
+      - customer_id
+      pathType: list
+      mountName: compliance_inquiries
+      className: compliance_inquiries
+    post:
+      description: Create a new Compliance Inquiry for the authenticated account. This is necessary to start a new embedded session.
+      tags:
+      - ComplianceInquiries
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/trusthub.v1.compliance_inquiry'
+          description: Created
+      security:
+      - accountSid_authToken: []
+      operationId: CreateComplianceInquiry
+      x-maturity:
+      - GA
+      requestBody:
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/CreateComplianceInquiryRequest'
+  /v1/ComplianceInquiries/Customers/{CustomerId}/Initialize:
+    servers:
+    - url: https://trusthub.twilio.com
+    description: 'TODO: Resource-level docs'
+    x-twilio:
+      defaultOutputProperties:
+      - inquiry_id
+      - session_token
+      - customer_id
+      pathType: instance
+      mountName: compliance_inquiries
+      className: compliance_inquiries
+    post:
+      description: Resume a specific Compliance Inquiry that has expired, or re-open a rejected Compliance Inquiry for editing.
+      tags:
+      - ComplianceInquiries
+      parameters:
+      - name: CustomerId
+        in: path
+        description: The unique CustomerId matching the Customer Profile/Compliance Inquiry that should be resumed or resubmitted. This value will have been returned by the initial Compliance Inquiry creation call.
+        schema:
+          type: string
+        required: true
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/trusthub.v1.compliance_inquiry'
+          description: OK
+      security:
+      - accountSid_authToken: []
+      operationId: UpdateComplianceInquiry
+      x-maturity:
+      - GA
+      requestBody:
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/UpdateComplianceInquiryRequest'
+  /v1/ComplianceInquiries/Tollfree/Initialize:
+    servers:
+    - url: https://trusthub.twilio.com
+    description: 'TODO: Resource-level docs'
+    x-twilio:
+      defaultOutputProperties:
+      - inquiry_id
+      - session_token
+      - registration_id
+      pathType: list
+      mountName: compliance_tollfree_inquiries
+      className: compliance_tollfree_inquiries
+    post:
+      description: Create a new Compliance Tollfree Verification Inquiry for the authenticated account. This is necessary to start a new embedded session.
+      tags:
+      - ComplianceInquiries
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/trusthub.v1.compliance_tollfree_inquiry'
+          description: Created
+      security:
+      - accountSid_authToken: []
+      operationId: CreateComplianceTollfreeInquiry
+      x-maturity:
+      - GA
+      requestBody:
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/CreateComplianceTollfreeInquiryRequest'
+components:
+  schemas:
+    compliance_tollfree_inquiry_enum_opt_in_type:
+      type: string
+      enum:
+      - VERBAL
+      - WEB_FORM
+      - PAPER_FORM
+      - VIA_TEXT
+      - MOBILE_QR_CODE
+    trusthub.v1.compliance_tollfree_inquiry:
+      type: object
+      properties:
+        inquiry_id:
+          type: string
+          nullable: true
+          description: The unique ID used to start an embedded compliance registration session.
+        inquiry_session_token:
+          type: string
+          nullable: true
+          description: The session token used to start an embedded compliance registration session.
+        registration_id:
+          type: string
+          nullable: true
+          description: The TolfreeId matching the Tollfree Profile that should be resumed or resubmitted for editing.
+        url:
+          type: string
+          format: uri
+          nullable: true
+          description: The URL of this resource.
+    CreateComplianceTollfreeInquiryRequest:
+      type: object
+      required:
+      - TollfreePhoneNumber
+      - NotificationEmail
+      properties:
+        TollfreePhoneNumber:
+          type: string
+          format: phone-number
+          description: The Tollfree phone number to be verified
+        NotificationEmail:
+          type: string
+          description: The email address to receive the notification about the verification result.
+        BusinessName:
+          type: string
+          description: The name of the business or organization using the Tollfree number.
+        BusinessWebsite:
+          type: string
+          description: The website of the business or organization using the Tollfree number.
+        UseCaseCategories:
+          type: array
+          items:
+            type: string
+          description: The category of the use case for the Tollfree Number. List as many are applicable..
+        UseCaseSummary:
+          type: string
+          description: Use this to further explain how messaging is used by the business or organization.
+        ProductionMessageSample:
+          type: string
+          description: An example of message content, i.e. a sample message.
+        OptInImageUrls:
+          type: array
+          items:
+            type: string
+          description: Link to an image that shows the opt-in workflow. Multiple images allowed and must be a publicly hosted URL.
+        OptInType:
+          type: string
+          $ref: '#/components/schemas/compliance_tollfree_inquiry_enum_opt_in_type'
+          description: Describe how a user opts-in to text messages.
+        MessageVolume:
+          type: string
+          description: Estimate monthly volume of messages from the Tollfree Number.
+        BusinessStreetAddress:
+          type: string
+          description: The address of the business or organization using the Tollfree number.
+        BusinessStreetAddress2:
+          type: string
+          description: The address of the business or organization using the Tollfree number.
+        BusinessCity:
+          type: string
+          description: The city of the business or organization using the Tollfree number.
+        BusinessStateProvinceRegion:
+          type: string
+          description: The state/province/region of the business or organization using the Tollfree number.
+        BusinessPostalCode:
+          type: string
+          description: The postal code of the business or organization using the Tollfree number.
+        BusinessCountry:
+          type: string
+          description: The country of the business or organization using the Tollfree number.
+        AdditionalInformation:
+          type: string
+          description: Additional information to be provided for verification.
+        BusinessContactFirstName:
+          type: string
+          description: The first name of the contact for the business or organization using the Tollfree number.
+        BusinessContactLastName:
+          type: string
+          description: The last name of the contact for the business or organization using the Tollfree number.
+        BusinessContactEmail:
+          type: string
+          description: The email address of the contact for the business or organization using the Tollfree number.
+        BusinessContactPhone:
+          type: string
+          format: phone-number
+          description: The phone number of the contact for the business or organization using the Tollfree number.
+    trusthub.v1.compliance_inquiry:
+      type: object
+      properties:
+        inquiry_id:
+          type: string
+          nullable: true
+          description: The unique ID used to start an embedded compliance registration session.
+        inquiry_session_token:
+          type: string
+          nullable: true
+          description: The session token used to start an embedded compliance registration session.
+        customer_id:
+          type: string
+          nullable: true
+          description: The CustomerID matching the Customer Profile that should be resumed or resubmitted for editing.
+        url:
+          type: string
+          format: uri
+          nullable: true
+          description: The URL of this resource.
+    CreateComplianceInquiryRequest:
+      type: object
+      required:
+      - PrimaryProfileSid
+      properties:
+        PrimaryProfileSid:
+          type: string
+          minLength: 34
+          maxLength: 34
+          pattern: ^BU[0-9a-fA-F]{32}$
+          description: The unique SID identifier of the Primary Customer Profile that should be used as a parent. Only necessary when creating a secondary Customer Profile.
+    UpdateComplianceInquiryRequest:
+      type: object
+      required:
+      - PrimaryProfileSid
+      properties:
+        PrimaryProfileSid:
+          type: string
+          minLength: 34
+          maxLength: 34
+          pattern: ^BU[0-9a-fA-F]{32}$
+          description: The unique SID identifier of the Primary Customer Profile that should be used as a parent. Only necessary when creating a secondary Customer Profile.
+  securitySchemes:
+    accountSid_authToken:
+      type: http
+      scheme: basic
+x-maturity:
+- name: GA
+  description: This product is Generally Available.
+- name: Beta
+  description: PLEASE NOTE that this is a Beta product that is subject to change. Use it with caution.

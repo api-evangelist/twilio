@@ -1,0 +1,242 @@
+openapi: 3.0.1
+info:
+  title: Twilio - Accounts A2p Composition Hooks API
+  description: This is the public Twilio REST API.
+  termsOfService: https://www.twilio.com/legal/tos
+  contact:
+    name: Twilio Support
+    url: https://support.twilio.com
+    email: support@twilio.com
+  license:
+    name: Apache 2.0
+    url: https://www.apache.org/licenses/LICENSE-2.0.html
+  version: 1.52.0
+servers:
+- url: https://accounts.twilio.com
+tags:
+- name: Composition Hooks
+  description: Configure automatic composition rules
+paths:
+  /CompositionHooks:
+    get:
+      operationId: listCompositionHooks
+      summary: Twilio List Composition Hooks
+      tags:
+      - Composition Hooks
+      parameters:
+      - name: Enabled
+        in: query
+        schema:
+          type: boolean
+      - name: PageSize
+        in: query
+        schema:
+          type: integer
+          minimum: 1
+          maximum: 100
+      responses:
+        '200':
+          description: List of composition hooks
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CompositionHookList'
+    post:
+      operationId: createCompositionHook
+      summary: Twilio Create a Composition Hook
+      description: Create a composition hook that automatically generates compositions when rooms complete.
+      tags:
+      - Composition Hooks
+      requestBody:
+        required: true
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/CreateCompositionHookRequest'
+      responses:
+        '201':
+          description: Composition hook created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CompositionHook'
+  /CompositionHooks/{CompositionHookSid}:
+    get:
+      operationId: fetchCompositionHook
+      summary: Twilio Fetch a Composition Hook
+      tags:
+      - Composition Hooks
+      parameters:
+      - name: CompositionHookSid
+        in: path
+        required: true
+        schema:
+          type: string
+          pattern: ^HK[0-9a-fA-F]{32}$
+      responses:
+        '200':
+          description: Composition hook details
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CompositionHook'
+    post:
+      operationId: updateCompositionHook
+      summary: Twilio Update a Composition Hook
+      tags:
+      - Composition Hooks
+      parameters:
+      - name: CompositionHookSid
+        in: path
+        required: true
+        schema:
+          type: string
+          pattern: ^HK[0-9a-fA-F]{32}$
+      requestBody:
+        required: true
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/CreateCompositionHookRequest'
+      responses:
+        '200':
+          description: Composition hook updated
+    delete:
+      operationId: deleteCompositionHook
+      summary: Twilio Delete a Composition Hook
+      tags:
+      - Composition Hooks
+      parameters:
+      - name: CompositionHookSid
+        in: path
+        required: true
+        schema:
+          type: string
+          pattern: ^HK[0-9a-fA-F]{32}$
+      responses:
+        '204':
+          description: Composition hook deleted
+components:
+  schemas:
+    CompositionHook:
+      type: object
+      properties:
+        sid:
+          type: string
+          pattern: ^HK[0-9a-fA-F]{32}$
+        account_sid:
+          type: string
+          pattern: ^AC[0-9a-fA-F]{32}$
+        friendly_name:
+          type: string
+        enabled:
+          type: boolean
+        video_layout:
+          type: object
+        audio_sources:
+          type: array
+          items:
+            type: string
+        audio_sources_excluded:
+          type: array
+          items:
+            type: string
+        resolution:
+          type: string
+        format:
+          type: string
+          enum:
+          - mp4
+          - webm
+        trim:
+          type: boolean
+        status_callback:
+          type: string
+          format: uri
+        status_callback_method:
+          type: string
+        date_created:
+          type: string
+          format: date-time
+        date_updated:
+          type: string
+          format: date-time
+        url:
+          type: string
+          format: uri
+    PaginationMeta:
+      type: object
+      properties:
+        page:
+          type: integer
+        page_size:
+          type: integer
+        first_page_url:
+          type: string
+          format: uri
+        previous_page_url:
+          type: string
+          format: uri
+        next_page_url:
+          type: string
+          format: uri
+        url:
+          type: string
+          format: uri
+        key:
+          type: string
+    CompositionHookList:
+      type: object
+      properties:
+        composition_hooks:
+          type: array
+          items:
+            $ref: '#/components/schemas/CompositionHook'
+        meta:
+          $ref: '#/components/schemas/PaginationMeta'
+    CreateCompositionHookRequest:
+      type: object
+      required:
+      - FriendlyName
+      properties:
+        FriendlyName:
+          type: string
+        Enabled:
+          type: boolean
+          default: true
+        VideoLayout:
+          type: string
+        AudioSources:
+          type: array
+          items:
+            type: string
+        AudioSourcesExcluded:
+          type: array
+          items:
+            type: string
+        Resolution:
+          type: string
+        Format:
+          type: string
+          enum:
+          - mp4
+          - webm
+        Trim:
+          type: boolean
+        StatusCallback:
+          type: string
+          format: uri
+        StatusCallbackMethod:
+          type: string
+          enum:
+          - GET
+          - POST
+  securitySchemes:
+    accountSid_authToken:
+      type: http
+      scheme: basic
+x-maturity:
+- name: GA
+  description: This product is Generally Available.
+- name: Beta
+  description: PLEASE NOTE that this is a Beta product that is subject to change. Use it with caution.

@@ -1,0 +1,117 @@
+openapi: 3.0.1
+info:
+  title: Twilio - Accounts A2p Email Validation API
+  description: This is the public Twilio REST API.
+  termsOfService: https://www.twilio.com/legal/tos
+  contact:
+    name: Twilio Support
+    url: https://support.twilio.com
+    email: support@twilio.com
+  license:
+    name: Apache 2.0
+    url: https://www.apache.org/licenses/LICENSE-2.0.html
+  version: 1.52.0
+servers:
+- url: https://accounts.twilio.com
+tags:
+- name: Email Validation
+  description: Validate email addresses
+paths:
+  /validations/email:
+    post:
+      operationId: validateEmail
+      summary: Twilio Validate an Email Address
+      description: Check if an email address is valid and deliverable.
+      tags:
+      - Email Validation
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+              - email
+              properties:
+                email:
+                  type: string
+                  format: email
+                source:
+                  type: string
+                  description: Source identifier for validation tracking
+      responses:
+        '200':
+          description: Validation result
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EmailValidation'
+components:
+  schemas:
+    EmailValidation:
+      type: object
+      properties:
+        result:
+          type: object
+          properties:
+            email:
+              type: string
+              format: email
+            verdict:
+              type: string
+              enum:
+              - Valid
+              - Risky
+              - Invalid
+            score:
+              type: number
+              minimum: 0
+              maximum: 1
+              description: Confidence score (0 to 1)
+            local:
+              type: string
+              description: Local part of the email
+            host:
+              type: string
+              description: Domain part of the email
+            suggestion:
+              type: string
+              description: Suggested correction if applicable
+            has_mx_or_a_record:
+              type: boolean
+            checks:
+              type: object
+              properties:
+                domain:
+                  type: object
+                  properties:
+                    has_valid_address_syntax:
+                      type: boolean
+                    has_mx_or_a_record:
+                      type: boolean
+                    is_suspected_disposable_address:
+                      type: boolean
+                local_part:
+                  type: object
+                  properties:
+                    is_suspected_role_address:
+                      type: boolean
+                additional:
+                  type: object
+                  properties:
+                    has_known_bounces:
+                      type: boolean
+                    has_suspected_bounces:
+                      type: boolean
+            ip_address:
+              type: string
+              description: IP address used for validation
+  securitySchemes:
+    accountSid_authToken:
+      type: http
+      scheme: basic
+x-maturity:
+- name: GA
+  description: This product is Generally Available.
+- name: Beta
+  description: PLEASE NOTE that this is a Beta product that is subject to change. Use it with caution.

@@ -1,0 +1,249 @@
+openapi: 3.0.1
+info:
+  title: Twilio - Accounts A2p Flex Flows API
+  description: This is the public Twilio REST API.
+  termsOfService: https://www.twilio.com/legal/tos
+  contact:
+    name: Twilio Support
+    url: https://support.twilio.com
+    email: support@twilio.com
+  license:
+    name: Apache 2.0
+    url: https://www.apache.org/licenses/LICENSE-2.0.html
+  version: 1.52.0
+servers:
+- url: https://accounts.twilio.com
+tags:
+- name: Flex Flows
+  description: Manage Flex Flow routing
+paths:
+  /FlexFlows:
+    get:
+      operationId: listFlexFlows
+      summary: Twilio List Flex Flows
+      description: Retrieve a list of Flex flows that define how inbound contacts are routed.
+      tags:
+      - Flex Flows
+      parameters:
+      - name: FriendlyName
+        in: query
+        schema:
+          type: string
+      - name: PageSize
+        in: query
+        schema:
+          type: integer
+          minimum: 1
+          maximum: 100
+      responses:
+        '200':
+          description: List of Flex flows
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/FlexFlowList'
+    post:
+      operationId: createFlexFlow
+      summary: Twilio Create a Flex Flow
+      tags:
+      - Flex Flows
+      requestBody:
+        required: true
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/CreateFlexFlowRequest'
+      responses:
+        '201':
+          description: Flex flow created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/FlexFlow'
+        '400':
+          description: Invalid request
+  /FlexFlows/{FlexFlowSid}:
+    get:
+      operationId: fetchFlexFlow
+      summary: Twilio Fetch a Flex Flow
+      tags:
+      - Flex Flows
+      parameters:
+      - name: FlexFlowSid
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Flex flow details
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/FlexFlow'
+    post:
+      operationId: updateFlexFlow
+      summary: Twilio Update a Flex Flow
+      tags:
+      - Flex Flows
+      parameters:
+      - name: FlexFlowSid
+        in: path
+        required: true
+        schema:
+          type: string
+      requestBody:
+        required: true
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/CreateFlexFlowRequest'
+      responses:
+        '200':
+          description: Flex flow updated
+    delete:
+      operationId: deleteFlexFlow
+      summary: Twilio Delete a Flex Flow
+      tags:
+      - Flex Flows
+      parameters:
+      - name: FlexFlowSid
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        '204':
+          description: Flex flow deleted
+components:
+  schemas:
+    FlexFlow:
+      type: object
+      properties:
+        sid:
+          type: string
+        account_sid:
+          type: string
+          pattern: ^AC[0-9a-fA-F]{32}$
+        friendly_name:
+          type: string
+        chat_service_sid:
+          type: string
+        channel_type:
+          type: string
+          enum:
+          - web
+          - sms
+          - facebook
+          - whatsapp
+          - line
+          - custom
+        contact_identity:
+          type: string
+        enabled:
+          type: boolean
+        integration_type:
+          type: string
+          enum:
+          - studio
+          - external
+          - task
+        integration:
+          type: object
+        long_lived:
+          type: boolean
+        janitor_enabled:
+          type: boolean
+        date_created:
+          type: string
+          format: date-time
+        date_updated:
+          type: string
+          format: date-time
+        url:
+          type: string
+          format: uri
+    PaginationMeta:
+      type: object
+      properties:
+        page:
+          type: integer
+        page_size:
+          type: integer
+        first_page_url:
+          type: string
+          format: uri
+        previous_page_url:
+          type: string
+          format: uri
+        next_page_url:
+          type: string
+          format: uri
+        url:
+          type: string
+          format: uri
+        key:
+          type: string
+    FlexFlowList:
+      type: object
+      properties:
+        flex_flows:
+          type: array
+          items:
+            $ref: '#/components/schemas/FlexFlow'
+        meta:
+          $ref: '#/components/schemas/PaginationMeta'
+    CreateFlexFlowRequest:
+      type: object
+      required:
+      - FriendlyName
+      - ChatServiceSid
+      - ChannelType
+      properties:
+        FriendlyName:
+          type: string
+        ChatServiceSid:
+          type: string
+        ChannelType:
+          type: string
+          enum:
+          - web
+          - sms
+          - facebook
+          - whatsapp
+          - line
+          - custom
+        ContactIdentity:
+          type: string
+        Enabled:
+          type: boolean
+        IntegrationType:
+          type: string
+          enum:
+          - studio
+          - external
+          - task
+        Integration.FlowSid:
+          type: string
+        Integration.Url:
+          type: string
+          format: uri
+        Integration.WorkspaceSid:
+          type: string
+        Integration.WorkflowSid:
+          type: string
+        Integration.Channel:
+          type: string
+        LongLived:
+          type: boolean
+        JanitorEnabled:
+          type: boolean
+  securitySchemes:
+    accountSid_authToken:
+      type: http
+      scheme: basic
+x-maturity:
+- name: GA
+  description: This product is Generally Available.
+- name: Beta
+  description: PLEASE NOTE that this is a Beta product that is subject to change. Use it with caution.

@@ -1,0 +1,301 @@
+openapi: 3.0.1
+info:
+  title: Twilio - Accounts A2p SafeList API
+  description: This is the public Twilio REST API.
+  termsOfService: https://www.twilio.com/legal/tos
+  contact:
+    name: Twilio Support
+    url: https://support.twilio.com
+    email: support@twilio.com
+  license:
+    name: Apache 2.0
+    url: https://www.apache.org/licenses/LICENSE-2.0.html
+  version: 1.52.0
+servers:
+- url: https://accounts.twilio.com
+tags:
+- name: SafeList
+paths:
+  /v1/SafeList/Numbers:
+    servers:
+    - url: https://accounts.twilio.com
+    description: 'TODO: Resource-level docs'
+    x-twilio:
+      defaultOutputProperties:
+      - sid
+      - phone_number
+      pathType: list
+      mountName: safelist
+    post:
+      description: Add a new phone number to SafeList.
+      tags:
+      - SafeList
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/accounts.v1.safelist'
+          description: Created
+      security:
+      - accountSid_authToken: []
+      operationId: CreateSafelist
+      x-maturity:
+      - Beta
+      requestBody:
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/CreateSafelistRequest'
+    get:
+      description: Check if a phone number exists in SafeList.
+      tags:
+      - SafeList
+      parameters:
+      - name: PhoneNumber
+        in: query
+        description: The phone number to be fetched from SafeList. Phone numbers must be in [E.164 format](https://www.twilio.com/docs/glossary/what-e164).
+        schema:
+          type: string
+        x-twilio:
+          pii:
+            handling: standard
+            deleteSla: 0
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/accounts.v1.safelist'
+          description: OK
+      security:
+      - accountSid_authToken: []
+      operationId: FetchSafelist
+      x-maturity:
+      - Beta
+    delete:
+      description: Remove a phone number from SafeList.
+      tags:
+      - SafeList
+      parameters:
+      - name: PhoneNumber
+        in: query
+        description: The phone number to be removed from SafeList. Phone numbers must be in [E.164 format](https://www.twilio.com/docs/glossary/what-e164).
+        schema:
+          type: string
+        x-twilio:
+          pii:
+            handling: standard
+            deleteSla: 0
+      responses:
+        '204':
+          description: The resource was deleted successfully.
+      security:
+      - accountSid_authToken: []
+      operationId: DeleteSafelist
+      x-maturity:
+      - Beta
+  /SafeList/Numbers:
+    post:
+      operationId: createSafelistNumber
+      summary: Twilio Add a Number to the Safelist
+      description: Add a phone number to the account safelist for verified caller IDs.
+      tags:
+      - SafeList
+      requestBody:
+        required: true
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              type: object
+              required:
+              - PhoneNumber
+              properties:
+                PhoneNumber:
+                  type: string
+                  description: Phone number in E.164 format
+      responses:
+        '201':
+          description: Number added to safelist
+  /SafeList/Numbers/{PhoneNumber}:
+    get:
+      operationId: fetchSafelistNumber
+      summary: Twilio Check if a Number is Safelisted
+      tags:
+      - SafeList
+      parameters:
+      - name: PhoneNumber
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Number is safelisted
+        '404':
+          description: Number not found in safelist
+    delete:
+      operationId: deleteSafelistNumber
+      summary: Twilio Remove a Number from the Safelist
+      tags:
+      - SafeList
+      parameters:
+      - name: PhoneNumber
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        '204':
+          description: Number removed from safelist
+  /v2/SafeList/Numbers:
+    servers:
+    - url: https://verify.twilio.com
+    description: 'TODO: Resource-level docs'
+    x-twilio:
+      defaultOutputProperties:
+      - sid
+      - phone_number
+      pathType: list
+      mountName: safelist
+    post:
+      description: Add a new phone number to SafeList.
+      tags:
+      - SafeList
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/verify.v2.safelist'
+          description: Created
+      security:
+      - accountSid_authToken: []
+      operationId: CreateSafelist
+      x-maturity:
+      - Beta
+      requestBody:
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/CreateSafelistRequest'
+  /v2/SafeList/Numbers/{PhoneNumber}:
+    servers:
+    - url: https://verify.twilio.com
+    description: 'TODO: Resource-level docs'
+    x-twilio:
+      defaultOutputProperties:
+      - sid
+      - phone_number
+      pathType: instance
+      mountName: safelist
+    get:
+      description: Check if a phone number exists in SafeList.
+      tags:
+      - SafeList
+      parameters:
+      - name: PhoneNumber
+        in: path
+        description: The phone number to be fetched from SafeList. Phone numbers must be in [E.164 format](https://www.twilio.com/docs/glossary/what-e164).
+        schema:
+          type: string
+        x-twilio:
+          pii:
+            handling: standard
+            deleteSla: 0
+        required: true
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/verify.v2.safelist'
+          description: OK
+      security:
+      - accountSid_authToken: []
+      operationId: FetchSafelist
+      x-maturity:
+      - Beta
+    delete:
+      description: Remove a phone number from SafeList.
+      tags:
+      - SafeList
+      parameters:
+      - name: PhoneNumber
+        in: path
+        description: The phone number to be removed from SafeList. Phone numbers must be in [E.164 format](https://www.twilio.com/docs/glossary/what-e164).
+        schema:
+          type: string
+        x-twilio:
+          pii:
+            handling: standard
+            deleteSla: 0
+        required: true
+      responses:
+        '204':
+          description: The resource was deleted successfully.
+      security:
+      - accountSid_authToken: []
+      operationId: DeleteSafelist
+      x-maturity:
+      - Beta
+components:
+  schemas:
+    accounts.v1.safelist:
+      type: object
+      properties:
+        sid:
+          type: string
+          minLength: 34
+          maxLength: 34
+          pattern: ^GN[0-9a-fA-F]{32}$
+          nullable: true
+          description: The unique string that we created to identify the SafeList resource.
+        phone_number:
+          type: string
+          nullable: true
+          description: The phone number in SafeList.
+          x-twilio:
+            pii:
+              handling: standard
+              deleteSla: 0
+    verify.v2.safelist:
+      type: object
+      properties:
+        sid:
+          type: string
+          minLength: 34
+          maxLength: 34
+          pattern: ^GN[0-9a-fA-F]{32}$
+          nullable: true
+          description: The unique string that we created to identify the SafeList resource.
+        phone_number:
+          type: string
+          nullable: true
+          description: The phone number in SafeList.
+          x-twilio:
+            pii:
+              handling: standard
+              deleteSla: 0
+        url:
+          type: string
+          format: uri
+          nullable: true
+          description: The absolute URL of the SafeList resource.
+    CreateSafelistRequest:
+      type: object
+      required:
+      - PhoneNumber
+      properties:
+        PhoneNumber:
+          type: string
+          description: The phone number to be added in SafeList. Phone numbers must be in [E.164 format](https://www.twilio.com/docs/glossary/what-e164).
+  securitySchemes:
+    accountSid_authToken:
+      type: http
+      scheme: basic
+x-maturity:
+- name: GA
+  description: This product is Generally Available.
+- name: Beta
+  description: PLEASE NOTE that this is a Beta product that is subject to change. Use it with caution.

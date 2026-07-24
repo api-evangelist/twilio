@@ -1,0 +1,282 @@
+openapi: 3.0.1
+info:
+  title: Twilio - Accounts A2p SourceIpMappings API
+  description: This is the public Twilio REST API.
+  termsOfService: https://www.twilio.com/legal/tos
+  contact:
+    name: Twilio Support
+    url: https://support.twilio.com
+    email: support@twilio.com
+  license:
+    name: Apache 2.0
+    url: https://www.apache.org/licenses/LICENSE-2.0.html
+  version: 1.52.0
+servers:
+- url: https://accounts.twilio.com
+tags:
+- name: SourceIpMappings
+paths:
+  /v1/SourceIpMappings:
+    servers:
+    - url: https://voice.twilio.com
+    description: With Source IP Mappings, Twilio can recognize your SIP requests based on where they are sent from. The Request-URI no longer has to have the FQDN (Fully Qualified Domain Name) of your SIP Domain.
+    x-twilio:
+      defaultOutputProperties:
+      - sid
+      - ip_record_sid
+      - sip_domain_sid
+      pathType: list
+    post:
+      description: ''
+      tags:
+      - SourceIpMappings
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/voice.v1.source_ip_mapping'
+          description: Created
+      security:
+      - accountSid_authToken: []
+      operationId: CreateSourceIpMapping
+      x-maturity:
+      - GA
+      requestBody:
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/CreateSourceIpMappingRequest'
+    get:
+      description: ''
+      tags:
+      - SourceIpMappings
+      parameters:
+      - name: PageSize
+        in: query
+        description: How many resources to return in each list page. The default is 50, and the maximum is 1000.
+        schema:
+          type: integer
+          minimum: 1
+          maximum: 1000
+      - name: Page
+        in: query
+        description: The page index. This value is simply for client state.
+        schema:
+          type: integer
+          minimum: 0
+      - name: PageToken
+        in: query
+        description: The page token. This is provided by the API.
+        schema:
+          type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ListSourceIpMappingResponse'
+          description: OK
+      security:
+      - accountSid_authToken: []
+      operationId: ListSourceIpMapping
+      x-maturity:
+      - GA
+  /v1/SourceIpMappings/{Sid}:
+    servers:
+    - url: https://voice.twilio.com
+    description: With Source IP Mappings, Twilio can recognize your SIP requests based on where they are sent from. The Request-URI no longer has to have the FQDN (Fully Qualified Domain Name) of your SIP Domain.
+    x-twilio:
+      defaultOutputProperties:
+      - sid
+      - ip_record_sid
+      - sip_domain_sid
+      pathType: instance
+    get:
+      description: ''
+      tags:
+      - SourceIpMappings
+      parameters:
+      - name: Sid
+        in: path
+        description: The Twilio-provided string that uniquely identifies the IP Record resource to fetch.
+        schema:
+          type: string
+          minLength: 34
+          maxLength: 34
+          pattern: ^IB[0-9a-fA-F]{32}$
+        required: true
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/voice.v1.source_ip_mapping'
+          description: OK
+      security:
+      - accountSid_authToken: []
+      operationId: FetchSourceIpMapping
+      x-maturity:
+      - GA
+    post:
+      description: ''
+      tags:
+      - SourceIpMappings
+      parameters:
+      - name: Sid
+        in: path
+        description: The Twilio-provided string that uniquely identifies the IP Record resource to update.
+        schema:
+          type: string
+          minLength: 34
+          maxLength: 34
+          pattern: ^IB[0-9a-fA-F]{32}$
+        required: true
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/voice.v1.source_ip_mapping'
+          description: OK
+      security:
+      - accountSid_authToken: []
+      operationId: UpdateSourceIpMapping
+      x-maturity:
+      - GA
+      requestBody:
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/UpdateSourceIpMappingRequest'
+    delete:
+      description: ''
+      tags:
+      - SourceIpMappings
+      parameters:
+      - name: Sid
+        in: path
+        description: The Twilio-provided string that uniquely identifies the IP Record resource to delete.
+        schema:
+          type: string
+          minLength: 34
+          maxLength: 34
+          pattern: ^IB[0-9a-fA-F]{32}$
+        required: true
+      responses:
+        '204':
+          description: The resource was deleted successfully.
+      security:
+      - accountSid_authToken: []
+      operationId: DeleteSourceIpMapping
+      x-maturity:
+      - GA
+components:
+  schemas:
+    voice.v1.source_ip_mapping:
+      type: object
+      properties:
+        sid:
+          type: string
+          minLength: 34
+          maxLength: 34
+          pattern: ^IB[0-9a-fA-F]{32}$
+          nullable: true
+          description: The unique string that we created to identify the IP Record resource.
+        ip_record_sid:
+          type: string
+          minLength: 34
+          maxLength: 34
+          pattern: ^IL[0-9a-fA-F]{32}$
+          nullable: true
+          description: The Twilio-provided string that uniquely identifies the IP Record resource to map from.
+        sip_domain_sid:
+          type: string
+          minLength: 34
+          maxLength: 34
+          pattern: ^SD[0-9a-fA-F]{32}$
+          nullable: true
+          description: The SID of the SIP Domain that the IP Record is mapped to.
+        date_created:
+          type: string
+          format: date-time
+          nullable: true
+          description: The date and time in GMT that the resource was created specified in [RFC 2822](https://www.ietf.org/rfc/rfc2822.txt) format.
+        date_updated:
+          type: string
+          format: date-time
+          nullable: true
+          description: The date and time in GMT that the resource was last updated specified in [RFC 2822](https://www.ietf.org/rfc/rfc2822.txt) format.
+        url:
+          type: string
+          format: uri
+          nullable: true
+          description: The absolute URL of the resource.
+    UpdateSourceIpMappingRequest:
+      type: object
+      required:
+      - SipDomainSid
+      properties:
+        SipDomainSid:
+          type: string
+          minLength: 34
+          maxLength: 34
+          pattern: ^SD[0-9a-fA-F]{32}$
+          description: The SID of the SIP Domain that the IP Record should be mapped to.
+    CreateSourceIpMappingRequest:
+      type: object
+      required:
+      - IpRecordSid
+      - SipDomainSid
+      properties:
+        IpRecordSid:
+          type: string
+          minLength: 34
+          maxLength: 34
+          pattern: ^IL[0-9a-fA-F]{32}$
+          description: The Twilio-provided string that uniquely identifies the IP Record resource to map from.
+        SipDomainSid:
+          type: string
+          minLength: 34
+          maxLength: 34
+          pattern: ^SD[0-9a-fA-F]{32}$
+          description: The SID of the SIP Domain that the IP Record should be mapped to.
+    ListSourceIpMappingResponse:
+      type: object
+      properties:
+        source_ip_mappings:
+          type: array
+          items:
+            $ref: '#/components/schemas/voice.v1.source_ip_mapping'
+        meta:
+          type: object
+          properties:
+            first_page_url:
+              type: string
+              format: uri
+            next_page_url:
+              type: string
+              format: uri
+              nullable: true
+            page:
+              type: integer
+            page_size:
+              type: integer
+            previous_page_url:
+              type: string
+              format: uri
+              nullable: true
+            url:
+              type: string
+              format: uri
+            key:
+              type: string
+  securitySchemes:
+    accountSid_authToken:
+      type: http
+      scheme: basic
+x-maturity:
+- name: GA
+  description: This product is Generally Available.
+- name: Beta
+  description: PLEASE NOTE that this is a Beta product that is subject to change. Use it with caution.

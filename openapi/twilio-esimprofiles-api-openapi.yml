@@ -1,0 +1,283 @@
+openapi: 3.0.1
+info:
+  title: Twilio - Accounts A2p ESimProfiles API
+  description: This is the public Twilio REST API.
+  termsOfService: https://www.twilio.com/legal/tos
+  contact:
+    name: Twilio Support
+    url: https://support.twilio.com
+    email: support@twilio.com
+  license:
+    name: Apache 2.0
+    url: https://www.apache.org/licenses/LICENSE-2.0.html
+  version: 1.52.0
+servers:
+- url: https://accounts.twilio.com
+tags:
+- name: ESimProfiles
+paths:
+  /v1/ESimProfiles:
+    servers:
+    - url: https://supersim.twilio.com
+    description: eSIM Profiles that can be loaded onto consumer eUICC SIMs
+    x-twilio:
+      defaultOutputProperties:
+      - sid
+      - status
+      pathType: list
+      mountName: esim_profiles
+    post:
+      description: Order an eSIM Profile.
+      tags:
+      - ESimProfiles
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/supersim.v1.esim_profile'
+          description: Created
+      security:
+      - accountSid_authToken: []
+      operationId: CreateEsimProfile
+      x-maturity:
+      - Beta
+      requestBody:
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/CreateEsimProfileRequest'
+    get:
+      description: Retrieve a list of eSIM Profiles.
+      tags:
+      - ESimProfiles
+      parameters:
+      - name: Eid
+        in: query
+        description: List the eSIM Profiles that have been associated with an EId.
+        schema:
+          type: string
+      - name: SimSid
+        in: query
+        description: Find the eSIM Profile resource related to a [Sim](https://www.twilio.com/docs/iot/supersim/api/sim-resource) resource by providing the SIM SID. Will always return an array with either 1 or 0 records.
+        schema:
+          type: string
+      - name: Status
+        in: query
+        description: List the eSIM Profiles that are in a given status.
+        schema:
+          type: string
+          $ref: '#/components/schemas/esim_profile_enum_status'
+      - name: PageSize
+        in: query
+        description: How many resources to return in each list page. The default is 50, and the maximum is 1000.
+        schema:
+          type: integer
+          minimum: 1
+          maximum: 1000
+      - name: Page
+        in: query
+        description: The page index. This value is simply for client state.
+        schema:
+          type: integer
+          minimum: 0
+      - name: PageToken
+        in: query
+        description: The page token. This is provided by the API.
+        schema:
+          type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ListEsimProfileResponse'
+          description: OK
+      security:
+      - accountSid_authToken: []
+      operationId: ListEsimProfile
+      x-maturity:
+      - Beta
+  /v1/ESimProfiles/{Sid}:
+    servers:
+    - url: https://supersim.twilio.com
+    description: eSIM Profiles that can be loaded onto consumer eUICC SIMs
+    x-twilio:
+      defaultOutputProperties:
+      - sid
+      - status
+      pathType: instance
+      mountName: esim_profiles
+    get:
+      description: Fetch an eSIM Profile.
+      tags:
+      - ESimProfiles
+      parameters:
+      - name: Sid
+        in: path
+        description: The SID of the eSIM Profile resource to fetch.
+        schema:
+          type: string
+        required: true
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/supersim.v1.esim_profile'
+          description: OK
+      security:
+      - accountSid_authToken: []
+      operationId: FetchEsimProfile
+      x-maturity:
+      - Beta
+components:
+  schemas:
+    CreateEsimProfileRequest:
+      type: object
+      properties:
+        CallbackUrl:
+          type: string
+          description: The URL we should call using the `callback_method` when the status of the eSIM Profile changes. At this stage of the eSIM Profile pilot, the a request to the URL will only be called when the ESimProfile resource changes from `reserving` to `available`.
+        CallbackMethod:
+          type: string
+          format: http-method
+          enum:
+          - HEAD
+          - GET
+          - POST
+          - PATCH
+          - PUT
+          - DELETE
+          description: 'The HTTP method we should use to call `callback_url`. Can be: `GET` or `POST` and the default is POST.'
+        GenerateMatchingId:
+          type: boolean
+          description: When set to `true`, a value for `Eid` does not need to be provided. Instead, when the eSIM profile is reserved, a matching ID will be generated and returned via the `matching_id` property. This identifies the specific eSIM profile that can be used by any capable device to claim and download the profile.
+        Eid:
+          type: string
+          description: Identifier of the eUICC that will claim the eSIM Profile.
+    ListEsimProfileResponse:
+      type: object
+      properties:
+        esim_profiles:
+          type: array
+          items:
+            $ref: '#/components/schemas/supersim.v1.esim_profile'
+        meta:
+          type: object
+          properties:
+            first_page_url:
+              type: string
+              format: uri
+            next_page_url:
+              type: string
+              format: uri
+              nullable: true
+            page:
+              type: integer
+            page_size:
+              type: integer
+            previous_page_url:
+              type: string
+              format: uri
+              nullable: true
+            url:
+              type: string
+              format: uri
+            key:
+              type: string
+    supersim.v1.esim_profile:
+      type: object
+      properties:
+        sid:
+          type: string
+          minLength: 34
+          maxLength: 34
+          pattern: ^HP[0-9a-fA-F]{32}$
+          nullable: true
+          description: The unique string that we created to identify the eSIM Profile resource.
+        account_sid:
+          type: string
+          minLength: 34
+          maxLength: 34
+          pattern: ^AC[0-9a-fA-F]{32}$
+          nullable: true
+          description: The SID of the [Account](https://www.twilio.com/docs/iam/api/account) to which the eSIM Profile resource belongs.
+        iccid:
+          type: string
+          nullable: true
+          description: The [ICCID](https://en.wikipedia.org/wiki/Subscriber_identity_module#ICCID) associated with the Sim resource.
+          x-twilio:
+            pii:
+              handling: standard
+              deleteSla: 30
+        sim_sid:
+          type: string
+          minLength: 34
+          maxLength: 34
+          pattern: ^HS[0-9a-fA-F]{32}$
+          nullable: true
+          description: The SID of the [Sim](https://www.twilio.com/docs/iot/supersim/api/sim-resource) resource that this eSIM Profile controls.
+        status:
+          type: string
+          $ref: '#/components/schemas/esim_profile_enum_status'
+          nullable: true
+          description: 'The status of the eSIM Profile. Can be: `new`, `reserving`, `available`, `downloaded`, `installed` or `failed`. See the [eSIM Profile Status Values](https://www.twilio.com/docs/iot/supersim/api/esimprofile-resource#status-values) for a description of each.'
+        eid:
+          type: string
+          nullable: true
+          description: Identifier of the eUICC that can claim the eSIM Profile.
+        smdp_plus_address:
+          type: string
+          format: uri
+          nullable: true
+          description: Address of the SM-DP+ server from which the Profile will be downloaded. The URL will appear once the eSIM Profile reaches the status `available`.
+        matching_id:
+          type: string
+          nullable: true
+          description: Unique identifier of the eSIM profile that can be used to identify and download the eSIM profile from the SM-DP+ server. Populated if `generate_matching_id` is set to `true` when creating the eSIM profile reservation.
+        activation_code:
+          type: string
+          nullable: true
+          description: Combined machine-readable activation code for acquiring an eSIM Profile with the Activation Code download method. Can be used in a QR code to download an eSIM profile.
+        error_code:
+          type: string
+          nullable: true
+          description: Code indicating the failure if the download of the SIM Profile failed and the eSIM Profile is in `failed` state.
+        error_message:
+          type: string
+          nullable: true
+          description: Error message describing the failure if the download of the SIM Profile failed and the eSIM Profile is in `failed` state.
+        date_created:
+          type: string
+          format: date-time
+          nullable: true
+          description: The date and time in GMT when the resource was created specified in [ISO 8601](https://en.wikipedia.org/wiki/ISO_8601) format.
+        date_updated:
+          type: string
+          format: date-time
+          nullable: true
+          description: The date and time in GMT when the resource was last updated specified in [ISO 8601](https://en.wikipedia.org/wiki/ISO_8601) format.
+        url:
+          type: string
+          format: uri
+          nullable: true
+          description: The absolute URL of the eSIM Profile resource.
+    esim_profile_enum_status:
+      type: string
+      enum:
+      - new
+      - reserving
+      - available
+      - downloaded
+      - installed
+      - failed
+  securitySchemes:
+    accountSid_authToken:
+      type: http
+      scheme: basic
+x-maturity:
+- name: GA
+  description: This product is Generally Available.
+- name: Beta
+  description: PLEASE NOTE that this is a Beta product that is subject to change. Use it with caution.

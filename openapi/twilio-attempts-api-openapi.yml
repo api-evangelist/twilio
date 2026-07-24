@@ -1,0 +1,370 @@
+openapi: 3.0.1
+info:
+  title: Twilio - Accounts A2p Attempts API
+  description: This is the public Twilio REST API.
+  termsOfService: https://www.twilio.com/legal/tos
+  contact:
+    name: Twilio Support
+    url: https://support.twilio.com
+    email: support@twilio.com
+  license:
+    name: Apache 2.0
+    url: https://www.apache.org/licenses/LICENSE-2.0.html
+  version: 1.52.0
+servers:
+- url: https://accounts.twilio.com
+tags:
+- name: Attempts
+paths:
+  /v2/Attempts:
+    servers:
+    - url: https://verify.twilio.com
+    description: 'TODO: Resource-level docs'
+    x-twilio:
+      defaultOutputProperties:
+      - sid
+      - date_created
+      - date_updated
+      - conversion_status
+      - channel
+      pathType: list
+      mountName: verification_attempts
+    get:
+      description: List all the verification attempts for a given Account.
+      tags:
+      - Attempts
+      parameters:
+      - name: DateCreatedAfter
+        in: query
+        description: 'Datetime filter used to consider only Verification Attempts created after this datetime on the summary aggregation. Given as GMT in ISO 8601 formatted datetime string: yyyy-MM-dd''T''HH:mm:ss''Z.'
+        schema:
+          type: string
+          format: date-time
+      - name: DateCreatedBefore
+        in: query
+        description: 'Datetime filter used to consider only Verification Attempts created before this datetime on the summary aggregation. Given as GMT in ISO 8601 formatted datetime string: yyyy-MM-dd''T''HH:mm:ss''Z.'
+        schema:
+          type: string
+          format: date-time
+      - name: ChannelData.To
+        in: query
+        description: Destination of a verification. It is phone number in E.164 format.
+        schema:
+          type: string
+        x-twilio:
+          pii:
+            handling: standard
+            deleteSla: 30
+      - name: Country
+        in: query
+        description: Filter used to query Verification Attempts sent to the specified destination country.
+        schema:
+          type: string
+          format: iso-country-code
+      - name: Channel
+        in: query
+        description: Filter used to query Verification Attempts by communication channel. Valid values are `SMS` and `CALL`
+        schema:
+          type: string
+          $ref: '#/components/schemas/verification_attempt_enum_channels'
+      - name: VerifyServiceSid
+        in: query
+        description: Filter used to query Verification Attempts by verify service. Only attempts of the provided SID will be returned.
+        schema:
+          type: string
+          minLength: 34
+          maxLength: 34
+          pattern: ^VA[0-9a-fA-F]{32}$
+      - name: VerificationSid
+        in: query
+        description: Filter used to return all the Verification Attempts of a single verification. Only attempts of the provided verification SID will be returned.
+        schema:
+          type: string
+          minLength: 34
+          maxLength: 34
+          pattern: ^VE[0-9a-fA-F]{32}$
+      - name: Status
+        in: query
+        description: Filter used to query Verification Attempts by conversion status. Valid values are `UNCONVERTED`, for attempts that were not converted, and `CONVERTED`, for attempts that were confirmed.
+        schema:
+          type: string
+          $ref: '#/components/schemas/verification_attempt_enum_conversion_status'
+      - name: PageSize
+        in: query
+        description: How many resources to return in each list page. The default is 50, and the maximum is 1000.
+        schema:
+          type: integer
+          minimum: 1
+          maximum: 1000
+      - name: Page
+        in: query
+        description: The page index. This value is simply for client state.
+        schema:
+          type: integer
+          minimum: 0
+      - name: PageToken
+        in: query
+        description: The page token. This is provided by the API.
+        schema:
+          type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ListVerificationAttemptResponse'
+          description: OK
+      security:
+      - accountSid_authToken: []
+      operationId: ListVerificationAttempt
+      x-maturity:
+      - GA
+  /v2/Attempts/{Sid}:
+    servers:
+    - url: https://verify.twilio.com
+    description: 'TODO: Resource-level docs'
+    x-twilio:
+      defaultOutputProperties:
+      - sid
+      - date_created
+      - date_updated
+      - conversion_status
+      - channel
+      pathType: instance
+      mountName: verification_attempts
+    get:
+      description: Fetch a specific verification attempt.
+      tags:
+      - Attempts
+      parameters:
+      - name: Sid
+        in: path
+        description: The unique SID identifier of a Verification Attempt
+        schema:
+          type: string
+          minLength: 34
+          maxLength: 34
+          pattern: ^VL[0-9a-fA-F]{32}$
+        required: true
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/verify.v2.verification_attempt'
+          description: OK
+      security:
+      - accountSid_authToken: []
+      operationId: FetchVerificationAttempt
+      x-maturity:
+      - GA
+  /v2/Attempts/Summary:
+    servers:
+    - url: https://verify.twilio.com
+    description: 'TODO: Resource-level docs'
+    x-twilio:
+      defaultOutputProperties:
+      - total_attempts
+      - total_converted
+      - total_unconverted
+      - conversion_rate_percentage
+      pathType: instance
+      mountName: verification_attempts_summary
+    get:
+      description: Get a summary of how many attempts were made and how many were converted.
+      tags:
+      - Attempts
+      parameters:
+      - name: VerifyServiceSid
+        in: query
+        description: Filter used to consider only Verification Attempts of the given verify service on the summary aggregation.
+        schema:
+          type: string
+          minLength: 34
+          maxLength: 34
+          pattern: ^VA[0-9a-fA-F]{32}$
+      - name: DateCreatedAfter
+        in: query
+        description: 'Datetime filter used to consider only Verification Attempts created after this datetime on the summary aggregation. Given as GMT in ISO 8601 formatted datetime string: yyyy-MM-dd''T''HH:mm:ss''Z.'
+        schema:
+          type: string
+          format: date-time
+      - name: DateCreatedBefore
+        in: query
+        description: 'Datetime filter used to consider only Verification Attempts created before this datetime on the summary aggregation. Given as GMT in ISO 8601 formatted datetime string: yyyy-MM-dd''T''HH:mm:ss''Z.'
+        schema:
+          type: string
+          format: date-time
+      - name: Country
+        in: query
+        description: Filter used to consider only Verification Attempts sent to the specified destination country on the summary aggregation.
+        schema:
+          type: string
+          format: iso-country-code
+      - name: Channel
+        in: query
+        description: Filter Verification Attempts considered on the summary aggregation by communication channel. Valid values are `SMS`, `CALL` and `WHATSAPP`
+        schema:
+          type: string
+          $ref: '#/components/schemas/verification_attempts_summary_enum_channels'
+      - name: DestinationPrefix
+        in: query
+        description: Filter the Verification Attempts considered on the summary aggregation by Destination prefix. It is the prefix of a phone number in E.164 format.
+        schema:
+          type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/verify.v2.verification_attempts_summary'
+          description: OK
+      security:
+      - accountSid_authToken: []
+      operationId: FetchVerificationAttemptsSummary
+      x-maturity:
+      - GA
+components:
+  schemas:
+    verify.v2.verification_attempt:
+      type: object
+      properties:
+        sid:
+          type: string
+          minLength: 34
+          maxLength: 34
+          pattern: ^VL[0-9a-fA-F]{32}$
+          nullable: true
+          description: The SID that uniquely identifies the verification attempt resource.
+        account_sid:
+          type: string
+          minLength: 34
+          maxLength: 34
+          pattern: ^AC[0-9a-fA-F]{32}$
+          nullable: true
+          description: The SID of the [Account](https://www.twilio.com/docs/iam/api/account) that created the Verification resource.
+        service_sid:
+          type: string
+          minLength: 34
+          maxLength: 34
+          pattern: ^VA[0-9a-fA-F]{32}$
+          nullable: true
+          description: The SID of the [Service](https://www.twilio.com/docs/verify/api/service) used to generate the attempt.
+        verification_sid:
+          type: string
+          minLength: 34
+          maxLength: 34
+          pattern: ^VE[0-9a-fA-F]{32}$
+          nullable: true
+          description: The SID of the [Verification](https://www.twilio.com/docs/verify/api/verification) that generated the attempt.
+        date_created:
+          type: string
+          format: date-time
+          nullable: true
+          description: The date that this Attempt was created, given in [ISO 8601](https://en.wikipedia.org/wiki/ISO_8601) format.
+        date_updated:
+          type: string
+          format: date-time
+          nullable: true
+          description: The date that this Attempt was updated, given in [ISO 8601](https://en.wikipedia.org/wiki/ISO_8601) format.
+        conversion_status:
+          type: string
+          $ref: '#/components/schemas/verification_attempt_enum_conversion_status'
+          nullable: true
+          description: A string specifying the conversion status of the verification. A conversion happens when the user is able to provide the correct code. Possible values are `CONVERTED` and `UNCONVERTED`.
+        channel:
+          type: string
+          $ref: '#/components/schemas/verification_attempt_enum_channels'
+          nullable: true
+          description: A string specifying the communication channel used for the verification attempt. i.e SMS, CALL, etc.
+        price:
+          nullable: true
+          description: An object containing the charge for this verification attempt related to the channel costs and the currency used. The costs related to the succeeded verifications are not included. May not be immediately available. More information on pricing is available [here](https://www.twilio.com/en-us/verify/pricing).
+        channel_data:
+          nullable: true
+          description: An object containing the channel specific information for an attempt.
+        url:
+          type: string
+          format: uri
+          nullable: true
+    ListVerificationAttemptResponse:
+      type: object
+      properties:
+        attempts:
+          type: array
+          items:
+            $ref: '#/components/schemas/verify.v2.verification_attempt'
+        meta:
+          type: object
+          properties:
+            first_page_url:
+              type: string
+              format: uri
+            next_page_url:
+              type: string
+              format: uri
+              nullable: true
+            page:
+              type: integer
+            page_size:
+              type: integer
+            previous_page_url:
+              type: string
+              format: uri
+              nullable: true
+            url:
+              type: string
+              format: uri
+            key:
+              type: string
+    verify.v2.verification_attempts_summary:
+      type: object
+      properties:
+        total_attempts:
+          type: integer
+          nullable: true
+          description: Total of attempts made according to the provided filters
+        total_converted:
+          type: integer
+          nullable: true
+          description: Total of  attempts made that were confirmed by the end user, according to the provided filters.
+        total_unconverted:
+          type: integer
+          nullable: true
+          description: Total of attempts made that were not confirmed by the end user, according to the provided filters.
+        conversion_rate_percentage:
+          type: number
+          nullable: true
+          description: 'Percentage of the confirmed messages over the total, defined by (total_converted/total_attempts)*100. '
+        url:
+          type: string
+          format: uri
+          nullable: true
+    verification_attempt_enum_channels:
+      type: string
+      enum:
+      - sms
+      - call
+      - email
+      - whatsapp
+    verification_attempt_enum_conversion_status:
+      type: string
+      enum:
+      - converted
+      - unconverted
+    verification_attempts_summary_enum_channels:
+      type: string
+      enum:
+      - sms
+      - call
+      - email
+      - whatsapp
+  securitySchemes:
+    accountSid_authToken:
+      type: http
+      scheme: basic
+x-maturity:
+- name: GA
+  description: This product is Generally Available.
+- name: Beta
+  description: PLEASE NOTE that this is a Beta product that is subject to change. Use it with caution.

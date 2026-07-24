@@ -1,0 +1,109 @@
+openapi: 3.0.1
+info:
+  title: Twilio - Accounts A2p Access Tokens API
+  description: This is the public Twilio REST API.
+  termsOfService: https://www.twilio.com/legal/tos
+  contact:
+    name: Twilio Support
+    url: https://support.twilio.com
+    email: support@twilio.com
+  license:
+    name: Apache 2.0
+    url: https://www.apache.org/licenses/LICENSE-2.0.html
+  version: 1.52.0
+servers:
+- url: https://accounts.twilio.com
+tags:
+- name: Access Tokens
+  description: Generate access tokens for SDKs
+paths:
+  /Services/{ServiceSid}/AccessTokens:
+    post:
+      operationId: createAccessToken
+      summary: Twilio Create an Access Token
+      description: Generate an access token for use with Verify Push or TOTP SDKs.
+      tags:
+      - Access Tokens
+      parameters:
+      - $ref: '#/components/parameters/ServiceSid'
+      requestBody:
+        required: true
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              type: object
+              required:
+              - Identity
+              - FactorType
+              properties:
+                Identity:
+                  type: string
+                FactorType:
+                  type: string
+                  enum:
+                  - push
+                  - totp
+                FactorFriendlyName:
+                  type: string
+                Ttl:
+                  type: integer
+                  description: Token time to live in seconds
+                  default: 60
+      responses:
+        '201':
+          description: Access token created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AccessToken'
+components:
+  schemas:
+    AccessToken:
+      type: object
+      properties:
+        sid:
+          type: string
+        account_sid:
+          type: string
+          pattern: ^AC[0-9a-fA-F]{32}$
+        service_sid:
+          type: string
+          pattern: ^VA[0-9a-fA-F]{32}$
+        entity_identity:
+          type: string
+        factor_type:
+          type: string
+          enum:
+          - push
+          - totp
+        factor_friendly_name:
+          type: string
+        token:
+          type: string
+          description: The access token string
+        ttl:
+          type: integer
+        date_created:
+          type: string
+          format: date-time
+        url:
+          type: string
+          format: uri
+  parameters:
+    ServiceSid:
+      name: ServiceSid
+      in: path
+      required: true
+      description: The SID of the Verify service
+      schema:
+        type: string
+        pattern: ^VA[0-9a-fA-F]{32}$
+  securitySchemes:
+    accountSid_authToken:
+      type: http
+      scheme: basic
+x-maturity:
+- name: GA
+  description: This product is Generally Available.
+- name: Beta
+  description: PLEASE NOTE that this is a Beta product that is subject to change. Use it with caution.

@@ -1,0 +1,155 @@
+openapi: 3.0.1
+info:
+  title: Twilio - Accounts A2p Media API
+  description: This is the public Twilio REST API.
+  termsOfService: https://www.twilio.com/legal/tos
+  contact:
+    name: Twilio Support
+    url: https://support.twilio.com
+    email: support@twilio.com
+  license:
+    name: Apache 2.0
+    url: https://www.apache.org/licenses/LICENSE-2.0.html
+  version: 1.52.0
+servers:
+- url: https://accounts.twilio.com
+tags:
+- name: Media
+  description: Manage media attachments for MMS messages
+paths:
+  /Accounts/{AccountSid}/Messages/{MessageSid}/Media.json:
+    get:
+      operationId: listMedia
+      summary: Twilio List Media for a Message
+      description: Retrieve a list of media associated with an MMS message.
+      tags:
+      - Media
+      parameters:
+      - $ref: '#/components/parameters/AccountSid'
+      - $ref: '#/components/parameters/MessageSid'
+      - name: PageSize
+        in: query
+        schema:
+          type: integer
+          minimum: 1
+          maximum: 1000
+      responses:
+        '200':
+          description: List of media resources
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MediaList'
+        '401':
+          description: Unauthorized
+  /Accounts/{AccountSid}/Messages/{MessageSid}/Media/{MediaSid}.json:
+    get:
+      operationId: fetchMedia
+      summary: Twilio Fetch a Media Resource
+      description: Retrieve a specific media resource associated with a message.
+      tags:
+      - Media
+      parameters:
+      - $ref: '#/components/parameters/AccountSid'
+      - $ref: '#/components/parameters/MessageSid'
+      - name: MediaSid
+        in: path
+        required: true
+        schema:
+          type: string
+          pattern: ^ME[0-9a-fA-F]{32}$
+      responses:
+        '200':
+          description: Media resource details
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MediaResource'
+        '401':
+          description: Unauthorized
+        '404':
+          description: Media not found
+    delete:
+      operationId: deleteMedia
+      summary: Twilio Delete a Media Resource
+      tags:
+      - Media
+      parameters:
+      - $ref: '#/components/parameters/AccountSid'
+      - $ref: '#/components/parameters/MessageSid'
+      - name: MediaSid
+        in: path
+        required: true
+        schema:
+          type: string
+          pattern: ^ME[0-9a-fA-F]{32}$
+      responses:
+        '204':
+          description: Media deleted
+        '404':
+          description: Media not found
+components:
+  schemas:
+    MediaResource:
+      type: object
+      properties:
+        sid:
+          type: string
+          pattern: ^ME[0-9a-fA-F]{32}$
+          description: Unique identifier for the media resource
+        account_sid:
+          type: string
+          pattern: ^AC[0-9a-fA-F]{32}$
+        parent_sid:
+          type: string
+          description: SID of the parent message
+        content_type:
+          type: string
+          description: MIME type of the media
+        date_created:
+          type: string
+          format: date-time
+        date_updated:
+          type: string
+          format: date-time
+        uri:
+          type: string
+    MediaList:
+      type: object
+      properties:
+        media_list:
+          type: array
+          items:
+            $ref: '#/components/schemas/MediaResource'
+        page:
+          type: integer
+        page_size:
+          type: integer
+        uri:
+          type: string
+  parameters:
+    MessageSid:
+      name: MessageSid
+      in: path
+      required: true
+      description: The unique identifier of the message
+      schema:
+        type: string
+        pattern: ^(SM|MM)[0-9a-fA-F]{32}$
+    AccountSid:
+      name: AccountSid
+      in: path
+      required: true
+      description: The unique identifier of the Twilio account
+      schema:
+        type: string
+        pattern: ^AC[0-9a-fA-F]{32}$
+  securitySchemes:
+    accountSid_authToken:
+      type: http
+      scheme: basic
+x-maturity:
+- name: GA
+  description: This product is Generally Available.
+- name: Beta
+  description: PLEASE NOTE that this is a Beta product that is subject to change. Use it with caution.

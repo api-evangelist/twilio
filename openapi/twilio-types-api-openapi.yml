@@ -1,0 +1,178 @@
+openapi: 3.0.1
+info:
+  title: Twilio - Accounts A2p Types API
+  description: This is the public Twilio REST API.
+  termsOfService: https://www.twilio.com/legal/tos
+  contact:
+    name: Twilio Support
+    url: https://support.twilio.com
+    email: support@twilio.com
+  license:
+    name: Apache 2.0
+    url: https://www.apache.org/licenses/LICENSE-2.0.html
+  version: 1.52.0
+servers:
+- url: https://accounts.twilio.com
+tags:
+- name: Types
+paths:
+  /v1/Types:
+    servers:
+    - url: https://events.twilio.com
+    description: Event Types available
+    x-twilio:
+      defaultOutputProperties:
+      - type
+      - schema_id
+      - description
+      pathType: list
+      mountName: event_types
+    get:
+      description: Retrieve a paginated list of all the available Event Types.
+      tags:
+      - Types
+      parameters:
+      - name: SchemaId
+        in: query
+        description: A string parameter filtering the results to return only the Event Types using a given schema.
+        schema:
+          type: string
+      - name: PageSize
+        in: query
+        description: How many resources to return in each list page. The default is 50, and the maximum is 1000.
+        schema:
+          type: integer
+          minimum: 1
+          maximum: 1000
+      - name: Page
+        in: query
+        description: The page index. This value is simply for client state.
+        schema:
+          type: integer
+          minimum: 0
+      - name: PageToken
+        in: query
+        description: The page token. This is provided by the API.
+        schema:
+          type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ListEventTypeResponse'
+          description: OK
+      security:
+      - accountSid_authToken: []
+      operationId: ListEventType
+      x-maturity:
+      - GA
+  /v1/Types/{Type}:
+    servers:
+    - url: https://events.twilio.com
+    description: Event Types available
+    x-twilio:
+      defaultOutputProperties:
+      - type
+      - schema_id
+      - description
+      pathType: instance
+      mountName: event_types
+    get:
+      description: Fetch a specific Event Type.
+      tags:
+      - Types
+      parameters:
+      - name: Type
+        in: path
+        description: A string that uniquely identifies this Event Type.
+        schema:
+          type: string
+        required: true
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/events.v1.event_type'
+          description: OK
+      security:
+      - accountSid_authToken: []
+      operationId: FetchEventType
+      x-maturity:
+      - GA
+components:
+  schemas:
+    events.v1.event_type:
+      type: object
+      properties:
+        type:
+          type: string
+          nullable: true
+          description: A string that uniquely identifies this Event Type.
+        schema_id:
+          type: string
+          nullable: true
+          description: A string that uniquely identifies the Schema this Event Type adheres to.
+        date_created:
+          type: string
+          format: date-time
+          nullable: true
+          description: The date that this Event Type was created, given in ISO 8601 format.
+        date_updated:
+          type: string
+          format: date-time
+          nullable: true
+          description: The date that this Event Type was updated, given in ISO 8601 format.
+        description:
+          type: string
+          nullable: true
+          description: A human readable description for this Event Type.
+        url:
+          type: string
+          format: uri
+          nullable: true
+          description: The URL of this resource.
+        links:
+          type: object
+          format: uri-map
+          nullable: true
+    ListEventTypeResponse:
+      type: object
+      properties:
+        types:
+          type: array
+          items:
+            $ref: '#/components/schemas/events.v1.event_type'
+        meta:
+          type: object
+          properties:
+            first_page_url:
+              type: string
+              format: uri
+            next_page_url:
+              type: string
+              format: uri
+              nullable: true
+            page:
+              type: integer
+            page_size:
+              type: integer
+            previous_page_url:
+              type: string
+              format: uri
+              nullable: true
+            url:
+              type: string
+              format: uri
+            key:
+              type: string
+  securitySchemes:
+    accountSid_authToken:
+      type: http
+      scheme: basic
+x-maturity:
+- name: GA
+  description: This product is Generally Available.
+- name: Beta
+  description: PLEASE NOTE that this is a Beta product that is subject to change. Use it with caution.

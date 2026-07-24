@@ -1,0 +1,306 @@
+openapi: 3.0.1
+info:
+  title: Twilio - Accounts A2p Roles API
+  description: This is the public Twilio REST API.
+  termsOfService: https://www.twilio.com/legal/tos
+  contact:
+    name: Twilio Support
+    url: https://support.twilio.com
+    email: support@twilio.com
+  license:
+    name: Apache 2.0
+    url: https://www.apache.org/licenses/LICENSE-2.0.html
+  version: 1.52.0
+servers:
+- url: https://accounts.twilio.com
+tags:
+- name: Roles
+paths:
+  /v1/Roles:
+    servers:
+    - url: https://conversations.twilio.com
+    description: A Role resource represents a set of permissions granted to a user within a service or a conversation.
+    x-twilio:
+      defaultOutputProperties:
+      - sid
+      - friendly_name
+      - type
+      pathType: list
+    post:
+      description: Create a new user role in your account's default service
+      tags:
+      - Roles
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/conversations.v1.role'
+          description: Created
+      security:
+      - accountSid_authToken: []
+      operationId: CreateRole
+      x-maturity:
+      - GA
+      requestBody:
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/CreateRoleRequest'
+    get:
+      description: Retrieve a list of all user roles in your account's default service
+      tags:
+      - Roles
+      parameters:
+      - name: PageSize
+        in: query
+        description: How many resources to return in each list page. The default is 50, and the maximum is 1000.
+        schema:
+          type: integer
+          minimum: 1
+          maximum: 1000
+      - name: Page
+        in: query
+        description: The page index. This value is simply for client state.
+        schema:
+          type: integer
+          minimum: 0
+      - name: PageToken
+        in: query
+        description: The page token. This is provided by the API.
+        schema:
+          type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ListRoleResponse'
+          description: OK
+      security:
+      - accountSid_authToken: []
+      operationId: ListRole
+      x-maturity:
+      - GA
+  /v1/Roles/{Sid}:
+    servers:
+    - url: https://conversations.twilio.com
+    description: A Role resource represents a set of permissions granted to a user within a service or a conversation.
+    x-twilio:
+      defaultOutputProperties:
+      - sid
+      - friendly_name
+      - type
+      pathType: instance
+    post:
+      description: Update an existing user role in your account's default service
+      tags:
+      - Roles
+      parameters:
+      - name: Sid
+        in: path
+        description: The SID of the Role resource to update.
+        schema:
+          type: string
+          minLength: 34
+          maxLength: 34
+          pattern: ^RL[0-9a-fA-F]{32}$
+        required: true
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/conversations.v1.role'
+          description: OK
+      security:
+      - accountSid_authToken: []
+      operationId: UpdateRole
+      x-maturity:
+      - GA
+      requestBody:
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/UpdateRoleRequest'
+    delete:
+      description: Remove a user role from your account's default service
+      tags:
+      - Roles
+      parameters:
+      - name: Sid
+        in: path
+        description: The SID of the Role resource to delete.
+        schema:
+          type: string
+          minLength: 34
+          maxLength: 34
+          pattern: ^RL[0-9a-fA-F]{32}$
+        required: true
+      responses:
+        '204':
+          description: The resource was deleted successfully.
+      security:
+      - accountSid_authToken: []
+      operationId: DeleteRole
+      x-maturity:
+      - GA
+    get:
+      description: Fetch a user role from your account's default service
+      tags:
+      - Roles
+      parameters:
+      - name: Sid
+        in: path
+        description: The SID of the Role resource to fetch.
+        schema:
+          type: string
+          minLength: 34
+          maxLength: 34
+          pattern: ^RL[0-9a-fA-F]{32}$
+        required: true
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/conversations.v1.role'
+          description: OK
+      security:
+      - accountSid_authToken: []
+      operationId: FetchRole
+      x-maturity:
+      - GA
+components:
+  schemas:
+    UpdateRoleRequest:
+      type: object
+      required:
+      - Permission
+      properties:
+        Permission:
+          type: array
+          items:
+            type: string
+          description: A permission that you grant to the role. Only one permission can be granted per parameter. To assign more than one permission, repeat this parameter for each permission value. Note that the update action replaces all previously assigned permissions with those defined in the update action. To remove a permission, do not include it in the subsequent update action. The values for this parameter depend on the role's `type`.
+    conversations.v1.role:
+      type: object
+      properties:
+        sid:
+          type: string
+          minLength: 34
+          maxLength: 34
+          pattern: ^RL[0-9a-fA-F]{32}$
+          nullable: true
+          description: The unique string that we created to identify the Role resource.
+        account_sid:
+          type: string
+          minLength: 34
+          maxLength: 34
+          pattern: ^AC[0-9a-fA-F]{32}$
+          nullable: true
+          description: The SID of the [Account](https://www.twilio.com/docs/iam/api/account) that created the Role resource.
+        chat_service_sid:
+          type: string
+          minLength: 34
+          maxLength: 34
+          pattern: ^IS[0-9a-fA-F]{32}$
+          nullable: true
+          description: The SID of the [Conversation Service](https://www.twilio.com/docs/conversations/api/service-resource) the Role resource is associated with.
+        friendly_name:
+          type: string
+          nullable: true
+          description: The string that you assigned to describe the resource.
+          x-twilio:
+            pii:
+              handling: standard
+              deleteSla: 30
+        type:
+          type: string
+          $ref: '#/components/schemas/role_enum_role_type'
+          nullable: true
+          description: 'The type of role. Can be: `conversation` for [Conversation](https://www.twilio.com/docs/conversations/api/conversation-resource) roles or `service` for [Conversation Service](https://www.twilio.com/docs/conversations/api/service-resource) roles.'
+        permissions:
+          type: array
+          items:
+            type: string
+          nullable: true
+          description: An array of the permissions the role has been granted.
+        date_created:
+          type: string
+          format: date-time
+          nullable: true
+          description: The date and time in GMT when the resource was created specified in [ISO 8601](https://en.wikipedia.org/wiki/ISO_8601) format.
+        date_updated:
+          type: string
+          format: date-time
+          nullable: true
+          description: The date and time in GMT when the resource was last updated specified in [ISO 8601](https://en.wikipedia.org/wiki/ISO_8601) format.
+        url:
+          type: string
+          format: uri
+          nullable: true
+          description: An absolute API resource URL for this user role.
+    role_enum_role_type:
+      type: string
+      enum:
+      - conversation
+      - service
+    CreateRoleRequest:
+      type: object
+      required:
+      - FriendlyName
+      - Type
+      - Permission
+      properties:
+        FriendlyName:
+          type: string
+          description: A descriptive string that you create to describe the new resource. It can be up to 64 characters long.
+        Type:
+          type: string
+          $ref: '#/components/schemas/role_enum_role_type'
+          description: 'The type of role. Can be: `conversation` for [Conversation](https://www.twilio.com/docs/conversations/api/conversation-resource) roles or `service` for [Conversation Service](https://www.twilio.com/docs/conversations/api/service-resource) roles.'
+        Permission:
+          type: array
+          items:
+            type: string
+          description: A permission that you grant to the new role. Only one permission can be granted per parameter. To assign more than one permission, repeat this parameter for each permission value. The values for this parameter depend on the role's `type`.
+    ListRoleResponse:
+      type: object
+      properties:
+        roles:
+          type: array
+          items:
+            $ref: '#/components/schemas/conversations.v1.role'
+        meta:
+          type: object
+          properties:
+            first_page_url:
+              type: string
+              format: uri
+            next_page_url:
+              type: string
+              format: uri
+              nullable: true
+            page:
+              type: integer
+            page_size:
+              type: integer
+            previous_page_url:
+              type: string
+              format: uri
+              nullable: true
+            url:
+              type: string
+              format: uri
+            key:
+              type: string
+  securitySchemes:
+    accountSid_authToken:
+      type: http
+      scheme: basic
+x-maturity:
+- name: GA
+  description: This product is Generally Available.
+- name: Beta
+  description: PLEASE NOTE that this is a Beta product that is subject to change. Use it with caution.

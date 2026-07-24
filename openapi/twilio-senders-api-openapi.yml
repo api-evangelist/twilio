@@ -1,0 +1,91 @@
+openapi: 3.0.1
+info:
+  title: Twilio - Accounts A2p Senders API
+  description: This is the public Twilio REST API.
+  termsOfService: https://www.twilio.com/legal/tos
+  contact:
+    name: Twilio Support
+    url: https://support.twilio.com
+    email: support@twilio.com
+  license:
+    name: Apache 2.0
+    url: https://www.apache.org/licenses/LICENSE-2.0.html
+  version: 1.52.0
+servers:
+- url: https://accounts.twilio.com
+tags:
+- name: Senders
+  description: Manage verified sender identities
+paths:
+  /verified_senders:
+    get:
+      operationId: listVerifiedSenders
+      summary: Twilio List Verified Senders
+      tags:
+      - Senders
+      responses:
+        '200':
+          description: List of verified senders
+    post:
+      operationId: createVerifiedSender
+      summary: Twilio Create a Verified Sender
+      tags:
+      - Senders
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateVerifiedSenderRequest'
+      responses:
+        '201':
+          description: Verified sender created
+        '400':
+          description: Invalid request
+components:
+  schemas:
+    CreateVerifiedSenderRequest:
+      type: object
+      required:
+      - nickname
+      - from_email
+      - from_name
+      - reply_to
+      - reply_to_name
+      - address
+      - city
+      - country
+      properties:
+        nickname:
+          type: string
+        from_email:
+          type: string
+          format: email
+        from_name:
+          type: string
+        reply_to:
+          type: string
+          format: email
+        reply_to_name:
+          type: string
+        address:
+          type: string
+        address2:
+          type: string
+        city:
+          type: string
+        state:
+          type: string
+        zip:
+          type: string
+        country:
+          type: string
+  securitySchemes:
+    accountSid_authToken:
+      type: http
+      scheme: basic
+x-maturity:
+- name: GA
+  description: This product is Generally Available.
+- name: Beta
+  description: PLEASE NOTE that this is a Beta product that is subject to change. Use it with caution.

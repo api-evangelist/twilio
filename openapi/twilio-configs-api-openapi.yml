@@ -1,0 +1,241 @@
+openapi: 3.0.1
+info:
+  title: Twilio - Accounts A2p Configs API
+  description: This is the public Twilio REST API.
+  termsOfService: https://www.twilio.com/legal/tos
+  contact:
+    name: Twilio Support
+    url: https://support.twilio.com
+    email: support@twilio.com
+  license:
+    name: Apache 2.0
+    url: https://www.apache.org/licenses/LICENSE-2.0.html
+  version: 1.52.0
+servers:
+- url: https://accounts.twilio.com
+tags:
+- name: Configs
+paths:
+  /v1/Configs:
+    servers:
+    - url: https://microvisor.twilio.com
+    description: 'TODO: Resource-level docs'
+    x-twilio:
+      defaultOutputProperties: []
+      pathType: list
+      mountName: account_configs
+    get:
+      description: Retrieve a list of all Configs for an Account.
+      tags:
+      - Configs
+      parameters:
+      - name: PageSize
+        in: query
+        description: How many resources to return in each list page. The default is 50, and the maximum is 1000.
+        schema:
+          type: integer
+          minimum: 1
+          maximum: 1000
+      - name: Page
+        in: query
+        description: The page index. This value is simply for client state.
+        schema:
+          type: integer
+          minimum: 0
+      - name: PageToken
+        in: query
+        description: The page token. This is provided by the API.
+        schema:
+          type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ListAccountConfigResponse'
+          description: OK
+      security:
+      - accountSid_authToken: []
+      operationId: ListAccountConfig
+      x-maturity:
+      - Preview
+    post:
+      description: Create a config for an Account.
+      tags:
+      - Configs
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/microvisor.v1.account_config'
+          description: Created
+      security:
+      - accountSid_authToken: []
+      operationId: CreateAccountConfig
+      x-maturity:
+      - Preview
+      requestBody:
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/CreateAccountConfigRequest'
+  /v1/Configs/{Key}:
+    servers:
+    - url: https://microvisor.twilio.com
+    description: 'TODO: Resource-level docs'
+    x-twilio:
+      defaultOutputProperties: []
+      pathType: instance
+      mountName: account_configs
+    get:
+      description: Retrieve a Config for an Account.
+      tags:
+      - Configs
+      parameters:
+      - name: Key
+        in: path
+        description: The config key; up to 100 characters.
+        schema:
+          type: string
+        required: true
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/microvisor.v1.account_config'
+          description: OK
+      security:
+      - accountSid_authToken: []
+      operationId: FetchAccountConfig
+      x-maturity:
+      - Preview
+    post:
+      description: Update a config for an Account.
+      tags:
+      - Configs
+      parameters:
+      - name: Key
+        in: path
+        description: The config key; up to 100 characters.
+        schema:
+          type: string
+        required: true
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/microvisor.v1.account_config'
+          description: OK
+      security:
+      - accountSid_authToken: []
+      operationId: UpdateAccountConfig
+      x-maturity:
+      - Preview
+      requestBody:
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/UpdateAccountConfigRequest'
+    delete:
+      description: Delete a config for an Account.
+      tags:
+      - Configs
+      parameters:
+      - name: Key
+        in: path
+        description: The config key; up to 100 characters.
+        schema:
+          type: string
+        required: true
+      responses:
+        '204':
+          description: The resource was deleted successfully.
+      security:
+      - accountSid_authToken: []
+      operationId: DeleteAccountConfig
+      x-maturity:
+      - Preview
+components:
+  schemas:
+    CreateAccountConfigRequest:
+      type: object
+      required:
+      - Key
+      - Value
+      properties:
+        Key:
+          type: string
+          description: The config key; up to 100 characters.
+        Value:
+          type: string
+          description: The config value; up to 4096 characters.
+    UpdateAccountConfigRequest:
+      type: object
+      required:
+      - Value
+      properties:
+        Value:
+          type: string
+          description: The config value; up to 4096 characters.
+    microvisor.v1.account_config:
+      type: object
+      properties:
+        key:
+          type: string
+          nullable: true
+          description: The config key; up to 100 characters.
+        date_updated:
+          type: string
+          format: date-time
+          nullable: true
+        value:
+          type: string
+          nullable: true
+          description: The config value; up to 4096 characters.
+        url:
+          type: string
+          format: uri
+          nullable: true
+          description: The absolute URL of the Config.
+    ListAccountConfigResponse:
+      type: object
+      properties:
+        configs:
+          type: array
+          items:
+            $ref: '#/components/schemas/microvisor.v1.account_config'
+        meta:
+          type: object
+          properties:
+            first_page_url:
+              type: string
+              format: uri
+            next_page_url:
+              type: string
+              format: uri
+              nullable: true
+            page:
+              type: integer
+            page_size:
+              type: integer
+            previous_page_url:
+              type: string
+              format: uri
+              nullable: true
+            url:
+              type: string
+              format: uri
+            key:
+              type: string
+  securitySchemes:
+    accountSid_authToken:
+      type: http
+      scheme: basic
+x-maturity:
+- name: GA
+  description: This product is Generally Available.
+- name: Beta
+  description: PLEASE NOTE that this is a Beta product that is subject to change. Use it with caution.

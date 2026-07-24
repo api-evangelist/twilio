@@ -1,0 +1,147 @@
+openapi: 3.0.1
+info:
+  title: Twilio - Accounts A2p Web Channels API
+  description: This is the public Twilio REST API.
+  termsOfService: https://www.twilio.com/legal/tos
+  contact:
+    name: Twilio Support
+    url: https://support.twilio.com
+    email: support@twilio.com
+  license:
+    name: Apache 2.0
+    url: https://www.apache.org/licenses/LICENSE-2.0.html
+  version: 1.52.0
+servers:
+- url: https://accounts.twilio.com
+tags:
+- name: Web Channels
+  description: Manage web chat channels
+paths:
+  /WebChannels:
+    post:
+      operationId: createWebChannel
+      summary: Twilio Create a Web Channel
+      description: Create a new web chat channel for customer interaction.
+      tags:
+      - Web Channels
+      requestBody:
+        required: true
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              type: object
+              required:
+              - FlexFlowSid
+              - Identity
+              - CustomerFriendlyName
+              - ChatFriendlyName
+              properties:
+                FlexFlowSid:
+                  type: string
+                Identity:
+                  type: string
+                CustomerFriendlyName:
+                  type: string
+                ChatFriendlyName:
+                  type: string
+                ChatUniqueName:
+                  type: string
+                PreEngagementData:
+                  type: string
+                  description: JSON string with pre-engagement form data
+      responses:
+        '201':
+          description: Web channel created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/WebChannel'
+  /WebChannels/{ChannelSid}:
+    get:
+      operationId: fetchWebChannel
+      summary: Twilio Fetch a Web Channel
+      tags:
+      - Web Channels
+      parameters:
+      - name: ChannelSid
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Web channel details
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/WebChannel'
+    post:
+      operationId: updateWebChannel
+      summary: Twilio Update a Web Channel
+      tags:
+      - Web Channels
+      parameters:
+      - name: ChannelSid
+        in: path
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              type: object
+              properties:
+                ChatStatus:
+                  type: string
+                  enum:
+                  - inactive
+                PostEngagementData:
+                  type: string
+      responses:
+        '200':
+          description: Web channel updated
+    delete:
+      operationId: deleteWebChannel
+      summary: Twilio Delete a Web Channel
+      tags:
+      - Web Channels
+      parameters:
+      - name: ChannelSid
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        '204':
+          description: Web channel deleted
+components:
+  schemas:
+    WebChannel:
+      type: object
+      properties:
+        sid:
+          type: string
+        account_sid:
+          type: string
+          pattern: ^AC[0-9a-fA-F]{32}$
+        flex_flow_sid:
+          type: string
+        url:
+          type: string
+          format: uri
+        date_created:
+          type: string
+          format: date-time
+        date_updated:
+          type: string
+          format: date-time
+  securitySchemes:
+    accountSid_authToken:
+      type: http
+      scheme: basic
+x-maturity:
+- name: GA
+  description: This product is Generally Available.
+- name: Beta
+  description: PLEASE NOTE that this is a Beta product that is subject to change. Use it with caution.

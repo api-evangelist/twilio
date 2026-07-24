@@ -1,0 +1,147 @@
+openapi: 3.0.1
+info:
+  title: Twilio - Accounts A2p Lists API
+  description: This is the public Twilio REST API.
+  termsOfService: https://www.twilio.com/legal/tos
+  contact:
+    name: Twilio Support
+    url: https://support.twilio.com
+    email: support@twilio.com
+  license:
+    name: Apache 2.0
+    url: https://www.apache.org/licenses/LICENSE-2.0.html
+  version: 1.52.0
+servers:
+- url: https://accounts.twilio.com
+tags:
+- name: Lists
+  description: Manage contact lists
+paths:
+  /marketing/lists:
+    get:
+      operationId: listContactLists
+      summary: Twilio List Contact Lists
+      tags:
+      - Lists
+      parameters:
+      - name: page_size
+        in: query
+        schema:
+          type: integer
+          minimum: 1
+          maximum: 1000
+      responses:
+        '200':
+          description: List of contact lists
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ContactListCollection'
+    post:
+      operationId: createContactList
+      summary: Twilio Create a Contact List
+      tags:
+      - Lists
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+              - name
+              properties:
+                name:
+                  type: string
+      responses:
+        '201':
+          description: List created
+  /marketing/lists/{list_id}:
+    get:
+      operationId: fetchContactList
+      summary: Twilio Fetch a Contact List
+      tags:
+      - Lists
+      parameters:
+      - name: list_id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+      responses:
+        '200':
+          description: Contact list details
+    patch:
+      operationId: updateContactList
+      summary: Twilio Update a Contact List
+      tags:
+      - Lists
+      parameters:
+      - name: list_id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+      responses:
+        '200':
+          description: List updated
+    delete:
+      operationId: deleteContactList
+      summary: Twilio Delete a Contact List
+      tags:
+      - Lists
+      parameters:
+      - name: list_id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+      - name: delete_contacts
+        in: query
+        description: Whether to delete contacts in the list
+        schema:
+          type: boolean
+          default: false
+      responses:
+        '200':
+          description: List deleted
+components:
+  schemas:
+    ContactListCollection:
+      type: object
+      properties:
+        result:
+          type: array
+          items:
+            type: object
+            properties:
+              id:
+                type: string
+                format: uuid
+              name:
+                type: string
+              contact_count:
+                type: integer
+              _metadata:
+                type: object
+  securitySchemes:
+    accountSid_authToken:
+      type: http
+      scheme: basic
+x-maturity:
+- name: GA
+  description: This product is Generally Available.
+- name: Beta
+  description: PLEASE NOTE that this is a Beta product that is subject to change. Use it with caution.

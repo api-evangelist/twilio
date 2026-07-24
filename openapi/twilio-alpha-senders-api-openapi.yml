@@ -1,0 +1,100 @@
+openapi: 3.0.1
+info:
+  title: Twilio - Accounts A2p Alpha Senders API
+  description: This is the public Twilio REST API.
+  termsOfService: https://www.twilio.com/legal/tos
+  contact:
+    name: Twilio Support
+    url: https://support.twilio.com
+    email: support@twilio.com
+  license:
+    name: Apache 2.0
+    url: https://www.apache.org/licenses/LICENSE-2.0.html
+  version: 1.52.0
+servers:
+- url: https://accounts.twilio.com
+tags:
+- name: Alpha Senders
+  description: Manage alphanumeric sender IDs
+paths:
+  /Services/{ServiceSid}/AlphaSenders:
+    get:
+      operationId: listAlphaSenders
+      summary: Twilio List Alpha Senders in a Messaging Service
+      tags:
+      - Alpha Senders
+      parameters:
+      - $ref: '#/components/parameters/ServiceSid'
+      responses:
+        '200':
+          description: List of alpha senders
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  alpha_senders:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/AlphaSender'
+    post:
+      operationId: addAlphaSender
+      summary: Twilio Add an Alpha Sender to a Messaging Service
+      tags:
+      - Alpha Senders
+      parameters:
+      - $ref: '#/components/parameters/ServiceSid'
+      requestBody:
+        required: true
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              type: object
+              required:
+              - AlphaSender
+              properties:
+                AlphaSender:
+                  type: string
+                  description: Alphanumeric sender ID string (max 11 characters)
+                  maxLength: 11
+      responses:
+        '201':
+          description: Alpha sender added
+        '400':
+          description: Invalid request
+components:
+  parameters:
+    ServiceSid:
+      name: ServiceSid
+      in: path
+      required: true
+      description: The unique identifier of the messaging service
+      schema:
+        type: string
+        pattern: ^MG[0-9a-fA-F]{32}$
+  schemas:
+    AlphaSender:
+      type: object
+      properties:
+        sid:
+          type: string
+          pattern: ^AI[0-9a-fA-F]{32}$
+        alpha_sender:
+          type: string
+          description: Alphanumeric sender ID
+        capabilities:
+          type: array
+          items:
+            type: string
+        date_created:
+          type: string
+          format: date-time
+  securitySchemes:
+    accountSid_authToken:
+      type: http
+      scheme: basic
+x-maturity:
+- name: GA
+  description: This product is Generally Available.
+- name: Beta
+  description: PLEASE NOTE that this is a Beta product that is subject to change. Use it with caution.

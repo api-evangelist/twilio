@@ -1,0 +1,433 @@
+openapi: 3.0.1
+info:
+  title: Twilio - Accounts A2p Sinks API
+  description: This is the public Twilio REST API.
+  termsOfService: https://www.twilio.com/legal/tos
+  contact:
+    name: Twilio Support
+    url: https://support.twilio.com
+    email: support@twilio.com
+  license:
+    name: Apache 2.0
+    url: https://www.apache.org/licenses/LICENSE-2.0.html
+  version: 1.52.0
+servers:
+- url: https://accounts.twilio.com
+tags:
+- name: Sinks
+paths:
+  /v1/Sinks/{Sid}:
+    servers:
+    - url: https://events.twilio.com
+    description: Sink destination to send events to
+    x-twilio:
+      defaultOutputProperties:
+      - date_created
+      - date_updated
+      - description
+      - sid
+      - sink_configuration
+      - sink_type
+      - status
+      pathType: instance
+      dependentProperties:
+        sink_test:
+          mapping:
+            sid: sid
+          resource_url: /v1/Sinks/{sid}/Test
+        sink_validate:
+          mapping:
+            sid: sid
+          resource_url: /v1/Sinks/{sid}/Validate
+    get:
+      description: Fetch a specific Sink.
+      tags:
+      - Sinks
+      parameters:
+      - name: Sid
+        in: path
+        description: A 34 character string that uniquely identifies this Sink.
+        schema:
+          type: string
+          minLength: 34
+          maxLength: 34
+          pattern: ^DG[0-9a-fA-F]{32}$
+        required: true
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/events.v1.sink'
+          description: OK
+      security:
+      - accountSid_authToken: []
+      operationId: FetchSink
+      x-maturity:
+      - GA
+    delete:
+      description: Delete a specific Sink.
+      tags:
+      - Sinks
+      parameters:
+      - name: Sid
+        in: path
+        description: A 34 character string that uniquely identifies this Sink.
+        schema:
+          type: string
+          minLength: 34
+          maxLength: 34
+          pattern: ^DG[0-9a-fA-F]{32}$
+        required: true
+      responses:
+        '204':
+          description: The resource was deleted successfully.
+      security:
+      - accountSid_authToken: []
+      operationId: DeleteSink
+      x-maturity:
+      - GA
+    post:
+      description: Update a specific Sink
+      tags:
+      - Sinks
+      parameters:
+      - name: Sid
+        in: path
+        description: A 34 character string that uniquely identifies this Sink.
+        schema:
+          type: string
+          minLength: 34
+          maxLength: 34
+          pattern: ^DG[0-9a-fA-F]{32}$
+        required: true
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/events.v1.sink'
+          description: OK
+      security:
+      - accountSid_authToken: []
+      operationId: UpdateSink
+      x-maturity:
+      - GA
+      requestBody:
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/UpdateSinkRequest'
+  /v1/Sinks:
+    servers:
+    - url: https://events.twilio.com
+    description: Sink destination to send events to
+    x-twilio:
+      defaultOutputProperties:
+      - date_created
+      - date_updated
+      - description
+      - sid
+      - sink_configuration
+      - sink_type
+      - status
+      pathType: list
+      dependentProperties:
+        sink_test:
+          mapping:
+            sid: sid
+          resource_url: /v1/Sinks/{sid}/Test
+        sink_validate:
+          mapping:
+            sid: sid
+          resource_url: /v1/Sinks/{sid}/Validate
+    post:
+      description: Create a new Sink
+      tags:
+      - Sinks
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/events.v1.sink'
+          description: Created
+      security:
+      - accountSid_authToken: []
+      operationId: CreateSink
+      x-maturity:
+      - GA
+      requestBody:
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/CreateSinkRequest'
+    get:
+      description: Retrieve a paginated list of Sinks belonging to the account used to make the request.
+      tags:
+      - Sinks
+      parameters:
+      - name: InUse
+        in: query
+        description: A boolean query parameter filtering the results to return sinks used/not used by a subscription.
+        schema:
+          type: boolean
+      - name: Status
+        in: query
+        description: A String query parameter filtering the results by status `initialized`, `validating`, `active` or `failed`.
+        schema:
+          type: string
+      - name: PageSize
+        in: query
+        description: How many resources to return in each list page. The default is 50, and the maximum is 1000.
+        schema:
+          type: integer
+          minimum: 1
+          maximum: 1000
+      - name: Page
+        in: query
+        description: The page index. This value is simply for client state.
+        schema:
+          type: integer
+          minimum: 0
+      - name: PageToken
+        in: query
+        description: The page token. This is provided by the API.
+        schema:
+          type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ListSinkResponse'
+          description: OK
+      security:
+      - accountSid_authToken: []
+      operationId: ListSink
+      x-maturity:
+      - GA
+  /v1/Sinks/{Sid}/Test:
+    servers:
+    - url: https://events.twilio.com
+    description: Test sink
+    x-twilio:
+      defaultOutputProperties:
+      - result
+      pathType: list
+      parent: /Sinks/{Sid}
+      mountName: sink_test
+    post:
+      description: Create a new Sink Test Event for the given Sink.
+      tags:
+      - Sinks
+      parameters:
+      - name: Sid
+        in: path
+        description: A 34 character string that uniquely identifies the Sink to be Tested.
+        schema:
+          type: string
+          minLength: 34
+          maxLength: 34
+          pattern: ^DG[0-9a-fA-F]{32}$
+        required: true
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/events.v1.sink.sink_test'
+          description: Created
+      security:
+      - accountSid_authToken: []
+      operationId: CreateSinkTest
+      x-maturity:
+      - GA
+  /v1/Sinks/{Sid}/Validate:
+    servers:
+    - url: https://events.twilio.com
+    description: Validate sink
+    x-twilio:
+      defaultOutputProperties:
+      - result
+      pathType: list
+      parent: /Sinks/{Sid}
+      mountName: sink_validate
+    post:
+      description: Validate that a test event for a Sink was received.
+      tags:
+      - Sinks
+      parameters:
+      - name: Sid
+        in: path
+        description: A 34 character string that uniquely identifies the Sink being validated.
+        schema:
+          type: string
+          minLength: 34
+          maxLength: 34
+          pattern: ^DG[0-9a-fA-F]{32}$
+        required: true
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/events.v1.sink.sink_validate'
+          description: Created
+      security:
+      - accountSid_authToken: []
+      operationId: CreateSinkValidate
+      x-maturity:
+      - GA
+      requestBody:
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/CreateSinkValidateRequest'
+components:
+  schemas:
+    events.v1.sink.sink_validate:
+      type: object
+      properties:
+        result:
+          type: string
+          nullable: true
+          description: Feedback indicating whether the given Sink was validated.
+    sink_enum_sink_type:
+      type: string
+      enum:
+      - kinesis
+      - webhook
+      - segment
+    sink_enum_status:
+      type: string
+      enum:
+      - initialized
+      - validating
+      - active
+      - failed
+    CreateSinkRequest:
+      type: object
+      required:
+      - Description
+      - SinkConfiguration
+      - SinkType
+      properties:
+        Description:
+          type: string
+          description: A human readable description for the Sink **This value should not contain PII.**
+        SinkConfiguration:
+          description: The information required for Twilio to connect to the provided Sink encoded as JSON.
+        SinkType:
+          type: string
+          $ref: '#/components/schemas/sink_enum_sink_type'
+          description: The Sink type. Can only be "kinesis" or "webhook" currently.
+    events.v1.sink:
+      type: object
+      properties:
+        date_created:
+          type: string
+          format: date-time
+          nullable: true
+          description: The date that this Sink was created, given in ISO 8601 format.
+        date_updated:
+          type: string
+          format: date-time
+          nullable: true
+          description: The date that this Sink was updated, given in ISO 8601 format.
+        description:
+          type: string
+          nullable: true
+          description: A human readable description for the Sink
+        sid:
+          type: string
+          minLength: 34
+          maxLength: 34
+          pattern: ^DG[0-9a-fA-F]{32}$
+          nullable: true
+          description: A 34 character string that uniquely identifies this Sink.
+        sink_configuration:
+          nullable: true
+          description: The information required for Twilio to connect to the provided Sink encoded as JSON.
+        sink_type:
+          type: string
+          $ref: '#/components/schemas/sink_enum_sink_type'
+          nullable: true
+          description: The Sink type. Can only be "kinesis" or "webhook" currently.
+        status:
+          type: string
+          $ref: '#/components/schemas/sink_enum_status'
+          nullable: true
+          description: The Status of this Sink. One of `initialized`, `validating`, `active` or `failed`.
+        url:
+          type: string
+          format: uri
+          nullable: true
+          description: The URL of this resource.
+        links:
+          type: object
+          format: uri-map
+          nullable: true
+          description: Contains a dictionary of URL links to nested resources of this Sink.
+    events.v1.sink.sink_test:
+      type: object
+      properties:
+        result:
+          type: string
+          nullable: true
+          description: Feedback indicating whether the test event was generated.
+    CreateSinkValidateRequest:
+      type: object
+      required:
+      - TestId
+      properties:
+        TestId:
+          type: string
+          description: A 34 character string that uniquely identifies the test event for a Sink being validated.
+    UpdateSinkRequest:
+      type: object
+      required:
+      - Description
+      properties:
+        Description:
+          type: string
+          description: A human readable description for the Sink **This value should not contain PII.**
+    ListSinkResponse:
+      type: object
+      properties:
+        sinks:
+          type: array
+          items:
+            $ref: '#/components/schemas/events.v1.sink'
+        meta:
+          type: object
+          properties:
+            first_page_url:
+              type: string
+              format: uri
+            next_page_url:
+              type: string
+              format: uri
+              nullable: true
+            page:
+              type: integer
+            page_size:
+              type: integer
+            previous_page_url:
+              type: string
+              format: uri
+              nullable: true
+            url:
+              type: string
+              format: uri
+            key:
+              type: string
+  securitySchemes:
+    accountSid_authToken:
+      type: http
+      scheme: basic
+x-maturity:
+- name: GA
+  description: This product is Generally Available.
+- name: Beta
+  description: PLEASE NOTE that this is a Beta product that is subject to change. Use it with caution.
