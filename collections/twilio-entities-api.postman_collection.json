@@ -1,0 +1,215 @@
+{
+  "item": [
+    {
+      "id": "016f19b0-2c4c-4506-8499-2d6ab50f169c",
+      "name": "Entities",
+      "description": {
+        "content": "Manage end-user entities for TOTP and push",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "544a7608-dee5-4c84-a3d7-8da5db82560e",
+          "name": "Twilio List Entities",
+          "request": {
+            "name": "Twilio List Entities",
+            "description": {},
+            "url": {
+              "path": [
+                "Services",
+                ":ServiceSid",
+                "Entities"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "ServiceSid",
+                  "description": "(Required) The SID of the Verify service"
+                }
+              ]
+            },
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "228d1ddf-2000-4fd5-9693-307854251944",
+              "name": "List of entities",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "Services",
+                    ":ServiceSid",
+                    "Entities"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "ServiceSid",
+                      "description": "(Required) The SID of the Verify service"
+                    }
+                  ]
+                },
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "19a3a5fa-c33a-49fa-8aa8-803f73090690",
+          "name": "Twilio Create an Entity",
+          "request": {
+            "name": "Twilio Create an Entity",
+            "description": {
+              "content": "Create a new entity representing an end user for TOTP or push authentication.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "Services",
+                ":ServiceSid",
+                "Entities"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "ServiceSid",
+                  "description": "(Required) The SID of the Verify service"
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/x-www-form-urlencoded"
+              }
+            ],
+            "method": "POST",
+            "auth": null,
+            "body": {
+              "mode": "urlencoded",
+              "urlencoded": [
+                {
+                  "disabled": false,
+                  "key": "Identity",
+                  "value": "<string>",
+                  "description": "(Required) Unique identity of the end user"
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "id": "d2b2aab1-997d-4789-b08a-d338b25efa47",
+              "name": "Entity created",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "Services",
+                    ":ServiceSid",
+                    "Entities"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "ServiceSid",
+                      "description": "(Required) The SID of the Verify service"
+                    }
+                  ]
+                },
+                "method": "POST",
+                "body": {
+                  "mode": "urlencoded",
+                  "urlencoded": [
+                    {
+                      "disabled": false,
+                      "description": {
+                        "content": "(Required) Unique identity of the end user",
+                        "type": "text/plain"
+                      },
+                      "key": "Identity",
+                      "value": "<string>"
+                    }
+                  ]
+                }
+              },
+              "status": "Created",
+              "code": 201,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "type": "string",
+      "value": "https://accounts.twilio.com",
+      "key": "baseUrl"
+    }
+  ],
+  "info": {
+    "_postman_id": "9b5fe358-e985-4907-979e-459e97f7ae61",
+    "name": "Twilio - Accounts A2p Entities API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "This is the public Twilio REST API.\n\nContact Support:\n Name: Twilio Support\n Email: support@twilio.com",
+      "type": "text/plain"
+    }
+  }
+}

@@ -1,0 +1,537 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Twilio - Accounts A2p Voice API",
+    "version": "1.52.0"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Voice",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "FetchAccountSettings",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://accounts.twilio.com/v1/Voice/Settings",
+            "params": [
+              {
+                "name": "SubaccountSid",
+                "value": "",
+                "type": "query",
+                "description": "The unique SID identifier of the Subaccount."
+              }
+            ],
+            "auth": {
+              "type": "basic",
+              "username": "{{username}}",
+              "password": "{{password}}"
+            }
+          },
+          "docs": "Get the Voice Insights Settings."
+        },
+        {
+          "info": {
+            "name": "UpdateAccountSettings",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://accounts.twilio.com/v1/Voice/Settings",
+            "body": {
+              "type": "form-urlencoded",
+              "data": []
+            },
+            "auth": {
+              "type": "basic",
+              "username": "{{username}}",
+              "password": "{{password}}"
+            }
+          },
+          "docs": "Update a specific Voice Insights Setting."
+        },
+        {
+          "info": {
+            "name": "FetchAnnotation",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://accounts.twilio.com/v1/Voice/:CallSid/Annotation",
+            "params": [
+              {
+                "name": "CallSid",
+                "value": "",
+                "type": "path",
+                "description": "The unique SID identifier of the Call."
+              }
+            ],
+            "auth": {
+              "type": "basic",
+              "username": "{{username}}",
+              "password": "{{password}}"
+            }
+          },
+          "docs": "Get the Annotation for a specific Call."
+        },
+        {
+          "info": {
+            "name": "UpdateAnnotation",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://accounts.twilio.com/v1/Voice/:CallSid/Annotation",
+            "params": [
+              {
+                "name": "CallSid",
+                "value": "",
+                "type": "path",
+                "description": "The unique string that Twilio created to identify this Call resource. It always starts with a CA."
+              }
+            ],
+            "body": {
+              "type": "form-urlencoded",
+              "data": []
+            },
+            "auth": {
+              "type": "basic",
+              "username": "{{username}}",
+              "password": "{{password}}"
+            }
+          },
+          "docs": "Update an Annotation for a specific Call."
+        },
+        {
+          "info": {
+            "name": "FetchCall",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://accounts.twilio.com/v1/Voice/:Sid",
+            "params": [
+              {
+                "name": "Sid",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "auth": {
+              "type": "basic",
+              "username": "{{username}}",
+              "password": "{{password}}"
+            }
+          }
+        },
+        {
+          "info": {
+            "name": "ListCallSummaries",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://accounts.twilio.com/v1/Voice/Summaries",
+            "params": [
+              {
+                "name": "From",
+                "value": "",
+                "type": "query",
+                "description": "A calling party. Could be an E.164 number, a SIP URI, or a Twilio Client registered name."
+              },
+              {
+                "name": "To",
+                "value": "",
+                "type": "query",
+                "description": "A called party. Could be an E.164 number, a SIP URI, or a Twilio Client registered name."
+              },
+              {
+                "name": "FromCarrier",
+                "value": "",
+                "type": "query",
+                "description": "An origination carrier."
+              },
+              {
+                "name": "ToCarrier",
+                "value": "",
+                "type": "query",
+                "description": "A destination carrier."
+              },
+              {
+                "name": "FromCountryCode",
+                "value": "",
+                "type": "query",
+                "description": "A source country code based on phone number in From."
+              },
+              {
+                "name": "ToCountryCode",
+                "value": "",
+                "type": "query",
+                "description": "A destination country code. Based on phone number in To."
+              },
+              {
+                "name": "Branded",
+                "value": "",
+                "type": "query",
+                "description": "A boolean flag indicating whether or not the calls were branded using Twilio Branded Calls."
+              },
+              {
+                "name": "VerifiedCaller",
+                "value": "",
+                "type": "query",
+                "description": "A boolean flag indicating whether or not the caller was verified using SHAKEN/STIR."
+              },
+              {
+                "name": "HasTag",
+                "value": "",
+                "type": "query",
+                "description": "A boolean flag indicating the presence of one or more [Voice Insights Call Tags](https://www.twilio.com/docs/voice/voice-insights/api/call/details-call-tags)."
+              },
+              {
+                "name": "StartTime",
+                "value": "",
+                "type": "query",
+                "description": "A Start time of the calls. xm (x minutes), xh (x hours), xd (x days), 1w, 30m, 3d, 4w or datetime-ISO. Defaults to 4h."
+              },
+              {
+                "name": "EndTime",
+                "value": "",
+                "type": "query",
+                "description": "An End Time of the calls. xm (x minutes), xh (x hours), xd (x days), 1w, 30m, 3d, 4w or datetime-ISO. Defaults to 0m."
+              },
+              {
+                "name": "CallType",
+                "value": "",
+                "type": "query",
+                "description": "A Call Type of the calls. One of `carrier`, `sip`, `trunking` or `client`."
+              },
+              {
+                "name": "CallState",
+                "value": "",
+                "type": "query",
+                "description": "A Call State of the calls. One of `ringing`, `completed`, `busy`, `fail`, `noanswer`, `canceled`, `answered`, `undialed`."
+              },
+              {
+                "name": "Direction",
+                "value": "",
+                "type": "query",
+                "description": "A Direction of the calls. One of `outbound_api`, `outbound_dial`, `inbound`, `trunking_originating`, `trunking_terminating`."
+              },
+              {
+                "name": "ProcessingState",
+                "value": "",
+                "type": "query",
+                "description": "A Processing State of the Call Summaries. One of `completed`, `partial` or `all`."
+              },
+              {
+                "name": "SortBy",
+                "value": "",
+                "type": "query",
+                "description": "A Sort By criterion for the returned list of Call Summaries. One of `start_time` or `end_time`."
+              },
+              {
+                "name": "Subaccount",
+                "value": "",
+                "type": "query",
+                "description": "A unique SID identifier of a Subaccount."
+              },
+              {
+                "name": "AbnormalSession",
+                "value": "",
+                "type": "query",
+                "description": "A boolean flag indicating an abnormal session where the last SIP response was not 200 OK."
+              },
+              {
+                "name": "AnsweredBy",
+                "value": "",
+                "type": "query",
+                "description": "An Answered By value for the calls based on `Answering Machine Detection (AMD)`. One of `unknown`, `machine_start`, `machine_end_beep`, `machine_end_silence`, `machine_end_other`, `human` or `fax`."
+              },
+              {
+                "name": "AnsweredByAnnotation",
+                "value": "",
+                "type": "query",
+                "description": "Either machine or human."
+              },
+              {
+                "name": "ConnectivityIssueAnnotation",
+                "value": "",
+                "type": "query",
+                "description": "A Connectivity Issue with the calls. One of `no_connectivity_issue`, `invalid_number`, `caller_id`, `dropped_call`, or `number_reachability`."
+              },
+              {
+                "name": "QualityIssueAnnotation",
+                "value": "",
+                "type": "query",
+                "description": "A subjective Quality Issue with the calls. One of `no_quality_issue`, `low_volume`, `choppy_robotic`, `echo`, `dtmf`, `latency`, `owa`, `static_noise`."
+              },
+              {
+                "name": "SpamAnnotation",
+                "value": "",
+                "type": "query",
+                "description": "A boolean flag indicating spam calls."
+              },
+              {
+                "name": "CallScoreAnnotation",
+                "value": "",
+                "type": "query",
+                "description": "A Call Score of the calls. Use a range of 1-5 to indicate the call experience score, with the following mapping as a reference for the rated call [5: Excellent, 4: Good, 3 : Fair, 2 : Poor, 1: Bad]."
+              },
+              {
+                "name": "PageSize",
+                "value": "",
+                "type": "query",
+                "description": "How many resources to return in each list page. The default is 50, and the maximum is 1000."
+              },
+              {
+                "name": "Page",
+                "value": "",
+                "type": "query",
+                "description": "The page index. This value is simply for client state."
+              },
+              {
+                "name": "PageToken",
+                "value": "",
+                "type": "query",
+                "description": "The page token. This is provided by the API."
+              }
+            ],
+            "auth": {
+              "type": "basic",
+              "username": "{{username}}",
+              "password": "{{password}}"
+            }
+          },
+          "docs": "Get a list of Call Summaries."
+        },
+        {
+          "info": {
+            "name": "ListEvent",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://accounts.twilio.com/v1/Voice/:CallSid/Events",
+            "params": [
+              {
+                "name": "CallSid",
+                "value": "",
+                "type": "path",
+                "description": "The unique SID identifier of the Call."
+              },
+              {
+                "name": "Edge",
+                "value": "",
+                "type": "query",
+                "description": "The Edge of this Event. One of `unknown_edge`, `carrier_edge`, `sip_edge`, `sdk_edge` or `client_edge`."
+              },
+              {
+                "name": "PageSize",
+                "value": "",
+                "type": "query",
+                "description": "How many resources to return in each list page. The default is 50, and the maximum is 1000."
+              },
+              {
+                "name": "Page",
+                "value": "",
+                "type": "query",
+                "description": "The page index. This value is simply for client state."
+              },
+              {
+                "name": "PageToken",
+                "value": "",
+                "type": "query",
+                "description": "The page token. This is provided by the API."
+              }
+            ],
+            "auth": {
+              "type": "basic",
+              "username": "{{username}}",
+              "password": "{{password}}"
+            }
+          },
+          "docs": "Get a list of Call Insight Events for a Call."
+        },
+        {
+          "info": {
+            "name": "ListMetric",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://accounts.twilio.com/v1/Voice/:CallSid/Metrics",
+            "params": [
+              {
+                "name": "CallSid",
+                "value": "",
+                "type": "path",
+                "description": "The unique SID identifier of the Call."
+              },
+              {
+                "name": "Edge",
+                "value": "",
+                "type": "query",
+                "description": "The Edge of this Metric. One of `unknown_edge`, `carrier_edge`, `sip_edge`, `sdk_edge` or `client_edge`."
+              },
+              {
+                "name": "Direction",
+                "value": "",
+                "type": "query",
+                "description": "The Direction of this Metric. One of `unknown`, `inbound`, `outbound` or `both`."
+              },
+              {
+                "name": "PageSize",
+                "value": "",
+                "type": "query",
+                "description": "How many resources to return in each list page. The default is 50, and the maximum is 1000."
+              },
+              {
+                "name": "Page",
+                "value": "",
+                "type": "query",
+                "description": "The page index. This value is simply for client state."
+              },
+              {
+                "name": "PageToken",
+                "value": "",
+                "type": "query",
+                "description": "The page token. This is provided by the API."
+              }
+            ],
+            "auth": {
+              "type": "basic",
+              "username": "{{username}}",
+              "password": "{{password}}"
+            }
+          },
+          "docs": "Get a list of Call Metrics for a Call."
+        },
+        {
+          "info": {
+            "name": "FetchSummary",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://accounts.twilio.com/v1/Voice/:CallSid/Summary",
+            "params": [
+              {
+                "name": "CallSid",
+                "value": "",
+                "type": "path",
+                "description": "The unique SID identifier of the Call."
+              },
+              {
+                "name": "ProcessingState",
+                "value": "",
+                "type": "query",
+                "description": "The Processing State of this Call Summary. One of `complete`, `partial` or `all`."
+              }
+            ],
+            "auth": {
+              "type": "basic",
+              "username": "{{username}}",
+              "password": "{{password}}"
+            }
+          },
+          "docs": "Get a specific Call Summary."
+        },
+        {
+          "info": {
+            "name": "ListVoiceCountry",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://accounts.twilio.com/v2/Voice/Countries",
+            "params": [
+              {
+                "name": "PageSize",
+                "value": "",
+                "type": "query",
+                "description": "How many resources to return in each list page. The default is 50, and the maximum is 1000."
+              },
+              {
+                "name": "Page",
+                "value": "",
+                "type": "query",
+                "description": "The page index. This value is simply for client state."
+              },
+              {
+                "name": "PageToken",
+                "value": "",
+                "type": "query",
+                "description": "The page token. This is provided by the API."
+              }
+            ],
+            "auth": {
+              "type": "basic",
+              "username": "{{username}}",
+              "password": "{{password}}"
+            }
+          }
+        },
+        {
+          "info": {
+            "name": "FetchVoiceCountry",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://accounts.twilio.com/v2/Voice/Countries/:IsoCountry",
+            "params": [
+              {
+                "name": "IsoCountry",
+                "value": "",
+                "type": "path",
+                "description": "The [ISO country code](https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2) of the origin-based voice pricing information to fetch."
+              }
+            ],
+            "auth": {
+              "type": "basic",
+              "username": "{{username}}",
+              "password": "{{password}}"
+            }
+          },
+          "docs": "Fetch a specific Country."
+        },
+        {
+          "info": {
+            "name": "FetchVoiceNumber",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://accounts.twilio.com/v2/Voice/Numbers/:DestinationNumber",
+            "params": [
+              {
+                "name": "DestinationNumber",
+                "value": "",
+                "type": "path",
+                "description": "The destination phone number, in [E.164](https://www.twilio.com/docs/glossary/what-e164) format, for which to fetch the origin-based voice pricing information. E.164 format consists of a + followed by the country code and subscriber number."
+              },
+              {
+                "name": "OriginationNumber",
+                "value": "",
+                "type": "query",
+                "description": "The origination phone number, in [E.164](https://www.twilio.com/docs/glossary/what-e164) format, for which to fetch the origin-based voice pricing information. E.164 format consists of a + followed by the country code and subscriber number."
+              }
+            ],
+            "auth": {
+              "type": "basic",
+              "username": "{{username}}",
+              "password": "{{password}}"
+            }
+          },
+          "docs": "Fetch pricing information for a specific destination and, optionally, origination phone number."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

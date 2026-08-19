@@ -1,6 +1,6 @@
-openapi: 3.0.1
+openapi: 3.2.0
 info:
-  title: Twilio - Accounts A2p SourceIpMappings API
+  title: Twilio - Accounts A2p Source Ip Mappings API
   description: This is the public Twilio REST API.
   termsOfService: https://www.twilio.com/legal/tos
   contact:
@@ -173,45 +173,38 @@ paths:
       - GA
 components:
   schemas:
-    voice.v1.source_ip_mapping:
+    ListSourceIpMappingResponse:
       type: object
       properties:
-        sid:
-          type: string
-          minLength: 34
-          maxLength: 34
-          pattern: ^IB[0-9a-fA-F]{32}$
-          nullable: true
-          description: The unique string that we created to identify the IP Record resource.
-        ip_record_sid:
-          type: string
-          minLength: 34
-          maxLength: 34
-          pattern: ^IL[0-9a-fA-F]{32}$
-          nullable: true
-          description: The Twilio-provided string that uniquely identifies the IP Record resource to map from.
-        sip_domain_sid:
-          type: string
-          minLength: 34
-          maxLength: 34
-          pattern: ^SD[0-9a-fA-F]{32}$
-          nullable: true
-          description: The SID of the SIP Domain that the IP Record is mapped to.
-        date_created:
-          type: string
-          format: date-time
-          nullable: true
-          description: The date and time in GMT that the resource was created specified in [RFC 2822](https://www.ietf.org/rfc/rfc2822.txt) format.
-        date_updated:
-          type: string
-          format: date-time
-          nullable: true
-          description: The date and time in GMT that the resource was last updated specified in [RFC 2822](https://www.ietf.org/rfc/rfc2822.txt) format.
-        url:
-          type: string
-          format: uri
-          nullable: true
-          description: The absolute URL of the resource.
+        source_ip_mappings:
+          type: array
+          items:
+            $ref: '#/components/schemas/voice.v1.source_ip_mapping'
+        meta:
+          type: object
+          properties:
+            first_page_url:
+              type: string
+              format: uri
+            next_page_url:
+              type:
+              - string
+              - 'null'
+              format: uri
+            page:
+              type: integer
+            page_size:
+              type: integer
+            previous_page_url:
+              type:
+              - string
+              - 'null'
+              format: uri
+            url:
+              type: string
+              format: uri
+            key:
+              type: string
     UpdateSourceIpMappingRequest:
       type: object
       required:
@@ -223,6 +216,51 @@ components:
           maxLength: 34
           pattern: ^SD[0-9a-fA-F]{32}$
           description: The SID of the SIP Domain that the IP Record should be mapped to.
+    voice.v1.source_ip_mapping:
+      type: object
+      properties:
+        sid:
+          type:
+          - string
+          - 'null'
+          minLength: 34
+          maxLength: 34
+          pattern: ^IB[0-9a-fA-F]{32}$
+          description: The unique string that we created to identify the IP Record resource.
+        ip_record_sid:
+          type:
+          - string
+          - 'null'
+          minLength: 34
+          maxLength: 34
+          pattern: ^IL[0-9a-fA-F]{32}$
+          description: The Twilio-provided string that uniquely identifies the IP Record resource to map from.
+        sip_domain_sid:
+          type:
+          - string
+          - 'null'
+          minLength: 34
+          maxLength: 34
+          pattern: ^SD[0-9a-fA-F]{32}$
+          description: The SID of the SIP Domain that the IP Record is mapped to.
+        date_created:
+          type:
+          - string
+          - 'null'
+          format: date-time
+          description: The date and time in GMT that the resource was created specified in [RFC 2822](https://www.ietf.org/rfc/rfc2822.txt) format.
+        date_updated:
+          type:
+          - string
+          - 'null'
+          format: date-time
+          description: The date and time in GMT that the resource was last updated specified in [RFC 2822](https://www.ietf.org/rfc/rfc2822.txt) format.
+        url:
+          type:
+          - string
+          - 'null'
+          format: uri
+          description: The absolute URL of the resource.
     CreateSourceIpMappingRequest:
       type: object
       required:
@@ -241,36 +279,6 @@ components:
           maxLength: 34
           pattern: ^SD[0-9a-fA-F]{32}$
           description: The SID of the SIP Domain that the IP Record should be mapped to.
-    ListSourceIpMappingResponse:
-      type: object
-      properties:
-        source_ip_mappings:
-          type: array
-          items:
-            $ref: '#/components/schemas/voice.v1.source_ip_mapping'
-        meta:
-          type: object
-          properties:
-            first_page_url:
-              type: string
-              format: uri
-            next_page_url:
-              type: string
-              format: uri
-              nullable: true
-            page:
-              type: integer
-            page_size:
-              type: integer
-            previous_page_url:
-              type: string
-              format: uri
-              nullable: true
-            url:
-              type: string
-              format: uri
-            key:
-              type: string
   securitySchemes:
     accountSid_authToken:
       type: http

@@ -1,6 +1,6 @@
-openapi: 3.0.1
+openapi: 3.2.0
 info:
-  title: Twilio - Accounts A2p ContentAndApprovals API
+  title: Twilio - Accounts A2p Content And Approvals API
   description: This is the public Twilio REST API.
   termsOfService: https://www.twilio.com/legal/tos
   contact:
@@ -70,6 +70,53 @@ paths:
       - Preview
 components:
   schemas:
+    content.v1.content_and_approvals:
+      type: object
+      properties:
+        date_created:
+          type:
+          - string
+          - 'null'
+          format: date-time
+          description: The date and time in GMT that the resource was created specified in [RFC 2822](https://www.ietf.org/rfc/rfc2822.txt) format.
+        date_updated:
+          type:
+          - string
+          - 'null'
+          format: date-time
+          description: The date and time in GMT that the resource was last updated specified in [RFC 2822](https://www.ietf.org/rfc/rfc2822.txt) format.
+        sid:
+          type:
+          - string
+          - 'null'
+          minLength: 34
+          maxLength: 34
+          pattern: ^HX[0-9a-fA-F]{32}$
+          description: The unique string that that we created to identify the Content resource.
+        account_sid:
+          type:
+          - string
+          - 'null'
+          minLength: 34
+          maxLength: 34
+          pattern: ^AC[0-9a-fA-F]{32}$
+          description: The SID of the [Account](https://www.twilio.com/docs/usage/api/account) that created Content resource.
+        friendly_name:
+          type:
+          - string
+          - 'null'
+          description: A string name used to describe the Content resource. Not visible to the end recipient.
+        language:
+          type:
+          - string
+          - 'null'
+          description: Two-letter (ISO 639-1) language code (e.g., en) identifying the language the Content resource is in.
+        variables:
+          description: 'Defines the default placeholder values for variables included in the Content resource. e.g. {"1": "Customer_Name"}.'
+        types:
+          description: The [Content types](https://www.twilio.com/docs/content/content-types-overview) (e.g. twilio/text) for this Content resource.
+        approval_requests:
+          description: The submitted information and approval request status of the Content resource.
     ListContentAndApprovalsResponse:
       type: object
       properties:
@@ -84,66 +131,24 @@ components:
               type: string
               format: uri
             next_page_url:
-              type: string
+              type:
+              - string
+              - 'null'
               format: uri
-              nullable: true
             page:
               type: integer
             page_size:
               type: integer
             previous_page_url:
-              type: string
+              type:
+              - string
+              - 'null'
               format: uri
-              nullable: true
             url:
               type: string
               format: uri
             key:
               type: string
-    content.v1.content_and_approvals:
-      type: object
-      properties:
-        date_created:
-          type: string
-          format: date-time
-          nullable: true
-          description: The date and time in GMT that the resource was created specified in [RFC 2822](https://www.ietf.org/rfc/rfc2822.txt) format.
-        date_updated:
-          type: string
-          format: date-time
-          nullable: true
-          description: The date and time in GMT that the resource was last updated specified in [RFC 2822](https://www.ietf.org/rfc/rfc2822.txt) format.
-        sid:
-          type: string
-          minLength: 34
-          maxLength: 34
-          pattern: ^HX[0-9a-fA-F]{32}$
-          nullable: true
-          description: The unique string that that we created to identify the Content resource.
-        account_sid:
-          type: string
-          minLength: 34
-          maxLength: 34
-          pattern: ^AC[0-9a-fA-F]{32}$
-          nullable: true
-          description: The SID of the [Account](https://www.twilio.com/docs/usage/api/account) that created Content resource.
-        friendly_name:
-          type: string
-          nullable: true
-          description: A string name used to describe the Content resource. Not visible to the end recipient.
-        language:
-          type: string
-          nullable: true
-          description: Two-letter (ISO 639-1) language code (e.g., en) identifying the language the Content resource is in.
-        variables:
-          nullable: true
-          description: 'Defines the default placeholder values for variables included in the Content resource. e.g. {"1": "Customer_Name"}.'
-        types:
-          nullable: true
-          description: The [Content types](https://www.twilio.com/docs/content/content-types-overview) (e.g. twilio/text) for this Content resource.
-        approval_requests:
-          nullable: true
-          description: The submitted information and approval request status of the Content resource.
   securitySchemes:
     accountSid_authToken:
       type: http

@@ -1,4 +1,4 @@
-openapi: 3.0.1
+openapi: 3.2.0
 info:
   title: Twilio - Accounts A2p Conferences API
   description: This is the public Twilio REST API.
@@ -469,156 +469,26 @@ paths:
                 $ref: '#/components/schemas/Participant'
 components:
   schemas:
-    conference_enum_processing_state:
-      type: string
-      enum:
-      - complete
-      - in_progress
-      - timeout
-    insights.v1.conference.conference_participant:
+    ConferenceList:
       type: object
       properties:
-        participant_sid:
-          type: string
-          minLength: 34
-          maxLength: 34
-          pattern: ^CP[0-9a-fA-F]{32}$
-          nullable: true
-          description: SID for this participant.
-        label:
-          type: string
-          nullable: true
-          description: The user-specified label of this participant.
-          x-twilio:
-            pii:
-              handling: standard
-              deleteSla: 30
-        conference_sid:
-          type: string
-          minLength: 34
-          maxLength: 34
-          pattern: ^CF[0-9a-fA-F]{32}$
-          nullable: true
-          description: The unique SID identifier of the Conference.
-        call_sid:
-          type: string
-          minLength: 34
-          maxLength: 34
-          pattern: ^CA[0-9a-fA-F]{32}$
-          nullable: true
-          description: Unique SID identifier of the call that generated the Participant resource.
-        account_sid:
-          type: string
-          minLength: 34
-          maxLength: 34
-          pattern: ^AC[0-9a-fA-F]{32}$
-          nullable: true
-          description: The unique SID identifier of the Account.
-        call_direction:
-          type: string
-          $ref: '#/components/schemas/conference_participant_enum_call_direction'
-          nullable: true
-          description: Call direction of the participant; inbound or outbound.
-        from:
-          type: string
-          nullable: true
-          description: Caller ID of the calling party.
-          x-twilio:
-            pii:
-              handling: standard
-              deleteSla: 30
-        to:
-          type: string
-          nullable: true
-          description: Called party.
-          x-twilio:
-            pii:
-              handling: standard
-              deleteSla: 30
-        call_status:
-          type: string
-          $ref: '#/components/schemas/conference_participant_enum_call_status'
-          nullable: true
-          description: Call status of the call that generated the participant.
-        country_code:
-          type: string
-          nullable: true
-          description: ISO alpha-2 country code of the participant based on caller ID or called number.
-        is_moderator:
-          type: boolean
-          nullable: true
-          description: Boolean. Indicates whether participant had startConferenceOnEnter=true or endConferenceOnExit=true.
-        join_time:
-          type: string
-          format: date-time
-          nullable: true
-          description: ISO 8601 timestamp of participant join event.
-        leave_time:
-          type: string
-          format: date-time
-          nullable: true
-          description: ISO 8601 timestamp of participant leave event.
-        duration_seconds:
-          type: integer
-          nullable: true
-          description: Participant durations in seconds.
-        outbound_queue_length:
-          type: integer
-          nullable: true
-          description: Add Participant API only. Estimated time in queue at call creation.
-        outbound_time_in_queue:
-          type: integer
-          nullable: true
-          description: Add Participant API only. Actual time in queue in seconds.
-        jitter_buffer_size:
-          type: string
-          $ref: '#/components/schemas/conference_participant_enum_jitter_buffer_size'
-          nullable: true
-          description: The Jitter Buffer Size of this Conference Participant. One of `large`, `small`, `medium` or `off`.
-        is_coach:
-          type: boolean
-          nullable: true
-          description: Boolean. Indicated whether participant was a coach.
-        coached_participants:
+        conferences:
           type: array
           items:
-            type: string
-          nullable: true
-          description: Call SIDs coached by this participant.
-        participant_region:
+            $ref: '#/components/schemas/Conference'
+        first_page_uri:
           type: string
-          $ref: '#/components/schemas/conference_participant_enum_region'
-          nullable: true
-          description: Twilio region where the participant media originates.
-        conference_region:
+        next_page_uri:
           type: string
-          $ref: '#/components/schemas/conference_participant_enum_region'
-          nullable: true
-          description: The Conference Region of this Conference Participant. One of `us1`, `us2`, `au1`, `br1`, `ie1`, `jp1`, `sg1` or `de1`.
-        call_type:
-          type: string
-          $ref: '#/components/schemas/conference_participant_enum_call_type'
-          nullable: true
-          description: The Call Type of this Conference Participant. One of `carrier`, `client` or `sip`.
-        processing_state:
-          type: string
-          $ref: '#/components/schemas/conference_participant_enum_processing_state'
-          nullable: true
-          description: Processing state of the Participant Summary. Will be `in_progress` while data is being aggregated, `timeout` if Twilio couldn't process the summary in 24hrs, and `complete` once aggregations and analysis has ended.
-        properties:
-          nullable: true
-          description: Participant properties and metadata.
-        events:
-          nullable: true
-          description: Object containing information of actions taken by participants. Contains a dictionary of URL links to nested resources of this Conference Participant.
-        metrics:
-          nullable: true
-          description: Object. Contains participant call quality metrics.
-        url:
-          type: string
-          format: uri
-          nullable: true
-          description: The URL of this resource.
+        page:
+          type: integer
+        page_size:
+          type: integer
+    conference_participant_enum_call_direction:
+      type: string
+      enum:
+      - inbound
+      - outbound
     conference_enum_conference_status:
       type: string
       enum:
@@ -626,6 +496,413 @@ components:
       - not_started
       - completed
       - summary_timeout
+    insights.v1.conference.conference_participant:
+      type: object
+      properties:
+        participant_sid:
+          type:
+          - string
+          - 'null'
+          minLength: 34
+          maxLength: 34
+          pattern: ^CP[0-9a-fA-F]{32}$
+          description: SID for this participant.
+        label:
+          type:
+          - string
+          - 'null'
+          description: The user-specified label of this participant.
+          x-twilio:
+            pii:
+              handling: standard
+              deleteSla: 30
+        conference_sid:
+          type:
+          - string
+          - 'null'
+          minLength: 34
+          maxLength: 34
+          pattern: ^CF[0-9a-fA-F]{32}$
+          description: The unique SID identifier of the Conference.
+        call_sid:
+          type:
+          - string
+          - 'null'
+          minLength: 34
+          maxLength: 34
+          pattern: ^CA[0-9a-fA-F]{32}$
+          description: Unique SID identifier of the call that generated the Participant resource.
+        account_sid:
+          type:
+          - string
+          - 'null'
+          minLength: 34
+          maxLength: 34
+          pattern: ^AC[0-9a-fA-F]{32}$
+          description: The unique SID identifier of the Account.
+        call_direction:
+          type:
+          - string
+          - 'null'
+          $ref: '#/components/schemas/conference_participant_enum_call_direction'
+          description: Call direction of the participant; inbound or outbound.
+        from:
+          type:
+          - string
+          - 'null'
+          description: Caller ID of the calling party.
+          x-twilio:
+            pii:
+              handling: standard
+              deleteSla: 30
+        to:
+          type:
+          - string
+          - 'null'
+          description: Called party.
+          x-twilio:
+            pii:
+              handling: standard
+              deleteSla: 30
+        call_status:
+          type:
+          - string
+          - 'null'
+          $ref: '#/components/schemas/conference_participant_enum_call_status'
+          description: Call status of the call that generated the participant.
+        country_code:
+          type:
+          - string
+          - 'null'
+          description: ISO alpha-2 country code of the participant based on caller ID or called number.
+        is_moderator:
+          type:
+          - boolean
+          - 'null'
+          description: Boolean. Indicates whether participant had startConferenceOnEnter=true or endConferenceOnExit=true.
+        join_time:
+          type:
+          - string
+          - 'null'
+          format: date-time
+          description: ISO 8601 timestamp of participant join event.
+        leave_time:
+          type:
+          - string
+          - 'null'
+          format: date-time
+          description: ISO 8601 timestamp of participant leave event.
+        duration_seconds:
+          type:
+          - integer
+          - 'null'
+          description: Participant durations in seconds.
+        outbound_queue_length:
+          type:
+          - integer
+          - 'null'
+          description: Add Participant API only. Estimated time in queue at call creation.
+        outbound_time_in_queue:
+          type:
+          - integer
+          - 'null'
+          description: Add Participant API only. Actual time in queue in seconds.
+        jitter_buffer_size:
+          type:
+          - string
+          - 'null'
+          $ref: '#/components/schemas/conference_participant_enum_jitter_buffer_size'
+          description: The Jitter Buffer Size of this Conference Participant. One of `large`, `small`, `medium` or `off`.
+        is_coach:
+          type:
+          - boolean
+          - 'null'
+          description: Boolean. Indicated whether participant was a coach.
+        coached_participants:
+          type:
+          - array
+          - 'null'
+          items:
+            type: string
+          description: Call SIDs coached by this participant.
+        participant_region:
+          type:
+          - string
+          - 'null'
+          $ref: '#/components/schemas/conference_participant_enum_region'
+          description: Twilio region where the participant media originates.
+        conference_region:
+          type:
+          - string
+          - 'null'
+          $ref: '#/components/schemas/conference_participant_enum_region'
+          description: The Conference Region of this Conference Participant. One of `us1`, `us2`, `au1`, `br1`, `ie1`, `jp1`, `sg1` or `de1`.
+        call_type:
+          type:
+          - string
+          - 'null'
+          $ref: '#/components/schemas/conference_participant_enum_call_type'
+          description: The Call Type of this Conference Participant. One of `carrier`, `client` or `sip`.
+        processing_state:
+          type:
+          - string
+          - 'null'
+          $ref: '#/components/schemas/conference_participant_enum_processing_state'
+          description: Processing state of the Participant Summary. Will be `in_progress` while data is being aggregated, `timeout` if Twilio couldn't process the summary in 24hrs, and `complete` once aggregations and analysis has ended.
+        properties:
+          description: Participant properties and metadata.
+        events:
+          description: Object containing information of actions taken by participants. Contains a dictionary of URL links to nested resources of this Conference Participant.
+        metrics:
+          description: Object. Contains participant call quality metrics.
+        url:
+          type:
+          - string
+          - 'null'
+          format: uri
+          description: The URL of this resource.
+    conference_participant_enum_call_type:
+      type: string
+      enum:
+      - carrier
+      - client
+      - sip
+    conference_participant_enum_region:
+      type: string
+      enum:
+      - us1
+      - us2
+      - au1
+      - br1
+      - ie1
+      - jp1
+      - sg1
+      - de1
+    conference_enum_tag:
+      type: string
+      enum:
+      - invalid_requested_region
+      - duplicate_identity
+      - start_failure
+      - region_configuration_issues
+      - quality_warnings
+      - participant_behavior_issues
+      - high_packet_loss
+      - high_jitter
+      - high_latency
+      - low_mos
+      - detected_silence
+    conference_enum_region:
+      type: string
+      enum:
+      - us1
+      - au1
+      - br1
+      - ie1
+      - jp1
+      - sg1
+      - de1
+    conference_participant_enum_call_status:
+      type: string
+      enum:
+      - answered
+      - completed
+      - busy
+      - fail
+      - noanswer
+      - ringing
+      - canceled
+    conference_enum_conference_end_reason:
+      type: string
+      enum:
+      - last_participant_left
+      - conference_ended_via_api
+      - participant_with_end_conference_on_exit_left
+      - last_participant_kicked
+      - participant_with_end_conference_on_exit_kicked
+    conference_participant_enum_jitter_buffer_size:
+      type: string
+      enum:
+      - large
+      - small
+      - medium
+      - 'off'
+    ListConferenceParticipantResponse:
+      type: object
+      properties:
+        participants:
+          type: array
+          items:
+            $ref: '#/components/schemas/insights.v1.conference.conference_participant'
+        meta:
+          type: object
+          properties:
+            first_page_url:
+              type: string
+              format: uri
+            next_page_url:
+              type:
+              - string
+              - 'null'
+              format: uri
+            page:
+              type: integer
+            page_size:
+              type: integer
+            previous_page_url:
+              type:
+              - string
+              - 'null'
+              format: uri
+            url:
+              type: string
+              format: uri
+            key:
+              type: string
+    insights.v1.conference:
+      type: object
+      properties:
+        conference_sid:
+          type:
+          - string
+          - 'null'
+          minLength: 34
+          maxLength: 34
+          pattern: ^CF[0-9a-fA-F]{32}$
+          description: The unique SID identifier of the Conference.
+        account_sid:
+          type:
+          - string
+          - 'null'
+          minLength: 34
+          maxLength: 34
+          pattern: ^AC[0-9a-fA-F]{32}$
+          description: The unique SID identifier of the Account.
+        friendly_name:
+          type:
+          - string
+          - 'null'
+          description: Custom label for the conference resource, up to 64 characters.
+          x-twilio:
+            pii:
+              handling: standard
+              deleteSla: 30
+        create_time:
+          type:
+          - string
+          - 'null'
+          format: date-time
+          description: Conference creation date and time in ISO 8601 format.
+        start_time:
+          type:
+          - string
+          - 'null'
+          format: date-time
+          description: Timestamp in ISO 8601 format when the conference started. Conferences do not start until at least two participants join, at least one of whom has startConferenceOnEnter=true.
+        end_time:
+          type:
+          - string
+          - 'null'
+          format: date-time
+          description: Conference end date and time in ISO 8601 format.
+        duration_seconds:
+          type:
+          - integer
+          - 'null'
+          description: Conference duration in seconds.
+        connect_duration_seconds:
+          type:
+          - integer
+          - 'null'
+          description: Duration of the between conference start event and conference end event in seconds.
+        status:
+          type:
+          - string
+          - 'null'
+          $ref: '#/components/schemas/conference_enum_conference_status'
+          description: Status of this Conference; `in_progress`, `not_started`, `completed` or `summary_timeout`. if Twilio don't receive `last_participant_left` event, summary will be timeout after 24 hours
+        max_participants:
+          type:
+          - integer
+          - 'null'
+          description: Maximum number of concurrent participants as specified by the configuration.
+        max_concurrent_participants:
+          type:
+          - integer
+          - 'null'
+          description: Actual maximum number of concurrent participants in the conference.
+        unique_participants:
+          type:
+          - integer
+          - 'null'
+          description: Unique conference participants based on caller ID.
+        end_reason:
+          type:
+          - string
+          - 'null'
+          $ref: '#/components/schemas/conference_enum_conference_end_reason'
+          description: Conference end reason; e.g. last participant left, modified by API, etc.
+        ended_by:
+          type:
+          - string
+          - 'null'
+          minLength: 34
+          maxLength: 34
+          pattern: ^CA[0-9a-fA-F]{32}$
+          description: Call SID of the participant whose actions ended the conference.
+        mixer_region:
+          type:
+          - string
+          - 'null'
+          $ref: '#/components/schemas/conference_enum_region'
+          description: Twilio region where the conference media was mixed.
+        mixer_region_requested:
+          type:
+          - string
+          - 'null'
+          $ref: '#/components/schemas/conference_enum_region'
+          description: Twilio region where conference mixed was specified to be mixed in configuration.
+        recording_enabled:
+          type:
+          - boolean
+          - 'null'
+          description: Boolean. Indicates whether recording was enabled at the conference mixer.
+        detected_issues:
+          description: Potential issues detected by Twilio during the conference.
+        tags:
+          type:
+          - array
+          - 'null'
+          items:
+            type: string
+            $ref: '#/components/schemas/conference_enum_tag'
+          description: Tags for detected conference conditions and participant behaviors which may be of interest.
+        tag_info:
+          description: Object. Contains details about conference tags including severity.
+        processing_state:
+          type:
+          - string
+          - 'null'
+          $ref: '#/components/schemas/conference_enum_processing_state'
+          description: Processing state for the Conference Summary resource. Will be `in_progress` while data is being aggregated, `timeout` if Twilio couldn't process the summary in 24hrs, and `complete` once aggregations and analysis has ended.
+        url:
+          type:
+          - string
+          - 'null'
+          format: uri
+          description: The URL of this resource.
+        links:
+          type:
+          - object
+          - 'null'
+          format: uri-map
+          description: Contains a dictionary of URL links to nested resources of this Conference.
+    conference_enum_processing_state:
+      type: string
+      enum:
+      - complete
+      - in_progress
+      - timeout
     Conference:
       type: object
       properties:
@@ -668,81 +945,6 @@ components:
               type: string
             recordings:
               type: string
-    ConferenceList:
-      type: object
-      properties:
-        conferences:
-          type: array
-          items:
-            $ref: '#/components/schemas/Conference'
-        first_page_uri:
-          type: string
-        next_page_uri:
-          type: string
-        page:
-          type: integer
-        page_size:
-          type: integer
-    conference_participant_enum_jitter_buffer_size:
-      type: string
-      enum:
-      - large
-      - small
-      - medium
-      - 'off'
-    conference_enum_tag:
-      type: string
-      enum:
-      - invalid_requested_region
-      - duplicate_identity
-      - start_failure
-      - region_configuration_issues
-      - quality_warnings
-      - participant_behavior_issues
-      - high_packet_loss
-      - high_jitter
-      - high_latency
-      - low_mos
-      - detected_silence
-    ParticipantList:
-      type: object
-      properties:
-        participants:
-          type: array
-          items:
-            $ref: '#/components/schemas/Participant'
-        first_page_uri:
-          type: string
-        next_page_uri:
-          type: string
-        page:
-          type: integer
-        page_size:
-          type: integer
-    conference_participant_enum_call_type:
-      type: string
-      enum:
-      - carrier
-      - client
-      - sip
-    conference_enum_conference_end_reason:
-      type: string
-      enum:
-      - last_participant_left
-      - conference_ended_via_api
-      - participant_with_end_conference_on_exit_left
-      - last_participant_kicked
-      - participant_with_end_conference_on_exit_kicked
-    conference_participant_enum_call_status:
-      type: string
-      enum:
-      - answered
-      - completed
-      - busy
-      - fail
-      - noanswer
-      - ringing
-      - canceled
     Participant:
       type: object
       properties:
@@ -782,41 +984,27 @@ components:
           format: date-time
         uri:
           type: string
-    ListConferenceParticipantResponse:
+    ParticipantList:
       type: object
       properties:
         participants:
           type: array
           items:
-            $ref: '#/components/schemas/insights.v1.conference.conference_participant'
-        meta:
-          type: object
-          properties:
-            first_page_url:
-              type: string
-              format: uri
-            next_page_url:
-              type: string
-              format: uri
-              nullable: true
-            page:
-              type: integer
-            page_size:
-              type: integer
-            previous_page_url:
-              type: string
-              format: uri
-              nullable: true
-            url:
-              type: string
-              format: uri
-            key:
-              type: string
-    conference_participant_enum_call_direction:
+            $ref: '#/components/schemas/Participant'
+        first_page_uri:
+          type: string
+        next_page_uri:
+          type: string
+        page:
+          type: integer
+        page_size:
+          type: integer
+    conference_participant_enum_processing_state:
       type: string
       enum:
-      - inbound
-      - outbound
+      - complete
+      - in_progress
+      - timeout
     ListConferenceResponse:
       type: object
       properties:
@@ -831,168 +1019,24 @@ components:
               type: string
               format: uri
             next_page_url:
-              type: string
+              type:
+              - string
+              - 'null'
               format: uri
-              nullable: true
             page:
               type: integer
             page_size:
               type: integer
             previous_page_url:
-              type: string
+              type:
+              - string
+              - 'null'
               format: uri
-              nullable: true
             url:
               type: string
               format: uri
             key:
               type: string
-    conference_enum_region:
-      type: string
-      enum:
-      - us1
-      - au1
-      - br1
-      - ie1
-      - jp1
-      - sg1
-      - de1
-    conference_participant_enum_processing_state:
-      type: string
-      enum:
-      - complete
-      - in_progress
-      - timeout
-    insights.v1.conference:
-      type: object
-      properties:
-        conference_sid:
-          type: string
-          minLength: 34
-          maxLength: 34
-          pattern: ^CF[0-9a-fA-F]{32}$
-          nullable: true
-          description: The unique SID identifier of the Conference.
-        account_sid:
-          type: string
-          minLength: 34
-          maxLength: 34
-          pattern: ^AC[0-9a-fA-F]{32}$
-          nullable: true
-          description: The unique SID identifier of the Account.
-        friendly_name:
-          type: string
-          nullable: true
-          description: Custom label for the conference resource, up to 64 characters.
-          x-twilio:
-            pii:
-              handling: standard
-              deleteSla: 30
-        create_time:
-          type: string
-          format: date-time
-          nullable: true
-          description: Conference creation date and time in ISO 8601 format.
-        start_time:
-          type: string
-          format: date-time
-          nullable: true
-          description: Timestamp in ISO 8601 format when the conference started. Conferences do not start until at least two participants join, at least one of whom has startConferenceOnEnter=true.
-        end_time:
-          type: string
-          format: date-time
-          nullable: true
-          description: Conference end date and time in ISO 8601 format.
-        duration_seconds:
-          type: integer
-          nullable: true
-          description: Conference duration in seconds.
-        connect_duration_seconds:
-          type: integer
-          nullable: true
-          description: Duration of the between conference start event and conference end event in seconds.
-        status:
-          type: string
-          $ref: '#/components/schemas/conference_enum_conference_status'
-          nullable: true
-          description: Status of this Conference; `in_progress`, `not_started`, `completed` or `summary_timeout`. if Twilio don't receive `last_participant_left` event, summary will be timeout after 24 hours
-        max_participants:
-          type: integer
-          nullable: true
-          description: Maximum number of concurrent participants as specified by the configuration.
-        max_concurrent_participants:
-          type: integer
-          nullable: true
-          description: Actual maximum number of concurrent participants in the conference.
-        unique_participants:
-          type: integer
-          nullable: true
-          description: Unique conference participants based on caller ID.
-        end_reason:
-          type: string
-          $ref: '#/components/schemas/conference_enum_conference_end_reason'
-          nullable: true
-          description: Conference end reason; e.g. last participant left, modified by API, etc.
-        ended_by:
-          type: string
-          minLength: 34
-          maxLength: 34
-          pattern: ^CA[0-9a-fA-F]{32}$
-          nullable: true
-          description: Call SID of the participant whose actions ended the conference.
-        mixer_region:
-          type: string
-          $ref: '#/components/schemas/conference_enum_region'
-          nullable: true
-          description: Twilio region where the conference media was mixed.
-        mixer_region_requested:
-          type: string
-          $ref: '#/components/schemas/conference_enum_region'
-          nullable: true
-          description: Twilio region where conference mixed was specified to be mixed in configuration.
-        recording_enabled:
-          type: boolean
-          nullable: true
-          description: Boolean. Indicates whether recording was enabled at the conference mixer.
-        detected_issues:
-          nullable: true
-          description: Potential issues detected by Twilio during the conference.
-        tags:
-          type: array
-          items:
-            type: string
-            $ref: '#/components/schemas/conference_enum_tag'
-          nullable: true
-          description: Tags for detected conference conditions and participant behaviors which may be of interest.
-        tag_info:
-          nullable: true
-          description: Object. Contains details about conference tags including severity.
-        processing_state:
-          type: string
-          $ref: '#/components/schemas/conference_enum_processing_state'
-          nullable: true
-          description: Processing state for the Conference Summary resource. Will be `in_progress` while data is being aggregated, `timeout` if Twilio couldn't process the summary in 24hrs, and `complete` once aggregations and analysis has ended.
-        url:
-          type: string
-          format: uri
-          nullable: true
-          description: The URL of this resource.
-        links:
-          type: object
-          format: uri-map
-          nullable: true
-          description: Contains a dictionary of URL links to nested resources of this Conference.
-    conference_participant_enum_region:
-      type: string
-      enum:
-      - us1
-      - us2
-      - au1
-      - br1
-      - ie1
-      - jp1
-      - sg1
-      - de1
   parameters:
     AccountSid:
       name: AccountSid

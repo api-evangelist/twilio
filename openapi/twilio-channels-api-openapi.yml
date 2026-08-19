@@ -1,4 +1,4 @@
-openapi: 3.0.1
+openapi: 3.2.0
 info:
   title: Twilio - Accounts A2p Channels API
   description: This is the public Twilio REST API.
@@ -96,27 +96,29 @@ paths:
           description: Channel deleted
 components:
   schemas:
-    PaginationMeta:
+    FlexChannel:
       type: object
       properties:
-        page:
-          type: integer
-        page_size:
-          type: integer
-        first_page_url:
+        sid:
           type: string
-          format: uri
-        previous_page_url:
+        account_sid:
           type: string
-          format: uri
-        next_page_url:
+          pattern: ^AC[0-9a-fA-F]{32}$
+        flex_flow_sid:
           type: string
-          format: uri
+        user_sid:
+          type: string
+        task_sid:
+          type: string
+        date_created:
+          type: string
+          format: date-time
+        date_updated:
+          type: string
+          format: date-time
         url:
           type: string
           format: uri
-        key:
-          type: string
     CreateChannelRequest:
       type: object
       required:
@@ -145,29 +147,27 @@ components:
           type: string
         LongLived:
           type: boolean
-    FlexChannel:
+    PaginationMeta:
       type: object
       properties:
-        sid:
+        page:
+          type: integer
+        page_size:
+          type: integer
+        first_page_url:
           type: string
-        account_sid:
+          format: uri
+        previous_page_url:
           type: string
-          pattern: ^AC[0-9a-fA-F]{32}$
-        flex_flow_sid:
+          format: uri
+        next_page_url:
           type: string
-        user_sid:
-          type: string
-        task_sid:
-          type: string
-        date_created:
-          type: string
-          format: date-time
-        date_updated:
-          type: string
-          format: date-time
+          format: uri
         url:
           type: string
           format: uri
+        key:
+          type: string
     ChannelList:
       type: object
       properties:

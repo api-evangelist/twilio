@@ -1,4 +1,4 @@
-openapi: 3.0.1
+openapi: 3.2.0
 info:
   title: Twilio - Accounts A2p Suppressions API
   description: This is the public Twilio REST API.
@@ -127,6 +127,18 @@ paths:
           description: List of global unsubscribes
 components:
   schemas:
+    Block:
+      type: object
+      properties:
+        email:
+          type: string
+          format: email
+        status:
+          type: string
+        reason:
+          type: string
+        created:
+          type: integer
     Bounce:
       type: object
       properties:
@@ -142,18 +154,6 @@ components:
         created:
           type: integer
           description: Unix timestamp when the bounce occurred
-    Block:
-      type: object
-      properties:
-        email:
-          type: string
-          format: email
-        status:
-          type: string
-        reason:
-          type: string
-        created:
-          type: integer
   securitySchemes:
     accountSid_authToken:
       type: http

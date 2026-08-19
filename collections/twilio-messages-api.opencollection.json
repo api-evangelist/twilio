@@ -1,0 +1,178 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Twilio - Accounts A2p Messages API",
+    "version": "1.52.0"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Messages",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Twilio List Messages",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://accounts.twilio.com/Accounts/:AccountSid/Messages.json",
+            "params": [
+              {
+                "name": "AccountSid",
+                "value": "",
+                "type": "path",
+                "description": "The unique identifier of the Twilio account"
+              },
+              {
+                "name": "To",
+                "value": "",
+                "type": "query",
+                "description": "Filter by recipient phone number"
+              },
+              {
+                "name": "From",
+                "value": "",
+                "type": "query",
+                "description": "Filter by sender phone number"
+              },
+              {
+                "name": "DateSent",
+                "value": "",
+                "type": "query",
+                "description": "Filter by date sent (YYYY-MM-DD)"
+              },
+              {
+                "name": "PageSize",
+                "value": "",
+                "type": "query",
+                "description": "Number of records to return per page (max 1000)"
+              },
+              {
+                "name": "Page",
+                "value": "",
+                "type": "query",
+                "description": "Page number to retrieve"
+              }
+            ]
+          },
+          "docs": "Retrieve a list of messages associated with your account. The list includes paging information and is sorted by DateSent descending."
+        },
+        {
+          "info": {
+            "name": "Twilio Send a Message",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://accounts.twilio.com/Accounts/:AccountSid/Messages.json",
+            "params": [
+              {
+                "name": "AccountSid",
+                "value": "",
+                "type": "path",
+                "description": "The unique identifier of the Twilio account"
+              }
+            ],
+            "body": {
+              "type": "form-urlencoded",
+              "data": []
+            }
+          },
+          "docs": "Send an SMS or MMS message. Specify the recipient, sender, and body or media URL. Messages can be sent from a Twilio phone number, short code, alphanumeric sender ID, or messaging service."
+        },
+        {
+          "info": {
+            "name": "Twilio Fetch a Message",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://accounts.twilio.com/Accounts/:AccountSid/Messages/:MessageSid.json",
+            "params": [
+              {
+                "name": "AccountSid",
+                "value": "",
+                "type": "path",
+                "description": "The unique identifier of the Twilio account"
+              },
+              {
+                "name": "MessageSid",
+                "value": "",
+                "type": "path",
+                "description": "The unique identifier of the message"
+              }
+            ]
+          },
+          "docs": "Retrieve details of a specific message by its SID."
+        },
+        {
+          "info": {
+            "name": "Twilio Update a Message",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://accounts.twilio.com/Accounts/:AccountSid/Messages/:MessageSid.json",
+            "params": [
+              {
+                "name": "AccountSid",
+                "value": "",
+                "type": "path",
+                "description": "The unique identifier of the Twilio account"
+              },
+              {
+                "name": "MessageSid",
+                "value": "",
+                "type": "path",
+                "description": "The unique identifier of the message"
+              }
+            ],
+            "body": {
+              "type": "form-urlencoded",
+              "data": [
+                {
+                  "name": "Body",
+                  "value": ""
+                },
+                {
+                  "name": "Status",
+                  "value": ""
+                }
+              ]
+            }
+          },
+          "docs": "Update the body of a message resource. Can be used to redact message content by posting an empty body."
+        },
+        {
+          "info": {
+            "name": "Twilio Delete a Message",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://accounts.twilio.com/Accounts/:AccountSid/Messages/:MessageSid.json",
+            "params": [
+              {
+                "name": "AccountSid",
+                "value": "",
+                "type": "path",
+                "description": "The unique identifier of the Twilio account"
+              },
+              {
+                "name": "MessageSid",
+                "value": "",
+                "type": "path",
+                "description": "The unique identifier of the message"
+              }
+            ]
+          },
+          "docs": "Delete a message record from your account. The message will no longer appear in your account logs."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

@@ -1,0 +1,517 @@
+{
+  "item": [
+    {
+      "id": "274cc068-7aa2-48d0-a352-ad1fb89f3b50",
+      "name": "Attempts",
+      "description": {
+        "content": "",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "d920400f-6349-4734-9c4f-41d6db92a9fa",
+          "name": "List Verification Attempt",
+          "request": {
+            "name": "List Verification Attempt",
+            "description": {
+              "content": "List all the verification attempts for a given Account.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "v2",
+                "Attempts"
+              ],
+              "host": [
+                "{{v2-Attempts-Url}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "DateCreatedAfter",
+                  "value": "<dateTime>",
+                  "description": "Datetime filter used to consider only Verification Attempts created after this datetime on the summary aggregation. Given as GMT in ISO 8601 formatted datetime string: yyyy-MM-dd'T'HH:mm:ss'Z."
+                },
+                {
+                  "disabled": false,
+                  "key": "DateCreatedBefore",
+                  "value": "<dateTime>",
+                  "description": "Datetime filter used to consider only Verification Attempts created before this datetime on the summary aggregation. Given as GMT in ISO 8601 formatted datetime string: yyyy-MM-dd'T'HH:mm:ss'Z."
+                },
+                {
+                  "disabled": false,
+                  "key": "ChannelData.To",
+                  "value": "<string>",
+                  "description": "Destination of a verification. It is phone number in E.164 format."
+                },
+                {
+                  "disabled": false,
+                  "key": "Country",
+                  "value": "<iso-country-code>",
+                  "description": "Filter used to query Verification Attempts sent to the specified destination country."
+                },
+                {
+                  "disabled": false,
+                  "key": "Channel",
+                  "value": "<string>",
+                  "description": "Filter used to query Verification Attempts by communication channel. Valid values are `SMS` and `CALL`"
+                },
+                {
+                  "disabled": false,
+                  "key": "VerifyServiceSid",
+                  "value": "<string>",
+                  "description": "Filter used to query Verification Attempts by verify service. Only attempts of the provided SID will be returned."
+                },
+                {
+                  "disabled": false,
+                  "key": "VerificationSid",
+                  "value": "<string>",
+                  "description": "Filter used to return all the Verification Attempts of a single verification. Only attempts of the provided verification SID will be returned."
+                },
+                {
+                  "disabled": false,
+                  "key": "Status",
+                  "value": "<string>",
+                  "description": "Filter used to query Verification Attempts by conversion status. Valid values are `UNCONVERTED`, for attempts that were not converted, and `CONVERTED`, for attempts that were confirmed."
+                },
+                {
+                  "disabled": false,
+                  "key": "PageSize",
+                  "value": "<integer>",
+                  "description": "How many resources to return in each list page. The default is 50, and the maximum is 1000."
+                },
+                {
+                  "disabled": false,
+                  "key": "Page",
+                  "value": "<integer>",
+                  "description": "The page index. This value is simply for client state."
+                },
+                {
+                  "disabled": false,
+                  "key": "PageToken",
+                  "value": "<string>",
+                  "description": "The page token. This is provided by the API."
+                }
+              ],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": {
+              "type": "basic",
+              "basic": [
+                {
+                  "key": "username",
+                  "value": "{{basicAuthUsername}}"
+                },
+                {
+                  "key": "password",
+                  "value": "{{basicAuthPassword}}"
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "id": "83c57b7d-231a-4a7f-9591-79ea435534db",
+              "name": "OK",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v2",
+                    "Attempts"
+                  ],
+                  "host": [
+                    "{{v2-Attempts-Url}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "DateCreatedAfter",
+                      "value": "<dateTime>"
+                    },
+                    {
+                      "key": "DateCreatedBefore",
+                      "value": "<dateTime>"
+                    },
+                    {
+                      "key": "ChannelData.To",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "Country",
+                      "value": "<iso-country-code>"
+                    },
+                    {
+                      "key": "Channel",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "VerifyServiceSid",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "VerificationSid",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "Status",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "PageSize",
+                      "value": "<integer>"
+                    },
+                    {
+                      "key": "Page",
+                      "value": "<integer>"
+                    },
+                    {
+                      "key": "PageToken",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: basic",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Basic <credentials>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"attempts\": [\n    {\n      \"sid\": \"VL934fA2a3eD5EF116fc8e1aD554Cfa4B2\",\n      \"account_sid\": \"ACxREDACTEDxEXAMPLExSIDxVALUExxxxxx\",\n      \"service_sid\": \"VA75b0Ee6A902dB22A8bD0BA13D08BCF74\",\n      \"verification_sid\": \"VEDDc9De805e29B6BFe1B48e9ea62EcaB4\",\n      \"date_created\": \"1947-03-01T22:39:15.638Z\",\n      \"date_updated\": null,\n      \"conversion_status\": \"<string>\",\n      \"channel\": \"<string>\",\n      \"price\": {},\n      \"channel_data\": {},\n      \"url\": \"http://tOglWlQKLmQdykDvoznhg.psjrnujT5ahUE3KbS8fr9hXjjaMDmd8xXd3fw8nr7p,Q1cFUXKTn7K\"\n    },\n    {\n      \"sid\": \"VLa30dFe4aBB8BDc229aFc85ddeA9CC482\",\n      \"account_sid\": \"ACxREDACTEDxEXAMPLExSIDxVALUExxxxxx\",\n      \"service_sid\": \"VA2ca3D4f7e90450aD22f282bAF44BD5E2\",\n      \"verification_sid\": \"VEfa1FE6D8Ee53FEe5a3Ca4Bff3Ab44F09\",\n      \"date_created\": null,\n      \"date_updated\": null,\n      \"conversion_status\": \"<string>\",\n      \"channel\": \"<string>\",\n      \"price\": {},\n      \"channel_data\": {},\n      \"url\": null\n    }\n  ],\n  \"meta\": {\n    \"first_page_url\": \"https://cwnzaJbmoCyeKjxuMZqIgMUYA.oxk.ofI1oDudrSXrhDuVmYEsin1eiS\",\n    \"next_page_url\": \"http://HPDUFMJGRDOmdaudyBUkTgHiAGrBEsV.ahXHYagntUKhduiRC+7\",\n    \"page\": 2346,\n    \"page_size\": 5232,\n    \"previous_page_url\": \"http://qGGYUpksqrYEIbfPFOKZuAE.nriruaLJtsNj-M6ouOlk6STrf0s5ovuns\",\n    \"url\": \"http://nrfWqOqxBoLWNyixcPfSjI.qzseCc93xpwOI87Qb-shtYtkiH.Wxsu4Go-5OrntAldDOOJySYypVyvcye\",\n    \"key\": \"string\"\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "b78c5f89-dfee-43af-8356-cb6b8693383c",
+          "name": "Fetch Verification Attempt",
+          "request": {
+            "name": "Fetch Verification Attempt",
+            "description": {
+              "content": "Fetch a specific verification attempt.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "v2",
+                "Attempts",
+                ":Sid"
+              ],
+              "host": [
+                "{{v2-Attempts-Sid-Url}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "Sid",
+                  "description": "(Required) The unique SID identifier of a Verification Attempt"
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": {
+              "type": "basic",
+              "basic": [
+                {
+                  "key": "username",
+                  "value": "{{basicAuthUsername}}"
+                },
+                {
+                  "key": "password",
+                  "value": "{{basicAuthPassword}}"
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "id": "df8b7681-bf6d-48b4-a606-9d7058f6e7be",
+              "name": "OK",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v2",
+                    "Attempts",
+                    ":Sid"
+                  ],
+                  "host": [
+                    "{{v2-Attempts-Sid-Url}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "Sid",
+                      "description": "(Required) The unique SID identifier of a Verification Attempt"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: basic",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Basic <credentials>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"sid\": \"VLF0B19ECefF6149c8fCbE2Dff7e2bF822\",\n  \"account_sid\": \"ACxREDACTEDxEXAMPLExSIDxVALUExxxxxx\",\n  \"service_sid\": \"VA6beC9a9A4e184e4d3fa9bACf2BCcBadd\",\n  \"verification_sid\": \"VEe6A5FC7490065b892bBD86D7C7edD4be\",\n  \"date_created\": \"2009-02-23T22:47:23.119Z\",\n  \"date_updated\": null,\n  \"conversion_status\": \"<string>\",\n  \"channel\": \"<string>\",\n  \"price\": {},\n  \"channel_data\": {},\n  \"url\": null\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "aa7e7fc1-1887-4dc7-a283-479a2f590efb",
+          "name": "Fetch Verification Attempts Summary",
+          "request": {
+            "name": "Fetch Verification Attempts Summary",
+            "description": {
+              "content": "Get a summary of how many attempts were made and how many were converted.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "v2",
+                "Attempts",
+                "Summary"
+              ],
+              "host": [
+                "{{v2-Attempts-Summary-Url}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "VerifyServiceSid",
+                  "value": "<string>",
+                  "description": "Filter used to consider only Verification Attempts of the given verify service on the summary aggregation."
+                },
+                {
+                  "disabled": false,
+                  "key": "DateCreatedAfter",
+                  "value": "<dateTime>",
+                  "description": "Datetime filter used to consider only Verification Attempts created after this datetime on the summary aggregation. Given as GMT in ISO 8601 formatted datetime string: yyyy-MM-dd'T'HH:mm:ss'Z."
+                },
+                {
+                  "disabled": false,
+                  "key": "DateCreatedBefore",
+                  "value": "<dateTime>",
+                  "description": "Datetime filter used to consider only Verification Attempts created before this datetime on the summary aggregation. Given as GMT in ISO 8601 formatted datetime string: yyyy-MM-dd'T'HH:mm:ss'Z."
+                },
+                {
+                  "disabled": false,
+                  "key": "Country",
+                  "value": "<iso-country-code>",
+                  "description": "Filter used to consider only Verification Attempts sent to the specified destination country on the summary aggregation."
+                },
+                {
+                  "disabled": false,
+                  "key": "Channel",
+                  "value": "<string>",
+                  "description": "Filter Verification Attempts considered on the summary aggregation by communication channel. Valid values are `SMS`, `CALL` and `WHATSAPP`"
+                },
+                {
+                  "disabled": false,
+                  "key": "DestinationPrefix",
+                  "value": "<string>",
+                  "description": "Filter the Verification Attempts considered on the summary aggregation by Destination prefix. It is the prefix of a phone number in E.164 format."
+                }
+              ],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": {
+              "type": "basic",
+              "basic": [
+                {
+                  "key": "username",
+                  "value": "{{basicAuthUsername}}"
+                },
+                {
+                  "key": "password",
+                  "value": "{{basicAuthPassword}}"
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "id": "7065f1de-63b4-4316-97c1-f87433f07c0a",
+              "name": "OK",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v2",
+                    "Attempts",
+                    "Summary"
+                  ],
+                  "host": [
+                    "{{v2-Attempts-Summary-Url}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "VerifyServiceSid",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "DateCreatedAfter",
+                      "value": "<dateTime>"
+                    },
+                    {
+                      "key": "DateCreatedBefore",
+                      "value": "<dateTime>"
+                    },
+                    {
+                      "key": "Country",
+                      "value": "<iso-country-code>"
+                    },
+                    {
+                      "key": "Channel",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "DestinationPrefix",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: basic",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Basic <credentials>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"total_attempts\": 1271,\n  \"total_converted\": null,\n  \"total_unconverted\": 406,\n  \"conversion_rate_percentage\": 5998.916270835405,\n  \"url\": \"https://GkmERlDBaQvgORYzSdPQlANLR.qqUa0d995Gxuve2o.ZSOB8kW8JklGN9Ppb36oDs\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "type": "string",
+      "value": "https://accounts.twilio.com",
+      "key": "baseUrl"
+    },
+    {
+      "type": "string",
+      "value": "https://verify.twilio.com",
+      "key": "v2-Attempts-Url"
+    },
+    {
+      "type": "string",
+      "value": "https://verify.twilio.com",
+      "key": "v2-Attempts-Sid-Url"
+    },
+    {
+      "type": "string",
+      "value": "https://verify.twilio.com",
+      "key": "v2-Attempts-Summary-Url"
+    }
+  ],
+  "info": {
+    "_postman_id": "af231db4-ee90-49b4-82a8-55c374a704aa",
+    "name": "Twilio - Accounts A2p Attempts API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "This is the public Twilio REST API.\n\nContact Support:\n Name: Twilio Support\n Email: support@twilio.com",
+      "type": "text/plain"
+    }
+  }
+}

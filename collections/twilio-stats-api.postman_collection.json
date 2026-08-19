@@ -1,0 +1,133 @@
+{
+  "item": [
+    {
+      "id": "e81c458e-8a42-4d0b-9156-828bab4e1270",
+      "name": "Stats",
+      "description": {
+        "content": "Retrieve email analytics and statistics",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "6e32164e-4fb6-413d-bc4a-230dc0828a82",
+          "name": "Twilio Fetch Global Email Stats",
+          "request": {
+            "name": "Twilio Fetch Global Email Stats",
+            "description": {
+              "content": "Retrieve aggregate email statistics including requests, deliveries, opens, clicks, bounces, and more.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "stats"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "start_date",
+                  "value": "<date>",
+                  "description": "(Required) Start date (YYYY-MM-DD)"
+                },
+                {
+                  "disabled": false,
+                  "key": "end_date",
+                  "value": "<date>",
+                  "description": "End date (YYYY-MM-DD)"
+                },
+                {
+                  "disabled": false,
+                  "key": "aggregated_by",
+                  "value": "<string>"
+                }
+              ],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "7351703d-7179-41b5-bdca-7ef83a2242d8",
+              "name": "Email statistics",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "stats"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "start_date",
+                      "value": "<date>"
+                    },
+                    {
+                      "key": "end_date",
+                      "value": "<date>"
+                    },
+                    {
+                      "key": "aggregated_by",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "[\n  {\n    \"date\": \"1986-08-16\",\n    \"stats\": [\n      {\n        \"metrics\": {\n          \"requests\": 1232,\n          \"delivered\": 7548,\n          \"opens\": 2484,\n          \"unique_opens\": 9762,\n          \"clicks\": 3381,\n          \"unique_clicks\": 6688,\n          \"bounces\": 2020,\n          \"bounce_drops\": 4300,\n          \"spam_reports\": 1714,\n          \"spam_report_drops\": 5239,\n          \"unsubscribes\": 8989,\n          \"unsubscribe_drops\": 1824,\n          \"invalid_emails\": 4703,\n          \"blocks\": 3662,\n          \"deferred\": 4689,\n          \"processed\": 5890\n        }\n      },\n      {\n        \"metrics\": {\n          \"requests\": 6067,\n          \"delivered\": 4404,\n          \"opens\": 9127,\n          \"unique_opens\": 9978,\n          \"clicks\": 3598,\n          \"unique_clicks\": 5916,\n          \"bounces\": 1066,\n          \"bounce_drops\": 6534,\n          \"spam_reports\": 950,\n          \"spam_report_drops\": 3185,\n          \"unsubscribes\": 1803,\n          \"unsubscribe_drops\": 677,\n          \"invalid_emails\": 3136,\n          \"blocks\": 7266,\n          \"deferred\": 7716,\n          \"processed\": 1102\n        }\n      }\n    ]\n  },\n  {\n    \"date\": \"1985-01-03\",\n    \"stats\": [\n      {\n        \"metrics\": {\n          \"requests\": 1709,\n          \"delivered\": 8540,\n          \"opens\": 761,\n          \"unique_opens\": 7362,\n          \"clicks\": 3935,\n          \"unique_clicks\": 2890,\n          \"bounces\": 4875,\n          \"bounce_drops\": 6794,\n          \"spam_reports\": 5252,\n          \"spam_report_drops\": 856,\n          \"unsubscribes\": 7506,\n          \"unsubscribe_drops\": 1582,\n          \"invalid_emails\": 3522,\n          \"blocks\": 8611,\n          \"deferred\": 4755,\n          \"processed\": 6698\n        }\n      },\n      {\n        \"metrics\": {\n          \"requests\": 5913,\n          \"delivered\": 5605,\n          \"opens\": 728,\n          \"unique_opens\": 9087,\n          \"clicks\": 9150,\n          \"unique_clicks\": 6648,\n          \"bounces\": 6456,\n          \"bounce_drops\": 8430,\n          \"spam_reports\": 1676,\n          \"spam_report_drops\": 5826,\n          \"unsubscribes\": 1077,\n          \"unsubscribe_drops\": 945,\n          \"invalid_emails\": 9713,\n          \"blocks\": 7119,\n          \"deferred\": 6204,\n          \"processed\": 1619\n        }\n      }\n    ]\n  }\n]",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "type": "string",
+      "value": "https://accounts.twilio.com",
+      "key": "baseUrl"
+    }
+  ],
+  "info": {
+    "_postman_id": "a801c318-0039-4aa6-ba34-cf85a6e8c340",
+    "name": "Twilio - Accounts A2p Stats API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "This is the public Twilio REST API.\n\nContact Support:\n Name: Twilio Support\n Email: support@twilio.com",
+      "type": "text/plain"
+    }
+  }
+}

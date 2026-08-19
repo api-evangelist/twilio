@@ -1,0 +1,692 @@
+{
+  "item": [
+    {
+      "id": "39d40693-683f-431f-b543-c6cefab4fb02",
+      "name": "Accounts",
+      "description": {
+        "content": "Manage Twilio accounts and subaccounts",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "363b2fa9-9def-4563-975f-8c846a28c662",
+          "name": "Twilio List Accounts",
+          "request": {
+            "name": "Twilio List Accounts",
+            "description": {
+              "content": "Retrieve a list of subaccounts belonging to the main account.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "Accounts.json"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "FriendlyName",
+                  "value": "<string>",
+                  "description": "Filter by friendly name"
+                },
+                {
+                  "disabled": false,
+                  "key": "Status",
+                  "value": "<string>",
+                  "description": "Filter by account status"
+                },
+                {
+                  "disabled": false,
+                  "key": "PageSize",
+                  "value": "<integer>"
+                }
+              ],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "f0651a20-6886-4ac4-aafd-b86b8ec0c100",
+              "name": "List of accounts",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "Accounts.json"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "FriendlyName",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "Status",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "PageSize",
+                      "value": "<integer>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"accounts\": [\n    {\n      \"sid\": \"ACxREDACTEDxEXAMPLExSIDxVALUExxxxxx\",\n      \"friendly_name\": \"string\",\n      \"status\": \"active\",\n      \"type\": \"Full\",\n      \"auth_token\": \"string\",\n      \"owner_account_sid\": \"string\",\n      \"date_created\": \"2007-10-03T12:22:03.174Z\",\n      \"date_updated\": \"2020-08-25T12:50:58.032Z\",\n      \"uri\": \"string\",\n      \"subresource_uris\": {\n        \"calls\": \"string\",\n        \"messages\": \"string\",\n        \"recordings\": \"string\",\n        \"keys\": \"string\"\n      }\n    },\n    {\n      \"sid\": \"ACxREDACTEDxEXAMPLExSIDxVALUExxxxxx\",\n      \"friendly_name\": \"string\",\n      \"status\": \"active\",\n      \"type\": \"Trial\",\n      \"auth_token\": \"string\",\n      \"owner_account_sid\": \"string\",\n      \"date_created\": \"2002-04-21T16:37:42.043Z\",\n      \"date_updated\": \"1949-05-30T20:56:27.919Z\",\n      \"uri\": \"string\",\n      \"subresource_uris\": {\n        \"calls\": \"string\",\n        \"messages\": \"string\",\n        \"recordings\": \"string\",\n        \"keys\": \"string\"\n      }\n    }\n  ],\n  \"first_page_uri\": \"string\",\n  \"next_page_uri\": \"string\",\n  \"page\": 6114,\n  \"page_size\": 5213\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "98f3de7e-1ae6-4413-800b-3f9c83f83fd5",
+              "name": "Unauthorized",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "Accounts.json"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "FriendlyName",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "Status",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "PageSize",
+                      "value": "<integer>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "ffebb4bc-fc8f-4537-b7c9-813538a58d7a",
+          "name": "Twilio Create a Subaccount",
+          "request": {
+            "name": "Twilio Create a Subaccount",
+            "description": {
+              "content": "Create a new subaccount under the main account.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "Accounts.json"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/x-www-form-urlencoded"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": null,
+            "body": {
+              "mode": "urlencoded",
+              "urlencoded": [
+                {
+                  "disabled": false,
+                  "key": "FriendlyName",
+                  "value": "<string>",
+                  "description": "Human-readable name for the subaccount"
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "id": "48eaa00d-21ae-4472-8734-d52c7e79b55c",
+              "name": "Subaccount created",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "Accounts.json"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "urlencoded",
+                  "urlencoded": [
+                    {
+                      "disabled": false,
+                      "description": {
+                        "content": "Human-readable name for the subaccount",
+                        "type": "text/plain"
+                      },
+                      "key": "FriendlyName",
+                      "value": "<string>"
+                    }
+                  ]
+                }
+              },
+              "status": "Created",
+              "code": 201,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"sid\": \"ACxREDACTEDxEXAMPLExSIDxVALUExxxxxx\",\n  \"friendly_name\": \"string\",\n  \"status\": \"closed\",\n  \"type\": \"Trial\",\n  \"auth_token\": \"string\",\n  \"owner_account_sid\": \"string\",\n  \"date_created\": \"1996-05-13T00:03:12.255Z\",\n  \"date_updated\": \"1991-05-17T10:49:38.484Z\",\n  \"uri\": \"string\",\n  \"subresource_uris\": {\n    \"calls\": \"string\",\n    \"messages\": \"string\",\n    \"recordings\": \"string\",\n    \"keys\": \"string\"\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "70e324c5-b43b-44d6-a300-55a7156cf736",
+              "name": "Invalid request",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "Accounts.json"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "method": "POST",
+                "body": {
+                  "mode": "urlencoded",
+                  "urlencoded": [
+                    {
+                      "disabled": false,
+                      "description": {
+                        "content": "Human-readable name for the subaccount",
+                        "type": "text/plain"
+                      },
+                      "key": "FriendlyName",
+                      "value": "<string>"
+                    }
+                  ]
+                }
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "c7269330-79bb-4a49-aeff-cb9422e2dcac",
+              "name": "Unauthorized",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "Accounts.json"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "method": "POST",
+                "body": {
+                  "mode": "urlencoded",
+                  "urlencoded": [
+                    {
+                      "disabled": false,
+                      "description": {
+                        "content": "Human-readable name for the subaccount",
+                        "type": "text/plain"
+                      },
+                      "key": "FriendlyName",
+                      "value": "<string>"
+                    }
+                  ]
+                }
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "a0f02062-c0ef-4099-8705-273a03706c94",
+          "name": "Twilio Fetch an Account",
+          "request": {
+            "name": "Twilio Fetch an Account",
+            "description": {
+              "content": "Retrieve details for a specific account or subaccount.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "Accounts",
+                "{{AccountSid}}.json"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "3078bc18-bfd5-4319-bf42-a85a6754f41d",
+              "name": "Account details",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "Accounts",
+                    "{{AccountSid}}.json"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"sid\": \"ACxREDACTEDxEXAMPLExSIDxVALUExxxxxx\",\n  \"friendly_name\": \"string\",\n  \"status\": \"closed\",\n  \"type\": \"Trial\",\n  \"auth_token\": \"string\",\n  \"owner_account_sid\": \"string\",\n  \"date_created\": \"1996-05-13T00:03:12.255Z\",\n  \"date_updated\": \"1991-05-17T10:49:38.484Z\",\n  \"uri\": \"string\",\n  \"subresource_uris\": {\n    \"calls\": \"string\",\n    \"messages\": \"string\",\n    \"recordings\": \"string\",\n    \"keys\": \"string\"\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "fd7028ff-5acb-4fd4-b666-6a78ffc0abdb",
+              "name": "Unauthorized",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "Accounts",
+                    "{{AccountSid}}.json"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "6c25a061-f192-47e6-a030-5be177a7bab4",
+              "name": "Account not found",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "Accounts",
+                    "{{AccountSid}}.json"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "614430c7-40a1-4691-9d90-37dd0854c769",
+          "name": "Twilio Update an Account",
+          "request": {
+            "name": "Twilio Update an Account",
+            "description": {
+              "content": "Update account properties such as friendly name or status.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "Accounts",
+                "{{AccountSid}}.json"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/x-www-form-urlencoded"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": null,
+            "body": {
+              "mode": "urlencoded",
+              "urlencoded": [
+                {
+                  "disabled": false,
+                  "key": "FriendlyName",
+                  "value": "<string>"
+                },
+                {
+                  "disabled": false,
+                  "key": "Status",
+                  "value": "<string>"
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "id": "b8ab53a5-de3f-4caf-82d6-d263900c1da0",
+              "name": "Account updated",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "Accounts",
+                    "{{AccountSid}}.json"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "urlencoded",
+                  "urlencoded": [
+                    {
+                      "disabled": false,
+                      "key": "FriendlyName",
+                      "value": "<string>"
+                    },
+                    {
+                      "disabled": false,
+                      "key": "Status",
+                      "value": "<string>"
+                    }
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"sid\": \"ACxREDACTEDxEXAMPLExSIDxVALUExxxxxx\",\n  \"friendly_name\": \"string\",\n  \"status\": \"closed\",\n  \"type\": \"Trial\",\n  \"auth_token\": \"string\",\n  \"owner_account_sid\": \"string\",\n  \"date_created\": \"1996-05-13T00:03:12.255Z\",\n  \"date_updated\": \"1991-05-17T10:49:38.484Z\",\n  \"uri\": \"string\",\n  \"subresource_uris\": {\n    \"calls\": \"string\",\n    \"messages\": \"string\",\n    \"recordings\": \"string\",\n    \"keys\": \"string\"\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "3b1b635c-1bb9-40e7-9bd8-601b4956f9f1",
+              "name": "Unauthorized",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "Accounts",
+                    "{{AccountSid}}.json"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "method": "POST",
+                "body": {
+                  "mode": "urlencoded",
+                  "urlencoded": [
+                    {
+                      "disabled": false,
+                      "key": "FriendlyName",
+                      "value": "<string>"
+                    },
+                    {
+                      "disabled": false,
+                      "key": "Status",
+                      "value": "<string>"
+                    }
+                  ]
+                }
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "90f0d686-9bc4-4b7a-b6ba-db27eb4d806e",
+              "name": "Account not found",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "Accounts",
+                    "{{AccountSid}}.json"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "method": "POST",
+                "body": {
+                  "mode": "urlencoded",
+                  "urlencoded": [
+                    {
+                      "disabled": false,
+                      "key": "FriendlyName",
+                      "value": "<string>"
+                    },
+                    {
+                      "disabled": false,
+                      "key": "Status",
+                      "value": "<string>"
+                    }
+                  ]
+                }
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "type": "string",
+      "value": "https://accounts.twilio.com",
+      "key": "baseUrl"
+    },
+    {
+      "disabled": false,
+      "description": {
+        "content": "(Required) The unique identifier of the Twilio account",
+        "type": "text/plain"
+      },
+      "type": "any",
+      "value": "<string>",
+      "key": "AccountSid"
+    }
+  ],
+  "info": {
+    "_postman_id": "6603bd15-a25e-44ec-a9ec-522a2c64b23d",
+    "name": "Twilio - A2p Accounts API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "This is the public Twilio REST API.\n\nContact Support:\n Name: Twilio Support\n Email: support@twilio.com",
+      "type": "text/plain"
+    }
+  }
+}

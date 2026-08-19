@@ -1,0 +1,804 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Twilio - Accounts A2p Conversations API",
+    "version": "1.52.0"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Conversations",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "ListConversation",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://accounts.twilio.com/v1/Conversations",
+            "params": [
+              {
+                "name": "StartDate",
+                "value": "",
+                "type": "query",
+                "description": "Start date or time in ISO8601 format for filtering list of Conversations. If a date is provided, the start time of the date is used (YYYY-MM-DDT00:00:00Z). Can be combined with other filters."
+              },
+              {
+                "name": "EndDate",
+                "value": "",
+                "type": "query",
+                "description": "End date or time in ISO8601 format for filtering list of Conversations. If a date is provided, the end time of the date is used (YYYY-MM-DDT23:59:59Z). Can be combined with other filters."
+              },
+              {
+                "name": "State",
+                "value": "",
+                "type": "query",
+                "description": "State for sorting and filtering list of Conversations. Can be `active`, `inactive` or `closed`"
+              },
+              {
+                "name": "PageSize",
+                "value": "",
+                "type": "query",
+                "description": "How many resources to return in each list page. The default is 50, and the maximum is 1000."
+              },
+              {
+                "name": "Page",
+                "value": "",
+                "type": "query",
+                "description": "The page index. This value is simply for client state."
+              },
+              {
+                "name": "PageToken",
+                "value": "",
+                "type": "query",
+                "description": "The page token. This is provided by the API."
+              }
+            ],
+            "auth": {
+              "type": "basic",
+              "username": "{{username}}",
+              "password": "{{password}}"
+            }
+          },
+          "docs": "Retrieve a list of conversations in your account's default service"
+        },
+        {
+          "info": {
+            "name": "CreateConversation",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://accounts.twilio.com/v1/Conversations",
+            "headers": [
+              {
+                "name": "X-Twilio-Webhook-Enabled",
+                "value": ""
+              }
+            ],
+            "body": {
+              "type": "form-urlencoded",
+              "data": []
+            },
+            "auth": {
+              "type": "basic",
+              "username": "{{username}}",
+              "password": "{{password}}"
+            }
+          },
+          "docs": "Create a new conversation in your account's default service"
+        },
+        {
+          "info": {
+            "name": "FetchConversation",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://accounts.twilio.com/v1/Conversations/:Sid",
+            "params": [
+              {
+                "name": "Sid",
+                "value": "",
+                "type": "path",
+                "description": "A 34 character string that uniquely identifies this resource. Can also be the `unique_name` of the Conversation."
+              }
+            ],
+            "auth": {
+              "type": "basic",
+              "username": "{{username}}",
+              "password": "{{password}}"
+            }
+          },
+          "docs": "Fetch a conversation from your account's default service"
+        },
+        {
+          "info": {
+            "name": "UpdateConversation",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://accounts.twilio.com/v1/Conversations/:Sid",
+            "headers": [
+              {
+                "name": "X-Twilio-Webhook-Enabled",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "Sid",
+                "value": "",
+                "type": "path",
+                "description": "A 34 character string that uniquely identifies this resource. Can also be the `unique_name` of the Conversation."
+              }
+            ],
+            "body": {
+              "type": "form-urlencoded",
+              "data": []
+            },
+            "auth": {
+              "type": "basic",
+              "username": "{{username}}",
+              "password": "{{password}}"
+            }
+          },
+          "docs": "Update an existing conversation in your account's default service"
+        },
+        {
+          "info": {
+            "name": "DeleteConversation",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://accounts.twilio.com/v1/Conversations/:Sid",
+            "headers": [
+              {
+                "name": "X-Twilio-Webhook-Enabled",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "Sid",
+                "value": "",
+                "type": "path",
+                "description": "A 34 character string that uniquely identifies this resource. Can also be the `unique_name` of the Conversation."
+              }
+            ],
+            "auth": {
+              "type": "basic",
+              "username": "{{username}}",
+              "password": "{{password}}"
+            }
+          },
+          "docs": "Remove a conversation from your account's default service"
+        },
+        {
+          "info": {
+            "name": "ListConversationMessage",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://accounts.twilio.com/v1/Conversations/:ConversationSid/Messages",
+            "params": [
+              {
+                "name": "ConversationSid",
+                "value": "",
+                "type": "path",
+                "description": "The unique ID of the [Conversation](https://www.twilio.com/docs/conversations/api/conversation-resource) for messages."
+              },
+              {
+                "name": "Order",
+                "value": "",
+                "type": "query",
+                "description": "The sort order of the returned messages. Can be: `asc` (ascending) or `desc` (descending), with `asc` as the default."
+              },
+              {
+                "name": "PageSize",
+                "value": "",
+                "type": "query",
+                "description": "How many resources to return in each list page. The default is 50, and the maximum is 1000."
+              },
+              {
+                "name": "Page",
+                "value": "",
+                "type": "query",
+                "description": "The page index. This value is simply for client state."
+              },
+              {
+                "name": "PageToken",
+                "value": "",
+                "type": "query",
+                "description": "The page token. This is provided by the API."
+              }
+            ],
+            "auth": {
+              "type": "basic",
+              "username": "{{username}}",
+              "password": "{{password}}"
+            }
+          },
+          "docs": "Retrieve a list of all messages in the conversation"
+        },
+        {
+          "info": {
+            "name": "CreateConversationMessage",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://accounts.twilio.com/v1/Conversations/:ConversationSid/Messages",
+            "headers": [
+              {
+                "name": "X-Twilio-Webhook-Enabled",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "ConversationSid",
+                "value": "",
+                "type": "path",
+                "description": "The unique ID of the [Conversation](https://www.twilio.com/docs/conversations/api/conversation-resource) for this message."
+              }
+            ],
+            "body": {
+              "type": "form-urlencoded",
+              "data": []
+            },
+            "auth": {
+              "type": "basic",
+              "username": "{{username}}",
+              "password": "{{password}}"
+            }
+          },
+          "docs": "Add a new message to the conversation"
+        },
+        {
+          "info": {
+            "name": "FetchConversationMessage",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://accounts.twilio.com/v1/Conversations/:ConversationSid/Messages/:Sid",
+            "params": [
+              {
+                "name": "ConversationSid",
+                "value": "",
+                "type": "path",
+                "description": "The unique ID of the [Conversation](https://www.twilio.com/docs/conversations/api/conversation-resource) for this message."
+              },
+              {
+                "name": "Sid",
+                "value": "",
+                "type": "path",
+                "description": "A 34 character string that uniquely identifies this resource."
+              }
+            ],
+            "auth": {
+              "type": "basic",
+              "username": "{{username}}",
+              "password": "{{password}}"
+            }
+          },
+          "docs": "Fetch a message from the conversation"
+        },
+        {
+          "info": {
+            "name": "UpdateConversationMessage",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://accounts.twilio.com/v1/Conversations/:ConversationSid/Messages/:Sid",
+            "headers": [
+              {
+                "name": "X-Twilio-Webhook-Enabled",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "ConversationSid",
+                "value": "",
+                "type": "path",
+                "description": "The unique ID of the [Conversation](https://www.twilio.com/docs/conversations/api/conversation-resource) for this message."
+              },
+              {
+                "name": "Sid",
+                "value": "",
+                "type": "path",
+                "description": "A 34 character string that uniquely identifies this resource."
+              }
+            ],
+            "body": {
+              "type": "form-urlencoded",
+              "data": []
+            },
+            "auth": {
+              "type": "basic",
+              "username": "{{username}}",
+              "password": "{{password}}"
+            }
+          },
+          "docs": "Update an existing message in the conversation"
+        },
+        {
+          "info": {
+            "name": "DeleteConversationMessage",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://accounts.twilio.com/v1/Conversations/:ConversationSid/Messages/:Sid",
+            "headers": [
+              {
+                "name": "X-Twilio-Webhook-Enabled",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "ConversationSid",
+                "value": "",
+                "type": "path",
+                "description": "The unique ID of the [Conversation](https://www.twilio.com/docs/conversations/api/conversation-resource) for this message."
+              },
+              {
+                "name": "Sid",
+                "value": "",
+                "type": "path",
+                "description": "A 34 character string that uniquely identifies this resource."
+              }
+            ],
+            "auth": {
+              "type": "basic",
+              "username": "{{username}}",
+              "password": "{{password}}"
+            }
+          },
+          "docs": "Remove a message from the conversation"
+        },
+        {
+          "info": {
+            "name": "FetchConversationMessageReceipt",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://accounts.twilio.com/v1/Conversations/:ConversationSid/Messages/:MessageSid/Receipts/:Sid",
+            "params": [
+              {
+                "name": "ConversationSid",
+                "value": "",
+                "type": "path",
+                "description": "The unique ID of the [Conversation](https://www.twilio.com/docs/conversations/api/conversation-resource) for this message."
+              },
+              {
+                "name": "MessageSid",
+                "value": "",
+                "type": "path",
+                "description": "The SID of the message within a [Conversation](https://www.twilio.com/docs/conversations/api/conversation-resource) the delivery receipt belongs to."
+              },
+              {
+                "name": "Sid",
+                "value": "",
+                "type": "path",
+                "description": "A 34 character string that uniquely identifies this resource."
+              }
+            ],
+            "auth": {
+              "type": "basic",
+              "username": "{{username}}",
+              "password": "{{password}}"
+            }
+          },
+          "docs": "Fetch the delivery and read receipts of the conversation message"
+        },
+        {
+          "info": {
+            "name": "ListConversationMessageReceipt",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://accounts.twilio.com/v1/Conversations/:ConversationSid/Messages/:MessageSid/Receipts",
+            "params": [
+              {
+                "name": "ConversationSid",
+                "value": "",
+                "type": "path",
+                "description": "The unique ID of the [Conversation](https://www.twilio.com/docs/conversations/api/conversation-resource) for this message."
+              },
+              {
+                "name": "MessageSid",
+                "value": "",
+                "type": "path",
+                "description": "The SID of the message within a [Conversation](https://www.twilio.com/docs/conversations/api/conversation-resource) the delivery receipt belongs to."
+              },
+              {
+                "name": "PageSize",
+                "value": "",
+                "type": "query",
+                "description": "How many resources to return in each list page. The default is 50, and the maximum is 1000."
+              },
+              {
+                "name": "Page",
+                "value": "",
+                "type": "query",
+                "description": "The page index. This value is simply for client state."
+              },
+              {
+                "name": "PageToken",
+                "value": "",
+                "type": "query",
+                "description": "The page token. This is provided by the API."
+              }
+            ],
+            "auth": {
+              "type": "basic",
+              "username": "{{username}}",
+              "password": "{{password}}"
+            }
+          },
+          "docs": "Retrieve a list of all delivery and read receipts of the conversation message"
+        },
+        {
+          "info": {
+            "name": "ListConversationParticipant",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://accounts.twilio.com/v1/Conversations/:ConversationSid/Participants",
+            "params": [
+              {
+                "name": "ConversationSid",
+                "value": "",
+                "type": "path",
+                "description": "The unique ID of the [Conversation](https://www.twilio.com/docs/conversations/api/conversation-resource) for participants."
+              },
+              {
+                "name": "PageSize",
+                "value": "",
+                "type": "query",
+                "description": "How many resources to return in each list page. The default is 50, and the maximum is 1000."
+              },
+              {
+                "name": "Page",
+                "value": "",
+                "type": "query",
+                "description": "The page index. This value is simply for client state."
+              },
+              {
+                "name": "PageToken",
+                "value": "",
+                "type": "query",
+                "description": "The page token. This is provided by the API."
+              }
+            ],
+            "auth": {
+              "type": "basic",
+              "username": "{{username}}",
+              "password": "{{password}}"
+            }
+          },
+          "docs": "Retrieve a list of all participants of the conversation"
+        },
+        {
+          "info": {
+            "name": "CreateConversationParticipant",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://accounts.twilio.com/v1/Conversations/:ConversationSid/Participants",
+            "headers": [
+              {
+                "name": "X-Twilio-Webhook-Enabled",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "ConversationSid",
+                "value": "",
+                "type": "path",
+                "description": "The unique ID of the [Conversation](https://www.twilio.com/docs/conversations/api/conversation-resource) for this participant."
+              }
+            ],
+            "body": {
+              "type": "form-urlencoded",
+              "data": []
+            },
+            "auth": {
+              "type": "basic",
+              "username": "{{username}}",
+              "password": "{{password}}"
+            }
+          },
+          "docs": "Add a new participant to the conversation"
+        },
+        {
+          "info": {
+            "name": "FetchConversationParticipant",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://accounts.twilio.com/v1/Conversations/:ConversationSid/Participants/:Sid",
+            "params": [
+              {
+                "name": "ConversationSid",
+                "value": "",
+                "type": "path",
+                "description": "The unique ID of the [Conversation](https://www.twilio.com/docs/conversations/api/conversation-resource) for this participant."
+              },
+              {
+                "name": "Sid",
+                "value": "",
+                "type": "path",
+                "description": "A 34 character string that uniquely identifies this resource. Alternatively, you can pass a Participant's `identity` rather than the SID."
+              }
+            ],
+            "auth": {
+              "type": "basic",
+              "username": "{{username}}",
+              "password": "{{password}}"
+            }
+          },
+          "docs": "Fetch a participant of the conversation"
+        },
+        {
+          "info": {
+            "name": "UpdateConversationParticipant",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://accounts.twilio.com/v1/Conversations/:ConversationSid/Participants/:Sid",
+            "headers": [
+              {
+                "name": "X-Twilio-Webhook-Enabled",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "ConversationSid",
+                "value": "",
+                "type": "path",
+                "description": "The unique ID of the [Conversation](https://www.twilio.com/docs/conversations/api/conversation-resource) for this participant."
+              },
+              {
+                "name": "Sid",
+                "value": "",
+                "type": "path",
+                "description": "A 34 character string that uniquely identifies this resource."
+              }
+            ],
+            "body": {
+              "type": "form-urlencoded",
+              "data": []
+            },
+            "auth": {
+              "type": "basic",
+              "username": "{{username}}",
+              "password": "{{password}}"
+            }
+          },
+          "docs": "Update an existing participant in the conversation"
+        },
+        {
+          "info": {
+            "name": "DeleteConversationParticipant",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://accounts.twilio.com/v1/Conversations/:ConversationSid/Participants/:Sid",
+            "headers": [
+              {
+                "name": "X-Twilio-Webhook-Enabled",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "ConversationSid",
+                "value": "",
+                "type": "path",
+                "description": "The unique ID of the [Conversation](https://www.twilio.com/docs/conversations/api/conversation-resource) for this participant."
+              },
+              {
+                "name": "Sid",
+                "value": "",
+                "type": "path",
+                "description": "A 34 character string that uniquely identifies this resource."
+              }
+            ],
+            "auth": {
+              "type": "basic",
+              "username": "{{username}}",
+              "password": "{{password}}"
+            }
+          },
+          "docs": "Remove a participant from the conversation"
+        },
+        {
+          "info": {
+            "name": "ListConversationScopedWebhook",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://accounts.twilio.com/v1/Conversations/:ConversationSid/Webhooks",
+            "params": [
+              {
+                "name": "ConversationSid",
+                "value": "",
+                "type": "path",
+                "description": "The unique ID of the [Conversation](https://www.twilio.com/docs/conversations/api/conversation-resource) for this webhook."
+              },
+              {
+                "name": "PageSize",
+                "value": "",
+                "type": "query",
+                "description": "How many resources to return in each list page. The default is 50, and the maximum is 1000."
+              },
+              {
+                "name": "Page",
+                "value": "",
+                "type": "query",
+                "description": "The page index. This value is simply for client state."
+              },
+              {
+                "name": "PageToken",
+                "value": "",
+                "type": "query",
+                "description": "The page token. This is provided by the API."
+              }
+            ],
+            "auth": {
+              "type": "basic",
+              "username": "{{username}}",
+              "password": "{{password}}"
+            }
+          },
+          "docs": "Retrieve a list of all webhooks scoped to the conversation"
+        },
+        {
+          "info": {
+            "name": "CreateConversationScopedWebhook",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://accounts.twilio.com/v1/Conversations/:ConversationSid/Webhooks",
+            "params": [
+              {
+                "name": "ConversationSid",
+                "value": "",
+                "type": "path",
+                "description": "The unique ID of the [Conversation](https://www.twilio.com/docs/conversations/api/conversation-resource) for this webhook."
+              }
+            ],
+            "body": {
+              "type": "form-urlencoded",
+              "data": []
+            },
+            "auth": {
+              "type": "basic",
+              "username": "{{username}}",
+              "password": "{{password}}"
+            }
+          },
+          "docs": "Create a new webhook scoped to the conversation"
+        },
+        {
+          "info": {
+            "name": "FetchConversationScopedWebhook",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://accounts.twilio.com/v1/Conversations/:ConversationSid/Webhooks/:Sid",
+            "params": [
+              {
+                "name": "ConversationSid",
+                "value": "",
+                "type": "path",
+                "description": "The unique ID of the [Conversation](https://www.twilio.com/docs/conversations/api/conversation-resource) for this webhook."
+              },
+              {
+                "name": "Sid",
+                "value": "",
+                "type": "path",
+                "description": "A 34 character string that uniquely identifies this resource."
+              }
+            ],
+            "auth": {
+              "type": "basic",
+              "username": "{{username}}",
+              "password": "{{password}}"
+            }
+          },
+          "docs": "Fetch the configuration of a conversation-scoped webhook"
+        },
+        {
+          "info": {
+            "name": "UpdateConversationScopedWebhook",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://accounts.twilio.com/v1/Conversations/:ConversationSid/Webhooks/:Sid",
+            "params": [
+              {
+                "name": "ConversationSid",
+                "value": "",
+                "type": "path",
+                "description": "The unique ID of the [Conversation](https://www.twilio.com/docs/conversations/api/conversation-resource) for this webhook."
+              },
+              {
+                "name": "Sid",
+                "value": "",
+                "type": "path",
+                "description": "A 34 character string that uniquely identifies this resource."
+              }
+            ],
+            "body": {
+              "type": "form-urlencoded",
+              "data": []
+            },
+            "auth": {
+              "type": "basic",
+              "username": "{{username}}",
+              "password": "{{password}}"
+            }
+          },
+          "docs": "Update an existing conversation-scoped webhook"
+        },
+        {
+          "info": {
+            "name": "DeleteConversationScopedWebhook",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://accounts.twilio.com/v1/Conversations/:ConversationSid/Webhooks/:Sid",
+            "params": [
+              {
+                "name": "ConversationSid",
+                "value": "",
+                "type": "path",
+                "description": "The unique ID of the [Conversation](https://www.twilio.com/docs/conversations/api/conversation-resource) for this webhook."
+              },
+              {
+                "name": "Sid",
+                "value": "",
+                "type": "path",
+                "description": "A 34 character string that uniquely identifies this resource."
+              }
+            ],
+            "auth": {
+              "type": "basic",
+              "username": "{{username}}",
+              "password": "{{password}}"
+            }
+          },
+          "docs": "Remove an existing webhook scoped to the conversation"
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

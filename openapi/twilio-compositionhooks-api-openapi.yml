@@ -1,6 +1,6 @@
-openapi: 3.0.1
+openapi: 3.2.0
 info:
-  title: Twilio - Accounts A2p CompositionHooks API
+  title: Twilio - Accounts A2p Composition Hooks API
   description: This is the public Twilio REST API.
   termsOfService: https://www.twilio.com/legal/tos
   contact:
@@ -243,103 +243,6 @@ components:
           - PUT
           - DELETE
           description: 'The HTTP method we should use to call `status_callback`. Can be: `POST` or `GET` and the default is `POST`.'
-    video.v1.composition_hook:
-      type: object
-      properties:
-        account_sid:
-          type: string
-          minLength: 34
-          maxLength: 34
-          pattern: ^AC[0-9a-fA-F]{32}$
-          nullable: true
-          description: The SID of the [Account](https://www.twilio.com/docs/iam/api/account) that created the CompositionHook resource.
-        friendly_name:
-          type: string
-          nullable: true
-          description: The string that you assigned to describe the resource. Can be up to 100 characters long and must be unique within the account.
-        enabled:
-          type: boolean
-          nullable: true
-          description: Whether the CompositionHook is active. When `true`, the CompositionHook is triggered for every completed Group Room on the account. When `false`, the CompositionHook is never triggered.
-        date_created:
-          type: string
-          format: date-time
-          nullable: true
-          description: The date and time in GMT when the resource was created specified in [ISO 8601](https://en.wikipedia.org/wiki/ISO_8601) format.
-        date_updated:
-          type: string
-          format: date-time
-          nullable: true
-          description: The date and time in GMT when the resource was last updated specified in [ISO 8601](https://en.wikipedia.org/wiki/ISO_8601) format.
-        sid:
-          type: string
-          minLength: 34
-          maxLength: 34
-          pattern: ^HK[0-9a-fA-F]{32}$
-          nullable: true
-          description: The unique string that we created to identify the CompositionHook resource.
-        audio_sources:
-          type: array
-          items:
-            type: string
-          nullable: true
-          description: The array of track names to include in the compositions created by the composition hook. A composition triggered by the composition hook includes all audio sources specified in `audio_sources` except those specified in `audio_sources_excluded`. The track names in this property can include an asterisk as a wild card character, which matches zero or more characters in a track name. For example, `student*` includes tracks named `student` as well as `studentTeam`. Please, be aware that either video_layout or audio_sources have to be provided to get a valid creation request
-          x-twilio:
-            pii:
-              handling: standard
-              deleteSla: 30
-        audio_sources_excluded:
-          type: array
-          items:
-            type: string
-          nullable: true
-          description: The array of track names to exclude from the compositions created by the composition hook. A composition triggered by the composition hook includes all audio sources specified in `audio_sources` except for those specified in `audio_sources_excluded`. The track names in this property can include an asterisk as a wild card character, which matches zero or more characters in a track name. For example, `student*` excludes `student` as well as `studentTeam`. This parameter can also be empty.
-          x-twilio:
-            pii:
-              handling: standard
-              deleteSla: 30
-        video_layout:
-          nullable: true
-          description: A JSON object that describes the video layout of the composition in terms of regions as specified in the HTTP POST request that created the CompositionHook resource. See [POST Parameters](https://www.twilio.com/docs/video/api/compositions-resource#http-post-parameters) for more information. Please, be aware that either video_layout or audio_sources have to be provided to get a valid creation request
-          x-twilio:
-            pii:
-              handling: standard
-              deleteSla: 30
-        resolution:
-          type: string
-          nullable: true
-          description: The dimensions of the video image in pixels expressed as columns (width) and rows (height). The string's format is `{width}x{height}`, such as `640x480`.
-        trim:
-          type: boolean
-          nullable: true
-          description: Whether intervals with no media are clipped, as specified in the POST request that created the CompositionHook resource. Compositions with `trim` enabled are shorter when the Room is created and no Participant joins for a while as well as if all the Participants leave the room and join later, because those gaps will be removed. See [Specifying Video Layouts](https://www.twilio.com/docs/video/api/compositions-resource#specifying-video-layouts) for more info.
-        format:
-          type: string
-          $ref: '#/components/schemas/composition_hook_enum_format'
-          nullable: true
-          description: The container format of the media files used by the compositions created by the composition hook. If `mp4` or `webm`, `audio_sources` must have one or more tracks and/or a `video_layout` element must contain a valid `video_sources` list, otherwise an error occurs.
-        status_callback:
-          type: string
-          format: uri
-          nullable: true
-          description: The URL we call using the `status_callback_method` to send status information to your application.
-        status_callback_method:
-          type: string
-          format: http-method
-          enum:
-          - HEAD
-          - GET
-          - POST
-          - PATCH
-          - PUT
-          - DELETE
-          nullable: true
-          description: The HTTP method we should use to call `status_callback`. Can be `POST` or `GET` and defaults to `POST`.
-        url:
-          type: string
-          format: uri
-          nullable: true
-          description: The absolute URL of the resource.
     CreateCompositionHookRequest:
       type: object
       required:
@@ -388,6 +291,116 @@ components:
         Trim:
           type: boolean
           description: Whether to clip the intervals where there is no active media in the Compositions triggered by the composition hook. The default is `true`. Compositions with `trim` enabled are shorter when the Room is created and no Participant joins for a while as well as if all the Participants leave the room and join later, because those gaps will be removed. See [Specifying Video Layouts](https://www.twilio.com/docs/video/api/compositions-resource#specifying-video-layouts) for more info.
+    video.v1.composition_hook:
+      type: object
+      properties:
+        account_sid:
+          type:
+          - string
+          - 'null'
+          minLength: 34
+          maxLength: 34
+          pattern: ^AC[0-9a-fA-F]{32}$
+          description: The SID of the [Account](https://www.twilio.com/docs/iam/api/account) that created the CompositionHook resource.
+        friendly_name:
+          type:
+          - string
+          - 'null'
+          description: The string that you assigned to describe the resource. Can be up to 100 characters long and must be unique within the account.
+        enabled:
+          type:
+          - boolean
+          - 'null'
+          description: Whether the CompositionHook is active. When `true`, the CompositionHook is triggered for every completed Group Room on the account. When `false`, the CompositionHook is never triggered.
+        date_created:
+          type:
+          - string
+          - 'null'
+          format: date-time
+          description: The date and time in GMT when the resource was created specified in [ISO 8601](https://en.wikipedia.org/wiki/ISO_8601) format.
+        date_updated:
+          type:
+          - string
+          - 'null'
+          format: date-time
+          description: The date and time in GMT when the resource was last updated specified in [ISO 8601](https://en.wikipedia.org/wiki/ISO_8601) format.
+        sid:
+          type:
+          - string
+          - 'null'
+          minLength: 34
+          maxLength: 34
+          pattern: ^HK[0-9a-fA-F]{32}$
+          description: The unique string that we created to identify the CompositionHook resource.
+        audio_sources:
+          type:
+          - array
+          - 'null'
+          items:
+            type: string
+          description: The array of track names to include in the compositions created by the composition hook. A composition triggered by the composition hook includes all audio sources specified in `audio_sources` except those specified in `audio_sources_excluded`. The track names in this property can include an asterisk as a wild card character, which matches zero or more characters in a track name. For example, `student*` includes tracks named `student` as well as `studentTeam`. Please, be aware that either video_layout or audio_sources have to be provided to get a valid creation request
+          x-twilio:
+            pii:
+              handling: standard
+              deleteSla: 30
+        audio_sources_excluded:
+          type:
+          - array
+          - 'null'
+          items:
+            type: string
+          description: The array of track names to exclude from the compositions created by the composition hook. A composition triggered by the composition hook includes all audio sources specified in `audio_sources` except for those specified in `audio_sources_excluded`. The track names in this property can include an asterisk as a wild card character, which matches zero or more characters in a track name. For example, `student*` excludes `student` as well as `studentTeam`. This parameter can also be empty.
+          x-twilio:
+            pii:
+              handling: standard
+              deleteSla: 30
+        video_layout:
+          description: A JSON object that describes the video layout of the composition in terms of regions as specified in the HTTP POST request that created the CompositionHook resource. See [POST Parameters](https://www.twilio.com/docs/video/api/compositions-resource#http-post-parameters) for more information. Please, be aware that either video_layout or audio_sources have to be provided to get a valid creation request
+          x-twilio:
+            pii:
+              handling: standard
+              deleteSla: 30
+        resolution:
+          type:
+          - string
+          - 'null'
+          description: The dimensions of the video image in pixels expressed as columns (width) and rows (height). The string's format is `{width}x{height}`, such as `640x480`.
+        trim:
+          type:
+          - boolean
+          - 'null'
+          description: Whether intervals with no media are clipped, as specified in the POST request that created the CompositionHook resource. Compositions with `trim` enabled are shorter when the Room is created and no Participant joins for a while as well as if all the Participants leave the room and join later, because those gaps will be removed. See [Specifying Video Layouts](https://www.twilio.com/docs/video/api/compositions-resource#specifying-video-layouts) for more info.
+        format:
+          type:
+          - string
+          - 'null'
+          $ref: '#/components/schemas/composition_hook_enum_format'
+          description: The container format of the media files used by the compositions created by the composition hook. If `mp4` or `webm`, `audio_sources` must have one or more tracks and/or a `video_layout` element must contain a valid `video_sources` list, otherwise an error occurs.
+        status_callback:
+          type:
+          - string
+          - 'null'
+          format: uri
+          description: The URL we call using the `status_callback_method` to send status information to your application.
+        status_callback_method:
+          type:
+          - string
+          - 'null'
+          format: http-method
+          enum:
+          - HEAD
+          - GET
+          - POST
+          - PATCH
+          - PUT
+          - DELETE
+          description: The HTTP method we should use to call `status_callback`. Can be `POST` or `GET` and defaults to `POST`.
+        url:
+          type:
+          - string
+          - 'null'
+          format: uri
+          description: The absolute URL of the resource.
     composition_hook_enum_format:
       type: string
       enum:
@@ -407,17 +420,19 @@ components:
               type: string
               format: uri
             next_page_url:
-              type: string
+              type:
+              - string
+              - 'null'
               format: uri
-              nullable: true
             page:
               type: integer
             page_size:
               type: integer
             previous_page_url:
-              type: string
+              type:
+              - string
+              - 'null'
               format: uri
-              nullable: true
             url:
               type: string
               format: uri

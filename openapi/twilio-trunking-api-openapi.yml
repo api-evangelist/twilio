@@ -1,4 +1,4 @@
-openapi: 3.0.1
+openapi: 3.2.0
 info:
   title: Twilio - Accounts A2p Trunking API
   description: This is the public Twilio REST API.
@@ -139,16 +139,20 @@ components:
       type: object
       properties:
         country:
-          type: string
-          nullable: true
+          type:
+          - string
+          - 'null'
           description: The name of the country.
         iso_country:
-          type: string
+          type:
+          - string
+          - 'null'
           format: iso-country-code
-          nullable: true
           description: The [ISO country code](https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2).
         terminating_prefix_prices:
-          type: array
+          type:
+          - array
+          - 'null'
           items:
             type: object
             format: outbound-prefix-price-with-origin
@@ -167,10 +171,11 @@ components:
                 type: number
               friendly_name:
                 type: string
-          nullable: true
           description: The list of [TerminatingPrefixPrice](https://www.twilio.com/docs/voice/pricing#outbound-prefix-price-with-origin) records.
         originating_call_prices:
-          type: array
+          type:
+          - array
+          - 'null'
           items:
             type: object
             format: inbound-call-price
@@ -181,59 +186,49 @@ components:
                 type: number
               number_type:
                 type: string
-          nullable: true
           description: The list of [OriginatingCallPrice](https://www.twilio.com/docs/voice/pricing#inbound-call-price) records.
         price_unit:
-          type: string
+          type:
+          - string
+          - 'null'
           format: currency
-          nullable: true
           description: The currency in which prices are measured, specified in [ISO 4127](https://www.iso.org/iso/home/standards/currency_codes.htm) format (e.g. `usd`, `eur`, `jpy`).
         url:
-          type: string
+          type:
+          - string
+          - 'null'
           format: uri
-          nullable: true
-          description: The absolute URL of the resource.
-    pricing.v2.trunking_country:
-      type: object
-      properties:
-        country:
-          type: string
-          nullable: true
-          description: The name of the country.
-        iso_country:
-          type: string
-          format: iso-country-code
-          nullable: true
-          description: The [ISO country code](https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2).
-        url:
-          type: string
-          format: uri
-          nullable: true
           description: The absolute URL of the resource.
     pricing.v2.trunking_number:
       type: object
       properties:
         destination_number:
-          type: string
+          type:
+          - string
+          - 'null'
           format: phone-number
-          nullable: true
           description: The destination phone number in [E.164](https://www.twilio.com/docs/glossary/what-e164) format, which consists of a + followed by the country code and subscriber number.
         origination_number:
-          type: string
+          type:
+          - string
+          - 'null'
           format: phone-number
-          nullable: true
           description: The origination phone number in [[E.164](https://www.twilio.com/docs/glossary/what-e164) format, which consists of a + followed by the country code and subscriber number.
         country:
-          type: string
-          nullable: true
+          type:
+          - string
+          - 'null'
           description: The name of the country.
         iso_country:
-          type: string
+          type:
+          - string
+          - 'null'
           format: iso-country-code
-          nullable: true
           description: The [ISO country code](https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2)
         terminating_prefix_prices:
-          type: array
+          type:
+          - array
+          - 'null'
           items:
             type: object
             format: outbound-prefix-price-with-origin
@@ -252,9 +247,10 @@ components:
                 type: number
               friendly_name:
                 type: string
-          nullable: true
         originating_call_price:
-          type: object
+          type:
+          - object
+          - 'null'
           format: inbound-call-price
           properties:
             base_price:
@@ -263,17 +259,38 @@ components:
               type: number
             number_type:
               type: string
-          nullable: true
           description: The [OriginatingCallPrice](https://www.twilio.com/docs/voice/pricing#inbound-call-price) record.
         price_unit:
-          type: string
+          type:
+          - string
+          - 'null'
           format: currency
-          nullable: true
           description: The currency in which prices are measured, specified in [ISO 4127](https://www.iso.org/iso/home/standards/currency_codes.htm) format (e.g. `usd`, `eur`, `jpy`).
         url:
-          type: string
+          type:
+          - string
+          - 'null'
           format: uri
-          nullable: true
+          description: The absolute URL of the resource.
+    pricing.v2.trunking_country:
+      type: object
+      properties:
+        country:
+          type:
+          - string
+          - 'null'
+          description: The name of the country.
+        iso_country:
+          type:
+          - string
+          - 'null'
+          format: iso-country-code
+          description: The [ISO country code](https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2).
+        url:
+          type:
+          - string
+          - 'null'
+          format: uri
           description: The absolute URL of the resource.
     ListTrunkingCountryResponse:
       type: object
@@ -289,17 +306,19 @@ components:
               type: string
               format: uri
             next_page_url:
-              type: string
+              type:
+              - string
+              - 'null'
               format: uri
-              nullable: true
             page:
               type: integer
             page_size:
               type: integer
             previous_page_url:
-              type: string
+              type:
+              - string
+              - 'null'
               format: uri
-              nullable: true
             url:
               type: string
               format: uri

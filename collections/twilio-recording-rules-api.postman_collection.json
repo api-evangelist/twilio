@@ -1,0 +1,227 @@
+{
+  "item": [
+    {
+      "id": "8a760a33-ff62-4de9-8462-453aa863705c",
+      "name": "Recording Rules",
+      "description": {
+        "content": "Manage recording rules for rooms",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "0f52b108-5a0f-43f7-8563-be0b99bc9ea2",
+          "name": "Twilio Fetch Recording Rules",
+          "request": {
+            "name": "Twilio Fetch Recording Rules",
+            "description": {},
+            "url": {
+              "path": [
+                "Rooms",
+                ":RoomSid",
+                "RecordingRules"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "RoomSid",
+                  "description": "(Required) The SID or unique name of the room"
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "499843f7-64c8-4b48-bbe0-36f3a977bb16",
+              "name": "Recording rules",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "Rooms",
+                    ":RoomSid",
+                    "RecordingRules"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "RoomSid",
+                      "description": "(Required) The SID or unique name of the room"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"room_sid\": \"string\",\n  \"rules\": [\n    {\n      \"type\": \"exclude\",\n      \"all\": false,\n      \"kind\": \"audio\",\n      \"publisher\": \"string\",\n      \"track\": \"string\"\n    },\n    {\n      \"type\": \"exclude\",\n      \"all\": true,\n      \"kind\": \"video\",\n      \"publisher\": \"string\",\n      \"track\": \"string\"\n    }\n  ],\n  \"date_created\": \"1987-09-05T23:26:45.586Z\",\n  \"date_updated\": \"1992-03-09T04:40:20.021Z\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "8ab8755a-da73-45d2-9831-32fccdc0fb2f",
+          "name": "Twilio Update Recording Rules",
+          "request": {
+            "name": "Twilio Update Recording Rules",
+            "description": {
+              "content": "Update the recording rules for a room to control which tracks are recorded.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "Rooms",
+                ":RoomSid",
+                "RecordingRules"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "RoomSid",
+                  "description": "(Required) The SID or unique name of the room"
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/x-www-form-urlencoded"
+              }
+            ],
+            "method": "POST",
+            "auth": null,
+            "body": {
+              "mode": "urlencoded",
+              "urlencoded": [
+                {
+                  "disabled": false,
+                  "key": "Rules",
+                  "value": "<string>",
+                  "description": "JSON array of recording rules"
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "id": "9bd37dba-58ee-4151-83f2-b968cc4fc5d6",
+              "name": "Recording rules updated",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "Rooms",
+                    ":RoomSid",
+                    "RecordingRules"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "RoomSid",
+                      "description": "(Required) The SID or unique name of the room"
+                    }
+                  ]
+                },
+                "method": "POST",
+                "body": {
+                  "mode": "urlencoded",
+                  "urlencoded": [
+                    {
+                      "disabled": false,
+                      "description": {
+                        "content": "JSON array of recording rules",
+                        "type": "text/plain"
+                      },
+                      "key": "Rules",
+                      "value": "<string>"
+                    }
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "type": "string",
+      "value": "https://accounts.twilio.com",
+      "key": "baseUrl"
+    }
+  ],
+  "info": {
+    "_postman_id": "3c13a2bf-6df8-4dcd-abc8-caa44467a71b",
+    "name": "Twilio - Accounts A2p Recording Rules API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "This is the public Twilio REST API.\n\nContact Support:\n Name: Twilio Support\n Email: support@twilio.com",
+      "type": "text/plain"
+    }
+  }
+}

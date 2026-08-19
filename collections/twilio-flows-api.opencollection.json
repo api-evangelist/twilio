@@ -1,0 +1,620 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Twilio - Accounts A2p Flows API",
+    "version": "1.52.0"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Flows",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "ListExecution",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://accounts.twilio.com/v2/Flows/:FlowSid/Executions",
+            "params": [
+              {
+                "name": "FlowSid",
+                "value": "",
+                "type": "path",
+                "description": "The SID of the Flow with the Execution resources to read."
+              },
+              {
+                "name": "DateCreatedFrom",
+                "value": "",
+                "type": "query",
+                "description": "Only show Execution resources starting on or after this [ISO 8601](https://en.wikipedia.org/wiki/ISO_8601) date-time, given as `YYYY-MM-DDThh:mm:ss-hh:mm`."
+              },
+              {
+                "name": "DateCreatedTo",
+                "value": "",
+                "type": "query",
+                "description": "Only show Execution resources starting before this [ISO 8601](https://en.wikipedia.org/wiki/ISO_8601) date-time, given as `YYYY-MM-DDThh:mm:ss-hh:mm`."
+              },
+              {
+                "name": "PageSize",
+                "value": "",
+                "type": "query",
+                "description": "How many resources to return in each list page. The default is 50, and the maximum is 1000."
+              },
+              {
+                "name": "Page",
+                "value": "",
+                "type": "query",
+                "description": "The page index. This value is simply for client state."
+              },
+              {
+                "name": "PageToken",
+                "value": "",
+                "type": "query",
+                "description": "The page token. This is provided by the API."
+              }
+            ],
+            "auth": {
+              "type": "basic",
+              "username": "{{username}}",
+              "password": "{{password}}"
+            }
+          },
+          "docs": "Retrieve a list of all Executions for the Flow."
+        },
+        {
+          "info": {
+            "name": "CreateExecution",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://accounts.twilio.com/v2/Flows/:FlowSid/Executions",
+            "params": [
+              {
+                "name": "FlowSid",
+                "value": "",
+                "type": "path",
+                "description": "The SID of the Excecution's Flow."
+              }
+            ],
+            "body": {
+              "type": "form-urlencoded",
+              "data": []
+            },
+            "auth": {
+              "type": "basic",
+              "username": "{{username}}",
+              "password": "{{password}}"
+            }
+          },
+          "docs": "Triggers a new Execution for the Flow"
+        },
+        {
+          "info": {
+            "name": "FetchExecution",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://accounts.twilio.com/v2/Flows/:FlowSid/Executions/:Sid",
+            "params": [
+              {
+                "name": "FlowSid",
+                "value": "",
+                "type": "path",
+                "description": "The SID of the Flow with the Execution resource to fetch"
+              },
+              {
+                "name": "Sid",
+                "value": "",
+                "type": "path",
+                "description": "The SID of the Execution resource to fetch."
+              }
+            ],
+            "auth": {
+              "type": "basic",
+              "username": "{{username}}",
+              "password": "{{password}}"
+            }
+          },
+          "docs": "Retrieve an Execution"
+        },
+        {
+          "info": {
+            "name": "UpdateExecution",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://accounts.twilio.com/v2/Flows/:FlowSid/Executions/:Sid",
+            "params": [
+              {
+                "name": "FlowSid",
+                "value": "",
+                "type": "path",
+                "description": "The SID of the Flow with the Execution resources to update."
+              },
+              {
+                "name": "Sid",
+                "value": "",
+                "type": "path",
+                "description": "The SID of the Execution resource to update."
+              }
+            ],
+            "body": {
+              "type": "form-urlencoded",
+              "data": []
+            },
+            "auth": {
+              "type": "basic",
+              "username": "{{username}}",
+              "password": "{{password}}"
+            }
+          },
+          "docs": "Update the status of an Execution to `ended`."
+        },
+        {
+          "info": {
+            "name": "DeleteExecution",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://accounts.twilio.com/v2/Flows/:FlowSid/Executions/:Sid",
+            "params": [
+              {
+                "name": "FlowSid",
+                "value": "",
+                "type": "path",
+                "description": "The SID of the Flow with the Execution resources to delete."
+              },
+              {
+                "name": "Sid",
+                "value": "",
+                "type": "path",
+                "description": "The SID of the Execution resource to delete."
+              }
+            ],
+            "auth": {
+              "type": "basic",
+              "username": "{{username}}",
+              "password": "{{password}}"
+            }
+          },
+          "docs": "Delete the Execution and all Steps relating to it."
+        },
+        {
+          "info": {
+            "name": "FetchExecutionContext",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://accounts.twilio.com/v2/Flows/:FlowSid/Executions/:ExecutionSid/Context",
+            "params": [
+              {
+                "name": "FlowSid",
+                "value": "",
+                "type": "path",
+                "description": "The SID of the Flow with the Execution context to fetch."
+              },
+              {
+                "name": "ExecutionSid",
+                "value": "",
+                "type": "path",
+                "description": "The SID of the Execution context to fetch."
+              }
+            ],
+            "auth": {
+              "type": "basic",
+              "username": "{{username}}",
+              "password": "{{password}}"
+            }
+          },
+          "docs": "Retrieve the most recent context for an Execution."
+        },
+        {
+          "info": {
+            "name": "ListExecutionStep",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://accounts.twilio.com/v2/Flows/:FlowSid/Executions/:ExecutionSid/Steps",
+            "params": [
+              {
+                "name": "FlowSid",
+                "value": "",
+                "type": "path",
+                "description": "The SID of the Flow with the Steps to read."
+              },
+              {
+                "name": "ExecutionSid",
+                "value": "",
+                "type": "path",
+                "description": "The SID of the Execution with the Steps to read."
+              },
+              {
+                "name": "PageSize",
+                "value": "",
+                "type": "query",
+                "description": "How many resources to return in each list page. The default is 50, and the maximum is 1000."
+              },
+              {
+                "name": "Page",
+                "value": "",
+                "type": "query",
+                "description": "The page index. This value is simply for client state."
+              },
+              {
+                "name": "PageToken",
+                "value": "",
+                "type": "query",
+                "description": "The page token. This is provided by the API."
+              }
+            ],
+            "auth": {
+              "type": "basic",
+              "username": "{{username}}",
+              "password": "{{password}}"
+            }
+          },
+          "docs": "Retrieve a list of all Steps for an Execution."
+        },
+        {
+          "info": {
+            "name": "FetchExecutionStep",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://accounts.twilio.com/v2/Flows/:FlowSid/Executions/:ExecutionSid/Steps/:Sid",
+            "params": [
+              {
+                "name": "FlowSid",
+                "value": "",
+                "type": "path",
+                "description": "The SID of the Flow with the Step to fetch."
+              },
+              {
+                "name": "ExecutionSid",
+                "value": "",
+                "type": "path",
+                "description": "The SID of the Execution resource with the Step to fetch."
+              },
+              {
+                "name": "Sid",
+                "value": "",
+                "type": "path",
+                "description": "The SID of the ExecutionStep resource to fetch."
+              }
+            ],
+            "auth": {
+              "type": "basic",
+              "username": "{{username}}",
+              "password": "{{password}}"
+            }
+          },
+          "docs": "Retrieve a Step."
+        },
+        {
+          "info": {
+            "name": "FetchExecutionStepContext",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://accounts.twilio.com/v2/Flows/:FlowSid/Executions/:ExecutionSid/Steps/:StepSid/Context",
+            "params": [
+              {
+                "name": "FlowSid",
+                "value": "",
+                "type": "path",
+                "description": "The SID of the Flow with the Step to fetch."
+              },
+              {
+                "name": "ExecutionSid",
+                "value": "",
+                "type": "path",
+                "description": "The SID of the Execution resource with the Step to fetch."
+              },
+              {
+                "name": "StepSid",
+                "value": "",
+                "type": "path",
+                "description": "The SID of the Step to fetch."
+              }
+            ],
+            "auth": {
+              "type": "basic",
+              "username": "{{username}}",
+              "password": "{{password}}"
+            }
+          },
+          "docs": "Retrieve the context for an Execution Step."
+        },
+        {
+          "info": {
+            "name": "ListFlow",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://accounts.twilio.com/v2/Flows",
+            "params": [
+              {
+                "name": "PageSize",
+                "value": "",
+                "type": "query",
+                "description": "How many resources to return in each list page. The default is 50, and the maximum is 1000."
+              },
+              {
+                "name": "Page",
+                "value": "",
+                "type": "query",
+                "description": "The page index. This value is simply for client state."
+              },
+              {
+                "name": "PageToken",
+                "value": "",
+                "type": "query",
+                "description": "The page token. This is provided by the API."
+              }
+            ],
+            "auth": {
+              "type": "basic",
+              "username": "{{username}}",
+              "password": "{{password}}"
+            }
+          },
+          "docs": "Retrieve a list of all Flows."
+        },
+        {
+          "info": {
+            "name": "CreateFlow",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://accounts.twilio.com/v2/Flows",
+            "body": {
+              "type": "form-urlencoded",
+              "data": []
+            },
+            "auth": {
+              "type": "basic",
+              "username": "{{username}}",
+              "password": "{{password}}"
+            }
+          },
+          "docs": "Create a Flow."
+        },
+        {
+          "info": {
+            "name": "FetchFlow",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://accounts.twilio.com/v2/Flows/:Sid",
+            "params": [
+              {
+                "name": "Sid",
+                "value": "",
+                "type": "path",
+                "description": "The SID of the Flow resource to fetch."
+              }
+            ],
+            "auth": {
+              "type": "basic",
+              "username": "{{username}}",
+              "password": "{{password}}"
+            }
+          },
+          "docs": "Retrieve a specific Flow."
+        },
+        {
+          "info": {
+            "name": "UpdateFlow",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://accounts.twilio.com/v2/Flows/:Sid",
+            "params": [
+              {
+                "name": "Sid",
+                "value": "",
+                "type": "path",
+                "description": "The SID of the Flow resource to fetch."
+              }
+            ],
+            "body": {
+              "type": "form-urlencoded",
+              "data": []
+            },
+            "auth": {
+              "type": "basic",
+              "username": "{{username}}",
+              "password": "{{password}}"
+            }
+          },
+          "docs": "Update a Flow."
+        },
+        {
+          "info": {
+            "name": "DeleteFlow",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://accounts.twilio.com/v2/Flows/:Sid",
+            "params": [
+              {
+                "name": "Sid",
+                "value": "",
+                "type": "path",
+                "description": "The SID of the Flow resource to delete."
+              }
+            ],
+            "auth": {
+              "type": "basic",
+              "username": "{{username}}",
+              "password": "{{password}}"
+            }
+          },
+          "docs": "Delete a specific Flow."
+        },
+        {
+          "info": {
+            "name": "ListFlowRevision",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://accounts.twilio.com/v2/Flows/:Sid/Revisions",
+            "params": [
+              {
+                "name": "Sid",
+                "value": "",
+                "type": "path",
+                "description": "The SID of the Flow resource to fetch."
+              },
+              {
+                "name": "PageSize",
+                "value": "",
+                "type": "query",
+                "description": "How many resources to return in each list page. The default is 50, and the maximum is 1000."
+              },
+              {
+                "name": "Page",
+                "value": "",
+                "type": "query",
+                "description": "The page index. This value is simply for client state."
+              },
+              {
+                "name": "PageToken",
+                "value": "",
+                "type": "query",
+                "description": "The page token. This is provided by the API."
+              }
+            ],
+            "auth": {
+              "type": "basic",
+              "username": "{{username}}",
+              "password": "{{password}}"
+            }
+          },
+          "docs": "Retrieve a list of all Flows revisions."
+        },
+        {
+          "info": {
+            "name": "FetchFlowRevision",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://accounts.twilio.com/v2/Flows/:Sid/Revisions/:Revision",
+            "params": [
+              {
+                "name": "Sid",
+                "value": "",
+                "type": "path",
+                "description": "The SID of the Flow resource to fetch."
+              },
+              {
+                "name": "Revision",
+                "value": "",
+                "type": "path",
+                "description": "Specific Revision number or can be `LatestPublished` and `LatestRevision`."
+              }
+            ],
+            "auth": {
+              "type": "basic",
+              "username": "{{username}}",
+              "password": "{{password}}"
+            }
+          },
+          "docs": "Retrieve a specific Flow revision."
+        },
+        {
+          "info": {
+            "name": "UpdateFlowValidate",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://accounts.twilio.com/v2/Flows/Validate",
+            "body": {
+              "type": "form-urlencoded",
+              "data": []
+            },
+            "auth": {
+              "type": "basic",
+              "username": "{{username}}",
+              "password": "{{password}}"
+            }
+          },
+          "docs": "Validate flow JSON definition"
+        },
+        {
+          "info": {
+            "name": "FetchTestUser",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://accounts.twilio.com/v2/Flows/:Sid/TestUsers",
+            "params": [
+              {
+                "name": "Sid",
+                "value": "",
+                "type": "path",
+                "description": "Unique identifier of the flow."
+              }
+            ],
+            "auth": {
+              "type": "basic",
+              "username": "{{username}}",
+              "password": "{{password}}"
+            }
+          },
+          "docs": "Fetch flow test users"
+        },
+        {
+          "info": {
+            "name": "UpdateTestUser",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://accounts.twilio.com/v2/Flows/:Sid/TestUsers",
+            "params": [
+              {
+                "name": "Sid",
+                "value": "",
+                "type": "path",
+                "description": "Unique identifier of the flow."
+              }
+            ],
+            "body": {
+              "type": "form-urlencoded",
+              "data": []
+            },
+            "auth": {
+              "type": "basic",
+              "username": "{{username}}",
+              "password": "{{password}}"
+            }
+          },
+          "docs": "Update flow test users"
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

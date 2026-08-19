@@ -1,6 +1,6 @@
-openapi: 3.0.1
+openapi: 3.2.0
 info:
-  title: Twilio - Accounts A2p PhoneNumbers API
+  title: Twilio - Accounts A2p Phone Numbers API
   description: This is the public Twilio REST API.
   termsOfService: https://www.twilio.com/legal/tos
   contact:
@@ -79,50 +79,6 @@ paths:
       - GA
 components:
   schemas:
-    routes.v2.phone_number:
-      type: object
-      properties:
-        phone_number:
-          type: string
-          nullable: true
-          description: The phone number in E.164 format
-        url:
-          type: string
-          format: uri
-          nullable: true
-          description: The absolute URL of the resource.
-        sid:
-          type: string
-          minLength: 34
-          maxLength: 34
-          pattern: ^QQ[0-9a-fA-F]{32}$
-          nullable: true
-          description: A 34 character string that uniquely identifies the Inbound Processing Region assignments for this phone number.
-        account_sid:
-          type: string
-          minLength: 34
-          maxLength: 34
-          pattern: ^AC[0-9a-fA-F]{32}$
-          nullable: true
-          description: The unique SID identifier of the Account.
-        friendly_name:
-          type: string
-          nullable: true
-          description: A human readable description of the Inbound Processing Region assignments for this phone number, up to 64 characters.
-        voice_region:
-          type: string
-          nullable: true
-          description: The Inbound Processing Region used for this phone number for voice.
-        date_created:
-          type: string
-          format: date-time
-          nullable: true
-          description: The date that this phone number was assigned an Inbound Processing Region, given in ISO 8601 format.
-        date_updated:
-          type: string
-          format: date-time
-          nullable: true
-          description: The date that the Inbound Processing Region was updated for this phone number, given in ISO 8601 format.
     UpdatePhoneNumberRequest:
       type: object
       properties:
@@ -132,6 +88,58 @@ components:
         FriendlyName:
           type: string
           description: A human readable description of this resource, up to 64 characters.
+    routes.v2.phone_number:
+      type: object
+      properties:
+        phone_number:
+          type:
+          - string
+          - 'null'
+          description: The phone number in E.164 format
+        url:
+          type:
+          - string
+          - 'null'
+          format: uri
+          description: The absolute URL of the resource.
+        sid:
+          type:
+          - string
+          - 'null'
+          minLength: 34
+          maxLength: 34
+          pattern: ^QQ[0-9a-fA-F]{32}$
+          description: A 34 character string that uniquely identifies the Inbound Processing Region assignments for this phone number.
+        account_sid:
+          type:
+          - string
+          - 'null'
+          minLength: 34
+          maxLength: 34
+          pattern: ^AC[0-9a-fA-F]{32}$
+          description: The unique SID identifier of the Account.
+        friendly_name:
+          type:
+          - string
+          - 'null'
+          description: A human readable description of the Inbound Processing Region assignments for this phone number, up to 64 characters.
+        voice_region:
+          type:
+          - string
+          - 'null'
+          description: The Inbound Processing Region used for this phone number for voice.
+        date_created:
+          type:
+          - string
+          - 'null'
+          format: date-time
+          description: The date that this phone number was assigned an Inbound Processing Region, given in ISO 8601 format.
+        date_updated:
+          type:
+          - string
+          - 'null'
+          format: date-time
+          description: The date that the Inbound Processing Region was updated for this phone number, given in ISO 8601 format.
   securitySchemes:
     accountSid_authToken:
       type: http

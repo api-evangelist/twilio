@@ -1,0 +1,364 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Twilio - Accounts A2p Hosted Number API",
+    "version": "1.52.0"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "HostedNumber",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "FetchAuthorizationDocument",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://accounts.twilio.com/v2/HostedNumber/AuthorizationDocuments/:Sid",
+            "params": [
+              {
+                "name": "Sid",
+                "value": "",
+                "type": "path",
+                "description": "A 34 character string that uniquely identifies this AuthorizationDocument."
+              }
+            ],
+            "auth": {
+              "type": "basic",
+              "username": "{{username}}",
+              "password": "{{password}}"
+            }
+          },
+          "docs": "Fetch a specific AuthorizationDocument."
+        },
+        {
+          "info": {
+            "name": "DeleteAuthorizationDocument",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://accounts.twilio.com/v2/HostedNumber/AuthorizationDocuments/:Sid",
+            "params": [
+              {
+                "name": "Sid",
+                "value": "",
+                "type": "path",
+                "description": "A 34 character string that uniquely identifies this AuthorizationDocument."
+              }
+            ],
+            "auth": {
+              "type": "basic",
+              "username": "{{username}}",
+              "password": "{{password}}"
+            }
+          },
+          "docs": "Cancel the AuthorizationDocument request."
+        },
+        {
+          "info": {
+            "name": "ListAuthorizationDocument",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://accounts.twilio.com/v2/HostedNumber/AuthorizationDocuments",
+            "params": [
+              {
+                "name": "Email",
+                "value": "",
+                "type": "query",
+                "description": "Email that this AuthorizationDocument will be sent to for signing."
+              },
+              {
+                "name": "Status",
+                "value": "",
+                "type": "query",
+                "description": "Status of an instance resource. It can hold one of the values: 1. opened 2. signing, 3. signed LOA, 4. canceled, 5. failed. See the section entitled [Status Values](https://www.twilio.com/docs/phone-numbers/hosted-numbers/hosted-numbers-api/authorization-document-resource#status-values) for more information on each of these statuses."
+              },
+              {
+                "name": "PageSize",
+                "value": "",
+                "type": "query",
+                "description": "How many resources to return in each list page. The default is 50, and the maximum is 1000."
+              },
+              {
+                "name": "Page",
+                "value": "",
+                "type": "query",
+                "description": "The page index. This value is simply for client state."
+              },
+              {
+                "name": "PageToken",
+                "value": "",
+                "type": "query",
+                "description": "The page token. This is provided by the API."
+              }
+            ],
+            "auth": {
+              "type": "basic",
+              "username": "{{username}}",
+              "password": "{{password}}"
+            }
+          },
+          "docs": "Retrieve a list of AuthorizationDocuments belonging to the account initiating the request."
+        },
+        {
+          "info": {
+            "name": "CreateAuthorizationDocument",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://accounts.twilio.com/v2/HostedNumber/AuthorizationDocuments",
+            "body": {
+              "type": "form-urlencoded",
+              "data": []
+            },
+            "auth": {
+              "type": "basic",
+              "username": "{{username}}",
+              "password": "{{password}}"
+            }
+          },
+          "docs": "Create an AuthorizationDocument for authorizing the hosting of phone number capabilities on Twilio's platform."
+        },
+        {
+          "info": {
+            "name": "FetchBulkHostedNumberOrder",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://accounts.twilio.com/v2/HostedNumber/Orders/Bulk/:BulkHostingSid",
+            "params": [
+              {
+                "name": "BulkHostingSid",
+                "value": "",
+                "type": "path",
+                "description": "A 34 character string that uniquely identifies this BulkHostedNumberOrder."
+              },
+              {
+                "name": "OrderStatus",
+                "value": "",
+                "type": "query",
+                "description": "Order status can be used for filtering on Hosted Number Order status values. To see a complete list of order statuses, please check 'https://www.twilio.com/docs/phone-numbers/hosted-numbers/hosted-numbers-api/hosted-number-order-resource#status-values'."
+              }
+            ],
+            "auth": {
+              "type": "basic",
+              "username": "{{username}}",
+              "password": "{{password}}"
+            }
+          },
+          "docs": "Fetch a specific BulkHostedNumberOrder."
+        },
+        {
+          "info": {
+            "name": "ListDependentHostedNumberOrder",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://accounts.twilio.com/v2/HostedNumber/AuthorizationDocuments/:SigningDocumentSid/DependentHostedNumberOrders",
+            "params": [
+              {
+                "name": "SigningDocumentSid",
+                "value": "",
+                "type": "path",
+                "description": "A 34 character string that uniquely identifies the LOA document associated with this HostedNumberOrder."
+              },
+              {
+                "name": "Status",
+                "value": "",
+                "type": "query",
+                "description": "Status of an instance resource. It can hold one of the values: 1. opened 2. signing, 3. signed LOA, 4. canceled, 5. failed. See the section entitled [Status Values](https://www.twilio.com/docs/phone-numbers/hosted-numbers/hosted-numbers-api/authorization-document-resource#status-values) for more information on each of these statuses."
+              },
+              {
+                "name": "PhoneNumber",
+                "value": "",
+                "type": "query",
+                "description": "An E164 formatted phone number hosted by this HostedNumberOrder."
+              },
+              {
+                "name": "IncomingPhoneNumberSid",
+                "value": "",
+                "type": "query",
+                "description": "A 34 character string that uniquely identifies the IncomingPhoneNumber resource created by this HostedNumberOrder."
+              },
+              {
+                "name": "FriendlyName",
+                "value": "",
+                "type": "query",
+                "description": "A human readable description of this resource, up to 128 characters."
+              },
+              {
+                "name": "PageSize",
+                "value": "",
+                "type": "query",
+                "description": "How many resources to return in each list page. The default is 50, and the maximum is 1000."
+              },
+              {
+                "name": "Page",
+                "value": "",
+                "type": "query",
+                "description": "The page index. This value is simply for client state."
+              },
+              {
+                "name": "PageToken",
+                "value": "",
+                "type": "query",
+                "description": "The page token. This is provided by the API."
+              }
+            ],
+            "auth": {
+              "type": "basic",
+              "username": "{{username}}",
+              "password": "{{password}}"
+            }
+          },
+          "docs": "Retrieve a list of dependent HostedNumberOrders belonging to the AuthorizationDocument."
+        },
+        {
+          "info": {
+            "name": "FetchHostedNumberOrder",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://accounts.twilio.com/v2/HostedNumber/Orders/:Sid",
+            "params": [
+              {
+                "name": "Sid",
+                "value": "",
+                "type": "path",
+                "description": "A 34 character string that uniquely identifies this HostedNumberOrder."
+              }
+            ],
+            "auth": {
+              "type": "basic",
+              "username": "{{username}}",
+              "password": "{{password}}"
+            }
+          },
+          "docs": "Fetch a specific HostedNumberOrder."
+        },
+        {
+          "info": {
+            "name": "DeleteHostedNumberOrder",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://accounts.twilio.com/v2/HostedNumber/Orders/:Sid",
+            "params": [
+              {
+                "name": "Sid",
+                "value": "",
+                "type": "path",
+                "description": "A 34 character string that uniquely identifies this HostedNumberOrder."
+              }
+            ],
+            "auth": {
+              "type": "basic",
+              "username": "{{username}}",
+              "password": "{{password}}"
+            }
+          },
+          "docs": "Cancel the HostedNumberOrder (only available when the status is in `received`)."
+        },
+        {
+          "info": {
+            "name": "ListHostedNumberOrder",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://accounts.twilio.com/v2/HostedNumber/Orders",
+            "params": [
+              {
+                "name": "Status",
+                "value": "",
+                "type": "query",
+                "description": "The Status of this HostedNumberOrder. One of `received`, `pending-verification`, `verified`, `pending-loa`, `carrier-processing`, `testing`, `completed`, `failed`, or `action-required`."
+              },
+              {
+                "name": "SmsCapability",
+                "value": "",
+                "type": "query",
+                "description": "Whether the SMS capability will be hosted on our platform. Can be `true` of `false`."
+              },
+              {
+                "name": "PhoneNumber",
+                "value": "",
+                "type": "query",
+                "description": "An E164 formatted phone number hosted by this HostedNumberOrder."
+              },
+              {
+                "name": "IncomingPhoneNumberSid",
+                "value": "",
+                "type": "query",
+                "description": "A 34 character string that uniquely identifies the IncomingPhoneNumber resource created by this HostedNumberOrder."
+              },
+              {
+                "name": "FriendlyName",
+                "value": "",
+                "type": "query",
+                "description": "A human readable description of this resource, up to 128 characters."
+              },
+              {
+                "name": "PageSize",
+                "value": "",
+                "type": "query",
+                "description": "How many resources to return in each list page. The default is 50, and the maximum is 1000."
+              },
+              {
+                "name": "Page",
+                "value": "",
+                "type": "query",
+                "description": "The page index. This value is simply for client state."
+              },
+              {
+                "name": "PageToken",
+                "value": "",
+                "type": "query",
+                "description": "The page token. This is provided by the API."
+              }
+            ],
+            "auth": {
+              "type": "basic",
+              "username": "{{username}}",
+              "password": "{{password}}"
+            }
+          },
+          "docs": "Retrieve a list of HostedNumberOrders belonging to the account initiating the request."
+        },
+        {
+          "info": {
+            "name": "CreateHostedNumberOrder",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://accounts.twilio.com/v2/HostedNumber/Orders",
+            "body": {
+              "type": "form-urlencoded",
+              "data": []
+            },
+            "auth": {
+              "type": "basic",
+              "username": "{{username}}",
+              "password": "{{password}}"
+            }
+          },
+          "docs": "Host a phone number's capability on Twilio's platform."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

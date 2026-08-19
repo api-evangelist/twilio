@@ -1,4 +1,4 @@
-openapi: 3.0.1
+openapi: 3.2.0
 info:
   title: Twilio - Accounts A2p Media API
   description: This is the public Twilio REST API.
@@ -128,14 +128,6 @@ components:
         uri:
           type: string
   parameters:
-    MessageSid:
-      name: MessageSid
-      in: path
-      required: true
-      description: The unique identifier of the message
-      schema:
-        type: string
-        pattern: ^(SM|MM)[0-9a-fA-F]{32}$
     AccountSid:
       name: AccountSid
       in: path
@@ -144,6 +136,14 @@ components:
       schema:
         type: string
         pattern: ^AC[0-9a-fA-F]{32}$
+    MessageSid:
+      name: MessageSid
+      in: path
+      required: true
+      description: The unique identifier of the message
+      schema:
+        type: string
+        pattern: ^(SM|MM)[0-9a-fA-F]{32}$
   securitySchemes:
     accountSid_authToken:
       type: http

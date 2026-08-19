@@ -1,4 +1,4 @@
-openapi: 3.0.1
+openapi: 3.2.0
 info:
   title: Twilio - Accounts A2p Sims API
   description: This is the public Twilio REST API.
@@ -436,174 +436,6 @@ paths:
       - GA
 components:
   schemas:
-    sim_ip_address_enum_ip_address_version:
-      type: string
-      enum:
-      - IPv4
-      - IPv6
-    wireless.v1.sim.data_session:
-      type: object
-      properties:
-        sid:
-          type: string
-          nullable: true
-          description: The unique string that we created to identify the DataSession resource.
-        sim_sid:
-          type: string
-          nullable: true
-          description: The SID of the [Sim resource](https://www.twilio.com/docs/iot/wireless/api/sim-resource) that the Data Session is for.
-        account_sid:
-          type: string
-          minLength: 34
-          maxLength: 34
-          pattern: ^AC[0-9a-fA-F]{32}$
-          nullable: true
-          description: The SID of the [Account](https://www.twilio.com/docs/iam/api/account) that created the DataSession resource.
-        radio_link:
-          type: string
-          nullable: true
-          description: The generation of wireless technology that the device was using.
-        operator_mcc:
-          type: string
-          nullable: true
-          description: 'The ''mobile country code'' is the unique ID of the home country where the Data Session took place. See: [MCC/MNC lookup](http://mcc-mnc.com/).'
-        operator_mnc:
-          type: string
-          nullable: true
-          description: The 'mobile network code' is the unique ID specific to the mobile operator network where the Data Session took place.
-        operator_country:
-          type: string
-          nullable: true
-          description: The three letter country code representing where the device's Data Session took place. This is determined by looking up the `operator_mcc`.
-        operator_name:
-          type: string
-          nullable: true
-          description: The friendly name of the mobile operator network that the [SIM](https://www.twilio.com/docs/iot/wireless/api/sim-resource)-connected device is attached to. This is determined by looking up the `operator_mnc`.
-        cell_id:
-          type: string
-          nullable: true
-          description: The unique ID of the cellular tower that the device was attached to at the moment when the Data Session was last updated.
-        cell_location_estimate:
-          nullable: true
-          description: 'An object that describes the estimated location in latitude and longitude where the device''s Data Session took place. The location is derived from the `cell_id` when the Data Session was last updated. See [Cell Location Estimate Object](https://www.twilio.com/docs/iot/wireless/api/datasession-resource#cell-location-estimate-object). '
-        packets_uploaded:
-          type: integer
-          nullable: true
-          description: The number of packets uploaded by the device between the `start` time and when the Data Session was last updated.
-        packets_downloaded:
-          type: integer
-          nullable: true
-          description: The number of packets downloaded by the device between the `start` time and when the Data Session was last updated.
-        last_updated:
-          type: string
-          format: date-time
-          nullable: true
-          description: The date that the resource was last updated, given as GMT in [ISO 8601](https://www.iso.org/iso-8601-date-and-time-format.html) format.
-        start:
-          type: string
-          format: date-time
-          nullable: true
-          description: The date that the Data Session started, given as GMT in [ISO 8601](https://www.iso.org/iso-8601-date-and-time-format.html) format.
-        end:
-          type: string
-          format: date-time
-          nullable: true
-          description: The date that the record ended, given as GMT in [ISO 8601](https://www.iso.org/iso-8601-date-and-time-format.html) format.
-        imei:
-          type: string
-          nullable: true
-          description: 'The ''international mobile equipment identity'' is the unique ID of the device using the SIM to connect. An IMEI is a 15-digit string: 14 digits for the device identifier plus a check digit calculated using the Luhn formula.'
-    sim_enum_status:
-      type: string
-      enum:
-      - new
-      - ready
-      - active
-      - inactive
-      - scheduled
-    sim_enum_status_update:
-      type: string
-      enum:
-      - ready
-      - active
-      - inactive
-    ListUsageRecordResponse:
-      type: object
-      properties:
-        usage_records:
-          type: array
-          items:
-            $ref: '#/components/schemas/wireless.v1.sim.usage_record'
-        meta:
-          type: object
-          properties:
-            first_page_url:
-              type: string
-              format: uri
-            next_page_url:
-              type: string
-              format: uri
-              nullable: true
-            page:
-              type: integer
-            page_size:
-              type: integer
-            previous_page_url:
-              type: string
-              format: uri
-              nullable: true
-            url:
-              type: string
-              format: uri
-            key:
-              type: string
-    billing_period_enum_bp_type:
-      type: string
-      enum:
-      - ready
-      - active
-    ListDataSessionResponse:
-      type: object
-      properties:
-        data_sessions:
-          type: array
-          items:
-            $ref: '#/components/schemas/wireless.v1.sim.data_session'
-        meta:
-          type: object
-          properties:
-            first_page_url:
-              type: string
-              format: uri
-            next_page_url:
-              type: string
-              format: uri
-              nullable: true
-            page:
-              type: integer
-            page_size:
-              type: integer
-            previous_page_url:
-              type: string
-              format: uri
-              nullable: true
-            url:
-              type: string
-              format: uri
-            key:
-              type: string
-    CreateSimRequest:
-      type: object
-      required:
-      - Iccid
-      - RegistrationCode
-      properties:
-        Iccid:
-          type: string
-          description: The [ICCID](https://en.wikipedia.org/wiki/Subscriber_identity_module#ICCID) of the Super SIM to be added to your Account.
-        RegistrationCode:
-          type: string
-          description: The 10-digit code required to claim the Super SIM for your Account.
     UpdateSimRequest:
       type: object
       properties:
@@ -635,19 +467,13 @@ components:
         AccountSid:
           type: string
           description: The SID of the Account to which the Sim resource should belong. The Account SID can only be that of the requesting Account or that of a Subaccount of the requesting Account. Only valid when the Sim resource's status is new.
-    usage_record_enum_granularity:
-      type: string
-      enum:
-      - hourly
-      - daily
-      - all
-    ListBillingPeriodResponse:
+    ListDataSessionResponse:
       type: object
       properties:
-        billing_periods:
+        data_sessions:
           type: array
           items:
-            $ref: '#/components/schemas/supersim.v1.sim.billing_period'
+            $ref: '#/components/schemas/wireless.v1.sim.data_session'
         meta:
           type: object
           properties:
@@ -655,161 +481,110 @@ components:
               type: string
               format: uri
             next_page_url:
-              type: string
+              type:
+              - string
+              - 'null'
               format: uri
-              nullable: true
             page:
               type: integer
             page_size:
               type: integer
             previous_page_url:
-              type: string
+              type:
+              - string
+              - 'null'
               format: uri
-              nullable: true
             url:
               type: string
               format: uri
             key:
               type: string
-    supersim.v1.sim.billing_period:
+    wireless.v1.sim.data_session:
       type: object
       properties:
         sid:
-          type: string
-          minLength: 34
-          maxLength: 34
-          pattern: ^HB[0-9a-fA-F]{32}$
-          nullable: true
-          description: The SID of the Billing Period.
-        account_sid:
-          type: string
-          minLength: 34
-          maxLength: 34
-          pattern: ^AC[0-9a-fA-F]{32}$
-          nullable: true
-          description: The SID of the [Account](https://www.twilio.com/docs/iam/api/account) the Super SIM belongs to.
+          type:
+          - string
+          - 'null'
+          description: The unique string that we created to identify the DataSession resource.
         sim_sid:
-          type: string
-          minLength: 34
-          maxLength: 34
-          pattern: ^HS[0-9a-fA-F]{32}$
-          nullable: true
-          description: The SID of the Super SIM the Billing Period belongs to.
-        start_time:
-          type: string
-          format: date-time
-          nullable: true
-          description: The start time of the Billing Period specified in [ISO 8601](https://en.wikipedia.org/wiki/ISO_8601) format.
-        end_time:
-          type: string
-          format: date-time
-          nullable: true
-          description: The end time of the Billing Period specified in [ISO 8601](https://en.wikipedia.org/wiki/ISO_8601) format.
-        period_type:
-          type: string
-          $ref: '#/components/schemas/billing_period_enum_bp_type'
-          nullable: true
-          description: The type of Billing Period. Can be `ready` or `active`.
-        date_created:
-          type: string
-          format: date-time
-          nullable: true
-          description: The date and time in GMT when the resource was created specified in [ISO 8601](https://en.wikipedia.org/wiki/ISO_8601) format.
-        date_updated:
-          type: string
-          format: date-time
-          nullable: true
-          description: The date and time in GMT when the resource was last updated specified in [ISO 8601](https://en.wikipedia.org/wiki/ISO_8601) format.
-    supersim.v1.sim:
-      type: object
-      properties:
-        sid:
-          type: string
-          minLength: 34
-          maxLength: 34
-          pattern: ^HS[0-9a-fA-F]{32}$
-          nullable: true
-          description: The unique string that identifies the Sim resource.
-        unique_name:
-          type: string
-          nullable: true
-          description: An application-defined string that uniquely identifies the resource. It can be used in place of the resource's `sid` in the URL to address the resource.
+          type:
+          - string
+          - 'null'
+          description: The SID of the [Sim resource](https://www.twilio.com/docs/iot/wireless/api/sim-resource) that the Data Session is for.
         account_sid:
-          type: string
+          type:
+          - string
+          - 'null'
           minLength: 34
           maxLength: 34
           pattern: ^AC[0-9a-fA-F]{32}$
-          nullable: true
-          description: The SID of the [Account](https://www.twilio.com/docs/iam/api/account) that the Super SIM belongs to.
-        iccid:
-          type: string
-          nullable: true
-          description: The [ICCID](https://en.wikipedia.org/wiki/Subscriber_identity_module#ICCID) associated with the SIM.
-          x-twilio:
-            pii:
-              handling: standard
-              deleteSla: 30
-        status:
-          type: string
-          $ref: '#/components/schemas/sim_enum_status'
-          nullable: true
-          description: The status of the Super SIM. Can be `new`, `ready`, `active`, `inactive`, or `scheduled`. See the [Super SIM Status Values](https://www.twilio.com/docs/iot/supersim/api/sim-resource#status-values) for a description of each.
-        fleet_sid:
-          type: string
-          minLength: 34
-          maxLength: 34
-          pattern: ^HF[0-9a-fA-F]{32}$
-          nullable: true
-          description: The unique ID of the Fleet configured for this SIM.
-        date_created:
-          type: string
+          description: The SID of the [Account](https://www.twilio.com/docs/iam/api/account) that created the DataSession resource.
+        radio_link:
+          type:
+          - string
+          - 'null'
+          description: The generation of wireless technology that the device was using.
+        operator_mcc:
+          type:
+          - string
+          - 'null'
+          description: 'The ''mobile country code'' is the unique ID of the home country where the Data Session took place. See: [MCC/MNC lookup](http://mcc-mnc.com/).'
+        operator_mnc:
+          type:
+          - string
+          - 'null'
+          description: The 'mobile network code' is the unique ID specific to the mobile operator network where the Data Session took place.
+        operator_country:
+          type:
+          - string
+          - 'null'
+          description: The three letter country code representing where the device's Data Session took place. This is determined by looking up the `operator_mcc`.
+        operator_name:
+          type:
+          - string
+          - 'null'
+          description: The friendly name of the mobile operator network that the [SIM](https://www.twilio.com/docs/iot/wireless/api/sim-resource)-connected device is attached to. This is determined by looking up the `operator_mnc`.
+        cell_id:
+          type:
+          - string
+          - 'null'
+          description: The unique ID of the cellular tower that the device was attached to at the moment when the Data Session was last updated.
+        cell_location_estimate:
+          description: 'An object that describes the estimated location in latitude and longitude where the device''s Data Session took place. The location is derived from the `cell_id` when the Data Session was last updated. See [Cell Location Estimate Object](https://www.twilio.com/docs/iot/wireless/api/datasession-resource#cell-location-estimate-object). '
+        packets_uploaded:
+          type:
+          - integer
+          - 'null'
+          description: The number of packets uploaded by the device between the `start` time and when the Data Session was last updated.
+        packets_downloaded:
+          type:
+          - integer
+          - 'null'
+          description: The number of packets downloaded by the device between the `start` time and when the Data Session was last updated.
+        last_updated:
+          type:
+          - string
+          - 'null'
           format: date-time
-          nullable: true
-          description: The date and time in GMT when the resource was created specified in [ISO 8601](https://en.wikipedia.org/wiki/ISO_8601) format.
-        date_updated:
-          type: string
+          description: The date that the resource was last updated, given as GMT in [ISO 8601](https://www.iso.org/iso-8601-date-and-time-format.html) format.
+        start:
+          type:
+          - string
+          - 'null'
           format: date-time
-          nullable: true
-          description: The date and time in GMT when the resource was last updated specified in [ISO 8601](https://en.wikipedia.org/wiki/ISO_8601) format.
-        url:
-          type: string
-          format: uri
-          nullable: true
-          description: The absolute URL of the Sim Resource.
-        links:
-          type: object
-          format: uri-map
-          nullable: true
-    ListSimIpAddressResponse:
-      type: object
-      properties:
-        ip_addresses:
-          type: array
-          items:
-            $ref: '#/components/schemas/supersim.v1.sim.sim_ip_address'
-        meta:
-          type: object
-          properties:
-            first_page_url:
-              type: string
-              format: uri
-            next_page_url:
-              type: string
-              format: uri
-              nullable: true
-            page:
-              type: integer
-            page_size:
-              type: integer
-            previous_page_url:
-              type: string
-              format: uri
-              nullable: true
-            url:
-              type: string
-              format: uri
-            key:
-              type: string
+          description: The date that the Data Session started, given as GMT in [ISO 8601](https://www.iso.org/iso-8601-date-and-time-format.html) format.
+        end:
+          type:
+          - string
+          - 'null'
+          format: date-time
+          description: The date that the record ended, given as GMT in [ISO 8601](https://www.iso.org/iso-8601-date-and-time-format.html) format.
+        imei:
+          type:
+          - string
+          - 'null'
+          description: 'The ''international mobile equipment identity'' is the unique ID of the device using the SIM to connect. An IMEI is a 15-digit string: 14 digits for the device identifier plus a check digit calculated using the Luhn formula.'
     ListSimResponse:
       type: object
       properties:
@@ -824,57 +599,325 @@ components:
               type: string
               format: uri
             next_page_url:
-              type: string
+              type:
+              - string
+              - 'null'
               format: uri
-              nullable: true
             page:
               type: integer
             page_size:
               type: integer
             previous_page_url:
-              type: string
+              type:
+              - string
+              - 'null'
               format: uri
-              nullable: true
             url:
               type: string
               format: uri
             key:
               type: string
-    supersim.v1.sim.sim_ip_address:
+    ListUsageRecordResponse:
       type: object
       properties:
-        ip_address:
+        usage_records:
+          type: array
+          items:
+            $ref: '#/components/schemas/wireless.v1.sim.usage_record'
+        meta:
+          type: object
+          properties:
+            first_page_url:
+              type: string
+              format: uri
+            next_page_url:
+              type:
+              - string
+              - 'null'
+              format: uri
+            page:
+              type: integer
+            page_size:
+              type: integer
+            previous_page_url:
+              type:
+              - string
+              - 'null'
+              format: uri
+            url:
+              type: string
+              format: uri
+            key:
+              type: string
+    ListSimIpAddressResponse:
+      type: object
+      properties:
+        ip_addresses:
+          type: array
+          items:
+            $ref: '#/components/schemas/supersim.v1.sim.sim_ip_address'
+        meta:
+          type: object
+          properties:
+            first_page_url:
+              type: string
+              format: uri
+            next_page_url:
+              type:
+              - string
+              - 'null'
+              format: uri
+            page:
+              type: integer
+            page_size:
+              type: integer
+            previous_page_url:
+              type:
+              - string
+              - 'null'
+              format: uri
+            url:
+              type: string
+              format: uri
+            key:
+              type: string
+    supersim.v1.sim.billing_period:
+      type: object
+      properties:
+        sid:
+          type:
+          - string
+          - 'null'
+          minLength: 34
+          maxLength: 34
+          pattern: ^HB[0-9a-fA-F]{32}$
+          description: The SID of the Billing Period.
+        account_sid:
+          type:
+          - string
+          - 'null'
+          minLength: 34
+          maxLength: 34
+          pattern: ^AC[0-9a-fA-F]{32}$
+          description: The SID of the [Account](https://www.twilio.com/docs/iam/api/account) the Super SIM belongs to.
+        sim_sid:
+          type:
+          - string
+          - 'null'
+          minLength: 34
+          maxLength: 34
+          pattern: ^HS[0-9a-fA-F]{32}$
+          description: The SID of the Super SIM the Billing Period belongs to.
+        start_time:
+          type:
+          - string
+          - 'null'
+          format: date-time
+          description: The start time of the Billing Period specified in [ISO 8601](https://en.wikipedia.org/wiki/ISO_8601) format.
+        end_time:
+          type:
+          - string
+          - 'null'
+          format: date-time
+          description: The end time of the Billing Period specified in [ISO 8601](https://en.wikipedia.org/wiki/ISO_8601) format.
+        period_type:
+          type:
+          - string
+          - 'null'
+          $ref: '#/components/schemas/billing_period_enum_bp_type'
+          description: The type of Billing Period. Can be `ready` or `active`.
+        date_created:
+          type:
+          - string
+          - 'null'
+          format: date-time
+          description: The date and time in GMT when the resource was created specified in [ISO 8601](https://en.wikipedia.org/wiki/ISO_8601) format.
+        date_updated:
+          type:
+          - string
+          - 'null'
+          format: date-time
+          description: The date and time in GMT when the resource was last updated specified in [ISO 8601](https://en.wikipedia.org/wiki/ISO_8601) format.
+    usage_record_enum_granularity:
+      type: string
+      enum:
+      - hourly
+      - daily
+      - all
+    CreateSimRequest:
+      type: object
+      required:
+      - Iccid
+      - RegistrationCode
+      properties:
+        Iccid:
           type: string
-          nullable: true
-          description: IP address assigned to the given Super SIM
-        ip_address_version:
+          description: The [ICCID](https://en.wikipedia.org/wiki/Subscriber_identity_module#ICCID) of the Super SIM to be added to your Account.
+        RegistrationCode:
           type: string
-          $ref: '#/components/schemas/sim_ip_address_enum_ip_address_version'
-          nullable: true
-          description: IP address version of the corresponding IP address
+          description: The 10-digit code required to claim the Super SIM for your Account.
+    sim_enum_status:
+      type: string
+      enum:
+      - new
+      - ready
+      - active
+      - inactive
+      - scheduled
+    ListBillingPeriodResponse:
+      type: object
+      properties:
+        billing_periods:
+          type: array
+          items:
+            $ref: '#/components/schemas/supersim.v1.sim.billing_period'
+        meta:
+          type: object
+          properties:
+            first_page_url:
+              type: string
+              format: uri
+            next_page_url:
+              type:
+              - string
+              - 'null'
+              format: uri
+            page:
+              type: integer
+            page_size:
+              type: integer
+            previous_page_url:
+              type:
+              - string
+              - 'null'
+              format: uri
+            url:
+              type: string
+              format: uri
+            key:
+              type: string
     wireless.v1.sim.usage_record:
       type: object
       properties:
         sim_sid:
-          type: string
-          nullable: true
+          type:
+          - string
+          - 'null'
           description: The SID of the [Sim resource](https://www.twilio.com/docs/iot/wireless/api/sim-resource) that this Usage Record is for.
         account_sid:
-          type: string
+          type:
+          - string
+          - 'null'
           minLength: 34
           maxLength: 34
           pattern: ^AC[0-9a-fA-F]{32}$
-          nullable: true
           description: The SID of the [Account](https://www.twilio.com/docs/iam/api/account) that created the UsageRecord resource.
         period:
-          nullable: true
           description: The time period for which the usage is reported. Contains `start` and `end` datetime values given as GMT in [ISO 8601](https://www.iso.org/iso-8601-date-and-time-format.html) format.
         commands:
-          nullable: true
           description: An object that describes the SIM's usage of Commands during the specified period. See [Commands Usage Object](https://www.twilio.com/docs/iot/wireless/api/sim-usagerecord-resource#commands-usage-object).
         data:
-          nullable: true
           description: An object that describes the SIM's data usage during the specified period. See [Data Usage Object](https://www.twilio.com/docs/iot/wireless/api/sim-usagerecord-resource#data-usage-object).
+    supersim.v1.sim.sim_ip_address:
+      type: object
+      properties:
+        ip_address:
+          type:
+          - string
+          - 'null'
+          description: IP address assigned to the given Super SIM
+        ip_address_version:
+          type:
+          - string
+          - 'null'
+          $ref: '#/components/schemas/sim_ip_address_enum_ip_address_version'
+          description: IP address version of the corresponding IP address
+    billing_period_enum_bp_type:
+      type: string
+      enum:
+      - ready
+      - active
+    sim_enum_status_update:
+      type: string
+      enum:
+      - ready
+      - active
+      - inactive
+    supersim.v1.sim:
+      type: object
+      properties:
+        sid:
+          type:
+          - string
+          - 'null'
+          minLength: 34
+          maxLength: 34
+          pattern: ^HS[0-9a-fA-F]{32}$
+          description: The unique string that identifies the Sim resource.
+        unique_name:
+          type:
+          - string
+          - 'null'
+          description: An application-defined string that uniquely identifies the resource. It can be used in place of the resource's `sid` in the URL to address the resource.
+        account_sid:
+          type:
+          - string
+          - 'null'
+          minLength: 34
+          maxLength: 34
+          pattern: ^AC[0-9a-fA-F]{32}$
+          description: The SID of the [Account](https://www.twilio.com/docs/iam/api/account) that the Super SIM belongs to.
+        iccid:
+          type:
+          - string
+          - 'null'
+          description: The [ICCID](https://en.wikipedia.org/wiki/Subscriber_identity_module#ICCID) associated with the SIM.
+          x-twilio:
+            pii:
+              handling: standard
+              deleteSla: 30
+        status:
+          type:
+          - string
+          - 'null'
+          $ref: '#/components/schemas/sim_enum_status'
+          description: The status of the Super SIM. Can be `new`, `ready`, `active`, `inactive`, or `scheduled`. See the [Super SIM Status Values](https://www.twilio.com/docs/iot/supersim/api/sim-resource#status-values) for a description of each.
+        fleet_sid:
+          type:
+          - string
+          - 'null'
+          minLength: 34
+          maxLength: 34
+          pattern: ^HF[0-9a-fA-F]{32}$
+          description: The unique ID of the Fleet configured for this SIM.
+        date_created:
+          type:
+          - string
+          - 'null'
+          format: date-time
+          description: The date and time in GMT when the resource was created specified in [ISO 8601](https://en.wikipedia.org/wiki/ISO_8601) format.
+        date_updated:
+          type:
+          - string
+          - 'null'
+          format: date-time
+          description: The date and time in GMT when the resource was last updated specified in [ISO 8601](https://en.wikipedia.org/wiki/ISO_8601) format.
+        url:
+          type:
+          - string
+          - 'null'
+          format: uri
+          description: The absolute URL of the Sim Resource.
+        links:
+          type:
+          - object
+          - 'null'
+          format: uri-map
+    sim_ip_address_enum_ip_address_version:
+      type: string
+      enum:
+      - IPv4
+      - IPv6
   securitySchemes:
     accountSid_authToken:
       type: http

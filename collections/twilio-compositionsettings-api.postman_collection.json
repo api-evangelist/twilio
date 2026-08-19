@@ -1,0 +1,328 @@
+{
+  "item": [
+    {
+      "id": "8fb29289-e8e2-4360-8a2f-b1306144044b",
+      "name": "CompositionSettings",
+      "description": {
+        "content": "",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "9c001c6a-523e-4195-b5f7-a4bd63f94a87",
+          "name": "Fetch Composition Settings",
+          "request": {
+            "name": "Fetch Composition Settings",
+            "description": {
+              "content": "",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "v1",
+                "CompositionSettings",
+                "Default"
+              ],
+              "host": [
+                "{{v1-CompositionSettings-Default-Url}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": {
+              "type": "basic",
+              "basic": [
+                {
+                  "key": "username",
+                  "value": "{{basicAuthUsername}}"
+                },
+                {
+                  "key": "password",
+                  "value": "{{basicAuthPassword}}"
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "id": "1b94bdb6-81db-4502-aae0-41b8af3c508c",
+              "name": "OK",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "CompositionSettings",
+                    "Default"
+                  ],
+                  "host": [
+                    "{{v1-CompositionSettings-Default-Url}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: basic",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Basic <credentials>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"account_sid\": \"ACxREDACTEDxEXAMPLExSIDxVALUExxxxxx\",\n  \"friendly_name\": \"string\",\n  \"aws_credentials_sid\": \"CRc5FFf5deeC4C3E1a0AaEFAdDFfAcEBf2\",\n  \"aws_s3_url\": \"https://BUBilVsBKpQqTLYXENAokuMgq.bzx5O5csSwhM6Jv7CJBiD6QAQ20Rnh-Xzh2bYh8uoQj4CFztxCWZk\",\n  \"aws_storage_enabled\": true,\n  \"encryption_key_sid\": \"CRD063C0E752394bFbf26BffFEF2Fb0EE9\",\n  \"encryption_enabled\": false,\n  \"url\": \"http://dEffo.rbdvJuOLP2GoG.AlD6OO.bAmhILfRsJLGq\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "a95aaf9f-cc48-4576-bc8a-b4b9b1b31bcc",
+          "name": "Create Composition Settings",
+          "request": {
+            "name": "Create Composition Settings",
+            "description": {
+              "content": "",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "v1",
+                "CompositionSettings",
+                "Default"
+              ],
+              "host": [
+                "{{v1-CompositionSettings-Default-Url}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/x-www-form-urlencoded"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": {
+              "type": "basic",
+              "basic": [
+                {
+                  "key": "username",
+                  "value": "{{basicAuthUsername}}"
+                },
+                {
+                  "key": "password",
+                  "value": "{{basicAuthPassword}}"
+                }
+              ]
+            },
+            "body": {
+              "mode": "urlencoded",
+              "urlencoded": [
+                {
+                  "disabled": false,
+                  "key": "FriendlyName",
+                  "value": "<string>",
+                  "description": "(Required) A descriptive string that you create to describe the resource and show to the user in the console"
+                },
+                {
+                  "disabled": false,
+                  "key": "AwsCredentialsSid",
+                  "value": "<string>",
+                  "description": "The SID of the stored Credential resource."
+                },
+                {
+                  "disabled": false,
+                  "key": "EncryptionKeySid",
+                  "value": "<string>",
+                  "description": "The SID of the Public Key resource to use for encryption."
+                },
+                {
+                  "disabled": false,
+                  "key": "AwsS3Url",
+                  "value": "<uri>",
+                  "description": "The URL of the AWS S3 bucket where the compositions should be stored. We only support DNS-compliant URLs like `https://documentation-example-twilio-bucket/compositions`, where `compositions` is the path in which you want the compositions to be stored. This URL accepts only URI-valid characters, as described in the <a href='https://tools.ietf.org/html/rfc3986#section-2'>RFC 3986</a>."
+                },
+                {
+                  "disabled": false,
+                  "key": "AwsStorageEnabled",
+                  "value": "<boolean>",
+                  "description": "Whether all compositions should be written to the `aws_s3_url`. When `false`, all compositions are stored in our cloud."
+                },
+                {
+                  "disabled": false,
+                  "key": "EncryptionEnabled",
+                  "value": "<boolean>",
+                  "description": "Whether all compositions should be stored in an encrypted form. The default is `false`."
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "id": "58df15c5-07ac-41fd-9ca3-15df9255a572",
+              "name": "Created",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "CompositionSettings",
+                    "Default"
+                  ],
+                  "host": [
+                    "{{v1-CompositionSettings-Default-Url}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: basic",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Basic <credentials>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "urlencoded",
+                  "urlencoded": [
+                    {
+                      "disabled": false,
+                      "description": {
+                        "content": "(Required) A descriptive string that you create to describe the resource and show to the user in the console",
+                        "type": "text/plain"
+                      },
+                      "key": "FriendlyName",
+                      "value": "<string>"
+                    },
+                    {
+                      "disabled": false,
+                      "description": {
+                        "content": "The SID of the stored Credential resource.",
+                        "type": "text/plain"
+                      },
+                      "key": "AwsCredentialsSid",
+                      "value": "<string>"
+                    },
+                    {
+                      "disabled": false,
+                      "description": {
+                        "content": "The SID of the Public Key resource to use for encryption.",
+                        "type": "text/plain"
+                      },
+                      "key": "EncryptionKeySid",
+                      "value": "<string>"
+                    },
+                    {
+                      "disabled": false,
+                      "description": {
+                        "content": "The URL of the AWS S3 bucket where the compositions should be stored. We only support DNS-compliant URLs like `https://documentation-example-twilio-bucket/compositions`, where `compositions` is the path in which you want the compositions to be stored. This URL accepts only URI-valid characters, as described in the <a href='https://tools.ietf.org/html/rfc3986#section-2'>RFC 3986</a>.",
+                        "type": "text/plain"
+                      },
+                      "key": "AwsS3Url",
+                      "value": "<uri>"
+                    },
+                    {
+                      "disabled": false,
+                      "description": {
+                        "content": "Whether all compositions should be written to the `aws_s3_url`. When `false`, all compositions are stored in our cloud.",
+                        "type": "text/plain"
+                      },
+                      "key": "AwsStorageEnabled",
+                      "value": "<boolean>"
+                    },
+                    {
+                      "disabled": false,
+                      "description": {
+                        "content": "Whether all compositions should be stored in an encrypted form. The default is `false`.",
+                        "type": "text/plain"
+                      },
+                      "key": "EncryptionEnabled",
+                      "value": "<boolean>"
+                    }
+                  ]
+                }
+              },
+              "status": "Created",
+              "code": 201,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"account_sid\": \"ACxREDACTEDxEXAMPLExSIDxVALUExxxxxx\",\n  \"friendly_name\": \"string\",\n  \"aws_credentials_sid\": \"CRc5FFf5deeC4C3E1a0AaEFAdDFfAcEBf2\",\n  \"aws_s3_url\": \"https://BUBilVsBKpQqTLYXENAokuMgq.bzx5O5csSwhM6Jv7CJBiD6QAQ20Rnh-Xzh2bYh8uoQj4CFztxCWZk\",\n  \"aws_storage_enabled\": true,\n  \"encryption_key_sid\": \"CRD063C0E752394bFbf26BffFEF2Fb0EE9\",\n  \"encryption_enabled\": false,\n  \"url\": \"http://dEffo.rbdvJuOLP2GoG.AlD6OO.bAmhILfRsJLGq\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "type": "string",
+      "value": "https://accounts.twilio.com",
+      "key": "baseUrl"
+    },
+    {
+      "type": "string",
+      "value": "https://video.twilio.com",
+      "key": "v1-CompositionSettings-Default-Url"
+    }
+  ],
+  "info": {
+    "_postman_id": "fc9524c0-5c6d-495a-8c0b-938887892324",
+    "name": "Twilio - Accounts A2p Composition Settings API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "This is the public Twilio REST API.\n\nContact Support:\n Name: Twilio Support\n Email: support@twilio.com",
+      "type": "text/plain"
+    }
+  }
+}

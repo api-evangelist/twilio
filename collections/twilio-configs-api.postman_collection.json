@@ -1,0 +1,649 @@
+{
+  "item": [
+    {
+      "id": "87494ebf-8fb2-46ff-8c98-3ee0319bbff5",
+      "name": "Configs",
+      "description": {
+        "content": "",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "825b8ca0-439a-45ea-a07f-dc660d7fbec6",
+          "name": "List Account Config",
+          "request": {
+            "name": "List Account Config",
+            "description": {
+              "content": "Retrieve a list of all Configs for an Account.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "v1",
+                "Configs"
+              ],
+              "host": [
+                "{{v1-Configs-Url}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "PageSize",
+                  "value": "<integer>",
+                  "description": "How many resources to return in each list page. The default is 50, and the maximum is 1000."
+                },
+                {
+                  "disabled": false,
+                  "key": "Page",
+                  "value": "<integer>",
+                  "description": "The page index. This value is simply for client state."
+                },
+                {
+                  "disabled": false,
+                  "key": "PageToken",
+                  "value": "<string>",
+                  "description": "The page token. This is provided by the API."
+                }
+              ],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": {
+              "type": "basic",
+              "basic": [
+                {
+                  "key": "username",
+                  "value": "{{basicAuthUsername}}"
+                },
+                {
+                  "key": "password",
+                  "value": "{{basicAuthPassword}}"
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "id": "7f03d176-d36c-4ada-b5f7-d8cf4495bcd9",
+              "name": "OK",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "Configs"
+                  ],
+                  "host": [
+                    "{{v1-Configs-Url}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "PageSize",
+                      "value": "<integer>"
+                    },
+                    {
+                      "key": "Page",
+                      "value": "<integer>"
+                    },
+                    {
+                      "key": "PageToken",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: basic",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Basic <credentials>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"configs\": [\n    {\n      \"key\": \"string\",\n      \"date_updated\": \"2005-11-04T19:10:32.170Z\",\n      \"value\": null,\n      \"url\": null\n    },\n    {\n      \"key\": null,\n      \"date_updated\": \"1998-10-23T02:33:29.696Z\",\n      \"value\": null,\n      \"url\": \"https://wvcqQOpoPhZkuAbmejRRDuSRgFP.jyoyQbA26Dy6XxrNMzu8zm,APRET16.SK.oKPAqshj8Yu.mQ\"\n    }\n  ],\n  \"meta\": {\n    \"first_page_url\": \"http://klAnMasGWqvLGAFhbkcKaBcFRe.mdgeqi.hfsES6GJmvRX9DUT0o\",\n    \"next_page_url\": null,\n    \"page\": 2032,\n    \"page_size\": 2930,\n    \"previous_page_url\": null,\n    \"url\": \"https://YNApJUMMHbmVFcblhepfxmREtNd.cxVLHgk4b.u-yeZTa-RjW.o\",\n    \"key\": \"string\"\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "cc1b758c-17d3-4e05-acdb-f278843f3a29",
+          "name": "Create Account Config",
+          "request": {
+            "name": "Create Account Config",
+            "description": {
+              "content": "Create a config for an Account.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "v1",
+                "Configs"
+              ],
+              "host": [
+                "{{v1-Configs-Url}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/x-www-form-urlencoded"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": {
+              "type": "basic",
+              "basic": [
+                {
+                  "key": "username",
+                  "value": "{{basicAuthUsername}}"
+                },
+                {
+                  "key": "password",
+                  "value": "{{basicAuthPassword}}"
+                }
+              ]
+            },
+            "body": {
+              "mode": "urlencoded",
+              "urlencoded": [
+                {
+                  "disabled": false,
+                  "key": "Key",
+                  "value": "<string>",
+                  "description": "(Required) The config key; up to 100 characters."
+                },
+                {
+                  "disabled": false,
+                  "key": "Value",
+                  "value": "<string>",
+                  "description": "(Required) The config value; up to 4096 characters."
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "id": "9c25106d-1c4a-4d55-b02e-b50b9f52b364",
+              "name": "Created",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "Configs"
+                  ],
+                  "host": [
+                    "{{v1-Configs-Url}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: basic",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Basic <credentials>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "urlencoded",
+                  "urlencoded": [
+                    {
+                      "disabled": false,
+                      "description": {
+                        "content": "(Required) The config key; up to 100 characters.",
+                        "type": "text/plain"
+                      },
+                      "key": "Key",
+                      "value": "<string>"
+                    },
+                    {
+                      "disabled": false,
+                      "description": {
+                        "content": "(Required) The config value; up to 4096 characters.",
+                        "type": "text/plain"
+                      },
+                      "key": "Value",
+                      "value": "<string>"
+                    }
+                  ]
+                }
+              },
+              "status": "Created",
+              "code": 201,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"key\": \"string\",\n  \"date_updated\": null,\n  \"value\": \"string\",\n  \"url\": null\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "129faa3e-83bf-4843-b254-4d44e9a0af5d",
+          "name": "Fetch Account Config",
+          "request": {
+            "name": "Fetch Account Config",
+            "description": {
+              "content": "Retrieve a Config for an Account.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "v1",
+                "Configs",
+                ":Key"
+              ],
+              "host": [
+                "{{v1-Configs-Key-Url}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "Key",
+                  "description": "(Required) The config key; up to 100 characters."
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": {
+              "type": "basic",
+              "basic": [
+                {
+                  "key": "username",
+                  "value": "{{basicAuthUsername}}"
+                },
+                {
+                  "key": "password",
+                  "value": "{{basicAuthPassword}}"
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "id": "11b749f5-fb3e-4544-9401-f3f1cafb7508",
+              "name": "OK",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "Configs",
+                    ":Key"
+                  ],
+                  "host": [
+                    "{{v1-Configs-Key-Url}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "Key",
+                      "description": "(Required) The config key; up to 100 characters."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: basic",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Basic <credentials>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"key\": \"string\",\n  \"date_updated\": null,\n  \"value\": \"string\",\n  \"url\": null\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "cd8ab905-8584-49fb-a298-e7718c5fd88d",
+          "name": "Update Account Config",
+          "request": {
+            "name": "Update Account Config",
+            "description": {
+              "content": "Update a config for an Account.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "v1",
+                "Configs",
+                ":Key"
+              ],
+              "host": [
+                "{{v1-Configs-Key-Url}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "Key",
+                  "description": "(Required) The config key; up to 100 characters."
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/x-www-form-urlencoded"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": {
+              "type": "basic",
+              "basic": [
+                {
+                  "key": "username",
+                  "value": "{{basicAuthUsername}}"
+                },
+                {
+                  "key": "password",
+                  "value": "{{basicAuthPassword}}"
+                }
+              ]
+            },
+            "body": {
+              "mode": "urlencoded",
+              "urlencoded": [
+                {
+                  "disabled": false,
+                  "key": "Value",
+                  "value": "<string>",
+                  "description": "(Required) The config value; up to 4096 characters."
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "id": "622004d6-f576-405d-a4a8-75dc440efa86",
+              "name": "OK",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "Configs",
+                    ":Key"
+                  ],
+                  "host": [
+                    "{{v1-Configs-Key-Url}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "Key",
+                      "description": "(Required) The config key; up to 100 characters."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: basic",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Basic <credentials>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "urlencoded",
+                  "urlencoded": [
+                    {
+                      "disabled": false,
+                      "description": {
+                        "content": "(Required) The config value; up to 4096 characters.",
+                        "type": "text/plain"
+                      },
+                      "key": "Value",
+                      "value": "<string>"
+                    }
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"key\": \"string\",\n  \"date_updated\": null,\n  \"value\": \"string\",\n  \"url\": null\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "48ff352b-32ac-4f3e-95e0-a4ab437e0d5f",
+          "name": "Delete Account Config",
+          "request": {
+            "name": "Delete Account Config",
+            "description": {
+              "content": "Delete a config for an Account.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "v1",
+                "Configs",
+                ":Key"
+              ],
+              "host": [
+                "{{v1-Configs-Key-Url}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "Key",
+                  "description": "(Required) The config key; up to 100 characters."
+                }
+              ]
+            },
+            "method": "DELETE",
+            "auth": {
+              "type": "basic",
+              "basic": [
+                {
+                  "key": "username",
+                  "value": "{{basicAuthUsername}}"
+                },
+                {
+                  "key": "password",
+                  "value": "{{basicAuthPassword}}"
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "id": "084edfe8-0819-4d66-a88d-a04960da2161",
+              "name": "The resource was deleted successfully.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "Configs",
+                    ":Key"
+                  ],
+                  "host": [
+                    "{{v1-Configs-Key-Url}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "Key",
+                      "description": "(Required) The config key; up to 100 characters."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: basic",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Basic <credentials>"
+                  }
+                ],
+                "method": "DELETE",
+                "body": {}
+              },
+              "status": "No Content",
+              "code": 204,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "type": "string",
+      "value": "https://accounts.twilio.com",
+      "key": "baseUrl"
+    },
+    {
+      "type": "string",
+      "value": "https://microvisor.twilio.com",
+      "key": "v1-Configs-Url"
+    },
+    {
+      "type": "string",
+      "value": "https://microvisor.twilio.com",
+      "key": "v1-Configs-Key-Url"
+    }
+  ],
+  "info": {
+    "_postman_id": "50fe89eb-6221-425c-8022-49c1ccc42834",
+    "name": "Twilio - Accounts A2p Configs API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "This is the public Twilio REST API.\n\nContact Support:\n Name: Twilio Support\n Email: support@twilio.com",
+      "type": "text/plain"
+    }
+  }
+}

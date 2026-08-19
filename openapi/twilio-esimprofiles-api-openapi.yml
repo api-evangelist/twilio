@@ -1,6 +1,6 @@
-openapi: 3.0.1
+openapi: 3.2.0
 info:
-  title: Twilio - Accounts A2p ESimProfiles API
+  title: Twilio - Accounts A2p E Sim Profiles API
   description: This is the public Twilio REST API.
   termsOfService: https://www.twilio.com/legal/tos
   contact:
@@ -133,6 +133,97 @@ paths:
       - Beta
 components:
   schemas:
+    supersim.v1.esim_profile:
+      type: object
+      properties:
+        sid:
+          type:
+          - string
+          - 'null'
+          minLength: 34
+          maxLength: 34
+          pattern: ^HP[0-9a-fA-F]{32}$
+          description: The unique string that we created to identify the eSIM Profile resource.
+        account_sid:
+          type:
+          - string
+          - 'null'
+          minLength: 34
+          maxLength: 34
+          pattern: ^AC[0-9a-fA-F]{32}$
+          description: The SID of the [Account](https://www.twilio.com/docs/iam/api/account) to which the eSIM Profile resource belongs.
+        iccid:
+          type:
+          - string
+          - 'null'
+          description: The [ICCID](https://en.wikipedia.org/wiki/Subscriber_identity_module#ICCID) associated with the Sim resource.
+          x-twilio:
+            pii:
+              handling: standard
+              deleteSla: 30
+        sim_sid:
+          type:
+          - string
+          - 'null'
+          minLength: 34
+          maxLength: 34
+          pattern: ^HS[0-9a-fA-F]{32}$
+          description: The SID of the [Sim](https://www.twilio.com/docs/iot/supersim/api/sim-resource) resource that this eSIM Profile controls.
+        status:
+          type:
+          - string
+          - 'null'
+          $ref: '#/components/schemas/esim_profile_enum_status'
+          description: 'The status of the eSIM Profile. Can be: `new`, `reserving`, `available`, `downloaded`, `installed` or `failed`. See the [eSIM Profile Status Values](https://www.twilio.com/docs/iot/supersim/api/esimprofile-resource#status-values) for a description of each.'
+        eid:
+          type:
+          - string
+          - 'null'
+          description: Identifier of the eUICC that can claim the eSIM Profile.
+        smdp_plus_address:
+          type:
+          - string
+          - 'null'
+          format: uri
+          description: Address of the SM-DP+ server from which the Profile will be downloaded. The URL will appear once the eSIM Profile reaches the status `available`.
+        matching_id:
+          type:
+          - string
+          - 'null'
+          description: Unique identifier of the eSIM profile that can be used to identify and download the eSIM profile from the SM-DP+ server. Populated if `generate_matching_id` is set to `true` when creating the eSIM profile reservation.
+        activation_code:
+          type:
+          - string
+          - 'null'
+          description: Combined machine-readable activation code for acquiring an eSIM Profile with the Activation Code download method. Can be used in a QR code to download an eSIM profile.
+        error_code:
+          type:
+          - string
+          - 'null'
+          description: Code indicating the failure if the download of the SIM Profile failed and the eSIM Profile is in `failed` state.
+        error_message:
+          type:
+          - string
+          - 'null'
+          description: Error message describing the failure if the download of the SIM Profile failed and the eSIM Profile is in `failed` state.
+        date_created:
+          type:
+          - string
+          - 'null'
+          format: date-time
+          description: The date and time in GMT when the resource was created specified in [ISO 8601](https://en.wikipedia.org/wiki/ISO_8601) format.
+        date_updated:
+          type:
+          - string
+          - 'null'
+          format: date-time
+          description: The date and time in GMT when the resource was last updated specified in [ISO 8601](https://en.wikipedia.org/wiki/ISO_8601) format.
+        url:
+          type:
+          - string
+          - 'null'
+          format: uri
+          description: The absolute URL of the eSIM Profile resource.
     CreateEsimProfileRequest:
       type: object
       properties:
@@ -170,99 +261,24 @@ components:
               type: string
               format: uri
             next_page_url:
-              type: string
+              type:
+              - string
+              - 'null'
               format: uri
-              nullable: true
             page:
               type: integer
             page_size:
               type: integer
             previous_page_url:
-              type: string
+              type:
+              - string
+              - 'null'
               format: uri
-              nullable: true
             url:
               type: string
               format: uri
             key:
               type: string
-    supersim.v1.esim_profile:
-      type: object
-      properties:
-        sid:
-          type: string
-          minLength: 34
-          maxLength: 34
-          pattern: ^HP[0-9a-fA-F]{32}$
-          nullable: true
-          description: The unique string that we created to identify the eSIM Profile resource.
-        account_sid:
-          type: string
-          minLength: 34
-          maxLength: 34
-          pattern: ^AC[0-9a-fA-F]{32}$
-          nullable: true
-          description: The SID of the [Account](https://www.twilio.com/docs/iam/api/account) to which the eSIM Profile resource belongs.
-        iccid:
-          type: string
-          nullable: true
-          description: The [ICCID](https://en.wikipedia.org/wiki/Subscriber_identity_module#ICCID) associated with the Sim resource.
-          x-twilio:
-            pii:
-              handling: standard
-              deleteSla: 30
-        sim_sid:
-          type: string
-          minLength: 34
-          maxLength: 34
-          pattern: ^HS[0-9a-fA-F]{32}$
-          nullable: true
-          description: The SID of the [Sim](https://www.twilio.com/docs/iot/supersim/api/sim-resource) resource that this eSIM Profile controls.
-        status:
-          type: string
-          $ref: '#/components/schemas/esim_profile_enum_status'
-          nullable: true
-          description: 'The status of the eSIM Profile. Can be: `new`, `reserving`, `available`, `downloaded`, `installed` or `failed`. See the [eSIM Profile Status Values](https://www.twilio.com/docs/iot/supersim/api/esimprofile-resource#status-values) for a description of each.'
-        eid:
-          type: string
-          nullable: true
-          description: Identifier of the eUICC that can claim the eSIM Profile.
-        smdp_plus_address:
-          type: string
-          format: uri
-          nullable: true
-          description: Address of the SM-DP+ server from which the Profile will be downloaded. The URL will appear once the eSIM Profile reaches the status `available`.
-        matching_id:
-          type: string
-          nullable: true
-          description: Unique identifier of the eSIM profile that can be used to identify and download the eSIM profile from the SM-DP+ server. Populated if `generate_matching_id` is set to `true` when creating the eSIM profile reservation.
-        activation_code:
-          type: string
-          nullable: true
-          description: Combined machine-readable activation code for acquiring an eSIM Profile with the Activation Code download method. Can be used in a QR code to download an eSIM profile.
-        error_code:
-          type: string
-          nullable: true
-          description: Code indicating the failure if the download of the SIM Profile failed and the eSIM Profile is in `failed` state.
-        error_message:
-          type: string
-          nullable: true
-          description: Error message describing the failure if the download of the SIM Profile failed and the eSIM Profile is in `failed` state.
-        date_created:
-          type: string
-          format: date-time
-          nullable: true
-          description: The date and time in GMT when the resource was created specified in [ISO 8601](https://en.wikipedia.org/wiki/ISO_8601) format.
-        date_updated:
-          type: string
-          format: date-time
-          nullable: true
-          description: The date and time in GMT when the resource was last updated specified in [ISO 8601](https://en.wikipedia.org/wiki/ISO_8601) format.
-        url:
-          type: string
-          format: uri
-          nullable: true
-          description: The absolute URL of the eSIM Profile resource.
     esim_profile_enum_status:
       type: string
       enum:

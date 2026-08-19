@@ -1,0 +1,241 @@
+{
+  "item": [
+    {
+      "id": "1b0a52b8-0375-463d-a482-46da43ca84bf",
+      "name": "UsageRecords",
+      "description": {
+        "content": "",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "b4f216b1-29f4-40b6-adcd-a0f953d3c67c",
+          "name": "List Usage Record",
+          "request": {
+            "name": "List Usage Record",
+            "description": {
+              "content": "List UsageRecords",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "v1",
+                "UsageRecords"
+              ],
+              "host": [
+                "{{v1-UsageRecords-Url}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "Sim",
+                  "value": "<string>",
+                  "description": "SID or unique name of a Sim resource. Only show UsageRecords representing usage incurred by this Super SIM."
+                },
+                {
+                  "disabled": false,
+                  "key": "Fleet",
+                  "value": "<string>",
+                  "description": "SID or unique name of a Fleet resource. Only show UsageRecords representing usage for Super SIMs belonging to this Fleet resource at the time the usage occurred."
+                },
+                {
+                  "disabled": false,
+                  "key": "Network",
+                  "value": "<string>",
+                  "description": "SID of a Network resource. Only show UsageRecords representing usage on this network."
+                },
+                {
+                  "disabled": false,
+                  "key": "IsoCountry",
+                  "value": "<iso-country-code>",
+                  "description": "Alpha-2 ISO Country Code. Only show UsageRecords representing usage in this country."
+                },
+                {
+                  "disabled": false,
+                  "key": "Group",
+                  "value": "<string>",
+                  "description": "Dimension over which to aggregate usage records. Can be: `sim`, `fleet`, `network`, `isoCountry`. Default is to not aggregate across any of these dimensions, UsageRecords will be aggregated into the time buckets described by the `Granularity` parameter."
+                },
+                {
+                  "disabled": false,
+                  "key": "Granularity",
+                  "value": "<string>",
+                  "description": "Time-based grouping that UsageRecords should be aggregated by. Can be: `hour`, `day`, or `all`. Default is `all`. `all` returns one UsageRecord that describes the usage for the entire period."
+                },
+                {
+                  "disabled": false,
+                  "key": "StartTime",
+                  "value": "<dateTime>",
+                  "description": "Only include usage that occurred at or after this time, specified in [ISO 8601](https://en.wikipedia.org/wiki/ISO_8601) format. Default is one month before the `end_time`."
+                },
+                {
+                  "disabled": false,
+                  "key": "EndTime",
+                  "value": "<dateTime>",
+                  "description": "Only include usage that occurred before this time (exclusive), specified in [ISO 8601](https://en.wikipedia.org/wiki/ISO_8601) format. Default is the current time."
+                },
+                {
+                  "disabled": false,
+                  "key": "PageSize",
+                  "value": "<integer>",
+                  "description": "How many resources to return in each list page. The default is 50, and the maximum is 1000."
+                },
+                {
+                  "disabled": false,
+                  "key": "Page",
+                  "value": "<integer>",
+                  "description": "The page index. This value is simply for client state."
+                },
+                {
+                  "disabled": false,
+                  "key": "PageToken",
+                  "value": "<string>",
+                  "description": "The page token. This is provided by the API."
+                }
+              ],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": {
+              "type": "basic",
+              "basic": [
+                {
+                  "key": "username",
+                  "value": "{{basicAuthUsername}}"
+                },
+                {
+                  "key": "password",
+                  "value": "{{basicAuthPassword}}"
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "id": "2f0aeb69-43dc-43b7-befb-55c20f617a49",
+              "name": "OK",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "UsageRecords"
+                  ],
+                  "host": [
+                    "{{v1-UsageRecords-Url}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "Sim",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "Fleet",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "Network",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "IsoCountry",
+                      "value": "<iso-country-code>"
+                    },
+                    {
+                      "key": "Group",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "Granularity",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "StartTime",
+                      "value": "<dateTime>"
+                    },
+                    {
+                      "key": "EndTime",
+                      "value": "<dateTime>"
+                    },
+                    {
+                      "key": "PageSize",
+                      "value": "<integer>"
+                    },
+                    {
+                      "key": "Page",
+                      "value": "<integer>"
+                    },
+                    {
+                      "key": "PageToken",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: basic",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Basic <credentials>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"usage_records\": [\n    {\n      \"account_sid\": \"ACxREDACTEDxEXAMPLExSIDxVALUExxxxxx\",\n      \"sim_sid\": \"HSadB2D1dDe1aE872f6Ae44A0Fea6F4Af3\",\n      \"network_sid\": \"HW446dAaae6CdFeD17C16Dc84d26eb128b\",\n      \"fleet_sid\": \"HFf0a0DE7bbc8DAD986f672Cd657155E2F\",\n      \"iso_country\": null,\n      \"period\": {},\n      \"data_upload\": null,\n      \"data_download\": 5741,\n      \"data_total\": 6250,\n      \"data_total_billed\": null,\n      \"billed_unit\": null\n    },\n    {\n      \"account_sid\": \"ACxREDACTEDxEXAMPLExSIDxVALUExxxxxx\",\n      \"sim_sid\": \"HS92b4034cB78eA2Cb4f4ccbfE34eD78Bb\",\n      \"network_sid\": \"HW5b99fC67c1e3A8cEAe74edCEe8F8a3DA\",\n      \"fleet_sid\": \"HF36aab6967BAfAB9c5CCDFFbbBBacf90d\",\n      \"iso_country\": null,\n      \"period\": {},\n      \"data_upload\": null,\n      \"data_download\": null,\n      \"data_total\": 9064,\n      \"data_total_billed\": 5850.558583801462,\n      \"billed_unit\": \"string\"\n    }\n  ],\n  \"meta\": {\n    \"first_page_url\": \"http://cVN.lhkRUd6acrvfMozb-iEkoXGiS9myuMXR,KtqGzgx8daN\",\n    \"next_page_url\": \"https://zqs.uij3y621aXRbBZhaREx8JzM\",\n    \"page\": 9304,\n    \"page_size\": 7685,\n    \"previous_page_url\": \"http://JYgQbhukuGfWS.ldjj3DNw1lsVgIveqWPLt+uQIHSLFh1yt1ugEmh1tPx7VbtCRvSV6E8APpDpP\",\n    \"url\": \"https://KsXiPosOzeJaDplVuIuTVvjvGUckMsY.puvdqso0COyQ1BGFNAUxIJ-fn1RPbwTrOaGSpp\",\n    \"key\": \"string\"\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "type": "string",
+      "value": "https://accounts.twilio.com",
+      "key": "baseUrl"
+    },
+    {
+      "type": "string",
+      "value": "https://supersim.twilio.com",
+      "key": "v1-UsageRecords-Url"
+    }
+  ],
+  "info": {
+    "_postman_id": "71dbb508-776c-40a6-b584-cd3cba47ee20",
+    "name": "Twilio - Accounts A2p Usage Records API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "This is the public Twilio REST API.\n\nContact Support:\n Name: Twilio Support\n Email: support@twilio.com",
+      "type": "text/plain"
+    }
+  }
+}

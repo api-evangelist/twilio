@@ -1,4 +1,4 @@
-openapi: 3.0.1
+openapi: 3.2.0
 info:
   title: Twilio - Accounts A2p Participants API
   description: This is the public Twilio REST API.
@@ -155,7 +155,53 @@ paths:
         '200':
           description: Subscribe rules updated
 components:
+  parameters:
+    ParticipantSid:
+      name: ParticipantSid
+      in: path
+      required: true
+      description: The SID of the participant
+      schema:
+        type: string
+        pattern: ^PA[0-9a-fA-F]{32}$
+    RoomSid:
+      name: RoomSid
+      in: path
+      required: true
+      description: The SID or unique name of the room
+      schema:
+        type: string
   schemas:
+    VideoParticipantList:
+      type: object
+      properties:
+        participants:
+          type: array
+          items:
+            $ref: '#/components/schemas/VideoParticipant'
+        meta:
+          $ref: '#/components/schemas/PaginationMeta'
+    PaginationMeta:
+      type: object
+      properties:
+        page:
+          type: integer
+        page_size:
+          type: integer
+        first_page_url:
+          type: string
+          format: uri
+        previous_page_url:
+          type: string
+          format: uri
+        next_page_url:
+          type: string
+          format: uri
+        url:
+          type: string
+          format: uri
+        key:
+          type: string
     PublishedTrack:
       type: object
       properties:
@@ -188,27 +234,6 @@ components:
         url:
           type: string
           format: uri
-    PaginationMeta:
-      type: object
-      properties:
-        page:
-          type: integer
-        page_size:
-          type: integer
-        first_page_url:
-          type: string
-          format: uri
-        previous_page_url:
-          type: string
-          format: uri
-        next_page_url:
-          type: string
-          format: uri
-        url:
-          type: string
-          format: uri
-        key:
-          type: string
     VideoParticipant:
       type: object
       properties:
@@ -260,15 +285,6 @@ components:
             subscribed_tracks:
               type: string
               format: uri
-    VideoParticipantList:
-      type: object
-      properties:
-        participants:
-          type: array
-          items:
-            $ref: '#/components/schemas/VideoParticipant'
-        meta:
-          $ref: '#/components/schemas/PaginationMeta'
     SubscribeRules:
       type: object
       properties:
@@ -313,22 +329,6 @@ components:
             $ref: '#/components/schemas/PublishedTrack'
         meta:
           $ref: '#/components/schemas/PaginationMeta'
-  parameters:
-    ParticipantSid:
-      name: ParticipantSid
-      in: path
-      required: true
-      description: The SID of the participant
-      schema:
-        type: string
-        pattern: ^PA[0-9a-fA-F]{32}$
-    RoomSid:
-      name: RoomSid
-      in: path
-      required: true
-      description: The SID or unique name of the room
-      schema:
-        type: string
   securitySchemes:
     accountSid_authToken:
       type: http

@@ -1,0 +1,286 @@
+{
+  "item": [
+    {
+      "id": "6a5f0b78-c23e-446e-ac0d-51db7d3fe05b",
+      "name": "Types",
+      "description": {
+        "content": "",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "dd2e5a69-40e4-4d7d-9791-4eec83750a32",
+          "name": "List Event Type",
+          "request": {
+            "name": "List Event Type",
+            "description": {
+              "content": "Retrieve a paginated list of all the available Event Types.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "v1",
+                "Types"
+              ],
+              "host": [
+                "{{v1-Types-Url}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "SchemaId",
+                  "value": "<string>",
+                  "description": "A string parameter filtering the results to return only the Event Types using a given schema."
+                },
+                {
+                  "disabled": false,
+                  "key": "PageSize",
+                  "value": "<integer>",
+                  "description": "How many resources to return in each list page. The default is 50, and the maximum is 1000."
+                },
+                {
+                  "disabled": false,
+                  "key": "Page",
+                  "value": "<integer>",
+                  "description": "The page index. This value is simply for client state."
+                },
+                {
+                  "disabled": false,
+                  "key": "PageToken",
+                  "value": "<string>",
+                  "description": "The page token. This is provided by the API."
+                }
+              ],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": {
+              "type": "basic",
+              "basic": [
+                {
+                  "key": "username",
+                  "value": "{{basicAuthUsername}}"
+                },
+                {
+                  "key": "password",
+                  "value": "{{basicAuthPassword}}"
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "id": "a8c59bb7-8a92-4dd1-af16-5deaa43be979",
+              "name": "OK",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "Types"
+                  ],
+                  "host": [
+                    "{{v1-Types-Url}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "SchemaId",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "PageSize",
+                      "value": "<integer>"
+                    },
+                    {
+                      "key": "Page",
+                      "value": "<integer>"
+                    },
+                    {
+                      "key": "PageToken",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: basic",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Basic <credentials>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"types\": [\n    {\n      \"type\": \"string\",\n      \"schema_id\": null,\n      \"date_created\": null,\n      \"date_updated\": \"1959-12-16T08:25:06.869Z\",\n      \"description\": null,\n      \"url\": null,\n      \"links\": {}\n    },\n    {\n      \"type\": null,\n      \"schema_id\": \"string\",\n      \"date_created\": \"1948-01-06T14:13:48.039Z\",\n      \"date_updated\": null,\n      \"description\": null,\n      \"url\": null,\n      \"links\": null\n    }\n  ],\n  \"meta\": {\n    \"first_page_url\": \"https://BAsCyHCHLstxqqJVijuPIfc.jarpTXOW+G6QDUTGFpqVyr1uxWZBVDbxVBLMrd0q0vuWBYwXYd-3FIjmNrc7EWkWH.lfO0QRqLvAi\",\n    \"next_page_url\": null,\n    \"page\": 9285,\n    \"page_size\": 1116,\n    \"previous_page_url\": \"http://cb.znztgVUz7ynPTN9BiFNUZPXB7g1aCaW\",\n    \"url\": \"http://eRrmBHxPfeQwvcbLzLco.smwva+jQwJuRZXeKa7MED,icaiPbKG7PtUPbGBW+cTsnuqM63phW\",\n    \"key\": \"string\"\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "13a0591e-c860-4aa7-96d5-25588995300b",
+          "name": "Fetch Event Type",
+          "request": {
+            "name": "Fetch Event Type",
+            "description": {
+              "content": "Fetch a specific Event Type.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "v1",
+                "Types",
+                ":Type"
+              ],
+              "host": [
+                "{{v1-Types-Type-Url}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "Type",
+                  "description": "(Required) A string that uniquely identifies this Event Type."
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": {
+              "type": "basic",
+              "basic": [
+                {
+                  "key": "username",
+                  "value": "{{basicAuthUsername}}"
+                },
+                {
+                  "key": "password",
+                  "value": "{{basicAuthPassword}}"
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "id": "40b15791-b003-484f-8800-1a66d373db90",
+              "name": "OK",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "Types",
+                    ":Type"
+                  ],
+                  "host": [
+                    "{{v1-Types-Type-Url}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "Type",
+                      "description": "(Required) A string that uniquely identifies this Event Type."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: basic",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Basic <credentials>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"type\": null,\n  \"schema_id\": \"string\",\n  \"date_created\": \"2026-04-02T10:04:33.332Z\",\n  \"date_updated\": \"1973-03-24T20:54:35.609Z\",\n  \"description\": null,\n  \"url\": null,\n  \"links\": {}\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "type": "string",
+      "value": "https://accounts.twilio.com",
+      "key": "baseUrl"
+    },
+    {
+      "type": "string",
+      "value": "https://events.twilio.com",
+      "key": "v1-Types-Url"
+    },
+    {
+      "type": "string",
+      "value": "https://events.twilio.com",
+      "key": "v1-Types-Type-Url"
+    }
+  ],
+  "info": {
+    "_postman_id": "867b60a2-3a31-4e0e-bdb4-4b2f14381253",
+    "name": "Twilio - Accounts A2p Types API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "This is the public Twilio REST API.\n\nContact Support:\n Name: Twilio Support\n Email: support@twilio.com",
+      "type": "text/plain"
+    }
+  }
+}

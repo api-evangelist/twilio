@@ -1,4 +1,4 @@
-openapi: 3.0.1
+openapi: 3.2.0
 info:
   title: Twilio - Accounts A2p Recordings API
   description: This is the public Twilio REST API.
@@ -420,80 +420,39 @@ paths:
       x-maturity:
       - GA
 components:
+  parameters:
+    RecordingSid:
+      name: RecordingSid
+      in: path
+      required: true
+      description: The unique identifier of the recording
+      schema:
+        type: string
+        pattern: ^RE[0-9a-fA-F]{32}$
+    RoomSid:
+      name: RoomSid
+      in: path
+      required: true
+      description: The SID or unique name of the room
+      schema:
+        type: string
+    AccountSid:
+      name: AccountSid
+      in: path
+      required: true
+      description: The unique identifier of the Twilio account
+      schema:
+        type: string
+        pattern: ^AC[0-9a-fA-F]{32}$
+    CallSid:
+      name: CallSid
+      in: path
+      required: true
+      description: The unique identifier of the call
+      schema:
+        type: string
+        pattern: ^CA[0-9a-fA-F]{32}$
   schemas:
-    Recording:
-      type: object
-      properties:
-        sid:
-          type: string
-          pattern: ^RE[0-9a-fA-F]{32}$
-          description: Unique identifier for the recording
-        account_sid:
-          type: string
-          pattern: ^AC[0-9a-fA-F]{32}$
-        call_sid:
-          type: string
-          pattern: ^CA[0-9a-fA-F]{32}$
-        conference_sid:
-          type: string
-          description: SID of the conference if applicable
-        channels:
-          type: integer
-          description: Number of channels in the recording
-        status:
-          type: string
-          enum:
-          - processing
-          - completed
-          - absent
-          description: Status of the recording
-        duration:
-          type: string
-          description: Duration of the recording in seconds
-        price:
-          type: string
-        price_unit:
-          type: string
-        source:
-          type: string
-          enum:
-          - DialVerb
-          - Conference
-          - OutboundAPI
-          - Trunking
-          - RecordVerb
-          - StartCallRecordingAPI
-          - StartConferenceRecordingAPI
-        date_created:
-          type: string
-          format: date-time
-        date_updated:
-          type: string
-          format: date-time
-        uri:
-          type: string
-    recording_enum_type:
-      type: string
-      enum:
-      - audio
-      - video
-      - data
-    recording_enum_codec:
-      type: string
-      enum:
-      - VP8
-      - H264
-      - OPUS
-      - PCMU
-    VideoRecordingList:
-      type: object
-      properties:
-        recordings:
-          type: array
-          items:
-            $ref: '#/components/schemas/VideoRecording'
-        meta:
-          $ref: '#/components/schemas/PaginationMeta'
     VideoRecording:
       type: object
       properties:
@@ -566,130 +525,113 @@ components:
             media:
               type: string
               format: uri
-    recording_enum_format:
-      type: string
-      enum:
-      - mka
-      - mkv
-    PaginationMeta:
-      type: object
-      properties:
-        page:
-          type: integer
-        page_size:
-          type: integer
-        first_page_url:
-          type: string
-          format: uri
-        previous_page_url:
-          type: string
-          format: uri
-        next_page_url:
-          type: string
-          format: uri
-        url:
-          type: string
-          format: uri
-        key:
-          type: string
-    recording_enum_status:
-      type: string
-      enum:
-      - processing
-      - completed
-      - deleted
-      - failed
     video.v1.recording:
       type: object
       properties:
         account_sid:
-          type: string
+          type:
+          - string
+          - 'null'
           minLength: 34
           maxLength: 34
           pattern: ^AC[0-9a-fA-F]{32}$
-          nullable: true
           description: The SID of the [Account](https://www.twilio.com/docs/iam/api/account) that created the Recording resource.
         status:
-          type: string
+          type:
+          - string
+          - 'null'
           $ref: '#/components/schemas/recording_enum_status'
-          nullable: true
           description: 'The status of the recording. Can be: `processing`, `completed`, or `deleted`. `processing` indicates the recording is still being captured; `completed` indicates the recording has been captured and is now available for download. `deleted` means the recording media has been deleted from the system, but its metadata is still available.'
         date_created:
-          type: string
+          type:
+          - string
+          - 'null'
           format: date-time
-          nullable: true
           description: The date and time in GMT when the resource was created specified in [ISO 8601](https://en.wikipedia.org/wiki/ISO_8601) format.
         sid:
-          type: string
+          type:
+          - string
+          - 'null'
           minLength: 34
           maxLength: 34
           pattern: ^RT[0-9a-fA-F]{32}$
-          nullable: true
           description: The unique string that we created to identify the Recording resource.
         source_sid:
-          type: string
+          type:
+          - string
+          - 'null'
           minLength: 34
           maxLength: 34
           pattern: ^[a-zA-Z]{2}[0-9a-fA-F]{32}$
-          nullable: true
           description: The SID of the recording source. For a Room Recording, this value is a `track_sid`.
         size:
-          type: integer
+          type:
+          - integer
+          - 'null'
           format: int64
-          nullable: true
           description: The size of the recorded track, in bytes.
         url:
-          type: string
+          type:
+          - string
+          - 'null'
           format: uri
-          nullable: true
           description: The absolute URL of the resource.
         type:
-          type: string
+          type:
+          - string
+          - 'null'
           $ref: '#/components/schemas/recording_enum_type'
-          nullable: true
           description: 'The recording''s media type. Can be: `audio` or `video`.'
         duration:
-          type: integer
-          nullable: true
+          type:
+          - integer
+          - 'null'
           description: The duration of the recording in seconds rounded to the nearest second. Sub-second tracks have a `Duration` property of 1 second
         container_format:
-          type: string
+          type:
+          - string
+          - 'null'
           $ref: '#/components/schemas/recording_enum_format'
-          nullable: true
           description: 'The file format for the recording. Can be: `mka` or `mkv`. Video Room recordings are captured in [Matroska container format](https://matroska.org/), `mka` is for audio files and `mkv` for video files.'
         codec:
-          type: string
+          type:
+          - string
+          - 'null'
           $ref: '#/components/schemas/recording_enum_codec'
-          nullable: true
           description: 'The codec used to encode the track. Can be: `VP8`, `H264`, `OPUS`, and `PCMU`.'
         grouping_sids:
-          nullable: true
           description: A list of SIDs related to the recording. Includes the `room_sid` and `participant_sid`.
         track_name:
-          type: string
-          nullable: true
+          type:
+          - string
+          - 'null'
           description: The name that was given to the source track of the recording. If no name is given, the `source_sid` is used.
           x-twilio:
             pii:
               handling: standard
               deleteSla: 30
         offset:
-          type: integer
+          type:
+          - integer
+          - 'null'
           format: int64
-          nullable: true
           description: The time in milliseconds elapsed between an arbitrary point in time, common to all group rooms, and the moment when the source room of this track started. This information provides a synchronization mechanism for recordings belonging to the same room.
         media_external_location:
-          type: string
+          type:
+          - string
+          - 'null'
           format: uri
-          nullable: true
           description: The URL of the media file associated with the recording when stored externally. See [External S3 Recordings](/docs/video/api/external-s3-recordings) for more details.
         status_callback:
-          type: string
+          type:
+          - string
+          - 'null'
           format: uri
-          nullable: true
           description: The URL called using the `status_callback_method` to send status information on every recording event.
         status_callback_method:
-          type: string
+          type:
+          - string
+          - 'null'
           format: http-method
           enum:
           - HEAD
@@ -698,13 +640,88 @@ components:
           - PATCH
           - PUT
           - DELETE
-          nullable: true
           description: 'The HTTP method used to call `status_callback`. Can be: `POST` or `GET`, defaults to `POST`.'
         links:
-          type: object
+          type:
+          - object
+          - 'null'
           format: uri-map
-          nullable: true
           description: The URLs of related resources.
+    recording_enum_codec:
+      type: string
+      enum:
+      - VP8
+      - H264
+      - OPUS
+      - PCMU
+    Recording:
+      type: object
+      properties:
+        sid:
+          type: string
+          pattern: ^RE[0-9a-fA-F]{32}$
+          description: Unique identifier for the recording
+        account_sid:
+          type: string
+          pattern: ^AC[0-9a-fA-F]{32}$
+        call_sid:
+          type: string
+          pattern: ^CA[0-9a-fA-F]{32}$
+        conference_sid:
+          type: string
+          description: SID of the conference if applicable
+        channels:
+          type: integer
+          description: Number of channels in the recording
+        status:
+          type: string
+          enum:
+          - processing
+          - completed
+          - absent
+          description: Status of the recording
+        duration:
+          type: string
+          description: Duration of the recording in seconds
+        price:
+          type: string
+        price_unit:
+          type: string
+        source:
+          type: string
+          enum:
+          - DialVerb
+          - Conference
+          - OutboundAPI
+          - Trunking
+          - RecordVerb
+          - StartCallRecordingAPI
+          - StartConferenceRecordingAPI
+        date_created:
+          type: string
+          format: date-time
+        date_updated:
+          type: string
+          format: date-time
+        uri:
+          type: string
+    RecordingList:
+      type: object
+      properties:
+        recordings:
+          type: array
+          items:
+            $ref: '#/components/schemas/Recording'
+        first_page_uri:
+          type: string
+        next_page_uri:
+          type: string
+        page:
+          type: integer
+        page_size:
+          type: integer
+        uri:
+          type: string
     ListRecordingResponse:
       type: object
       properties:
@@ -719,17 +736,19 @@ components:
               type: string
               format: uri
             next_page_url:
-              type: string
+              type:
+              - string
+              - 'null'
               format: uri
-              nullable: true
             page:
               type: integer
             page_size:
               type: integer
             previous_page_url:
-              type: string
+              type:
+              - string
+              - 'null'
               format: uri
-              nullable: true
             url:
               type: string
               format: uri
@@ -757,55 +776,54 @@ components:
         url:
           type: string
           format: uri
-    RecordingList:
+    PaginationMeta:
+      type: object
+      properties:
+        page:
+          type: integer
+        page_size:
+          type: integer
+        first_page_url:
+          type: string
+          format: uri
+        previous_page_url:
+          type: string
+          format: uri
+        next_page_url:
+          type: string
+          format: uri
+        url:
+          type: string
+          format: uri
+        key:
+          type: string
+    recording_enum_type:
+      type: string
+      enum:
+      - audio
+      - video
+      - data
+    recording_enum_format:
+      type: string
+      enum:
+      - mka
+      - mkv
+    VideoRecordingList:
       type: object
       properties:
         recordings:
           type: array
           items:
-            $ref: '#/components/schemas/Recording'
-        first_page_uri:
-          type: string
-        next_page_uri:
-          type: string
-        page:
-          type: integer
-        page_size:
-          type: integer
-        uri:
-          type: string
-  parameters:
-    AccountSid:
-      name: AccountSid
-      in: path
-      required: true
-      description: The unique identifier of the Twilio account
-      schema:
-        type: string
-        pattern: ^AC[0-9a-fA-F]{32}$
-    CallSid:
-      name: CallSid
-      in: path
-      required: true
-      description: The unique identifier of the call
-      schema:
-        type: string
-        pattern: ^CA[0-9a-fA-F]{32}$
-    RoomSid:
-      name: RoomSid
-      in: path
-      required: true
-      description: The SID or unique name of the room
-      schema:
-        type: string
-    RecordingSid:
-      name: RecordingSid
-      in: path
-      required: true
-      description: The unique identifier of the recording
-      schema:
-        type: string
-        pattern: ^RE[0-9a-fA-F]{32}$
+            $ref: '#/components/schemas/VideoRecording'
+        meta:
+          $ref: '#/components/schemas/PaginationMeta'
+    recording_enum_status:
+      type: string
+      enum:
+      - processing
+      - completed
+      - deleted
+      - failed
   securitySchemes:
     accountSid_authToken:
       type: http

@@ -1,0 +1,86 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Twilio - Accounts A2p Compliance Inquiries API",
+    "version": "1.52.0"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "ComplianceInquiries",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "CreateComplianceInquiry",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://accounts.twilio.com/v1/ComplianceInquiries/Customers/Initialize",
+            "body": {
+              "type": "form-urlencoded",
+              "data": []
+            },
+            "auth": {
+              "type": "basic",
+              "username": "{{username}}",
+              "password": "{{password}}"
+            }
+          },
+          "docs": "Create a new Compliance Inquiry for the authenticated account. This is necessary to start a new embedded session."
+        },
+        {
+          "info": {
+            "name": "UpdateComplianceInquiry",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://accounts.twilio.com/v1/ComplianceInquiries/Customers/:CustomerId/Initialize",
+            "params": [
+              {
+                "name": "CustomerId",
+                "value": "",
+                "type": "path",
+                "description": "The unique CustomerId matching the Customer Profile/Compliance Inquiry that should be resumed or resubmitted. This value will have been returned by the initial Compliance Inquiry creation call."
+              }
+            ],
+            "body": {
+              "type": "form-urlencoded",
+              "data": []
+            },
+            "auth": {
+              "type": "basic",
+              "username": "{{username}}",
+              "password": "{{password}}"
+            }
+          },
+          "docs": "Resume a specific Compliance Inquiry that has expired, or re-open a rejected Compliance Inquiry for editing."
+        },
+        {
+          "info": {
+            "name": "CreateComplianceTollfreeInquiry",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://accounts.twilio.com/v1/ComplianceInquiries/Tollfree/Initialize",
+            "body": {
+              "type": "form-urlencoded",
+              "data": []
+            },
+            "auth": {
+              "type": "basic",
+              "username": "{{username}}",
+              "password": "{{password}}"
+            }
+          },
+          "docs": "Create a new Compliance Tollfree Verification Inquiry for the authenticated account. This is necessary to start a new embedded session."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

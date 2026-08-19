@@ -1,6 +1,6 @@
-openapi: 3.0.1
+openapi: 3.2.0
 info:
-  title: Twilio - Accounts A2p RecordingSettings API
+  title: Twilio - Accounts A2p Recording Settings API
   description: This is the public Twilio REST API.
   termsOfService: https://www.twilio.com/legal/tos
   contact:
@@ -67,52 +67,6 @@ paths:
               $ref: '#/components/schemas/CreateRecordingSettingsRequest'
 components:
   schemas:
-    video.v1.recording_settings:
-      type: object
-      properties:
-        account_sid:
-          type: string
-          minLength: 34
-          maxLength: 34
-          pattern: ^AC[0-9a-fA-F]{32}$
-          nullable: true
-          description: The SID of the [Account](https://www.twilio.com/docs/iam/api/account) that created the RecordingSettings resource.
-        friendly_name:
-          type: string
-          nullable: true
-          description: The string that you assigned to describe the resource and show the user in the console
-        aws_credentials_sid:
-          type: string
-          minLength: 34
-          maxLength: 34
-          pattern: ^CR[0-9a-fA-F]{32}$
-          nullable: true
-          description: The SID of the stored Credential resource.
-        aws_s3_url:
-          type: string
-          format: uri
-          nullable: true
-          description: The URL of the AWS S3 bucket where the recordings are stored. We only support DNS-compliant URLs like `https://documentation-example-twilio-bucket/recordings`, where `recordings` is the path in which you want the recordings to be stored. This URL accepts only URI-valid characters, as described in the <a href='https://tools.ietf.org/html/rfc3986#section-2'>RFC 3986</a>.
-        aws_storage_enabled:
-          type: boolean
-          nullable: true
-          description: Whether all recordings are written to the `aws_s3_url`. When `false`, all recordings are stored in our cloud.
-        encryption_key_sid:
-          type: string
-          minLength: 34
-          maxLength: 34
-          pattern: ^CR[0-9a-fA-F]{32}$
-          nullable: true
-          description: The SID of the Public Key resource used for encryption.
-        encryption_enabled:
-          type: boolean
-          nullable: true
-          description: Whether all recordings are stored in an encrypted form. The default is `false`.
-        url:
-          type: string
-          format: uri
-          nullable: true
-          description: The absolute URL of the resource.
     CreateRecordingSettingsRequest:
       type: object
       required:
@@ -143,6 +97,60 @@ components:
         EncryptionEnabled:
           type: boolean
           description: Whether all recordings should be stored in an encrypted form. The default is `false`.
+    video.v1.recording_settings:
+      type: object
+      properties:
+        account_sid:
+          type:
+          - string
+          - 'null'
+          minLength: 34
+          maxLength: 34
+          pattern: ^AC[0-9a-fA-F]{32}$
+          description: The SID of the [Account](https://www.twilio.com/docs/iam/api/account) that created the RecordingSettings resource.
+        friendly_name:
+          type:
+          - string
+          - 'null'
+          description: The string that you assigned to describe the resource and show the user in the console
+        aws_credentials_sid:
+          type:
+          - string
+          - 'null'
+          minLength: 34
+          maxLength: 34
+          pattern: ^CR[0-9a-fA-F]{32}$
+          description: The SID of the stored Credential resource.
+        aws_s3_url:
+          type:
+          - string
+          - 'null'
+          format: uri
+          description: The URL of the AWS S3 bucket where the recordings are stored. We only support DNS-compliant URLs like `https://documentation-example-twilio-bucket/recordings`, where `recordings` is the path in which you want the recordings to be stored. This URL accepts only URI-valid characters, as described in the <a href='https://tools.ietf.org/html/rfc3986#section-2'>RFC 3986</a>.
+        aws_storage_enabled:
+          type:
+          - boolean
+          - 'null'
+          description: Whether all recordings are written to the `aws_s3_url`. When `false`, all recordings are stored in our cloud.
+        encryption_key_sid:
+          type:
+          - string
+          - 'null'
+          minLength: 34
+          maxLength: 34
+          pattern: ^CR[0-9a-fA-F]{32}$
+          description: The SID of the Public Key resource used for encryption.
+        encryption_enabled:
+          type:
+          - boolean
+          - 'null'
+          description: Whether all recordings are stored in an encrypted form. The default is `false`.
+        url:
+          type:
+          - string
+          - 'null'
+          format: uri
+          description: The absolute URL of the resource.
   securitySchemes:
     accountSid_authToken:
       type: http

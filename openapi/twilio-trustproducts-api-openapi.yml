@@ -1,6 +1,6 @@
-openapi: 3.0.1
+openapi: 3.2.0
 info:
-  title: Twilio - Accounts A2p TrustProducts API
+  title: Twilio - Accounts A2p Trust Products API
   description: This is the public Twilio REST API.
   termsOfService: https://www.twilio.com/legal/tos
   contact:
@@ -689,280 +689,6 @@ paths:
       - GA
 components:
   schemas:
-    trusthub.v1.trust_product.trust_product_channel_endpoint_assignment:
-      type: object
-      properties:
-        sid:
-          type: string
-          minLength: 34
-          maxLength: 34
-          pattern: ^RA[0-9a-fA-F]{32}$
-          nullable: true
-          description: The unique string that we created to identify the Item Assignment resource.
-        trust_product_sid:
-          type: string
-          minLength: 34
-          maxLength: 34
-          pattern: ^BU[0-9a-fA-F]{32}$
-          nullable: true
-          description: The unique string that we created to identify the CustomerProfile resource.
-        account_sid:
-          type: string
-          minLength: 34
-          maxLength: 34
-          pattern: ^AC[0-9a-fA-F]{32}$
-          nullable: true
-          description: The SID of the [Account](https://www.twilio.com/docs/iam/api/account) that created the Item Assignment resource.
-        channel_endpoint_type:
-          type: string
-          nullable: true
-          description: 'The type of channel endpoint. eg: phone-number'
-        channel_endpoint_sid:
-          type: string
-          minLength: 34
-          maxLength: 34
-          pattern: ^[a-zA-Z]{2}[0-9a-fA-F]{32}$
-          nullable: true
-          description: The SID of an channel endpoint
-        date_created:
-          type: string
-          format: date-time
-          nullable: true
-          description: The date and time in GMT when the resource was created specified in [ISO 8601](https://en.wikipedia.org/wiki/ISO_8601) format.
-        url:
-          type: string
-          format: uri
-          nullable: true
-          description: The absolute URL of the Identity resource.
-    CreateTrustProductRequest:
-      type: object
-      required:
-      - FriendlyName
-      - Email
-      - PolicySid
-      properties:
-        FriendlyName:
-          type: string
-          description: The string that you assigned to describe the resource.
-        Email:
-          type: string
-          description: The email address that will receive updates when the Customer-Profile resource changes status.
-        PolicySid:
-          type: string
-          minLength: 34
-          maxLength: 34
-          pattern: ^RN[0-9a-fA-F]{32}$
-          description: The unique string of a policy that is associated to the Customer-Profile resource.
-        StatusCallback:
-          type: string
-          format: uri
-          description: The URL we call to inform your application of status changes.
-    ListTrustProductEvaluationResponse:
-      type: object
-      properties:
-        results:
-          type: array
-          items:
-            $ref: '#/components/schemas/trusthub.v1.trust_product.trust_product_evaluation'
-        meta:
-          type: object
-          properties:
-            first_page_url:
-              type: string
-              format: uri
-            next_page_url:
-              type: string
-              format: uri
-              nullable: true
-            page:
-              type: integer
-            page_size:
-              type: integer
-            previous_page_url:
-              type: string
-              format: uri
-              nullable: true
-            url:
-              type: string
-              format: uri
-            key:
-              type: string
-    trusthub.v1.trust_product:
-      type: object
-      properties:
-        sid:
-          type: string
-          minLength: 34
-          maxLength: 34
-          pattern: ^BU[0-9a-fA-F]{32}$
-          nullable: true
-          description: The unique string that we created to identify the Customer-Profile resource.
-        account_sid:
-          type: string
-          minLength: 34
-          maxLength: 34
-          pattern: ^AC[0-9a-fA-F]{32}$
-          nullable: true
-          description: The SID of the [Account](https://www.twilio.com/docs/iam/api/account) that created the Customer-Profile resource.
-        policy_sid:
-          type: string
-          minLength: 34
-          maxLength: 34
-          pattern: ^RN[0-9a-fA-F]{32}$
-          nullable: true
-          description: The unique string of a policy that is associated to the Customer-Profile resource.
-        friendly_name:
-          type: string
-          nullable: true
-          description: The string that you assigned to describe the resource.
-        status:
-          type: string
-          $ref: '#/components/schemas/trust_product_enum_status'
-          nullable: true
-          description: The verification status of the Customer-Profile resource.
-        valid_until:
-          type: string
-          format: date-time
-          nullable: true
-          description: The date and time in GMT in [ISO 8601](https://en.wikipedia.org/wiki/ISO_8601) format when the resource will be valid until.
-        email:
-          type: string
-          nullable: true
-          description: The email address that will receive updates when the Customer-Profile resource changes status.
-        status_callback:
-          type: string
-          format: uri
-          nullable: true
-          description: The URL we call to inform your application of status changes.
-        date_created:
-          type: string
-          format: date-time
-          nullable: true
-          description: The date and time in GMT when the resource was created specified in [ISO 8601](https://en.wikipedia.org/wiki/ISO_8601) format.
-        date_updated:
-          type: string
-          format: date-time
-          nullable: true
-          description: The date and time in GMT when the resource was last updated specified in [ISO 8601](https://en.wikipedia.org/wiki/ISO_8601) format.
-        url:
-          type: string
-          format: uri
-          nullable: true
-          description: The absolute URL of the Customer-Profile resource.
-        links:
-          type: object
-          format: uri-map
-          nullable: true
-          description: The URLs of the Assigned Items of the Customer-Profile resource.
-    trusthub.v1.trust_product.trust_product_evaluation:
-      type: object
-      properties:
-        sid:
-          type: string
-          minLength: 34
-          maxLength: 34
-          pattern: ^EL[0-9a-fA-F]{32}$
-          nullable: true
-          description: The unique string that identifies the Evaluation resource.
-        account_sid:
-          type: string
-          minLength: 34
-          maxLength: 34
-          pattern: ^AC[0-9a-fA-F]{32}$
-          nullable: true
-          description: The SID of the [Account](https://www.twilio.com/docs/iam/api/account) that created the trust_product resource.
-        policy_sid:
-          type: string
-          minLength: 34
-          maxLength: 34
-          pattern: ^RN[0-9a-fA-F]{32}$
-          nullable: true
-          description: The unique string of a policy that is associated to the trust_product resource.
-        trust_product_sid:
-          type: string
-          minLength: 34
-          maxLength: 34
-          pattern: ^BU[0-9a-fA-F]{32}$
-          nullable: true
-          description: The unique string that we created to identify the trust_product resource.
-        status:
-          type: string
-          $ref: '#/components/schemas/trust_product_evaluation_enum_status'
-          nullable: true
-          description: The compliance status of the Evaluation resource.
-        results:
-          type: array
-          items: {}
-          nullable: true
-          description: The results of the Evaluation which includes the valid and invalid attributes.
-        date_created:
-          type: string
-          format: date-time
-          nullable: true
-        url:
-          type: string
-          format: uri
-          nullable: true
-    CreateTrustProductEvaluationRequest:
-      type: object
-      required:
-      - PolicySid
-      properties:
-        PolicySid:
-          type: string
-          minLength: 34
-          maxLength: 34
-          pattern: ^RN[0-9a-fA-F]{32}$
-          description: The unique string of a policy that is associated to the customer_profile resource.
-    ListTrustProductEntityAssignmentResponse:
-      type: object
-      properties:
-        results:
-          type: array
-          items:
-            $ref: '#/components/schemas/trusthub.v1.trust_product.trust_product_entity_assignment'
-        meta:
-          type: object
-          properties:
-            first_page_url:
-              type: string
-              format: uri
-            next_page_url:
-              type: string
-              format: uri
-              nullable: true
-            page:
-              type: integer
-            page_size:
-              type: integer
-            previous_page_url:
-              type: string
-              format: uri
-              nullable: true
-            url:
-              type: string
-              format: uri
-            key:
-              type: string
-    CreateTrustProductEntityAssignmentRequest:
-      type: object
-      required:
-      - ObjectSid
-      properties:
-        ObjectSid:
-          type: string
-          minLength: 34
-          maxLength: 34
-          pattern: ^[a-zA-Z]{2}[0-9a-fA-F]{32}$
-          description: The SID of an object bag that holds information of the different items.
-    trust_product_enum_status:
-      type: string
-      enum:
-      - draft
-      - pending-review
-      - in-review
-      - twilio-rejected
-      - twilio-approved
     CreateTrustProductChannelEndpointAssignmentRequest:
       type: object
       required:
@@ -992,22 +718,258 @@ components:
               type: string
               format: uri
             next_page_url:
-              type: string
+              type:
+              - string
+              - 'null'
               format: uri
-              nullable: true
             page:
               type: integer
             page_size:
               type: integer
             previous_page_url:
-              type: string
+              type:
+              - string
+              - 'null'
               format: uri
-              nullable: true
             url:
               type: string
               format: uri
             key:
               type: string
+    trusthub.v1.trust_product.trust_product_channel_endpoint_assignment:
+      type: object
+      properties:
+        sid:
+          type:
+          - string
+          - 'null'
+          minLength: 34
+          maxLength: 34
+          pattern: ^RA[0-9a-fA-F]{32}$
+          description: The unique string that we created to identify the Item Assignment resource.
+        trust_product_sid:
+          type:
+          - string
+          - 'null'
+          minLength: 34
+          maxLength: 34
+          pattern: ^BU[0-9a-fA-F]{32}$
+          description: The unique string that we created to identify the CustomerProfile resource.
+        account_sid:
+          type:
+          - string
+          - 'null'
+          minLength: 34
+          maxLength: 34
+          pattern: ^AC[0-9a-fA-F]{32}$
+          description: The SID of the [Account](https://www.twilio.com/docs/iam/api/account) that created the Item Assignment resource.
+        channel_endpoint_type:
+          type:
+          - string
+          - 'null'
+          description: 'The type of channel endpoint. eg: phone-number'
+        channel_endpoint_sid:
+          type:
+          - string
+          - 'null'
+          minLength: 34
+          maxLength: 34
+          pattern: ^[a-zA-Z]{2}[0-9a-fA-F]{32}$
+          description: The SID of an channel endpoint
+        date_created:
+          type:
+          - string
+          - 'null'
+          format: date-time
+          description: The date and time in GMT when the resource was created specified in [ISO 8601](https://en.wikipedia.org/wiki/ISO_8601) format.
+        url:
+          type:
+          - string
+          - 'null'
+          format: uri
+          description: The absolute URL of the Identity resource.
+    CreateTrustProductEvaluationRequest:
+      type: object
+      required:
+      - PolicySid
+      properties:
+        PolicySid:
+          type: string
+          minLength: 34
+          maxLength: 34
+          pattern: ^RN[0-9a-fA-F]{32}$
+          description: The unique string of a policy that is associated to the customer_profile resource.
+    CreateTrustProductRequest:
+      type: object
+      required:
+      - FriendlyName
+      - Email
+      - PolicySid
+      properties:
+        FriendlyName:
+          type: string
+          description: The string that you assigned to describe the resource.
+        Email:
+          type: string
+          description: The email address that will receive updates when the Customer-Profile resource changes status.
+        PolicySid:
+          type: string
+          minLength: 34
+          maxLength: 34
+          pattern: ^RN[0-9a-fA-F]{32}$
+          description: The unique string of a policy that is associated to the Customer-Profile resource.
+        StatusCallback:
+          type: string
+          format: uri
+          description: The URL we call to inform your application of status changes.
+    trust_product_evaluation_enum_status:
+      type: string
+      enum:
+      - compliant
+      - noncompliant
+    ListTrustProductEvaluationResponse:
+      type: object
+      properties:
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/trusthub.v1.trust_product.trust_product_evaluation'
+        meta:
+          type: object
+          properties:
+            first_page_url:
+              type: string
+              format: uri
+            next_page_url:
+              type:
+              - string
+              - 'null'
+              format: uri
+            page:
+              type: integer
+            page_size:
+              type: integer
+            previous_page_url:
+              type:
+              - string
+              - 'null'
+              format: uri
+            url:
+              type: string
+              format: uri
+            key:
+              type: string
+    ListTrustProductEntityAssignmentResponse:
+      type: object
+      properties:
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/trusthub.v1.trust_product.trust_product_entity_assignment'
+        meta:
+          type: object
+          properties:
+            first_page_url:
+              type: string
+              format: uri
+            next_page_url:
+              type:
+              - string
+              - 'null'
+              format: uri
+            page:
+              type: integer
+            page_size:
+              type: integer
+            previous_page_url:
+              type:
+              - string
+              - 'null'
+              format: uri
+            url:
+              type: string
+              format: uri
+            key:
+              type: string
+    trusthub.v1.trust_product:
+      type: object
+      properties:
+        sid:
+          type:
+          - string
+          - 'null'
+          minLength: 34
+          maxLength: 34
+          pattern: ^BU[0-9a-fA-F]{32}$
+          description: The unique string that we created to identify the Customer-Profile resource.
+        account_sid:
+          type:
+          - string
+          - 'null'
+          minLength: 34
+          maxLength: 34
+          pattern: ^AC[0-9a-fA-F]{32}$
+          description: The SID of the [Account](https://www.twilio.com/docs/iam/api/account) that created the Customer-Profile resource.
+        policy_sid:
+          type:
+          - string
+          - 'null'
+          minLength: 34
+          maxLength: 34
+          pattern: ^RN[0-9a-fA-F]{32}$
+          description: The unique string of a policy that is associated to the Customer-Profile resource.
+        friendly_name:
+          type:
+          - string
+          - 'null'
+          description: The string that you assigned to describe the resource.
+        status:
+          type:
+          - string
+          - 'null'
+          $ref: '#/components/schemas/trust_product_enum_status'
+          description: The verification status of the Customer-Profile resource.
+        valid_until:
+          type:
+          - string
+          - 'null'
+          format: date-time
+          description: The date and time in GMT in [ISO 8601](https://en.wikipedia.org/wiki/ISO_8601) format when the resource will be valid until.
+        email:
+          type:
+          - string
+          - 'null'
+          description: The email address that will receive updates when the Customer-Profile resource changes status.
+        status_callback:
+          type:
+          - string
+          - 'null'
+          format: uri
+          description: The URL we call to inform your application of status changes.
+        date_created:
+          type:
+          - string
+          - 'null'
+          format: date-time
+          description: The date and time in GMT when the resource was created specified in [ISO 8601](https://en.wikipedia.org/wiki/ISO_8601) format.
+        date_updated:
+          type:
+          - string
+          - 'null'
+          format: date-time
+          description: The date and time in GMT when the resource was last updated specified in [ISO 8601](https://en.wikipedia.org/wiki/ISO_8601) format.
+        url:
+          type:
+          - string
+          - 'null'
+          format: uri
+          description: The absolute URL of the Customer-Profile resource.
+        links:
+          type:
+          - object
+          - 'null'
+          format: uri-map
+          description: The URLs of the Assigned Items of the Customer-Profile resource.
     UpdateTrustProductRequest:
       type: object
       properties:
@@ -1039,68 +1001,147 @@ components:
               type: string
               format: uri
             next_page_url:
-              type: string
+              type:
+              - string
+              - 'null'
               format: uri
-              nullable: true
             page:
               type: integer
             page_size:
               type: integer
             previous_page_url:
-              type: string
+              type:
+              - string
+              - 'null'
               format: uri
-              nullable: true
             url:
               type: string
               format: uri
             key:
               type: string
+    trusthub.v1.trust_product.trust_product_evaluation:
+      type: object
+      properties:
+        sid:
+          type:
+          - string
+          - 'null'
+          minLength: 34
+          maxLength: 34
+          pattern: ^EL[0-9a-fA-F]{32}$
+          description: The unique string that identifies the Evaluation resource.
+        account_sid:
+          type:
+          - string
+          - 'null'
+          minLength: 34
+          maxLength: 34
+          pattern: ^AC[0-9a-fA-F]{32}$
+          description: The SID of the [Account](https://www.twilio.com/docs/iam/api/account) that created the trust_product resource.
+        policy_sid:
+          type:
+          - string
+          - 'null'
+          minLength: 34
+          maxLength: 34
+          pattern: ^RN[0-9a-fA-F]{32}$
+          description: The unique string of a policy that is associated to the trust_product resource.
+        trust_product_sid:
+          type:
+          - string
+          - 'null'
+          minLength: 34
+          maxLength: 34
+          pattern: ^BU[0-9a-fA-F]{32}$
+          description: The unique string that we created to identify the trust_product resource.
+        status:
+          type:
+          - string
+          - 'null'
+          $ref: '#/components/schemas/trust_product_evaluation_enum_status'
+          description: The compliance status of the Evaluation resource.
+        results:
+          type:
+          - array
+          - 'null'
+          items: {}
+          description: The results of the Evaluation which includes the valid and invalid attributes.
+        date_created:
+          type:
+          - string
+          - 'null'
+          format: date-time
+        url:
+          type:
+          - string
+          - 'null'
+          format: uri
     trusthub.v1.trust_product.trust_product_entity_assignment:
       type: object
       properties:
         sid:
-          type: string
+          type:
+          - string
+          - 'null'
           minLength: 34
           maxLength: 34
           pattern: ^BV[0-9a-fA-F]{32}$
-          nullable: true
           description: The unique string that we created to identify the Item Assignment resource.
         trust_product_sid:
-          type: string
+          type:
+          - string
+          - 'null'
           minLength: 34
           maxLength: 34
           pattern: ^BU[0-9a-fA-F]{32}$
-          nullable: true
           description: The unique string that we created to identify the TrustProduct resource.
         account_sid:
-          type: string
+          type:
+          - string
+          - 'null'
           minLength: 34
           maxLength: 34
           pattern: ^AC[0-9a-fA-F]{32}$
-          nullable: true
           description: The SID of the [Account](https://www.twilio.com/docs/iam/api/account) that created the Item Assignment resource.
         object_sid:
+          type:
+          - string
+          - 'null'
+          minLength: 34
+          maxLength: 34
+          pattern: ^[a-zA-Z]{2}[0-9a-fA-F]{32}$
+          description: The SID of an object bag that holds information of the different items.
+        date_created:
+          type:
+          - string
+          - 'null'
+          format: date-time
+          description: The date and time in GMT when the resource was created specified in [ISO 8601](https://en.wikipedia.org/wiki/ISO_8601) format.
+        url:
+          type:
+          - string
+          - 'null'
+          format: uri
+          description: The absolute URL of the Identity resource.
+    CreateTrustProductEntityAssignmentRequest:
+      type: object
+      required:
+      - ObjectSid
+      properties:
+        ObjectSid:
           type: string
           minLength: 34
           maxLength: 34
           pattern: ^[a-zA-Z]{2}[0-9a-fA-F]{32}$
-          nullable: true
           description: The SID of an object bag that holds information of the different items.
-        date_created:
-          type: string
-          format: date-time
-          nullable: true
-          description: The date and time in GMT when the resource was created specified in [ISO 8601](https://en.wikipedia.org/wiki/ISO_8601) format.
-        url:
-          type: string
-          format: uri
-          nullable: true
-          description: The absolute URL of the Identity resource.
-    trust_product_evaluation_enum_status:
+    trust_product_enum_status:
       type: string
       enum:
-      - compliant
-      - noncompliant
+      - draft
+      - pending-review
+      - in-review
+      - twilio-rejected
+      - twilio-approved
   securitySchemes:
     accountSid_authToken:
       type: http

@@ -1,0 +1,409 @@
+{
+  "item": [
+    {
+      "id": "cfa05060-fa1f-4a5b-b0f2-2f7f2398fd26",
+      "name": "Trunking",
+      "description": {
+        "content": "",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "d40c202e-26e8-4937-ba83-bd8510612b65",
+          "name": "List Trunking Country",
+          "request": {
+            "name": "List Trunking Country",
+            "description": {
+              "content": "",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "v2",
+                "Trunking",
+                "Countries"
+              ],
+              "host": [
+                "{{v2-Trunking-Countries-Url}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "PageSize",
+                  "value": "<integer>",
+                  "description": "How many resources to return in each list page. The default is 50, and the maximum is 1000."
+                },
+                {
+                  "disabled": false,
+                  "key": "Page",
+                  "value": "<integer>",
+                  "description": "The page index. This value is simply for client state."
+                },
+                {
+                  "disabled": false,
+                  "key": "PageToken",
+                  "value": "<string>",
+                  "description": "The page token. This is provided by the API."
+                }
+              ],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": {
+              "type": "basic",
+              "basic": [
+                {
+                  "key": "username",
+                  "value": "{{basicAuthUsername}}"
+                },
+                {
+                  "key": "password",
+                  "value": "{{basicAuthPassword}}"
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "id": "619ed3e2-ccc7-4806-a8e8-fa54022260d9",
+              "name": "OK",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v2",
+                    "Trunking",
+                    "Countries"
+                  ],
+                  "host": [
+                    "{{v2-Trunking-Countries-Url}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "PageSize",
+                      "value": "<integer>"
+                    },
+                    {
+                      "key": "Page",
+                      "value": "<integer>"
+                    },
+                    {
+                      "key": "PageToken",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: basic",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Basic <credentials>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"countries\": [\n    {\n      \"country\": null,\n      \"iso_country\": \"string\",\n      \"url\": null\n    },\n    {\n      \"country\": null,\n      \"iso_country\": \"string\",\n      \"url\": null\n    }\n  ],\n  \"meta\": {\n    \"first_page_url\": \"https://lkJQCdabskWIazTIS.kbjLW2rTjGnN6,rgVM6ppO33WX51CEPdjaojcUt2TI\",\n    \"next_page_url\": \"http://akPTvRWFLw.grmtGaUcSqO0KsVwF2CnpV+-+UtIOkbfdX-+al01oUv7g6Xq\",\n    \"page\": 7872,\n    \"page_size\": 3865,\n    \"previous_page_url\": \"https://JbEqOteEix.dunzeRw62KdgdzuRj0wJRReKdBrORms-qmk3w-e10ap96dDqx3.lVAzmQveMKwEN2dehOlNym\",\n    \"url\": \"https://PxIuRhcKdYtrBeQULdJsJygJpQVxDpXGR.soocwQS56sUzYlC-ehRrS.YVkaDv5em79j.sH9kDtxtKM0XIc0ViQVgHV+r3AF\",\n    \"key\": \"string\"\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "365a8072-4e5f-471a-9ac2-9a0fc0b62a85",
+          "name": "Fetch Trunking Country",
+          "request": {
+            "name": "Fetch Trunking Country",
+            "description": {
+              "content": "Fetch a specific Country.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "v2",
+                "Trunking",
+                "Countries",
+                ":IsoCountry"
+              ],
+              "host": [
+                "{{v2-Trunking-Countries-IsoCountry-Url}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<iso-country-code>",
+                  "key": "IsoCountry",
+                  "description": "(Required) The [ISO country code](https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2) of the origin-based voice pricing information to fetch."
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": {
+              "type": "basic",
+              "basic": [
+                {
+                  "key": "username",
+                  "value": "{{basicAuthUsername}}"
+                },
+                {
+                  "key": "password",
+                  "value": "{{basicAuthPassword}}"
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "id": "993fbb98-dd47-4ec8-aeed-472b9ab29c6c",
+              "name": "OK",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v2",
+                    "Trunking",
+                    "Countries",
+                    ":IsoCountry"
+                  ],
+                  "host": [
+                    "{{v2-Trunking-Countries-IsoCountry-Url}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<iso-country-code>",
+                      "key": "IsoCountry",
+                      "description": "(Required) The [ISO country code](https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2) of the origin-based voice pricing information to fetch."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: basic",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Basic <credentials>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"country\": \"string\",\n  \"iso_country\": null,\n  \"terminating_prefix_prices\": [\n    {\n      \"origination_prefixes\": [\n        \"string\",\n        \"string\"\n      ],\n      \"destination_prefixes\": [\n        \"string\",\n        \"string\"\n      ],\n      \"base_price\": 1854.8116285789029,\n      \"current_price\": 3948.017392970099,\n      \"friendly_name\": \"string\"\n    },\n    {\n      \"origination_prefixes\": [\n        \"string\",\n        \"string\"\n      ],\n      \"destination_prefixes\": [\n        \"string\",\n        \"string\"\n      ],\n      \"base_price\": 2588.76776423999,\n      \"current_price\": 7036.659559129833,\n      \"friendly_name\": \"string\"\n    }\n  ],\n  \"originating_call_prices\": [\n    {\n      \"base_price\": 4370.818212000777,\n      \"current_price\": 7200.289571816547,\n      \"number_type\": \"string\"\n    },\n    {\n      \"base_price\": 3062.7165524843667,\n      \"current_price\": 763.2142755323523,\n      \"number_type\": \"string\"\n    }\n  ],\n  \"price_unit\": \"string\",\n  \"url\": \"https://UpkIoWdVioGhDifaGTwdnsBXvGnil.hcwPgxpIUb6GzHhJ9FDDNfWF.6qGmvkeDoe+GtJFt.AJXZmQBUXvJyN7IhZFTKm.9avGRNAoVZth2KYkaj0z\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "f21ae156-d715-4948-bc96-45768571fe07",
+          "name": "Fetch Trunking Number",
+          "request": {
+            "name": "Fetch Trunking Number",
+            "description": {
+              "content": "Fetch pricing information for a specific destination and, optionally, origination phone number.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "v2",
+                "Trunking",
+                "Numbers",
+                ":DestinationNumber"
+              ],
+              "host": [
+                "{{v2-Trunking-Numbers-DestinationNumber-Url}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "OriginationNumber",
+                  "value": "<phone-number>",
+                  "description": "The origination phone number, in [E.164](https://www.twilio.com/docs/glossary/what-e164) format, for which to fetch the origin-based voice pricing information. E.164 format consists of a + followed by the country code and subscriber number."
+                }
+              ],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<phone-number>",
+                  "key": "DestinationNumber",
+                  "description": "(Required) The destination phone number, in [E.164](https://www.twilio.com/docs/glossary/what-e164) format, for which to fetch the origin-based voice pricing information. E.164 format consists of a + followed by the country code and subscriber number."
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": {
+              "type": "basic",
+              "basic": [
+                {
+                  "key": "username",
+                  "value": "{{basicAuthUsername}}"
+                },
+                {
+                  "key": "password",
+                  "value": "{{basicAuthPassword}}"
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "id": "3946bba9-ec40-4785-9421-7ffaca4b3bf0",
+              "name": "OK",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v2",
+                    "Trunking",
+                    "Numbers",
+                    ":DestinationNumber"
+                  ],
+                  "host": [
+                    "{{v2-Trunking-Numbers-DestinationNumber-Url}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "OriginationNumber",
+                      "value": "<phone-number>"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<phone-number>",
+                      "key": "DestinationNumber",
+                      "description": "(Required) The destination phone number, in [E.164](https://www.twilio.com/docs/glossary/what-e164) format, for which to fetch the origin-based voice pricing information. E.164 format consists of a + followed by the country code and subscriber number."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: basic",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Basic <credentials>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"destination_number\": \"string\",\n  \"origination_number\": null,\n  \"country\": null,\n  \"iso_country\": \"string\",\n  \"terminating_prefix_prices\": [\n    {\n      \"origination_prefixes\": [\n        \"string\",\n        \"string\"\n      ],\n      \"destination_prefixes\": [\n        \"string\",\n        \"string\"\n      ],\n      \"base_price\": 2445.2538863470454,\n      \"current_price\": 4246.041268544956,\n      \"friendly_name\": \"string\"\n    },\n    {\n      \"origination_prefixes\": [\n        \"string\",\n        \"string\"\n      ],\n      \"destination_prefixes\": [\n        \"string\",\n        \"string\"\n      ],\n      \"base_price\": 2414.6592290964577,\n      \"current_price\": 8753.37863343593,\n      \"friendly_name\": \"string\"\n    }\n  ],\n  \"originating_call_price\": {\n    \"base_price\": 5810.4366627181025,\n    \"current_price\": 4698.776345319302,\n    \"number_type\": \"string\"\n  },\n  \"price_unit\": \"string\",\n  \"url\": null\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "type": "string",
+      "value": "https://accounts.twilio.com",
+      "key": "baseUrl"
+    },
+    {
+      "type": "string",
+      "value": "https://pricing.twilio.com",
+      "key": "v2-Trunking-Countries-Url"
+    },
+    {
+      "type": "string",
+      "value": "https://pricing.twilio.com",
+      "key": "v2-Trunking-Countries-IsoCountry-Url"
+    },
+    {
+      "type": "string",
+      "value": "https://pricing.twilio.com",
+      "key": "v2-Trunking-Numbers-DestinationNumber-Url"
+    }
+  ],
+  "info": {
+    "_postman_id": "0c3be811-5bea-433e-9c70-4c9bbdb37114",
+    "name": "Twilio - Accounts A2p Trunking API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "This is the public Twilio REST API.\n\nContact Support:\n Name: Twilio Support\n Email: support@twilio.com",
+      "type": "text/plain"
+    }
+  }
+}

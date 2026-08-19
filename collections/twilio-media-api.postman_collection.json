@@ -1,0 +1,566 @@
+{
+  "item": [
+    {
+      "id": "5c7ed807-093a-4f19-be1f-82223e84abfb",
+      "name": "Media",
+      "description": {
+        "content": "Manage media attachments for MMS messages",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "2d3ac729-f738-41a4-b91d-c11a5e683f00",
+          "name": "Twilio List Media for a Message",
+          "request": {
+            "name": "Twilio List Media for a Message",
+            "description": {
+              "content": "Retrieve a list of media associated with an MMS message.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "Accounts",
+                ":AccountSid",
+                "Messages",
+                ":MessageSid",
+                "Media.json"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "PageSize",
+                  "value": "<integer>"
+                }
+              ],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "AccountSid",
+                  "description": "(Required) The unique identifier of the Twilio account"
+                },
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "MessageSid",
+                  "description": "(Required) The unique identifier of the message"
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "4e611c9e-715e-4706-9c65-a2302b8b21ef",
+              "name": "List of media resources",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "Accounts",
+                    ":AccountSid",
+                    "Messages",
+                    ":MessageSid",
+                    "Media.json"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "PageSize",
+                      "value": "<integer>"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "AccountSid",
+                      "description": "(Required) The unique identifier of the Twilio account"
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "MessageSid",
+                      "description": "(Required) The unique identifier of the message"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"media_list\": [\n    {\n      \"sid\": \"MEFBEbbA808dfDf38a6b9b9d8d381afCbf\",\n      \"account_sid\": \"ACxREDACTEDxEXAMPLExSIDxVALUExxxxxx\",\n      \"parent_sid\": \"string\",\n      \"content_type\": \"string\",\n      \"date_created\": \"1972-12-16T14:09:31.397Z\",\n      \"date_updated\": \"2005-08-28T06:31:09.337Z\",\n      \"uri\": \"string\"\n    },\n    {\n      \"sid\": \"MEfc43d2BEBA33FB9aAB5170edB6bFC142\",\n      \"account_sid\": \"ACxREDACTEDxEXAMPLExSIDxVALUExxxxxx\",\n      \"parent_sid\": \"string\",\n      \"content_type\": \"string\",\n      \"date_created\": \"1969-08-10T01:24:23.227Z\",\n      \"date_updated\": \"1975-08-07T02:16:44.929Z\",\n      \"uri\": \"string\"\n    }\n  ],\n  \"page\": 8333,\n  \"page_size\": 4503,\n  \"uri\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "69dd2f3e-7677-49ad-b34b-c8c748a24556",
+              "name": "Unauthorized",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "Accounts",
+                    ":AccountSid",
+                    "Messages",
+                    ":MessageSid",
+                    "Media.json"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "PageSize",
+                      "value": "<integer>"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "AccountSid",
+                      "description": "(Required) The unique identifier of the Twilio account"
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "MessageSid",
+                      "description": "(Required) The unique identifier of the message"
+                    }
+                  ]
+                },
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "5ca45e6a-fa14-4cf9-b99c-4ae5e18a5a5c",
+          "name": "Twilio Fetch a Media Resource",
+          "request": {
+            "name": "Twilio Fetch a Media Resource",
+            "description": {
+              "content": "Retrieve a specific media resource associated with a message.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "Accounts",
+                ":AccountSid",
+                "Messages",
+                ":MessageSid",
+                "Media",
+                "{{MediaSid}}.json"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "AccountSid",
+                  "description": "(Required) The unique identifier of the Twilio account"
+                },
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "MessageSid",
+                  "description": "(Required) The unique identifier of the message"
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "7fc85a24-3073-46f2-b071-941265966a9f",
+              "name": "Media resource details",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "Accounts",
+                    ":AccountSid",
+                    "Messages",
+                    ":MessageSid",
+                    "Media",
+                    "{{MediaSid}}.json"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "AccountSid",
+                      "description": "(Required) The unique identifier of the Twilio account"
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "MessageSid",
+                      "description": "(Required) The unique identifier of the message"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"sid\": \"ME50E14e777C2a08DBEfE1ff520036140A\",\n  \"account_sid\": \"ACxREDACTEDxEXAMPLExSIDxVALUExxxxxx\",\n  \"parent_sid\": \"string\",\n  \"content_type\": \"string\",\n  \"date_created\": \"1961-02-02T14:50:31.213Z\",\n  \"date_updated\": \"2003-09-03T03:09:15.804Z\",\n  \"uri\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "6922aedd-596f-4adc-a096-9d5eab4fe773",
+              "name": "Unauthorized",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "Accounts",
+                    ":AccountSid",
+                    "Messages",
+                    ":MessageSid",
+                    "Media",
+                    "{{MediaSid}}.json"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "AccountSid",
+                      "description": "(Required) The unique identifier of the Twilio account"
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "MessageSid",
+                      "description": "(Required) The unique identifier of the message"
+                    }
+                  ]
+                },
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "331ea535-9243-471c-a97f-a0f4abd2e16d",
+              "name": "Media not found",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "Accounts",
+                    ":AccountSid",
+                    "Messages",
+                    ":MessageSid",
+                    "Media",
+                    "{{MediaSid}}.json"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "AccountSid",
+                      "description": "(Required) The unique identifier of the Twilio account"
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "MessageSid",
+                      "description": "(Required) The unique identifier of the message"
+                    }
+                  ]
+                },
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "b61bc276-3dc8-4ee9-a1d0-03d2931c9fc1",
+          "name": "Twilio Delete a Media Resource",
+          "request": {
+            "name": "Twilio Delete a Media Resource",
+            "description": {},
+            "url": {
+              "path": [
+                "Accounts",
+                ":AccountSid",
+                "Messages",
+                ":MessageSid",
+                "Media",
+                "{{MediaSid}}.json"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "AccountSid",
+                  "description": "(Required) The unique identifier of the Twilio account"
+                },
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "MessageSid",
+                  "description": "(Required) The unique identifier of the message"
+                }
+              ]
+            },
+            "method": "DELETE",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "8f18413a-78ec-4734-87fd-3f4197908207",
+              "name": "Media deleted",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "Accounts",
+                    ":AccountSid",
+                    "Messages",
+                    ":MessageSid",
+                    "Media",
+                    "{{MediaSid}}.json"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "AccountSid",
+                      "description": "(Required) The unique identifier of the Twilio account"
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "MessageSid",
+                      "description": "(Required) The unique identifier of the message"
+                    }
+                  ]
+                },
+                "method": "DELETE",
+                "body": {}
+              },
+              "status": "No Content",
+              "code": 204,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "5a9a9432-a7cb-4efe-862d-460113c802fb",
+              "name": "Media not found",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "Accounts",
+                    ":AccountSid",
+                    "Messages",
+                    ":MessageSid",
+                    "Media",
+                    "{{MediaSid}}.json"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "AccountSid",
+                      "description": "(Required) The unique identifier of the Twilio account"
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "MessageSid",
+                      "description": "(Required) The unique identifier of the message"
+                    }
+                  ]
+                },
+                "method": "DELETE",
+                "body": {}
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "type": "string",
+      "value": "https://accounts.twilio.com",
+      "key": "baseUrl"
+    },
+    {
+      "disabled": false,
+      "description": {
+        "content": "(Required) ",
+        "type": "text/plain"
+      },
+      "type": "any",
+      "value": "<string>",
+      "key": "MediaSid"
+    }
+  ],
+  "info": {
+    "_postman_id": "6939a46d-f46a-4a1b-9d90-c11a80a1930e",
+    "name": "Twilio - Accounts A2p Media API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "This is the public Twilio REST API.\n\nContact Support:\n Name: Twilio Support\n Email: support@twilio.com",
+      "type": "text/plain"
+    }
+  }
+}

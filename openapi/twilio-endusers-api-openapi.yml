@@ -1,6 +1,6 @@
-openapi: 3.0.1
+openapi: 3.2.0
 info:
-  title: Twilio - Accounts A2p EndUsers API
+  title: Twilio - Accounts A2p End Users API
   description: This is the public Twilio REST API.
   termsOfService: https://www.twilio.com/legal/tos
   contact:
@@ -199,69 +199,24 @@ components:
               type: string
               format: uri
             next_page_url:
-              type: string
+              type:
+              - string
+              - 'null'
               format: uri
-              nullable: true
             page:
               type: integer
             page_size:
               type: integer
             previous_page_url:
-              type: string
+              type:
+              - string
+              - 'null'
               format: uri
-              nullable: true
             url:
               type: string
               format: uri
             key:
               type: string
-    trusthub.v1.end_user:
-      type: object
-      properties:
-        sid:
-          type: string
-          minLength: 34
-          maxLength: 34
-          pattern: ^IT[0-9a-fA-F]{32}$
-          nullable: true
-          description: The unique string created by Twilio to identify the End User resource.
-        account_sid:
-          type: string
-          minLength: 34
-          maxLength: 34
-          pattern: ^AC[0-9a-fA-F]{32}$
-          nullable: true
-          description: The SID of the [Account](https://www.twilio.com/docs/iam/api/account) that created the End User resource.
-        friendly_name:
-          type: string
-          nullable: true
-          description: The string that you assigned to describe the resource.
-        type:
-          type: string
-          nullable: true
-          description: The type of end user of the Bundle resource - can be `individual` or `business`.
-        attributes:
-          nullable: true
-          description: The set of parameters that are the attributes of the End Users resource which are listed in the End User Types.
-          x-twilio:
-            pii:
-              handling: standard
-              deleteSla: 30
-        date_created:
-          type: string
-          format: date-time
-          nullable: true
-          description: The date and time in GMT when the resource was created specified in [ISO 8601](https://en.wikipedia.org/wiki/ISO_8601) format.
-        date_updated:
-          type: string
-          format: date-time
-          nullable: true
-          description: The date and time in GMT when the resource was last updated specified in [ISO 8601](https://en.wikipedia.org/wiki/ISO_8601) format.
-        url:
-          type: string
-          format: uri
-          nullable: true
-          description: The absolute URL of the End User resource.
     UpdateEndUserRequest:
       type: object
       properties:
@@ -270,6 +225,59 @@ components:
           description: The string that you assigned to describe the resource.
         Attributes:
           description: The set of parameters that are the attributes of the End User resource which are derived End User Types.
+    trusthub.v1.end_user:
+      type: object
+      properties:
+        sid:
+          type:
+          - string
+          - 'null'
+          minLength: 34
+          maxLength: 34
+          pattern: ^IT[0-9a-fA-F]{32}$
+          description: The unique string created by Twilio to identify the End User resource.
+        account_sid:
+          type:
+          - string
+          - 'null'
+          minLength: 34
+          maxLength: 34
+          pattern: ^AC[0-9a-fA-F]{32}$
+          description: The SID of the [Account](https://www.twilio.com/docs/iam/api/account) that created the End User resource.
+        friendly_name:
+          type:
+          - string
+          - 'null'
+          description: The string that you assigned to describe the resource.
+        type:
+          type:
+          - string
+          - 'null'
+          description: The type of end user of the Bundle resource - can be `individual` or `business`.
+        attributes:
+          description: The set of parameters that are the attributes of the End Users resource which are listed in the End User Types.
+          x-twilio:
+            pii:
+              handling: standard
+              deleteSla: 30
+        date_created:
+          type:
+          - string
+          - 'null'
+          format: date-time
+          description: The date and time in GMT when the resource was created specified in [ISO 8601](https://en.wikipedia.org/wiki/ISO_8601) format.
+        date_updated:
+          type:
+          - string
+          - 'null'
+          format: date-time
+          description: The date and time in GMT when the resource was last updated specified in [ISO 8601](https://en.wikipedia.org/wiki/ISO_8601) format.
+        url:
+          type:
+          - string
+          - 'null'
+          format: uri
+          description: The absolute URL of the End User resource.
   securitySchemes:
     accountSid_authToken:
       type: http

@@ -1,0 +1,155 @@
+{
+  "item": [
+    {
+      "id": "bd9e3f9c-a79f-4441-b9e6-a3ecba064a62",
+      "name": "Archives",
+      "description": {
+        "content": "",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "e4a7b338-debf-4e48-8384-43c9cc8801ae",
+          "name": "Delete Archived Call",
+          "request": {
+            "name": "Delete Archived Call",
+            "description": {
+              "content": "Delete an archived call record from Bulk Export. Note: this does not also delete the record from the Voice API.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "v1",
+                "Archives",
+                ":Date",
+                "Calls",
+                ":Sid"
+              ],
+              "host": [
+                "{{v1-Archives-Date-Calls-Sid-Url}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<date>",
+                  "key": "Date",
+                  "description": "(Required) The date of the Call in UTC."
+                },
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "Sid",
+                  "description": "(Required) The Twilio-provided Call SID that uniquely identifies the Call resource to delete"
+                }
+              ]
+            },
+            "method": "DELETE",
+            "auth": {
+              "type": "basic",
+              "basic": [
+                {
+                  "key": "username",
+                  "value": "{{basicAuthUsername}}"
+                },
+                {
+                  "key": "password",
+                  "value": "{{basicAuthPassword}}"
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "id": "5841d608-4833-4534-bb82-d6e88cda8b43",
+              "name": "The resource was deleted successfully.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "Archives",
+                    ":Date",
+                    "Calls",
+                    ":Sid"
+                  ],
+                  "host": [
+                    "{{v1-Archives-Date-Calls-Sid-Url}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<date>",
+                      "key": "Date",
+                      "description": "(Required) The date of the Call in UTC."
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "Sid",
+                      "description": "(Required) The Twilio-provided Call SID that uniquely identifies the Call resource to delete"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: basic",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Basic <credentials>"
+                  }
+                ],
+                "method": "DELETE",
+                "body": {}
+              },
+              "status": "No Content",
+              "code": 204,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "type": "string",
+      "value": "https://accounts.twilio.com",
+      "key": "baseUrl"
+    },
+    {
+      "type": "string",
+      "value": "https://voice.twilio.com",
+      "key": "v1-Archives-Date-Calls-Sid-Url"
+    }
+  ],
+  "info": {
+    "_postman_id": "5108045f-af51-457b-8836-5603ee62e8ed",
+    "name": "Twilio - Accounts A2p Archives API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "This is the public Twilio REST API.\n\nContact Support:\n Name: Twilio Support\n Email: support@twilio.com",
+      "type": "text/plain"
+    }
+  }
+}

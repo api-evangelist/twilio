@@ -1,4 +1,4 @@
-openapi: 3.0.1
+openapi: 3.2.0
 info:
   title: Twilio - Accounts A2p Queues API
   description: This is the public Twilio REST API.
@@ -127,21 +127,6 @@ paths:
           description: Queue deleted
 components:
   schemas:
-    QueueList:
-      type: object
-      properties:
-        queues:
-          type: array
-          items:
-            $ref: '#/components/schemas/Queue'
-        first_page_uri:
-          type: string
-        next_page_uri:
-          type: string
-        page:
-          type: integer
-        page_size:
-          type: integer
     Queue:
       type: object
       properties:
@@ -170,6 +155,21 @@ components:
           format: date-time
         uri:
           type: string
+    QueueList:
+      type: object
+      properties:
+        queues:
+          type: array
+          items:
+            $ref: '#/components/schemas/Queue'
+        first_page_uri:
+          type: string
+        next_page_uri:
+          type: string
+        page:
+          type: integer
+        page_size:
+          type: integer
   parameters:
     AccountSid:
       name: AccountSid

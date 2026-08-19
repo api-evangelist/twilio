@@ -1,0 +1,180 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Twilio - Accounts A2p Attempts API",
+    "version": "1.52.0"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Attempts",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "ListVerificationAttempt",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://accounts.twilio.com/v2/Attempts",
+            "params": [
+              {
+                "name": "DateCreatedAfter",
+                "value": "",
+                "type": "query",
+                "description": "Datetime filter used to consider only Verification Attempts created after this datetime on the summary aggregation. Given as GMT in ISO 8601 formatted datetime string: yyyy-MM-dd'T'HH:mm:ss'Z."
+              },
+              {
+                "name": "DateCreatedBefore",
+                "value": "",
+                "type": "query",
+                "description": "Datetime filter used to consider only Verification Attempts created before this datetime on the summary aggregation. Given as GMT in ISO 8601 formatted datetime string: yyyy-MM-dd'T'HH:mm:ss'Z."
+              },
+              {
+                "name": "ChannelData.To",
+                "value": "",
+                "type": "query",
+                "description": "Destination of a verification. It is phone number in E.164 format."
+              },
+              {
+                "name": "Country",
+                "value": "",
+                "type": "query",
+                "description": "Filter used to query Verification Attempts sent to the specified destination country."
+              },
+              {
+                "name": "Channel",
+                "value": "",
+                "type": "query",
+                "description": "Filter used to query Verification Attempts by communication channel. Valid values are `SMS` and `CALL`"
+              },
+              {
+                "name": "VerifyServiceSid",
+                "value": "",
+                "type": "query",
+                "description": "Filter used to query Verification Attempts by verify service. Only attempts of the provided SID will be returned."
+              },
+              {
+                "name": "VerificationSid",
+                "value": "",
+                "type": "query",
+                "description": "Filter used to return all the Verification Attempts of a single verification. Only attempts of the provided verification SID will be returned."
+              },
+              {
+                "name": "Status",
+                "value": "",
+                "type": "query",
+                "description": "Filter used to query Verification Attempts by conversion status. Valid values are `UNCONVERTED`, for attempts that were not converted, and `CONVERTED`, for attempts that were confirmed."
+              },
+              {
+                "name": "PageSize",
+                "value": "",
+                "type": "query",
+                "description": "How many resources to return in each list page. The default is 50, and the maximum is 1000."
+              },
+              {
+                "name": "Page",
+                "value": "",
+                "type": "query",
+                "description": "The page index. This value is simply for client state."
+              },
+              {
+                "name": "PageToken",
+                "value": "",
+                "type": "query",
+                "description": "The page token. This is provided by the API."
+              }
+            ],
+            "auth": {
+              "type": "basic",
+              "username": "{{username}}",
+              "password": "{{password}}"
+            }
+          },
+          "docs": "List all the verification attempts for a given Account."
+        },
+        {
+          "info": {
+            "name": "FetchVerificationAttempt",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://accounts.twilio.com/v2/Attempts/:Sid",
+            "params": [
+              {
+                "name": "Sid",
+                "value": "",
+                "type": "path",
+                "description": "The unique SID identifier of a Verification Attempt"
+              }
+            ],
+            "auth": {
+              "type": "basic",
+              "username": "{{username}}",
+              "password": "{{password}}"
+            }
+          },
+          "docs": "Fetch a specific verification attempt."
+        },
+        {
+          "info": {
+            "name": "FetchVerificationAttemptsSummary",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://accounts.twilio.com/v2/Attempts/Summary",
+            "params": [
+              {
+                "name": "VerifyServiceSid",
+                "value": "",
+                "type": "query",
+                "description": "Filter used to consider only Verification Attempts of the given verify service on the summary aggregation."
+              },
+              {
+                "name": "DateCreatedAfter",
+                "value": "",
+                "type": "query",
+                "description": "Datetime filter used to consider only Verification Attempts created after this datetime on the summary aggregation. Given as GMT in ISO 8601 formatted datetime string: yyyy-MM-dd'T'HH:mm:ss'Z."
+              },
+              {
+                "name": "DateCreatedBefore",
+                "value": "",
+                "type": "query",
+                "description": "Datetime filter used to consider only Verification Attempts created before this datetime on the summary aggregation. Given as GMT in ISO 8601 formatted datetime string: yyyy-MM-dd'T'HH:mm:ss'Z."
+              },
+              {
+                "name": "Country",
+                "value": "",
+                "type": "query",
+                "description": "Filter used to consider only Verification Attempts sent to the specified destination country on the summary aggregation."
+              },
+              {
+                "name": "Channel",
+                "value": "",
+                "type": "query",
+                "description": "Filter Verification Attempts considered on the summary aggregation by communication channel. Valid values are `SMS`, `CALL` and `WHATSAPP`"
+              },
+              {
+                "name": "DestinationPrefix",
+                "value": "",
+                "type": "query",
+                "description": "Filter the Verification Attempts considered on the summary aggregation by Destination prefix. It is the prefix of a phone number in E.164 format."
+              }
+            ],
+            "auth": {
+              "type": "basic",
+              "username": "{{username}}",
+              "password": "{{password}}"
+            }
+          },
+          "docs": "Get a summary of how many attempts were made and how many were converted."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

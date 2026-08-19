@@ -1,4 +1,4 @@
-openapi: 3.0.1
+openapi: 3.2.0
 info:
   title: Twilio - Accounts A2p Tollfree API
   description: This is the public Twilio REST API.
@@ -187,226 +187,6 @@ paths:
               $ref: '#/components/schemas/CreateTollfreeVerificationRequest'
 components:
   schemas:
-    tollfree_verification_enum_status:
-      type: string
-      enum:
-      - PENDING_REVIEW
-      - IN_REVIEW
-      - TWILIO_APPROVED
-      - TWILIO_REJECTED
-    messaging.v1.tollfree_verification:
-      type: object
-      properties:
-        sid:
-          type: string
-          minLength: 34
-          maxLength: 34
-          pattern: ^HH[0-9a-fA-F]{32}$
-          nullable: true
-          description: The unique string to identify Tollfree Verification.
-        account_sid:
-          type: string
-          minLength: 34
-          maxLength: 34
-          pattern: ^AC[0-9a-fA-F]{32}$
-          nullable: true
-          description: The SID of the [Account](https://www.twilio.com/docs/iam/api/account) that created the Tollfree Verification resource.
-        customer_profile_sid:
-          type: string
-          minLength: 34
-          maxLength: 34
-          pattern: ^BU[0-9a-fA-F]{32}$
-          nullable: true
-          description: Customer's Profile Bundle BundleSid.
-        trust_product_sid:
-          type: string
-          minLength: 34
-          maxLength: 34
-          pattern: ^BU[0-9a-fA-F]{32}$
-          nullable: true
-          description: Tollfree TrustProduct Bundle BundleSid.
-        date_created:
-          type: string
-          format: date-time
-          nullable: true
-          description: The date and time in GMT when the resource was created specified in [ISO 8601](https://en.wikipedia.org/wiki/ISO_8601) format.
-        date_updated:
-          type: string
-          format: date-time
-          nullable: true
-          description: The date and time in GMT when the resource was last updated specified in [ISO 8601](https://en.wikipedia.org/wiki/ISO_8601) format.
-        regulated_item_sid:
-          type: string
-          minLength: 34
-          maxLength: 34
-          pattern: ^RA[0-9a-fA-F]{32}$
-          nullable: true
-          description: The SID of the Regulated Item.
-        business_name:
-          type: string
-          nullable: true
-          description: The name of the business or organization using the Tollfree number.
-        business_street_address:
-          type: string
-          nullable: true
-          description: The address of the business or organization using the Tollfree number.
-        business_street_address2:
-          type: string
-          nullable: true
-          description: The address of the business or organization using the Tollfree number.
-        business_city:
-          type: string
-          nullable: true
-          description: The city of the business or organization using the Tollfree number.
-        business_state_province_region:
-          type: string
-          nullable: true
-          description: The state/province/region of the business or organization using the Tollfree number.
-        business_postal_code:
-          type: string
-          nullable: true
-          description: The postal code of the business or organization using the Tollfree number.
-        business_country:
-          type: string
-          nullable: true
-          description: The country of the business or organization using the Tollfree number.
-        business_website:
-          type: string
-          nullable: true
-          description: The website of the business or organization using the Tollfree number.
-        business_contact_first_name:
-          type: string
-          nullable: true
-          description: The first name of the contact for the business or organization using the Tollfree number.
-        business_contact_last_name:
-          type: string
-          nullable: true
-          description: The last name of the contact for the business or organization using the Tollfree number.
-        business_contact_email:
-          type: string
-          nullable: true
-          description: The email address of the contact for the business or organization using the Tollfree number.
-        business_contact_phone:
-          type: string
-          format: phone-number
-          nullable: true
-          description: The phone number of the contact for the business or organization using the Tollfree number.
-        notification_email:
-          type: string
-          nullable: true
-          description: The email address to receive the notification about the verification result. .
-        use_case_categories:
-          type: array
-          items:
-            type: string
-          nullable: true
-          description: The category of the use case for the Tollfree Number. List as many are applicable..
-        use_case_summary:
-          type: string
-          nullable: true
-          description: Use this to further explain how messaging is used by the business or organization.
-        production_message_sample:
-          type: string
-          nullable: true
-          description: An example of message content, i.e. a sample message.
-        opt_in_image_urls:
-          type: array
-          items:
-            type: string
-          nullable: true
-          description: Link to an image that shows the opt-in workflow. Multiple images allowed and must be a publicly hosted URL.
-        opt_in_type:
-          type: string
-          $ref: '#/components/schemas/tollfree_verification_enum_opt_in_type'
-          nullable: true
-          description: Describe how a user opts-in to text messages.
-        message_volume:
-          type: string
-          nullable: true
-          description: Estimate monthly volume of messages from the Tollfree Number.
-        additional_information:
-          type: string
-          nullable: true
-          description: Additional information to be provided for verification.
-        tollfree_phone_number_sid:
-          type: string
-          minLength: 34
-          maxLength: 34
-          pattern: ^PN[0-9a-fA-F]{32}$
-          nullable: true
-          description: The SID of the Phone Number associated with the Tollfree Verification.
-        status:
-          type: string
-          $ref: '#/components/schemas/tollfree_verification_enum_status'
-          nullable: true
-          description: The compliance status of the Tollfree Verification record.
-        url:
-          type: string
-          format: uri
-          nullable: true
-          description: The absolute URL of the Tollfree Verification resource.
-        rejection_reason:
-          type: string
-          nullable: true
-          description: The rejection reason given when a Tollfree Verification has been rejected.
-        error_code:
-          type: integer
-          nullable: true
-          description: The error code given when a Tollfree Verification has been rejected.
-        edit_expiration:
-          type: string
-          format: date-time
-          nullable: true
-          description: The date and time when the ability to edit a rejected verification expires.
-        edit_allowed:
-          type: boolean
-          nullable: true
-          description: If a rejected verification is allowed to be edited/resubmitted. Some rejection reasons allow editing and some do not.
-        resource_links:
-          nullable: true
-          description: The URLs of the documents associated with the Tollfree Verification resource.
-        external_reference_id:
-          type: string
-          nullable: true
-          description: An optional external reference ID supplied by customer and echoed back on status retrieval.
-    tollfree_verification_enum_opt_in_type:
-      type: string
-      enum:
-      - VERBAL
-      - WEB_FORM
-      - PAPER_FORM
-      - VIA_TEXT
-      - MOBILE_QR_CODE
-    ListTollfreeVerificationResponse:
-      type: object
-      properties:
-        verifications:
-          type: array
-          items:
-            $ref: '#/components/schemas/messaging.v1.tollfree_verification'
-        meta:
-          type: object
-          properties:
-            first_page_url:
-              type: string
-              format: uri
-            next_page_url:
-              type: string
-              format: uri
-              nullable: true
-            page:
-              type: integer
-            page_size:
-              type: integer
-            previous_page_url:
-              type: string
-              format: uri
-              nullable: true
-            url:
-              type: string
-              format: uri
-            key:
-              type: string
     UpdateTollfreeVerificationRequest:
       type: object
       properties:
@@ -479,6 +259,38 @@ components:
         EditReason:
           type: string
           description: Describe why the verification is being edited. If the verification was rejected because of a technical issue, such as the website being down, and the issue has been resolved this parameter should be set to something similar to 'Website fixed'.
+    ListTollfreeVerificationResponse:
+      type: object
+      properties:
+        verifications:
+          type: array
+          items:
+            $ref: '#/components/schemas/messaging.v1.tollfree_verification'
+        meta:
+          type: object
+          properties:
+            first_page_url:
+              type: string
+              format: uri
+            next_page_url:
+              type:
+              - string
+              - 'null'
+              format: uri
+            page:
+              type: integer
+            page_size:
+              type: integer
+            previous_page_url:
+              type:
+              - string
+              - 'null'
+              format: uri
+            url:
+              type: string
+              format: uri
+            key:
+              type: string
     CreateTollfreeVerificationRequest:
       type: object
       required:
@@ -573,6 +385,230 @@ components:
           description: The phone number of the contact for the business or organization using the Tollfree number.
         ExternalReferenceId:
           type: string
+          description: An optional external reference ID supplied by customer and echoed back on status retrieval.
+    tollfree_verification_enum_opt_in_type:
+      type: string
+      enum:
+      - VERBAL
+      - WEB_FORM
+      - PAPER_FORM
+      - VIA_TEXT
+      - MOBILE_QR_CODE
+    tollfree_verification_enum_status:
+      type: string
+      enum:
+      - PENDING_REVIEW
+      - IN_REVIEW
+      - TWILIO_APPROVED
+      - TWILIO_REJECTED
+    messaging.v1.tollfree_verification:
+      type: object
+      properties:
+        sid:
+          type:
+          - string
+          - 'null'
+          minLength: 34
+          maxLength: 34
+          pattern: ^HH[0-9a-fA-F]{32}$
+          description: The unique string to identify Tollfree Verification.
+        account_sid:
+          type:
+          - string
+          - 'null'
+          minLength: 34
+          maxLength: 34
+          pattern: ^AC[0-9a-fA-F]{32}$
+          description: The SID of the [Account](https://www.twilio.com/docs/iam/api/account) that created the Tollfree Verification resource.
+        customer_profile_sid:
+          type:
+          - string
+          - 'null'
+          minLength: 34
+          maxLength: 34
+          pattern: ^BU[0-9a-fA-F]{32}$
+          description: Customer's Profile Bundle BundleSid.
+        trust_product_sid:
+          type:
+          - string
+          - 'null'
+          minLength: 34
+          maxLength: 34
+          pattern: ^BU[0-9a-fA-F]{32}$
+          description: Tollfree TrustProduct Bundle BundleSid.
+        date_created:
+          type:
+          - string
+          - 'null'
+          format: date-time
+          description: The date and time in GMT when the resource was created specified in [ISO 8601](https://en.wikipedia.org/wiki/ISO_8601) format.
+        date_updated:
+          type:
+          - string
+          - 'null'
+          format: date-time
+          description: The date and time in GMT when the resource was last updated specified in [ISO 8601](https://en.wikipedia.org/wiki/ISO_8601) format.
+        regulated_item_sid:
+          type:
+          - string
+          - 'null'
+          minLength: 34
+          maxLength: 34
+          pattern: ^RA[0-9a-fA-F]{32}$
+          description: The SID of the Regulated Item.
+        business_name:
+          type:
+          - string
+          - 'null'
+          description: The name of the business or organization using the Tollfree number.
+        business_street_address:
+          type:
+          - string
+          - 'null'
+          description: The address of the business or organization using the Tollfree number.
+        business_street_address2:
+          type:
+          - string
+          - 'null'
+          description: The address of the business or organization using the Tollfree number.
+        business_city:
+          type:
+          - string
+          - 'null'
+          description: The city of the business or organization using the Tollfree number.
+        business_state_province_region:
+          type:
+          - string
+          - 'null'
+          description: The state/province/region of the business or organization using the Tollfree number.
+        business_postal_code:
+          type:
+          - string
+          - 'null'
+          description: The postal code of the business or organization using the Tollfree number.
+        business_country:
+          type:
+          - string
+          - 'null'
+          description: The country of the business or organization using the Tollfree number.
+        business_website:
+          type:
+          - string
+          - 'null'
+          description: The website of the business or organization using the Tollfree number.
+        business_contact_first_name:
+          type:
+          - string
+          - 'null'
+          description: The first name of the contact for the business or organization using the Tollfree number.
+        business_contact_last_name:
+          type:
+          - string
+          - 'null'
+          description: The last name of the contact for the business or organization using the Tollfree number.
+        business_contact_email:
+          type:
+          - string
+          - 'null'
+          description: The email address of the contact for the business or organization using the Tollfree number.
+        business_contact_phone:
+          type:
+          - string
+          - 'null'
+          format: phone-number
+          description: The phone number of the contact for the business or organization using the Tollfree number.
+        notification_email:
+          type:
+          - string
+          - 'null'
+          description: The email address to receive the notification about the verification result. .
+        use_case_categories:
+          type:
+          - array
+          - 'null'
+          items:
+            type: string
+          description: The category of the use case for the Tollfree Number. List as many are applicable..
+        use_case_summary:
+          type:
+          - string
+          - 'null'
+          description: Use this to further explain how messaging is used by the business or organization.
+        production_message_sample:
+          type:
+          - string
+          - 'null'
+          description: An example of message content, i.e. a sample message.
+        opt_in_image_urls:
+          type:
+          - array
+          - 'null'
+          items:
+            type: string
+          description: Link to an image that shows the opt-in workflow. Multiple images allowed and must be a publicly hosted URL.
+        opt_in_type:
+          type:
+          - string
+          - 'null'
+          $ref: '#/components/schemas/tollfree_verification_enum_opt_in_type'
+          description: Describe how a user opts-in to text messages.
+        message_volume:
+          type:
+          - string
+          - 'null'
+          description: Estimate monthly volume of messages from the Tollfree Number.
+        additional_information:
+          type:
+          - string
+          - 'null'
+          description: Additional information to be provided for verification.
+        tollfree_phone_number_sid:
+          type:
+          - string
+          - 'null'
+          minLength: 34
+          maxLength: 34
+          pattern: ^PN[0-9a-fA-F]{32}$
+          description: The SID of the Phone Number associated with the Tollfree Verification.
+        status:
+          type:
+          - string
+          - 'null'
+          $ref: '#/components/schemas/tollfree_verification_enum_status'
+          description: The compliance status of the Tollfree Verification record.
+        url:
+          type:
+          - string
+          - 'null'
+          format: uri
+          description: The absolute URL of the Tollfree Verification resource.
+        rejection_reason:
+          type:
+          - string
+          - 'null'
+          description: The rejection reason given when a Tollfree Verification has been rejected.
+        error_code:
+          type:
+          - integer
+          - 'null'
+          description: The error code given when a Tollfree Verification has been rejected.
+        edit_expiration:
+          type:
+          - string
+          - 'null'
+          format: date-time
+          description: The date and time when the ability to edit a rejected verification expires.
+        edit_allowed:
+          type:
+          - boolean
+          - 'null'
+          description: If a rejected verification is allowed to be edited/resubmitted. Some rejection reasons allow editing and some do not.
+        resource_links:
+          description: The URLs of the documents associated with the Tollfree Verification resource.
+        external_reference_id:
+          type:
+          - string
+          - 'null'
           description: An optional external reference ID supplied by customer and echoed back on status retrieval.
   securitySchemes:
     accountSid_authToken:

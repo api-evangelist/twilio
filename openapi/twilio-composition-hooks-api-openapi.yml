@@ -1,4 +1,4 @@
-openapi: 3.0.1
+openapi: 3.2.0
 info:
   title: Twilio - Accounts A2p Composition Hooks API
   description: This is the public Twilio REST API.
@@ -118,6 +118,52 @@ paths:
           description: Composition hook deleted
 components:
   schemas:
+    CompositionHookList:
+      type: object
+      properties:
+        composition_hooks:
+          type: array
+          items:
+            $ref: '#/components/schemas/CompositionHook'
+        meta:
+          $ref: '#/components/schemas/PaginationMeta'
+    CreateCompositionHookRequest:
+      type: object
+      required:
+      - FriendlyName
+      properties:
+        FriendlyName:
+          type: string
+        Enabled:
+          type: boolean
+          default: true
+        VideoLayout:
+          type: string
+        AudioSources:
+          type: array
+          items:
+            type: string
+        AudioSourcesExcluded:
+          type: array
+          items:
+            type: string
+        Resolution:
+          type: string
+        Format:
+          type: string
+          enum:
+          - mp4
+          - webm
+        Trim:
+          type: boolean
+        StatusCallback:
+          type: string
+          format: uri
+        StatusCallbackMethod:
+          type: string
+          enum:
+          - GET
+          - POST
     CompositionHook:
       type: object
       properties:
@@ -185,52 +231,6 @@ components:
           format: uri
         key:
           type: string
-    CompositionHookList:
-      type: object
-      properties:
-        composition_hooks:
-          type: array
-          items:
-            $ref: '#/components/schemas/CompositionHook'
-        meta:
-          $ref: '#/components/schemas/PaginationMeta'
-    CreateCompositionHookRequest:
-      type: object
-      required:
-      - FriendlyName
-      properties:
-        FriendlyName:
-          type: string
-        Enabled:
-          type: boolean
-          default: true
-        VideoLayout:
-          type: string
-        AudioSources:
-          type: array
-          items:
-            type: string
-        AudioSourcesExcluded:
-          type: array
-          items:
-            type: string
-        Resolution:
-          type: string
-        Format:
-          type: string
-          enum:
-          - mp4
-          - webm
-        Trim:
-          type: boolean
-        StatusCallback:
-          type: string
-          format: uri
-        StatusCallbackMethod:
-          type: string
-          enum:
-          - GET
-          - POST
   securitySchemes:
     accountSid_authToken:
       type: http

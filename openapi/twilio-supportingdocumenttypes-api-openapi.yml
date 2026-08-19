@@ -1,6 +1,6 @@
-openapi: 3.0.1
+openapi: 3.2.0
 info:
-  title: Twilio - Accounts A2p SupportingDocumentTypes API
+  title: Twilio - Accounts A2p Supporting Document Types API
   description: This is the public Twilio REST API.
   termsOfService: https://www.twilio.com/legal/tos
   contact:
@@ -94,6 +94,39 @@ paths:
       - GA
 components:
   schemas:
+    trusthub.v1.supporting_document_type:
+      type: object
+      properties:
+        sid:
+          type:
+          - string
+          - 'null'
+          minLength: 34
+          maxLength: 34
+          pattern: ^OY[0-9a-fA-F]{32}$
+          description: The unique string that identifies the Supporting Document Type resource.
+        friendly_name:
+          type:
+          - string
+          - 'null'
+          description: A human-readable description of the Supporting Document Type resource.
+        machine_name:
+          type:
+          - string
+          - 'null'
+          description: The machine-readable description of the Supporting Document Type resource.
+        fields:
+          type:
+          - array
+          - 'null'
+          items: {}
+          description: The required information for creating a Supporting Document. The required fields will change as regulatory needs change and will differ for businesses and individuals.
+        url:
+          type:
+          - string
+          - 'null'
+          format: uri
+          description: The absolute URL of the Supporting Document Type resource.
     ListSupportingDocumentTypeResponse:
       type: object
       properties:
@@ -108,50 +141,24 @@ components:
               type: string
               format: uri
             next_page_url:
-              type: string
+              type:
+              - string
+              - 'null'
               format: uri
-              nullable: true
             page:
               type: integer
             page_size:
               type: integer
             previous_page_url:
-              type: string
+              type:
+              - string
+              - 'null'
               format: uri
-              nullable: true
             url:
               type: string
               format: uri
             key:
               type: string
-    trusthub.v1.supporting_document_type:
-      type: object
-      properties:
-        sid:
-          type: string
-          minLength: 34
-          maxLength: 34
-          pattern: ^OY[0-9a-fA-F]{32}$
-          nullable: true
-          description: The unique string that identifies the Supporting Document Type resource.
-        friendly_name:
-          type: string
-          nullable: true
-          description: A human-readable description of the Supporting Document Type resource.
-        machine_name:
-          type: string
-          nullable: true
-          description: The machine-readable description of the Supporting Document Type resource.
-        fields:
-          type: array
-          items: {}
-          nullable: true
-          description: The required information for creating a Supporting Document. The required fields will change as regulatory needs change and will differ for businesses and individuals.
-        url:
-          type: string
-          format: uri
-          nullable: true
-          description: The absolute URL of the Supporting Document Type resource.
   securitySchemes:
     accountSid_authToken:
       type: http

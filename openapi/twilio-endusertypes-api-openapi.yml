@@ -1,6 +1,6 @@
-openapi: 3.0.1
+openapi: 3.2.0
 info:
-  title: Twilio - Accounts A2p EndUserTypes API
+  title: Twilio - Accounts A2p End User Types API
   description: This is the public Twilio REST API.
   termsOfService: https://www.twilio.com/legal/tos
   contact:
@@ -108,17 +108,19 @@ components:
               type: string
               format: uri
             next_page_url:
-              type: string
+              type:
+              - string
+              - 'null'
               format: uri
-              nullable: true
             page:
               type: integer
             page_size:
               type: integer
             previous_page_url:
-              type: string
+              type:
+              - string
+              - 'null'
               format: uri
-              nullable: true
             url:
               type: string
               format: uri
@@ -128,29 +130,34 @@ components:
       type: object
       properties:
         sid:
-          type: string
+          type:
+          - string
+          - 'null'
           minLength: 34
           maxLength: 34
           pattern: ^OY[0-9a-fA-F]{32}$
-          nullable: true
           description: The unique string that identifies the End-User Type resource.
         friendly_name:
-          type: string
-          nullable: true
+          type:
+          - string
+          - 'null'
           description: A human-readable description that is assigned to describe the End-User Type resource. Examples can include first name, last name, email, business name, etc
         machine_name:
-          type: string
-          nullable: true
+          type:
+          - string
+          - 'null'
           description: A machine-readable description of the End-User Type resource. Examples can include first_name, last_name, email, business_name, etc.
         fields:
-          type: array
+          type:
+          - array
+          - 'null'
           items: {}
-          nullable: true
           description: The required information for creating an End-User. The required fields will change as regulatory needs change and will differ for businesses and individuals.
         url:
-          type: string
+          type:
+          - string
+          - 'null'
           format: uri
-          nullable: true
           description: The absolute URL of the End-User Type resource.
   securitySchemes:
     accountSid_authToken:

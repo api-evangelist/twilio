@@ -1,0 +1,336 @@
+{
+  "item": [
+    {
+      "id": "4b9d7c35-7434-4819-af40-5df691abeecb",
+      "name": "Events",
+      "description": {
+        "content": "",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "1301daec-fe94-42a0-849f-6cde3494697a",
+          "name": "Fetch Event",
+          "request": {
+            "name": "Fetch Event",
+            "description": {
+              "content": "",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "v1",
+                "Events",
+                ":Sid"
+              ],
+              "host": [
+                "{{v1-Events-Sid-Url}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "Sid",
+                  "description": "(Required) The SID of the Event resource to fetch."
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": {
+              "type": "basic",
+              "basic": [
+                {
+                  "key": "username",
+                  "value": "{{basicAuthUsername}}"
+                },
+                {
+                  "key": "password",
+                  "value": "{{basicAuthPassword}}"
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "id": "d85f3120-1cbb-42ae-a9a7-152e3afdb85f",
+              "name": "OK",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "Events",
+                    ":Sid"
+                  ],
+                  "host": [
+                    "{{v1-Events-Sid-Url}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "Sid",
+                      "description": "(Required) The SID of the Event resource to fetch."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: basic",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Basic <credentials>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"account_sid\": \"ACxREDACTEDxEXAMPLExSIDxVALUExxxxxx\",\n  \"actor_sid\": \"USD6cFE38adE16fFf83ecdAaAe1Ebaa3e6\",\n  \"actor_type\": null,\n  \"description\": null,\n  \"event_data\": {},\n  \"event_date\": null,\n  \"event_type\": \"string\",\n  \"resource_sid\": \"jj2E5ca0C1BbD3c6c48c1Da6eDA00Fef29\",\n  \"resource_type\": null,\n  \"sid\": \"AE42EAaD41cf67DaB6e6C4bF4BbFdc2aA4\",\n  \"source\": \"string\",\n  \"source_ip_address\": \"string\",\n  \"url\": null,\n  \"links\": {}\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "6cc19a96-0f36-40eb-8c2a-b6bf9fdfd252",
+          "name": "List Event",
+          "request": {
+            "name": "List Event",
+            "description": {
+              "content": "Returns a list of events in the account, sorted by event-date.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "v1",
+                "Events"
+              ],
+              "host": [
+                "{{v1-Events-Url}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "ActorSid",
+                  "value": "<string>",
+                  "description": "Only include events initiated by this Actor. Useful for auditing actions taken by specific users or API credentials."
+                },
+                {
+                  "disabled": false,
+                  "key": "EventType",
+                  "value": "<string>",
+                  "description": "Only include events of this [Event Type](https://www.twilio.com/docs/usage/monitor-events#event-types)."
+                },
+                {
+                  "disabled": false,
+                  "key": "ResourceSid",
+                  "value": "<string>",
+                  "description": "Only include events that refer to this resource. Useful for discovering the history of a specific resource."
+                },
+                {
+                  "disabled": false,
+                  "key": "SourceIpAddress",
+                  "value": "<string>",
+                  "description": "Only include events that originated from this IP address. Useful for tracking suspicious activity originating from the API or the Twilio Console."
+                },
+                {
+                  "disabled": false,
+                  "key": "StartDate",
+                  "value": "<dateTime>",
+                  "description": "Only include events that occurred on or after this date. Specify the date in GMT and [ISO 8601](https://en.wikipedia.org/wiki/ISO_8601) format."
+                },
+                {
+                  "disabled": false,
+                  "key": "EndDate",
+                  "value": "<dateTime>",
+                  "description": "Only include events that occurred on or before this date. Specify the date in GMT and [ISO 8601](https://en.wikipedia.org/wiki/ISO_8601) format."
+                },
+                {
+                  "disabled": false,
+                  "key": "PageSize",
+                  "value": "<integer>",
+                  "description": "How many resources to return in each list page. The default is 50, and the maximum is 1000."
+                },
+                {
+                  "disabled": false,
+                  "key": "Page",
+                  "value": "<integer>",
+                  "description": "The page index. This value is simply for client state."
+                },
+                {
+                  "disabled": false,
+                  "key": "PageToken",
+                  "value": "<string>",
+                  "description": "The page token. This is provided by the API."
+                }
+              ],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": {
+              "type": "basic",
+              "basic": [
+                {
+                  "key": "username",
+                  "value": "{{basicAuthUsername}}"
+                },
+                {
+                  "key": "password",
+                  "value": "{{basicAuthPassword}}"
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "id": "bbebdd55-9fc3-4342-877f-2317e7490976",
+              "name": "OK",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "Events"
+                  ],
+                  "host": [
+                    "{{v1-Events-Url}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "ActorSid",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "EventType",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "ResourceSid",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "SourceIpAddress",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "StartDate",
+                      "value": "<dateTime>"
+                    },
+                    {
+                      "key": "EndDate",
+                      "value": "<dateTime>"
+                    },
+                    {
+                      "key": "PageSize",
+                      "value": "<integer>"
+                    },
+                    {
+                      "key": "Page",
+                      "value": "<integer>"
+                    },
+                    {
+                      "key": "PageToken",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: basic",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Basic <credentials>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"events\": [\n    {\n      \"account_sid\": \"ACxREDACTEDxEXAMPLExSIDxVALUExxxxxx\",\n      \"actor_sid\": \"USbdcD21814ff2DC5027B9dFe5e4A7CAF9\",\n      \"actor_type\": \"string\",\n      \"description\": null,\n      \"event_data\": {},\n      \"event_date\": null,\n      \"event_type\": null,\n      \"resource_sid\": \"BU27daE88AaF66fa800BC2E87c3a0B9F7F\",\n      \"resource_type\": \"string\",\n      \"sid\": \"AE3feEe25Fd24A6ebeF0Eff4e587313cEB\",\n      \"source\": \"string\",\n      \"source_ip_address\": null,\n      \"url\": null,\n      \"links\": {}\n    },\n    {\n      \"account_sid\": \"ACxREDACTEDxEXAMPLExSIDxVALUExxxxxx\",\n      \"actor_sid\": \"USadEeD50d7b17BEDb34671D22C2eF11d8\",\n      \"actor_type\": null,\n      \"description\": null,\n      \"event_data\": {},\n      \"event_date\": null,\n      \"event_type\": \"string\",\n      \"resource_sid\": \"Aed79Dab0fFBCf7DB85912FDaeed24C5c6\",\n      \"resource_type\": null,\n      \"sid\": \"AE983DdbFCF72944eA87F6Bf470eCFAd7C\",\n      \"source\": null,\n      \"source_ip_address\": \"string\",\n      \"url\": \"http://Aadpj.bcocJEPqtvw8o3gS+k1yPzXlm6trf7j-wt.5swBzOF4APMq6Ep-WmJPXkHrb1IE,M8YuGo0.i4DJuV,-nLDNu\",\n      \"links\": null\n    }\n  ],\n  \"meta\": {\n    \"first_page_url\": \"https://wmLkYqsffrjNgwt.jtjYBtxWVr8ajLWPyPaUXvkzoeJY86Nd3GXPkjQVpuWj,CDJlZfvYVGDEHjwF9s4Tm1nki\",\n    \"next_page_url\": null,\n    \"page\": 2003,\n    \"page_size\": 7000,\n    \"previous_page_url\": null,\n    \"url\": \"http://pXpaFTlADGp.wnJIvUFmjeexBstANQgSvrSqpakVbBXvQb3g\",\n    \"key\": \"string\"\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "type": "string",
+      "value": "https://accounts.twilio.com",
+      "key": "baseUrl"
+    },
+    {
+      "type": "string",
+      "value": "https://monitor.twilio.com",
+      "key": "v1-Events-Sid-Url"
+    },
+    {
+      "type": "string",
+      "value": "https://monitor.twilio.com",
+      "key": "v1-Events-Url"
+    }
+  ],
+  "info": {
+    "_postman_id": "24b949e9-29fc-4276-ba08-cefd442e3db0",
+    "name": "Twilio - Accounts A2p Events API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "This is the public Twilio REST API.\n\nContact Support:\n Name: Twilio Support\n Email: support@twilio.com",
+      "type": "text/plain"
+    }
+  }
+}

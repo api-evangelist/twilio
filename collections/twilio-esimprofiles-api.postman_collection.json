@@ -1,0 +1,471 @@
+{
+  "item": [
+    {
+      "id": "49a95c54-5662-41ad-afff-96881938547a",
+      "name": "ESimProfiles",
+      "description": {
+        "content": "",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "3d310426-aa37-4498-b678-3b6003ccaf55",
+          "name": "Create Esim Profile",
+          "request": {
+            "name": "Create Esim Profile",
+            "description": {
+              "content": "Order an eSIM Profile.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "v1",
+                "ESimProfiles"
+              ],
+              "host": [
+                "{{v1-ESimProfiles-Url}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/x-www-form-urlencoded"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": {
+              "type": "basic",
+              "basic": [
+                {
+                  "key": "username",
+                  "value": "{{basicAuthUsername}}"
+                },
+                {
+                  "key": "password",
+                  "value": "{{basicAuthPassword}}"
+                }
+              ]
+            },
+            "body": {
+              "mode": "urlencoded",
+              "urlencoded": [
+                {
+                  "disabled": false,
+                  "key": "CallbackUrl",
+                  "value": "<string>",
+                  "description": "The URL we should call using the `callback_method` when the status of the eSIM Profile changes. At this stage of the eSIM Profile pilot, the a request to the URL will only be called when the ESimProfile resource changes from `reserving` to `available`."
+                },
+                {
+                  "disabled": false,
+                  "key": "CallbackMethod",
+                  "value": "<http-method>",
+                  "description": "The HTTP method we should use to call `callback_url`. Can be: `GET` or `POST` and the default is POST."
+                },
+                {
+                  "disabled": false,
+                  "key": "GenerateMatchingId",
+                  "value": "<boolean>",
+                  "description": "When set to `true`, a value for `Eid` does not need to be provided. Instead, when the eSIM profile is reserved, a matching ID will be generated and returned via the `matching_id` property. This identifies the specific eSIM profile that can be used by any capable device to claim and download the profile."
+                },
+                {
+                  "disabled": false,
+                  "key": "Eid",
+                  "value": "<string>",
+                  "description": "Identifier of the eUICC that will claim the eSIM Profile."
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "id": "139d790d-103d-4093-9eef-68607542300e",
+              "name": "Created",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "ESimProfiles"
+                  ],
+                  "host": [
+                    "{{v1-ESimProfiles-Url}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: basic",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Basic <credentials>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "urlencoded",
+                  "urlencoded": [
+                    {
+                      "disabled": false,
+                      "description": {
+                        "content": "The URL we should call using the `callback_method` when the status of the eSIM Profile changes. At this stage of the eSIM Profile pilot, the a request to the URL will only be called when the ESimProfile resource changes from `reserving` to `available`.",
+                        "type": "text/plain"
+                      },
+                      "key": "CallbackUrl",
+                      "value": "<string>"
+                    },
+                    {
+                      "disabled": false,
+                      "description": {
+                        "content": "The HTTP method we should use to call `callback_url`. Can be: `GET` or `POST` and the default is POST.",
+                        "type": "text/plain"
+                      },
+                      "key": "CallbackMethod",
+                      "value": "<http-method>"
+                    },
+                    {
+                      "disabled": false,
+                      "description": {
+                        "content": "When set to `true`, a value for `Eid` does not need to be provided. Instead, when the eSIM profile is reserved, a matching ID will be generated and returned via the `matching_id` property. This identifies the specific eSIM profile that can be used by any capable device to claim and download the profile.",
+                        "type": "text/plain"
+                      },
+                      "key": "GenerateMatchingId",
+                      "value": "<boolean>"
+                    },
+                    {
+                      "disabled": false,
+                      "description": {
+                        "content": "Identifier of the eUICC that will claim the eSIM Profile.",
+                        "type": "text/plain"
+                      },
+                      "key": "Eid",
+                      "value": "<string>"
+                    }
+                  ]
+                }
+              },
+              "status": "Created",
+              "code": 201,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"sid\": \"HPFe10B16398e3a49eA44DFFdbf0A1Da3f\",\n  \"account_sid\": \"ACxREDACTEDxEXAMPLExSIDxVALUExxxxxx\",\n  \"iccid\": \"string\",\n  \"sim_sid\": \"HSDe26c57c41578fBbAe0336c68749ddda\",\n  \"status\": \"installed\",\n  \"eid\": null,\n  \"smdp_plus_address\": null,\n  \"matching_id\": \"string\",\n  \"activation_code\": \"string\",\n  \"error_code\": \"string\",\n  \"error_message\": \"string\",\n  \"date_created\": \"2013-08-22T21:05:00.072Z\",\n  \"date_updated\": \"1988-02-07T22:33:52.604Z\",\n  \"url\": \"https://ssUJYGw.kdezVpC5EYPq.B40Un1NSFB.raQzoH9jmrsbVTXYRlrYEp6Tsp4Jr1v18waOzgUCEc\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "28bec338-dce6-4a2c-b1fe-c5645fd67ca4",
+          "name": "List Esim Profile",
+          "request": {
+            "name": "List Esim Profile",
+            "description": {
+              "content": "Retrieve a list of eSIM Profiles.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "v1",
+                "ESimProfiles"
+              ],
+              "host": [
+                "{{v1-ESimProfiles-Url}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "Eid",
+                  "value": "<string>",
+                  "description": "List the eSIM Profiles that have been associated with an EId."
+                },
+                {
+                  "disabled": false,
+                  "key": "SimSid",
+                  "value": "<string>",
+                  "description": "Find the eSIM Profile resource related to a [Sim](https://www.twilio.com/docs/iot/supersim/api/sim-resource) resource by providing the SIM SID. Will always return an array with either 1 or 0 records."
+                },
+                {
+                  "disabled": false,
+                  "key": "Status",
+                  "value": "<string>",
+                  "description": "List the eSIM Profiles that are in a given status."
+                },
+                {
+                  "disabled": false,
+                  "key": "PageSize",
+                  "value": "<integer>",
+                  "description": "How many resources to return in each list page. The default is 50, and the maximum is 1000."
+                },
+                {
+                  "disabled": false,
+                  "key": "Page",
+                  "value": "<integer>",
+                  "description": "The page index. This value is simply for client state."
+                },
+                {
+                  "disabled": false,
+                  "key": "PageToken",
+                  "value": "<string>",
+                  "description": "The page token. This is provided by the API."
+                }
+              ],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": {
+              "type": "basic",
+              "basic": [
+                {
+                  "key": "username",
+                  "value": "{{basicAuthUsername}}"
+                },
+                {
+                  "key": "password",
+                  "value": "{{basicAuthPassword}}"
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "id": "be27a985-79fa-42a9-b168-6f143f4ae44c",
+              "name": "OK",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "ESimProfiles"
+                  ],
+                  "host": [
+                    "{{v1-ESimProfiles-Url}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "Eid",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "SimSid",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "Status",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "PageSize",
+                      "value": "<integer>"
+                    },
+                    {
+                      "key": "Page",
+                      "value": "<integer>"
+                    },
+                    {
+                      "key": "PageToken",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: basic",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Basic <credentials>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"esim_profiles\": [\n    {\n      \"sid\": \"HPCBBCf2Fb2a57c3ce9ff1C58dCAA2dE2D\",\n      \"account_sid\": \"ACxREDACTEDxEXAMPLExSIDxVALUExxxxxx\",\n      \"iccid\": null,\n      \"sim_sid\": \"HSf0bbfF0D1cCeDDA6b7a0F8BEE5BA8473\",\n      \"status\": \"<string>\",\n      \"eid\": null,\n      \"smdp_plus_address\": null,\n      \"matching_id\": null,\n      \"activation_code\": \"string\",\n      \"error_code\": \"string\",\n      \"error_message\": null,\n      \"date_created\": null,\n      \"date_updated\": null,\n      \"url\": null\n    },\n    {\n      \"sid\": \"HP9b2feD6bb5faa692e9AB9d96DAa43aFf\",\n      \"account_sid\": \"ACxREDACTEDxEXAMPLExSIDxVALUExxxxxx\",\n      \"iccid\": \"string\",\n      \"sim_sid\": \"HSe5fddBD6f9B731Fffe9cEDcc0FEa91da\",\n      \"status\": \"<string>\",\n      \"eid\": null,\n      \"smdp_plus_address\": null,\n      \"matching_id\": \"string\",\n      \"activation_code\": null,\n      \"error_code\": null,\n      \"error_message\": null,\n      \"date_created\": \"1983-02-19T19:16:02.334Z\",\n      \"date_updated\": \"2022-06-29T10:36:09.567Z\",\n      \"url\": null\n    }\n  ],\n  \"meta\": {\n    \"first_page_url\": \"http://puyOLoNrHTAVFZGquoLZSabW.tehOnkO\",\n    \"next_page_url\": \"https://dSUelKDihKQLQmJPPRdtdhxRbRQLrB.qdz9Tb3AxQnwPXYPhzFsjShQBOtdF1Ii2wBsYrMbNc0sgK4W\",\n    \"page\": 666,\n    \"page_size\": 8703,\n    \"previous_page_url\": null,\n    \"url\": \"http://iyFgmBqQbwonCMvtpCmgEBjUilphu.fcwoszNeg2lM5eYf0IiteYbfxgDMJr1jGEvme\",\n    \"key\": \"string\"\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "ffdf60fb-a431-4469-b307-dc5acc94ccc4",
+          "name": "Fetch Esim Profile",
+          "request": {
+            "name": "Fetch Esim Profile",
+            "description": {
+              "content": "Fetch an eSIM Profile.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "v1",
+                "ESimProfiles",
+                ":Sid"
+              ],
+              "host": [
+                "{{v1-ESimProfiles-Sid-Url}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "Sid",
+                  "description": "(Required) The SID of the eSIM Profile resource to fetch."
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": {
+              "type": "basic",
+              "basic": [
+                {
+                  "key": "username",
+                  "value": "{{basicAuthUsername}}"
+                },
+                {
+                  "key": "password",
+                  "value": "{{basicAuthPassword}}"
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "id": "bedd3e37-af48-4a76-a54e-63affb8528a9",
+              "name": "OK",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "ESimProfiles",
+                    ":Sid"
+                  ],
+                  "host": [
+                    "{{v1-ESimProfiles-Sid-Url}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "Sid",
+                      "description": "(Required) The SID of the eSIM Profile resource to fetch."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: basic",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Basic <credentials>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"sid\": \"HPb2B0df97C0167E3B31Cb17164f82dEB4\",\n  \"account_sid\": \"ACxREDACTEDxEXAMPLExSIDxVALUExxxxxx\",\n  \"iccid\": null,\n  \"sim_sid\": \"HS8bEfd5F7DdbeCCDe52faE4d1996923B3\",\n  \"status\": \"<string>\",\n  \"eid\": \"string\",\n  \"smdp_plus_address\": \"https://NziekMWVtUjBuUVTRPWMXJ.ldlnRqXXdrfvqg-2aHl\",\n  \"matching_id\": null,\n  \"activation_code\": \"string\",\n  \"error_code\": \"string\",\n  \"error_message\": \"string\",\n  \"date_created\": \"1999-08-09T07:41:44.487Z\",\n  \"date_updated\": null,\n  \"url\": null\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "type": "string",
+      "value": "https://accounts.twilio.com",
+      "key": "baseUrl"
+    },
+    {
+      "type": "string",
+      "value": "https://supersim.twilio.com",
+      "key": "v1-ESimProfiles-Url"
+    },
+    {
+      "type": "string",
+      "value": "https://supersim.twilio.com",
+      "key": "v1-ESimProfiles-Sid-Url"
+    }
+  ],
+  "info": {
+    "_postman_id": "3dcd3213-16e7-411e-b804-9a0366b144e3",
+    "name": "Twilio - Accounts A2p E Sim Profiles API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "This is the public Twilio REST API.\n\nContact Support:\n Name: Twilio Support\n Email: support@twilio.com",
+      "type": "text/plain"
+    }
+  }
+}

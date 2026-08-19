@@ -1,6 +1,6 @@
-openapi: 3.0.1
+openapi: 3.2.0
 info:
-  title: Twilio - Accounts A2p SupportingDocuments API
+  title: Twilio - Accounts A2p Supporting Documents API
   description: This is the public Twilio REST API.
   termsOfService: https://www.twilio.com/legal/tos
   contact:
@@ -171,109 +171,6 @@ paths:
       - GA
 components:
   schemas:
-    ListSupportingDocumentResponse:
-      type: object
-      properties:
-        results:
-          type: array
-          items:
-            $ref: '#/components/schemas/trusthub.v1.supporting_document'
-        meta:
-          type: object
-          properties:
-            first_page_url:
-              type: string
-              format: uri
-            next_page_url:
-              type: string
-              format: uri
-              nullable: true
-            page:
-              type: integer
-            page_size:
-              type: integer
-            previous_page_url:
-              type: string
-              format: uri
-              nullable: true
-            url:
-              type: string
-              format: uri
-            key:
-              type: string
-    supporting_document_enum_status:
-      type: string
-      enum:
-      - draft
-      - pending-review
-      - rejected
-      - approved
-      - expired
-      - provisionally-approved
-    trusthub.v1.supporting_document:
-      type: object
-      properties:
-        sid:
-          type: string
-          minLength: 34
-          maxLength: 34
-          pattern: ^RD[0-9a-fA-F]{32}$
-          nullable: true
-          description: The unique string created by Twilio to identify the Supporting Document resource.
-        account_sid:
-          type: string
-          minLength: 34
-          maxLength: 34
-          pattern: ^AC[0-9a-fA-F]{32}$
-          nullable: true
-          description: The SID of the [Account](https://www.twilio.com/docs/iam/api/account) that created the Document resource.
-        friendly_name:
-          type: string
-          nullable: true
-          description: The string that you assigned to describe the resource.
-        mime_type:
-          type: string
-          nullable: true
-          description: The image type uploaded in the Supporting Document container.
-        status:
-          type: string
-          $ref: '#/components/schemas/supporting_document_enum_status'
-          nullable: true
-          description: The verification status of the Supporting Document resource.
-        type:
-          type: string
-          nullable: true
-          description: The type of the Supporting Document.
-        attributes:
-          nullable: true
-          description: The set of parameters that are the attributes of the Supporting Documents resource which are listed in the Supporting Document Types.
-          x-twilio:
-            pii:
-              handling: standard
-              deleteSla: 30
-        date_created:
-          type: string
-          format: date-time
-          nullable: true
-          description: The date and time in GMT when the resource was created specified in [ISO 8601](https://en.wikipedia.org/wiki/ISO_8601) format.
-        date_updated:
-          type: string
-          format: date-time
-          nullable: true
-          description: The date and time in GMT when the resource was last updated specified in [ISO 8601](https://en.wikipedia.org/wiki/ISO_8601) format.
-        url:
-          type: string
-          format: uri
-          nullable: true
-          description: The absolute URL of the Supporting Document resource.
-    UpdateSupportingDocumentRequest:
-      type: object
-      properties:
-        FriendlyName:
-          type: string
-          description: The string that you assigned to describe the resource.
-        Attributes:
-          description: The set of parameters that are the attributes of the Supporting Document resource which are derived Supporting Document Types.
     CreateSupportingDocumentRequest:
       type: object
       required:
@@ -288,6 +185,119 @@ components:
           description: The type of the Supporting Document.
         Attributes:
           description: The set of parameters that are the attributes of the Supporting Documents resource which are derived Supporting Document Types.
+    ListSupportingDocumentResponse:
+      type: object
+      properties:
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/trusthub.v1.supporting_document'
+        meta:
+          type: object
+          properties:
+            first_page_url:
+              type: string
+              format: uri
+            next_page_url:
+              type:
+              - string
+              - 'null'
+              format: uri
+            page:
+              type: integer
+            page_size:
+              type: integer
+            previous_page_url:
+              type:
+              - string
+              - 'null'
+              format: uri
+            url:
+              type: string
+              format: uri
+            key:
+              type: string
+    UpdateSupportingDocumentRequest:
+      type: object
+      properties:
+        FriendlyName:
+          type: string
+          description: The string that you assigned to describe the resource.
+        Attributes:
+          description: The set of parameters that are the attributes of the Supporting Document resource which are derived Supporting Document Types.
+    supporting_document_enum_status:
+      type: string
+      enum:
+      - draft
+      - pending-review
+      - rejected
+      - approved
+      - expired
+      - provisionally-approved
+    trusthub.v1.supporting_document:
+      type: object
+      properties:
+        sid:
+          type:
+          - string
+          - 'null'
+          minLength: 34
+          maxLength: 34
+          pattern: ^RD[0-9a-fA-F]{32}$
+          description: The unique string created by Twilio to identify the Supporting Document resource.
+        account_sid:
+          type:
+          - string
+          - 'null'
+          minLength: 34
+          maxLength: 34
+          pattern: ^AC[0-9a-fA-F]{32}$
+          description: The SID of the [Account](https://www.twilio.com/docs/iam/api/account) that created the Document resource.
+        friendly_name:
+          type:
+          - string
+          - 'null'
+          description: The string that you assigned to describe the resource.
+        mime_type:
+          type:
+          - string
+          - 'null'
+          description: The image type uploaded in the Supporting Document container.
+        status:
+          type:
+          - string
+          - 'null'
+          $ref: '#/components/schemas/supporting_document_enum_status'
+          description: The verification status of the Supporting Document resource.
+        type:
+          type:
+          - string
+          - 'null'
+          description: The type of the Supporting Document.
+        attributes:
+          description: The set of parameters that are the attributes of the Supporting Documents resource which are listed in the Supporting Document Types.
+          x-twilio:
+            pii:
+              handling: standard
+              deleteSla: 30
+        date_created:
+          type:
+          - string
+          - 'null'
+          format: date-time
+          description: The date and time in GMT when the resource was created specified in [ISO 8601](https://en.wikipedia.org/wiki/ISO_8601) format.
+        date_updated:
+          type:
+          - string
+          - 'null'
+          format: date-time
+          description: The date and time in GMT when the resource was last updated specified in [ISO 8601](https://en.wikipedia.org/wiki/ISO_8601) format.
+        url:
+          type:
+          - string
+          - 'null'
+          format: uri
+          description: The absolute URL of the Supporting Document resource.
   securitySchemes:
     accountSid_authToken:
       type: http

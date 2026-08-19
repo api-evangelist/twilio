@@ -1,0 +1,102 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Twilio - Accounts A2p Usage Records API",
+    "version": "1.52.0"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "UsageRecords",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "ListUsageRecord",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://accounts.twilio.com/v1/UsageRecords",
+            "params": [
+              {
+                "name": "Sim",
+                "value": "",
+                "type": "query",
+                "description": "SID or unique name of a Sim resource. Only show UsageRecords representing usage incurred by this Super SIM."
+              },
+              {
+                "name": "Fleet",
+                "value": "",
+                "type": "query",
+                "description": "SID or unique name of a Fleet resource. Only show UsageRecords representing usage for Super SIMs belonging to this Fleet resource at the time the usage occurred."
+              },
+              {
+                "name": "Network",
+                "value": "",
+                "type": "query",
+                "description": "SID of a Network resource. Only show UsageRecords representing usage on this network."
+              },
+              {
+                "name": "IsoCountry",
+                "value": "",
+                "type": "query",
+                "description": "Alpha-2 ISO Country Code. Only show UsageRecords representing usage in this country."
+              },
+              {
+                "name": "Group",
+                "value": "",
+                "type": "query",
+                "description": "Dimension over which to aggregate usage records. Can be: `sim`, `fleet`, `network`, `isoCountry`. Default is to not aggregate across any of these dimensions, UsageRecords will be aggregated into the time buckets described by the `Granularity` parameter."
+              },
+              {
+                "name": "Granularity",
+                "value": "",
+                "type": "query",
+                "description": "Time-based grouping that UsageRecords should be aggregated by. Can be: `hour`, `day`, or `all`. Default is `all`. `all` returns one UsageRecord that describes the usage for the entire period."
+              },
+              {
+                "name": "StartTime",
+                "value": "",
+                "type": "query",
+                "description": "Only include usage that occurred at or after this time, specified in [ISO 8601](https://en.wikipedia.org/wiki/ISO_8601) format. Default is one month before the `end_time`."
+              },
+              {
+                "name": "EndTime",
+                "value": "",
+                "type": "query",
+                "description": "Only include usage that occurred before this time (exclusive), specified in [ISO 8601](https://en.wikipedia.org/wiki/ISO_8601) format. Default is the current time."
+              },
+              {
+                "name": "PageSize",
+                "value": "",
+                "type": "query",
+                "description": "How many resources to return in each list page. The default is 50, and the maximum is 1000."
+              },
+              {
+                "name": "Page",
+                "value": "",
+                "type": "query",
+                "description": "The page index. This value is simply for client state."
+              },
+              {
+                "name": "PageToken",
+                "value": "",
+                "type": "query",
+                "description": "The page token. This is provided by the API."
+              }
+            ],
+            "auth": {
+              "type": "basic",
+              "username": "{{username}}",
+              "password": "{{password}}"
+            }
+          },
+          "docs": "List UsageRecords"
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

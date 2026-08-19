@@ -1,0 +1,664 @@
+{
+  "item": [
+    {
+      "id": "e7da9222-89d4-4840-a16b-828ccfbea229",
+      "name": "IpRecords",
+      "description": {
+        "content": "",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "5e34081e-39f8-4ef1-9d19-0d8122d00618",
+          "name": "Create Ip Record",
+          "request": {
+            "name": "Create Ip Record",
+            "description": {
+              "content": "",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "v1",
+                "IpRecords"
+              ],
+              "host": [
+                "{{v1-IpRecords-Url}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/x-www-form-urlencoded"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": {
+              "type": "basic",
+              "basic": [
+                {
+                  "key": "username",
+                  "value": "{{basicAuthUsername}}"
+                },
+                {
+                  "key": "password",
+                  "value": "{{basicAuthPassword}}"
+                }
+              ]
+            },
+            "body": {
+              "mode": "urlencoded",
+              "urlencoded": [
+                {
+                  "disabled": false,
+                  "key": "IpAddress",
+                  "value": "<string>",
+                  "description": "(Required) An IP address in dotted decimal notation, IPv4 only."
+                },
+                {
+                  "disabled": false,
+                  "key": "FriendlyName",
+                  "value": "<string>",
+                  "description": "A descriptive string that you create to describe the resource. It is not unique and can be up to 255 characters long."
+                },
+                {
+                  "disabled": false,
+                  "key": "CidrPrefixLength",
+                  "value": "<integer>",
+                  "description": "An integer representing the length of the [CIDR](https://tools.ietf.org/html/rfc4632) prefix to use with this IP address. By default the entire IP address is used, which for IPv4 is value 32."
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "id": "4374cc66-2392-47be-ac53-06c71d8aad9a",
+              "name": "Created",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "IpRecords"
+                  ],
+                  "host": [
+                    "{{v1-IpRecords-Url}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: basic",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Basic <credentials>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "urlencoded",
+                  "urlencoded": [
+                    {
+                      "disabled": false,
+                      "description": {
+                        "content": "(Required) An IP address in dotted decimal notation, IPv4 only.",
+                        "type": "text/plain"
+                      },
+                      "key": "IpAddress",
+                      "value": "<string>"
+                    },
+                    {
+                      "disabled": false,
+                      "description": {
+                        "content": "A descriptive string that you create to describe the resource. It is not unique and can be up to 255 characters long.",
+                        "type": "text/plain"
+                      },
+                      "key": "FriendlyName",
+                      "value": "<string>"
+                    },
+                    {
+                      "disabled": false,
+                      "description": {
+                        "content": "An integer representing the length of the [CIDR](https://tools.ietf.org/html/rfc4632) prefix to use with this IP address. By default the entire IP address is used, which for IPv4 is value 32.",
+                        "type": "text/plain"
+                      },
+                      "key": "CidrPrefixLength",
+                      "value": "<integer>"
+                    }
+                  ]
+                }
+              },
+              "status": "Created",
+              "code": 201,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"account_sid\": \"ACxREDACTEDxEXAMPLExSIDxVALUExxxxxx\",\n  \"sid\": \"ILF75DCB3Db2E6bb5dc64bde6Dd5F6AECe\",\n  \"friendly_name\": \"string\",\n  \"ip_address\": \"string\",\n  \"cidr_prefix_length\": 590,\n  \"date_created\": \"2003-08-07T08:39:54.742Z\",\n  \"date_updated\": null,\n  \"url\": null\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "40e6a4e8-1008-40d1-883f-c6327cad75b6",
+          "name": "List Ip Record",
+          "request": {
+            "name": "List Ip Record",
+            "description": {
+              "content": "",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "v1",
+                "IpRecords"
+              ],
+              "host": [
+                "{{v1-IpRecords-Url}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "PageSize",
+                  "value": "<integer>",
+                  "description": "How many resources to return in each list page. The default is 50, and the maximum is 1000."
+                },
+                {
+                  "disabled": false,
+                  "key": "Page",
+                  "value": "<integer>",
+                  "description": "The page index. This value is simply for client state."
+                },
+                {
+                  "disabled": false,
+                  "key": "PageToken",
+                  "value": "<string>",
+                  "description": "The page token. This is provided by the API."
+                }
+              ],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": {
+              "type": "basic",
+              "basic": [
+                {
+                  "key": "username",
+                  "value": "{{basicAuthUsername}}"
+                },
+                {
+                  "key": "password",
+                  "value": "{{basicAuthPassword}}"
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "id": "1a8321ad-02cf-40af-b3a2-0995afdfc486",
+              "name": "OK",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "IpRecords"
+                  ],
+                  "host": [
+                    "{{v1-IpRecords-Url}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "PageSize",
+                      "value": "<integer>"
+                    },
+                    {
+                      "key": "Page",
+                      "value": "<integer>"
+                    },
+                    {
+                      "key": "PageToken",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: basic",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Basic <credentials>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"ip_records\": [\n    {\n      \"account_sid\": \"ACxREDACTEDxEXAMPLExSIDxVALUExxxxxx\",\n      \"sid\": \"IL9DDDBF7bEec0F9ADb1b9db2B0E99a3eD\",\n      \"friendly_name\": null,\n      \"ip_address\": null,\n      \"cidr_prefix_length\": null,\n      \"date_created\": null,\n      \"date_updated\": null,\n      \"url\": \"http://sIKtTRLskp.mdwfWmBZCCHXN2WFAoC16pMokRpjB0FqXkFtHO,AtpyM5xjjYthenuecbwWZp4y\"\n    },\n    {\n      \"account_sid\": \"ACxREDACTEDxEXAMPLExSIDxVALUExxxxxx\",\n      \"sid\": \"IL1e1E1C10Ac8571cBA9FB5a82E5C4D11a\",\n      \"friendly_name\": null,\n      \"ip_address\": \"string\",\n      \"cidr_prefix_length\": null,\n      \"date_created\": null,\n      \"date_updated\": \"1979-06-27T18:41:22.885Z\",\n      \"url\": null\n    }\n  ],\n  \"meta\": {\n    \"first_page_url\": \"https://SRYcPwpfYCKElQqFpetkI.phmyqTmWKzo6uv,RKSZS9D1A2ur466Km.yPcn9rtwLY3NYGsitzsW4Gq+\",\n    \"next_page_url\": \"http://hJqSiaXycMQeJoEiRJ.ygpgLr7WRpzz9Ar4gom50Eaq5P8SKujHrJ,oBV1l6SMfEytD,6zbnQeOY\",\n    \"page\": 6813,\n    \"page_size\": 5350,\n    \"previous_page_url\": null,\n    \"url\": \"http://BqcAPHfx.ynyG6YuB28OuLJA5W6kWRKx7qk8e.FqGyCCd\",\n    \"key\": \"string\"\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "8485e06b-9925-4aaf-ae11-c90d65cb5521",
+          "name": "Fetch Ip Record",
+          "request": {
+            "name": "Fetch Ip Record",
+            "description": {
+              "content": "",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "v1",
+                "IpRecords",
+                ":Sid"
+              ],
+              "host": [
+                "{{v1-IpRecords-Sid-Url}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "Sid",
+                  "description": "(Required) The Twilio-provided string that uniquely identifies the IP Record resource to fetch."
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": {
+              "type": "basic",
+              "basic": [
+                {
+                  "key": "username",
+                  "value": "{{basicAuthUsername}}"
+                },
+                {
+                  "key": "password",
+                  "value": "{{basicAuthPassword}}"
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "id": "f4f6e4b0-f412-4e3f-975b-f65b5723b532",
+              "name": "OK",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "IpRecords",
+                    ":Sid"
+                  ],
+                  "host": [
+                    "{{v1-IpRecords-Sid-Url}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "Sid",
+                      "description": "(Required) The Twilio-provided string that uniquely identifies the IP Record resource to fetch."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: basic",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Basic <credentials>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"account_sid\": \"ACxREDACTEDxEXAMPLExSIDxVALUExxxxxx\",\n  \"sid\": \"ILF75DCB3Db2E6bb5dc64bde6Dd5F6AECe\",\n  \"friendly_name\": \"string\",\n  \"ip_address\": \"string\",\n  \"cidr_prefix_length\": 590,\n  \"date_created\": \"2003-08-07T08:39:54.742Z\",\n  \"date_updated\": null,\n  \"url\": null\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "8e1436b7-9da3-4665-93fe-59e5fe1eea3a",
+          "name": "Update Ip Record",
+          "request": {
+            "name": "Update Ip Record",
+            "description": {
+              "content": "",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "v1",
+                "IpRecords",
+                ":Sid"
+              ],
+              "host": [
+                "{{v1-IpRecords-Sid-Url}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "Sid",
+                  "description": "(Required) The Twilio-provided string that uniquely identifies the IP Record resource to update."
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/x-www-form-urlencoded"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": {
+              "type": "basic",
+              "basic": [
+                {
+                  "key": "username",
+                  "value": "{{basicAuthUsername}}"
+                },
+                {
+                  "key": "password",
+                  "value": "{{basicAuthPassword}}"
+                }
+              ]
+            },
+            "body": {
+              "mode": "urlencoded",
+              "urlencoded": [
+                {
+                  "disabled": false,
+                  "key": "FriendlyName",
+                  "value": "<string>",
+                  "description": "A descriptive string that you create to describe the resource. It is not unique and can be up to 255 characters long."
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "id": "1698f3f0-eefa-4ded-b352-5f80fa3ba7dc",
+              "name": "OK",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "IpRecords",
+                    ":Sid"
+                  ],
+                  "host": [
+                    "{{v1-IpRecords-Sid-Url}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "Sid",
+                      "description": "(Required) The Twilio-provided string that uniquely identifies the IP Record resource to update."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: basic",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Basic <credentials>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "urlencoded",
+                  "urlencoded": [
+                    {
+                      "disabled": false,
+                      "description": {
+                        "content": "A descriptive string that you create to describe the resource. It is not unique and can be up to 255 characters long.",
+                        "type": "text/plain"
+                      },
+                      "key": "FriendlyName",
+                      "value": "<string>"
+                    }
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"account_sid\": \"ACxREDACTEDxEXAMPLExSIDxVALUExxxxxx\",\n  \"sid\": \"ILF75DCB3Db2E6bb5dc64bde6Dd5F6AECe\",\n  \"friendly_name\": \"string\",\n  \"ip_address\": \"string\",\n  \"cidr_prefix_length\": 590,\n  \"date_created\": \"2003-08-07T08:39:54.742Z\",\n  \"date_updated\": null,\n  \"url\": null\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "36e69584-e486-437b-900d-8f865335dc9b",
+          "name": "Delete Ip Record",
+          "request": {
+            "name": "Delete Ip Record",
+            "description": {
+              "content": "",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "v1",
+                "IpRecords",
+                ":Sid"
+              ],
+              "host": [
+                "{{v1-IpRecords-Sid-Url}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "Sid",
+                  "description": "(Required) The Twilio-provided string that uniquely identifies the IP Record resource to delete."
+                }
+              ]
+            },
+            "method": "DELETE",
+            "auth": {
+              "type": "basic",
+              "basic": [
+                {
+                  "key": "username",
+                  "value": "{{basicAuthUsername}}"
+                },
+                {
+                  "key": "password",
+                  "value": "{{basicAuthPassword}}"
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "id": "8926485a-30f1-4d6e-be0f-b4ededc84095",
+              "name": "The resource was deleted successfully.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "IpRecords",
+                    ":Sid"
+                  ],
+                  "host": [
+                    "{{v1-IpRecords-Sid-Url}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "Sid",
+                      "description": "(Required) The Twilio-provided string that uniquely identifies the IP Record resource to delete."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: basic",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Basic <credentials>"
+                  }
+                ],
+                "method": "DELETE",
+                "body": {}
+              },
+              "status": "No Content",
+              "code": 204,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "type": "string",
+      "value": "https://accounts.twilio.com",
+      "key": "baseUrl"
+    },
+    {
+      "type": "string",
+      "value": "https://voice.twilio.com",
+      "key": "v1-IpRecords-Url"
+    },
+    {
+      "type": "string",
+      "value": "https://voice.twilio.com",
+      "key": "v1-IpRecords-Sid-Url"
+    }
+  ],
+  "info": {
+    "_postman_id": "148908a6-5d00-4eb2-b797-30e50e1cb807",
+    "name": "Twilio - Accounts A2p Ip Records API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "This is the public Twilio REST API.\n\nContact Support:\n Name: Twilio Support\n Email: support@twilio.com",
+      "type": "text/plain"
+    }
+  }
+}

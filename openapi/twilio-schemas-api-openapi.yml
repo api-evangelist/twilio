@@ -1,4 +1,4 @@
-openapi: 3.0.1
+openapi: 3.2.0
 info:
   title: Twilio - Accounts A2p Schemas API
   description: This is the public Twilio REST API.
@@ -162,17 +162,19 @@ components:
               type: string
               format: uri
             next_page_url:
-              type: string
+              type:
+              - string
+              - 'null'
               format: uri
-              nullable: true
             page:
               type: integer
             page_size:
               type: integer
             previous_page_url:
-              type: string
+              type:
+              - string
+              - 'null'
               format: uri
-              nullable: true
             url:
               type: string
               format: uri
@@ -182,53 +184,63 @@ components:
       type: object
       properties:
         id:
-          type: string
-          nullable: true
+          type:
+          - string
+          - 'null'
           description: The unique identifier of the schema. Each schema can have multiple versions, that share the same id.
         url:
-          type: string
+          type:
+          - string
+          - 'null'
           format: uri
-          nullable: true
           description: The URL of this resource.
         links:
-          type: object
+          type:
+          - object
+          - 'null'
           format: uri-map
-          nullable: true
           description: Contains a dictionary of URL links to nested resources of this schema.
         latest_version_date_created:
-          type: string
+          type:
+          - string
+          - 'null'
           format: date-time
-          nullable: true
           description: The date that the latest schema version was created, given in ISO 8601 format.
         latest_version:
-          type: integer
-          nullable: true
+          type:
+          - integer
+          - 'null'
           description: The latest version published of this schema.
     events.v1.schema.schema_version:
       type: object
       properties:
         id:
-          type: string
-          nullable: true
+          type:
+          - string
+          - 'null'
           description: The unique identifier of the schema. Each schema can have multiple versions, that share the same id.
         schema_version:
-          type: integer
-          nullable: true
+          type:
+          - integer
+          - 'null'
           description: The version of this schema.
         date_created:
-          type: string
+          type:
+          - string
+          - 'null'
           format: date-time
-          nullable: true
           description: The date the schema version was created, given in ISO 8601 format.
         url:
-          type: string
+          type:
+          - string
+          - 'null'
           format: uri
-          nullable: true
           description: The URL of this resource.
         raw:
-          type: string
+          type:
+          - string
+          - 'null'
           format: uri
-          nullable: true
   securitySchemes:
     accountSid_authToken:
       type: http

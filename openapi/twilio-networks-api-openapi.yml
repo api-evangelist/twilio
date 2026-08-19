@@ -1,4 +1,4 @@
-openapi: 3.0.1
+openapi: 3.2.0
 info:
   title: Twilio - Accounts A2p Networks API
   description: This is the public Twilio REST API.
@@ -124,17 +124,19 @@ components:
               type: string
               format: uri
             next_page_url:
-              type: string
+              type:
+              - string
+              - 'null'
               format: uri
-              nullable: true
             page:
               type: integer
             page_size:
               type: integer
             previous_page_url:
-              type: string
+              type:
+              - string
+              - 'null'
               format: uri
-              nullable: true
             url:
               type: string
               format: uri
@@ -144,29 +146,34 @@ components:
       type: object
       properties:
         sid:
-          type: string
+          type:
+          - string
+          - 'null'
           minLength: 34
           maxLength: 34
           pattern: ^HW[0-9a-fA-F]{32}$
-          nullable: true
           description: The unique string that we created to identify the Network resource.
         friendly_name:
-          type: string
-          nullable: true
+          type:
+          - string
+          - 'null'
           description: A human readable identifier of this resource.
         url:
-          type: string
+          type:
+          - string
+          - 'null'
           format: uri
-          nullable: true
           description: The absolute URL of the Network resource.
         iso_country:
-          type: string
-          nullable: true
+          type:
+          - string
+          - 'null'
           description: The [ISO country code](https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2) of the Network resource.
         identifiers:
-          type: array
+          type:
+          - array
+          - 'null'
           items: {}
-          nullable: true
           description: Array of objects identifying the [MCC-MNCs](https://en.wikipedia.org/wiki/Mobile_country_code) that are included in the Network resource.
   securitySchemes:
     accountSid_authToken:

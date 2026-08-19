@@ -1,6 +1,6 @@
-openapi: 3.0.1
+openapi: 3.2.0
 info:
-  title: Twilio - Accounts A2p UsageRecords API
+  title: Twilio - Accounts A2p Usage Records API
   description: This is the public Twilio REST API.
   termsOfService: https://www.twilio.com/legal/tos
   contact:
@@ -110,6 +110,78 @@ paths:
       - Beta
 components:
   schemas:
+    supersim.v1.usage_record:
+      type: object
+      properties:
+        account_sid:
+          type:
+          - string
+          - 'null'
+          minLength: 34
+          maxLength: 34
+          pattern: ^AC[0-9a-fA-F]{32}$
+          description: The SID of the [Account](https://www.twilio.com/docs/iam/api/account) that incurred the usage.
+        sim_sid:
+          type:
+          - string
+          - 'null'
+          minLength: 34
+          maxLength: 34
+          pattern: ^HS[0-9a-fA-F]{32}$
+          description: SID of a Sim resource to which the UsageRecord belongs. Value will only be present when either a value for the `Sim` query parameter is provided or when UsageRecords are grouped by `sim`. Otherwise, the value will be `null`.
+        network_sid:
+          type:
+          - string
+          - 'null'
+          minLength: 34
+          maxLength: 34
+          pattern: ^HW[0-9a-fA-F]{32}$
+          description: SID of the Network resource the usage occurred on. Value will only be present when either a value for the `Network` query parameter is provided or when UsageRecords are grouped by `network`. Otherwise, the value will be `null`.
+        fleet_sid:
+          type:
+          - string
+          - 'null'
+          minLength: 34
+          maxLength: 34
+          pattern: ^HF[0-9a-fA-F]{32}$
+          description: SID of the Fleet resource the usage occurred on. Value will only be present when either a value for the `Fleet` query parameter is provided or when UsageRecords are grouped by `fleet`. Otherwise, the value will be `null`.
+        iso_country:
+          type:
+          - string
+          - 'null'
+          format: iso-country-code
+          description: Alpha-2 ISO Country Code that the usage occurred in. Value will only be present when either a value for the `IsoCountry` query parameter is provided or when UsageRecords are grouped by `isoCountry`. Otherwise, the value will be `null`.
+        period:
+          description: The time period for which the usage is reported. The period is represented as a pair of `start_time` and `end_time` timestamps specified in [ISO 8601](https://en.wikipedia.org/wiki/ISO_8601) format.
+        data_upload:
+          type:
+          - integer
+          - 'null'
+          format: int64
+          description: Total data uploaded in bytes, aggregated by the query parameters.
+        data_download:
+          type:
+          - integer
+          - 'null'
+          format: int64
+          description: Total data downloaded in bytes, aggregated by the query parameters.
+        data_total:
+          type:
+          - integer
+          - 'null'
+          format: int64
+          description: Total of data_upload and data_download.
+        data_total_billed:
+          type:
+          - number
+          - 'null'
+          description: Total amount in the `billed_unit` that was charged for the data uploaded or downloaded. Will return 0 for usage prior to February 1, 2022. Value may be 0 despite `data_total` being greater than 0 if the data usage is still being processed by Twilio's billing system. Refer to [Data Usage Processing](https://www.twilio.com/docs/iot/supersim/api/usage-record-resource#data-usage-processing) for more details.
+        billed_unit:
+          type:
+          - string
+          - 'null'
+          format: currency
+          description: The currency in which the billed amounts are measured, specified in the 3 letter ISO 4127 format (e.g. `USD`, `EUR`, `JPY`). This can be null when data_toal_billed is 0 and we do not yet have billing information for the corresponding data usage. Refer to [Data Usage Processing](https://www.twilio.com/docs/iot/supersim/api/usage-record-resource#data-usage-processing) for more details.
     ListUsageRecordResponse:
       type: object
       properties:
@@ -124,17 +196,19 @@ components:
               type: string
               format: uri
             next_page_url:
-              type: string
+              type:
+              - string
+              - 'null'
               format: uri
-              nullable: true
             page:
               type: integer
             page_size:
               type: integer
             previous_page_url:
-              type: string
+              type:
+              - string
+              - 'null'
               format: uri
-              nullable: true
             url:
               type: string
               format: uri
@@ -147,69 +221,6 @@ components:
       - fleet
       - network
       - isoCountry
-    supersim.v1.usage_record:
-      type: object
-      properties:
-        account_sid:
-          type: string
-          minLength: 34
-          maxLength: 34
-          pattern: ^AC[0-9a-fA-F]{32}$
-          nullable: true
-          description: The SID of the [Account](https://www.twilio.com/docs/iam/api/account) that incurred the usage.
-        sim_sid:
-          type: string
-          minLength: 34
-          maxLength: 34
-          pattern: ^HS[0-9a-fA-F]{32}$
-          nullable: true
-          description: SID of a Sim resource to which the UsageRecord belongs. Value will only be present when either a value for the `Sim` query parameter is provided or when UsageRecords are grouped by `sim`. Otherwise, the value will be `null`.
-        network_sid:
-          type: string
-          minLength: 34
-          maxLength: 34
-          pattern: ^HW[0-9a-fA-F]{32}$
-          nullable: true
-          description: SID of the Network resource the usage occurred on. Value will only be present when either a value for the `Network` query parameter is provided or when UsageRecords are grouped by `network`. Otherwise, the value will be `null`.
-        fleet_sid:
-          type: string
-          minLength: 34
-          maxLength: 34
-          pattern: ^HF[0-9a-fA-F]{32}$
-          nullable: true
-          description: SID of the Fleet resource the usage occurred on. Value will only be present when either a value for the `Fleet` query parameter is provided or when UsageRecords are grouped by `fleet`. Otherwise, the value will be `null`.
-        iso_country:
-          type: string
-          format: iso-country-code
-          nullable: true
-          description: Alpha-2 ISO Country Code that the usage occurred in. Value will only be present when either a value for the `IsoCountry` query parameter is provided or when UsageRecords are grouped by `isoCountry`. Otherwise, the value will be `null`.
-        period:
-          nullable: true
-          description: The time period for which the usage is reported. The period is represented as a pair of `start_time` and `end_time` timestamps specified in [ISO 8601](https://en.wikipedia.org/wiki/ISO_8601) format.
-        data_upload:
-          type: integer
-          format: int64
-          nullable: true
-          description: Total data uploaded in bytes, aggregated by the query parameters.
-        data_download:
-          type: integer
-          format: int64
-          nullable: true
-          description: Total data downloaded in bytes, aggregated by the query parameters.
-        data_total:
-          type: integer
-          format: int64
-          nullable: true
-          description: Total of data_upload and data_download.
-        data_total_billed:
-          type: number
-          nullable: true
-          description: Total amount in the `billed_unit` that was charged for the data uploaded or downloaded. Will return 0 for usage prior to February 1, 2022. Value may be 0 despite `data_total` being greater than 0 if the data usage is still being processed by Twilio's billing system. Refer to [Data Usage Processing](https://www.twilio.com/docs/iot/supersim/api/usage-record-resource#data-usage-processing) for more details.
-        billed_unit:
-          type: string
-          format: currency
-          nullable: true
-          description: The currency in which the billed amounts are measured, specified in the 3 letter ISO 4127 format (e.g. `USD`, `EUR`, `JPY`). This can be null when data_toal_billed is 0 and we do not yet have billing information for the corresponding data usage. Refer to [Data Usage Processing](https://www.twilio.com/docs/iot/supersim/api/usage-record-resource#data-usage-processing) for more details.
     usage_record_enum_granularity:
       type: string
       enum:

@@ -1,4 +1,4 @@
-openapi: 3.0.1
+openapi: 3.2.0
 info:
   title: Twilio - Accounts A2p Calls API
   description: This is the public Twilio REST API.
@@ -167,24 +167,47 @@ paths:
         '404':
           description: Call not found
 components:
-  parameters:
-    AccountSid:
-      name: AccountSid
-      in: path
-      required: true
-      description: The unique identifier of the Twilio account
-      schema:
-        type: string
-        pattern: ^AC[0-9a-fA-F]{32}$
-    CallSid:
-      name: CallSid
-      in: path
-      required: true
-      description: The unique identifier of the call
-      schema:
-        type: string
-        pattern: ^CA[0-9a-fA-F]{32}$
   schemas:
+    UpdateCallRequest:
+      type: object
+      properties:
+        Url:
+          type: string
+          format: uri
+          description: Redirect the call to a new TwiML URL
+        Method:
+          type: string
+          enum:
+          - GET
+          - POST
+        Status:
+          type: string
+          enum:
+          - canceled
+          - completed
+          description: Set to completed to end the call
+        Twiml:
+          type: string
+          description: Inline TwiML to redirect the call
+    CallList:
+      type: object
+      properties:
+        calls:
+          type: array
+          items:
+            $ref: '#/components/schemas/Call'
+        first_page_uri:
+          type: string
+        next_page_uri:
+          type: string
+        previous_page_uri:
+          type: string
+        page:
+          type: integer
+        page_size:
+          type: integer
+        uri:
+          type: string
     Call:
       type: object
       properties:
@@ -353,46 +376,23 @@ components:
         CallerId:
           type: string
           description: Caller ID to display on outbound call
-    UpdateCallRequest:
-      type: object
-      properties:
-        Url:
-          type: string
-          format: uri
-          description: Redirect the call to a new TwiML URL
-        Method:
-          type: string
-          enum:
-          - GET
-          - POST
-        Status:
-          type: string
-          enum:
-          - canceled
-          - completed
-          description: Set to completed to end the call
-        Twiml:
-          type: string
-          description: Inline TwiML to redirect the call
-    CallList:
-      type: object
-      properties:
-        calls:
-          type: array
-          items:
-            $ref: '#/components/schemas/Call'
-        first_page_uri:
-          type: string
-        next_page_uri:
-          type: string
-        previous_page_uri:
-          type: string
-        page:
-          type: integer
-        page_size:
-          type: integer
-        uri:
-          type: string
+  parameters:
+    AccountSid:
+      name: AccountSid
+      in: path
+      required: true
+      description: The unique identifier of the Twilio account
+      schema:
+        type: string
+        pattern: ^AC[0-9a-fA-F]{32}$
+    CallSid:
+      name: CallSid
+      in: path
+      required: true
+      description: The unique identifier of the call
+      schema:
+        type: string
+        pattern: ^CA[0-9a-fA-F]{32}$
   securitySchemes:
     accountSid_authToken:
       type: http

@@ -1,4 +1,4 @@
-openapi: 3.0.1
+openapi: 3.2.0
 info:
   title: Twilio - Accounts A2p Rate Limits API
   description: This is the public Twilio REST API.
@@ -106,6 +106,15 @@ paths:
         '201':
           description: Bucket created
 components:
+  parameters:
+    ServiceSid:
+      name: ServiceSid
+      in: path
+      required: true
+      description: The SID of the Verify service
+      schema:
+        type: string
+        pattern: ^VA[0-9a-fA-F]{32}$
   schemas:
     RateLimitList:
       type: object
@@ -158,15 +167,6 @@ components:
           format: uri
         key:
           type: string
-  parameters:
-    ServiceSid:
-      name: ServiceSid
-      in: path
-      required: true
-      description: The SID of the Verify service
-      schema:
-        type: string
-        pattern: ^VA[0-9a-fA-F]{32}$
   securitySchemes:
     accountSid_authToken:
       type: http

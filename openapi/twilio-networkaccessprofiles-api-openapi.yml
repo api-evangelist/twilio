@@ -1,6 +1,6 @@
-openapi: 3.0.1
+openapi: 3.2.0
 info:
-  title: Twilio - Accounts A2p NetworkAccessProfiles API
+  title: Twilio - Accounts A2p Network Access Profiles API
   description: This is the public Twilio REST API.
   termsOfService: https://www.twilio.com/legal/tos
   contact:
@@ -307,36 +307,100 @@ paths:
       - Beta
 components:
   schemas:
-    ListNetworkAccessProfileResponse:
+    supersim.v1.network_access_profile:
       type: object
       properties:
-        network_access_profiles:
-          type: array
-          items:
-            $ref: '#/components/schemas/supersim.v1.network_access_profile'
-        meta:
-          type: object
-          properties:
-            first_page_url:
-              type: string
-              format: uri
-            next_page_url:
-              type: string
-              format: uri
-              nullable: true
-            page:
-              type: integer
-            page_size:
-              type: integer
-            previous_page_url:
-              type: string
-              format: uri
-              nullable: true
-            url:
-              type: string
-              format: uri
-            key:
-              type: string
+        sid:
+          type:
+          - string
+          - 'null'
+          minLength: 34
+          maxLength: 34
+          pattern: ^HA[0-9a-fA-F]{32}$
+          description: The unique string that identifies the Network Access Profile resource.
+        unique_name:
+          type:
+          - string
+          - 'null'
+          description: An application-defined string that uniquely identifies the resource. It can be used in place of the resource's `sid` in the URL to address the resource.
+        account_sid:
+          type:
+          - string
+          - 'null'
+          minLength: 34
+          maxLength: 34
+          pattern: ^AC[0-9a-fA-F]{32}$
+          description: The SID of the [Account](https://www.twilio.com/docs/iam/api/account) that the Network Access Profile belongs to.
+        date_created:
+          type:
+          - string
+          - 'null'
+          format: date-time
+          description: The date and time in GMT when the resource was created specified in [ISO 8601](https://en.wikipedia.org/wiki/ISO_8601) format.
+        date_updated:
+          type:
+          - string
+          - 'null'
+          format: date-time
+          description: The date and time in GMT when the resource was last updated specified in [ISO 8601](https://en.wikipedia.org/wiki/ISO_8601) format.
+        url:
+          type:
+          - string
+          - 'null'
+          format: uri
+          description: The absolute URL of the Network Access Profile resource.
+        links:
+          type:
+          - object
+          - 'null'
+          format: uri-map
+    supersim.v1.network_access_profile.network_access_profile_network:
+      type: object
+      properties:
+        sid:
+          type:
+          - string
+          - 'null'
+          minLength: 34
+          maxLength: 34
+          pattern: ^HW[0-9a-fA-F]{32}$
+          description: The unique string that identifies the Network resource.
+        network_access_profile_sid:
+          type:
+          - string
+          - 'null'
+          minLength: 34
+          maxLength: 34
+          pattern: ^HA[0-9a-fA-F]{32}$
+          description: The unique string that identifies the Network resource's Network Access Profile resource.
+        friendly_name:
+          type:
+          - string
+          - 'null'
+          description: A human readable identifier of the Network this resource refers to.
+        iso_country:
+          type:
+          - string
+          - 'null'
+          description: The [ISO country code](https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2) of the Network resource.
+        identifiers:
+          type:
+          - array
+          - 'null'
+          items: {}
+          description: Array of objects identifying the [MCC-MNCs](https://en.wikipedia.org/wiki/Mobile_country_code) that are included in the Network resource.
+        url:
+          type:
+          - string
+          - 'null'
+          format: uri
+          description: The absolute URL of the Network resource.
+    UpdateNetworkAccessProfileRequest:
+      type: object
+      properties:
+        UniqueName:
+          type: string
+          description: The new unique name of the Network Access Profile.
     CreateNetworkAccessProfileNetworkRequest:
       type: object
       required:
@@ -348,17 +412,6 @@ components:
           maxLength: 34
           pattern: ^HW[0-9a-fA-F]{32}$
           description: The SID of the Network resource to be added to the Network Access Profile resource.
-    CreateNetworkAccessProfileRequest:
-      type: object
-      properties:
-        UniqueName:
-          type: string
-          description: An application-defined string that uniquely identifies the resource. It can be used in place of the resource's `sid` in the URL to address the resource.
-        Networks:
-          type: array
-          items:
-            type: string
-          description: List of Network SIDs that this Network Access Profile will allow connections to.
     ListNetworkAccessProfileNetworkResponse:
       type: object
       properties:
@@ -373,103 +426,67 @@ components:
               type: string
               format: uri
             next_page_url:
-              type: string
+              type:
+              - string
+              - 'null'
               format: uri
-              nullable: true
             page:
               type: integer
             page_size:
               type: integer
             previous_page_url:
-              type: string
+              type:
+              - string
+              - 'null'
               format: uri
-              nullable: true
             url:
               type: string
               format: uri
             key:
               type: string
-    UpdateNetworkAccessProfileRequest:
+    ListNetworkAccessProfileResponse:
+      type: object
+      properties:
+        network_access_profiles:
+          type: array
+          items:
+            $ref: '#/components/schemas/supersim.v1.network_access_profile'
+        meta:
+          type: object
+          properties:
+            first_page_url:
+              type: string
+              format: uri
+            next_page_url:
+              type:
+              - string
+              - 'null'
+              format: uri
+            page:
+              type: integer
+            page_size:
+              type: integer
+            previous_page_url:
+              type:
+              - string
+              - 'null'
+              format: uri
+            url:
+              type: string
+              format: uri
+            key:
+              type: string
+    CreateNetworkAccessProfileRequest:
       type: object
       properties:
         UniqueName:
           type: string
-          description: The new unique name of the Network Access Profile.
-    supersim.v1.network_access_profile:
-      type: object
-      properties:
-        sid:
-          type: string
-          minLength: 34
-          maxLength: 34
-          pattern: ^HA[0-9a-fA-F]{32}$
-          nullable: true
-          description: The unique string that identifies the Network Access Profile resource.
-        unique_name:
-          type: string
-          nullable: true
           description: An application-defined string that uniquely identifies the resource. It can be used in place of the resource's `sid` in the URL to address the resource.
-        account_sid:
-          type: string
-          minLength: 34
-          maxLength: 34
-          pattern: ^AC[0-9a-fA-F]{32}$
-          nullable: true
-          description: The SID of the [Account](https://www.twilio.com/docs/iam/api/account) that the Network Access Profile belongs to.
-        date_created:
-          type: string
-          format: date-time
-          nullable: true
-          description: The date and time in GMT when the resource was created specified in [ISO 8601](https://en.wikipedia.org/wiki/ISO_8601) format.
-        date_updated:
-          type: string
-          format: date-time
-          nullable: true
-          description: The date and time in GMT when the resource was last updated specified in [ISO 8601](https://en.wikipedia.org/wiki/ISO_8601) format.
-        url:
-          type: string
-          format: uri
-          nullable: true
-          description: The absolute URL of the Network Access Profile resource.
-        links:
-          type: object
-          format: uri-map
-          nullable: true
-    supersim.v1.network_access_profile.network_access_profile_network:
-      type: object
-      properties:
-        sid:
-          type: string
-          minLength: 34
-          maxLength: 34
-          pattern: ^HW[0-9a-fA-F]{32}$
-          nullable: true
-          description: The unique string that identifies the Network resource.
-        network_access_profile_sid:
-          type: string
-          minLength: 34
-          maxLength: 34
-          pattern: ^HA[0-9a-fA-F]{32}$
-          nullable: true
-          description: The unique string that identifies the Network resource's Network Access Profile resource.
-        friendly_name:
-          type: string
-          nullable: true
-          description: A human readable identifier of the Network this resource refers to.
-        iso_country:
-          type: string
-          nullable: true
-          description: The [ISO country code](https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2) of the Network resource.
-        identifiers:
+        Networks:
           type: array
-          items: {}
-          nullable: true
-          description: Array of objects identifying the [MCC-MNCs](https://en.wikipedia.org/wiki/Mobile_country_code) that are included in the Network resource.
-        url:
-          type: string
-          format: uri
-          nullable: true
-          description: The absolute URL of the Network resource.
+          items:
+            type: string
+          description: List of Network SIDs that this Network Access Profile will allow connections to.
   securitySchemes:
     accountSid_authToken:
       type: http

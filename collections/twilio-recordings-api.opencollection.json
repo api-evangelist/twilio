@@ -1,0 +1,409 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Twilio - Accounts A2p Recordings API",
+    "version": "1.52.0"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Recordings",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Twilio List Room Recordings",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://accounts.twilio.com/Rooms/:RoomSid/Recordings",
+            "params": [
+              {
+                "name": "RoomSid",
+                "value": "",
+                "type": "path",
+                "description": "The SID or unique name of the room"
+              },
+              {
+                "name": "Status",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "PageSize",
+                "value": "",
+                "type": "query"
+              }
+            ]
+          },
+          "docs": "Twilio List Room Recordings"
+        },
+        {
+          "info": {
+            "name": "Twilio Fetch a Recording",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://accounts.twilio.com/Recordings/:RecordingSid",
+            "params": [
+              {
+                "name": "RecordingSid",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "Twilio Fetch a Recording"
+        },
+        {
+          "info": {
+            "name": "Twilio Delete a Recording",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://accounts.twilio.com/Recordings/:RecordingSid",
+            "params": [
+              {
+                "name": "RecordingSid",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "Twilio Delete a Recording"
+        },
+        {
+          "info": {
+            "name": "Twilio Fetch Recording Settings",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://accounts.twilio.com/RecordingSettings/Default"
+          },
+          "docs": "Twilio Fetch Recording Settings"
+        },
+        {
+          "info": {
+            "name": "Twilio Create or Update Recording Settings",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://accounts.twilio.com/RecordingSettings/Default",
+            "body": {
+              "type": "form-urlencoded",
+              "data": [
+                {
+                  "name": "FriendlyName",
+                  "value": ""
+                },
+                {
+                  "name": "AwsCredentialsSid",
+                  "value": ""
+                },
+                {
+                  "name": "AwsS3Url",
+                  "value": ""
+                },
+                {
+                  "name": "AwsStorageEnabled",
+                  "value": ""
+                },
+                {
+                  "name": "EncryptionKeySid",
+                  "value": ""
+                },
+                {
+                  "name": "EncryptionEnabled",
+                  "value": ""
+                }
+              ]
+            }
+          },
+          "docs": "Configure the AWS credentials and S3 bucket for storing recordings."
+        },
+        {
+          "info": {
+            "name": "Twilio List Recordings for a Call",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://accounts.twilio.com/Accounts/:AccountSid/Calls/:CallSid/Recordings.json",
+            "params": [
+              {
+                "name": "AccountSid",
+                "value": "",
+                "type": "path",
+                "description": "The unique identifier of the Twilio account"
+              },
+              {
+                "name": "CallSid",
+                "value": "",
+                "type": "path",
+                "description": "The unique identifier of the call"
+              }
+            ]
+          },
+          "docs": "Retrieve a list of recordings associated with a specific call."
+        },
+        {
+          "info": {
+            "name": "Twilio Start Recording a Call",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://accounts.twilio.com/Accounts/:AccountSid/Calls/:CallSid/Recordings.json",
+            "params": [
+              {
+                "name": "AccountSid",
+                "value": "",
+                "type": "path",
+                "description": "The unique identifier of the Twilio account"
+              },
+              {
+                "name": "CallSid",
+                "value": "",
+                "type": "path",
+                "description": "The unique identifier of the call"
+              }
+            ],
+            "body": {
+              "type": "form-urlencoded",
+              "data": [
+                {
+                  "name": "RecordingStatusCallback",
+                  "value": ""
+                },
+                {
+                  "name": "RecordingStatusCallbackMethod",
+                  "value": ""
+                },
+                {
+                  "name": "RecordingChannels",
+                  "value": ""
+                },
+                {
+                  "name": "Trim",
+                  "value": ""
+                }
+              ]
+            }
+          },
+          "docs": "Start recording an in-progress call."
+        },
+        {
+          "info": {
+            "name": "Twilio List All Recordings",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://accounts.twilio.com/Accounts/:AccountSid/Recordings.json",
+            "params": [
+              {
+                "name": "AccountSid",
+                "value": "",
+                "type": "path",
+                "description": "The unique identifier of the Twilio account"
+              },
+              {
+                "name": "DateCreated",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "CallSid",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "PageSize",
+                "value": "",
+                "type": "query"
+              }
+            ]
+          },
+          "docs": "Retrieve a list of all recordings associated with your account."
+        },
+        {
+          "info": {
+            "name": "Twilio Fetch a Recording",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://accounts.twilio.com/Accounts/:AccountSid/Recordings/:RecordingSid.json",
+            "params": [
+              {
+                "name": "AccountSid",
+                "value": "",
+                "type": "path",
+                "description": "The unique identifier of the Twilio account"
+              },
+              {
+                "name": "RecordingSid",
+                "value": "",
+                "type": "path",
+                "description": "The unique identifier of the recording"
+              }
+            ]
+          },
+          "docs": "Twilio Fetch a Recording"
+        },
+        {
+          "info": {
+            "name": "Twilio Delete a Recording",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://accounts.twilio.com/Accounts/:AccountSid/Recordings/:RecordingSid.json",
+            "params": [
+              {
+                "name": "AccountSid",
+                "value": "",
+                "type": "path",
+                "description": "The unique identifier of the Twilio account"
+              },
+              {
+                "name": "RecordingSid",
+                "value": "",
+                "type": "path",
+                "description": "The unique identifier of the recording"
+              }
+            ]
+          },
+          "docs": "Twilio Delete a Recording"
+        },
+        {
+          "info": {
+            "name": "FetchRecording",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://accounts.twilio.com/v1/Recordings/:Sid",
+            "params": [
+              {
+                "name": "Sid",
+                "value": "",
+                "type": "path",
+                "description": "The SID of the Recording resource to fetch."
+              }
+            ],
+            "auth": {
+              "type": "basic",
+              "username": "{{username}}",
+              "password": "{{password}}"
+            }
+          },
+          "docs": "Returns a single Recording resource identified by a Recording SID."
+        },
+        {
+          "info": {
+            "name": "DeleteRecording",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://accounts.twilio.com/v1/Recordings/:Sid",
+            "params": [
+              {
+                "name": "Sid",
+                "value": "",
+                "type": "path",
+                "description": "The SID of the Recording resource to delete."
+              }
+            ],
+            "auth": {
+              "type": "basic",
+              "username": "{{username}}",
+              "password": "{{password}}"
+            }
+          },
+          "docs": "Delete a Recording resource identified by a Recording SID."
+        },
+        {
+          "info": {
+            "name": "ListRecording",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://accounts.twilio.com/v1/Recordings",
+            "params": [
+              {
+                "name": "Status",
+                "value": "",
+                "type": "query",
+                "description": "Read only the recordings that have this status. Can be: `processing`, `completed`, or `deleted`."
+              },
+              {
+                "name": "SourceSid",
+                "value": "",
+                "type": "query",
+                "description": "Read only the recordings that have this `source_sid`."
+              },
+              {
+                "name": "GroupingSid",
+                "value": "",
+                "type": "query",
+                "description": "Read only recordings with this `grouping_sid`, which may include a `participant_sid` and/or a `room_sid`."
+              },
+              {
+                "name": "DateCreatedAfter",
+                "value": "",
+                "type": "query",
+                "description": "Read only recordings that started on or after this [ISO 8601](https://en.wikipedia.org/wiki/ISO_8601) date-time with time zone."
+              },
+              {
+                "name": "DateCreatedBefore",
+                "value": "",
+                "type": "query",
+                "description": "Read only recordings that started before this [ISO 8601](https://en.wikipedia.org/wiki/ISO_8601) date-time with time zone, given as `YYYY-MM-DDThh:mm:ss+|-hh:mm` or `YYYY-MM-DDThh:mm:ssZ`."
+              },
+              {
+                "name": "MediaType",
+                "value": "",
+                "type": "query",
+                "description": "Read only recordings that have this media type. Can be either `audio` or `video`."
+              },
+              {
+                "name": "PageSize",
+                "value": "",
+                "type": "query",
+                "description": "How many resources to return in each list page. The default is 50, and the maximum is 1000."
+              },
+              {
+                "name": "Page",
+                "value": "",
+                "type": "query",
+                "description": "The page index. This value is simply for client state."
+              },
+              {
+                "name": "PageToken",
+                "value": "",
+                "type": "query",
+                "description": "The page token. This is provided by the API."
+              }
+            ],
+            "auth": {
+              "type": "basic",
+              "username": "{{username}}",
+              "password": "{{password}}"
+            }
+          },
+          "docs": "List of all Track recordings."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

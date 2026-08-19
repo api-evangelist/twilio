@@ -1,0 +1,306 @@
+{
+  "item": [
+    {
+      "id": "0713c44a-db88-402f-95fd-28ef58365c76",
+      "name": "Factors",
+      "description": {
+        "content": "Manage authentication factors (TOTP, push)",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "4d100d4f-7a83-4a71-9b93-08c86201a83c",
+          "name": "Twilio List Factors for an Entity",
+          "request": {
+            "name": "Twilio List Factors for an Entity",
+            "description": {},
+            "url": {
+              "path": [
+                "Services",
+                ":ServiceSid",
+                "Entities",
+                ":Identity",
+                "Factors"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "ServiceSid",
+                  "description": "(Required) The SID of the Verify service"
+                },
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "Identity",
+                  "description": "(Required) "
+                }
+              ]
+            },
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "ee20b1a6-09c2-482d-b96b-aba09650dbc4",
+              "name": "List of factors",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "Services",
+                    ":ServiceSid",
+                    "Entities",
+                    ":Identity",
+                    "Factors"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "ServiceSid",
+                      "description": "(Required) The SID of the Verify service"
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "Identity",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "a3521c25-912b-48ce-97c9-9b0e46aae1e0",
+          "name": "Twilio Create a Factor",
+          "request": {
+            "name": "Twilio Create a Factor",
+            "description": {
+              "content": "Create a new authentication factor (TOTP or push) for an entity.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "Services",
+                ":ServiceSid",
+                "Entities",
+                ":Identity",
+                "Factors"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "ServiceSid",
+                  "description": "(Required) The SID of the Verify service"
+                },
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "Identity",
+                  "description": "(Required) "
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/x-www-form-urlencoded"
+              }
+            ],
+            "method": "POST",
+            "auth": null,
+            "body": {
+              "mode": "urlencoded",
+              "urlencoded": [
+                {
+                  "disabled": false,
+                  "key": "FriendlyName",
+                  "value": "<string>",
+                  "description": "(Required) "
+                },
+                {
+                  "disabled": false,
+                  "key": "FactorType",
+                  "value": "<string>",
+                  "description": "(Required) "
+                },
+                {
+                  "disabled": false,
+                  "key": "Binding.Alg",
+                  "value": "<string>"
+                },
+                {
+                  "disabled": false,
+                  "key": "Binding.CodeLength",
+                  "value": "<integer>"
+                },
+                {
+                  "disabled": false,
+                  "key": "Binding.TimeStep",
+                  "value": "<integer>"
+                },
+                {
+                  "disabled": false,
+                  "key": "Config.NotificationPlatform",
+                  "value": "<string>"
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "id": "9121b4a0-1e78-48db-b9bd-69537be52264",
+              "name": "Factor created",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "Services",
+                    ":ServiceSid",
+                    "Entities",
+                    ":Identity",
+                    "Factors"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "ServiceSid",
+                      "description": "(Required) The SID of the Verify service"
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "Identity",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "method": "POST",
+                "body": {
+                  "mode": "urlencoded",
+                  "urlencoded": [
+                    {
+                      "disabled": false,
+                      "description": {
+                        "content": "(Required) ",
+                        "type": "text/plain"
+                      },
+                      "key": "FriendlyName",
+                      "value": "<string>"
+                    },
+                    {
+                      "disabled": false,
+                      "description": {
+                        "content": "(Required) ",
+                        "type": "text/plain"
+                      },
+                      "key": "FactorType",
+                      "value": "<string>"
+                    },
+                    {
+                      "disabled": false,
+                      "key": "Binding.Alg",
+                      "value": "<string>"
+                    },
+                    {
+                      "disabled": false,
+                      "key": "Binding.CodeLength",
+                      "value": "<integer>"
+                    },
+                    {
+                      "disabled": false,
+                      "key": "Binding.TimeStep",
+                      "value": "<integer>"
+                    },
+                    {
+                      "disabled": false,
+                      "key": "Config.NotificationPlatform",
+                      "value": "<string>"
+                    }
+                  ]
+                }
+              },
+              "status": "Created",
+              "code": 201,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "type": "string",
+      "value": "https://accounts.twilio.com",
+      "key": "baseUrl"
+    }
+  ],
+  "info": {
+    "_postman_id": "0a7d561d-1b50-4dc4-a237-6358a3dcc615",
+    "name": "Twilio - Accounts A2p Factors API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "This is the public Twilio REST API.\n\nContact Support:\n Name: Twilio Support\n Email: support@twilio.com",
+      "type": "text/plain"
+    }
+  }
+}

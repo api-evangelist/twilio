@@ -1,0 +1,181 @@
+{
+  "item": [
+    {
+      "id": "6121591b-18a1-4d4c-bdab-a85863a9cd06",
+      "name": "ParticipantConversations",
+      "description": {
+        "content": "",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "2c3577de-1ca7-4c45-b592-5a89634f128b",
+          "name": "List Participant Conversation",
+          "request": {
+            "name": "List Participant Conversation",
+            "description": {
+              "content": "Retrieve a list of all Conversations that this Participant belongs to by identity or by address. Only one parameter should be specified.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "v1",
+                "ParticipantConversations"
+              ],
+              "host": [
+                "{{v1-ParticipantConversations-Url}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "Identity",
+                  "value": "<string>",
+                  "description": "A unique string identifier for the conversation participant as [Conversation User](https://www.twilio.com/docs/conversations/api/user-resource). This parameter is non-null if (and only if) the participant is using the Conversations SDK to communicate. Limited to 256 characters."
+                },
+                {
+                  "disabled": false,
+                  "key": "Address",
+                  "value": "<string>",
+                  "description": "A unique string identifier for the conversation participant who's not a Conversation User. This parameter could be found in messaging_binding.address field of Participant resource. It should be url-encoded."
+                },
+                {
+                  "disabled": false,
+                  "key": "PageSize",
+                  "value": "<integer>",
+                  "description": "How many resources to return in each list page. The default is 50, and the maximum is 1000."
+                },
+                {
+                  "disabled": false,
+                  "key": "Page",
+                  "value": "<integer>",
+                  "description": "The page index. This value is simply for client state."
+                },
+                {
+                  "disabled": false,
+                  "key": "PageToken",
+                  "value": "<string>",
+                  "description": "The page token. This is provided by the API."
+                }
+              ],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": {
+              "type": "basic",
+              "basic": [
+                {
+                  "key": "username",
+                  "value": "{{basicAuthUsername}}"
+                },
+                {
+                  "key": "password",
+                  "value": "{{basicAuthPassword}}"
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "id": "c4214a34-4bac-4845-98d2-68998e476ff1",
+              "name": "OK",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "ParticipantConversations"
+                  ],
+                  "host": [
+                    "{{v1-ParticipantConversations-Url}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "Identity",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "Address",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "PageSize",
+                      "value": "<integer>"
+                    },
+                    {
+                      "key": "Page",
+                      "value": "<integer>"
+                    },
+                    {
+                      "key": "PageToken",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: basic",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Basic <credentials>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"conversations\": [\n    {\n      \"account_sid\": \"ACxREDACTEDxEXAMPLExSIDxVALUExxxxxx\",\n      \"chat_service_sid\": \"ISxREDACTEDxEXAMPLExSIDxVALUExxxxxx\",\n      \"participant_sid\": \"MBefF96EDD4a0c785FFB31ae56226B59D5\",\n      \"participant_user_sid\": \"USCa294ACA5FC45dec7A19C38eF456a96B\",\n      \"participant_identity\": \"string\",\n      \"participant_messaging_binding\": {},\n      \"conversation_sid\": \"CHF9DC9DE27BbfDcbc7a4c5BFDCbb710A4\",\n      \"conversation_unique_name\": \"string\",\n      \"conversation_friendly_name\": \"string\",\n      \"conversation_attributes\": \"string\",\n      \"conversation_date_created\": null,\n      \"conversation_date_updated\": null,\n      \"conversation_created_by\": null,\n      \"conversation_state\": \"closed\",\n      \"conversation_timers\": {},\n      \"links\": null\n    },\n    {\n      \"account_sid\": \"ACxREDACTEDxEXAMPLExSIDxVALUExxxxxx\",\n      \"chat_service_sid\": \"ISxREDACTEDxEXAMPLExSIDxVALUExxxxxx\",\n      \"participant_sid\": \"MBbAeAe5F8cEC006ABDabbEecCF3d95b7e\",\n      \"participant_user_sid\": \"USDB61bFbe763d77Fec4c5a9B1bde0e0De\",\n      \"participant_identity\": null,\n      \"participant_messaging_binding\": {},\n      \"conversation_sid\": \"CHd9AecEEce069cc8Bba4540Dc9c6fDdB5\",\n      \"conversation_unique_name\": \"string\",\n      \"conversation_friendly_name\": null,\n      \"conversation_attributes\": null,\n      \"conversation_date_created\": \"2023-08-31T14:21:58.909Z\",\n      \"conversation_date_updated\": null,\n      \"conversation_created_by\": null,\n      \"conversation_state\": \"closed\",\n      \"conversation_timers\": {},\n      \"links\": null\n    }\n  ],\n  \"meta\": {\n    \"first_page_url\": \"https://F.clpx4-lfba3osF4EURcM7iChCtJbN3lX2jbjTj0wF+.+ZEeAKgJmiqStdMc\",\n    \"next_page_url\": null,\n    \"page\": 4136,\n    \"page_size\": 4451,\n    \"previous_page_url\": \"http://AUQrMTLqnmlueFnaEMfF.oipjZp-kfzraH8rgH,A93bdvc1L5wgrtAVgOOq1ZPsJZ2SP743\",\n    \"url\": \"https://OuqMgsREmpBhybbyR.khvMh6dcuI7P-K3nfAgb-Wi+jhHd\",\n    \"key\": \"string\"\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "type": "string",
+      "value": "https://accounts.twilio.com",
+      "key": "baseUrl"
+    },
+    {
+      "type": "string",
+      "value": "https://conversations.twilio.com",
+      "key": "v1-ParticipantConversations-Url"
+    }
+  ],
+  "info": {
+    "_postman_id": "e157b8a9-9be2-4a47-860a-7b9d194999db",
+    "name": "Twilio - Accounts A2p Participant Conversations API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "This is the public Twilio REST API.\n\nContact Support:\n Name: Twilio Support\n Email: support@twilio.com",
+      "type": "text/plain"
+    }
+  }
+}

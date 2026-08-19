@@ -1,4 +1,4 @@
-openapi: 3.0.1
+openapi: 3.2.0
 info:
   title: Twilio - Accounts A2p Configs API
   description: This is the public Twilio REST API.
@@ -160,18 +160,6 @@ paths:
       - Preview
 components:
   schemas:
-    CreateAccountConfigRequest:
-      type: object
-      required:
-      - Key
-      - Value
-      properties:
-        Key:
-          type: string
-          description: The config key; up to 100 characters.
-        Value:
-          type: string
-          description: The config value; up to 4096 characters.
     UpdateAccountConfigRequest:
       type: object
       required:
@@ -180,26 +168,6 @@ components:
         Value:
           type: string
           description: The config value; up to 4096 characters.
-    microvisor.v1.account_config:
-      type: object
-      properties:
-        key:
-          type: string
-          nullable: true
-          description: The config key; up to 100 characters.
-        date_updated:
-          type: string
-          format: date-time
-          nullable: true
-        value:
-          type: string
-          nullable: true
-          description: The config value; up to 4096 characters.
-        url:
-          type: string
-          format: uri
-          nullable: true
-          description: The absolute URL of the Config.
     ListAccountConfigResponse:
       type: object
       properties:
@@ -214,22 +182,60 @@ components:
               type: string
               format: uri
             next_page_url:
-              type: string
+              type:
+              - string
+              - 'null'
               format: uri
-              nullable: true
             page:
               type: integer
             page_size:
               type: integer
             previous_page_url:
-              type: string
+              type:
+              - string
+              - 'null'
               format: uri
-              nullable: true
             url:
               type: string
               format: uri
             key:
               type: string
+    CreateAccountConfigRequest:
+      type: object
+      required:
+      - Key
+      - Value
+      properties:
+        Key:
+          type: string
+          description: The config key; up to 100 characters.
+        Value:
+          type: string
+          description: The config value; up to 4096 characters.
+    microvisor.v1.account_config:
+      type: object
+      properties:
+        key:
+          type:
+          - string
+          - 'null'
+          description: The config key; up to 100 characters.
+        date_updated:
+          type:
+          - string
+          - 'null'
+          format: date-time
+        value:
+          type:
+          - string
+          - 'null'
+          description: The config value; up to 4096 characters.
+        url:
+          type:
+          - string
+          - 'null'
+          format: uri
+          description: The absolute URL of the Config.
   securitySchemes:
     accountSid_authToken:
       type: http

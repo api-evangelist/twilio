@@ -1,4 +1,4 @@
-openapi: 3.0.1
+openapi: 3.2.0
 info:
   title: Twilio - Accounts A2p Devices API
   description: This is the public Twilio REST API.
@@ -490,59 +490,78 @@ paths:
       - Preview
 components:
   schemas:
-    microvisor.v1.device.device_secret:
+    CreateDeviceSecretRequest:
+      type: object
+      required:
+      - Key
+      - Value
+      properties:
+        Key:
+          type: string
+          description: The secret key; up to 100 characters.
+        Value:
+          type: string
+          description: The secret value; up to 4096 characters.
+    microvisor.v1.device:
       type: object
       properties:
-        device_sid:
-          type: string
+        sid:
+          type:
+          - string
+          - 'null'
           minLength: 34
           maxLength: 34
           pattern: ^UV[0-9a-fA-F]{32}$
-          nullable: true
-          description: A 34-character string that uniquely identifies the parent Device.
-        key:
-          type: string
-          nullable: true
-          description: The secret key; up to 100 characters.
-        date_rotated:
-          type: string
+          description: A 34-character string that uniquely identifies this Device.
+        unique_name:
+          type:
+          - string
+          - 'null'
+          description: A developer-defined string that uniquely identifies the Device. This value must be unique for all Devices on this Account. The `unique_name` value may be used as an alternative to the `sid` in the URL path to address the resource.
+        account_sid:
+          type:
+          - string
+          - 'null'
+          minLength: 34
+          maxLength: 34
+          pattern: ^AC[0-9a-fA-F]{32}$
+          description: The unique SID identifier of the Account.
+        app:
+          description: Information about the target App and the App reported by this Device. Contains the properties `target_sid`, `date_targeted`, `update_status` (one of `up-to-date`, `pending` and `error`), `update_error_code`, `reported_sid` and `date_reported`.
+        logging:
+          description: Object specifying whether application logging is enabled for this Device. Contains the properties `enabled` and `date_expires`.
+        date_created:
+          type:
+          - string
+          - 'null'
           format: date-time
-          nullable: true
+          description: The date that this Device was created, given in [ISO 8601](https://en.wikipedia.org/wiki/ISO_8601) format.
+        date_updated:
+          type:
+          - string
+          - 'null'
+          format: date-time
+          description: The date that this Device was last updated, given in [ISO 8601](https://en.wikipedia.org/wiki/ISO_8601) format.
         url:
-          type: string
+          type:
+          - string
+          - 'null'
           format: uri
-          nullable: true
-          description: The absolute URL of the Secret.
-    ListDeviceResponse:
+          description: The URL of this resource.
+        links:
+          type:
+          - object
+          - 'null'
+          format: uri-map
+          description: The absolute URLs of related resources.
+    UpdateDeviceSecretRequest:
       type: object
+      required:
+      - Value
       properties:
-        devices:
-          type: array
-          items:
-            $ref: '#/components/schemas/microvisor.v1.device'
-        meta:
-          type: object
-          properties:
-            first_page_url:
-              type: string
-              format: uri
-            next_page_url:
-              type: string
-              format: uri
-              nullable: true
-            page:
-              type: integer
-            page_size:
-              type: integer
-            previous_page_url:
-              type: string
-              format: uri
-              nullable: true
-            url:
-              type: string
-              format: uri
-            key:
-              type: string
+        Value:
+          type: string
+          description: The secret value; up to 4096 characters.
     ListDeviceConfigResponse:
       type: object
       properties:
@@ -557,85 +576,100 @@ components:
               type: string
               format: uri
             next_page_url:
-              type: string
+              type:
+              - string
+              - 'null'
               format: uri
-              nullable: true
             page:
               type: integer
             page_size:
               type: integer
             previous_page_url:
-              type: string
+              type:
+              - string
+              - 'null'
               format: uri
-              nullable: true
             url:
               type: string
               format: uri
             key:
               type: string
-    microvisor.v1.device:
+    ListDeviceSecretResponse:
       type: object
       properties:
-        sid:
-          type: string
-          minLength: 34
-          maxLength: 34
-          pattern: ^UV[0-9a-fA-F]{32}$
-          nullable: true
-          description: A 34-character string that uniquely identifies this Device.
-        unique_name:
-          type: string
-          nullable: true
-          description: A developer-defined string that uniquely identifies the Device. This value must be unique for all Devices on this Account. The `unique_name` value may be used as an alternative to the `sid` in the URL path to address the resource.
-        account_sid:
-          type: string
-          minLength: 34
-          maxLength: 34
-          pattern: ^AC[0-9a-fA-F]{32}$
-          nullable: true
-          description: The unique SID identifier of the Account.
-        app:
-          nullable: true
-          description: Information about the target App and the App reported by this Device. Contains the properties `target_sid`, `date_targeted`, `update_status` (one of `up-to-date`, `pending` and `error`), `update_error_code`, `reported_sid` and `date_reported`.
-        logging:
-          nullable: true
-          description: Object specifying whether application logging is enabled for this Device. Contains the properties `enabled` and `date_expires`.
-        date_created:
-          type: string
-          format: date-time
-          nullable: true
-          description: The date that this Device was created, given in [ISO 8601](https://en.wikipedia.org/wiki/ISO_8601) format.
-        date_updated:
-          type: string
-          format: date-time
-          nullable: true
-          description: The date that this Device was last updated, given in [ISO 8601](https://en.wikipedia.org/wiki/ISO_8601) format.
-        url:
-          type: string
-          format: uri
-          nullable: true
-          description: The URL of this resource.
-        links:
+        secrets:
+          type: array
+          items:
+            $ref: '#/components/schemas/microvisor.v1.device.device_secret'
+        meta:
           type: object
-          format: uri-map
-          nullable: true
-          description: The absolute URLs of related resources.
-    UpdateDeviceSecretRequest:
+          properties:
+            first_page_url:
+              type: string
+              format: uri
+            next_page_url:
+              type:
+              - string
+              - 'null'
+              format: uri
+            page:
+              type: integer
+            page_size:
+              type: integer
+            previous_page_url:
+              type:
+              - string
+              - 'null'
+              format: uri
+            url:
+              type: string
+              format: uri
+            key:
+              type: string
+    CreateDeviceConfigRequest:
       type: object
       required:
+      - Key
       - Value
       properties:
-        Value:
+        Key:
           type: string
-          description: The secret value; up to 4096 characters.
-    UpdateDeviceConfigRequest:
-      type: object
-      required:
-      - Value
-      properties:
+          description: The config key; up to 100 characters.
         Value:
           type: string
           description: The config value; up to 4096 characters.
+    ListDeviceResponse:
+      type: object
+      properties:
+        devices:
+          type: array
+          items:
+            $ref: '#/components/schemas/microvisor.v1.device'
+        meta:
+          type: object
+          properties:
+            first_page_url:
+              type: string
+              format: uri
+            next_page_url:
+              type:
+              - string
+              - 'null'
+              format: uri
+            page:
+              type: integer
+            page_size:
+              type: integer
+            previous_page_url:
+              type:
+              - string
+              - 'null'
+              format: uri
+            url:
+              type: string
+              format: uri
+            key:
+              type: string
     UpdateDeviceRequest:
       type: object
       properties:
@@ -651,87 +685,73 @@ components:
         RestartApp:
           type: boolean
           description: Set to true to restart the App running on the Device.
-    CreateDeviceConfigRequest:
-      type: object
-      required:
-      - Key
-      - Value
-      properties:
-        Key:
-          type: string
-          description: The config key; up to 100 characters.
-        Value:
-          type: string
-          description: The config value; up to 4096 characters.
-    ListDeviceSecretResponse:
-      type: object
-      properties:
-        secrets:
-          type: array
-          items:
-            $ref: '#/components/schemas/microvisor.v1.device.device_secret'
-        meta:
-          type: object
-          properties:
-            first_page_url:
-              type: string
-              format: uri
-            next_page_url:
-              type: string
-              format: uri
-              nullable: true
-            page:
-              type: integer
-            page_size:
-              type: integer
-            previous_page_url:
-              type: string
-              format: uri
-              nullable: true
-            url:
-              type: string
-              format: uri
-            key:
-              type: string
     microvisor.v1.device.device_config:
       type: object
       properties:
         device_sid:
-          type: string
+          type:
+          - string
+          - 'null'
           minLength: 34
           maxLength: 34
           pattern: ^UV[0-9a-fA-F]{32}$
-          nullable: true
           description: A 34-character string that uniquely identifies the parent Device.
         key:
-          type: string
-          nullable: true
+          type:
+          - string
+          - 'null'
           description: The config key; up to 100 characters.
         value:
-          type: string
-          nullable: true
+          type:
+          - string
+          - 'null'
           description: The config value; up to 4096 characters.
         date_updated:
-          type: string
+          type:
+          - string
+          - 'null'
           format: date-time
-          nullable: true
         url:
-          type: string
+          type:
+          - string
+          - 'null'
           format: uri
-          nullable: true
           description: The absolute URL of the Config.
-    CreateDeviceSecretRequest:
+    UpdateDeviceConfigRequest:
       type: object
       required:
-      - Key
       - Value
       properties:
-        Key:
-          type: string
-          description: The secret key; up to 100 characters.
         Value:
           type: string
-          description: The secret value; up to 4096 characters.
+          description: The config value; up to 4096 characters.
+    microvisor.v1.device.device_secret:
+      type: object
+      properties:
+        device_sid:
+          type:
+          - string
+          - 'null'
+          minLength: 34
+          maxLength: 34
+          pattern: ^UV[0-9a-fA-F]{32}$
+          description: A 34-character string that uniquely identifies the parent Device.
+        key:
+          type:
+          - string
+          - 'null'
+          description: The secret key; up to 100 characters.
+        date_rotated:
+          type:
+          - string
+          - 'null'
+          format: date-time
+        url:
+          type:
+          - string
+          - 'null'
+          format: uri
+          description: The absolute URL of the Secret.
   securitySchemes:
     accountSid_authToken:
       type: http

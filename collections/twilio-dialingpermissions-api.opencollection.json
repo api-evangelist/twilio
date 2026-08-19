@@ -1,0 +1,176 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Twilio - Accounts A2p Dialing Permissions API",
+    "version": "1.52.0"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "DialingPermissions",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "FetchDialingPermissionsCountry",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://accounts.twilio.com/v1/DialingPermissions/Countries/:IsoCode",
+            "params": [
+              {
+                "name": "IsoCode",
+                "value": "",
+                "type": "path",
+                "description": "The [ISO country code](https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2) of the DialingPermissions Country resource to fetch"
+              }
+            ],
+            "auth": {
+              "type": "basic",
+              "username": "{{username}}",
+              "password": "{{password}}"
+            }
+          },
+          "docs": "Retrieve voice dialing country permissions identified by the given ISO country code"
+        },
+        {
+          "info": {
+            "name": "ListDialingPermissionsCountry",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://accounts.twilio.com/v1/DialingPermissions/Countries",
+            "params": [
+              {
+                "name": "IsoCode",
+                "value": "",
+                "type": "query",
+                "description": "Filter to retrieve the country permissions by specifying the [ISO country code](https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2)"
+              },
+              {
+                "name": "Continent",
+                "value": "",
+                "type": "query",
+                "description": "Filter to retrieve the country permissions by specifying the continent"
+              },
+              {
+                "name": "CountryCode",
+                "value": "",
+                "type": "query",
+                "description": "Filter the results by specified [country codes](https://www.itu.int/itudoc/itu-t/ob-lists/icc/e164_763.html)"
+              },
+              {
+                "name": "LowRiskNumbersEnabled",
+                "value": "",
+                "type": "query",
+                "description": "Filter to retrieve the country permissions with dialing to low-risk numbers enabled. Can be: `true` or `false`."
+              },
+              {
+                "name": "HighRiskSpecialNumbersEnabled",
+                "value": "",
+                "type": "query",
+                "description": "Filter to retrieve the country permissions with dialing to high-risk special service numbers enabled. Can be: `true` or `false`"
+              },
+              {
+                "name": "HighRiskTollfraudNumbersEnabled",
+                "value": "",
+                "type": "query",
+                "description": "Filter to retrieve the country permissions with dialing to high-risk [toll fraud](https://www.twilio.com/blog/how-to-protect-your-account-from-toll-fraud-with-voice-dialing-geo-permissions-html) numbers enabled. Can be: `true` or `false`."
+              },
+              {
+                "name": "PageSize",
+                "value": "",
+                "type": "query",
+                "description": "How many resources to return in each list page. The default is 50, and the maximum is 1000."
+              },
+              {
+                "name": "Page",
+                "value": "",
+                "type": "query",
+                "description": "The page index. This value is simply for client state."
+              },
+              {
+                "name": "PageToken",
+                "value": "",
+                "type": "query",
+                "description": "The page token. This is provided by the API."
+              }
+            ],
+            "auth": {
+              "type": "basic",
+              "username": "{{username}}",
+              "password": "{{password}}"
+            }
+          },
+          "docs": "Retrieve all voice dialing country permissions for this account"
+        },
+        {
+          "info": {
+            "name": "CreateDialingPermissionsCountryBulkUpdate",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://accounts.twilio.com/v1/DialingPermissions/BulkCountryUpdates",
+            "body": {
+              "type": "form-urlencoded",
+              "data": []
+            },
+            "auth": {
+              "type": "basic",
+              "username": "{{username}}",
+              "password": "{{password}}"
+            }
+          },
+          "docs": "Create a bulk update request to change voice dialing country permissions of one or more countries identified by the corresponding [ISO country code](https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2)"
+        },
+        {
+          "info": {
+            "name": "ListDialingPermissionsHrsPrefixes",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://accounts.twilio.com/v1/DialingPermissions/Countries/:IsoCode/HighRiskSpecialPrefixes",
+            "params": [
+              {
+                "name": "IsoCode",
+                "value": "",
+                "type": "path",
+                "description": "The [ISO 3166-1 country code](https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2) to identify the country permissions from which high-risk special service number prefixes are fetched"
+              },
+              {
+                "name": "PageSize",
+                "value": "",
+                "type": "query",
+                "description": "How many resources to return in each list page. The default is 50, and the maximum is 1000."
+              },
+              {
+                "name": "Page",
+                "value": "",
+                "type": "query",
+                "description": "The page index. This value is simply for client state."
+              },
+              {
+                "name": "PageToken",
+                "value": "",
+                "type": "query",
+                "description": "The page token. This is provided by the API."
+              }
+            ],
+            "auth": {
+              "type": "basic",
+              "username": "{{username}}",
+              "password": "{{password}}"
+            }
+          },
+          "docs": "Fetch the high-risk special services prefixes from the country resource corresponding to the [ISO country code](https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2)"
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

@@ -1,4 +1,4 @@
-openapi: 3.0.1
+openapi: 3.2.0
 info:
   title: Twilio - Accounts A2p Templates API
   description: This is the public Twilio REST API.
@@ -212,87 +212,18 @@ paths:
       - GA
 components:
   schemas:
-    ListVerificationTemplateResponse:
+    TemplateList:
       type: object
       properties:
-        templates:
+        result:
           type: array
           items:
-            $ref: '#/components/schemas/verify.v2.verification_template'
-        meta:
+            $ref: '#/components/schemas/Template'
+        _metadata:
           type: object
           properties:
-            first_page_url:
-              type: string
-              format: uri
-            next_page_url:
-              type: string
-              format: uri
-              nullable: true
-            page:
+            count:
               type: integer
-            page_size:
-              type: integer
-            previous_page_url:
-              type: string
-              format: uri
-              nullable: true
-            url:
-              type: string
-              format: uri
-            key:
-              type: string
-    Template:
-      type: object
-      properties:
-        id:
-          type: string
-          format: uuid
-        name:
-          type: string
-        generation:
-          type: string
-          enum:
-          - legacy
-          - dynamic
-        updated_at:
-          type: string
-          format: date-time
-        versions:
-          type: array
-          items:
-            $ref: '#/components/schemas/TemplateVersion'
-    CreateTemplateVersionRequest:
-      type: object
-      required:
-      - name
-      - subject
-      properties:
-        name:
-          type: string
-          maxLength: 100
-        subject:
-          type: string
-        html_content:
-          type: string
-        plain_content:
-          type: string
-        active:
-          type: integer
-          enum:
-          - 0
-          - 1
-        editor:
-          type: string
-          enum:
-          - code
-          - design
-        generate_plain_content:
-          type: boolean
-          default: true
-        test_data:
-          type: string
-          description: JSON test data for template preview
     TemplateVersion:
       type: object
       properties:
@@ -325,48 +256,122 @@ components:
         updated_at:
           type: string
           format: date-time
+    Template:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        name:
+          type: string
+        generation:
+          type: string
+          enum:
+          - legacy
+          - dynamic
+        updated_at:
+          type: string
+          format: date-time
+        versions:
+          type: array
+          items:
+            $ref: '#/components/schemas/TemplateVersion'
     verify.v2.verification_template:
       type: object
       properties:
         sid:
-          type: string
+          type:
+          - string
+          - 'null'
           minLength: 34
           maxLength: 34
           pattern: ^HJ[0-9a-fA-F]{32}$
-          nullable: true
           description: A 34 character string that uniquely identifies a Verification Template.
         account_sid:
-          type: string
+          type:
+          - string
+          - 'null'
           minLength: 34
           maxLength: 34
           pattern: ^AC[0-9a-fA-F]{32}$
-          nullable: true
           description: The unique SID identifier of the Account.
         friendly_name:
-          type: string
-          nullable: true
+          type:
+          - string
+          - 'null'
           description: A descriptive string that you create to describe a Template. It can be up to 32 characters long.
         channels:
-          type: array
+          type:
+          - array
+          - 'null'
           items:
             type: string
-          nullable: true
           description: 'A list of channels that support the Template. Can include: sms, voice.'
         translations:
-          nullable: true
           description: An object that contains the different translations of the template. Every translation is identified by the language short name and contains its respective information as the approval status, text and created/modified date.
-    TemplateList:
+    CreateTemplateVersionRequest:
+      type: object
+      required:
+      - name
+      - subject
+      properties:
+        name:
+          type: string
+          maxLength: 100
+        subject:
+          type: string
+        html_content:
+          type: string
+        plain_content:
+          type: string
+        active:
+          type: integer
+          enum:
+          - 0
+          - 1
+        editor:
+          type: string
+          enum:
+          - code
+          - design
+        generate_plain_content:
+          type: boolean
+          default: true
+        test_data:
+          type: string
+          description: JSON test data for template preview
+    ListVerificationTemplateResponse:
       type: object
       properties:
-        result:
+        templates:
           type: array
           items:
-            $ref: '#/components/schemas/Template'
-        _metadata:
+            $ref: '#/components/schemas/verify.v2.verification_template'
+        meta:
           type: object
           properties:
-            count:
+            first_page_url:
+              type: string
+              format: uri
+            next_page_url:
+              type:
+              - string
+              - 'null'
+              format: uri
+            page:
               type: integer
+            page_size:
+              type: integer
+            previous_page_url:
+              type:
+              - string
+              - 'null'
+              format: uri
+            url:
+              type: string
+              format: uri
+            key:
+              type: string
   securitySchemes:
     accountSid_authToken:
       type: http

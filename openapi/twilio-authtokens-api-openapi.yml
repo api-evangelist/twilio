@@ -1,6 +1,6 @@
-openapi: 3.0.1
+openapi: 3.2.0
 info:
-  title: Twilio - Accounts A2p AuthTokens API
+  title: Twilio - Accounts A2p Auth Tokens API
   description: This is the public Twilio REST API.
   termsOfService: https://www.twilio.com/legal/tos
   contact:
@@ -84,71 +84,81 @@ paths:
       - GA
 components:
   schemas:
-    accounts.v1.secondary_auth_token:
-      type: object
-      properties:
-        account_sid:
-          type: string
-          minLength: 34
-          maxLength: 34
-          pattern: ^AC[0-9a-fA-F]{32}$
-          nullable: true
-          description: The SID of the [Account](https://www.twilio.com/docs/iam/api/account) that the secondary Auth Token was created for.
-        date_created:
-          type: string
-          format: date-time
-          nullable: true
-          description: The date and time in UTC when the resource was created specified in [ISO 8601](https://en.wikipedia.org/wiki/ISO_8601) format.
-        date_updated:
-          type: string
-          format: date-time
-          nullable: true
-          description: The date and time in UTC when the resource was last updated specified in [ISO 8601](https://en.wikipedia.org/wiki/ISO_8601) format.
-        secondary_auth_token:
-          type: string
-          nullable: true
-          description: The generated secondary Auth Token that can be used to authenticate future API requests.
-          x-twilio:
-            pii:
-              handling: sensitive
-              deleteSla: 0
-        url:
-          type: string
-          format: uri
-          nullable: true
-          description: The URI for this resource, relative to `https://accounts.twilio.com`
     accounts.v1.auth_token_promotion:
       type: object
       properties:
         account_sid:
-          type: string
+          type:
+          - string
+          - 'null'
           minLength: 34
           maxLength: 34
           pattern: ^AC[0-9a-fA-F]{32}$
-          nullable: true
           description: The SID of the [Account](https://www.twilio.com/docs/iam/api/account) that the secondary Auth Token was created for.
         auth_token:
-          type: string
-          nullable: true
+          type:
+          - string
+          - 'null'
           description: The promoted Auth Token that must be used to authenticate future API requests.
           x-twilio:
             pii:
               handling: sensitive
               deleteSla: 0
         date_created:
-          type: string
+          type:
+          - string
+          - 'null'
           format: date-time
-          nullable: true
           description: The date and time in UTC when the resource was created specified in [ISO 8601](https://en.wikipedia.org/wiki/ISO_8601) format.
         date_updated:
-          type: string
+          type:
+          - string
+          - 'null'
           format: date-time
-          nullable: true
           description: The date and time in GMT when the resource was last updated specified in [ISO 8601](https://en.wikipedia.org/wiki/ISO_8601) format.
         url:
-          type: string
+          type:
+          - string
+          - 'null'
           format: uri
-          nullable: true
+          description: The URI for this resource, relative to `https://accounts.twilio.com`
+    accounts.v1.secondary_auth_token:
+      type: object
+      properties:
+        account_sid:
+          type:
+          - string
+          - 'null'
+          minLength: 34
+          maxLength: 34
+          pattern: ^AC[0-9a-fA-F]{32}$
+          description: The SID of the [Account](https://www.twilio.com/docs/iam/api/account) that the secondary Auth Token was created for.
+        date_created:
+          type:
+          - string
+          - 'null'
+          format: date-time
+          description: The date and time in UTC when the resource was created specified in [ISO 8601](https://en.wikipedia.org/wiki/ISO_8601) format.
+        date_updated:
+          type:
+          - string
+          - 'null'
+          format: date-time
+          description: The date and time in UTC when the resource was last updated specified in [ISO 8601](https://en.wikipedia.org/wiki/ISO_8601) format.
+        secondary_auth_token:
+          type:
+          - string
+          - 'null'
+          description: The generated secondary Auth Token that can be used to authenticate future API requests.
+          x-twilio:
+            pii:
+              handling: sensitive
+              deleteSla: 0
+        url:
+          type:
+          - string
+          - 'null'
+          format: uri
           description: The URI for this resource, relative to `https://accounts.twilio.com`
   securitySchemes:
     accountSid_authToken:

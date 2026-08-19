@@ -1,0 +1,493 @@
+{
+  "item": [
+    {
+      "id": "a7e67d01-109e-4a76-b114-d4c5229e3d5e",
+      "name": "Apps",
+      "description": {
+        "content": "",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "d727ee3d-d42f-489f-9417-1644f1986f96",
+          "name": "List App",
+          "request": {
+            "name": "List App",
+            "description": {
+              "content": "Retrieve a list of all Apps for an Account.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "v1",
+                "Apps"
+              ],
+              "host": [
+                "{{v1-Apps-Url}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "PageSize",
+                  "value": "<integer>",
+                  "description": "How many resources to return in each list page. The default is 50, and the maximum is 1000."
+                },
+                {
+                  "disabled": false,
+                  "key": "Page",
+                  "value": "<integer>",
+                  "description": "The page index. This value is simply for client state."
+                },
+                {
+                  "disabled": false,
+                  "key": "PageToken",
+                  "value": "<string>",
+                  "description": "The page token. This is provided by the API."
+                }
+              ],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": {
+              "type": "basic",
+              "basic": [
+                {
+                  "key": "username",
+                  "value": "{{basicAuthUsername}}"
+                },
+                {
+                  "key": "password",
+                  "value": "{{basicAuthPassword}}"
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "id": "dd682578-c78a-4050-a093-62f46fb63b71",
+              "name": "OK",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "Apps"
+                  ],
+                  "host": [
+                    "{{v1-Apps-Url}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "PageSize",
+                      "value": "<integer>"
+                    },
+                    {
+                      "key": "Page",
+                      "value": "<integer>"
+                    },
+                    {
+                      "key": "PageToken",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: basic",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Basic <credentials>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"apps\": [\n    {\n      \"sid\": \"KAfed36FF0c1e3EDE26746bB6B28dB21a5\",\n      \"account_sid\": \"ACxREDACTEDxEXAMPLExSIDxVALUExxxxxx\",\n      \"hash\": \"string\",\n      \"unique_name\": null,\n      \"date_created\": \"1982-07-04T16:08:20.596Z\",\n      \"date_updated\": \"1993-08-02T07:12:05.889Z\",\n      \"url\": \"http://CTHYdZWJpENkIQQcmxBw.hwxaEbxRYuO-pPO0QG\",\n      \"links\": {}\n    },\n    {\n      \"sid\": \"KA6CEC1B4CABd7f7b369b5bff005e7716c\",\n      \"account_sid\": \"ACxREDACTEDxEXAMPLExSIDxVALUExxxxxx\",\n      \"hash\": null,\n      \"unique_name\": \"string\",\n      \"date_created\": \"2001-04-18T00:21:05.750Z\",\n      \"date_updated\": null,\n      \"url\": \"https://yupLGpSNagGdskEkRDFElHrRdKETE.azohkr9c.MXatpO-2lThXhK+yqX67dtAf0-nDhXazrfoaL4YchPDlkm\",\n      \"links\": null\n    }\n  ],\n  \"meta\": {\n    \"first_page_url\": \"http://UWNgYPpSGB.fhHszxaASYoYtl-NrwO.IAvU\",\n    \"next_page_url\": \"https://UPGMoRluFHtLjUxLiin.isgrVK3k+X6iOC2nkLT8j66A5bCYAk.Kb0WpCgTZQfHua0B6vdRtArLjjEPsvsNkf8QCVq\",\n    \"page\": 1954,\n    \"page_size\": 8865,\n    \"previous_page_url\": null,\n    \"url\": \"https://cvmXQRqWwpimjYYVCrESqakLLTQFwp.xqfwx-.pmaedZtjYtSH1m9AplxZI+pOd9FOfa9jNAcDGNN9iHQuwILNXtNB8aUd9ZjgPM\",\n    \"key\": \"string\"\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "44c234cb-86c2-423c-8f99-d6c7241ba88f",
+          "name": "Fetch App",
+          "request": {
+            "name": "Fetch App",
+            "description": {
+              "content": "Fetch a specific App.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "v1",
+                "Apps",
+                ":Sid"
+              ],
+              "host": [
+                "{{v1-Apps-Sid-Url}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "Sid",
+                  "description": "(Required) A 34-character string that uniquely identifies this App."
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": {
+              "type": "basic",
+              "basic": [
+                {
+                  "key": "username",
+                  "value": "{{basicAuthUsername}}"
+                },
+                {
+                  "key": "password",
+                  "value": "{{basicAuthPassword}}"
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "id": "76354861-bf27-43af-9672-87dd01dda1f4",
+              "name": "OK",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "Apps",
+                    ":Sid"
+                  ],
+                  "host": [
+                    "{{v1-Apps-Sid-Url}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "Sid",
+                      "description": "(Required) A 34-character string that uniquely identifies this App."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: basic",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Basic <credentials>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"sid\": \"KA7Ab5E0d89Fa199e35c2cB43FEB5bEdd8\",\n  \"account_sid\": \"ACxREDACTEDxEXAMPLExSIDxVALUExxxxxx\",\n  \"hash\": \"string\",\n  \"unique_name\": \"string\",\n  \"date_created\": \"1998-11-27T07:15:21.039Z\",\n  \"date_updated\": null,\n  \"url\": null,\n  \"links\": null\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "0a57c33f-5a83-4cfc-a9f7-b4071cc7a12c",
+          "name": "Delete App",
+          "request": {
+            "name": "Delete App",
+            "description": {
+              "content": "Delete a specific App.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "v1",
+                "Apps",
+                ":Sid"
+              ],
+              "host": [
+                "{{v1-Apps-Sid-Url}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "Sid",
+                  "description": "(Required) A 34-character string that uniquely identifies this App."
+                }
+              ]
+            },
+            "method": "DELETE",
+            "auth": {
+              "type": "basic",
+              "basic": [
+                {
+                  "key": "username",
+                  "value": "{{basicAuthUsername}}"
+                },
+                {
+                  "key": "password",
+                  "value": "{{basicAuthPassword}}"
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "id": "f91c7053-63f6-4432-9c1b-5d023d2e7b17",
+              "name": "The resource was deleted successfully.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "Apps",
+                    ":Sid"
+                  ],
+                  "host": [
+                    "{{v1-Apps-Sid-Url}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "Sid",
+                      "description": "(Required) A 34-character string that uniquely identifies this App."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: basic",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Basic <credentials>"
+                  }
+                ],
+                "method": "DELETE",
+                "body": {}
+              },
+              "status": "No Content",
+              "code": 204,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "a5b90a50-1e53-4f2b-9d5f-0e0df7a14c73",
+          "name": "Fetch App Manifest",
+          "request": {
+            "name": "Fetch App Manifest",
+            "description": {
+              "content": "Retrieve the Manifest for an App.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "v1",
+                "Apps",
+                ":AppSid",
+                "Manifest"
+              ],
+              "host": [
+                "{{v1-Apps-AppSid-Manifest-Url}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "AppSid",
+                  "description": "(Required) A 34-character string that uniquely identifies this App."
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": {
+              "type": "basic",
+              "basic": [
+                {
+                  "key": "username",
+                  "value": "{{basicAuthUsername}}"
+                },
+                {
+                  "key": "password",
+                  "value": "{{basicAuthPassword}}"
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "id": "5cf9592b-aa83-427f-9598-d4f902f1a740",
+              "name": "OK",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "Apps",
+                    ":AppSid",
+                    "Manifest"
+                  ],
+                  "host": [
+                    "{{v1-Apps-AppSid-Manifest-Url}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "AppSid",
+                      "description": "(Required) A 34-character string that uniquely identifies this App."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: basic",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Basic <credentials>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"app_sid\": \"KA65dBF1FEBA59f7e596DC4409BA650e0D\",\n  \"hash\": \"string\",\n  \"encoded_bytes\": \"string\",\n  \"url\": \"http://pln.povPusXM2zP4TJWst7uwzZPxdtouFm4RF2hQazrk7rllWbqCBAufP+75Mh4EeGiAfq,WoC\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "type": "string",
+      "value": "https://accounts.twilio.com",
+      "key": "baseUrl"
+    },
+    {
+      "type": "string",
+      "value": "https://microvisor.twilio.com",
+      "key": "v1-Apps-Url"
+    },
+    {
+      "type": "string",
+      "value": "https://microvisor.twilio.com",
+      "key": "v1-Apps-Sid-Url"
+    },
+    {
+      "type": "string",
+      "value": "https://microvisor.twilio.com",
+      "key": "v1-Apps-AppSid-Manifest-Url"
+    }
+  ],
+  "info": {
+    "_postman_id": "7bade345-c675-4372-8eec-493a326ebf2b",
+    "name": "Twilio - Accounts A2p Apps API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "This is the public Twilio REST API.\n\nContact Support:\n Name: Twilio Support\n Email: support@twilio.com",
+      "type": "text/plain"
+    }
+  }
+}

@@ -1,0 +1,306 @@
+{
+  "item": [
+    {
+      "id": "41c09e4c-ce8e-4fba-a95e-2bef3e1093b1",
+      "name": "Alerts",
+      "description": {
+        "content": "",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "8f9f1660-9c5c-4329-9ad2-ae00b34e4ca9",
+          "name": "Fetch Alert",
+          "request": {
+            "name": "Fetch Alert",
+            "description": {
+              "content": "",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "v1",
+                "Alerts",
+                ":Sid"
+              ],
+              "host": [
+                "{{v1-Alerts-Sid-Url}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "Sid",
+                  "description": "(Required) The SID of the Alert resource to fetch."
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": {
+              "type": "basic",
+              "basic": [
+                {
+                  "key": "username",
+                  "value": "{{basicAuthUsername}}"
+                },
+                {
+                  "key": "password",
+                  "value": "{{basicAuthPassword}}"
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "id": "4a9bdd3f-fdb8-4adb-99ae-7f44a42ae8d4",
+              "name": "OK",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "Alerts",
+                    ":Sid"
+                  ],
+                  "host": [
+                    "{{v1-Alerts-Sid-Url}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "Sid",
+                      "description": "(Required) The SID of the Alert resource to fetch."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: basic",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Basic <credentials>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"account_sid\": \"ACxREDACTEDxEXAMPLExSIDxVALUExxxxxx\",\n  \"alert_text\": null,\n  \"api_version\": null,\n  \"date_created\": \"1980-05-19T19:36:11.840Z\",\n  \"date_generated\": null,\n  \"date_updated\": null,\n  \"error_code\": \"string\",\n  \"log_level\": null,\n  \"more_info\": null,\n  \"request_method\": \"PATCH\",\n  \"request_url\": null,\n  \"request_variables\": null,\n  \"resource_sid\": \"vAeaAd29ED1333EF5AbFb9c6cE7Ae893a3\",\n  \"response_body\": \"string\",\n  \"response_headers\": \"string\",\n  \"sid\": \"NO9fdFEb6bCE22BBfc85607bC683C73363\",\n  \"url\": \"https://VtXXFCLxeUFDPFzkVWUMYcbKB.nphBNGAXuwofpRT3tjZfSFL3OJ.\",\n  \"request_headers\": null,\n  \"service_sid\": \"rs7238e3adfDB65BcbA2560fFf488823ab\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "55036454-3a10-4e19-815c-0df5e05f9b06",
+          "name": "List Alert",
+          "request": {
+            "name": "List Alert",
+            "description": {
+              "content": "",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "v1",
+                "Alerts"
+              ],
+              "host": [
+                "{{v1-Alerts-Url}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "LogLevel",
+                  "value": "<string>",
+                  "description": "Only show alerts for this log-level.  Can be: `error`, `warning`, `notice`, or `debug`."
+                },
+                {
+                  "disabled": false,
+                  "key": "StartDate",
+                  "value": "<dateTime>",
+                  "description": "Only include alerts that occurred on or after this date and time. Specify the date and time in GMT and format as `YYYY-MM-DD` or `YYYY-MM-DDThh:mm:ssZ`. Queries for alerts older than 30 days are not supported."
+                },
+                {
+                  "disabled": false,
+                  "key": "EndDate",
+                  "value": "<dateTime>",
+                  "description": "Only include alerts that occurred on or before this date and time. Specify the date and time in GMT and format as `YYYY-MM-DD` or `YYYY-MM-DDThh:mm:ssZ`. Queries for alerts older than 30 days are not supported."
+                },
+                {
+                  "disabled": false,
+                  "key": "PageSize",
+                  "value": "<integer>",
+                  "description": "How many resources to return in each list page. The default is 50, and the maximum is 1000."
+                },
+                {
+                  "disabled": false,
+                  "key": "Page",
+                  "value": "<integer>",
+                  "description": "The page index. This value is simply for client state."
+                },
+                {
+                  "disabled": false,
+                  "key": "PageToken",
+                  "value": "<string>",
+                  "description": "The page token. This is provided by the API."
+                }
+              ],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": {
+              "type": "basic",
+              "basic": [
+                {
+                  "key": "username",
+                  "value": "{{basicAuthUsername}}"
+                },
+                {
+                  "key": "password",
+                  "value": "{{basicAuthPassword}}"
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "id": "e6b60a41-2b01-424f-b02f-09fc3e3a1665",
+              "name": "OK",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "Alerts"
+                  ],
+                  "host": [
+                    "{{v1-Alerts-Url}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "LogLevel",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "StartDate",
+                      "value": "<dateTime>"
+                    },
+                    {
+                      "key": "EndDate",
+                      "value": "<dateTime>"
+                    },
+                    {
+                      "key": "PageSize",
+                      "value": "<integer>"
+                    },
+                    {
+                      "key": "Page",
+                      "value": "<integer>"
+                    },
+                    {
+                      "key": "PageToken",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: basic",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Basic <credentials>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"alerts\": [\n    {\n      \"account_sid\": \"ACxREDACTEDxEXAMPLExSIDxVALUExxxxxx\",\n      \"alert_text\": \"string\",\n      \"api_version\": \"string\",\n      \"date_created\": null,\n      \"date_generated\": \"1946-10-29T05:37:11.725Z\",\n      \"date_updated\": null,\n      \"error_code\": null,\n      \"log_level\": \"string\",\n      \"more_info\": \"string\",\n      \"request_method\": \"POST\",\n      \"request_url\": \"string\",\n      \"resource_sid\": \"XRE2bB4e95A50c6Feba8C7ad5Adfa74564\",\n      \"sid\": \"NOC0E665008EabBdeb10079CAfD7B66534\",\n      \"url\": \"http://IdtrTp.lvqq4rU8ob7LOVEk1i-In+G4uyYLTUM-8,.eh46yfKtOVVcXwktX3jNIOMWEeIjFBcZtztp6,N\",\n      \"service_sid\": \"eb1f1e5C9d6D8b17F8c866cc32b2E7dc8A\"\n    },\n    {\n      \"account_sid\": \"ACxREDACTEDxEXAMPLExSIDxVALUExxxxxx\",\n      \"alert_text\": null,\n      \"api_version\": \"string\",\n      \"date_created\": \"1978-01-14T10:13:39.753Z\",\n      \"date_generated\": \"1995-10-06T19:43:08.767Z\",\n      \"date_updated\": \"1976-01-03T11:50:02.448Z\",\n      \"error_code\": null,\n      \"log_level\": null,\n      \"more_info\": \"string\",\n      \"request_method\": \"POST\",\n      \"request_url\": null,\n      \"resource_sid\": \"eEc4A8fD505c9b2f23398bE2Cd2FF3CD73\",\n      \"sid\": \"NO9Aae02D176459e9942f267FBdEeD1f35\",\n      \"url\": null,\n      \"service_sid\": \"SKxREDACTEDxEXAMPLExSIDxVALUExxxxxx\"\n    }\n  ],\n  \"meta\": {\n    \"first_page_url\": \"https://YXrRspHCMRfE.yuj,3kN8K1x7dWAA4qUBqZWFyXyVE4+-0WgQEgaq2Mth3Nz,\",\n    \"next_page_url\": null,\n    \"page\": 1429,\n    \"page_size\": 8218,\n    \"previous_page_url\": null,\n    \"url\": \"http://fUFoLDDPbNnfkcDwokWaXVD.ony-CCL.bu2K,J47ioii2CeQ29lOrAPwwWsYFR8RrHa9meGytzQ3mg.sAU4GmXyB\",\n    \"key\": \"string\"\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "type": "string",
+      "value": "https://accounts.twilio.com",
+      "key": "baseUrl"
+    },
+    {
+      "type": "string",
+      "value": "https://monitor.twilio.com",
+      "key": "v1-Alerts-Sid-Url"
+    },
+    {
+      "type": "string",
+      "value": "https://monitor.twilio.com",
+      "key": "v1-Alerts-Url"
+    }
+  ],
+  "info": {
+    "_postman_id": "66dbfe20-2f0b-4c13-a0a3-72e70fd98ed8",
+    "name": "Twilio - Accounts A2p Alerts API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "This is the public Twilio REST API.\n\nContact Support:\n Name: Twilio Support\n Email: support@twilio.com",
+      "type": "text/plain"
+    }
+  }
+}

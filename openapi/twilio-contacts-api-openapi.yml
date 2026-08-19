@@ -1,4 +1,4 @@
-openapi: 3.0.1
+openapi: 3.2.0
 info:
   title: Twilio - Accounts A2p Contacts API
   description: This is the public Twilio REST API.
@@ -108,6 +108,41 @@ paths:
                 $ref: '#/components/schemas/ContactList'
 components:
   schemas:
+    ContactRequest:
+      type: object
+      required:
+      - email
+      properties:
+        email:
+          type: string
+          format: email
+        first_name:
+          type: string
+        last_name:
+          type: string
+        address_line_1:
+          type: string
+        address_line_2:
+          type: string
+        city:
+          type: string
+        state_province_region:
+          type: string
+        postal_code:
+          type: string
+        country:
+          type: string
+        phone_number:
+          type: string
+        alternate_emails:
+          type: array
+          items:
+            type: string
+            format: email
+          maxItems: 5
+        custom_fields:
+          type: object
+          additionalProperties: true
     Contact:
       type: object
       properties:
@@ -151,41 +186,6 @@ components:
         updated_at:
           type: string
           format: date-time
-    ContactRequest:
-      type: object
-      required:
-      - email
-      properties:
-        email:
-          type: string
-          format: email
-        first_name:
-          type: string
-        last_name:
-          type: string
-        address_line_1:
-          type: string
-        address_line_2:
-          type: string
-        city:
-          type: string
-        state_province_region:
-          type: string
-        postal_code:
-          type: string
-        country:
-          type: string
-        phone_number:
-          type: string
-        alternate_emails:
-          type: array
-          items:
-            type: string
-            format: email
-          maxItems: 5
-        custom_fields:
-          type: object
-          additionalProperties: true
     ContactList:
       type: object
       properties:

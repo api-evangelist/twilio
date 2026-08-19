@@ -1,0 +1,673 @@
+{
+  "item": [
+    {
+      "id": "f50f2f40-5476-4c83-a35f-09020cedd7c9",
+      "name": "Keys",
+      "description": {
+        "content": "Manage API keys for authentication",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "08e9a2a8-99b1-4269-9b7c-b39631e14a4b",
+          "name": "Twilio List Api Keys",
+          "request": {
+            "name": "Twilio List Api Keys",
+            "description": {
+              "content": "Retrieve a list of API keys for the account.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "Accounts",
+                ":AccountSid",
+                "Keys.json"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "AccountSid",
+                  "description": "(Required) The unique identifier of the Twilio account"
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "d5265ca1-3979-4e40-9bb6-6e5965f9e379",
+              "name": "List of API keys",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "Accounts",
+                    ":AccountSid",
+                    "Keys.json"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "AccountSid",
+                      "description": "(Required) The unique identifier of the Twilio account"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"keys\": [\n    {\n      \"sid\": \"SKxREDACTEDxEXAMPLExSIDxVALUExxxxxx\",\n      \"friendly_name\": \"string\",\n      \"date_created\": \"1962-07-03T00:47:31.228Z\",\n      \"date_updated\": \"1974-10-12T05:08:47.201Z\"\n    },\n    {\n      \"sid\": \"SKxREDACTEDxEXAMPLExSIDxVALUExxxxxx\",\n      \"friendly_name\": \"string\",\n      \"date_created\": \"2017-11-16T02:20:41.901Z\",\n      \"date_updated\": \"1972-04-03T18:10:00.730Z\"\n    }\n  ],\n  \"first_page_uri\": \"string\",\n  \"next_page_uri\": \"string\",\n  \"page\": 9568,\n  \"page_size\": 2166\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "f53e2101-5ce1-411f-8ea2-cd9fc653270a",
+              "name": "Unauthorized",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "Accounts",
+                    ":AccountSid",
+                    "Keys.json"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "AccountSid",
+                      "description": "(Required) The unique identifier of the Twilio account"
+                    }
+                  ]
+                },
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "db172761-4eb6-4c52-a663-387cd04fbe81",
+          "name": "Twilio Create an Api Key",
+          "request": {
+            "name": "Twilio Create an Api Key",
+            "description": {
+              "content": "Create a new API key for authentication. The secret is only returned once upon creation.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "Accounts",
+                ":AccountSid",
+                "Keys.json"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "AccountSid",
+                  "description": "(Required) The unique identifier of the Twilio account"
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/x-www-form-urlencoded"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": null,
+            "body": {
+              "mode": "urlencoded",
+              "urlencoded": [
+                {
+                  "disabled": false,
+                  "key": "FriendlyName",
+                  "value": "<string>",
+                  "description": "Descriptive name for the API key"
+                },
+                {
+                  "disabled": false,
+                  "key": "AccountSid",
+                  "value": "<string>",
+                  "description": "Account SID to scope the key to"
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "id": "62d72e85-0f46-420d-b276-71bc27c58ac2",
+              "name": "API key created (secret returned only once)",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "Accounts",
+                    ":AccountSid",
+                    "Keys.json"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "AccountSid",
+                      "description": "(Required) The unique identifier of the Twilio account"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "urlencoded",
+                  "urlencoded": [
+                    {
+                      "disabled": false,
+                      "description": {
+                        "content": "Descriptive name for the API key",
+                        "type": "text/plain"
+                      },
+                      "key": "FriendlyName",
+                      "value": "<string>"
+                    },
+                    {
+                      "disabled": false,
+                      "description": {
+                        "content": "Account SID to scope the key to",
+                        "type": "text/plain"
+                      },
+                      "key": "AccountSid",
+                      "value": "<string>"
+                    }
+                  ]
+                }
+              },
+              "status": "Created",
+              "code": 201,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"sid\": \"SKxREDACTEDxEXAMPLExSIDxVALUExxxxxx\",\n  \"friendly_name\": \"string\",\n  \"secret\": \"string\",\n  \"date_created\": \"2016-05-08T04:39:02.799Z\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "cf79d9fd-33c9-491e-b82d-373320e6c244",
+              "name": "Unauthorized",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "Accounts",
+                    ":AccountSid",
+                    "Keys.json"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "AccountSid",
+                      "description": "(Required) The unique identifier of the Twilio account"
+                    }
+                  ]
+                },
+                "method": "POST",
+                "body": {
+                  "mode": "urlencoded",
+                  "urlencoded": [
+                    {
+                      "disabled": false,
+                      "description": {
+                        "content": "Descriptive name for the API key",
+                        "type": "text/plain"
+                      },
+                      "key": "FriendlyName",
+                      "value": "<string>"
+                    },
+                    {
+                      "disabled": false,
+                      "description": {
+                        "content": "Account SID to scope the key to",
+                        "type": "text/plain"
+                      },
+                      "key": "AccountSid",
+                      "value": "<string>"
+                    }
+                  ]
+                }
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "1bfb4e33-77f1-4c96-b07b-dc91c3c33b49",
+          "name": "Twilio Fetch an Api Key",
+          "request": {
+            "name": "Twilio Fetch an Api Key",
+            "description": {},
+            "url": {
+              "path": [
+                "Accounts",
+                ":AccountSid",
+                "Keys",
+                "{{KeySid}}.json"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "AccountSid",
+                  "description": "(Required) The unique identifier of the Twilio account"
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "88192480-4433-47c5-9df2-c0ef7e3106c9",
+              "name": "API key details",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "Accounts",
+                    ":AccountSid",
+                    "Keys",
+                    "{{KeySid}}.json"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "AccountSid",
+                      "description": "(Required) The unique identifier of the Twilio account"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"sid\": \"SKxREDACTEDxEXAMPLExSIDxVALUExxxxxx\",\n  \"friendly_name\": \"string\",\n  \"date_created\": \"2025-02-03T04:04:34.507Z\",\n  \"date_updated\": \"2012-11-04T19:16:09.841Z\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "660654fa-503d-4e9c-9868-649b233c6cb0",
+              "name": "Key not found",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "Accounts",
+                    ":AccountSid",
+                    "Keys",
+                    "{{KeySid}}.json"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "AccountSid",
+                      "description": "(Required) The unique identifier of the Twilio account"
+                    }
+                  ]
+                },
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "34afa4cf-1427-4c0b-bfdf-735edb7e2c5e",
+          "name": "Twilio Update an Api Key",
+          "request": {
+            "name": "Twilio Update an Api Key",
+            "description": {},
+            "url": {
+              "path": [
+                "Accounts",
+                ":AccountSid",
+                "Keys",
+                "{{KeySid}}.json"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "AccountSid",
+                  "description": "(Required) The unique identifier of the Twilio account"
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/x-www-form-urlencoded"
+              }
+            ],
+            "method": "POST",
+            "auth": null,
+            "body": {
+              "mode": "urlencoded",
+              "urlencoded": [
+                {
+                  "disabled": false,
+                  "key": "FriendlyName",
+                  "value": "<string>"
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "id": "5c80c630-4134-47bc-9842-96ffa79e704c",
+              "name": "Key updated",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "Accounts",
+                    ":AccountSid",
+                    "Keys",
+                    "{{KeySid}}.json"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "AccountSid",
+                      "description": "(Required) The unique identifier of the Twilio account"
+                    }
+                  ]
+                },
+                "method": "POST",
+                "body": {
+                  "mode": "urlencoded",
+                  "urlencoded": [
+                    {
+                      "disabled": false,
+                      "key": "FriendlyName",
+                      "value": "<string>"
+                    }
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "5efabf02-f046-4af0-b3a3-1669ab98af14",
+          "name": "Twilio Delete an Api Key",
+          "request": {
+            "name": "Twilio Delete an Api Key",
+            "description": {},
+            "url": {
+              "path": [
+                "Accounts",
+                ":AccountSid",
+                "Keys",
+                "{{KeySid}}.json"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "AccountSid",
+                  "description": "(Required) The unique identifier of the Twilio account"
+                }
+              ]
+            },
+            "method": "DELETE",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "eee9b5a4-4b54-4cbd-993f-cd00e9965b72",
+              "name": "Key deleted",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "Accounts",
+                    ":AccountSid",
+                    "Keys",
+                    "{{KeySid}}.json"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "AccountSid",
+                      "description": "(Required) The unique identifier of the Twilio account"
+                    }
+                  ]
+                },
+                "method": "DELETE",
+                "body": {}
+              },
+              "status": "No Content",
+              "code": 204,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "type": "string",
+      "value": "https://accounts.twilio.com",
+      "key": "baseUrl"
+    },
+    {
+      "disabled": false,
+      "description": {
+        "content": "(Required) ",
+        "type": "text/plain"
+      },
+      "type": "any",
+      "value": "<string>",
+      "key": "KeySid"
+    }
+  ],
+  "info": {
+    "_postman_id": "daa87eba-3fa6-46c8-a4a9-0b8146ed3ac7",
+    "name": "Twilio - Accounts A2p Keys API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "This is the public Twilio REST API.\n\nContact Support:\n Name: Twilio Support\n Email: support@twilio.com",
+      "type": "text/plain"
+    }
+  }
+}

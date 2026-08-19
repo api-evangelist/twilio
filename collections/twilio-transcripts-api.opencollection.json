@@ -1,0 +1,332 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Twilio - Accounts A2p Transcripts API",
+    "version": "1.52.0"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Transcripts",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "FetchMedia",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://accounts.twilio.com/v2/Transcripts/:Sid/Media",
+            "params": [
+              {
+                "name": "Sid",
+                "value": "",
+                "type": "path",
+                "description": "The unique SID identifier of the Transcript."
+              },
+              {
+                "name": "Redacted",
+                "value": "",
+                "type": "query",
+                "description": "Grant access to PII Redacted/Unredacted Media. If redaction is enabled, the default is `true` to access redacted media."
+              }
+            ],
+            "auth": {
+              "type": "basic",
+              "username": "{{username}}",
+              "password": "{{password}}"
+            }
+          },
+          "docs": "Get download URLs for media if possible"
+        },
+        {
+          "info": {
+            "name": "ListOperatorResult",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://accounts.twilio.com/v2/Transcripts/:TranscriptSid/OperatorResults",
+            "params": [
+              {
+                "name": "TranscriptSid",
+                "value": "",
+                "type": "path",
+                "description": "A 34 character string that uniquely identifies this Transcript."
+              },
+              {
+                "name": "Redacted",
+                "value": "",
+                "type": "query",
+                "description": "Grant access to PII redacted/unredacted Language Understanding operator. If redaction is enabled, the default is True."
+              },
+              {
+                "name": "PageSize",
+                "value": "",
+                "type": "query",
+                "description": "How many resources to return in each list page. The default is 50, and the maximum is 1000."
+              },
+              {
+                "name": "Page",
+                "value": "",
+                "type": "query",
+                "description": "The page index. This value is simply for client state."
+              },
+              {
+                "name": "PageToken",
+                "value": "",
+                "type": "query",
+                "description": "The page token. This is provided by the API."
+              }
+            ],
+            "auth": {
+              "type": "basic",
+              "username": "{{username}}",
+              "password": "{{password}}"
+            }
+          },
+          "docs": "Retrieve a list of Operator Results for the given Transcript."
+        },
+        {
+          "info": {
+            "name": "FetchOperatorResult",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://accounts.twilio.com/v2/Transcripts/:TranscriptSid/OperatorResults/:OperatorSid",
+            "params": [
+              {
+                "name": "TranscriptSid",
+                "value": "",
+                "type": "path",
+                "description": "A 34 character string that uniquely identifies this Transcript."
+              },
+              {
+                "name": "OperatorSid",
+                "value": "",
+                "type": "path",
+                "description": "A 34 character string that identifies this Language Understanding operator sid."
+              },
+              {
+                "name": "Redacted",
+                "value": "",
+                "type": "query",
+                "description": "Grant access to PII redacted/unredacted Language Understanding operator. If redaction is enabled, the default is True."
+              }
+            ],
+            "auth": {
+              "type": "basic",
+              "username": "{{username}}",
+              "password": "{{password}}"
+            }
+          },
+          "docs": "Fetch a specific Operator Result for the given Transcript."
+        },
+        {
+          "info": {
+            "name": "ListSentence",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://accounts.twilio.com/v2/Transcripts/:TranscriptSid/Sentences",
+            "params": [
+              {
+                "name": "TranscriptSid",
+                "value": "",
+                "type": "path",
+                "description": "The unique SID identifier of the Transcript."
+              },
+              {
+                "name": "Redacted",
+                "value": "",
+                "type": "query",
+                "description": "Grant access to PII Redacted/Unredacted Sentences. If redaction is enabled, the default is `true` to access redacted sentences."
+              },
+              {
+                "name": "PageSize",
+                "value": "",
+                "type": "query",
+                "description": "How many resources to return in each list page. The default is 50, and the maximum is 1000."
+              },
+              {
+                "name": "Page",
+                "value": "",
+                "type": "query",
+                "description": "The page index. This value is simply for client state."
+              },
+              {
+                "name": "PageToken",
+                "value": "",
+                "type": "query",
+                "description": "The page token. This is provided by the API."
+              }
+            ],
+            "auth": {
+              "type": "basic",
+              "username": "{{username}}",
+              "password": "{{password}}"
+            }
+          },
+          "docs": "Get all Transcript Sentences by TranscriptSid"
+        },
+        {
+          "info": {
+            "name": "ListTranscript",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://accounts.twilio.com/v2/Transcripts",
+            "params": [
+              {
+                "name": "ServiceSid",
+                "value": "",
+                "type": "query",
+                "description": "The unique SID identifier of the Service."
+              },
+              {
+                "name": "BeforeStartTime",
+                "value": "",
+                "type": "query",
+                "description": "Filter by before StartTime."
+              },
+              {
+                "name": "AfterStartTime",
+                "value": "",
+                "type": "query",
+                "description": "Filter by after StartTime."
+              },
+              {
+                "name": "BeforeDateCreated",
+                "value": "",
+                "type": "query",
+                "description": "Filter by before DateCreated."
+              },
+              {
+                "name": "AfterDateCreated",
+                "value": "",
+                "type": "query",
+                "description": "Filter by after DateCreated."
+              },
+              {
+                "name": "Status",
+                "value": "",
+                "type": "query",
+                "description": "Filter by status."
+              },
+              {
+                "name": "LanguageCode",
+                "value": "",
+                "type": "query",
+                "description": "Filter by Language Code."
+              },
+              {
+                "name": "SourceSid",
+                "value": "",
+                "type": "query",
+                "description": "Filter by SourceSid."
+              },
+              {
+                "name": "PageSize",
+                "value": "",
+                "type": "query",
+                "description": "How many resources to return in each list page. The default is 50, and the maximum is 1000."
+              },
+              {
+                "name": "Page",
+                "value": "",
+                "type": "query",
+                "description": "The page index. This value is simply for client state."
+              },
+              {
+                "name": "PageToken",
+                "value": "",
+                "type": "query",
+                "description": "The page token. This is provided by the API."
+              }
+            ],
+            "auth": {
+              "type": "basic",
+              "username": "{{username}}",
+              "password": "{{password}}"
+            }
+          },
+          "docs": "Retrieve a list of Transcripts for a given service."
+        },
+        {
+          "info": {
+            "name": "CreateTranscript",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://accounts.twilio.com/v2/Transcripts",
+            "body": {
+              "type": "form-urlencoded",
+              "data": []
+            },
+            "auth": {
+              "type": "basic",
+              "username": "{{username}}",
+              "password": "{{password}}"
+            }
+          },
+          "docs": "Create a new Transcript for the service"
+        },
+        {
+          "info": {
+            "name": "FetchTranscript",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://accounts.twilio.com/v2/Transcripts/:Sid",
+            "params": [
+              {
+                "name": "Sid",
+                "value": "",
+                "type": "path",
+                "description": "A 34 character string that uniquely identifies this Transcript."
+              }
+            ],
+            "auth": {
+              "type": "basic",
+              "username": "{{username}}",
+              "password": "{{password}}"
+            }
+          },
+          "docs": "Fetch a specific Transcript."
+        },
+        {
+          "info": {
+            "name": "DeleteTranscript",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://accounts.twilio.com/v2/Transcripts/:Sid",
+            "params": [
+              {
+                "name": "Sid",
+                "value": "",
+                "type": "path",
+                "description": "A 34 character string that uniquely identifies this Transcript."
+              }
+            ],
+            "auth": {
+              "type": "basic",
+              "username": "{{username}}",
+              "password": "{{password}}"
+            }
+          },
+          "docs": "Delete a specific Transcript."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

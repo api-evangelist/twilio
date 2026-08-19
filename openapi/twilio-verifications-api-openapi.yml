@@ -1,4 +1,4 @@
-openapi: 3.0.1
+openapi: 3.2.0
 info:
   title: Twilio - Accounts A2p Verifications API
   description: This is the public Twilio REST API.
@@ -96,55 +96,16 @@ paths:
         '200':
           description: Verification updated
 components:
+  parameters:
+    ServiceSid:
+      name: ServiceSid
+      in: path
+      required: true
+      description: The SID of the Verify service
+      schema:
+        type: string
+        pattern: ^VA[0-9a-fA-F]{32}$
   schemas:
-    CreateVerificationRequest:
-      type: object
-      required:
-      - To
-      - Channel
-      properties:
-        To:
-          type: string
-          description: Phone number (E.164) or email address to verify
-        Channel:
-          type: string
-          enum:
-          - sms
-          - call
-          - email
-          - whatsapp
-          - sna
-          description: Channel to use for delivery
-        CustomFriendlyName:
-          type: string
-          description: Custom name shown in the verification message
-        CustomMessage:
-          type: string
-          description: Custom message for SMS verification
-        SendDigits:
-          type: string
-          description: DTMF digits to play before the code (call channel)
-        Locale:
-          type: string
-          description: Locale for the verification message (e.g., en)
-        CustomCode:
-          type: string
-          description: Custom verification code (requires custom code enabled)
-        Amount:
-          type: string
-          description: Amount for PSD2 verification
-        Payee:
-          type: string
-          description: Payee for PSD2 verification
-        RateLimits:
-          type: string
-          description: JSON object of rate limit key-value pairs
-        TemplateSid:
-          type: string
-          description: SID of a custom template
-        TemplateCustomSubstitutions:
-          type: string
-          description: JSON object of template substitution variables
     Verification:
       type: object
       properties:
@@ -211,15 +172,54 @@ components:
         url:
           type: string
           format: uri
-  parameters:
-    ServiceSid:
-      name: ServiceSid
-      in: path
-      required: true
-      description: The SID of the Verify service
-      schema:
-        type: string
-        pattern: ^VA[0-9a-fA-F]{32}$
+    CreateVerificationRequest:
+      type: object
+      required:
+      - To
+      - Channel
+      properties:
+        To:
+          type: string
+          description: Phone number (E.164) or email address to verify
+        Channel:
+          type: string
+          enum:
+          - sms
+          - call
+          - email
+          - whatsapp
+          - sna
+          description: Channel to use for delivery
+        CustomFriendlyName:
+          type: string
+          description: Custom name shown in the verification message
+        CustomMessage:
+          type: string
+          description: Custom message for SMS verification
+        SendDigits:
+          type: string
+          description: DTMF digits to play before the code (call channel)
+        Locale:
+          type: string
+          description: Locale for the verification message (e.g., en)
+        CustomCode:
+          type: string
+          description: Custom verification code (requires custom code enabled)
+        Amount:
+          type: string
+          description: Amount for PSD2 verification
+        Payee:
+          type: string
+          description: Payee for PSD2 verification
+        RateLimits:
+          type: string
+          description: JSON object of rate limit key-value pairs
+        TemplateSid:
+          type: string
+          description: SID of a custom template
+        TemplateCustomSubstitutions:
+          type: string
+          description: JSON object of template substitution variables
   securitySchemes:
     accountSid_authToken:
       type: http

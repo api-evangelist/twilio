@@ -1,0 +1,1673 @@
+{
+  "item": [
+    {
+      "id": "5ffbcad3-3ae9-4e9b-b3c1-c66d6c4f6091",
+      "name": "Messages",
+      "description": {
+        "content": "Send and manage SMS and MMS messages",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "d43d7824-5f89-4d43-9a74-2de885059006",
+          "name": "Twilio List Messages",
+          "request": {
+            "name": "Twilio List Messages",
+            "description": {
+              "content": "Retrieve a list of messages associated with your account. The list includes paging information and is sorted by DateSent descending.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "Accounts",
+                ":AccountSid",
+                "Messages.json"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "To",
+                  "value": "<string>",
+                  "description": "Filter by recipient phone number"
+                },
+                {
+                  "disabled": false,
+                  "key": "From",
+                  "value": "<string>",
+                  "description": "Filter by sender phone number"
+                },
+                {
+                  "disabled": false,
+                  "key": "DateSent",
+                  "value": "<date>",
+                  "description": "Filter by date sent (YYYY-MM-DD)"
+                },
+                {
+                  "disabled": false,
+                  "key": "PageSize",
+                  "value": "50",
+                  "description": "Number of records to return per page (max 1000)"
+                },
+                {
+                  "disabled": false,
+                  "key": "Page",
+                  "value": "<integer>",
+                  "description": "Page number to retrieve"
+                }
+              ],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "AccountSid",
+                  "description": "(Required) The unique identifier of the Twilio account"
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "db8849b9-c9bf-47f1-9d08-09bb377bfa28",
+              "name": "List of messages",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "Accounts",
+                    ":AccountSid",
+                    "Messages.json"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "To",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "From",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "DateSent",
+                      "value": "<date>"
+                    },
+                    {
+                      "key": "PageSize",
+                      "value": "50"
+                    },
+                    {
+                      "key": "Page",
+                      "value": "<integer>"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "AccountSid",
+                      "description": "(Required) The unique identifier of the Twilio account"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"messages\": [\n    {\n      \"sid\": \"MMa7F8E8c19cB093149BBe4Ca4C8715dDb\",\n      \"account_sid\": \"ACxREDACTEDxEXAMPLExSIDxVALUExxxxxx\",\n      \"messaging_service_sid\": \"MGxREDACTEDxEXAMPLExSIDxVALUExxxxxx\",\n      \"to\": \"string\",\n      \"from\": \"string\",\n      \"body\": \"string\",\n      \"status\": \"accepted\",\n      \"direction\": \"outbound-api\",\n      \"price\": \"string\",\n      \"price_unit\": \"string\",\n      \"num_segments\": \"string\",\n      \"num_media\": \"string\",\n      \"error_code\": 3841,\n      \"error_message\": \"string\",\n      \"date_created\": \"1962-02-19T13:03:05.846Z\",\n      \"date_updated\": \"1969-11-28T19:03:12.413Z\",\n      \"date_sent\": \"1960-01-29T17:54:53.255Z\",\n      \"uri\": \"string\",\n      \"api_version\": \"string\",\n      \"subresource_uris\": {\n        \"media\": \"string\"\n      }\n    },\n    {\n      \"sid\": \"SMxREDACTEDxEXAMPLExSIDxVALUExxxxxx\",\n      \"account_sid\": \"ACxREDACTEDxEXAMPLExSIDxVALUExxxxxx\",\n      \"messaging_service_sid\": \"MGxREDACTEDxEXAMPLExSIDxVALUExxxxxx\",\n      \"to\": \"string\",\n      \"from\": \"string\",\n      \"body\": \"string\",\n      \"status\": \"delivered\",\n      \"direction\": \"outbound-reply\",\n      \"price\": \"string\",\n      \"price_unit\": \"string\",\n      \"num_segments\": \"string\",\n      \"num_media\": \"string\",\n      \"error_code\": 1466,\n      \"error_message\": \"string\",\n      \"date_created\": \"1956-12-31T09:15:54.871Z\",\n      \"date_updated\": \"2025-04-29T14:43:17.131Z\",\n      \"date_sent\": \"1959-04-14T01:02:04.626Z\",\n      \"uri\": \"string\",\n      \"api_version\": \"string\",\n      \"subresource_uris\": {\n        \"media\": \"string\"\n      }\n    }\n  ],\n  \"first_page_uri\": \"string\",\n  \"next_page_uri\": \"string\",\n  \"previous_page_uri\": \"string\",\n  \"page\": 1330,\n  \"page_size\": 74,\n  \"uri\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "221fe428-4616-478f-9e46-a4250b2208d9",
+              "name": "Unauthorized - invalid credentials",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "Accounts",
+                    ":AccountSid",
+                    "Messages.json"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "To",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "From",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "DateSent",
+                      "value": "<date>"
+                    },
+                    {
+                      "key": "PageSize",
+                      "value": "50"
+                    },
+                    {
+                      "key": "Page",
+                      "value": "<integer>"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "AccountSid",
+                      "description": "(Required) The unique identifier of the Twilio account"
+                    }
+                  ]
+                },
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "652bdf9b-5d0e-4d8f-942e-ca3d15c63596",
+              "name": "Account not found",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "Accounts",
+                    ":AccountSid",
+                    "Messages.json"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "To",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "From",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "DateSent",
+                      "value": "<date>"
+                    },
+                    {
+                      "key": "PageSize",
+                      "value": "50"
+                    },
+                    {
+                      "key": "Page",
+                      "value": "<integer>"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "AccountSid",
+                      "description": "(Required) The unique identifier of the Twilio account"
+                    }
+                  ]
+                },
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "9b930131-2eed-426b-a75f-48c399097d6b",
+          "name": "Twilio Send a Message",
+          "request": {
+            "name": "Twilio Send a Message",
+            "description": {
+              "content": "Send an SMS or MMS message. Specify the recipient, sender, and body or media URL. Messages can be sent from a Twilio phone number, short code, alphanumeric sender ID, or messaging service.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "Accounts",
+                ":AccountSid",
+                "Messages.json"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "AccountSid",
+                  "description": "(Required) The unique identifier of the Twilio account"
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/x-www-form-urlencoded"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": null,
+            "body": {
+              "mode": "urlencoded",
+              "urlencoded": [
+                {
+                  "disabled": false,
+                  "key": "To",
+                  "value": "<string>",
+                  "description": "(Required) Recipient phone number in E.164 format"
+                },
+                {
+                  "disabled": false,
+                  "key": "From",
+                  "value": "<string>",
+                  "description": "Twilio phone number, short code, or alphanumeric sender ID"
+                },
+                {
+                  "disabled": false,
+                  "key": "Body",
+                  "value": "<string>",
+                  "description": "The text content of the message (max 1600 characters)"
+                },
+                {
+                  "disabled": false,
+                  "key": "MessagingServiceSid",
+                  "value": "<string>",
+                  "description": "SID of the messaging service to use"
+                },
+                {
+                  "disabled": false,
+                  "key": "MediaUrl",
+                  "value": "<uri>",
+                  "description": "URLs of media to include in MMS messages (max 10)"
+                },
+                {
+                  "disabled": false,
+                  "key": "MediaUrl",
+                  "value": "<uri>",
+                  "description": "URLs of media to include in MMS messages (max 10)"
+                },
+                {
+                  "disabled": false,
+                  "key": "StatusCallback",
+                  "value": "<uri>",
+                  "description": "URL for status callback notifications"
+                },
+                {
+                  "disabled": false,
+                  "key": "MaxPrice",
+                  "value": "<number>",
+                  "description": "Maximum price in USD to pay for the message"
+                },
+                {
+                  "disabled": false,
+                  "key": "ValidityPeriod",
+                  "value": "<integer>",
+                  "description": "Validity period in seconds (max 14400)"
+                },
+                {
+                  "disabled": false,
+                  "key": "SendAt",
+                  "value": "<dateTime>",
+                  "description": "Time to send a scheduled message (requires messaging service)"
+                },
+                {
+                  "disabled": false,
+                  "key": "ScheduleType",
+                  "value": "<string>",
+                  "description": "Schedule type for scheduled messages"
+                },
+                {
+                  "disabled": false,
+                  "key": "ContentSid",
+                  "value": "<string>",
+                  "description": "SID of a content template to use"
+                },
+                {
+                  "disabled": false,
+                  "key": "ContentVariables",
+                  "value": "<string>",
+                  "description": "JSON string of variables for content templates"
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "id": "6a2a7c52-70f8-43b9-a928-97ecebf40627",
+              "name": "Message created and queued for delivery",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "Accounts",
+                    ":AccountSid",
+                    "Messages.json"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "AccountSid",
+                      "description": "(Required) The unique identifier of the Twilio account"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "urlencoded",
+                  "urlencoded": [
+                    {
+                      "disabled": false,
+                      "description": {
+                        "content": "(Required) Recipient phone number in E.164 format",
+                        "type": "text/plain"
+                      },
+                      "key": "To",
+                      "value": "<string>"
+                    },
+                    {
+                      "disabled": false,
+                      "description": {
+                        "content": "Twilio phone number, short code, or alphanumeric sender ID",
+                        "type": "text/plain"
+                      },
+                      "key": "From",
+                      "value": "<string>"
+                    },
+                    {
+                      "disabled": false,
+                      "description": {
+                        "content": "The text content of the message (max 1600 characters)",
+                        "type": "text/plain"
+                      },
+                      "key": "Body",
+                      "value": "<string>"
+                    },
+                    {
+                      "disabled": false,
+                      "description": {
+                        "content": "SID of the messaging service to use",
+                        "type": "text/plain"
+                      },
+                      "key": "MessagingServiceSid",
+                      "value": "<string>"
+                    },
+                    {
+                      "disabled": false,
+                      "description": {
+                        "content": "URLs of media to include in MMS messages (max 10)",
+                        "type": "text/plain"
+                      },
+                      "key": "MediaUrl",
+                      "value": "<uri>"
+                    },
+                    {
+                      "disabled": false,
+                      "description": {
+                        "content": "URLs of media to include in MMS messages (max 10)",
+                        "type": "text/plain"
+                      },
+                      "key": "MediaUrl",
+                      "value": "<uri>"
+                    },
+                    {
+                      "disabled": false,
+                      "description": {
+                        "content": "URL for status callback notifications",
+                        "type": "text/plain"
+                      },
+                      "key": "StatusCallback",
+                      "value": "<uri>"
+                    },
+                    {
+                      "disabled": false,
+                      "description": {
+                        "content": "Maximum price in USD to pay for the message",
+                        "type": "text/plain"
+                      },
+                      "key": "MaxPrice",
+                      "value": "<number>"
+                    },
+                    {
+                      "disabled": false,
+                      "description": {
+                        "content": "Validity period in seconds (max 14400)",
+                        "type": "text/plain"
+                      },
+                      "key": "ValidityPeriod",
+                      "value": "<integer>"
+                    },
+                    {
+                      "disabled": false,
+                      "description": {
+                        "content": "Time to send a scheduled message (requires messaging service)",
+                        "type": "text/plain"
+                      },
+                      "key": "SendAt",
+                      "value": "<dateTime>"
+                    },
+                    {
+                      "disabled": false,
+                      "description": {
+                        "content": "Schedule type for scheduled messages",
+                        "type": "text/plain"
+                      },
+                      "key": "ScheduleType",
+                      "value": "<string>"
+                    },
+                    {
+                      "disabled": false,
+                      "description": {
+                        "content": "SID of a content template to use",
+                        "type": "text/plain"
+                      },
+                      "key": "ContentSid",
+                      "value": "<string>"
+                    },
+                    {
+                      "disabled": false,
+                      "description": {
+                        "content": "JSON string of variables for content templates",
+                        "type": "text/plain"
+                      },
+                      "key": "ContentVariables",
+                      "value": "<string>"
+                    }
+                  ]
+                }
+              },
+              "status": "Created",
+              "code": 201,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"sid\": \"SMxREDACTEDxEXAMPLExSIDxVALUExxxxxx\",\n  \"account_sid\": \"ACxREDACTEDxEXAMPLExSIDxVALUExxxxxx\",\n  \"messaging_service_sid\": \"MGxREDACTEDxEXAMPLExSIDxVALUExxxxxx\",\n  \"to\": \"string\",\n  \"from\": \"string\",\n  \"body\": \"string\",\n  \"status\": \"delivered\",\n  \"direction\": \"outbound-call\",\n  \"price\": \"string\",\n  \"price_unit\": \"string\",\n  \"num_segments\": \"string\",\n  \"num_media\": \"string\",\n  \"error_code\": 9781,\n  \"error_message\": \"string\",\n  \"date_created\": \"2026-02-25T03:28:19.051Z\",\n  \"date_updated\": \"1962-03-03T05:53:59.414Z\",\n  \"date_sent\": \"1974-02-24T22:39:45.597Z\",\n  \"uri\": \"string\",\n  \"api_version\": \"string\",\n  \"subresource_uris\": {\n    \"media\": \"string\"\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "f64808b3-3319-48ab-9834-1fd4f12dda61",
+              "name": "Invalid request parameters",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "Accounts",
+                    ":AccountSid",
+                    "Messages.json"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "AccountSid",
+                      "description": "(Required) The unique identifier of the Twilio account"
+                    }
+                  ]
+                },
+                "method": "POST",
+                "body": {
+                  "mode": "urlencoded",
+                  "urlencoded": [
+                    {
+                      "disabled": false,
+                      "description": {
+                        "content": "(Required) Recipient phone number in E.164 format",
+                        "type": "text/plain"
+                      },
+                      "key": "To",
+                      "value": "<string>"
+                    },
+                    {
+                      "disabled": false,
+                      "description": {
+                        "content": "Twilio phone number, short code, or alphanumeric sender ID",
+                        "type": "text/plain"
+                      },
+                      "key": "From",
+                      "value": "<string>"
+                    },
+                    {
+                      "disabled": false,
+                      "description": {
+                        "content": "The text content of the message (max 1600 characters)",
+                        "type": "text/plain"
+                      },
+                      "key": "Body",
+                      "value": "<string>"
+                    },
+                    {
+                      "disabled": false,
+                      "description": {
+                        "content": "SID of the messaging service to use",
+                        "type": "text/plain"
+                      },
+                      "key": "MessagingServiceSid",
+                      "value": "<string>"
+                    },
+                    {
+                      "disabled": false,
+                      "description": {
+                        "content": "URLs of media to include in MMS messages (max 10)",
+                        "type": "text/plain"
+                      },
+                      "key": "MediaUrl",
+                      "value": "<uri>"
+                    },
+                    {
+                      "disabled": false,
+                      "description": {
+                        "content": "URLs of media to include in MMS messages (max 10)",
+                        "type": "text/plain"
+                      },
+                      "key": "MediaUrl",
+                      "value": "<uri>"
+                    },
+                    {
+                      "disabled": false,
+                      "description": {
+                        "content": "URL for status callback notifications",
+                        "type": "text/plain"
+                      },
+                      "key": "StatusCallback",
+                      "value": "<uri>"
+                    },
+                    {
+                      "disabled": false,
+                      "description": {
+                        "content": "Maximum price in USD to pay for the message",
+                        "type": "text/plain"
+                      },
+                      "key": "MaxPrice",
+                      "value": "<number>"
+                    },
+                    {
+                      "disabled": false,
+                      "description": {
+                        "content": "Validity period in seconds (max 14400)",
+                        "type": "text/plain"
+                      },
+                      "key": "ValidityPeriod",
+                      "value": "<integer>"
+                    },
+                    {
+                      "disabled": false,
+                      "description": {
+                        "content": "Time to send a scheduled message (requires messaging service)",
+                        "type": "text/plain"
+                      },
+                      "key": "SendAt",
+                      "value": "<dateTime>"
+                    },
+                    {
+                      "disabled": false,
+                      "description": {
+                        "content": "Schedule type for scheduled messages",
+                        "type": "text/plain"
+                      },
+                      "key": "ScheduleType",
+                      "value": "<string>"
+                    },
+                    {
+                      "disabled": false,
+                      "description": {
+                        "content": "SID of a content template to use",
+                        "type": "text/plain"
+                      },
+                      "key": "ContentSid",
+                      "value": "<string>"
+                    },
+                    {
+                      "disabled": false,
+                      "description": {
+                        "content": "JSON string of variables for content templates",
+                        "type": "text/plain"
+                      },
+                      "key": "ContentVariables",
+                      "value": "<string>"
+                    }
+                  ]
+                }
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "71bdda69-78ff-403a-889f-75fd76a58f9c",
+              "name": "Unauthorized - invalid credentials",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "Accounts",
+                    ":AccountSid",
+                    "Messages.json"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "AccountSid",
+                      "description": "(Required) The unique identifier of the Twilio account"
+                    }
+                  ]
+                },
+                "method": "POST",
+                "body": {
+                  "mode": "urlencoded",
+                  "urlencoded": [
+                    {
+                      "disabled": false,
+                      "description": {
+                        "content": "(Required) Recipient phone number in E.164 format",
+                        "type": "text/plain"
+                      },
+                      "key": "To",
+                      "value": "<string>"
+                    },
+                    {
+                      "disabled": false,
+                      "description": {
+                        "content": "Twilio phone number, short code, or alphanumeric sender ID",
+                        "type": "text/plain"
+                      },
+                      "key": "From",
+                      "value": "<string>"
+                    },
+                    {
+                      "disabled": false,
+                      "description": {
+                        "content": "The text content of the message (max 1600 characters)",
+                        "type": "text/plain"
+                      },
+                      "key": "Body",
+                      "value": "<string>"
+                    },
+                    {
+                      "disabled": false,
+                      "description": {
+                        "content": "SID of the messaging service to use",
+                        "type": "text/plain"
+                      },
+                      "key": "MessagingServiceSid",
+                      "value": "<string>"
+                    },
+                    {
+                      "disabled": false,
+                      "description": {
+                        "content": "URLs of media to include in MMS messages (max 10)",
+                        "type": "text/plain"
+                      },
+                      "key": "MediaUrl",
+                      "value": "<uri>"
+                    },
+                    {
+                      "disabled": false,
+                      "description": {
+                        "content": "URLs of media to include in MMS messages (max 10)",
+                        "type": "text/plain"
+                      },
+                      "key": "MediaUrl",
+                      "value": "<uri>"
+                    },
+                    {
+                      "disabled": false,
+                      "description": {
+                        "content": "URL for status callback notifications",
+                        "type": "text/plain"
+                      },
+                      "key": "StatusCallback",
+                      "value": "<uri>"
+                    },
+                    {
+                      "disabled": false,
+                      "description": {
+                        "content": "Maximum price in USD to pay for the message",
+                        "type": "text/plain"
+                      },
+                      "key": "MaxPrice",
+                      "value": "<number>"
+                    },
+                    {
+                      "disabled": false,
+                      "description": {
+                        "content": "Validity period in seconds (max 14400)",
+                        "type": "text/plain"
+                      },
+                      "key": "ValidityPeriod",
+                      "value": "<integer>"
+                    },
+                    {
+                      "disabled": false,
+                      "description": {
+                        "content": "Time to send a scheduled message (requires messaging service)",
+                        "type": "text/plain"
+                      },
+                      "key": "SendAt",
+                      "value": "<dateTime>"
+                    },
+                    {
+                      "disabled": false,
+                      "description": {
+                        "content": "Schedule type for scheduled messages",
+                        "type": "text/plain"
+                      },
+                      "key": "ScheduleType",
+                      "value": "<string>"
+                    },
+                    {
+                      "disabled": false,
+                      "description": {
+                        "content": "SID of a content template to use",
+                        "type": "text/plain"
+                      },
+                      "key": "ContentSid",
+                      "value": "<string>"
+                    },
+                    {
+                      "disabled": false,
+                      "description": {
+                        "content": "JSON string of variables for content templates",
+                        "type": "text/plain"
+                      },
+                      "key": "ContentVariables",
+                      "value": "<string>"
+                    }
+                  ]
+                }
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "7f5a52f9-88cb-46cd-87e9-440fa3d65382",
+              "name": "Unable to create message",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "Accounts",
+                    ":AccountSid",
+                    "Messages.json"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "AccountSid",
+                      "description": "(Required) The unique identifier of the Twilio account"
+                    }
+                  ]
+                },
+                "method": "POST",
+                "body": {
+                  "mode": "urlencoded",
+                  "urlencoded": [
+                    {
+                      "disabled": false,
+                      "description": {
+                        "content": "(Required) Recipient phone number in E.164 format",
+                        "type": "text/plain"
+                      },
+                      "key": "To",
+                      "value": "<string>"
+                    },
+                    {
+                      "disabled": false,
+                      "description": {
+                        "content": "Twilio phone number, short code, or alphanumeric sender ID",
+                        "type": "text/plain"
+                      },
+                      "key": "From",
+                      "value": "<string>"
+                    },
+                    {
+                      "disabled": false,
+                      "description": {
+                        "content": "The text content of the message (max 1600 characters)",
+                        "type": "text/plain"
+                      },
+                      "key": "Body",
+                      "value": "<string>"
+                    },
+                    {
+                      "disabled": false,
+                      "description": {
+                        "content": "SID of the messaging service to use",
+                        "type": "text/plain"
+                      },
+                      "key": "MessagingServiceSid",
+                      "value": "<string>"
+                    },
+                    {
+                      "disabled": false,
+                      "description": {
+                        "content": "URLs of media to include in MMS messages (max 10)",
+                        "type": "text/plain"
+                      },
+                      "key": "MediaUrl",
+                      "value": "<uri>"
+                    },
+                    {
+                      "disabled": false,
+                      "description": {
+                        "content": "URLs of media to include in MMS messages (max 10)",
+                        "type": "text/plain"
+                      },
+                      "key": "MediaUrl",
+                      "value": "<uri>"
+                    },
+                    {
+                      "disabled": false,
+                      "description": {
+                        "content": "URL for status callback notifications",
+                        "type": "text/plain"
+                      },
+                      "key": "StatusCallback",
+                      "value": "<uri>"
+                    },
+                    {
+                      "disabled": false,
+                      "description": {
+                        "content": "Maximum price in USD to pay for the message",
+                        "type": "text/plain"
+                      },
+                      "key": "MaxPrice",
+                      "value": "<number>"
+                    },
+                    {
+                      "disabled": false,
+                      "description": {
+                        "content": "Validity period in seconds (max 14400)",
+                        "type": "text/plain"
+                      },
+                      "key": "ValidityPeriod",
+                      "value": "<integer>"
+                    },
+                    {
+                      "disabled": false,
+                      "description": {
+                        "content": "Time to send a scheduled message (requires messaging service)",
+                        "type": "text/plain"
+                      },
+                      "key": "SendAt",
+                      "value": "<dateTime>"
+                    },
+                    {
+                      "disabled": false,
+                      "description": {
+                        "content": "Schedule type for scheduled messages",
+                        "type": "text/plain"
+                      },
+                      "key": "ScheduleType",
+                      "value": "<string>"
+                    },
+                    {
+                      "disabled": false,
+                      "description": {
+                        "content": "SID of a content template to use",
+                        "type": "text/plain"
+                      },
+                      "key": "ContentSid",
+                      "value": "<string>"
+                    },
+                    {
+                      "disabled": false,
+                      "description": {
+                        "content": "JSON string of variables for content templates",
+                        "type": "text/plain"
+                      },
+                      "key": "ContentVariables",
+                      "value": "<string>"
+                    }
+                  ]
+                }
+              },
+              "status": "Unprocessable Entity (WebDAV) (RFC 4918)",
+              "code": 422,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "b1aede2c-4493-43b7-b76e-49f3d134e9ae",
+          "name": "Twilio Fetch a Message",
+          "request": {
+            "name": "Twilio Fetch a Message",
+            "description": {
+              "content": "Retrieve details of a specific message by its SID.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "Accounts",
+                ":AccountSid",
+                "Messages",
+                "{{MessageSid}}.json"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "AccountSid",
+                  "description": "(Required) The unique identifier of the Twilio account"
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "34996478-b551-4e69-be1b-444f21e0c201",
+              "name": "Message details",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "Accounts",
+                    ":AccountSid",
+                    "Messages",
+                    "{{MessageSid}}.json"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "AccountSid",
+                      "description": "(Required) The unique identifier of the Twilio account"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"sid\": \"SMxREDACTEDxEXAMPLExSIDxVALUExxxxxx\",\n  \"account_sid\": \"ACxREDACTEDxEXAMPLExSIDxVALUExxxxxx\",\n  \"messaging_service_sid\": \"MGxREDACTEDxEXAMPLExSIDxVALUExxxxxx\",\n  \"to\": \"string\",\n  \"from\": \"string\",\n  \"body\": \"string\",\n  \"status\": \"delivered\",\n  \"direction\": \"outbound-call\",\n  \"price\": \"string\",\n  \"price_unit\": \"string\",\n  \"num_segments\": \"string\",\n  \"num_media\": \"string\",\n  \"error_code\": 9781,\n  \"error_message\": \"string\",\n  \"date_created\": \"2026-02-25T03:28:19.051Z\",\n  \"date_updated\": \"1962-03-03T05:53:59.414Z\",\n  \"date_sent\": \"1974-02-24T22:39:45.597Z\",\n  \"uri\": \"string\",\n  \"api_version\": \"string\",\n  \"subresource_uris\": {\n    \"media\": \"string\"\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "5c77cf8c-bfcb-4cd2-9d13-6f3c4f42ce87",
+              "name": "Unauthorized",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "Accounts",
+                    ":AccountSid",
+                    "Messages",
+                    "{{MessageSid}}.json"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "AccountSid",
+                      "description": "(Required) The unique identifier of the Twilio account"
+                    }
+                  ]
+                },
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "72e60f12-ef6c-4b66-a589-1a5707f3c55d",
+              "name": "Message not found",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "Accounts",
+                    ":AccountSid",
+                    "Messages",
+                    "{{MessageSid}}.json"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "AccountSid",
+                      "description": "(Required) The unique identifier of the Twilio account"
+                    }
+                  ]
+                },
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "3b0b8391-8fd4-4f93-9223-2db4d7d91caf",
+          "name": "Twilio Update a Message",
+          "request": {
+            "name": "Twilio Update a Message",
+            "description": {
+              "content": "Update the body of a message resource. Can be used to redact message content by posting an empty body.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "Accounts",
+                ":AccountSid",
+                "Messages",
+                "{{MessageSid}}.json"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "AccountSid",
+                  "description": "(Required) The unique identifier of the Twilio account"
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/x-www-form-urlencoded"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": null,
+            "body": {
+              "mode": "urlencoded",
+              "urlencoded": [
+                {
+                  "disabled": false,
+                  "key": "Body",
+                  "value": "<string>",
+                  "description": "The updated message body (empty string to redact)"
+                },
+                {
+                  "disabled": false,
+                  "key": "Status",
+                  "value": "<string>",
+                  "description": "Set to canceled to cancel a queued message"
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "id": "95256b90-4457-438b-9840-dcc8b6c46e6d",
+              "name": "Message updated",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "Accounts",
+                    ":AccountSid",
+                    "Messages",
+                    "{{MessageSid}}.json"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "AccountSid",
+                      "description": "(Required) The unique identifier of the Twilio account"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "urlencoded",
+                  "urlencoded": [
+                    {
+                      "disabled": false,
+                      "description": {
+                        "content": "The updated message body (empty string to redact)",
+                        "type": "text/plain"
+                      },
+                      "key": "Body",
+                      "value": "<string>"
+                    },
+                    {
+                      "disabled": false,
+                      "description": {
+                        "content": "Set to canceled to cancel a queued message",
+                        "type": "text/plain"
+                      },
+                      "key": "Status",
+                      "value": "<string>"
+                    }
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"sid\": \"SMxREDACTEDxEXAMPLExSIDxVALUExxxxxx\",\n  \"account_sid\": \"ACxREDACTEDxEXAMPLExSIDxVALUExxxxxx\",\n  \"messaging_service_sid\": \"MGxREDACTEDxEXAMPLExSIDxVALUExxxxxx\",\n  \"to\": \"string\",\n  \"from\": \"string\",\n  \"body\": \"string\",\n  \"status\": \"delivered\",\n  \"direction\": \"outbound-call\",\n  \"price\": \"string\",\n  \"price_unit\": \"string\",\n  \"num_segments\": \"string\",\n  \"num_media\": \"string\",\n  \"error_code\": 9781,\n  \"error_message\": \"string\",\n  \"date_created\": \"2026-02-25T03:28:19.051Z\",\n  \"date_updated\": \"1962-03-03T05:53:59.414Z\",\n  \"date_sent\": \"1974-02-24T22:39:45.597Z\",\n  \"uri\": \"string\",\n  \"api_version\": \"string\",\n  \"subresource_uris\": {\n    \"media\": \"string\"\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "e4a2f8f5-74b4-4ffc-a662-91ada32e16d0",
+              "name": "Unauthorized",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "Accounts",
+                    ":AccountSid",
+                    "Messages",
+                    "{{MessageSid}}.json"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "AccountSid",
+                      "description": "(Required) The unique identifier of the Twilio account"
+                    }
+                  ]
+                },
+                "method": "POST",
+                "body": {
+                  "mode": "urlencoded",
+                  "urlencoded": [
+                    {
+                      "disabled": false,
+                      "description": {
+                        "content": "The updated message body (empty string to redact)",
+                        "type": "text/plain"
+                      },
+                      "key": "Body",
+                      "value": "<string>"
+                    },
+                    {
+                      "disabled": false,
+                      "description": {
+                        "content": "Set to canceled to cancel a queued message",
+                        "type": "text/plain"
+                      },
+                      "key": "Status",
+                      "value": "<string>"
+                    }
+                  ]
+                }
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "0697d31c-007d-4bea-a9d2-93a4bdce9a3f",
+              "name": "Message not found",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "Accounts",
+                    ":AccountSid",
+                    "Messages",
+                    "{{MessageSid}}.json"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "AccountSid",
+                      "description": "(Required) The unique identifier of the Twilio account"
+                    }
+                  ]
+                },
+                "method": "POST",
+                "body": {
+                  "mode": "urlencoded",
+                  "urlencoded": [
+                    {
+                      "disabled": false,
+                      "description": {
+                        "content": "The updated message body (empty string to redact)",
+                        "type": "text/plain"
+                      },
+                      "key": "Body",
+                      "value": "<string>"
+                    },
+                    {
+                      "disabled": false,
+                      "description": {
+                        "content": "Set to canceled to cancel a queued message",
+                        "type": "text/plain"
+                      },
+                      "key": "Status",
+                      "value": "<string>"
+                    }
+                  ]
+                }
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "13f16ef7-8727-4d3b-bca3-8649d866f89b",
+          "name": "Twilio Delete a Message",
+          "request": {
+            "name": "Twilio Delete a Message",
+            "description": {
+              "content": "Delete a message record from your account. The message will no longer appear in your account logs.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "Accounts",
+                ":AccountSid",
+                "Messages",
+                "{{MessageSid}}.json"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "AccountSid",
+                  "description": "(Required) The unique identifier of the Twilio account"
+                }
+              ]
+            },
+            "method": "DELETE",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "c24a3d63-c314-4ca7-8f41-1fd0915c18b6",
+              "name": "Message deleted",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "Accounts",
+                    ":AccountSid",
+                    "Messages",
+                    "{{MessageSid}}.json"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "AccountSid",
+                      "description": "(Required) The unique identifier of the Twilio account"
+                    }
+                  ]
+                },
+                "method": "DELETE",
+                "body": {}
+              },
+              "status": "No Content",
+              "code": 204,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "0c1d3818-d193-436b-bfe9-55aad4c8529e",
+              "name": "Unauthorized",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "Accounts",
+                    ":AccountSid",
+                    "Messages",
+                    "{{MessageSid}}.json"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "AccountSid",
+                      "description": "(Required) The unique identifier of the Twilio account"
+                    }
+                  ]
+                },
+                "method": "DELETE",
+                "body": {}
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "b3b6c3ff-9d84-4753-b11b-7d4e5e03f103",
+              "name": "Message not found",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "Accounts",
+                    ":AccountSid",
+                    "Messages",
+                    "{{MessageSid}}.json"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "AccountSid",
+                      "description": "(Required) The unique identifier of the Twilio account"
+                    }
+                  ]
+                },
+                "method": "DELETE",
+                "body": {}
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "type": "string",
+      "value": "https://accounts.twilio.com",
+      "key": "baseUrl"
+    },
+    {
+      "disabled": false,
+      "description": {
+        "content": "(Required) The unique identifier of the message",
+        "type": "text/plain"
+      },
+      "type": "any",
+      "value": "<string>",
+      "key": "MessageSid"
+    }
+  ],
+  "info": {
+    "_postman_id": "874ff046-a219-4e6a-ba18-93d76e7fff2e",
+    "name": "Twilio - Accounts A2p Messages API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "This is the public Twilio REST API.\n\nContact Support:\n Name: Twilio Support\n Email: support@twilio.com",
+      "type": "text/plain"
+    }
+  }
+}

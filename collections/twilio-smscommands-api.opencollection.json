@@ -1,0 +1,116 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Twilio - Accounts A2p Sms Commands API",
+    "version": "1.52.0"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "SmsCommands",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "ListSmsCommand",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://accounts.twilio.com/v1/SmsCommands",
+            "params": [
+              {
+                "name": "Sim",
+                "value": "",
+                "type": "query",
+                "description": "The SID or unique name of the Sim resource that SMS Command was sent to or from."
+              },
+              {
+                "name": "Status",
+                "value": "",
+                "type": "query",
+                "description": "The status of the SMS Command. Can be: `queued`, `sent`, `delivered`, `received` or `failed`. See the [SMS Command Status Values](https://www.twilio.com/docs/iot/supersim/api/smscommand-resource#status-values) for a description of each."
+              },
+              {
+                "name": "Direction",
+                "value": "",
+                "type": "query",
+                "description": "The direction of the SMS Command. Can be `to_sim` or `from_sim`. The value of `to_sim` is synonymous with the term `mobile terminated`, and `from_sim` is synonymous with the term `mobile originated`."
+              },
+              {
+                "name": "PageSize",
+                "value": "",
+                "type": "query",
+                "description": "How many resources to return in each list page. The default is 50, and the maximum is 1000."
+              },
+              {
+                "name": "Page",
+                "value": "",
+                "type": "query",
+                "description": "The page index. This value is simply for client state."
+              },
+              {
+                "name": "PageToken",
+                "value": "",
+                "type": "query",
+                "description": "The page token. This is provided by the API."
+              }
+            ],
+            "auth": {
+              "type": "basic",
+              "username": "{{username}}",
+              "password": "{{password}}"
+            }
+          },
+          "docs": "Retrieve a list of SMS Commands from your account."
+        },
+        {
+          "info": {
+            "name": "CreateSmsCommand",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://accounts.twilio.com/v1/SmsCommands",
+            "body": {
+              "type": "form-urlencoded",
+              "data": []
+            },
+            "auth": {
+              "type": "basic",
+              "username": "{{username}}",
+              "password": "{{password}}"
+            }
+          },
+          "docs": "Send SMS Command to a Sim."
+        },
+        {
+          "info": {
+            "name": "FetchSmsCommand",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://accounts.twilio.com/v1/SmsCommands/:Sid",
+            "params": [
+              {
+                "name": "Sid",
+                "value": "",
+                "type": "path",
+                "description": "The SID of the SMS Command resource to fetch."
+              }
+            ],
+            "auth": {
+              "type": "basic",
+              "username": "{{username}}",
+              "password": "{{password}}"
+            }
+          },
+          "docs": "Fetch SMS Command instance from your account."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

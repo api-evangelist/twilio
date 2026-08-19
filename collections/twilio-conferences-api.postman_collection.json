@@ -1,0 +1,1471 @@
+{
+  "item": [
+    {
+      "id": "e1365fe3-0cf8-4126-b2b1-013c63263ead",
+      "name": "Conferences",
+      "description": {
+        "content": "",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "44e8ee25-5dff-4d77-b476-0edc43c13f1d",
+          "name": "Fetch Conference",
+          "request": {
+            "name": "Fetch Conference",
+            "description": {
+              "content": "Get a specific Conference Summary.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "v1",
+                "Conferences",
+                ":ConferenceSid"
+              ],
+              "host": [
+                "{{v1-Conferences-ConferenceSid-Url}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "ConferenceSid",
+                  "description": "(Required) The unique SID identifier of the Conference."
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": {
+              "type": "basic",
+              "basic": [
+                {
+                  "key": "username",
+                  "value": "{{basicAuthUsername}}"
+                },
+                {
+                  "key": "password",
+                  "value": "{{basicAuthPassword}}"
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "id": "f6edbe28-94ff-462b-8327-ddf5eed694a9",
+              "name": "OK",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "Conferences",
+                    ":ConferenceSid"
+                  ],
+                  "host": [
+                    "{{v1-Conferences-ConferenceSid-Url}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "ConferenceSid",
+                      "description": "(Required) The unique SID identifier of the Conference."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: basic",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Basic <credentials>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"conference_sid\": \"CF8968ADBebf8d65EF0b39ADC0B92998B6\",\n  \"account_sid\": \"ACxREDACTEDxEXAMPLExSIDxVALUExxxxxx\",\n  \"friendly_name\": \"string\",\n  \"create_time\": \"2011-09-01T05:33:03.871Z\",\n  \"start_time\": null,\n  \"end_time\": \"1979-12-12T06:21:25.576Z\",\n  \"duration_seconds\": null,\n  \"connect_duration_seconds\": 5341,\n  \"status\": \"in_progress\",\n  \"max_participants\": null,\n  \"max_concurrent_participants\": null,\n  \"unique_participants\": null,\n  \"end_reason\": \"last_participant_kicked\",\n  \"ended_by\": \"CAxREDACTEDxEXAMPLExSIDxVALUExxxxxx\",\n  \"mixer_region\": \"ie1\",\n  \"mixer_region_requested\": \"ie1\",\n  \"recording_enabled\": null,\n  \"detected_issues\": {},\n  \"tags\": null,\n  \"tag_info\": {},\n  \"processing_state\": \"in_progress\",\n  \"url\": null,\n  \"links\": null\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "4dfdd8d6-555d-4543-a181-c0d5c188e396",
+          "name": "List Conference",
+          "request": {
+            "name": "List Conference",
+            "description": {
+              "content": "Get a list of Conference Summaries.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "v1",
+                "Conferences"
+              ],
+              "host": [
+                "{{v1-Conferences-Url}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "ConferenceSid",
+                  "value": "<string>",
+                  "description": "The SID of the conference."
+                },
+                {
+                  "disabled": false,
+                  "key": "FriendlyName",
+                  "value": "<string>",
+                  "description": "Custom label for the conference resource, up to 64 characters."
+                },
+                {
+                  "disabled": false,
+                  "key": "Status",
+                  "value": "<string>",
+                  "description": "Conference status."
+                },
+                {
+                  "disabled": false,
+                  "key": "CreatedAfter",
+                  "value": "<string>",
+                  "description": "Conferences created after the provided timestamp specified in ISO 8601 format"
+                },
+                {
+                  "disabled": false,
+                  "key": "CreatedBefore",
+                  "value": "<string>",
+                  "description": "Conferences created before the provided timestamp specified in ISO 8601 format."
+                },
+                {
+                  "disabled": false,
+                  "key": "MixerRegion",
+                  "value": "<string>",
+                  "description": "Twilio region where the conference media was mixed."
+                },
+                {
+                  "disabled": false,
+                  "key": "Tags",
+                  "value": "<string>",
+                  "description": "Tags applied by Twilio for common potential configuration, quality, or performance issues."
+                },
+                {
+                  "disabled": false,
+                  "key": "Subaccount",
+                  "value": "<string>",
+                  "description": "Account SID for the subaccount whose resources you wish to retrieve."
+                },
+                {
+                  "disabled": false,
+                  "key": "DetectedIssues",
+                  "value": "<string>",
+                  "description": "Potential configuration, behavior, or performance issues detected during the conference."
+                },
+                {
+                  "disabled": false,
+                  "key": "EndReason",
+                  "value": "<string>",
+                  "description": "Conference end reason; e.g. last participant left, modified by API, etc."
+                },
+                {
+                  "disabled": false,
+                  "key": "PageSize",
+                  "value": "<integer>",
+                  "description": "How many resources to return in each list page. The default is 50, and the maximum is 1000."
+                },
+                {
+                  "disabled": false,
+                  "key": "Page",
+                  "value": "<integer>",
+                  "description": "The page index. This value is simply for client state."
+                },
+                {
+                  "disabled": false,
+                  "key": "PageToken",
+                  "value": "<string>",
+                  "description": "The page token. This is provided by the API."
+                }
+              ],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": {
+              "type": "basic",
+              "basic": [
+                {
+                  "key": "username",
+                  "value": "{{basicAuthUsername}}"
+                },
+                {
+                  "key": "password",
+                  "value": "{{basicAuthPassword}}"
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "id": "50623649-6c20-4e32-abfb-63603e98a141",
+              "name": "OK",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "Conferences"
+                  ],
+                  "host": [
+                    "{{v1-Conferences-Url}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "ConferenceSid",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "FriendlyName",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "Status",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "CreatedAfter",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "CreatedBefore",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "MixerRegion",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "Tags",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "Subaccount",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "DetectedIssues",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "EndReason",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "PageSize",
+                      "value": "<integer>"
+                    },
+                    {
+                      "key": "Page",
+                      "value": "<integer>"
+                    },
+                    {
+                      "key": "PageToken",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: basic",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Basic <credentials>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"conferences\": [\n    {\n      \"conference_sid\": \"CF71B8e9df6C03AaA3EDa859Bc9CCF16dB\",\n      \"account_sid\": \"ACxREDACTEDxEXAMPLExSIDxVALUExxxxxx\",\n      \"friendly_name\": null,\n      \"create_time\": \"1970-02-09T01:42:48.940Z\",\n      \"start_time\": null,\n      \"end_time\": null,\n      \"duration_seconds\": 9980,\n      \"connect_duration_seconds\": null,\n      \"status\": \"completed\",\n      \"max_participants\": 5819,\n      \"max_concurrent_participants\": 2778,\n      \"unique_participants\": 5996,\n      \"end_reason\": \"participant_with_end_conference_on_exit_left\",\n      \"ended_by\": \"CAxREDACTEDxEXAMPLExSIDxVALUExxxxxx\",\n      \"mixer_region\": \"au1\",\n      \"mixer_region_requested\": \"sg1\",\n      \"recording_enabled\": null,\n      \"detected_issues\": {},\n      \"tags\": null,\n      \"tag_info\": {},\n      \"processing_state\": \"timeout\",\n      \"url\": null,\n      \"links\": null\n    },\n    {\n      \"conference_sid\": \"CF7B2adfFB4F1E6d994EC10A8bbBa2c4Df\",\n      \"account_sid\": \"ACxREDACTEDxEXAMPLExSIDxVALUExxxxxx\",\n      \"friendly_name\": \"string\",\n      \"create_time\": \"2000-04-21T14:55:00.721Z\",\n      \"start_time\": null,\n      \"end_time\": null,\n      \"duration_seconds\": null,\n      \"connect_duration_seconds\": 8457,\n      \"status\": \"not_started\",\n      \"max_participants\": null,\n      \"max_concurrent_participants\": 3916,\n      \"unique_participants\": 7655,\n      \"end_reason\": \"participant_with_end_conference_on_exit_left\",\n      \"ended_by\": \"CAxREDACTEDxEXAMPLExSIDxVALUExxxxxx\",\n      \"mixer_region\": \"us1\",\n      \"mixer_region_requested\": \"br1\",\n      \"recording_enabled\": null,\n      \"detected_issues\": {},\n      \"tags\": null,\n      \"tag_info\": {},\n      \"processing_state\": \"complete\",\n      \"url\": null,\n      \"links\": null\n    }\n  ],\n  \"meta\": {\n    \"first_page_url\": \"http://tvbfsFmIevXipFZCSQhFHDVvmnKVyqFP.hdpArCmLkOSzz\",\n    \"next_page_url\": \"https://CaTIh.ypgmsq6bq9olFEl6K+aJb+.O\",\n    \"page\": 433,\n    \"page_size\": 8670,\n    \"previous_page_url\": null,\n    \"url\": \"https://rJgFJicXuTrzMuSqkhbEB.wzklL9YikJqffi4B8Hl\",\n    \"key\": \"string\"\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "b6c9ea3c-2e01-45c3-912a-a36ffa598287",
+          "name": "Fetch Conference Participant",
+          "request": {
+            "name": "Fetch Conference Participant",
+            "description": {
+              "content": "Get a specific Conference Participant Summary for a Conference.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "v1",
+                "Conferences",
+                ":ConferenceSid",
+                "Participants",
+                ":ParticipantSid"
+              ],
+              "host": [
+                "{{v1-Conferences-ConferenceSid-Participants-ParticipantSid-Url}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "Events",
+                  "value": "<string>",
+                  "description": "Conference events generated by application or participant activity; e.g. `hold`, `mute`, etc."
+                },
+                {
+                  "disabled": false,
+                  "key": "Metrics",
+                  "value": "<string>",
+                  "description": "Object. Contains participant call quality metrics."
+                }
+              ],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "ConferenceSid",
+                  "description": "(Required) The unique SID identifier of the Conference."
+                },
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "ParticipantSid",
+                  "description": "(Required) The unique SID identifier of the Participant."
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": {
+              "type": "basic",
+              "basic": [
+                {
+                  "key": "username",
+                  "value": "{{basicAuthUsername}}"
+                },
+                {
+                  "key": "password",
+                  "value": "{{basicAuthPassword}}"
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "id": "a3fdc39d-cc22-4cb9-98f1-189040664e7f",
+              "name": "OK",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "Conferences",
+                    ":ConferenceSid",
+                    "Participants",
+                    ":ParticipantSid"
+                  ],
+                  "host": [
+                    "{{v1-Conferences-ConferenceSid-Participants-ParticipantSid-Url}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "Events",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "Metrics",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "ConferenceSid",
+                      "description": "(Required) The unique SID identifier of the Conference."
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "ParticipantSid",
+                      "description": "(Required) The unique SID identifier of the Participant."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: basic",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Basic <credentials>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"participant_sid\": \"CP0b996bdEfed0445A886d0D6E452b7dfA\",\n  \"label\": \"string\",\n  \"conference_sid\": \"CFFaDc0faBde67ed42a2fdEe57a7DbffEe\",\n  \"call_sid\": \"CAxREDACTEDxEXAMPLExSIDxVALUExxxxxx\",\n  \"account_sid\": \"ACxREDACTEDxEXAMPLExSIDxVALUExxxxxx\",\n  \"call_direction\": \"outbound\",\n  \"from\": null,\n  \"to\": \"string\",\n  \"call_status\": \"completed\",\n  \"country_code\": null,\n  \"is_moderator\": null,\n  \"join_time\": \"1953-10-15T11:24:03.619Z\",\n  \"leave_time\": null,\n  \"duration_seconds\": 9930,\n  \"outbound_queue_length\": 2122,\n  \"outbound_time_in_queue\": 8319,\n  \"jitter_buffer_size\": \"medium\",\n  \"is_coach\": null,\n  \"coached_participants\": [\n    \"string\",\n    \"string\"\n  ],\n  \"participant_region\": \"de1\",\n  \"conference_region\": \"au1\",\n  \"call_type\": \"carrier\",\n  \"processing_state\": \"timeout\",\n  \"properties\": {},\n  \"events\": {},\n  \"metrics\": {},\n  \"url\": \"http://sUayKsdcQHByCAYAZffVsTJYiB.heazyBEtkWRiptsKg8wWX\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "1490f70f-23dc-46bb-ac72-90499a6b9c23",
+          "name": "List Conference Participant",
+          "request": {
+            "name": "List Conference Participant",
+            "description": {
+              "content": "Get a list of Conference Participants Summaries for a Conference.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "v1",
+                "Conferences",
+                ":ConferenceSid",
+                "Participants"
+              ],
+              "host": [
+                "{{v1-Conferences-ConferenceSid-Participants-Url}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "ParticipantSid",
+                  "value": "<string>",
+                  "description": "The unique SID identifier of the Participant."
+                },
+                {
+                  "disabled": false,
+                  "key": "Label",
+                  "value": "<string>",
+                  "description": "User-specified label for a participant."
+                },
+                {
+                  "disabled": false,
+                  "key": "Events",
+                  "value": "<string>",
+                  "description": "Conference events generated by application or participant activity; e.g. `hold`, `mute`, etc."
+                },
+                {
+                  "disabled": false,
+                  "key": "PageSize",
+                  "value": "<integer>",
+                  "description": "How many resources to return in each list page. The default is 50, and the maximum is 1000."
+                },
+                {
+                  "disabled": false,
+                  "key": "Page",
+                  "value": "<integer>",
+                  "description": "The page index. This value is simply for client state."
+                },
+                {
+                  "disabled": false,
+                  "key": "PageToken",
+                  "value": "<string>",
+                  "description": "The page token. This is provided by the API."
+                }
+              ],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "ConferenceSid",
+                  "description": "(Required) The unique SID identifier of the Conference."
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": {
+              "type": "basic",
+              "basic": [
+                {
+                  "key": "username",
+                  "value": "{{basicAuthUsername}}"
+                },
+                {
+                  "key": "password",
+                  "value": "{{basicAuthPassword}}"
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "id": "422f02df-34ca-48ee-9ade-5b3480b87a12",
+              "name": "OK",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "Conferences",
+                    ":ConferenceSid",
+                    "Participants"
+                  ],
+                  "host": [
+                    "{{v1-Conferences-ConferenceSid-Participants-Url}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "ParticipantSid",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "Label",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "Events",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "PageSize",
+                      "value": "<integer>"
+                    },
+                    {
+                      "key": "Page",
+                      "value": "<integer>"
+                    },
+                    {
+                      "key": "PageToken",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "ConferenceSid",
+                      "description": "(Required) The unique SID identifier of the Conference."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: basic",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Basic <credentials>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"participants\": [\n    {\n      \"participant_sid\": \"CPff8CF2b2654E04c75Accece6dDDbC781\",\n      \"label\": \"string\",\n      \"conference_sid\": \"CFEEB9eC581Dbd80B351ef838FDCA5E7bE\",\n      \"call_sid\": \"CAxREDACTEDxEXAMPLExSIDxVALUExxxxxx\",\n      \"account_sid\": \"ACxREDACTEDxEXAMPLExSIDxVALUExxxxxx\",\n      \"call_direction\": \"inbound\",\n      \"from\": null,\n      \"to\": null,\n      \"call_status\": \"answered\",\n      \"country_code\": null,\n      \"is_moderator\": true,\n      \"join_time\": \"1965-07-06T04:45:14.540Z\",\n      \"leave_time\": \"1964-10-11T17:54:44.613Z\",\n      \"duration_seconds\": 2809,\n      \"outbound_queue_length\": null,\n      \"outbound_time_in_queue\": null,\n      \"jitter_buffer_size\": \"medium\",\n      \"is_coach\": true,\n      \"coached_participants\": null,\n      \"participant_region\": \"us2\",\n      \"conference_region\": \"sg1\",\n      \"call_type\": \"client\",\n      \"processing_state\": \"complete\",\n      \"properties\": {},\n      \"events\": {},\n      \"metrics\": {},\n      \"url\": null\n    },\n    {\n      \"participant_sid\": \"CP95c77631867e7BD25dA77e8a61EeBc31\",\n      \"label\": null,\n      \"conference_sid\": \"CFF1F458a0b22AEE79b7BDF380f4D2D08B\",\n      \"call_sid\": \"CAxREDACTEDxEXAMPLExSIDxVALUExxxxxx\",\n      \"account_sid\": \"ACxREDACTEDxEXAMPLExSIDxVALUExxxxxx\",\n      \"call_direction\": \"outbound\",\n      \"from\": \"string\",\n      \"to\": null,\n      \"call_status\": \"completed\",\n      \"country_code\": \"string\",\n      \"is_moderator\": false,\n      \"join_time\": null,\n      \"leave_time\": null,\n      \"duration_seconds\": 6490,\n      \"outbound_queue_length\": 7148,\n      \"outbound_time_in_queue\": 899,\n      \"jitter_buffer_size\": \"off\",\n      \"is_coach\": true,\n      \"coached_participants\": [\n        \"string\",\n        \"string\"\n      ],\n      \"participant_region\": \"sg1\",\n      \"conference_region\": \"de1\",\n      \"call_type\": \"client\",\n      \"processing_state\": \"timeout\",\n      \"properties\": {},\n      \"events\": {},\n      \"metrics\": {},\n      \"url\": \"https://MpILWuxnZuHwupKAlgtOOWi.xifmSwOgvMne\"\n    }\n  ],\n  \"meta\": {\n    \"first_page_url\": \"https://EpEyzPN.czpdilOH5.YqE6x1ZmScP8LEjvvukVOi24M\",\n    \"next_page_url\": null,\n    \"page\": 8042,\n    \"page_size\": 3164,\n    \"previous_page_url\": \"http://yERHQdPkqnAIwkMgkJSvDczXLPw.cpbF3of-FdaGcxXemlGugwyCvvpQYufrHvi7JZxQeEUBdF3rd\",\n    \"url\": \"https://GQpVwawLULuQSprVYgAAxyGOgGmlIs.jcgI+HngZbEKcRVfcOhCmRNhFK0Eemz3SI41IyRnNg\",\n    \"key\": \"string\"\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "4b88df60-357c-47e6-9337-e0b477c8194d",
+          "name": "Twilio List Conferences",
+          "request": {
+            "name": "Twilio List Conferences",
+            "description": {
+              "content": "Retrieve a list of conferences within your account.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "Accounts",
+                ":AccountSid",
+                "Conferences.json"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "Status",
+                  "value": "<string>"
+                },
+                {
+                  "disabled": false,
+                  "key": "FriendlyName",
+                  "value": "<string>"
+                },
+                {
+                  "disabled": false,
+                  "key": "DateCreated",
+                  "value": "<date>"
+                },
+                {
+                  "disabled": false,
+                  "key": "PageSize",
+                  "value": "<integer>"
+                }
+              ],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "AccountSid",
+                  "description": "(Required) The unique identifier of the Twilio account"
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "09e5d238-4712-4b33-9267-605b1763b36c",
+              "name": "List of conferences",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "Accounts",
+                    ":AccountSid",
+                    "Conferences.json"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "Status",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "FriendlyName",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "DateCreated",
+                      "value": "<date>"
+                    },
+                    {
+                      "key": "PageSize",
+                      "value": "<integer>"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "AccountSid",
+                      "description": "(Required) The unique identifier of the Twilio account"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"conferences\": [\n    {\n      \"sid\": \"CF66EEBa13ecbDc8Ea4aA5FeD0BBcF7Be0\",\n      \"account_sid\": \"ACxREDACTEDxEXAMPLExSIDxVALUExxxxxx\",\n      \"friendly_name\": \"string\",\n      \"status\": \"completed\",\n      \"region\": \"string\",\n      \"reason_conference_ended\": \"string\",\n      \"call_sid_ending_conference\": \"string\",\n      \"date_created\": \"1964-05-04T07:02:32.578Z\",\n      \"date_updated\": \"1963-03-04T10:41:25.224Z\",\n      \"uri\": \"string\",\n      \"subresource_uris\": {\n        \"participants\": \"string\",\n        \"recordings\": \"string\"\n      }\n    },\n    {\n      \"sid\": \"CFC82ABdF33Dd26436Acd1bf1af5593Ce4\",\n      \"account_sid\": \"ACxREDACTEDxEXAMPLExSIDxVALUExxxxxx\",\n      \"friendly_name\": \"string\",\n      \"status\": \"completed\",\n      \"region\": \"string\",\n      \"reason_conference_ended\": \"string\",\n      \"call_sid_ending_conference\": \"string\",\n      \"date_created\": \"2013-06-01T12:35:10.708Z\",\n      \"date_updated\": \"2019-06-10T08:59:28.479Z\",\n      \"uri\": \"string\",\n      \"subresource_uris\": {\n        \"participants\": \"string\",\n        \"recordings\": \"string\"\n      }\n    }\n  ],\n  \"first_page_uri\": \"string\",\n  \"next_page_uri\": \"string\",\n  \"page\": 6931,\n  \"page_size\": 5536\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "27267c9d-0143-4c61-ba18-f41d38bf169b",
+              "name": "Unauthorized",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "Accounts",
+                    ":AccountSid",
+                    "Conferences.json"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "Status",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "FriendlyName",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "DateCreated",
+                      "value": "<date>"
+                    },
+                    {
+                      "key": "PageSize",
+                      "value": "<integer>"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "AccountSid",
+                      "description": "(Required) The unique identifier of the Twilio account"
+                    }
+                  ]
+                },
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "33efb92b-0dfe-4e0b-8d5a-fbddf190759e",
+          "name": "Twilio Fetch a Conference",
+          "request": {
+            "name": "Twilio Fetch a Conference",
+            "description": {},
+            "url": {
+              "path": [
+                "Accounts",
+                ":AccountSid",
+                "Conferences",
+                "{{ConferenceSid}}.json"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "AccountSid",
+                  "description": "(Required) The unique identifier of the Twilio account"
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "ea533753-ac8c-4ae7-af5c-8daefa85a9b1",
+              "name": "Conference details",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "Accounts",
+                    ":AccountSid",
+                    "Conferences",
+                    "{{ConferenceSid}}.json"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "AccountSid",
+                      "description": "(Required) The unique identifier of the Twilio account"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"sid\": \"CF6c7A5F41fa47E80f8CF0aBA5959e1e2c\",\n  \"account_sid\": \"ACxREDACTEDxEXAMPLExSIDxVALUExxxxxx\",\n  \"friendly_name\": \"string\",\n  \"status\": \"init\",\n  \"region\": \"string\",\n  \"reason_conference_ended\": \"string\",\n  \"call_sid_ending_conference\": \"string\",\n  \"date_created\": \"2024-10-13T08:26:42.990Z\",\n  \"date_updated\": \"1963-12-21T00:48:54.072Z\",\n  \"uri\": \"string\",\n  \"subresource_uris\": {\n    \"participants\": \"string\",\n    \"recordings\": \"string\"\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "ace94ca4-c437-4f45-8bb8-127029759ea3",
+              "name": "Conference not found",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "Accounts",
+                    ":AccountSid",
+                    "Conferences",
+                    "{{ConferenceSid}}.json"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "AccountSid",
+                      "description": "(Required) The unique identifier of the Twilio account"
+                    }
+                  ]
+                },
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "b0b77c35-9a3c-44bf-bb79-f2a4da2577d3",
+          "name": "Twilio Update a Conference",
+          "request": {
+            "name": "Twilio Update a Conference",
+            "description": {
+              "content": "End a conference or announce a message to participants.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "Accounts",
+                ":AccountSid",
+                "Conferences",
+                "{{ConferenceSid}}.json"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "AccountSid",
+                  "description": "(Required) The unique identifier of the Twilio account"
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/x-www-form-urlencoded"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": null,
+            "body": {
+              "mode": "urlencoded",
+              "urlencoded": [
+                {
+                  "disabled": false,
+                  "key": "Status",
+                  "value": "<string>",
+                  "description": "Set to completed to end the conference"
+                },
+                {
+                  "disabled": false,
+                  "key": "AnnounceUrl",
+                  "value": "<uri>",
+                  "description": "URL for TwiML to play to all participants"
+                },
+                {
+                  "disabled": false,
+                  "key": "AnnounceMethod",
+                  "value": "<string>"
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "id": "f161ff2b-300c-4f5f-9857-17f081f60de4",
+              "name": "Conference updated",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "Accounts",
+                    ":AccountSid",
+                    "Conferences",
+                    "{{ConferenceSid}}.json"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "AccountSid",
+                      "description": "(Required) The unique identifier of the Twilio account"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "urlencoded",
+                  "urlencoded": [
+                    {
+                      "disabled": false,
+                      "description": {
+                        "content": "Set to completed to end the conference",
+                        "type": "text/plain"
+                      },
+                      "key": "Status",
+                      "value": "<string>"
+                    },
+                    {
+                      "disabled": false,
+                      "description": {
+                        "content": "URL for TwiML to play to all participants",
+                        "type": "text/plain"
+                      },
+                      "key": "AnnounceUrl",
+                      "value": "<uri>"
+                    },
+                    {
+                      "disabled": false,
+                      "key": "AnnounceMethod",
+                      "value": "<string>"
+                    }
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"sid\": \"CF6c7A5F41fa47E80f8CF0aBA5959e1e2c\",\n  \"account_sid\": \"ACxREDACTEDxEXAMPLExSIDxVALUExxxxxx\",\n  \"friendly_name\": \"string\",\n  \"status\": \"init\",\n  \"region\": \"string\",\n  \"reason_conference_ended\": \"string\",\n  \"call_sid_ending_conference\": \"string\",\n  \"date_created\": \"2024-10-13T08:26:42.990Z\",\n  \"date_updated\": \"1963-12-21T00:48:54.072Z\",\n  \"uri\": \"string\",\n  \"subresource_uris\": {\n    \"participants\": \"string\",\n    \"recordings\": \"string\"\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "279ff534-56f8-42d6-a4fe-94179f79f3a4",
+          "name": "Twilio List Conference Participants",
+          "request": {
+            "name": "Twilio List Conference Participants",
+            "description": {},
+            "url": {
+              "path": [
+                "Accounts",
+                ":AccountSid",
+                "Conferences",
+                ":ConferenceSid",
+                "Participants.json"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "AccountSid",
+                  "description": "(Required) The unique identifier of the Twilio account"
+                },
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "ConferenceSid",
+                  "description": "(Required) "
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "ae74d1ed-d42c-476e-afaa-75d196c095eb",
+              "name": "List of participants",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "Accounts",
+                    ":AccountSid",
+                    "Conferences",
+                    ":ConferenceSid",
+                    "Participants.json"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "AccountSid",
+                      "description": "(Required) The unique identifier of the Twilio account"
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "ConferenceSid",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"participants\": [\n    {\n      \"call_sid\": \"CAxREDACTEDxEXAMPLExSIDxVALUExxxxxx\",\n      \"conference_sid\": \"CFBF654Cb6aeDd46D251fcCFF931eBbf0E\",\n      \"account_sid\": \"ACxREDACTEDxEXAMPLExSIDxVALUExxxxxx\",\n      \"muted\": false,\n      \"hold\": true,\n      \"coaching\": true,\n      \"status\": \"connecting\",\n      \"start_conference_on_enter\": false,\n      \"end_conference_on_exit\": false,\n      \"date_created\": \"1974-04-25T13:13:18.090Z\",\n      \"date_updated\": \"2013-02-01T11:06:44.390Z\",\n      \"uri\": \"string\"\n    },\n    {\n      \"call_sid\": \"CAxREDACTEDxEXAMPLExSIDxVALUExxxxxx\",\n      \"conference_sid\": \"CFbBee5F0FA294686ffa14CFB5e63053e2\",\n      \"account_sid\": \"ACxREDACTEDxEXAMPLExSIDxVALUExxxxxx\",\n      \"muted\": false,\n      \"hold\": false,\n      \"coaching\": true,\n      \"status\": \"queued\",\n      \"start_conference_on_enter\": false,\n      \"end_conference_on_exit\": true,\n      \"date_created\": \"1959-03-19T15:58:58.592Z\",\n      \"date_updated\": \"1972-09-17T08:03:49.410Z\",\n      \"uri\": \"string\"\n    }\n  ],\n  \"first_page_uri\": \"string\",\n  \"next_page_uri\": \"string\",\n  \"page\": 9923,\n  \"page_size\": 5580\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "6be48f20-e76c-4a78-8ad9-26db73239e3a",
+          "name": "Twilio Add a Participant to a Conference",
+          "request": {
+            "name": "Twilio Add a Participant to a Conference",
+            "description": {},
+            "url": {
+              "path": [
+                "Accounts",
+                ":AccountSid",
+                "Conferences",
+                ":ConferenceSid",
+                "Participants.json"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "AccountSid",
+                  "description": "(Required) The unique identifier of the Twilio account"
+                },
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "ConferenceSid",
+                  "description": "(Required) "
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/x-www-form-urlencoded"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": null,
+            "body": {
+              "mode": "urlencoded",
+              "urlencoded": [
+                {
+                  "disabled": false,
+                  "key": "From",
+                  "value": "<string>",
+                  "description": "(Required) Twilio phone number to use as caller ID"
+                },
+                {
+                  "disabled": false,
+                  "key": "To",
+                  "value": "<string>",
+                  "description": "(Required) Phone number to call and add to conference"
+                },
+                {
+                  "disabled": false,
+                  "key": "Muted",
+                  "value": "<boolean>"
+                },
+                {
+                  "disabled": false,
+                  "key": "Hold",
+                  "value": "<boolean>"
+                },
+                {
+                  "disabled": false,
+                  "key": "Record",
+                  "value": "<boolean>"
+                },
+                {
+                  "disabled": false,
+                  "key": "StatusCallback",
+                  "value": "<uri>"
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "id": "a499d171-6e70-4483-9859-efd8990b48a3",
+              "name": "Participant added",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "Accounts",
+                    ":AccountSid",
+                    "Conferences",
+                    ":ConferenceSid",
+                    "Participants.json"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "AccountSid",
+                      "description": "(Required) The unique identifier of the Twilio account"
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "ConferenceSid",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "urlencoded",
+                  "urlencoded": [
+                    {
+                      "disabled": false,
+                      "description": {
+                        "content": "(Required) Twilio phone number to use as caller ID",
+                        "type": "text/plain"
+                      },
+                      "key": "From",
+                      "value": "<string>"
+                    },
+                    {
+                      "disabled": false,
+                      "description": {
+                        "content": "(Required) Phone number to call and add to conference",
+                        "type": "text/plain"
+                      },
+                      "key": "To",
+                      "value": "<string>"
+                    },
+                    {
+                      "disabled": false,
+                      "key": "Muted",
+                      "value": "<boolean>"
+                    },
+                    {
+                      "disabled": false,
+                      "key": "Hold",
+                      "value": "<boolean>"
+                    },
+                    {
+                      "disabled": false,
+                      "key": "Record",
+                      "value": "<boolean>"
+                    },
+                    {
+                      "disabled": false,
+                      "key": "StatusCallback",
+                      "value": "<uri>"
+                    }
+                  ]
+                }
+              },
+              "status": "Created",
+              "code": 201,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"call_sid\": \"CAxREDACTEDxEXAMPLExSIDxVALUExxxxxx\",\n  \"conference_sid\": \"CFEfd4a1c2D2432C9b8a5f7BAdfc67aCae\",\n  \"account_sid\": \"ACxREDACTEDxEXAMPLExSIDxVALUExxxxxx\",\n  \"muted\": true,\n  \"hold\": false,\n  \"coaching\": true,\n  \"status\": \"connected\",\n  \"start_conference_on_enter\": true,\n  \"end_conference_on_exit\": false,\n  \"date_created\": \"1996-12-09T01:23:43.019Z\",\n  \"date_updated\": \"1956-12-09T14:46:24.048Z\",\n  \"uri\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "type": "string",
+      "value": "https://accounts.twilio.com",
+      "key": "baseUrl"
+    },
+    {
+      "type": "string",
+      "value": "https://insights.twilio.com",
+      "key": "v1-Conferences-ConferenceSid-Url"
+    },
+    {
+      "type": "string",
+      "value": "https://insights.twilio.com",
+      "key": "v1-Conferences-Url"
+    },
+    {
+      "type": "string",
+      "value": "https://insights.twilio.com",
+      "key": "v1-Conferences-ConferenceSid-Participants-ParticipantSid-Url"
+    },
+    {
+      "type": "string",
+      "value": "https://insights.twilio.com",
+      "key": "v1-Conferences-ConferenceSid-Participants-Url"
+    },
+    {
+      "disabled": false,
+      "description": {
+        "content": "(Required) ",
+        "type": "text/plain"
+      },
+      "type": "any",
+      "value": "<string>",
+      "key": "ConferenceSid"
+    }
+  ],
+  "info": {
+    "_postman_id": "5accbbeb-40cd-4405-9eab-7ba65b47197a",
+    "name": "Twilio - Accounts A2p Conferences API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "This is the public Twilio REST API.\n\nContact Support:\n Name: Twilio Support\n Email: support@twilio.com",
+      "type": "text/plain"
+    }
+  }
+}

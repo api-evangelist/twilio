@@ -1,6 +1,6 @@
-openapi: 3.0.1
+openapi: 3.2.0
 info:
-  title: Twilio - Accounts A2p IpRecords API
+  title: Twilio - Accounts A2p Ip Records API
   description: This is the public Twilio REST API.
   termsOfService: https://www.twilio.com/legal/tos
   contact:
@@ -175,6 +175,44 @@ paths:
       - GA
 components:
   schemas:
+    UpdateIpRecordRequest:
+      type: object
+      properties:
+        FriendlyName:
+          type: string
+          description: A descriptive string that you create to describe the resource. It is not unique and can be up to 255 characters long.
+    ListIpRecordResponse:
+      type: object
+      properties:
+        ip_records:
+          type: array
+          items:
+            $ref: '#/components/schemas/voice.v1.ip_record'
+        meta:
+          type: object
+          properties:
+            first_page_url:
+              type: string
+              format: uri
+            next_page_url:
+              type:
+              - string
+              - 'null'
+              format: uri
+            page:
+              type: integer
+            page_size:
+              type: integer
+            previous_page_url:
+              type:
+              - string
+              - 'null'
+              format: uri
+            url:
+              type: string
+              format: uri
+            key:
+              type: string
     CreateIpRecordRequest:
       type: object
       required:
@@ -193,86 +231,58 @@ components:
       type: object
       properties:
         account_sid:
-          type: string
+          type:
+          - string
+          - 'null'
           minLength: 34
           maxLength: 34
           pattern: ^AC[0-9a-fA-F]{32}$
-          nullable: true
           description: The SID of the [Account](https://www.twilio.com/docs/iam/api/account) that created the IP Record resource.
         sid:
-          type: string
+          type:
+          - string
+          - 'null'
           minLength: 34
           maxLength: 34
           pattern: ^IL[0-9a-fA-F]{32}$
-          nullable: true
           description: The unique string that we created to identify the IP Record resource.
         friendly_name:
-          type: string
-          nullable: true
+          type:
+          - string
+          - 'null'
           description: The string that you assigned to describe the resource.
         ip_address:
-          type: string
-          nullable: true
+          type:
+          - string
+          - 'null'
           description: An IP address in dotted decimal notation, IPv4 only.
           x-twilio:
             pii:
               handling: standard
               deleteSla: 30
         cidr_prefix_length:
-          type: integer
-          nullable: true
+          type:
+          - integer
+          - 'null'
           description: An integer representing the length of the [CIDR](https://tools.ietf.org/html/rfc4632) prefix to use with this IP address. By default the entire IP address is used, which for IPv4 is value 32.
         date_created:
-          type: string
+          type:
+          - string
+          - 'null'
           format: date-time
-          nullable: true
           description: The date and time in GMT that the resource was created specified in [RFC 2822](https://www.ietf.org/rfc/rfc2822.txt) format.
         date_updated:
-          type: string
+          type:
+          - string
+          - 'null'
           format: date-time
-          nullable: true
           description: The date and time in GMT that the resource was last updated specified in [RFC 2822](https://www.ietf.org/rfc/rfc2822.txt) format.
         url:
-          type: string
+          type:
+          - string
+          - 'null'
           format: uri
-          nullable: true
           description: The absolute URL of the resource.
-    ListIpRecordResponse:
-      type: object
-      properties:
-        ip_records:
-          type: array
-          items:
-            $ref: '#/components/schemas/voice.v1.ip_record'
-        meta:
-          type: object
-          properties:
-            first_page_url:
-              type: string
-              format: uri
-            next_page_url:
-              type: string
-              format: uri
-              nullable: true
-            page:
-              type: integer
-            page_size:
-              type: integer
-            previous_page_url:
-              type: string
-              format: uri
-              nullable: true
-            url:
-              type: string
-              format: uri
-            key:
-              type: string
-    UpdateIpRecordRequest:
-      type: object
-      properties:
-        FriendlyName:
-          type: string
-          description: A descriptive string that you create to describe the resource. It is not unique and can be up to 255 characters long.
   securitySchemes:
     accountSid_authToken:
       type: http

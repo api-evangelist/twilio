@@ -1,0 +1,636 @@
+{
+  "item": [
+    {
+      "id": "b9a98455-4ccf-41e9-be03-7ebb6a64a058",
+      "name": "Video",
+      "description": {
+        "content": "",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "2c0725e2-cf18-40ab-ad46-8bd89a2eb415",
+          "name": "Fetch Video Participant Summary",
+          "request": {
+            "name": "Fetch Video Participant Summary",
+            "description": {
+              "content": "Get Video Log Analyzer data for a Room Participant.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "v1",
+                "Video",
+                "Rooms",
+                ":RoomSid",
+                "Participants",
+                ":ParticipantSid"
+              ],
+              "host": [
+                "{{v1-Video-Rooms-RoomSid-Participants-ParticipantSid-Url}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "RoomSid",
+                  "description": "(Required) The SID of the Room resource."
+                },
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "ParticipantSid",
+                  "description": "(Required) The SID of the Participant resource."
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": {
+              "type": "basic",
+              "basic": [
+                {
+                  "key": "username",
+                  "value": "{{basicAuthUsername}}"
+                },
+                {
+                  "key": "password",
+                  "value": "{{basicAuthPassword}}"
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "id": "84359f1d-c22e-42a5-91b0-daecb3d3d814",
+              "name": "OK",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "Video",
+                    "Rooms",
+                    ":RoomSid",
+                    "Participants",
+                    ":ParticipantSid"
+                  ],
+                  "host": [
+                    "{{v1-Video-Rooms-RoomSid-Participants-ParticipantSid-Url}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "RoomSid",
+                      "description": "(Required) The SID of the Room resource."
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "ParticipantSid",
+                      "description": "(Required) The SID of the Participant resource."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: basic",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Basic <credentials>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"participant_sid\": \"PA37e5810c32B1d220dfD7871FebE48DdC\",\n  \"participant_identity\": \"string\",\n  \"join_time\": \"1996-11-02T23:05:04.921Z\",\n  \"leave_time\": \"1960-09-17T07:34:18.225Z\",\n  \"duration_sec\": null,\n  \"account_sid\": \"ACxREDACTEDxEXAMPLExSIDxVALUExxxxxx\",\n  \"room_sid\": \"RM2d384E630685dE54B3e648ED70dE0581\",\n  \"status\": \"completed\",\n  \"codecs\": null,\n  \"end_reason\": \"string\",\n  \"error_code\": null,\n  \"error_code_url\": \"string\",\n  \"media_region\": \"sg1\",\n  \"properties\": {},\n  \"edge_location\": \"dublin\",\n  \"publisher_info\": {},\n  \"url\": \"https://QYvZQpYGrZfzBKuYThPGeuTAGvktwAA.ugwDO3ioBgkZJumVfJZz7,IMo9EOsSb5iRro+VsPgcgocAzTHFmY4BQ.mpMqnjiThMcnycvtOzO8.Ey,Q\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "d68cdd23-ad78-4aae-a530-90f56898ca38",
+          "name": "List Video Participant Summary",
+          "request": {
+            "name": "List Video Participant Summary",
+            "description": {
+              "content": "Get a list of room participants.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "v1",
+                "Video",
+                "Rooms",
+                ":RoomSid",
+                "Participants"
+              ],
+              "host": [
+                "{{v1-Video-Rooms-RoomSid-Participants-Url}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "PageSize",
+                  "value": "<integer>",
+                  "description": "How many resources to return in each list page. The default is 50, and the maximum is 1000."
+                },
+                {
+                  "disabled": false,
+                  "key": "Page",
+                  "value": "<integer>",
+                  "description": "The page index. This value is simply for client state."
+                },
+                {
+                  "disabled": false,
+                  "key": "PageToken",
+                  "value": "<string>",
+                  "description": "The page token. This is provided by the API."
+                }
+              ],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "RoomSid",
+                  "description": "(Required) The SID of the Room resource."
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": {
+              "type": "basic",
+              "basic": [
+                {
+                  "key": "username",
+                  "value": "{{basicAuthUsername}}"
+                },
+                {
+                  "key": "password",
+                  "value": "{{basicAuthPassword}}"
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "id": "4b2c6a1d-4c2e-4a26-8737-4fb282450aa6",
+              "name": "OK",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "Video",
+                    "Rooms",
+                    ":RoomSid",
+                    "Participants"
+                  ],
+                  "host": [
+                    "{{v1-Video-Rooms-RoomSid-Participants-Url}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "PageSize",
+                      "value": "<integer>"
+                    },
+                    {
+                      "key": "Page",
+                      "value": "<integer>"
+                    },
+                    {
+                      "key": "PageToken",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "RoomSid",
+                      "description": "(Required) The SID of the Room resource."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: basic",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Basic <credentials>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"participants\": [\n    {\n      \"participant_sid\": \"PA711fC86ab0Cb01b24ababaf54C9d3da4\",\n      \"participant_identity\": null,\n      \"join_time\": null,\n      \"leave_time\": null,\n      \"duration_sec\": 4855,\n      \"account_sid\": \"ACxREDACTEDxEXAMPLExSIDxVALUExxxxxx\",\n      \"room_sid\": \"RM8abfa7101f6933eFcCfAA419DD8A0D0d\",\n      \"status\": \"in_progress\",\n      \"codecs\": [\n        \"string\",\n        \"string\"\n      ],\n      \"end_reason\": \"string\",\n      \"error_code\": null,\n      \"error_code_url\": \"string\",\n      \"media_region\": \"in1\",\n      \"properties\": {},\n      \"edge_location\": \"ashburn\",\n      \"publisher_info\": {},\n      \"url\": null\n    },\n    {\n      \"participant_sid\": \"PA4E95FDBec0Af50C0C1A4DfC9147E3c1B\",\n      \"participant_identity\": \"string\",\n      \"join_time\": \"1993-11-11T01:23:58.353Z\",\n      \"leave_time\": \"1966-03-10T16:07:42.629Z\",\n      \"duration_sec\": null,\n      \"account_sid\": \"ACxREDACTEDxEXAMPLExSIDxVALUExxxxxx\",\n      \"room_sid\": \"RMA228cBE63CE3a70C3CcBD393Fd1Fa8aE\",\n      \"status\": \"in_progress\",\n      \"codecs\": [\n        \"string\",\n        \"string\"\n      ],\n      \"end_reason\": \"string\",\n      \"error_code\": 7500,\n      \"error_code_url\": null,\n      \"media_region\": \"jp1\",\n      \"properties\": {},\n      \"edge_location\": \"sydney\",\n      \"publisher_info\": {},\n      \"url\": \"http://WqJtUtxqrZOMhfyuwihszvaoFPNdDw.fvoHiLtB18Zhiyif-JGSj1.80.PUYScc9uqQrY8r+vam45bWD0Xo1rKfD6H,4a,npZOu\"\n    }\n  ],\n  \"meta\": {\n    \"first_page_url\": \"https://ICSRRKPqPrcjteczj.prVU6kd6VN+tGEGAAbfLo3W19pk1gKy71MYyMYOwmaQPLQcPsM6SYSunpR6beiOVmm\",\n    \"next_page_url\": null,\n    \"page\": 3429,\n    \"page_size\": 2622,\n    \"previous_page_url\": \"https://zfTchXmU.eyuoOdH+jFpkkoTGn,IFTeDY4WILqW\",\n    \"url\": \"http://oxCTTSEHSOVGfmCIia.xjrjKFm8FyMRRpFEO75p1PyAzeXEG1a+lgQKi8Pxq\",\n    \"key\": \"string\"\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "fce6d451-3f4f-4873-8d97-adadec65a44a",
+          "name": "Fetch Video Room Summary",
+          "request": {
+            "name": "Fetch Video Room Summary",
+            "description": {
+              "content": "Get Video Log Analyzer data for a Room.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "v1",
+                "Video",
+                "Rooms",
+                ":RoomSid"
+              ],
+              "host": [
+                "{{v1-Video-Rooms-RoomSid-Url}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "RoomSid",
+                  "description": "(Required) The SID of the Room resource."
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": {
+              "type": "basic",
+              "basic": [
+                {
+                  "key": "username",
+                  "value": "{{basicAuthUsername}}"
+                },
+                {
+                  "key": "password",
+                  "value": "{{basicAuthPassword}}"
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "id": "bf879fab-9c14-4966-b032-fd4b3c2a6fa3",
+              "name": "OK",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "Video",
+                    "Rooms",
+                    ":RoomSid"
+                  ],
+                  "host": [
+                    "{{v1-Video-Rooms-RoomSid-Url}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "RoomSid",
+                      "description": "(Required) The SID of the Room resource."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: basic",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Basic <credentials>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"account_sid\": \"ACxREDACTEDxEXAMPLExSIDxVALUExxxxxx\",\n  \"room_sid\": \"RM8Bd88C4f68363c3fd545Fa3C0Ef19095\",\n  \"room_name\": \"string\",\n  \"create_time\": \"1992-09-03T21:11:46.250Z\",\n  \"end_time\": \"2019-05-30T18:06:25.020Z\",\n  \"room_type\": \"go\",\n  \"room_status\": \"completed\",\n  \"status_callback\": null,\n  \"status_callback_method\": \"POST\",\n  \"created_method\": \"sdk\",\n  \"end_reason\": \"room_ended_via_api\",\n  \"max_participants\": null,\n  \"unique_participants\": null,\n  \"unique_participant_identities\": null,\n  \"concurrent_participants\": 4866,\n  \"max_concurrent_participants\": null,\n  \"codecs\": [\n    \"string\",\n    \"string\"\n  ],\n  \"media_region\": \"de1\",\n  \"duration_sec\": null,\n  \"total_participant_duration_sec\": null,\n  \"total_recording_duration_sec\": 5377,\n  \"processing_state\": \"complete\",\n  \"recording_enabled\": false,\n  \"edge_location\": \"umatilla\",\n  \"url\": null,\n  \"links\": null\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "80849d79-a193-43d9-ae32-e7cbe1dc8479",
+          "name": "List Video Room Summary",
+          "request": {
+            "name": "List Video Room Summary",
+            "description": {
+              "content": "Get a list of Programmable Video Rooms.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "v1",
+                "Video",
+                "Rooms"
+              ],
+              "host": [
+                "{{v1-Video-Rooms-Url}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "RoomType",
+                  "value": "<string>",
+                  "description": "Type of room. Can be `go`, `peer_to_peer`, `group`, or `group_small`."
+                },
+                {
+                  "disabled": false,
+                  "key": "RoomType",
+                  "value": "<string>",
+                  "description": "Type of room. Can be `go`, `peer_to_peer`, `group`, or `group_small`."
+                },
+                {
+                  "disabled": false,
+                  "key": "Codec",
+                  "value": "<string>",
+                  "description": "Codecs used by participants in the room. Can be `VP8`, `H264`, or `VP9`."
+                },
+                {
+                  "disabled": false,
+                  "key": "Codec",
+                  "value": "<string>",
+                  "description": "Codecs used by participants in the room. Can be `VP8`, `H264`, or `VP9`."
+                },
+                {
+                  "disabled": false,
+                  "key": "RoomName",
+                  "value": "<string>",
+                  "description": "Room friendly name."
+                },
+                {
+                  "disabled": false,
+                  "key": "CreatedAfter",
+                  "value": "<dateTime>",
+                  "description": "Only read rooms that started on or after this ISO 8601 timestamp."
+                },
+                {
+                  "disabled": false,
+                  "key": "CreatedBefore",
+                  "value": "<dateTime>",
+                  "description": "Only read rooms that started before this ISO 8601 timestamp."
+                },
+                {
+                  "disabled": false,
+                  "key": "PageSize",
+                  "value": "<integer>",
+                  "description": "How many resources to return in each list page. The default is 50, and the maximum is 1000."
+                },
+                {
+                  "disabled": false,
+                  "key": "Page",
+                  "value": "<integer>",
+                  "description": "The page index. This value is simply for client state."
+                },
+                {
+                  "disabled": false,
+                  "key": "PageToken",
+                  "value": "<string>",
+                  "description": "The page token. This is provided by the API."
+                }
+              ],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": {
+              "type": "basic",
+              "basic": [
+                {
+                  "key": "username",
+                  "value": "{{basicAuthUsername}}"
+                },
+                {
+                  "key": "password",
+                  "value": "{{basicAuthPassword}}"
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "id": "d21b17db-0bbf-4a8b-9a1d-2c783d94abc8",
+              "name": "OK",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "Video",
+                    "Rooms"
+                  ],
+                  "host": [
+                    "{{v1-Video-Rooms-Url}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "RoomType",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "RoomType",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "Codec",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "Codec",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "RoomName",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "CreatedAfter",
+                      "value": "<dateTime>"
+                    },
+                    {
+                      "key": "CreatedBefore",
+                      "value": "<dateTime>"
+                    },
+                    {
+                      "key": "PageSize",
+                      "value": "<integer>"
+                    },
+                    {
+                      "key": "Page",
+                      "value": "<integer>"
+                    },
+                    {
+                      "key": "PageToken",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: basic",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Basic <credentials>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"rooms\": [\n    {\n      \"account_sid\": \"ACxREDACTEDxEXAMPLExSIDxVALUExxxxxx\",\n      \"room_sid\": \"RM4cabdCbDe0cEf69f87696AfE0bfFeb6e\",\n      \"room_name\": \"string\",\n      \"create_time\": null,\n      \"end_time\": \"2018-07-13T17:55:38.387Z\",\n      \"room_type\": \"<string>\",\n      \"room_status\": \"in_progress\",\n      \"status_callback\": \"http://DGUdBlYPIBnP.ipGCVsUkCkW32m6FEJgVfILPT+ckpY3jvnD5R6Fm\",\n      \"status_callback_method\": \"GET\",\n      \"created_method\": \"sdk\",\n      \"end_reason\": \"timeout\",\n      \"max_participants\": null,\n      \"unique_participants\": null,\n      \"unique_participant_identities\": 8660,\n      \"concurrent_participants\": null,\n      \"max_concurrent_participants\": 434,\n      \"codecs\": null,\n      \"media_region\": \"in1\",\n      \"duration_sec\": 2937,\n      \"total_participant_duration_sec\": null,\n      \"total_recording_duration_sec\": 788,\n      \"processing_state\": \"complete\",\n      \"recording_enabled\": null,\n      \"edge_location\": \"dublin\",\n      \"url\": null,\n      \"links\": {}\n    },\n    {\n      \"account_sid\": \"ACxREDACTEDxEXAMPLExSIDxVALUExxxxxx\",\n      \"room_sid\": \"RM49A30c64bCCCdc6b53aaa53dE5313D76\",\n      \"room_name\": \"string\",\n      \"create_time\": \"1998-10-17T17:08:21.120Z\",\n      \"end_time\": null,\n      \"room_type\": \"<string>\",\n      \"room_status\": \"completed\",\n      \"status_callback\": null,\n      \"status_callback_method\": \"POST\",\n      \"created_method\": \"sdk\",\n      \"end_reason\": \"timeout\",\n      \"max_participants\": null,\n      \"unique_participants\": null,\n      \"unique_participant_identities\": null,\n      \"concurrent_participants\": 9730,\n      \"max_concurrent_participants\": null,\n      \"codecs\": null,\n      \"media_region\": \"us2\",\n      \"duration_sec\": 1997,\n      \"total_participant_duration_sec\": null,\n      \"total_recording_duration_sec\": null,\n      \"processing_state\": \"in_progress\",\n      \"recording_enabled\": false,\n      \"edge_location\": \"ashburn\",\n      \"url\": null,\n      \"links\": {}\n    }\n  ],\n  \"meta\": {\n    \"first_page_url\": \"http://XUaXELxelaxRphHGqhsV.vaFJ\",\n    \"next_page_url\": \"https://ykjaXDViWecyShHWqSul.xzbmrS2pPRtYyxr8UX1dcboJJAWyXw\",\n    \"page\": 6254,\n    \"page_size\": 6720,\n    \"previous_page_url\": \"http://vexHfTyMcu.dxtyLAKIvTEELazcG5zVbJCU6xWJ5xDxQsO.P6b+tHQIo22O0p,7\",\n    \"url\": \"http://yNwolayhFJdIkMyzmPIMtSMRZTlpZCqh.ssKlFBJAj\",\n    \"key\": \"string\"\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "type": "string",
+      "value": "https://accounts.twilio.com",
+      "key": "baseUrl"
+    },
+    {
+      "type": "string",
+      "value": "https://insights.twilio.com",
+      "key": "v1-Video-Rooms-RoomSid-Participants-ParticipantSid-Url"
+    },
+    {
+      "type": "string",
+      "value": "https://insights.twilio.com",
+      "key": "v1-Video-Rooms-RoomSid-Participants-Url"
+    },
+    {
+      "type": "string",
+      "value": "https://insights.twilio.com",
+      "key": "v1-Video-Rooms-RoomSid-Url"
+    },
+    {
+      "type": "string",
+      "value": "https://insights.twilio.com",
+      "key": "v1-Video-Rooms-Url"
+    }
+  ],
+  "info": {
+    "_postman_id": "d1a33c03-e717-4f8b-887f-59295504164d",
+    "name": "Twilio - Accounts A2p Video API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "This is the public Twilio REST API.\n\nContact Support:\n Name: Twilio Support\n Email: support@twilio.com",
+      "type": "text/plain"
+    }
+  }
+}

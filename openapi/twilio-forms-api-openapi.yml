@@ -1,4 +1,4 @@
-openapi: 3.0.1
+openapi: 3.2.0
 info:
   title: Twilio - Accounts A2p Forms API
   description: This is the public Twilio REST API.
@@ -50,29 +50,29 @@ paths:
       - Beta
 components:
   schemas:
-    form_enum_form_types:
-      type: string
-      enum:
-      - form-push
     verify.v2.form:
       type: object
       properties:
         form_type:
-          type: string
+          type:
+          - string
+          - 'null'
           $ref: '#/components/schemas/form_enum_form_types'
-          nullable: true
           description: The Type of this Form. Currently only `form-push` is supported.
         forms:
-          nullable: true
           description: Object that contains the available forms for this type. This available forms are given in the standard [JSON Schema](https://json-schema.org/) format
         form_meta:
-          nullable: true
           description: Additional information for the available forms for this type. E.g. The separator string used for `binding` in a Factor push.
         url:
-          type: string
+          type:
+          - string
+          - 'null'
           format: uri
-          nullable: true
           description: The URL to access the forms for this type.
+    form_enum_form_types:
+      type: string
+      enum:
+      - form-push
   securitySchemes:
     accountSid_authToken:
       type: http

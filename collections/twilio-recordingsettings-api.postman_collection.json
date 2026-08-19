@@ -1,0 +1,328 @@
+{
+  "item": [
+    {
+      "id": "54504626-d927-4396-bf63-d184b01c5fd7",
+      "name": "RecordingSettings",
+      "description": {
+        "content": "",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "dcc08e0e-45f1-4fa7-8632-5d6a78798868",
+          "name": "Fetch Recording Settings",
+          "request": {
+            "name": "Fetch Recording Settings",
+            "description": {
+              "content": "",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "v1",
+                "RecordingSettings",
+                "Default"
+              ],
+              "host": [
+                "{{v1-RecordingSettings-Default-Url}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": {
+              "type": "basic",
+              "basic": [
+                {
+                  "key": "username",
+                  "value": "{{basicAuthUsername}}"
+                },
+                {
+                  "key": "password",
+                  "value": "{{basicAuthPassword}}"
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "id": "b6a8a501-5c82-4e68-9882-3aa590fc456d",
+              "name": "OK",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "RecordingSettings",
+                    "Default"
+                  ],
+                  "host": [
+                    "{{v1-RecordingSettings-Default-Url}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: basic",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Basic <credentials>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"account_sid\": \"ACxREDACTEDxEXAMPLExSIDxVALUExxxxxx\",\n  \"friendly_name\": \"string\",\n  \"aws_credentials_sid\": \"CR12BfA29BF667d1d5752Ba736B4FBddDa\",\n  \"aws_s3_url\": null,\n  \"aws_storage_enabled\": true,\n  \"encryption_key_sid\": \"CRb65ecdeff5e48B8Bdf6CBBC5F4Ca4cfC\",\n  \"encryption_enabled\": null,\n  \"url\": \"https://HVUlvrbwuNiuhxVlRsAtxll.iahlvLkGoVaDvKfQur0fkiVPa1ClpezymPwpW7zwDfpX1fWKCnC97FeoqsjlIw\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "206d0d6f-dd3f-495a-926e-ebc0a484b325",
+          "name": "Create Recording Settings",
+          "request": {
+            "name": "Create Recording Settings",
+            "description": {
+              "content": "",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "v1",
+                "RecordingSettings",
+                "Default"
+              ],
+              "host": [
+                "{{v1-RecordingSettings-Default-Url}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/x-www-form-urlencoded"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": {
+              "type": "basic",
+              "basic": [
+                {
+                  "key": "username",
+                  "value": "{{basicAuthUsername}}"
+                },
+                {
+                  "key": "password",
+                  "value": "{{basicAuthPassword}}"
+                }
+              ]
+            },
+            "body": {
+              "mode": "urlencoded",
+              "urlencoded": [
+                {
+                  "disabled": false,
+                  "key": "FriendlyName",
+                  "value": "<string>",
+                  "description": "(Required) A descriptive string that you create to describe the resource and be shown to users in the console"
+                },
+                {
+                  "disabled": false,
+                  "key": "AwsCredentialsSid",
+                  "value": "<string>",
+                  "description": "The SID of the stored Credential resource."
+                },
+                {
+                  "disabled": false,
+                  "key": "EncryptionKeySid",
+                  "value": "<string>",
+                  "description": "The SID of the Public Key resource to use for encryption."
+                },
+                {
+                  "disabled": false,
+                  "key": "AwsS3Url",
+                  "value": "<uri>",
+                  "description": "The URL of the AWS S3 bucket where the recordings should be stored. We only support DNS-compliant URLs like `https://documentation-example-twilio-bucket/recordings`, where `recordings` is the path in which you want the recordings to be stored. This URL accepts only URI-valid characters, as described in the <a href='https://tools.ietf.org/html/rfc3986#section-2'>RFC 3986</a>."
+                },
+                {
+                  "disabled": false,
+                  "key": "AwsStorageEnabled",
+                  "value": "<boolean>",
+                  "description": "Whether all recordings should be written to the `aws_s3_url`. When `false`, all recordings are stored in our cloud."
+                },
+                {
+                  "disabled": false,
+                  "key": "EncryptionEnabled",
+                  "value": "<boolean>",
+                  "description": "Whether all recordings should be stored in an encrypted form. The default is `false`."
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "id": "84c7571c-5395-4d7b-be38-f855d1b313b0",
+              "name": "Created",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "RecordingSettings",
+                    "Default"
+                  ],
+                  "host": [
+                    "{{v1-RecordingSettings-Default-Url}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: basic",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Basic <credentials>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "urlencoded",
+                  "urlencoded": [
+                    {
+                      "disabled": false,
+                      "description": {
+                        "content": "(Required) A descriptive string that you create to describe the resource and be shown to users in the console",
+                        "type": "text/plain"
+                      },
+                      "key": "FriendlyName",
+                      "value": "<string>"
+                    },
+                    {
+                      "disabled": false,
+                      "description": {
+                        "content": "The SID of the stored Credential resource.",
+                        "type": "text/plain"
+                      },
+                      "key": "AwsCredentialsSid",
+                      "value": "<string>"
+                    },
+                    {
+                      "disabled": false,
+                      "description": {
+                        "content": "The SID of the Public Key resource to use for encryption.",
+                        "type": "text/plain"
+                      },
+                      "key": "EncryptionKeySid",
+                      "value": "<string>"
+                    },
+                    {
+                      "disabled": false,
+                      "description": {
+                        "content": "The URL of the AWS S3 bucket where the recordings should be stored. We only support DNS-compliant URLs like `https://documentation-example-twilio-bucket/recordings`, where `recordings` is the path in which you want the recordings to be stored. This URL accepts only URI-valid characters, as described in the <a href='https://tools.ietf.org/html/rfc3986#section-2'>RFC 3986</a>.",
+                        "type": "text/plain"
+                      },
+                      "key": "AwsS3Url",
+                      "value": "<uri>"
+                    },
+                    {
+                      "disabled": false,
+                      "description": {
+                        "content": "Whether all recordings should be written to the `aws_s3_url`. When `false`, all recordings are stored in our cloud.",
+                        "type": "text/plain"
+                      },
+                      "key": "AwsStorageEnabled",
+                      "value": "<boolean>"
+                    },
+                    {
+                      "disabled": false,
+                      "description": {
+                        "content": "Whether all recordings should be stored in an encrypted form. The default is `false`.",
+                        "type": "text/plain"
+                      },
+                      "key": "EncryptionEnabled",
+                      "value": "<boolean>"
+                    }
+                  ]
+                }
+              },
+              "status": "Created",
+              "code": 201,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"account_sid\": \"ACxREDACTEDxEXAMPLExSIDxVALUExxxxxx\",\n  \"friendly_name\": \"string\",\n  \"aws_credentials_sid\": \"CR12BfA29BF667d1d5752Ba736B4FBddDa\",\n  \"aws_s3_url\": null,\n  \"aws_storage_enabled\": true,\n  \"encryption_key_sid\": \"CRb65ecdeff5e48B8Bdf6CBBC5F4Ca4cfC\",\n  \"encryption_enabled\": null,\n  \"url\": \"https://HVUlvrbwuNiuhxVlRsAtxll.iahlvLkGoVaDvKfQur0fkiVPa1ClpezymPwpW7zwDfpX1fWKCnC97FeoqsjlIw\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "type": "string",
+      "value": "https://accounts.twilio.com",
+      "key": "baseUrl"
+    },
+    {
+      "type": "string",
+      "value": "https://video.twilio.com",
+      "key": "v1-RecordingSettings-Default-Url"
+    }
+  ],
+  "info": {
+    "_postman_id": "9d9e4812-eb74-4f5d-8291-e9d93ff2f699",
+    "name": "Twilio - Accounts A2p Recording Settings API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "This is the public Twilio REST API.\n\nContact Support:\n Name: Twilio Support\n Email: support@twilio.com",
+      "type": "text/plain"
+    }
+  }
+}

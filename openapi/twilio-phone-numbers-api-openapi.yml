@@ -1,4 +1,4 @@
-openapi: 3.0.1
+openapi: 3.2.0
 info:
   title: Twilio - Accounts A2p Phone Numbers API
   description: This is the public Twilio REST API.
@@ -161,24 +161,6 @@ paths:
           description: Invalid request
 components:
   schemas:
-    PhoneNumberResource:
-      type: object
-      properties:
-        sid:
-          type: string
-          pattern: ^PN[0-9a-fA-F]{32}$
-        phone_number:
-          type: string
-          description: Phone number in E.164 format
-        country_code:
-          type: string
-        capabilities:
-          type: array
-          items:
-            type: string
-        date_created:
-          type: string
-          format: date-time
     PhoneNumberLookup:
       type: object
       properties:
@@ -392,6 +374,24 @@ components:
           type: string
           format: uri
           description: URL of this resource
+    PhoneNumberResource:
+      type: object
+      properties:
+        sid:
+          type: string
+          pattern: ^PN[0-9a-fA-F]{32}$
+        phone_number:
+          type: string
+          description: Phone number in E.164 format
+        country_code:
+          type: string
+        capabilities:
+          type: array
+          items:
+            type: string
+        date_created:
+          type: string
+          format: date-time
   parameters:
     ServiceSid:
       name: ServiceSid

@@ -1,0 +1,174 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Twilio - Accounts A2p Calls API",
+    "version": "1.52.0"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Calls",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Twilio List Calls",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://accounts.twilio.com/Accounts/:AccountSid/Calls.json",
+            "params": [
+              {
+                "name": "AccountSid",
+                "value": "",
+                "type": "path",
+                "description": "The unique identifier of the Twilio account"
+              },
+              {
+                "name": "To",
+                "value": "",
+                "type": "query",
+                "description": "Filter by the phone number that received the call"
+              },
+              {
+                "name": "From",
+                "value": "",
+                "type": "query",
+                "description": "Filter by the phone number that initiated the call"
+              },
+              {
+                "name": "Status",
+                "value": "",
+                "type": "query",
+                "description": "Filter by call status"
+              },
+              {
+                "name": "StartTime",
+                "value": "",
+                "type": "query",
+                "description": "Filter by start time (YYYY-MM-DD)"
+              },
+              {
+                "name": "EndTime",
+                "value": "",
+                "type": "query",
+                "description": "Filter by end time (YYYY-MM-DD)"
+              },
+              {
+                "name": "PageSize",
+                "value": "",
+                "type": "query"
+              }
+            ]
+          },
+          "docs": "Retrieve a list of calls made to and from your account. Results are sorted by DateUpdated descending."
+        },
+        {
+          "info": {
+            "name": "Twilio Make a Call",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://accounts.twilio.com/Accounts/:AccountSid/Calls.json",
+            "params": [
+              {
+                "name": "AccountSid",
+                "value": "",
+                "type": "path",
+                "description": "The unique identifier of the Twilio account"
+              }
+            ],
+            "body": {
+              "type": "form-urlencoded",
+              "data": []
+            }
+          },
+          "docs": "Initiate a new outbound phone call. Provide a TwiML URL or ApplicationSid to control the call flow, along with the To and From phone numbers."
+        },
+        {
+          "info": {
+            "name": "Twilio Fetch a Call",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://accounts.twilio.com/Accounts/:AccountSid/Calls/:CallSid.json",
+            "params": [
+              {
+                "name": "AccountSid",
+                "value": "",
+                "type": "path",
+                "description": "The unique identifier of the Twilio account"
+              },
+              {
+                "name": "CallSid",
+                "value": "",
+                "type": "path",
+                "description": "The unique identifier of the call"
+              }
+            ]
+          },
+          "docs": "Retrieve details of a specific call by its SID."
+        },
+        {
+          "info": {
+            "name": "Twilio Modify a Live Call",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://accounts.twilio.com/Accounts/:AccountSid/Calls/:CallSid.json",
+            "params": [
+              {
+                "name": "AccountSid",
+                "value": "",
+                "type": "path",
+                "description": "The unique identifier of the Twilio account"
+              },
+              {
+                "name": "CallSid",
+                "value": "",
+                "type": "path",
+                "description": "The unique identifier of the call"
+              }
+            ],
+            "body": {
+              "type": "form-urlencoded",
+              "data": []
+            }
+          },
+          "docs": "Modify an in-progress call. Redirect to a new TwiML URL, end the call, or put the caller on hold."
+        },
+        {
+          "info": {
+            "name": "Twilio Delete a Call Record",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://accounts.twilio.com/Accounts/:AccountSid/Calls/:CallSid.json",
+            "params": [
+              {
+                "name": "AccountSid",
+                "value": "",
+                "type": "path",
+                "description": "The unique identifier of the Twilio account"
+              },
+              {
+                "name": "CallSid",
+                "value": "",
+                "type": "path",
+                "description": "The unique identifier of the call"
+              }
+            ]
+          },
+          "docs": "Delete a call record from your account."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

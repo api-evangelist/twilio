@@ -1,0 +1,66 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Twilio - Accounts A2p Participant Conversations API",
+    "version": "1.52.0"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "ParticipantConversations",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "ListParticipantConversation",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://accounts.twilio.com/v1/ParticipantConversations",
+            "params": [
+              {
+                "name": "Identity",
+                "value": "",
+                "type": "query",
+                "description": "A unique string identifier for the conversation participant as [Conversation User](https://www.twilio.com/docs/conversations/api/user-resource). This parameter is non-null if (and only if) the participant is using the Conversations SDK to communicate. Limited to 256 characters."
+              },
+              {
+                "name": "Address",
+                "value": "",
+                "type": "query",
+                "description": "A unique string identifier for the conversation participant who's not a Conversation User. This parameter could be found in messaging_binding.address field of Participant resource. It should be url-encoded."
+              },
+              {
+                "name": "PageSize",
+                "value": "",
+                "type": "query",
+                "description": "How many resources to return in each list page. The default is 50, and the maximum is 1000."
+              },
+              {
+                "name": "Page",
+                "value": "",
+                "type": "query",
+                "description": "The page index. This value is simply for client state."
+              },
+              {
+                "name": "PageToken",
+                "value": "",
+                "type": "query",
+                "description": "The page token. This is provided by the API."
+              }
+            ],
+            "auth": {
+              "type": "basic",
+              "username": "{{username}}",
+              "password": "{{password}}"
+            }
+          },
+          "docs": "Retrieve a list of all Conversations that this Participant belongs to by identity or by address. Only one parameter should be specified."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

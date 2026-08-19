@@ -1,4 +1,4 @@
-openapi: 3.0.1
+openapi: 3.2.0
 info:
   title: Twilio - Accounts A2p Mail Send API
   description: This is the public Twilio REST API.
@@ -43,6 +43,29 @@ paths:
           description: Rate limit exceeded
 components:
   schemas:
+    Attachment:
+      type: object
+      required:
+      - content
+      - filename
+      properties:
+        content:
+          type: string
+          description: Base64 encoded attachment content
+        filename:
+          type: string
+        type:
+          type: string
+          description: MIME type of the attachment
+        disposition:
+          type: string
+          enum:
+          - inline
+          - attachment
+          default: attachment
+        content_id:
+          type: string
+          description: Content ID for inline attachments
     SendEmailRequest:
       type: object
       required:
@@ -141,39 +164,6 @@ components:
               properties:
                 enable:
                   type: boolean
-    EmailAddress:
-      type: object
-      required:
-      - email
-      properties:
-        email:
-          type: string
-          format: email
-        name:
-          type: string
-    Attachment:
-      type: object
-      required:
-      - content
-      - filename
-      properties:
-        content:
-          type: string
-          description: Base64 encoded attachment content
-        filename:
-          type: string
-        type:
-          type: string
-          description: MIME type of the attachment
-        disposition:
-          type: string
-          enum:
-          - inline
-          - attachment
-          default: attachment
-        content_id:
-          type: string
-          description: Content ID for inline attachments
     Personalization:
       type: object
       required:
@@ -211,6 +201,16 @@ components:
             type: string
         send_at:
           type: integer
+    EmailAddress:
+      type: object
+      required:
+      - email
+      properties:
+        email:
+          type: string
+          format: email
+        name:
+          type: string
   securitySchemes:
     accountSid_authToken:
       type: http

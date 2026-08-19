@@ -1,0 +1,1881 @@
+{
+  "item": [
+    {
+      "id": "d230891b-cb51-4652-bbb2-eff52b57f7ff",
+      "name": "Devices",
+      "description": {
+        "content": "",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "db11562e-4f2d-4e65-8678-ec1d6253f305",
+          "name": "List Device",
+          "request": {
+            "name": "List Device",
+            "description": {
+              "content": "Retrieve a list of all Devices registered with the Account.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "v1",
+                "Devices"
+              ],
+              "host": [
+                "{{v1-Devices-Url}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "PageSize",
+                  "value": "<integer>",
+                  "description": "How many resources to return in each list page. The default is 50, and the maximum is 1000."
+                },
+                {
+                  "disabled": false,
+                  "key": "Page",
+                  "value": "<integer>",
+                  "description": "The page index. This value is simply for client state."
+                },
+                {
+                  "disabled": false,
+                  "key": "PageToken",
+                  "value": "<string>",
+                  "description": "The page token. This is provided by the API."
+                }
+              ],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": {
+              "type": "basic",
+              "basic": [
+                {
+                  "key": "username",
+                  "value": "{{basicAuthUsername}}"
+                },
+                {
+                  "key": "password",
+                  "value": "{{basicAuthPassword}}"
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "id": "dcf9e1a8-8c25-4259-8ea0-167875529cf9",
+              "name": "OK",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "Devices"
+                  ],
+                  "host": [
+                    "{{v1-Devices-Url}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "PageSize",
+                      "value": "<integer>"
+                    },
+                    {
+                      "key": "Page",
+                      "value": "<integer>"
+                    },
+                    {
+                      "key": "PageToken",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: basic",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Basic <credentials>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"devices\": [\n    {\n      \"sid\": \"UV7c1a21dd559CCBFE233B68Aa6D6d3Cf6\",\n      \"unique_name\": \"string\",\n      \"account_sid\": \"ACxREDACTEDxEXAMPLExSIDxVALUExxxxxx\",\n      \"app\": {},\n      \"logging\": {},\n      \"date_created\": \"1955-08-16T12:22:15.348Z\",\n      \"date_updated\": null,\n      \"url\": \"http://nnaNjAUFIxTDcmOhwiywmPhUPK.wfaMHQqxOgXT1YdbtNRqrF6uZ1MMQnzEVFPtwO5Hpa5CvKwi8VjnRdHEEiu81\",\n      \"links\": null\n    },\n    {\n      \"sid\": \"UV8Afcf0674c7c8cf6234ab968b74Be56F\",\n      \"unique_name\": \"string\",\n      \"account_sid\": \"ACxREDACTEDxEXAMPLExSIDxVALUExxxxxx\",\n      \"app\": {},\n      \"logging\": {},\n      \"date_created\": \"2023-08-25T11:40:22.839Z\",\n      \"date_updated\": \"2000-12-06T22:20:53.464Z\",\n      \"url\": \"https://tTFCUsmVRoR.bfjwI,51PyXmMoyFtuwbTKGWzhT-\",\n      \"links\": {}\n    }\n  ],\n  \"meta\": {\n    \"first_page_url\": \"http://JUIIULNQXjxSdXkOEgr.tyvlWFpTtN2Saf\",\n    \"next_page_url\": null,\n    \"page\": 1039,\n    \"page_size\": 7608,\n    \"previous_page_url\": null,\n    \"url\": \"https://QqTeZKFt.yqQ9MoRtdJjA+fWEmZq-SFvyjCap\",\n    \"key\": \"string\"\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "ae68b877-3f79-4cdd-91fc-be83b0622687",
+          "name": "Fetch Device",
+          "request": {
+            "name": "Fetch Device",
+            "description": {
+              "content": "Fetch a specific Device.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "v1",
+                "Devices",
+                ":Sid"
+              ],
+              "host": [
+                "{{v1-Devices-Sid-Url}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "Sid",
+                  "description": "(Required) A 34-character string that uniquely identifies this Device."
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": {
+              "type": "basic",
+              "basic": [
+                {
+                  "key": "username",
+                  "value": "{{basicAuthUsername}}"
+                },
+                {
+                  "key": "password",
+                  "value": "{{basicAuthPassword}}"
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "id": "bb3846ba-9623-48a4-9d11-39f3561c70fe",
+              "name": "OK",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "Devices",
+                    ":Sid"
+                  ],
+                  "host": [
+                    "{{v1-Devices-Sid-Url}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "Sid",
+                      "description": "(Required) A 34-character string that uniquely identifies this Device."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: basic",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Basic <credentials>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"sid\": \"UVEf49DaE08D3310ce476b4B9Bda45bEad\",\n  \"unique_name\": null,\n  \"account_sid\": \"ACxREDACTEDxEXAMPLExSIDxVALUExxxxxx\",\n  \"app\": {},\n  \"logging\": {},\n  \"date_created\": null,\n  \"date_updated\": null,\n  \"url\": null,\n  \"links\": {}\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "31952301-f4fb-4c83-a7b5-eb0dd012abeb",
+          "name": "Update Device",
+          "request": {
+            "name": "Update Device",
+            "description": {
+              "content": "Update a specific Device.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "v1",
+                "Devices",
+                ":Sid"
+              ],
+              "host": [
+                "{{v1-Devices-Sid-Url}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "Sid",
+                  "description": "(Required) A 34-character string that uniquely identifies this Device."
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/x-www-form-urlencoded"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": {
+              "type": "basic",
+              "basic": [
+                {
+                  "key": "username",
+                  "value": "{{basicAuthUsername}}"
+                },
+                {
+                  "key": "password",
+                  "value": "{{basicAuthPassword}}"
+                }
+              ]
+            },
+            "body": {
+              "mode": "urlencoded",
+              "urlencoded": [
+                {
+                  "disabled": false,
+                  "key": "UniqueName",
+                  "value": "<string>",
+                  "description": "A unique and addressable name to be assigned to this Device by the developer. It may be used in place of the Device SID."
+                },
+                {
+                  "disabled": false,
+                  "key": "TargetApp",
+                  "value": "<string>",
+                  "description": "The SID or unique name of the App to be targeted to the Device."
+                },
+                {
+                  "disabled": false,
+                  "key": "LoggingEnabled",
+                  "value": "<boolean>",
+                  "description": "A Boolean flag specifying whether to enable application logging. Logs will be enabled or extended for 24 hours."
+                },
+                {
+                  "disabled": false,
+                  "key": "RestartApp",
+                  "value": "<boolean>",
+                  "description": "Set to true to restart the App running on the Device."
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "id": "01ad3421-8376-4f73-bdd4-709a20f00827",
+              "name": "OK",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "Devices",
+                    ":Sid"
+                  ],
+                  "host": [
+                    "{{v1-Devices-Sid-Url}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "Sid",
+                      "description": "(Required) A 34-character string that uniquely identifies this Device."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: basic",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Basic <credentials>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "urlencoded",
+                  "urlencoded": [
+                    {
+                      "disabled": false,
+                      "description": {
+                        "content": "A unique and addressable name to be assigned to this Device by the developer. It may be used in place of the Device SID.",
+                        "type": "text/plain"
+                      },
+                      "key": "UniqueName",
+                      "value": "<string>"
+                    },
+                    {
+                      "disabled": false,
+                      "description": {
+                        "content": "The SID or unique name of the App to be targeted to the Device.",
+                        "type": "text/plain"
+                      },
+                      "key": "TargetApp",
+                      "value": "<string>"
+                    },
+                    {
+                      "disabled": false,
+                      "description": {
+                        "content": "A Boolean flag specifying whether to enable application logging. Logs will be enabled or extended for 24 hours.",
+                        "type": "text/plain"
+                      },
+                      "key": "LoggingEnabled",
+                      "value": "<boolean>"
+                    },
+                    {
+                      "disabled": false,
+                      "description": {
+                        "content": "Set to true to restart the App running on the Device.",
+                        "type": "text/plain"
+                      },
+                      "key": "RestartApp",
+                      "value": "<boolean>"
+                    }
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"sid\": \"UVEf49DaE08D3310ce476b4B9Bda45bEad\",\n  \"unique_name\": null,\n  \"account_sid\": \"ACxREDACTEDxEXAMPLExSIDxVALUExxxxxx\",\n  \"app\": {},\n  \"logging\": {},\n  \"date_created\": null,\n  \"date_updated\": null,\n  \"url\": null,\n  \"links\": {}\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "8f3c4132-7f2f-49cd-add7-da71e9d72cab",
+          "name": "List Device Config",
+          "request": {
+            "name": "List Device Config",
+            "description": {
+              "content": "Retrieve a list of all Configs for a Device.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "v1",
+                "Devices",
+                ":DeviceSid",
+                "Configs"
+              ],
+              "host": [
+                "{{v1-Devices-DeviceSid-Configs-Url}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "PageSize",
+                  "value": "<integer>",
+                  "description": "How many resources to return in each list page. The default is 50, and the maximum is 1000."
+                },
+                {
+                  "disabled": false,
+                  "key": "Page",
+                  "value": "<integer>",
+                  "description": "The page index. This value is simply for client state."
+                },
+                {
+                  "disabled": false,
+                  "key": "PageToken",
+                  "value": "<string>",
+                  "description": "The page token. This is provided by the API."
+                }
+              ],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "DeviceSid",
+                  "description": "(Required) A 34-character string that uniquely identifies the Device."
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": {
+              "type": "basic",
+              "basic": [
+                {
+                  "key": "username",
+                  "value": "{{basicAuthUsername}}"
+                },
+                {
+                  "key": "password",
+                  "value": "{{basicAuthPassword}}"
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "id": "b3639a46-e48b-40f6-b404-3fcb715ee9b9",
+              "name": "OK",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "Devices",
+                    ":DeviceSid",
+                    "Configs"
+                  ],
+                  "host": [
+                    "{{v1-Devices-DeviceSid-Configs-Url}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "PageSize",
+                      "value": "<integer>"
+                    },
+                    {
+                      "key": "Page",
+                      "value": "<integer>"
+                    },
+                    {
+                      "key": "PageToken",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "DeviceSid",
+                      "description": "(Required) A 34-character string that uniquely identifies the Device."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: basic",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Basic <credentials>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"configs\": [\n    {\n      \"device_sid\": \"UV1Ff4F7714C25B27B4c511B32a1FFF33a\",\n      \"key\": \"string\",\n      \"value\": null,\n      \"date_updated\": null,\n      \"url\": null\n    },\n    {\n      \"device_sid\": \"UV09aCF1133dFc010e0a6CF93d0936dE5a\",\n      \"key\": null,\n      \"value\": null,\n      \"date_updated\": null,\n      \"url\": \"https://qArJbPsvfbRQ.hmxKqpoAdX-fV3uMjjVYEjnivosOphp+oBaNe,\"\n    }\n  ],\n  \"meta\": {\n    \"first_page_url\": \"http://eRQyAYsTlbqoRkJyasZOfFy.mbZz.p3a8SXX8\",\n    \"next_page_url\": null,\n    \"page\": 2318,\n    \"page_size\": 4563,\n    \"previous_page_url\": null,\n    \"url\": \"https://VbuyStElzlGWiLu.nvpZcUWecMgMWinId\",\n    \"key\": \"string\"\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "f822dcfc-d4c2-4117-ae65-ec0abcf630f2",
+          "name": "Create Device Config",
+          "request": {
+            "name": "Create Device Config",
+            "description": {
+              "content": "Create a config for a Microvisor Device.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "v1",
+                "Devices",
+                ":DeviceSid",
+                "Configs"
+              ],
+              "host": [
+                "{{v1-Devices-DeviceSid-Configs-Url}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "DeviceSid",
+                  "description": "(Required) A 34-character string that uniquely identifies the Device."
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/x-www-form-urlencoded"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": {
+              "type": "basic",
+              "basic": [
+                {
+                  "key": "username",
+                  "value": "{{basicAuthUsername}}"
+                },
+                {
+                  "key": "password",
+                  "value": "{{basicAuthPassword}}"
+                }
+              ]
+            },
+            "body": {
+              "mode": "urlencoded",
+              "urlencoded": [
+                {
+                  "disabled": false,
+                  "key": "Key",
+                  "value": "<string>",
+                  "description": "(Required) The config key; up to 100 characters."
+                },
+                {
+                  "disabled": false,
+                  "key": "Value",
+                  "value": "<string>",
+                  "description": "(Required) The config value; up to 4096 characters."
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "id": "6d7528f2-46b2-4f76-bc9e-185747f85a10",
+              "name": "Created",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "Devices",
+                    ":DeviceSid",
+                    "Configs"
+                  ],
+                  "host": [
+                    "{{v1-Devices-DeviceSid-Configs-Url}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "DeviceSid",
+                      "description": "(Required) A 34-character string that uniquely identifies the Device."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: basic",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Basic <credentials>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "urlencoded",
+                  "urlencoded": [
+                    {
+                      "disabled": false,
+                      "description": {
+                        "content": "(Required) The config key; up to 100 characters.",
+                        "type": "text/plain"
+                      },
+                      "key": "Key",
+                      "value": "<string>"
+                    },
+                    {
+                      "disabled": false,
+                      "description": {
+                        "content": "(Required) The config value; up to 4096 characters.",
+                        "type": "text/plain"
+                      },
+                      "key": "Value",
+                      "value": "<string>"
+                    }
+                  ]
+                }
+              },
+              "status": "Created",
+              "code": 201,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"device_sid\": \"UV3d7fDf3a040Cf138DbB2ebFdBa7D5e9C\",\n  \"key\": null,\n  \"value\": null,\n  \"date_updated\": \"1999-11-10T18:44:21.606Z\",\n  \"url\": \"https://KStmKtunWHZTvihgJqonBdiwRC.mwlyJfRCIqh7oz-Yh6B4B1sB5WbStSw7\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "92bbd044-a243-4f16-a7b0-0554a8c4063c",
+          "name": "Fetch Device Config",
+          "request": {
+            "name": "Fetch Device Config",
+            "description": {
+              "content": "Retrieve a Config for a Device.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "v1",
+                "Devices",
+                ":DeviceSid",
+                "Configs",
+                ":Key"
+              ],
+              "host": [
+                "{{v1-Devices-DeviceSid-Configs-Key-Url}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "DeviceSid",
+                  "description": "(Required) A 34-character string that uniquely identifies the Device."
+                },
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "Key",
+                  "description": "(Required) The config key; up to 100 characters."
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": {
+              "type": "basic",
+              "basic": [
+                {
+                  "key": "username",
+                  "value": "{{basicAuthUsername}}"
+                },
+                {
+                  "key": "password",
+                  "value": "{{basicAuthPassword}}"
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "id": "c85ccffd-785c-40c9-90b5-ddaca445fbda",
+              "name": "OK",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "Devices",
+                    ":DeviceSid",
+                    "Configs",
+                    ":Key"
+                  ],
+                  "host": [
+                    "{{v1-Devices-DeviceSid-Configs-Key-Url}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "DeviceSid",
+                      "description": "(Required) A 34-character string that uniquely identifies the Device."
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "Key",
+                      "description": "(Required) The config key; up to 100 characters."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: basic",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Basic <credentials>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"device_sid\": \"UV3d7fDf3a040Cf138DbB2ebFdBa7D5e9C\",\n  \"key\": null,\n  \"value\": null,\n  \"date_updated\": \"1999-11-10T18:44:21.606Z\",\n  \"url\": \"https://KStmKtunWHZTvihgJqonBdiwRC.mwlyJfRCIqh7oz-Yh6B4B1sB5WbStSw7\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "18c15031-0018-4f21-9ecc-29f6eb0b2674",
+          "name": "Update Device Config",
+          "request": {
+            "name": "Update Device Config",
+            "description": {
+              "content": "Update a config for a Microvisor Device.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "v1",
+                "Devices",
+                ":DeviceSid",
+                "Configs",
+                ":Key"
+              ],
+              "host": [
+                "{{v1-Devices-DeviceSid-Configs-Key-Url}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "DeviceSid",
+                  "description": "(Required) A 34-character string that uniquely identifies the Device."
+                },
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "Key",
+                  "description": "(Required) The config key; up to 100 characters."
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/x-www-form-urlencoded"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": {
+              "type": "basic",
+              "basic": [
+                {
+                  "key": "username",
+                  "value": "{{basicAuthUsername}}"
+                },
+                {
+                  "key": "password",
+                  "value": "{{basicAuthPassword}}"
+                }
+              ]
+            },
+            "body": {
+              "mode": "urlencoded",
+              "urlencoded": [
+                {
+                  "disabled": false,
+                  "key": "Value",
+                  "value": "<string>",
+                  "description": "(Required) The config value; up to 4096 characters."
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "id": "7fdc3819-9a48-45e3-a298-7126e6840781",
+              "name": "OK",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "Devices",
+                    ":DeviceSid",
+                    "Configs",
+                    ":Key"
+                  ],
+                  "host": [
+                    "{{v1-Devices-DeviceSid-Configs-Key-Url}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "DeviceSid",
+                      "description": "(Required) A 34-character string that uniquely identifies the Device."
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "Key",
+                      "description": "(Required) The config key; up to 100 characters."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: basic",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Basic <credentials>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "urlencoded",
+                  "urlencoded": [
+                    {
+                      "disabled": false,
+                      "description": {
+                        "content": "(Required) The config value; up to 4096 characters.",
+                        "type": "text/plain"
+                      },
+                      "key": "Value",
+                      "value": "<string>"
+                    }
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"device_sid\": \"UV3d7fDf3a040Cf138DbB2ebFdBa7D5e9C\",\n  \"key\": null,\n  \"value\": null,\n  \"date_updated\": \"1999-11-10T18:44:21.606Z\",\n  \"url\": \"https://KStmKtunWHZTvihgJqonBdiwRC.mwlyJfRCIqh7oz-Yh6B4B1sB5WbStSw7\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "18af0df9-bf80-4b19-9963-2e6d0a3fe3bd",
+          "name": "Delete Device Config",
+          "request": {
+            "name": "Delete Device Config",
+            "description": {
+              "content": "Delete a config for a Microvisor Device.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "v1",
+                "Devices",
+                ":DeviceSid",
+                "Configs",
+                ":Key"
+              ],
+              "host": [
+                "{{v1-Devices-DeviceSid-Configs-Key-Url}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "DeviceSid",
+                  "description": "(Required) A 34-character string that uniquely identifies the Device."
+                },
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "Key",
+                  "description": "(Required) The config key; up to 100 characters."
+                }
+              ]
+            },
+            "method": "DELETE",
+            "auth": {
+              "type": "basic",
+              "basic": [
+                {
+                  "key": "username",
+                  "value": "{{basicAuthUsername}}"
+                },
+                {
+                  "key": "password",
+                  "value": "{{basicAuthPassword}}"
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "id": "67a1d745-9903-4288-86fb-b29191e00e1f",
+              "name": "The resource was deleted successfully.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "Devices",
+                    ":DeviceSid",
+                    "Configs",
+                    ":Key"
+                  ],
+                  "host": [
+                    "{{v1-Devices-DeviceSid-Configs-Key-Url}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "DeviceSid",
+                      "description": "(Required) A 34-character string that uniquely identifies the Device."
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "Key",
+                      "description": "(Required) The config key; up to 100 characters."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: basic",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Basic <credentials>"
+                  }
+                ],
+                "method": "DELETE",
+                "body": {}
+              },
+              "status": "No Content",
+              "code": 204,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "0b25320c-77fe-46c7-a5b0-898fa512ad36",
+          "name": "List Device Secret",
+          "request": {
+            "name": "List Device Secret",
+            "description": {
+              "content": "Retrieve a list of all Secrets for a Device.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "v1",
+                "Devices",
+                ":DeviceSid",
+                "Secrets"
+              ],
+              "host": [
+                "{{v1-Devices-DeviceSid-Secrets-Url}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "PageSize",
+                  "value": "<integer>",
+                  "description": "How many resources to return in each list page. The default is 50, and the maximum is 1000."
+                },
+                {
+                  "disabled": false,
+                  "key": "Page",
+                  "value": "<integer>",
+                  "description": "The page index. This value is simply for client state."
+                },
+                {
+                  "disabled": false,
+                  "key": "PageToken",
+                  "value": "<string>",
+                  "description": "The page token. This is provided by the API."
+                }
+              ],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "DeviceSid",
+                  "description": "(Required) A 34-character string that uniquely identifies the Device."
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": {
+              "type": "basic",
+              "basic": [
+                {
+                  "key": "username",
+                  "value": "{{basicAuthUsername}}"
+                },
+                {
+                  "key": "password",
+                  "value": "{{basicAuthPassword}}"
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "id": "e432b1e2-08d0-40f3-89a1-ac0946b58c2f",
+              "name": "OK",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "Devices",
+                    ":DeviceSid",
+                    "Secrets"
+                  ],
+                  "host": [
+                    "{{v1-Devices-DeviceSid-Secrets-Url}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "PageSize",
+                      "value": "<integer>"
+                    },
+                    {
+                      "key": "Page",
+                      "value": "<integer>"
+                    },
+                    {
+                      "key": "PageToken",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "DeviceSid",
+                      "description": "(Required) A 34-character string that uniquely identifies the Device."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: basic",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Basic <credentials>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"secrets\": [\n    {\n      \"device_sid\": \"UV01daF7Bb73EBE1f626DED45bECa88Dc3\",\n      \"key\": null,\n      \"date_rotated\": null,\n      \"url\": null\n    },\n    {\n      \"device_sid\": \"UV8a06DCD39eC62E62a984783517665ddF\",\n      \"key\": \"string\",\n      \"date_rotated\": \"1979-10-13T00:11:13.347Z\",\n      \"url\": null\n    }\n  ],\n  \"meta\": {\n    \"first_page_url\": \"http://U.zlaSBR0i5Xod6Tjxr7NSops1yTauFSblrgdIXfTAVlcRWtROSOIkoXQ+9gfroFHQhtkAF\",\n    \"next_page_url\": null,\n    \"page\": 7993,\n    \"page_size\": 8208,\n    \"previous_page_url\": \"http://J.cfunxLM1j\",\n    \"url\": \"http://OtuFqPZbNZRxtAoHBhigPlPplDUiVRhsm.bisnHq.CaiNpxeuHKBnxjrfJXj2pXQREpDNkfYRcS\",\n    \"key\": \"string\"\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "e4728cd5-b9de-4d70-bfb2-b1f1cabebae3",
+          "name": "Create Device Secret",
+          "request": {
+            "name": "Create Device Secret",
+            "description": {
+              "content": "Create a secret for a Microvisor Device.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "v1",
+                "Devices",
+                ":DeviceSid",
+                "Secrets"
+              ],
+              "host": [
+                "{{v1-Devices-DeviceSid-Secrets-Url}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "DeviceSid",
+                  "description": "(Required) A 34-character string that uniquely identifies the Device."
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/x-www-form-urlencoded"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": {
+              "type": "basic",
+              "basic": [
+                {
+                  "key": "username",
+                  "value": "{{basicAuthUsername}}"
+                },
+                {
+                  "key": "password",
+                  "value": "{{basicAuthPassword}}"
+                }
+              ]
+            },
+            "body": {
+              "mode": "urlencoded",
+              "urlencoded": [
+                {
+                  "disabled": false,
+                  "key": "Key",
+                  "value": "<string>",
+                  "description": "(Required) The secret key; up to 100 characters."
+                },
+                {
+                  "disabled": false,
+                  "key": "Value",
+                  "value": "<string>",
+                  "description": "(Required) The secret value; up to 4096 characters."
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "id": "84cfc2d2-6387-4b67-9127-3c8878ec7629",
+              "name": "Created",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "Devices",
+                    ":DeviceSid",
+                    "Secrets"
+                  ],
+                  "host": [
+                    "{{v1-Devices-DeviceSid-Secrets-Url}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "DeviceSid",
+                      "description": "(Required) A 34-character string that uniquely identifies the Device."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: basic",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Basic <credentials>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "urlencoded",
+                  "urlencoded": [
+                    {
+                      "disabled": false,
+                      "description": {
+                        "content": "(Required) The secret key; up to 100 characters.",
+                        "type": "text/plain"
+                      },
+                      "key": "Key",
+                      "value": "<string>"
+                    },
+                    {
+                      "disabled": false,
+                      "description": {
+                        "content": "(Required) The secret value; up to 4096 characters.",
+                        "type": "text/plain"
+                      },
+                      "key": "Value",
+                      "value": "<string>"
+                    }
+                  ]
+                }
+              },
+              "status": "Created",
+              "code": 201,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"device_sid\": \"UVE6DF2FB9ee4ED425639a125EbB273F07\",\n  \"key\": null,\n  \"date_rotated\": \"1960-09-19T22:16:30.356Z\",\n  \"url\": null\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "3824c7ed-4259-4506-94a5-f25cdf46e0fe",
+          "name": "Fetch Device Secret",
+          "request": {
+            "name": "Fetch Device Secret",
+            "description": {
+              "content": "Retrieve a Secret for a Device.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "v1",
+                "Devices",
+                ":DeviceSid",
+                "Secrets",
+                ":Key"
+              ],
+              "host": [
+                "{{v1-Devices-DeviceSid-Secrets-Key-Url}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "DeviceSid",
+                  "description": "(Required) A 34-character string that uniquely identifies the Device."
+                },
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "Key",
+                  "description": "(Required) The secret key; up to 100 characters."
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": {
+              "type": "basic",
+              "basic": [
+                {
+                  "key": "username",
+                  "value": "{{basicAuthUsername}}"
+                },
+                {
+                  "key": "password",
+                  "value": "{{basicAuthPassword}}"
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "id": "080f05ae-0d9e-4336-ae96-e74f1dfc5042",
+              "name": "OK",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "Devices",
+                    ":DeviceSid",
+                    "Secrets",
+                    ":Key"
+                  ],
+                  "host": [
+                    "{{v1-Devices-DeviceSid-Secrets-Key-Url}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "DeviceSid",
+                      "description": "(Required) A 34-character string that uniquely identifies the Device."
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "Key",
+                      "description": "(Required) The secret key; up to 100 characters."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: basic",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Basic <credentials>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"device_sid\": \"UVE6DF2FB9ee4ED425639a125EbB273F07\",\n  \"key\": null,\n  \"date_rotated\": \"1960-09-19T22:16:30.356Z\",\n  \"url\": null\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "e96b7256-613a-48af-95db-ebbf2499f67d",
+          "name": "Update Device Secret",
+          "request": {
+            "name": "Update Device Secret",
+            "description": {
+              "content": "Update a secret for a Microvisor Device.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "v1",
+                "Devices",
+                ":DeviceSid",
+                "Secrets",
+                ":Key"
+              ],
+              "host": [
+                "{{v1-Devices-DeviceSid-Secrets-Key-Url}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "DeviceSid",
+                  "description": "(Required) A 34-character string that uniquely identifies the Device."
+                },
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "Key",
+                  "description": "(Required) The secret key; up to 100 characters."
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/x-www-form-urlencoded"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": {
+              "type": "basic",
+              "basic": [
+                {
+                  "key": "username",
+                  "value": "{{basicAuthUsername}}"
+                },
+                {
+                  "key": "password",
+                  "value": "{{basicAuthPassword}}"
+                }
+              ]
+            },
+            "body": {
+              "mode": "urlencoded",
+              "urlencoded": [
+                {
+                  "disabled": false,
+                  "key": "Value",
+                  "value": "<string>",
+                  "description": "(Required) The secret value; up to 4096 characters."
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "id": "9ab75811-d03e-46ab-92f7-fcff348820e6",
+              "name": "OK",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "Devices",
+                    ":DeviceSid",
+                    "Secrets",
+                    ":Key"
+                  ],
+                  "host": [
+                    "{{v1-Devices-DeviceSid-Secrets-Key-Url}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "DeviceSid",
+                      "description": "(Required) A 34-character string that uniquely identifies the Device."
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "Key",
+                      "description": "(Required) The secret key; up to 100 characters."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: basic",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Basic <credentials>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "urlencoded",
+                  "urlencoded": [
+                    {
+                      "disabled": false,
+                      "description": {
+                        "content": "(Required) The secret value; up to 4096 characters.",
+                        "type": "text/plain"
+                      },
+                      "key": "Value",
+                      "value": "<string>"
+                    }
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"device_sid\": \"UVE6DF2FB9ee4ED425639a125EbB273F07\",\n  \"key\": null,\n  \"date_rotated\": \"1960-09-19T22:16:30.356Z\",\n  \"url\": null\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "64e16d33-78a1-4deb-b772-868e4f2cffc2",
+          "name": "Delete Device Secret",
+          "request": {
+            "name": "Delete Device Secret",
+            "description": {
+              "content": "Delete a secret for a Microvisor Device.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "v1",
+                "Devices",
+                ":DeviceSid",
+                "Secrets",
+                ":Key"
+              ],
+              "host": [
+                "{{v1-Devices-DeviceSid-Secrets-Key-Url}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "DeviceSid",
+                  "description": "(Required) A 34-character string that uniquely identifies the Device."
+                },
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "Key",
+                  "description": "(Required) The secret key; up to 100 characters."
+                }
+              ]
+            },
+            "method": "DELETE",
+            "auth": {
+              "type": "basic",
+              "basic": [
+                {
+                  "key": "username",
+                  "value": "{{basicAuthUsername}}"
+                },
+                {
+                  "key": "password",
+                  "value": "{{basicAuthPassword}}"
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "id": "f0322c4b-52ae-42b2-823d-fafd66021235",
+              "name": "The resource was deleted successfully.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "Devices",
+                    ":DeviceSid",
+                    "Secrets",
+                    ":Key"
+                  ],
+                  "host": [
+                    "{{v1-Devices-DeviceSid-Secrets-Key-Url}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "DeviceSid",
+                      "description": "(Required) A 34-character string that uniquely identifies the Device."
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "Key",
+                      "description": "(Required) The secret key; up to 100 characters."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: basic",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Basic <credentials>"
+                  }
+                ],
+                "method": "DELETE",
+                "body": {}
+              },
+              "status": "No Content",
+              "code": 204,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "type": "string",
+      "value": "https://accounts.twilio.com",
+      "key": "baseUrl"
+    },
+    {
+      "type": "string",
+      "value": "https://microvisor.twilio.com",
+      "key": "v1-Devices-Url"
+    },
+    {
+      "type": "string",
+      "value": "https://microvisor.twilio.com",
+      "key": "v1-Devices-Sid-Url"
+    },
+    {
+      "type": "string",
+      "value": "https://microvisor.twilio.com",
+      "key": "v1-Devices-DeviceSid-Configs-Url"
+    },
+    {
+      "type": "string",
+      "value": "https://microvisor.twilio.com",
+      "key": "v1-Devices-DeviceSid-Configs-Key-Url"
+    },
+    {
+      "type": "string",
+      "value": "https://microvisor.twilio.com",
+      "key": "v1-Devices-DeviceSid-Secrets-Url"
+    },
+    {
+      "type": "string",
+      "value": "https://microvisor.twilio.com",
+      "key": "v1-Devices-DeviceSid-Secrets-Key-Url"
+    }
+  ],
+  "info": {
+    "_postman_id": "8658d662-e53b-4d0b-a2f0-dffe2a250a14",
+    "name": "Twilio - Accounts A2p Devices API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "This is the public Twilio REST API.\n\nContact Support:\n Name: Twilio Support\n Email: support@twilio.com",
+      "type": "text/plain"
+    }
+  }
+}

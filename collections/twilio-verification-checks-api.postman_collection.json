@@ -1,0 +1,298 @@
+{
+  "item": [
+    {
+      "id": "c4fde1ff-74bb-4b5f-ab22-ffea0b59def5",
+      "name": "Verification Checks",
+      "description": {
+        "content": "Check verification codes",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "607f53ae-c2ff-4440-b50b-f5291b146a2b",
+          "name": "Twilio Check a Verification Code",
+          "request": {
+            "name": "Twilio Check a Verification Code",
+            "description": {
+              "content": "Check whether a user-provided code matches the verification code that was sent. Returns approved if the code is correct.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "Services",
+                ":ServiceSid",
+                "VerificationCheck"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "ServiceSid",
+                  "description": "(Required) The SID of the Verify service"
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/x-www-form-urlencoded"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": null,
+            "body": {
+              "mode": "urlencoded",
+              "urlencoded": [
+                {
+                  "disabled": false,
+                  "key": "Code",
+                  "value": "<string>",
+                  "description": "The verification code entered by the user"
+                },
+                {
+                  "disabled": false,
+                  "key": "To",
+                  "value": "<string>",
+                  "description": "Phone number or email being verified"
+                },
+                {
+                  "disabled": false,
+                  "key": "VerificationSid",
+                  "value": "<string>",
+                  "description": "SID of the verification (alternative to To)"
+                },
+                {
+                  "disabled": false,
+                  "key": "Amount",
+                  "value": "<string>",
+                  "description": "Amount for PSD2 verification check"
+                },
+                {
+                  "disabled": false,
+                  "key": "Payee",
+                  "value": "<string>",
+                  "description": "Payee for PSD2 verification check"
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "id": "79709a95-0bc3-4a05-bd86-38717785311f",
+              "name": "Verification check result",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "Services",
+                    ":ServiceSid",
+                    "VerificationCheck"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "ServiceSid",
+                      "description": "(Required) The SID of the Verify service"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "urlencoded",
+                  "urlencoded": [
+                    {
+                      "disabled": false,
+                      "description": {
+                        "content": "The verification code entered by the user",
+                        "type": "text/plain"
+                      },
+                      "key": "Code",
+                      "value": "<string>"
+                    },
+                    {
+                      "disabled": false,
+                      "description": {
+                        "content": "Phone number or email being verified",
+                        "type": "text/plain"
+                      },
+                      "key": "To",
+                      "value": "<string>"
+                    },
+                    {
+                      "disabled": false,
+                      "description": {
+                        "content": "SID of the verification (alternative to To)",
+                        "type": "text/plain"
+                      },
+                      "key": "VerificationSid",
+                      "value": "<string>"
+                    },
+                    {
+                      "disabled": false,
+                      "description": {
+                        "content": "Amount for PSD2 verification check",
+                        "type": "text/plain"
+                      },
+                      "key": "Amount",
+                      "value": "<string>"
+                    },
+                    {
+                      "disabled": false,
+                      "description": {
+                        "content": "Payee for PSD2 verification check",
+                        "type": "text/plain"
+                      },
+                      "key": "Payee",
+                      "value": "<string>"
+                    }
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"sid\": \"VE55FD13a25b819f39d1f5c8CE2e5D2E5e\",\n  \"service_sid\": \"VAeda557DB76ef99fAE7Bcd3F55271A64b\",\n  \"account_sid\": \"ACxREDACTEDxEXAMPLExSIDxVALUExxxxxx\",\n  \"to\": \"string\",\n  \"channel\": \"call\",\n  \"status\": \"approved\",\n  \"valid\": false,\n  \"amount\": \"string\",\n  \"payee\": \"string\",\n  \"date_created\": \"2024-08-01T02:38:41.288Z\",\n  \"date_updated\": \"1987-08-13T21:17:56.995Z\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "10ae0aaa-d440-4e34-9aa8-02dfcc355142",
+              "name": "Verification not found or expired",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "Services",
+                    ":ServiceSid",
+                    "VerificationCheck"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "ServiceSid",
+                      "description": "(Required) The SID of the Verify service"
+                    }
+                  ]
+                },
+                "method": "POST",
+                "body": {
+                  "mode": "urlencoded",
+                  "urlencoded": [
+                    {
+                      "disabled": false,
+                      "description": {
+                        "content": "The verification code entered by the user",
+                        "type": "text/plain"
+                      },
+                      "key": "Code",
+                      "value": "<string>"
+                    },
+                    {
+                      "disabled": false,
+                      "description": {
+                        "content": "Phone number or email being verified",
+                        "type": "text/plain"
+                      },
+                      "key": "To",
+                      "value": "<string>"
+                    },
+                    {
+                      "disabled": false,
+                      "description": {
+                        "content": "SID of the verification (alternative to To)",
+                        "type": "text/plain"
+                      },
+                      "key": "VerificationSid",
+                      "value": "<string>"
+                    },
+                    {
+                      "disabled": false,
+                      "description": {
+                        "content": "Amount for PSD2 verification check",
+                        "type": "text/plain"
+                      },
+                      "key": "Amount",
+                      "value": "<string>"
+                    },
+                    {
+                      "disabled": false,
+                      "description": {
+                        "content": "Payee for PSD2 verification check",
+                        "type": "text/plain"
+                      },
+                      "key": "Payee",
+                      "value": "<string>"
+                    }
+                  ]
+                }
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "type": "string",
+      "value": "https://accounts.twilio.com",
+      "key": "baseUrl"
+    }
+  ],
+  "info": {
+    "_postman_id": "ee5342e6-3928-4b48-bb55-029d28bf2743",
+    "name": "Twilio - Accounts A2p Verification Checks API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "This is the public Twilio REST API.\n\nContact Support:\n Name: Twilio Support\n Email: support@twilio.com",
+      "type": "text/plain"
+    }
+  }
+}

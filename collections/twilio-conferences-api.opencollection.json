@@ -1,0 +1,421 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Twilio - Accounts A2p Conferences API",
+    "version": "1.52.0"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Conferences",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "FetchConference",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://accounts.twilio.com/v1/Conferences/:ConferenceSid",
+            "params": [
+              {
+                "name": "ConferenceSid",
+                "value": "",
+                "type": "path",
+                "description": "The unique SID identifier of the Conference."
+              }
+            ],
+            "auth": {
+              "type": "basic",
+              "username": "{{username}}",
+              "password": "{{password}}"
+            }
+          },
+          "docs": "Get a specific Conference Summary."
+        },
+        {
+          "info": {
+            "name": "ListConference",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://accounts.twilio.com/v1/Conferences",
+            "params": [
+              {
+                "name": "ConferenceSid",
+                "value": "",
+                "type": "query",
+                "description": "The SID of the conference."
+              },
+              {
+                "name": "FriendlyName",
+                "value": "",
+                "type": "query",
+                "description": "Custom label for the conference resource, up to 64 characters."
+              },
+              {
+                "name": "Status",
+                "value": "",
+                "type": "query",
+                "description": "Conference status."
+              },
+              {
+                "name": "CreatedAfter",
+                "value": "",
+                "type": "query",
+                "description": "Conferences created after the provided timestamp specified in ISO 8601 format"
+              },
+              {
+                "name": "CreatedBefore",
+                "value": "",
+                "type": "query",
+                "description": "Conferences created before the provided timestamp specified in ISO 8601 format."
+              },
+              {
+                "name": "MixerRegion",
+                "value": "",
+                "type": "query",
+                "description": "Twilio region where the conference media was mixed."
+              },
+              {
+                "name": "Tags",
+                "value": "",
+                "type": "query",
+                "description": "Tags applied by Twilio for common potential configuration, quality, or performance issues."
+              },
+              {
+                "name": "Subaccount",
+                "value": "",
+                "type": "query",
+                "description": "Account SID for the subaccount whose resources you wish to retrieve."
+              },
+              {
+                "name": "DetectedIssues",
+                "value": "",
+                "type": "query",
+                "description": "Potential configuration, behavior, or performance issues detected during the conference."
+              },
+              {
+                "name": "EndReason",
+                "value": "",
+                "type": "query",
+                "description": "Conference end reason; e.g. last participant left, modified by API, etc."
+              },
+              {
+                "name": "PageSize",
+                "value": "",
+                "type": "query",
+                "description": "How many resources to return in each list page. The default is 50, and the maximum is 1000."
+              },
+              {
+                "name": "Page",
+                "value": "",
+                "type": "query",
+                "description": "The page index. This value is simply for client state."
+              },
+              {
+                "name": "PageToken",
+                "value": "",
+                "type": "query",
+                "description": "The page token. This is provided by the API."
+              }
+            ],
+            "auth": {
+              "type": "basic",
+              "username": "{{username}}",
+              "password": "{{password}}"
+            }
+          },
+          "docs": "Get a list of Conference Summaries."
+        },
+        {
+          "info": {
+            "name": "FetchConferenceParticipant",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://accounts.twilio.com/v1/Conferences/:ConferenceSid/Participants/:ParticipantSid",
+            "params": [
+              {
+                "name": "ConferenceSid",
+                "value": "",
+                "type": "path",
+                "description": "The unique SID identifier of the Conference."
+              },
+              {
+                "name": "ParticipantSid",
+                "value": "",
+                "type": "path",
+                "description": "The unique SID identifier of the Participant."
+              },
+              {
+                "name": "Events",
+                "value": "",
+                "type": "query",
+                "description": "Conference events generated by application or participant activity; e.g. `hold`, `mute`, etc."
+              },
+              {
+                "name": "Metrics",
+                "value": "",
+                "type": "query",
+                "description": "Object. Contains participant call quality metrics."
+              }
+            ],
+            "auth": {
+              "type": "basic",
+              "username": "{{username}}",
+              "password": "{{password}}"
+            }
+          },
+          "docs": "Get a specific Conference Participant Summary for a Conference."
+        },
+        {
+          "info": {
+            "name": "ListConferenceParticipant",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://accounts.twilio.com/v1/Conferences/:ConferenceSid/Participants",
+            "params": [
+              {
+                "name": "ConferenceSid",
+                "value": "",
+                "type": "path",
+                "description": "The unique SID identifier of the Conference."
+              },
+              {
+                "name": "ParticipantSid",
+                "value": "",
+                "type": "query",
+                "description": "The unique SID identifier of the Participant."
+              },
+              {
+                "name": "Label",
+                "value": "",
+                "type": "query",
+                "description": "User-specified label for a participant."
+              },
+              {
+                "name": "Events",
+                "value": "",
+                "type": "query",
+                "description": "Conference events generated by application or participant activity; e.g. `hold`, `mute`, etc."
+              },
+              {
+                "name": "PageSize",
+                "value": "",
+                "type": "query",
+                "description": "How many resources to return in each list page. The default is 50, and the maximum is 1000."
+              },
+              {
+                "name": "Page",
+                "value": "",
+                "type": "query",
+                "description": "The page index. This value is simply for client state."
+              },
+              {
+                "name": "PageToken",
+                "value": "",
+                "type": "query",
+                "description": "The page token. This is provided by the API."
+              }
+            ],
+            "auth": {
+              "type": "basic",
+              "username": "{{username}}",
+              "password": "{{password}}"
+            }
+          },
+          "docs": "Get a list of Conference Participants Summaries for a Conference."
+        },
+        {
+          "info": {
+            "name": "Twilio List Conferences",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://accounts.twilio.com/Accounts/:AccountSid/Conferences.json",
+            "params": [
+              {
+                "name": "AccountSid",
+                "value": "",
+                "type": "path",
+                "description": "The unique identifier of the Twilio account"
+              },
+              {
+                "name": "Status",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "FriendlyName",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "DateCreated",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "PageSize",
+                "value": "",
+                "type": "query"
+              }
+            ]
+          },
+          "docs": "Retrieve a list of conferences within your account."
+        },
+        {
+          "info": {
+            "name": "Twilio Fetch a Conference",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://accounts.twilio.com/Accounts/:AccountSid/Conferences/:ConferenceSid.json",
+            "params": [
+              {
+                "name": "AccountSid",
+                "value": "",
+                "type": "path",
+                "description": "The unique identifier of the Twilio account"
+              },
+              {
+                "name": "ConferenceSid",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "Twilio Fetch a Conference"
+        },
+        {
+          "info": {
+            "name": "Twilio Update a Conference",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://accounts.twilio.com/Accounts/:AccountSid/Conferences/:ConferenceSid.json",
+            "params": [
+              {
+                "name": "AccountSid",
+                "value": "",
+                "type": "path",
+                "description": "The unique identifier of the Twilio account"
+              },
+              {
+                "name": "ConferenceSid",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "form-urlencoded",
+              "data": [
+                {
+                  "name": "Status",
+                  "value": ""
+                },
+                {
+                  "name": "AnnounceUrl",
+                  "value": ""
+                },
+                {
+                  "name": "AnnounceMethod",
+                  "value": ""
+                }
+              ]
+            }
+          },
+          "docs": "End a conference or announce a message to participants."
+        },
+        {
+          "info": {
+            "name": "Twilio List Conference Participants",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://accounts.twilio.com/Accounts/:AccountSid/Conferences/:ConferenceSid/Participants.json",
+            "params": [
+              {
+                "name": "AccountSid",
+                "value": "",
+                "type": "path",
+                "description": "The unique identifier of the Twilio account"
+              },
+              {
+                "name": "ConferenceSid",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "Twilio List Conference Participants"
+        },
+        {
+          "info": {
+            "name": "Twilio Add a Participant to a Conference",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://accounts.twilio.com/Accounts/:AccountSid/Conferences/:ConferenceSid/Participants.json",
+            "params": [
+              {
+                "name": "AccountSid",
+                "value": "",
+                "type": "path",
+                "description": "The unique identifier of the Twilio account"
+              },
+              {
+                "name": "ConferenceSid",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "form-urlencoded",
+              "data": [
+                {
+                  "name": "From",
+                  "value": ""
+                },
+                {
+                  "name": "To",
+                  "value": ""
+                },
+                {
+                  "name": "Muted",
+                  "value": ""
+                },
+                {
+                  "name": "Hold",
+                  "value": ""
+                },
+                {
+                  "name": "Record",
+                  "value": ""
+                },
+                {
+                  "name": "StatusCallback",
+                  "value": ""
+                }
+              ]
+            }
+          },
+          "docs": "Twilio Add a Participant to a Conference"
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}
