@@ -1,6 +1,6 @@
 openapi: 3.2.0
 info:
-  title: Twilio - Accounts A2p Rate Plans API
+  title: Twilio - Wireless Rate Plans API
   description: This is the public Twilio REST API.
   termsOfService: https://www.twilio.com/legal/tos
   contact:
@@ -12,7 +12,7 @@ info:
     url: https://www.apache.org/licenses/LICENSE-2.0.html
   version: 1.52.0
 servers:
-- url: https://accounts.twilio.com
+- url: https://wireless.twilio.com
 tags:
 - name: RatePlans
 paths:
@@ -166,53 +166,6 @@ paths:
       - GA
 components:
   schemas:
-    UpdateRatePlanRequest:
-      type: object
-      properties:
-        UniqueName:
-          type: string
-          description: An application-defined string that uniquely identifies the resource. It can be used in place of the resource's `sid` in the URL to address the resource.
-        FriendlyName:
-          type: string
-          description: A descriptive string that you create to describe the resource. It does not have to be unique.
-    CreateRatePlanRequest:
-      type: object
-      properties:
-        UniqueName:
-          type: string
-          description: An application-defined string that uniquely identifies the resource. It can be used in place of the resource's `sid` in the URL to address the resource.
-        FriendlyName:
-          type: string
-          description: A descriptive string that you create to describe the resource. It does not have to be unique.
-        DataEnabled:
-          type: boolean
-          description: Whether SIMs can use GPRS/3G/4G/LTE data connectivity.
-        DataLimit:
-          type: integer
-          description: The total data usage (download and upload combined) in Megabytes that the Network allows during one month on the home network (T-Mobile USA). The metering period begins the day of activation and ends on the same day in the following month. Can be up to 2TB and the default value is `1000`.
-        DataMetering:
-          type: string
-          description: 'The model used to meter data usage. Can be: `payg` and `quota-1`, `quota-10`, and `quota-50`. Learn more about the available [data metering models](https://www.twilio.com/docs/iot/wireless/api/rateplan-resource#payg-vs-quota-data-plans).'
-        MessagingEnabled:
-          type: boolean
-          description: Whether SIMs can make, send, and receive SMS using [Commands](https://www.twilio.com/docs/iot/wireless/api/command-resource).
-        VoiceEnabled:
-          type: boolean
-          description: Deprecated.
-        NationalRoamingEnabled:
-          type: boolean
-          description: Whether SIMs can roam on networks other than the home network (T-Mobile USA) in the United States. See [national roaming](https://www.twilio.com/docs/iot/wireless/api/rateplan-resource#national-roaming).
-        InternationalRoaming:
-          type: array
-          items:
-            type: string
-          description: 'The list of services that SIMs capable of using GPRS/3G/4G/LTE data connectivity can use outside of the United States. Can contain: `data` and `messaging`.'
-        NationalRoamingDataLimit:
-          type: integer
-          description: The total data usage (download and upload combined) in Megabytes that the Network allows during one month on non-home networks in the United States. The metering period begins the day of activation and ends on the same day in the following month. Can be up to 2TB. See [national roaming](https://www.twilio.com/docs/iot/wireless/api/rateplan-resource#national-roaming) for more info.
-        InternationalRoamingDataLimit:
-          type: integer
-          description: The total data usage (download and upload combined) in Megabytes that the Network allows during one month when roaming outside the United States. Can be up to 2TB.
     ListRatePlanResponse:
       type: object
       properties:
@@ -245,6 +198,15 @@ components:
               format: uri
             key:
               type: string
+    UpdateRatePlanRequest:
+      type: object
+      properties:
+        UniqueName:
+          type: string
+          description: An application-defined string that uniquely identifies the resource. It can be used in place of the resource's `sid` in the URL to address the resource.
+        FriendlyName:
+          type: string
+          description: A descriptive string that you create to describe the resource. It does not have to be unique.
     wireless.v1.rate_plan:
       type: object
       properties:
@@ -339,6 +301,44 @@ components:
           - 'null'
           format: uri
           description: The absolute URL of the resource.
+    CreateRatePlanRequest:
+      type: object
+      properties:
+        UniqueName:
+          type: string
+          description: An application-defined string that uniquely identifies the resource. It can be used in place of the resource's `sid` in the URL to address the resource.
+        FriendlyName:
+          type: string
+          description: A descriptive string that you create to describe the resource. It does not have to be unique.
+        DataEnabled:
+          type: boolean
+          description: Whether SIMs can use GPRS/3G/4G/LTE data connectivity.
+        DataLimit:
+          type: integer
+          description: The total data usage (download and upload combined) in Megabytes that the Network allows during one month on the home network (T-Mobile USA). The metering period begins the day of activation and ends on the same day in the following month. Can be up to 2TB and the default value is `1000`.
+        DataMetering:
+          type: string
+          description: 'The model used to meter data usage. Can be: `payg` and `quota-1`, `quota-10`, and `quota-50`. Learn more about the available [data metering models](https://www.twilio.com/docs/iot/wireless/api/rateplan-resource#payg-vs-quota-data-plans).'
+        MessagingEnabled:
+          type: boolean
+          description: Whether SIMs can make, send, and receive SMS using [Commands](https://www.twilio.com/docs/iot/wireless/api/command-resource).
+        VoiceEnabled:
+          type: boolean
+          description: Deprecated.
+        NationalRoamingEnabled:
+          type: boolean
+          description: Whether SIMs can roam on networks other than the home network (T-Mobile USA) in the United States. See [national roaming](https://www.twilio.com/docs/iot/wireless/api/rateplan-resource#national-roaming).
+        InternationalRoaming:
+          type: array
+          items:
+            type: string
+          description: 'The list of services that SIMs capable of using GPRS/3G/4G/LTE data connectivity can use outside of the United States. Can contain: `data` and `messaging`.'
+        NationalRoamingDataLimit:
+          type: integer
+          description: The total data usage (download and upload combined) in Megabytes that the Network allows during one month on non-home networks in the United States. The metering period begins the day of activation and ends on the same day in the following month. Can be up to 2TB. See [national roaming](https://www.twilio.com/docs/iot/wireless/api/rateplan-resource#national-roaming) for more info.
+        InternationalRoamingDataLimit:
+          type: integer
+          description: The total data usage (download and upload combined) in Megabytes that the Network allows during one month when roaming outside the United States. Can be up to 2TB.
   securitySchemes:
     accountSid_authToken:
       type: http
@@ -346,5 +346,3 @@ components:
 x-maturity:
 - name: GA
   description: This product is Generally Available.
-- name: Beta
-  description: PLEASE NOTE that this is a Beta product that is subject to change. Use it with caution.

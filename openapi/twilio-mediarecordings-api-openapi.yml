@@ -1,6 +1,6 @@
 openapi: 3.2.0
 info:
-  title: Twilio - Accounts A2p Media Recordings API
+  title: Twilio - Media Media Recordings API
   description: This is the public Twilio REST API.
   termsOfService: https://www.twilio.com/legal/tos
   contact:
@@ -12,7 +12,7 @@ info:
     url: https://www.apache.org/licenses/LICENSE-2.0.html
   version: 1.52.0
 servers:
-- url: https://accounts.twilio.com
+- url: https://media.twilio.com
 tags:
 - name: MediaRecordings
 paths:
@@ -167,6 +167,18 @@ paths:
       - Preview
 components:
   schemas:
+    media_recording_enum_status:
+      type: string
+      enum:
+      - processing
+      - completed
+      - deleted
+      - failed
+    media_recording_enum_format:
+      type: string
+      enum:
+      - mp4
+      - webm
     ListMediaRecordingResponse:
       type: object
       properties:
@@ -199,13 +211,11 @@ components:
               format: uri
             key:
               type: string
-    media_recording_enum_status:
+    media_recording_enum_order:
       type: string
       enum:
-      - processing
-      - completed
-      - deleted
-      - failed
+      - asc
+      - desc
     media.v1.media_recording:
       type: object
       properties:
@@ -312,16 +322,6 @@ components:
           - 'null'
           format: uri
           description: The absolute URL of the resource.
-    media_recording_enum_order:
-      type: string
-      enum:
-      - asc
-      - desc
-    media_recording_enum_format:
-      type: string
-      enum:
-      - mp4
-      - webm
   securitySchemes:
     accountSid_authToken:
       type: http
@@ -329,5 +329,5 @@ components:
 x-maturity:
 - name: GA
   description: This product is Generally Available.
-- name: Beta
-  description: PLEASE NOTE that this is a Beta product that is subject to change. Use it with caution.
+- name: Preview
+  description: PLEASE NOTE that this is a Preview product that is subject to change. Use it with caution. If you currently do not have developer preview access, please contact https://www.twilio.com/help/contact.

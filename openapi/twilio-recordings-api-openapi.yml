@@ -1,8 +1,6 @@
 openapi: 3.2.0
 info:
-  title: Twilio - Accounts A2p Recordings API
-  description: This is the public Twilio REST API.
-  termsOfService: https://www.twilio.com/legal/tos
+  title: Twilio Recordings API
   contact:
     name: Twilio Support
     url: https://support.twilio.com
@@ -10,9 +8,15 @@ info:
   license:
     name: Apache 2.0
     url: https://www.apache.org/licenses/LICENSE-2.0.html
-  version: 1.52.0
+  termsOfService: https://www.twilio.com/legal/tos
+  version: '1.0'
+  description: 'Operations tagged Recordings across 3 of this provider''s published API definitions: twilio-video-openapi.yml, twilio-voice-openapi.yml, video-openapi-original.yml. Each path carries the servers of the definition it was published in.'
 servers:
-- url: https://accounts.twilio.com
+- url: https://video.twilio.com/v1
+  description: Twilio Video API v1
+- url: https://api.twilio.com/2010-04-01
+  description: Twilio REST API v1
+- url: https://video.twilio.com
 tags:
 - name: Recordings
   description: Manage video and audio recordings
@@ -47,6 +51,11 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/VideoRecordingList'
+      security:
+      - accountSid_authToken: []
+    servers:
+    - url: https://video.twilio.com/v1
+      description: Twilio Video API v1
   /Recordings/{RecordingSid}:
     get:
       operationId: fetchRecording
@@ -69,6 +78,8 @@ paths:
                 $ref: '#/components/schemas/VideoRecording'
         '404':
           description: Recording not found
+      security:
+      - accountSid_authToken: []
     delete:
       operationId: deleteRecording
       summary: Twilio Delete a Recording
@@ -86,6 +97,11 @@ paths:
           description: Recording deleted
         '404':
           description: Recording not found
+      security:
+      - accountSid_authToken: []
+    servers:
+    - url: https://video.twilio.com/v1
+      description: Twilio Video API v1
   /RecordingSettings/Default:
     get:
       operationId: fetchRecordingSettings
@@ -99,6 +115,8 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/RecordingSettings'
+      security:
+      - accountSid_authToken: []
     post:
       operationId: createRecordingSettings
       summary: Twilio Create or Update Recording Settings
@@ -130,6 +148,11 @@ paths:
       responses:
         '201':
           description: Recording settings created
+      security:
+      - accountSid_authToken: []
+    servers:
+    - url: https://video.twilio.com/v1
+      description: Twilio Video API v1
   /Accounts/{AccountSid}/Calls/{CallSid}/Recordings.json:
     get:
       operationId: listCallRecordings
@@ -149,6 +172,8 @@ paths:
                 $ref: '#/components/schemas/RecordingList'
         '401':
           description: Unauthorized
+      security:
+      - accountSid_authToken: []
     post:
       operationId: createCallRecording
       summary: Twilio Start Recording a Call
@@ -193,6 +218,11 @@ paths:
                 $ref: '#/components/schemas/Recording'
         '401':
           description: Unauthorized
+      security:
+      - accountSid_authToken: []
+    servers:
+    - url: https://api.twilio.com/2010-04-01
+      description: Twilio REST API v1
   /Accounts/{AccountSid}/Recordings.json:
     get:
       operationId: listRecordings
@@ -227,6 +257,11 @@ paths:
                 $ref: '#/components/schemas/RecordingList'
         '401':
           description: Unauthorized
+      security:
+      - accountSid_authToken: []
+    servers:
+    - url: https://api.twilio.com/2010-04-01
+      description: Twilio REST API v1
   /Accounts/{AccountSid}/Recordings/{RecordingSid}.json:
     get:
       operationId: fetchRecording
@@ -245,6 +280,8 @@ paths:
                 $ref: '#/components/schemas/Recording'
         '404':
           description: Recording not found
+      security:
+      - accountSid_authToken: []
     delete:
       operationId: deleteRecording
       summary: Twilio Delete a Recording
@@ -258,6 +295,11 @@ paths:
           description: Recording deleted
         '404':
           description: Recording not found
+      security:
+      - accountSid_authToken: []
+    servers:
+    - url: https://api.twilio.com/2010-04-01
+      description: Twilio REST API v1
   /v1/Recordings/{Sid}:
     servers:
     - url: https://video.twilio.com
@@ -420,39 +462,29 @@ paths:
       x-maturity:
       - GA
 components:
-  parameters:
-    RecordingSid:
-      name: RecordingSid
-      in: path
-      required: true
-      description: The unique identifier of the recording
-      schema:
-        type: string
-        pattern: ^RE[0-9a-fA-F]{32}$
-    RoomSid:
-      name: RoomSid
-      in: path
-      required: true
-      description: The SID or unique name of the room
-      schema:
-        type: string
-    AccountSid:
-      name: AccountSid
-      in: path
-      required: true
-      description: The unique identifier of the Twilio account
-      schema:
-        type: string
-        pattern: ^AC[0-9a-fA-F]{32}$
-    CallSid:
-      name: CallSid
-      in: path
-      required: true
-      description: The unique identifier of the call
-      schema:
-        type: string
-        pattern: ^CA[0-9a-fA-F]{32}$
   schemas:
+    RecordingSettings:
+      type: object
+      properties:
+        account_sid:
+          type: string
+          pattern: ^AC[0-9a-fA-F]{32}$
+        friendly_name:
+          type: string
+        aws_credentials_sid:
+          type: string
+        aws_s3_url:
+          type: string
+          format: uri
+        aws_storage_enabled:
+          type: boolean
+        encryption_key_sid:
+          type: string
+        encryption_enabled:
+          type: boolean
+        url:
+          type: string
+          format: uri
     VideoRecording:
       type: object
       properties:
@@ -525,6 +557,110 @@ components:
             media:
               type: string
               format: uri
+    VideoRecordingList:
+      type: object
+      properties:
+        recordings:
+          type: array
+          items:
+            $ref: '#/components/schemas/VideoRecording'
+        meta:
+          $ref: '#/components/schemas/PaginationMeta'
+    PaginationMeta:
+      type: object
+      properties:
+        page:
+          type: integer
+        page_size:
+          type: integer
+        first_page_url:
+          type: string
+          format: uri
+        previous_page_url:
+          type: string
+          format: uri
+        next_page_url:
+          type: string
+          format: uri
+        url:
+          type: string
+          format: uri
+        key:
+          type: string
+    RecordingList:
+      type: object
+      properties:
+        recordings:
+          type: array
+          items:
+            $ref: '#/components/schemas/Recording'
+        first_page_uri:
+          type: string
+        next_page_uri:
+          type: string
+        page:
+          type: integer
+        page_size:
+          type: integer
+        uri:
+          type: string
+    Recording:
+      type: object
+      properties:
+        sid:
+          type: string
+          pattern: ^RE[0-9a-fA-F]{32}$
+          description: Unique identifier for the recording
+        account_sid:
+          type: string
+          pattern: ^AC[0-9a-fA-F]{32}$
+        call_sid:
+          type: string
+          pattern: ^CA[0-9a-fA-F]{32}$
+        conference_sid:
+          type: string
+          description: SID of the conference if applicable
+        channels:
+          type: integer
+          description: Number of channels in the recording
+        status:
+          type: string
+          enum:
+          - processing
+          - completed
+          - absent
+          description: Status of the recording
+        duration:
+          type: string
+          description: Duration of the recording in seconds
+        price:
+          type: string
+        price_unit:
+          type: string
+        source:
+          type: string
+          enum:
+          - DialVerb
+          - Conference
+          - OutboundAPI
+          - Trunking
+          - RecordVerb
+          - StartCallRecordingAPI
+          - StartConferenceRecordingAPI
+        date_created:
+          type: string
+          format: date-time
+        date_updated:
+          type: string
+          format: date-time
+        uri:
+          type: string
+    recording_enum_type:
+      type: string
+      enum:
+      - audio
+      - video
+      - data
     video.v1.recording:
       type: object
       properties:
@@ -654,74 +790,18 @@ components:
       - H264
       - OPUS
       - PCMU
-    Recording:
-      type: object
-      properties:
-        sid:
-          type: string
-          pattern: ^RE[0-9a-fA-F]{32}$
-          description: Unique identifier for the recording
-        account_sid:
-          type: string
-          pattern: ^AC[0-9a-fA-F]{32}$
-        call_sid:
-          type: string
-          pattern: ^CA[0-9a-fA-F]{32}$
-        conference_sid:
-          type: string
-          description: SID of the conference if applicable
-        channels:
-          type: integer
-          description: Number of channels in the recording
-        status:
-          type: string
-          enum:
-          - processing
-          - completed
-          - absent
-          description: Status of the recording
-        duration:
-          type: string
-          description: Duration of the recording in seconds
-        price:
-          type: string
-        price_unit:
-          type: string
-        source:
-          type: string
-          enum:
-          - DialVerb
-          - Conference
-          - OutboundAPI
-          - Trunking
-          - RecordVerb
-          - StartCallRecordingAPI
-          - StartConferenceRecordingAPI
-        date_created:
-          type: string
-          format: date-time
-        date_updated:
-          type: string
-          format: date-time
-        uri:
-          type: string
-    RecordingList:
-      type: object
-      properties:
-        recordings:
-          type: array
-          items:
-            $ref: '#/components/schemas/Recording'
-        first_page_uri:
-          type: string
-        next_page_uri:
-          type: string
-        page:
-          type: integer
-        page_size:
-          type: integer
-        uri:
-          type: string
+    recording_enum_format:
+      type: string
+      enum:
+      - mka
+      - mkv
+    recording_enum_status:
+      type: string
+      enum:
+      - processing
+      - completed
+      - deleted
+      - failed
     ListRecordingResponse:
       type: object
       properties:
@@ -754,80 +834,47 @@ components:
               format: uri
             key:
               type: string
-    RecordingSettings:
-      type: object
-      properties:
-        account_sid:
-          type: string
-          pattern: ^AC[0-9a-fA-F]{32}$
-        friendly_name:
-          type: string
-        aws_credentials_sid:
-          type: string
-        aws_s3_url:
-          type: string
-          format: uri
-        aws_storage_enabled:
-          type: boolean
-        encryption_key_sid:
-          type: string
-        encryption_enabled:
-          type: boolean
-        url:
-          type: string
-          format: uri
-    PaginationMeta:
-      type: object
-      properties:
-        page:
-          type: integer
-        page_size:
-          type: integer
-        first_page_url:
-          type: string
-          format: uri
-        previous_page_url:
-          type: string
-          format: uri
-        next_page_url:
-          type: string
-          format: uri
-        url:
-          type: string
-          format: uri
-        key:
-          type: string
-    recording_enum_type:
-      type: string
-      enum:
-      - audio
-      - video
-      - data
-    recording_enum_format:
-      type: string
-      enum:
-      - mka
-      - mkv
-    VideoRecordingList:
-      type: object
-      properties:
-        recordings:
-          type: array
-          items:
-            $ref: '#/components/schemas/VideoRecording'
-        meta:
-          $ref: '#/components/schemas/PaginationMeta'
-    recording_enum_status:
-      type: string
-      enum:
-      - processing
-      - completed
-      - deleted
-      - failed
+  parameters:
+    RoomSid:
+      name: RoomSid
+      in: path
+      required: true
+      description: The SID or unique name of the room
+      schema:
+        type: string
+    RecordingSid:
+      name: RecordingSid
+      in: path
+      required: true
+      description: The unique identifier of the recording
+      schema:
+        type: string
+        pattern: ^RE[0-9a-fA-F]{32}$
+    CallSid:
+      name: CallSid
+      in: path
+      required: true
+      description: The unique identifier of the call
+      schema:
+        type: string
+        pattern: ^CA[0-9a-fA-F]{32}$
+    AccountSid:
+      name: AccountSid
+      in: path
+      required: true
+      description: The unique identifier of the Twilio account
+      schema:
+        type: string
+        pattern: ^AC[0-9a-fA-F]{32}$
   securitySchemes:
     accountSid_authToken:
       type: http
       scheme: basic
+      description: Use your Twilio Account SID as the username and Auth Token as the password for HTTP Basic authentication.
+x-refined-from:
+- twilio-video-openapi.yml
+- twilio-voice-openapi.yml
+- video-openapi-original.yml
 x-maturity:
 - name: GA
   description: This product is Generally Available.

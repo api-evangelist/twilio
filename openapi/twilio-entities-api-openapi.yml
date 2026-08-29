@@ -1,8 +1,8 @@
 openapi: 3.2.0
 info:
-  title: Twilio - Accounts A2p Entities API
-  description: This is the public Twilio REST API.
-  termsOfService: https://www.twilio.com/legal/tos
+  title: Twilio Verify Entities API
+  description: User verification and two-factor authentication API. Send verification codes via SMS, voice, email, WhatsApp, or push notifications. Supports TOTP, push authentication, and silent network authentication for fraud prevention and user identity verification.
+  version: '2.0'
   contact:
     name: Twilio Support
     url: https://support.twilio.com
@@ -10,9 +10,12 @@ info:
   license:
     name: Apache 2.0
     url: https://www.apache.org/licenses/LICENSE-2.0.html
-  version: 1.52.0
+  termsOfService: https://www.twilio.com/legal/tos
 servers:
-- url: https://accounts.twilio.com
+- url: https://verify.twilio.com/v2
+  description: Twilio Verify API v2
+security:
+- accountSid_authToken: []
 tags:
 - name: Entities
   description: Manage end-user entities for TOTP and push
@@ -65,8 +68,7 @@ components:
     accountSid_authToken:
       type: http
       scheme: basic
-x-maturity:
-- name: GA
-  description: This product is Generally Available.
-- name: Beta
-  description: PLEASE NOTE that this is a Beta product that is subject to change. Use it with caution.
+      description: Use your Twilio Account SID as the username and Auth Token as the password for HTTP Basic authentication.
+externalDocs:
+  description: Twilio Verify API Documentation
+  url: https://www.twilio.com/docs/verify/api

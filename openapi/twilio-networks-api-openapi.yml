@@ -1,6 +1,6 @@
 openapi: 3.2.0
 info:
-  title: Twilio - Accounts A2p Networks API
+  title: Twilio - Supersim Networks API
   description: This is the public Twilio REST API.
   termsOfService: https://www.twilio.com/legal/tos
   contact:
@@ -12,7 +12,7 @@ info:
     url: https://www.apache.org/licenses/LICENSE-2.0.html
   version: 1.52.0
 servers:
-- url: https://accounts.twilio.com
+- url: https://supersim.twilio.com
 tags:
 - name: Networks
 paths:
@@ -110,38 +110,6 @@ paths:
       - Beta
 components:
   schemas:
-    ListNetworkResponse:
-      type: object
-      properties:
-        networks:
-          type: array
-          items:
-            $ref: '#/components/schemas/supersim.v1.network'
-        meta:
-          type: object
-          properties:
-            first_page_url:
-              type: string
-              format: uri
-            next_page_url:
-              type:
-              - string
-              - 'null'
-              format: uri
-            page:
-              type: integer
-            page_size:
-              type: integer
-            previous_page_url:
-              type:
-              - string
-              - 'null'
-              format: uri
-            url:
-              type: string
-              format: uri
-            key:
-              type: string
     supersim.v1.network:
       type: object
       properties:
@@ -175,6 +143,38 @@ components:
           - 'null'
           items: {}
           description: Array of objects identifying the [MCC-MNCs](https://en.wikipedia.org/wiki/Mobile_country_code) that are included in the Network resource.
+    ListNetworkResponse:
+      type: object
+      properties:
+        networks:
+          type: array
+          items:
+            $ref: '#/components/schemas/supersim.v1.network'
+        meta:
+          type: object
+          properties:
+            first_page_url:
+              type: string
+              format: uri
+            next_page_url:
+              type:
+              - string
+              - 'null'
+              format: uri
+            page:
+              type: integer
+            page_size:
+              type: integer
+            previous_page_url:
+              type:
+              - string
+              - 'null'
+              format: uri
+            url:
+              type: string
+              format: uri
+            key:
+              type: string
   securitySchemes:
     accountSid_authToken:
       type: http

@@ -1,8 +1,8 @@
 openapi: 3.2.0
 info:
-  title: Twilio - Accounts A2p Calls API
-  description: This is the public Twilio REST API.
-  termsOfService: https://www.twilio.com/legal/tos
+  title: Twilio Voice Calls API
+  description: Build and manage voice call experiences with Twilio's Voice API. Make outbound calls, receive inbound calls, control calls in progress with TwiML, record calls, set up conferencing, and manage SIP trunking.
+  version: '2.0'
   contact:
     name: Twilio Support
     url: https://support.twilio.com
@@ -10,9 +10,12 @@ info:
   license:
     name: Apache 2.0
     url: https://www.apache.org/licenses/LICENSE-2.0.html
-  version: 1.52.0
+  termsOfService: https://www.twilio.com/legal/tos
 servers:
-- url: https://accounts.twilio.com
+- url: https://api.twilio.com/2010-04-01
+  description: Twilio REST API v1
+security:
+- accountSid_authToken: []
 tags:
 - name: Calls
   description: Initiate, manage, and monitor voice calls
@@ -168,27 +171,6 @@ paths:
           description: Call not found
 components:
   schemas:
-    UpdateCallRequest:
-      type: object
-      properties:
-        Url:
-          type: string
-          format: uri
-          description: Redirect the call to a new TwiML URL
-        Method:
-          type: string
-          enum:
-          - GET
-          - POST
-        Status:
-          type: string
-          enum:
-          - canceled
-          - completed
-          description: Set to completed to end the call
-        Twiml:
-          type: string
-          description: Inline TwiML to redirect the call
     CallList:
       type: object
       properties:
@@ -208,6 +190,78 @@ components:
           type: integer
         uri:
           type: string
+    CreateCallRequest:
+      type: object
+      required:
+      - To
+      - From
+      properties:
+        To:
+          type: string
+          description: Phone number, SIP URI, or client identifier to call
+        From:
+          type: string
+          description: Twilio phone number or verified caller ID
+        Url:
+          type: string
+          format: uri
+          description: TwiML URL for call instructions
+        ApplicationSid:
+          type: string
+          description: SID of the TwiML application to handle the call
+          pattern: ^AP[0-9a-fA-F]{32}$
+        Method:
+          type: string
+          enum:
+          - GET
+          - POST
+          default: POST
+        StatusCallback:
+          type: string
+          format: uri
+          description: URL for call status webhooks
+        StatusCallbackMethod:
+          type: string
+          enum:
+          - GET
+          - POST
+        StatusCallbackEvent:
+          type: array
+          items:
+            type: string
+            enum:
+            - initiated
+            - ringing
+            - answered
+            - completed
+        Timeout:
+          type: integer
+          description: Ring timeout in seconds
+          default: 60
+        Record:
+          type: boolean
+          description: Whether to record the call
+          default: false
+        RecordingChannels:
+          type: string
+          enum:
+          - mono
+          - dual
+        RecordingStatusCallback:
+          type: string
+          format: uri
+        MachineDetection:
+          type: string
+          enum:
+          - Enable
+          - DetectMessageEnd
+          description: Enable answering machine detection
+        Twiml:
+          type: string
+          description: Inline TwiML instructions for the call
+        CallerId:
+          type: string
+          description: Caller ID to display on outbound call
     Call:
       type: object
       properties:
@@ -304,87 +358,28 @@ components:
               type: string
             notifications:
               type: string
-    CreateCallRequest:
+    UpdateCallRequest:
       type: object
-      required:
-      - To
-      - From
       properties:
-        To:
-          type: string
-          description: Phone number, SIP URI, or client identifier to call
-        From:
-          type: string
-          description: Twilio phone number or verified caller ID
         Url:
           type: string
           format: uri
-          description: TwiML URL for call instructions
-        ApplicationSid:
-          type: string
-          description: SID of the TwiML application to handle the call
-          pattern: ^AP[0-9a-fA-F]{32}$
+          description: Redirect the call to a new TwiML URL
         Method:
           type: string
           enum:
           - GET
           - POST
-          default: POST
-        StatusCallback:
-          type: string
-          format: uri
-          description: URL for call status webhooks
-        StatusCallbackMethod:
+        Status:
           type: string
           enum:
-          - GET
-          - POST
-        StatusCallbackEvent:
-          type: array
-          items:
-            type: string
-            enum:
-            - initiated
-            - ringing
-            - answered
-            - completed
-        Timeout:
-          type: integer
-          description: Ring timeout in seconds
-          default: 60
-        Record:
-          type: boolean
-          description: Whether to record the call
-          default: false
-        RecordingChannels:
-          type: string
-          enum:
-          - mono
-          - dual
-        RecordingStatusCallback:
-          type: string
-          format: uri
-        MachineDetection:
-          type: string
-          enum:
-          - Enable
-          - DetectMessageEnd
-          description: Enable answering machine detection
+          - canceled
+          - completed
+          description: Set to completed to end the call
         Twiml:
           type: string
-          description: Inline TwiML instructions for the call
-        CallerId:
-          type: string
-          description: Caller ID to display on outbound call
+          description: Inline TwiML to redirect the call
   parameters:
-    AccountSid:
-      name: AccountSid
-      in: path
-      required: true
-      description: The unique identifier of the Twilio account
-      schema:
-        type: string
-        pattern: ^AC[0-9a-fA-F]{32}$
     CallSid:
       name: CallSid
       in: path
@@ -393,12 +388,19 @@ components:
       schema:
         type: string
         pattern: ^CA[0-9a-fA-F]{32}$
+    AccountSid:
+      name: AccountSid
+      in: path
+      required: true
+      description: The unique identifier of the Twilio account
+      schema:
+        type: string
+        pattern: ^AC[0-9a-fA-F]{32}$
   securitySchemes:
     accountSid_authToken:
       type: http
       scheme: basic
-x-maturity:
-- name: GA
-  description: This product is Generally Available.
-- name: Beta
-  description: PLEASE NOTE that this is a Beta product that is subject to change. Use it with caution.
+      description: Use your Twilio Account SID as the username and Auth Token as the password for HTTP Basic authentication.
+externalDocs:
+  description: Twilio Voice API Documentation
+  url: https://www.twilio.com/docs/voice

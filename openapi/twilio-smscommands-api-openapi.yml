@@ -1,6 +1,6 @@
 openapi: 3.2.0
 info:
-  title: Twilio - Accounts A2p Sms Commands API
+  title: Twilio - Supersim Sms Commands API
   description: This is the public Twilio REST API.
   termsOfService: https://www.twilio.com/legal/tos
   contact:
@@ -12,7 +12,7 @@ info:
     url: https://www.apache.org/licenses/LICENSE-2.0.html
   version: 1.52.0
 servers:
-- url: https://accounts.twilio.com
+- url: https://supersim.twilio.com
 tags:
 - name: SmsCommands
 paths:
@@ -137,11 +137,33 @@ paths:
       - Beta
 components:
   schemas:
-    sms_command_enum_direction:
-      type: string
-      enum:
-      - to_sim
-      - from_sim
+    CreateSmsCommandRequest:
+      type: object
+      required:
+      - Sim
+      - Payload
+      properties:
+        Sim:
+          type: string
+          description: The `sid` or `unique_name` of the [SIM](https://www.twilio.com/docs/iot/supersim/api/sim-resource) to send the SMS Command to.
+        Payload:
+          type: string
+          description: The message body of the SMS Command.
+        CallbackMethod:
+          type: string
+          format: http-method
+          enum:
+          - HEAD
+          - GET
+          - POST
+          - PATCH
+          - PUT
+          - DELETE
+          description: 'The HTTP method we should use to call `callback_url`. Can be: `GET` or `POST` and the default is POST.'
+        CallbackUrl:
+          type: string
+          format: uri
+          description: The URL we should call using the `callback_method` after we have sent the command.
     ListSmsCommandResponse:
       type: object
       properties:
@@ -174,41 +196,6 @@ components:
               format: uri
             key:
               type: string
-    sms_command_enum_status:
-      type: string
-      enum:
-      - queued
-      - sent
-      - delivered
-      - received
-      - failed
-    CreateSmsCommandRequest:
-      type: object
-      required:
-      - Sim
-      - Payload
-      properties:
-        Sim:
-          type: string
-          description: The `sid` or `unique_name` of the [SIM](https://www.twilio.com/docs/iot/supersim/api/sim-resource) to send the SMS Command to.
-        Payload:
-          type: string
-          description: The message body of the SMS Command.
-        CallbackMethod:
-          type: string
-          format: http-method
-          enum:
-          - HEAD
-          - GET
-          - POST
-          - PATCH
-          - PUT
-          - DELETE
-          description: 'The HTTP method we should use to call `callback_url`. Can be: `GET` or `POST` and the default is POST.'
-        CallbackUrl:
-          type: string
-          format: uri
-          description: The URL we should call using the `callback_method` after we have sent the command.
     supersim.v1.sms_command:
       type: object
       properties:
@@ -275,6 +262,19 @@ components:
           - 'null'
           format: uri
           description: The absolute URL of the SMS Command resource.
+    sms_command_enum_status:
+      type: string
+      enum:
+      - queued
+      - sent
+      - delivered
+      - received
+      - failed
+    sms_command_enum_direction:
+      type: string
+      enum:
+      - to_sim
+      - from_sim
   securitySchemes:
     accountSid_authToken:
       type: http

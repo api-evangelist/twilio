@@ -1,8 +1,6 @@
 openapi: 3.2.0
 info:
-  title: Twilio - Accounts A2p Safe List API
-  description: This is the public Twilio REST API.
-  termsOfService: https://www.twilio.com/legal/tos
+  title: Twilio Safe List API
   contact:
     name: Twilio Support
     url: https://support.twilio.com
@@ -10,9 +8,16 @@ info:
   license:
     name: Apache 2.0
     url: https://www.apache.org/licenses/LICENSE-2.0.html
-  version: 1.52.0
+  termsOfService: https://www.twilio.com/legal/tos
+  version: '1.0'
+  description: 'Operations tagged SafeList across 3 of this provider''s published API definitions: accounts-openapi-original.yml, twilio-accounts-openapi.yml, verify-openapi-original.yml. Each path carries the servers of the definition it was published in.'
 servers:
 - url: https://accounts.twilio.com
+- url: https://api.twilio.com/2010-04-01
+  description: Twilio REST API v1
+- url: https://accounts.twilio.com/v1
+  description: Twilio Accounts API v1
+- url: https://verify.twilio.com
 tags:
 - name: SafeList
 paths:
@@ -117,6 +122,13 @@ paths:
       responses:
         '201':
           description: Number added to safelist
+      security:
+      - accountSid_authToken: []
+    servers:
+    - url: https://api.twilio.com/2010-04-01
+      description: Twilio REST API v1
+    - url: https://accounts.twilio.com/v1
+      description: Twilio Accounts API v1
   /SafeList/Numbers/{PhoneNumber}:
     get:
       operationId: fetchSafelistNumber
@@ -134,6 +146,8 @@ paths:
           description: Number is safelisted
         '404':
           description: Number not found in safelist
+      security:
+      - accountSid_authToken: []
     delete:
       operationId: deleteSafelistNumber
       summary: Twilio Remove a Number from the Safelist
@@ -148,6 +162,13 @@ paths:
       responses:
         '204':
           description: Number removed from safelist
+      security:
+      - accountSid_authToken: []
+    servers:
+    - url: https://api.twilio.com/2010-04-01
+      description: Twilio REST API v1
+    - url: https://accounts.twilio.com/v1
+      description: Twilio Accounts API v1
   /v2/SafeList/Numbers:
     servers:
     - url: https://verify.twilio.com
@@ -241,32 +262,6 @@ paths:
       - Beta
 components:
   schemas:
-    verify.v2.safelist:
-      type: object
-      properties:
-        sid:
-          type:
-          - string
-          - 'null'
-          minLength: 34
-          maxLength: 34
-          pattern: ^GN[0-9a-fA-F]{32}$
-          description: The unique string that we created to identify the SafeList resource.
-        phone_number:
-          type:
-          - string
-          - 'null'
-          description: The phone number in SafeList.
-          x-twilio:
-            pii:
-              handling: standard
-              deleteSla: 0
-        url:
-          type:
-          - string
-          - 'null'
-          format: uri
-          description: The absolute URL of the SafeList resource.
     accounts.v1.safelist:
       type: object
       properties:
@@ -295,10 +290,43 @@ components:
         PhoneNumber:
           type: string
           description: The phone number to be added in SafeList. Phone numbers must be in [E.164 format](https://www.twilio.com/docs/glossary/what-e164).
+    verify.v2.safelist:
+      type: object
+      properties:
+        sid:
+          type:
+          - string
+          - 'null'
+          minLength: 34
+          maxLength: 34
+          pattern: ^GN[0-9a-fA-F]{32}$
+          description: The unique string that we created to identify the SafeList resource.
+        phone_number:
+          type:
+          - string
+          - 'null'
+          description: The phone number in SafeList.
+          x-twilio:
+            pii:
+              handling: standard
+              deleteSla: 0
+        url:
+          type:
+          - string
+          - 'null'
+          format: uri
+          description: The absolute URL of the SafeList resource.
   securitySchemes:
     accountSid_authToken:
       type: http
       scheme: basic
+externalDocs:
+  description: Twilio Accounts API Documentation
+  url: https://www.twilio.com/docs/iam/api/account
+x-refined-from:
+- accounts-openapi-original.yml
+- twilio-accounts-openapi.yml
+- verify-openapi-original.yml
 x-maturity:
 - name: GA
   description: This product is Generally Available.

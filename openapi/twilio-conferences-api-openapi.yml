@@ -1,8 +1,6 @@
 openapi: 3.2.0
 info:
-  title: Twilio - Accounts A2p Conferences API
-  description: This is the public Twilio REST API.
-  termsOfService: https://www.twilio.com/legal/tos
+  title: Twilio Conferences API
   contact:
     name: Twilio Support
     url: https://support.twilio.com
@@ -10,9 +8,13 @@ info:
   license:
     name: Apache 2.0
     url: https://www.apache.org/licenses/LICENSE-2.0.html
-  version: 1.52.0
+  termsOfService: https://www.twilio.com/legal/tos
+  version: '1.0'
+  description: 'Operations tagged Conferences across 2 of this provider''s published API definitions: insights-openapi-original.yml, twilio-voice-openapi.yml. Each path carries the servers of the definition it was published in.'
 servers:
-- url: https://accounts.twilio.com
+- url: https://insights.twilio.com
+- url: https://api.twilio.com/2010-04-01
+  description: Twilio REST API v1
 tags:
 - name: Conferences
 paths:
@@ -337,6 +339,11 @@ paths:
                 $ref: '#/components/schemas/ConferenceList'
         '401':
           description: Unauthorized
+      security:
+      - accountSid_authToken: []
+    servers:
+    - url: https://api.twilio.com/2010-04-01
+      description: Twilio REST API v1
   /Accounts/{AccountSid}/Conferences/{ConferenceSid}.json:
     get:
       operationId: fetchConference
@@ -360,6 +367,8 @@ paths:
                 $ref: '#/components/schemas/Conference'
         '404':
           description: Conference not found
+      security:
+      - accountSid_authToken: []
     post:
       operationId: updateConference
       summary: Twilio Update a Conference
@@ -401,6 +410,11 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Conference'
+      security:
+      - accountSid_authToken: []
+    servers:
+    - url: https://api.twilio.com/2010-04-01
+      description: Twilio REST API v1
   /Accounts/{AccountSid}/Conferences/{ConferenceSid}/Participants.json:
     get:
       operationId: listParticipants
@@ -422,6 +436,8 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ParticipantList'
+      security:
+      - accountSid_authToken: []
     post:
       operationId: createParticipant
       summary: Twilio Add a Participant to a Conference
@@ -467,35 +483,116 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Participant'
+      security:
+      - accountSid_authToken: []
+    servers:
+    - url: https://api.twilio.com/2010-04-01
+      description: Twilio REST API v1
 components:
   schemas:
-    ConferenceList:
+    conference_participant_enum_call_status:
+      type: string
+      enum:
+      - answered
+      - completed
+      - busy
+      - fail
+      - noanswer
+      - ringing
+      - canceled
+    conference_enum_region:
+      type: string
+      enum:
+      - us1
+      - au1
+      - br1
+      - ie1
+      - jp1
+      - sg1
+      - de1
+    conference_enum_conference_end_reason:
+      type: string
+      enum:
+      - last_participant_left
+      - conference_ended_via_api
+      - participant_with_end_conference_on_exit_left
+      - last_participant_kicked
+      - participant_with_end_conference_on_exit_kicked
+    ListConferenceResponse:
       type: object
       properties:
         conferences:
           type: array
           items:
-            $ref: '#/components/schemas/Conference'
-        first_page_uri:
-          type: string
-        next_page_uri:
-          type: string
-        page:
-          type: integer
-        page_size:
-          type: integer
+            $ref: '#/components/schemas/insights.v1.conference'
+        meta:
+          type: object
+          properties:
+            first_page_url:
+              type: string
+              format: uri
+            next_page_url:
+              type:
+              - string
+              - 'null'
+              format: uri
+            page:
+              type: integer
+            page_size:
+              type: integer
+            previous_page_url:
+              type:
+              - string
+              - 'null'
+              format: uri
+            url:
+              type: string
+              format: uri
+            key:
+              type: string
+    conference_enum_processing_state:
+      type: string
+      enum:
+      - complete
+      - in_progress
+      - timeout
+    conference_participant_enum_region:
+      type: string
+      enum:
+      - us1
+      - us2
+      - au1
+      - br1
+      - ie1
+      - jp1
+      - sg1
+      - de1
+    conference_enum_tag:
+      type: string
+      enum:
+      - invalid_requested_region
+      - duplicate_identity
+      - start_failure
+      - region_configuration_issues
+      - quality_warnings
+      - participant_behavior_issues
+      - high_packet_loss
+      - high_jitter
+      - high_latency
+      - low_mos
+      - detected_silence
+    conference_participant_enum_jitter_buffer_size:
+      type: string
+      enum:
+      - large
+      - small
+      - medium
+      - 'off'
     conference_participant_enum_call_direction:
       type: string
       enum:
       - inbound
       - outbound
-    conference_enum_conference_status:
-      type: string
-      enum:
-      - in_progress
-      - not_started
-      - completed
-      - summary_timeout
     insights.v1.conference.conference_participant:
       type: object
       properties:
@@ -661,104 +758,13 @@ components:
           - 'null'
           format: uri
           description: The URL of this resource.
-    conference_participant_enum_call_type:
+    conference_enum_conference_status:
       type: string
       enum:
-      - carrier
-      - client
-      - sip
-    conference_participant_enum_region:
-      type: string
-      enum:
-      - us1
-      - us2
-      - au1
-      - br1
-      - ie1
-      - jp1
-      - sg1
-      - de1
-    conference_enum_tag:
-      type: string
-      enum:
-      - invalid_requested_region
-      - duplicate_identity
-      - start_failure
-      - region_configuration_issues
-      - quality_warnings
-      - participant_behavior_issues
-      - high_packet_loss
-      - high_jitter
-      - high_latency
-      - low_mos
-      - detected_silence
-    conference_enum_region:
-      type: string
-      enum:
-      - us1
-      - au1
-      - br1
-      - ie1
-      - jp1
-      - sg1
-      - de1
-    conference_participant_enum_call_status:
-      type: string
-      enum:
-      - answered
+      - in_progress
+      - not_started
       - completed
-      - busy
-      - fail
-      - noanswer
-      - ringing
-      - canceled
-    conference_enum_conference_end_reason:
-      type: string
-      enum:
-      - last_participant_left
-      - conference_ended_via_api
-      - participant_with_end_conference_on_exit_left
-      - last_participant_kicked
-      - participant_with_end_conference_on_exit_kicked
-    conference_participant_enum_jitter_buffer_size:
-      type: string
-      enum:
-      - large
-      - small
-      - medium
-      - 'off'
-    ListConferenceParticipantResponse:
-      type: object
-      properties:
-        participants:
-          type: array
-          items:
-            $ref: '#/components/schemas/insights.v1.conference.conference_participant'
-        meta:
-          type: object
-          properties:
-            first_page_url:
-              type: string
-              format: uri
-            next_page_url:
-              type:
-              - string
-              - 'null'
-              format: uri
-            page:
-              type: integer
-            page_size:
-              type: integer
-            previous_page_url:
-              type:
-              - string
-              - 'null'
-              format: uri
-            url:
-              type: string
-              format: uri
-            key:
-              type: string
+      - summary_timeout
     insights.v1.conference:
       type: object
       properties:
@@ -897,12 +903,89 @@ components:
           - 'null'
           format: uri-map
           description: Contains a dictionary of URL links to nested resources of this Conference.
-    conference_enum_processing_state:
+    conference_participant_enum_call_type:
+      type: string
+      enum:
+      - carrier
+      - client
+      - sip
+    ListConferenceParticipantResponse:
+      type: object
+      properties:
+        participants:
+          type: array
+          items:
+            $ref: '#/components/schemas/insights.v1.conference.conference_participant'
+        meta:
+          type: object
+          properties:
+            first_page_url:
+              type: string
+              format: uri
+            next_page_url:
+              type:
+              - string
+              - 'null'
+              format: uri
+            page:
+              type: integer
+            page_size:
+              type: integer
+            previous_page_url:
+              type:
+              - string
+              - 'null'
+              format: uri
+            url:
+              type: string
+              format: uri
+            key:
+              type: string
+    conference_participant_enum_processing_state:
       type: string
       enum:
       - complete
       - in_progress
       - timeout
+    Participant:
+      type: object
+      properties:
+        call_sid:
+          type: string
+          pattern: ^CA[0-9a-fA-F]{32}$
+        conference_sid:
+          type: string
+          pattern: ^CF[0-9a-fA-F]{32}$
+        account_sid:
+          type: string
+          pattern: ^AC[0-9a-fA-F]{32}$
+        muted:
+          type: boolean
+        hold:
+          type: boolean
+        coaching:
+          type: boolean
+        status:
+          type: string
+          enum:
+          - queued
+          - connecting
+          - ringing
+          - connected
+          - complete
+          - failed
+        start_conference_on_enter:
+          type: boolean
+        end_conference_on_exit:
+          type: boolean
+        date_created:
+          type: string
+          format: date-time
+        date_updated:
+          type: string
+          format: date-time
+        uri:
+          type: string
     Conference:
       type: object
       properties:
@@ -945,45 +1028,6 @@ components:
               type: string
             recordings:
               type: string
-    Participant:
-      type: object
-      properties:
-        call_sid:
-          type: string
-          pattern: ^CA[0-9a-fA-F]{32}$
-        conference_sid:
-          type: string
-          pattern: ^CF[0-9a-fA-F]{32}$
-        account_sid:
-          type: string
-          pattern: ^AC[0-9a-fA-F]{32}$
-        muted:
-          type: boolean
-        hold:
-          type: boolean
-        coaching:
-          type: boolean
-        status:
-          type: string
-          enum:
-          - queued
-          - connecting
-          - ringing
-          - connected
-          - complete
-          - failed
-        start_conference_on_enter:
-          type: boolean
-        end_conference_on_exit:
-          type: boolean
-        date_created:
-          type: string
-          format: date-time
-        date_updated:
-          type: string
-          format: date-time
-        uri:
-          type: string
     ParticipantList:
       type: object
       properties:
@@ -999,44 +1043,21 @@ components:
           type: integer
         page_size:
           type: integer
-    conference_participant_enum_processing_state:
-      type: string
-      enum:
-      - complete
-      - in_progress
-      - timeout
-    ListConferenceResponse:
+    ConferenceList:
       type: object
       properties:
         conferences:
           type: array
           items:
-            $ref: '#/components/schemas/insights.v1.conference'
-        meta:
-          type: object
-          properties:
-            first_page_url:
-              type: string
-              format: uri
-            next_page_url:
-              type:
-              - string
-              - 'null'
-              format: uri
-            page:
-              type: integer
-            page_size:
-              type: integer
-            previous_page_url:
-              type:
-              - string
-              - 'null'
-              format: uri
-            url:
-              type: string
-              format: uri
-            key:
-              type: string
+            $ref: '#/components/schemas/Conference'
+        first_page_uri:
+          type: string
+        next_page_uri:
+          type: string
+        page:
+          type: integer
+        page_size:
+          type: integer
   parameters:
     AccountSid:
       name: AccountSid
@@ -1050,6 +1071,12 @@ components:
     accountSid_authToken:
       type: http
       scheme: basic
+externalDocs:
+  description: Twilio Voice API Documentation
+  url: https://www.twilio.com/docs/voice
+x-refined-from:
+- insights-openapi-original.yml
+- twilio-voice-openapi.yml
 x-maturity:
 - name: GA
   description: This product is Generally Available.

@@ -1,6 +1,6 @@
 openapi: 3.2.0
 info:
-  title: Twilio - Accounts A2p Apps API
+  title: Twilio - Microvisor Apps API
   description: This is the public Twilio REST API.
   termsOfService: https://www.twilio.com/legal/tos
   contact:
@@ -12,7 +12,7 @@ info:
     url: https://www.apache.org/licenses/LICENSE-2.0.html
   version: 1.52.0
 servers:
-- url: https://accounts.twilio.com
+- url: https://microvisor.twilio.com
 tags:
 - name: Apps
 paths:
@@ -155,6 +155,65 @@ paths:
       - Preview
 components:
   schemas:
+    ListAppResponse:
+      type: object
+      properties:
+        apps:
+          type: array
+          items:
+            $ref: '#/components/schemas/microvisor.v1.app'
+        meta:
+          type: object
+          properties:
+            first_page_url:
+              type: string
+              format: uri
+            next_page_url:
+              type:
+              - string
+              - 'null'
+              format: uri
+            page:
+              type: integer
+            page_size:
+              type: integer
+            previous_page_url:
+              type:
+              - string
+              - 'null'
+              format: uri
+            url:
+              type: string
+              format: uri
+            key:
+              type: string
+    microvisor.v1.app.app_manifest:
+      type: object
+      properties:
+        app_sid:
+          type:
+          - string
+          - 'null'
+          minLength: 34
+          maxLength: 34
+          pattern: ^KA[0-9a-fA-F]{32}$
+          description: A 34-character string that uniquely identifies this App.
+        hash:
+          type:
+          - string
+          - 'null'
+          description: App manifest hash represented as `hash_algorithm:hash_value`.
+        encoded_bytes:
+          type:
+          - string
+          - 'null'
+          description: The base-64 encoded manifest
+        url:
+          type:
+          - string
+          - 'null'
+          format: uri
+          description: The absolute URL of this Manifest.
     microvisor.v1.app:
       type: object
       properties:
@@ -207,71 +266,10 @@ components:
           - object
           - 'null'
           format: uri-map
-    microvisor.v1.app.app_manifest:
-      type: object
-      properties:
-        app_sid:
-          type:
-          - string
-          - 'null'
-          minLength: 34
-          maxLength: 34
-          pattern: ^KA[0-9a-fA-F]{32}$
-          description: A 34-character string that uniquely identifies this App.
-        hash:
-          type:
-          - string
-          - 'null'
-          description: App manifest hash represented as `hash_algorithm:hash_value`.
-        encoded_bytes:
-          type:
-          - string
-          - 'null'
-          description: The base-64 encoded manifest
-        url:
-          type:
-          - string
-          - 'null'
-          format: uri
-          description: The absolute URL of this Manifest.
-    ListAppResponse:
-      type: object
-      properties:
-        apps:
-          type: array
-          items:
-            $ref: '#/components/schemas/microvisor.v1.app'
-        meta:
-          type: object
-          properties:
-            first_page_url:
-              type: string
-              format: uri
-            next_page_url:
-              type:
-              - string
-              - 'null'
-              format: uri
-            page:
-              type: integer
-            page_size:
-              type: integer
-            previous_page_url:
-              type:
-              - string
-              - 'null'
-              format: uri
-            url:
-              type: string
-              format: uri
-            key:
-              type: string
   securitySchemes:
     accountSid_authToken:
       type: http
       scheme: basic
 x-maturity:
-- name: GA
-  description: This product is Generally Available.
-- name: Beta
-  description: PLEASE NOTE that this is a Beta product that is subject to change. Use it with caution.
+- name: Preview
+  description: PLEASE NOTE that this is a Preview product that is subject to change. Use it with caution. If you currently do not have developer preview access, please contact https://www.twilio.com/help/contact.

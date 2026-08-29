@@ -1,6 +1,6 @@
 openapi: 3.2.0
 info:
-  title: Twilio - Accounts A2p API
+  title: Twilio - Messaging A2p API
   description: This is the public Twilio REST API.
   termsOfService: https://www.twilio.com/legal/tos
   contact:
@@ -12,7 +12,7 @@ info:
     url: https://www.apache.org/licenses/LICENSE-2.0.html
   version: 1.52.0
 servers:
-- url: https://accounts.twilio.com
+- url: https://messaging.twilio.com
 tags:
 - name: A2p
 paths:
@@ -347,91 +347,38 @@ paths:
       - Beta
 components:
   schemas:
-    CreateBrandVettingRequest:
-      type: object
-      required:
-      - VettingProvider
-      properties:
-        VettingProvider:
-          type: string
-          $ref: '#/components/schemas/brand_vetting_enum_vetting_provider'
-          description: The third-party provider of the vettings to create .
-        VettingId:
-          type: string
-          description: The unique ID of the vetting
-    brand_registrations_enum_identity_status:
-      type: string
-      enum:
-      - SELF_DECLARED
-      - UNVERIFIED
-      - VERIFIED
-      - VETTED_VERIFIED
-    messaging.v1.brand_registrations.brand_vetting:
+    ListBrandVettingResponse:
       type: object
       properties:
-        account_sid:
-          type:
-          - string
-          - 'null'
-          minLength: 34
-          maxLength: 34
-          pattern: ^AC[0-9a-fA-F]{32}$
-          description: The SID of the [Account](https://www.twilio.com/docs/iam/api/account) that created the vetting record.
-        brand_sid:
-          type:
-          - string
-          - 'null'
-          minLength: 34
-          maxLength: 34
-          pattern: ^BN[0-9a-fA-F]{32}$
-          description: The unique string to identify Brand Registration.
-        brand_vetting_sid:
-          type:
-          - string
-          - 'null'
-          minLength: 34
-          maxLength: 34
-          pattern: ^VT[0-9a-fA-F]{32}$
-          description: The Twilio SID of the third-party vetting record.
-        date_updated:
-          type:
-          - string
-          - 'null'
-          format: date-time
-          description: The date and time in GMT when the resource was last updated specified in [ISO 8601](https://en.wikipedia.org/wiki/ISO_8601) format.
-        date_created:
-          type:
-          - string
-          - 'null'
-          format: date-time
-          description: The date and time in GMT when the resource was created specified in [ISO 8601](https://en.wikipedia.org/wiki/ISO_8601) format.
-        vetting_id:
-          type:
-          - string
-          - 'null'
-          description: The unique identifier of the vetting from the third-party provider.
-        vetting_class:
-          type:
-          - string
-          - 'null'
-          description: The type of vetting that has been conducted. One of “STANDARD” (Aegis) or “POLITICAL” (Campaign Verify).
-        vetting_status:
-          type:
-          - string
-          - 'null'
-          description: The status of the import vetting attempt. One of “PENDING,” “SUCCESS,” or “FAILED”.
-        vetting_provider:
-          type:
-          - string
-          - 'null'
-          $ref: '#/components/schemas/brand_vetting_enum_vetting_provider'
-          description: The third-party provider that has conducted the vetting. One of “CampaignVerify” (Campaign Verify tokens) or “AEGIS” (Secondary Vetting).
-        url:
-          type:
-          - string
-          - 'null'
-          format: uri
-          description: The absolute URL of the Brand Vetting resource.
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/messaging.v1.brand_registrations.brand_vetting'
+        meta:
+          type: object
+          properties:
+            first_page_url:
+              type: string
+              format: uri
+            next_page_url:
+              type:
+              - string
+              - 'null'
+              format: uri
+            page:
+              type: integer
+            page_size:
+              type: integer
+            previous_page_url:
+              type:
+              - string
+              - 'null'
+              format: uri
+            url:
+              type: string
+              format: uri
+            key:
+              type: string
     brand_registrations_enum_brand_feedback:
       type: string
       enum:
@@ -440,14 +387,38 @@ components:
       - NONPROFIT
       - GOVERNMENT_ENTITY
       - OTHERS
-    brand_registrations_enum_status:
-      type: string
-      enum:
-      - PENDING
-      - APPROVED
-      - FAILED
-      - IN_REVIEW
-      - DELETED
+    ListBrandRegistrationsResponse:
+      type: object
+      properties:
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/messaging.v1.brand_registrations'
+        meta:
+          type: object
+          properties:
+            first_page_url:
+              type: string
+              format: uri
+            next_page_url:
+              type:
+              - string
+              - 'null'
+              format: uri
+            page:
+              type: integer
+            page_size:
+              type: integer
+            previous_page_url:
+              type:
+              - string
+              - 'null'
+              format: uri
+            url:
+              type: string
+              format: uri
+            key:
+              type: string
     messaging.v1.brand_registrations:
       type: object
       properties:
@@ -571,6 +542,99 @@ components:
           - object
           - 'null'
           format: uri-map
+    messaging.v1.brand_registrations.brand_registration_otp:
+      type: object
+      properties:
+        account_sid:
+          type:
+          - string
+          - 'null'
+          minLength: 34
+          maxLength: 34
+          pattern: ^AC[0-9a-fA-F]{32}$
+          description: The SID of the [Account](https://www.twilio.com/docs/iam/api/account) that created the Brand Registration resource.
+        brand_registration_sid:
+          type:
+          - string
+          - 'null'
+          minLength: 34
+          maxLength: 34
+          pattern: ^BN[0-9a-fA-F]{32}$
+          description: The unique string to identify Brand Registration of Sole Proprietor Brand
+    brand_registrations_enum_status:
+      type: string
+      enum:
+      - PENDING
+      - APPROVED
+      - FAILED
+      - IN_REVIEW
+      - DELETED
+    messaging.v1.brand_registrations.brand_vetting:
+      type: object
+      properties:
+        account_sid:
+          type:
+          - string
+          - 'null'
+          minLength: 34
+          maxLength: 34
+          pattern: ^AC[0-9a-fA-F]{32}$
+          description: The SID of the [Account](https://www.twilio.com/docs/iam/api/account) that created the vetting record.
+        brand_sid:
+          type:
+          - string
+          - 'null'
+          minLength: 34
+          maxLength: 34
+          pattern: ^BN[0-9a-fA-F]{32}$
+          description: The unique string to identify Brand Registration.
+        brand_vetting_sid:
+          type:
+          - string
+          - 'null'
+          minLength: 34
+          maxLength: 34
+          pattern: ^VT[0-9a-fA-F]{32}$
+          description: The Twilio SID of the third-party vetting record.
+        date_updated:
+          type:
+          - string
+          - 'null'
+          format: date-time
+          description: The date and time in GMT when the resource was last updated specified in [ISO 8601](https://en.wikipedia.org/wiki/ISO_8601) format.
+        date_created:
+          type:
+          - string
+          - 'null'
+          format: date-time
+          description: The date and time in GMT when the resource was created specified in [ISO 8601](https://en.wikipedia.org/wiki/ISO_8601) format.
+        vetting_id:
+          type:
+          - string
+          - 'null'
+          description: The unique identifier of the vetting from the third-party provider.
+        vetting_class:
+          type:
+          - string
+          - 'null'
+          description: The type of vetting that has been conducted. One of “STANDARD” (Aegis) or “POLITICAL” (Campaign Verify).
+        vetting_status:
+          type:
+          - string
+          - 'null'
+          description: The status of the import vetting attempt. One of “PENDING,” “SUCCESS,” or “FAILED”.
+        vetting_provider:
+          type:
+          - string
+          - 'null'
+          $ref: '#/components/schemas/brand_vetting_enum_vetting_provider'
+          description: The third-party provider that has conducted the vetting. One of “CampaignVerify” (Campaign Verify tokens) or “AEGIS” (Secondary Vetting).
+        url:
+          type:
+          - string
+          - 'null'
+          format: uri
+          description: The absolute URL of the Brand Vetting resource.
     CreateBrandRegistrationsRequest:
       type: object
       required:
@@ -598,93 +662,29 @@ components:
         SkipAutomaticSecVet:
           type: boolean
           description: A flag to disable automatic secondary vetting for brands which it would otherwise be done.
-    ListBrandVettingResponse:
+    CreateBrandVettingRequest:
       type: object
+      required:
+      - VettingProvider
       properties:
-        data:
-          type: array
-          items:
-            $ref: '#/components/schemas/messaging.v1.brand_registrations.brand_vetting'
-        meta:
-          type: object
-          properties:
-            first_page_url:
-              type: string
-              format: uri
-            next_page_url:
-              type:
-              - string
-              - 'null'
-              format: uri
-            page:
-              type: integer
-            page_size:
-              type: integer
-            previous_page_url:
-              type:
-              - string
-              - 'null'
-              format: uri
-            url:
-              type: string
-              format: uri
-            key:
-              type: string
-    ListBrandRegistrationsResponse:
-      type: object
-      properties:
-        data:
-          type: array
-          items:
-            $ref: '#/components/schemas/messaging.v1.brand_registrations'
-        meta:
-          type: object
-          properties:
-            first_page_url:
-              type: string
-              format: uri
-            next_page_url:
-              type:
-              - string
-              - 'null'
-              format: uri
-            page:
-              type: integer
-            page_size:
-              type: integer
-            previous_page_url:
-              type:
-              - string
-              - 'null'
-              format: uri
-            url:
-              type: string
-              format: uri
-            key:
-              type: string
+        VettingProvider:
+          type: string
+          $ref: '#/components/schemas/brand_vetting_enum_vetting_provider'
+          description: The third-party provider of the vettings to create .
+        VettingId:
+          type: string
+          description: The unique ID of the vetting
+    brand_registrations_enum_identity_status:
+      type: string
+      enum:
+      - SELF_DECLARED
+      - UNVERIFIED
+      - VERIFIED
+      - VETTED_VERIFIED
     brand_vetting_enum_vetting_provider:
       type: string
       enum:
       - campaign-verify
-    messaging.v1.brand_registrations.brand_registration_otp:
-      type: object
-      properties:
-        account_sid:
-          type:
-          - string
-          - 'null'
-          minLength: 34
-          maxLength: 34
-          pattern: ^AC[0-9a-fA-F]{32}$
-          description: The SID of the [Account](https://www.twilio.com/docs/iam/api/account) that created the Brand Registration resource.
-        brand_registration_sid:
-          type:
-          - string
-          - 'null'
-          minLength: 34
-          maxLength: 34
-          pattern: ^BN[0-9a-fA-F]{32}$
-          description: The unique string to identify Brand Registration of Sole Proprietor Brand
   securitySchemes:
     accountSid_authToken:
       type: http

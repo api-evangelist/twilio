@@ -1,6 +1,6 @@
 openapi: 3.2.0
 info:
-  title: Twilio - Accounts A2p Byoc Trunks API
+  title: Twilio - Voice Byoc Trunks API
   description: This is the public Twilio REST API.
   termsOfService: https://www.twilio.com/legal/tos
   contact:
@@ -12,7 +12,7 @@ info:
     url: https://www.apache.org/licenses/LICENSE-2.0.html
   version: 1.52.0
 servers:
-- url: https://accounts.twilio.com
+- url: https://voice.twilio.com
 tags:
 - name: ByocTrunks
 paths:
@@ -173,72 +173,6 @@ paths:
       - GA
 components:
   schemas:
-    CreateByocTrunkRequest:
-      type: object
-      properties:
-        FriendlyName:
-          type: string
-          description: A descriptive string that you create to describe the resource. It is not unique and can be up to 255 characters long.
-        VoiceUrl:
-          type: string
-          format: uri
-          description: The URL we should call when the BYOC Trunk receives a call.
-        VoiceMethod:
-          type: string
-          format: http-method
-          enum:
-          - HEAD
-          - GET
-          - POST
-          - PATCH
-          - PUT
-          - DELETE
-          description: 'The HTTP method we should use to call `voice_url`. Can be: `GET` or `POST`.'
-        VoiceFallbackUrl:
-          type: string
-          format: uri
-          description: The URL that we should call when an error occurs while retrieving or executing the TwiML from `voice_url`.
-        VoiceFallbackMethod:
-          type: string
-          format: http-method
-          enum:
-          - HEAD
-          - GET
-          - POST
-          - PATCH
-          - PUT
-          - DELETE
-          description: 'The HTTP method we should use to call `voice_fallback_url`. Can be: `GET` or `POST`.'
-        StatusCallbackUrl:
-          type: string
-          format: uri
-          description: The URL that we should call to pass status parameters (such as call ended) to your application.
-        StatusCallbackMethod:
-          type: string
-          format: http-method
-          enum:
-          - HEAD
-          - GET
-          - POST
-          - PATCH
-          - PUT
-          - DELETE
-          description: 'The HTTP method we should use to call `status_callback_url`. Can be: `GET` or `POST`.'
-        CnamLookupEnabled:
-          type: boolean
-          description: Whether Caller ID Name (CNAM) lookup is enabled for the trunk. If enabled, all inbound calls to the BYOC Trunk from the United States and Canada automatically perform a CNAM Lookup and display Caller ID data on your phone. See [CNAM Lookups](https://www.twilio.com/docs/sip-trunking#CNAM) for more information.
-        ConnectionPolicySid:
-          type: string
-          minLength: 34
-          maxLength: 34
-          pattern: ^NY[0-9a-fA-F]{32}$
-          description: The SID of the Connection Policy that Twilio will use when routing traffic to your communications infrastructure.
-        FromDomainSid:
-          type: string
-          minLength: 34
-          maxLength: 34
-          pattern: ^SD[0-9a-fA-F]{32}$
-          description: The SID of the SIP Domain that should be used in the `From` header of originating calls sent to your SIP infrastructure. If your SIP infrastructure allows users to "call back" an incoming call, configure this with a [SIP Domain](https://www.twilio.com/docs/voice/api/sending-sip) to ensure proper routing. If not configured, the from domain will default to "sip.twilio.com".
     UpdateByocTrunkRequest:
       type: object
       properties:
@@ -337,6 +271,72 @@ components:
               format: uri
             key:
               type: string
+    CreateByocTrunkRequest:
+      type: object
+      properties:
+        FriendlyName:
+          type: string
+          description: A descriptive string that you create to describe the resource. It is not unique and can be up to 255 characters long.
+        VoiceUrl:
+          type: string
+          format: uri
+          description: The URL we should call when the BYOC Trunk receives a call.
+        VoiceMethod:
+          type: string
+          format: http-method
+          enum:
+          - HEAD
+          - GET
+          - POST
+          - PATCH
+          - PUT
+          - DELETE
+          description: 'The HTTP method we should use to call `voice_url`. Can be: `GET` or `POST`.'
+        VoiceFallbackUrl:
+          type: string
+          format: uri
+          description: The URL that we should call when an error occurs while retrieving or executing the TwiML from `voice_url`.
+        VoiceFallbackMethod:
+          type: string
+          format: http-method
+          enum:
+          - HEAD
+          - GET
+          - POST
+          - PATCH
+          - PUT
+          - DELETE
+          description: 'The HTTP method we should use to call `voice_fallback_url`. Can be: `GET` or `POST`.'
+        StatusCallbackUrl:
+          type: string
+          format: uri
+          description: The URL that we should call to pass status parameters (such as call ended) to your application.
+        StatusCallbackMethod:
+          type: string
+          format: http-method
+          enum:
+          - HEAD
+          - GET
+          - POST
+          - PATCH
+          - PUT
+          - DELETE
+          description: 'The HTTP method we should use to call `status_callback_url`. Can be: `GET` or `POST`.'
+        CnamLookupEnabled:
+          type: boolean
+          description: Whether Caller ID Name (CNAM) lookup is enabled for the trunk. If enabled, all inbound calls to the BYOC Trunk from the United States and Canada automatically perform a CNAM Lookup and display Caller ID data on your phone. See [CNAM Lookups](https://www.twilio.com/docs/sip-trunking#CNAM) for more information.
+        ConnectionPolicySid:
+          type: string
+          minLength: 34
+          maxLength: 34
+          pattern: ^NY[0-9a-fA-F]{32}$
+          description: The SID of the Connection Policy that Twilio will use when routing traffic to your communications infrastructure.
+        FromDomainSid:
+          type: string
+          minLength: 34
+          maxLength: 34
+          pattern: ^SD[0-9a-fA-F]{32}$
+          description: The SID of the SIP Domain that should be used in the `From` header of originating calls sent to your SIP infrastructure. If your SIP infrastructure allows users to "call back" an incoming call, configure this with a [SIP Domain](https://www.twilio.com/docs/voice/api/sending-sip) to ensure proper routing. If not configured, the from domain will default to "sip.twilio.com".
     voice.v1.byoc_trunk:
       type: object
       properties:
@@ -478,3 +478,5 @@ x-maturity:
   description: This product is Generally Available.
 - name: Beta
   description: PLEASE NOTE that this is a Beta product that is subject to change. Use it with caution.
+- name: Preview
+  description: PLEASE NOTE that this is a Preview product that is subject to change. Use it with caution. If you currently do not have developer preview access, please contact https://www.twilio.com/help/contact.

@@ -1,6 +1,6 @@
 openapi: 3.2.0
 info:
-  title: Twilio - Accounts A2p Network Access Profiles API
+  title: Twilio - Supersim Network Access Profiles API
   description: This is the public Twilio REST API.
   termsOfService: https://www.twilio.com/legal/tos
   contact:
@@ -12,7 +12,7 @@ info:
     url: https://www.apache.org/licenses/LICENSE-2.0.html
   version: 1.52.0
 servers:
-- url: https://accounts.twilio.com
+- url: https://supersim.twilio.com
 tags:
 - name: NetworkAccessProfiles
 paths:
@@ -354,6 +354,98 @@ components:
           - object
           - 'null'
           format: uri-map
+    ListNetworkAccessProfileNetworkResponse:
+      type: object
+      properties:
+        networks:
+          type: array
+          items:
+            $ref: '#/components/schemas/supersim.v1.network_access_profile.network_access_profile_network'
+        meta:
+          type: object
+          properties:
+            first_page_url:
+              type: string
+              format: uri
+            next_page_url:
+              type:
+              - string
+              - 'null'
+              format: uri
+            page:
+              type: integer
+            page_size:
+              type: integer
+            previous_page_url:
+              type:
+              - string
+              - 'null'
+              format: uri
+            url:
+              type: string
+              format: uri
+            key:
+              type: string
+    CreateNetworkAccessProfileRequest:
+      type: object
+      properties:
+        UniqueName:
+          type: string
+          description: An application-defined string that uniquely identifies the resource. It can be used in place of the resource's `sid` in the URL to address the resource.
+        Networks:
+          type: array
+          items:
+            type: string
+          description: List of Network SIDs that this Network Access Profile will allow connections to.
+    CreateNetworkAccessProfileNetworkRequest:
+      type: object
+      required:
+      - Network
+      properties:
+        Network:
+          type: string
+          minLength: 34
+          maxLength: 34
+          pattern: ^HW[0-9a-fA-F]{32}$
+          description: The SID of the Network resource to be added to the Network Access Profile resource.
+    UpdateNetworkAccessProfileRequest:
+      type: object
+      properties:
+        UniqueName:
+          type: string
+          description: The new unique name of the Network Access Profile.
+    ListNetworkAccessProfileResponse:
+      type: object
+      properties:
+        network_access_profiles:
+          type: array
+          items:
+            $ref: '#/components/schemas/supersim.v1.network_access_profile'
+        meta:
+          type: object
+          properties:
+            first_page_url:
+              type: string
+              format: uri
+            next_page_url:
+              type:
+              - string
+              - 'null'
+              format: uri
+            page:
+              type: integer
+            page_size:
+              type: integer
+            previous_page_url:
+              type:
+              - string
+              - 'null'
+              format: uri
+            url:
+              type: string
+              format: uri
+            key:
+              type: string
     supersim.v1.network_access_profile.network_access_profile_network:
       type: object
       properties:
@@ -395,98 +487,6 @@ components:
           - 'null'
           format: uri
           description: The absolute URL of the Network resource.
-    UpdateNetworkAccessProfileRequest:
-      type: object
-      properties:
-        UniqueName:
-          type: string
-          description: The new unique name of the Network Access Profile.
-    CreateNetworkAccessProfileNetworkRequest:
-      type: object
-      required:
-      - Network
-      properties:
-        Network:
-          type: string
-          minLength: 34
-          maxLength: 34
-          pattern: ^HW[0-9a-fA-F]{32}$
-          description: The SID of the Network resource to be added to the Network Access Profile resource.
-    ListNetworkAccessProfileNetworkResponse:
-      type: object
-      properties:
-        networks:
-          type: array
-          items:
-            $ref: '#/components/schemas/supersim.v1.network_access_profile.network_access_profile_network'
-        meta:
-          type: object
-          properties:
-            first_page_url:
-              type: string
-              format: uri
-            next_page_url:
-              type:
-              - string
-              - 'null'
-              format: uri
-            page:
-              type: integer
-            page_size:
-              type: integer
-            previous_page_url:
-              type:
-              - string
-              - 'null'
-              format: uri
-            url:
-              type: string
-              format: uri
-            key:
-              type: string
-    ListNetworkAccessProfileResponse:
-      type: object
-      properties:
-        network_access_profiles:
-          type: array
-          items:
-            $ref: '#/components/schemas/supersim.v1.network_access_profile'
-        meta:
-          type: object
-          properties:
-            first_page_url:
-              type: string
-              format: uri
-            next_page_url:
-              type:
-              - string
-              - 'null'
-              format: uri
-            page:
-              type: integer
-            page_size:
-              type: integer
-            previous_page_url:
-              type:
-              - string
-              - 'null'
-              format: uri
-            url:
-              type: string
-              format: uri
-            key:
-              type: string
-    CreateNetworkAccessProfileRequest:
-      type: object
-      properties:
-        UniqueName:
-          type: string
-          description: An application-defined string that uniquely identifies the resource. It can be used in place of the resource's `sid` in the URL to address the resource.
-        Networks:
-          type: array
-          items:
-            type: string
-          description: List of Network SIDs that this Network Access Profile will allow connections to.
   securitySchemes:
     accountSid_authToken:
       type: http

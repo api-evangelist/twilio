@@ -1,8 +1,6 @@
 openapi: 3.2.0
 info:
-  title: Twilio - Accounts A2p Rooms API
-  description: This is the public Twilio REST API.
-  termsOfService: https://www.twilio.com/legal/tos
+  title: Twilio Rooms API
   contact:
     name: Twilio Support
     url: https://support.twilio.com
@@ -10,9 +8,13 @@ info:
   license:
     name: Apache 2.0
     url: https://www.apache.org/licenses/LICENSE-2.0.html
-  version: 1.52.0
+  termsOfService: https://www.twilio.com/legal/tos
+  version: '1.0'
+  description: 'Operations tagged Rooms across 2 of this provider''s published API definitions: twilio-video-openapi.yml, video-openapi-original.yml. Each path carries the servers of the definition it was published in.'
 servers:
-- url: https://accounts.twilio.com
+- url: https://video.twilio.com/v1
+  description: Twilio Video API v1
+- url: https://video.twilio.com
 tags:
 - name: Rooms
   description: Create and manage video rooms
@@ -63,6 +65,8 @@ paths:
                 $ref: '#/components/schemas/RoomList'
         '401':
           description: Unauthorized
+      security:
+      - accountSid_authToken: []
     post:
       operationId: createRoom
       summary: Twilio Create a Room
@@ -86,6 +90,11 @@ paths:
           description: Invalid request
         '401':
           description: Unauthorized
+      security:
+      - accountSid_authToken: []
+    servers:
+    - url: https://video.twilio.com/v1
+      description: Twilio Video API v1
   /Rooms/{RoomSid}:
     get:
       operationId: fetchRoom
@@ -104,6 +113,8 @@ paths:
                 $ref: '#/components/schemas/Room'
         '404':
           description: Room not found
+      security:
+      - accountSid_authToken: []
     post:
       operationId: updateRoom
       summary: Twilio Update a Room
@@ -135,6 +146,11 @@ paths:
                 $ref: '#/components/schemas/Room'
         '404':
           description: Room not found
+      security:
+      - accountSid_authToken: []
+    servers:
+    - url: https://video.twilio.com/v1
+      description: Twilio Video API v1
   /v1/Rooms/{Sid}:
     servers:
     - url: https://video.twilio.com
@@ -1074,11 +1090,6 @@ paths:
               $ref: '#/components/schemas/UpdateRoomRecordingRuleRequest'
 components:
   schemas:
-    room_enum_video_codec:
-      type: string
-      enum:
-      - VP8
-      - H264
     Room:
       type: object
       properties:
@@ -1164,22 +1175,125 @@ components:
             recording_rules:
               type: string
               format: uri
-    room_recording_enum_status:
-      type: string
-      enum:
-      - processing
-      - completed
-      - deleted
-      - failed
-    room_recording_enum_type:
-      type: string
-      enum:
-      - audio
-      - video
-      - data
-    video.v1.room.room_recording_rule:
+    CreateRoomRequest:
       type: object
       properties:
+        UniqueName:
+          type: string
+          description: Unique name for the room
+        Type:
+          type: string
+          enum:
+          - go
+          - peer-to-peer
+          - group
+          - group-small
+          default: group
+          description: Type of room
+        MaxParticipants:
+          type: integer
+          description: Maximum number of concurrent participants
+          default: 50
+        MaxParticipantDuration:
+          type: integer
+          description: Maximum participant duration in seconds
+          default: 14400
+        RecordParticipantsOnConnect:
+          type: boolean
+          description: Whether to automatically record participants
+          default: false
+        VideoCodecs:
+          type: array
+          items:
+            type: string
+            enum:
+            - VP8
+            - H264
+        MediaRegion:
+          type: string
+          description: Region where media is processed
+        StatusCallback:
+          type: string
+          format: uri
+          description: URL for room event webhooks
+        StatusCallbackMethod:
+          type: string
+          enum:
+          - GET
+          - POST
+        EmptyRoomTimeout:
+          type: integer
+          description: Minutes to keep an empty room alive
+        UnusedRoomTimeout:
+          type: integer
+          description: Minutes to keep an unused room alive
+        AudioOnly:
+          type: boolean
+          description: Create an audio-only room
+    PaginationMeta:
+      type: object
+      properties:
+        page:
+          type: integer
+        page_size:
+          type: integer
+        first_page_url:
+          type: string
+          format: uri
+        previous_page_url:
+          type: string
+          format: uri
+        next_page_url:
+          type: string
+          format: uri
+        url:
+          type: string
+          format: uri
+        key:
+          type: string
+    RoomList:
+      type: object
+      properties:
+        rooms:
+          type: array
+          items:
+            $ref: '#/components/schemas/Room'
+        meta:
+          $ref: '#/components/schemas/PaginationMeta'
+    room_enum_room_type:
+      type: string
+      enum:
+      - go
+      - peer-to-peer
+      - group
+      - group-small
+    video.v1.room.room_participant.room_participant_subscribed_track:
+      type: object
+      properties:
+        sid:
+          type:
+          - string
+          - 'null'
+          minLength: 34
+          maxLength: 34
+          pattern: ^MT[0-9a-fA-F]{32}$
+          description: The unique string that we created to identify the RoomParticipantSubscribedTrack resource.
+        participant_sid:
+          type:
+          - string
+          - 'null'
+          minLength: 34
+          maxLength: 34
+          pattern: ^PA[0-9a-fA-F]{32}$
+          description: The SID of the participant that subscribes to the track.
+        publisher_sid:
+          type:
+          - string
+          - 'null'
+          minLength: 34
+          maxLength: 34
+          pattern: ^PA[0-9a-fA-F]{32}$
+          description: The SID of the participant that publishes the track.
         room_sid:
           type:
           - string
@@ -1187,26 +1301,12 @@ components:
           minLength: 34
           maxLength: 34
           pattern: ^RM[0-9a-fA-F]{32}$
-          description: The SID of the Room resource for the Recording Rules
-        rules:
+          description: The SID of the room where the track is published.
+        name:
           type:
-          - array
+          - string
           - 'null'
-          items:
-            type: object
-            format: recording-rule
-            properties:
-              type:
-                type: string
-              all:
-                type: boolean
-              publisher:
-                type: string
-              track:
-                type: string
-              kind:
-                type: string
-          description: A collection of Recording Rules that describe how to include or exclude matching tracks for recording
+          description: The track name. Must have no more than 128 characters and be unique among the participant's published tracks.
         date_created:
           type:
           - string
@@ -1219,66 +1319,23 @@ components:
           - 'null'
           format: date-time
           description: The date and time in GMT when the resource was last updated specified in [ISO 8601](https://en.wikipedia.org/wiki/ISO_8601) format.
-    CreateRoomRequest_2:
-      type: object
-      properties:
-        EnableTurn:
-          type: boolean
-          description: Deprecated, now always considered to be true.
-        Type:
-          type: string
-          $ref: '#/components/schemas/room_enum_room_type'
-          description: 'The type of room. Can be: `go`, `peer-to-peer`, `group-small`, or `group`. The default value is `group`.'
-        UniqueName:
-          type: string
-          description: An application-defined string that uniquely identifies the resource. It can be used as a `room_sid` in place of the resource's `sid` in the URL to address the resource, assuming it does not contain any [reserved characters](https://tools.ietf.org/html/rfc3986#section-2.2) that would need to be URL encoded. This value is unique for `in-progress` rooms. SDK clients can use this name to connect to the room. REST API clients can use this name in place of the Room SID to interact with the room as long as the room is `in-progress`.
-        StatusCallback:
-          type: string
+        enabled:
+          type:
+          - boolean
+          - 'null'
+          description: Whether the track is enabled.
+        kind:
+          type:
+          - string
+          - 'null'
+          $ref: '#/components/schemas/room_participant_subscribed_track_enum_kind'
+          description: 'The track type. Can be: `audio`, `video` or `data`.'
+        url:
+          type:
+          - string
+          - 'null'
           format: uri
-          description: The URL we should call using the `status_callback_method` to send status information to your application on every room event. See [Status Callbacks](https://www.twilio.com/docs/video/api/status-callbacks) for more info.
-        StatusCallbackMethod:
-          type: string
-          format: http-method
-          enum:
-          - HEAD
-          - GET
-          - POST
-          - PATCH
-          - PUT
-          - DELETE
-          description: The HTTP method we should use to call `status_callback`. Can be `POST` or `GET`.
-        MaxParticipants:
-          type: integer
-          description: The maximum number of concurrent Participants allowed in the room. Peer-to-peer rooms can have up to 10 Participants. Small Group rooms can have up to 4 Participants. Group rooms can have up to 50 Participants.
-        RecordParticipantsOnConnect:
-          type: boolean
-          description: Whether to start recording when Participants connect. ***This feature is not available in `peer-to-peer` rooms.***
-        VideoCodecs:
-          type: array
-          items:
-            type: string
-            $ref: '#/components/schemas/room_enum_video_codec'
-          description: 'An array of the video codecs that are supported when publishing a track in the room.  Can be: `VP8` and `H264`.  ***This feature is not available in `peer-to-peer` rooms***'
-        MediaRegion:
-          type: string
-          description: 'The region for the media server in Group Rooms.  Can be: one of the [available Media Regions](https://www.twilio.com/docs/video/ip-addresses#group-rooms-media-servers). ***This feature is not available in `peer-to-peer` rooms.***'
-        RecordingRules:
-          description: A collection of Recording Rules that describe how to include or exclude matching tracks for recording
-        AudioOnly:
-          type: boolean
-          description: When set to true, indicates that the participants in the room will only publish audio. No video tracks will be allowed. Group rooms only.
-        MaxParticipantDuration:
-          type: integer
-          description: The maximum number of seconds a Participant can be connected to the room. The maximum possible value is 86400 seconds (24 hours). The default is 14400 seconds (4 hours).
-        EmptyRoomTimeout:
-          type: integer
-          description: Configures how long (in minutes) a room will remain active after last participant leaves. Valid values range from 1 to 60 minutes (no fractions).
-        UnusedRoomTimeout:
-          type: integer
-          description: Configures how long (in minutes) a room will remain active if no one joins. Valid values range from 1 to 60 minutes (no fractions).
-        LargeRoom:
-          type: boolean
-          description: When set to true, indicated that this is the large room.
+          description: The absolute URL of the resource.
     video.v1.room.room_participant.room_participant_published_track:
       type: object
       properties:
@@ -1340,62 +1397,11 @@ components:
           - 'null'
           format: uri
           description: The absolute URL of the resource.
-    ListRoomResponse:
+    UpdateRoomParticipantSubscribeRuleRequest:
       type: object
       properties:
-        rooms:
-          type: array
-          items:
-            $ref: '#/components/schemas/video.v1.room'
-        meta:
-          type: object
-          properties:
-            first_page_url:
-              type: string
-              format: uri
-            next_page_url:
-              type:
-              - string
-              - 'null'
-              format: uri
-            page:
-              type: integer
-            page_size:
-              type: integer
-            previous_page_url:
-              type:
-              - string
-              - 'null'
-              format: uri
-            url:
-              type: string
-              format: uri
-            key:
-              type: string
-    room_participant_anonymize_enum_status:
-      type: string
-      enum:
-      - connected
-      - disconnected
-    UpdateRoomParticipantRequest:
-      type: object
-      properties:
-        Status:
-          type: string
-          $ref: '#/components/schemas/room_participant_enum_status'
-          description: 'The new status of the resource. Can be: `connected` or `disconnected`. For `in-progress` Rooms the default Status is `connected`, for `completed` Rooms only `disconnected` Participants are returned.'
-    room_recording_enum_codec:
-      type: string
-      enum:
-      - VP8
-      - H264
-      - OPUS
-      - PCMU
-    room_recording_enum_format:
-      type: string
-      enum:
-      - mka
-      - mkv
+        Rules:
+          description: A JSON-encoded array of subscribe rules. See the [Specifying Subscribe Rules](https://www.twilio.com/docs/video/api/track-subscriptions#specifying-sr) section for further information.
     video.v1.room.room_recording:
       type: object
       properties:
@@ -1503,159 +1509,16 @@ components:
           - 'null'
           format: uri-map
           description: The URLs of related resources.
-    video.v1.room.room_participant.room_participant_subscribed_track:
-      type: object
-      properties:
-        sid:
-          type:
-          - string
-          - 'null'
-          minLength: 34
-          maxLength: 34
-          pattern: ^MT[0-9a-fA-F]{32}$
-          description: The unique string that we created to identify the RoomParticipantSubscribedTrack resource.
-        participant_sid:
-          type:
-          - string
-          - 'null'
-          minLength: 34
-          maxLength: 34
-          pattern: ^PA[0-9a-fA-F]{32}$
-          description: The SID of the participant that subscribes to the track.
-        publisher_sid:
-          type:
-          - string
-          - 'null'
-          minLength: 34
-          maxLength: 34
-          pattern: ^PA[0-9a-fA-F]{32}$
-          description: The SID of the participant that publishes the track.
-        room_sid:
-          type:
-          - string
-          - 'null'
-          minLength: 34
-          maxLength: 34
-          pattern: ^RM[0-9a-fA-F]{32}$
-          description: The SID of the room where the track is published.
-        name:
-          type:
-          - string
-          - 'null'
-          description: The track name. Must have no more than 128 characters and be unique among the participant's published tracks.
-        date_created:
-          type:
-          - string
-          - 'null'
-          format: date-time
-          description: The date and time in GMT when the resource was created specified in [ISO 8601](https://en.wikipedia.org/wiki/ISO_8601) format.
-        date_updated:
-          type:
-          - string
-          - 'null'
-          format: date-time
-          description: The date and time in GMT when the resource was last updated specified in [ISO 8601](https://en.wikipedia.org/wiki/ISO_8601) format.
-        enabled:
-          type:
-          - boolean
-          - 'null'
-          description: Whether the track is enabled.
-        kind:
-          type:
-          - string
-          - 'null'
-          $ref: '#/components/schemas/room_participant_subscribed_track_enum_kind'
-          description: 'The track type. Can be: `audio`, `video` or `data`.'
-        url:
-          type:
-          - string
-          - 'null'
-          format: uri
-          description: The absolute URL of the resource.
-    ListRoomRecordingResponse:
-      type: object
-      properties:
-        recordings:
-          type: array
-          items:
-            $ref: '#/components/schemas/video.v1.room.room_recording'
-        meta:
-          type: object
-          properties:
-            first_page_url:
-              type: string
-              format: uri
-            next_page_url:
-              type:
-              - string
-              - 'null'
-              format: uri
-            page:
-              type: integer
-            page_size:
-              type: integer
-            previous_page_url:
-              type:
-              - string
-              - 'null'
-              format: uri
-            url:
-              type: string
-              format: uri
-            key:
-              type: string
-    UpdateRoomRecordingRuleRequest:
-      type: object
-      properties:
-        Rules:
-          description: A JSON-encoded array of recording rules.
-    ListRoomParticipantSubscribedTrackResponse:
-      type: object
-      properties:
-        subscribed_tracks:
-          type: array
-          items:
-            $ref: '#/components/schemas/video.v1.room.room_participant.room_participant_subscribed_track'
-        meta:
-          type: object
-          properties:
-            first_page_url:
-              type: string
-              format: uri
-            next_page_url:
-              type:
-              - string
-              - 'null'
-              format: uri
-            page:
-              type: integer
-            page_size:
-              type: integer
-            previous_page_url:
-              type:
-              - string
-              - 'null'
-              format: uri
-            url:
-              type: string
-              format: uri
-            key:
-              type: string
-    UpdateRoomRequest:
-      type: object
-      required:
-      - Status
-      properties:
-        Status:
-          type: string
-          $ref: '#/components/schemas/room_enum_room_status'
-          description: The new status of the resource. Set to `completed` to end the room.
-    room_participant_published_track_enum_kind:
+    room_enum_video_codec:
       type: string
       enum:
-      - audio
-      - video
-      - data
+      - VP8
+      - H264
+    room_recording_enum_format:
+      type: string
+      enum:
+      - mka
+      - mkv
     video.v1.room.room_participant:
       type: object
       properties:
@@ -1735,273 +1598,31 @@ components:
           - 'null'
           format: uri-map
           description: The URLs of related resources.
-    UpdateRoomParticipantSubscribeRuleRequest:
+    room_participant_anonymize_enum_status:
+      type: string
+      enum:
+      - connected
+      - disconnected
+    UpdateRoomParticipantRequest:
       type: object
       properties:
-        Rules:
-          description: A JSON-encoded array of subscribe rules. See the [Specifying Subscribe Rules](https://www.twilio.com/docs/video/api/track-subscriptions#specifying-sr) section for further information.
-    room_participant_subscribed_track_enum_kind:
+        Status:
+          type: string
+          $ref: '#/components/schemas/room_participant_enum_status'
+          description: 'The new status of the resource. Can be: `connected` or `disconnected`. For `in-progress` Rooms the default Status is `connected`, for `completed` Rooms only `disconnected` Participants are returned.'
+    room_recording_enum_type:
       type: string
       enum:
       - audio
       - video
       - data
-    video.v1.room.room_participant.room_participant_subscribe_rule:
-      type: object
-      properties:
-        participant_sid:
-          type:
-          - string
-          - 'null'
-          minLength: 34
-          maxLength: 34
-          pattern: ^PA[0-9a-fA-F]{32}$
-          description: The SID of the Participant resource for the Subscribe Rules.
-        room_sid:
-          type:
-          - string
-          - 'null'
-          minLength: 34
-          maxLength: 34
-          pattern: ^RM[0-9a-fA-F]{32}$
-          description: The SID of the Room resource for the Subscribe Rules
-        rules:
-          type:
-          - array
-          - 'null'
-          items:
-            type: object
-            format: subscribe-rule
-            properties:
-              type:
-                type: string
-              all:
-                type: boolean
-              publisher:
-                type: string
-              track:
-                type: string
-              kind:
-                type: string
-              priority:
-                type: string
-          description: A collection of Subscribe Rules that describe how to include or exclude matching tracks. See the [Specifying Subscribe Rules](https://www.twilio.com/docs/video/api/track-subscriptions#specifying-sr) section for further information.
-        date_created:
-          type:
-          - string
-          - 'null'
-          format: date-time
-          description: The date and time in GMT when the resource was created specified in [ISO 8601](https://en.wikipedia.org/wiki/ISO_8601) format.
-        date_updated:
-          type:
-          - string
-          - 'null'
-          format: date-time
-          description: The date and time in GMT when the resource was last updated specified in [ISO 8601](https://en.wikipedia.org/wiki/ISO_8601) format.
-    ListRoomParticipantResponse:
-      type: object
-      properties:
-        participants:
-          type: array
-          items:
-            $ref: '#/components/schemas/video.v1.room.room_participant'
-        meta:
-          type: object
-          properties:
-            first_page_url:
-              type: string
-              format: uri
-            next_page_url:
-              type:
-              - string
-              - 'null'
-              format: uri
-            page:
-              type: integer
-            page_size:
-              type: integer
-            previous_page_url:
-              type:
-              - string
-              - 'null'
-              format: uri
-            url:
-              type: string
-              format: uri
-            key:
-              type: string
-    RoomList:
-      type: object
-      properties:
-        rooms:
-          type: array
-          items:
-            $ref: '#/components/schemas/Room'
-        meta:
-          $ref: '#/components/schemas/PaginationMeta'
-    video.v1.room.room_participant.room_participant_anonymize:
-      type: object
-      properties:
-        sid:
-          type:
-          - string
-          - 'null'
-          minLength: 34
-          maxLength: 34
-          pattern: ^PA[0-9a-fA-F]{32}$
-          description: The unique string that we created to identify the RoomParticipant resource.
-        room_sid:
-          type:
-          - string
-          - 'null'
-          minLength: 34
-          maxLength: 34
-          pattern: ^RM[0-9a-fA-F]{32}$
-          description: The SID of the participant's room.
-        account_sid:
-          type:
-          - string
-          - 'null'
-          minLength: 34
-          maxLength: 34
-          pattern: ^AC[0-9a-fA-F]{32}$
-          description: The SID of the [Account](https://www.twilio.com/docs/iam/api/account) that created the RoomParticipant resource.
-        status:
-          type:
-          - string
-          - 'null'
-          $ref: '#/components/schemas/room_participant_anonymize_enum_status'
-          description: 'The status of the Participant. Can be: `connected` or `disconnected`.'
-        identity:
-          type:
-          - string
-          - 'null'
-          minLength: 34
-          maxLength: 34
-          pattern: ^PA[0-9a-fA-F]{32}$
-          description: The SID of the participant.
-        date_created:
-          type:
-          - string
-          - 'null'
-          format: date-time
-          description: The date and time in GMT when the resource was created specified in [ISO 8601](https://en.wikipedia.org/wiki/ISO_8601) format.
-        date_updated:
-          type:
-          - string
-          - 'null'
-          format: date-time
-          description: The date and time in GMT when the resource was last updated specified in [ISO 8601](https://en.wikipedia.org/wiki/ISO_8601) format.
-        start_time:
-          type:
-          - string
-          - 'null'
-          format: date-time
-          description: The time of participant connected to the room in [ISO 8601](https://en.wikipedia.org/wiki/ISO_8601#UTC) format.
-        end_time:
-          type:
-          - string
-          - 'null'
-          format: date-time
-          description: The time when the participant disconnected from the room in [ISO 8601](https://en.wikipedia.org/wiki/ISO_8601#UTC) format.
-        duration:
-          type:
-          - integer
-          - 'null'
-          description: The duration in seconds that the participant was `connected`. Populated only after the participant is `disconnected`.
-        url:
-          type:
-          - string
-          - 'null'
-          format: uri
-          description: The absolute URL of the resource.
-    CreateRoomRequest:
-      type: object
-      properties:
-        UniqueName:
-          type: string
-          description: Unique name for the room
-        Type:
-          type: string
-          enum:
-          - go
-          - peer-to-peer
-          - group
-          - group-small
-          default: group
-          description: Type of room
-        MaxParticipants:
-          type: integer
-          description: Maximum number of concurrent participants
-          default: 50
-        MaxParticipantDuration:
-          type: integer
-          description: Maximum participant duration in seconds
-          default: 14400
-        RecordParticipantsOnConnect:
-          type: boolean
-          description: Whether to automatically record participants
-          default: false
-        VideoCodecs:
-          type: array
-          items:
-            type: string
-            enum:
-            - VP8
-            - H264
-        MediaRegion:
-          type: string
-          description: Region where media is processed
-        StatusCallback:
-          type: string
-          format: uri
-          description: URL for room event webhooks
-        StatusCallbackMethod:
-          type: string
-          enum:
-          - GET
-          - POST
-        EmptyRoomTimeout:
-          type: integer
-          description: Minutes to keep an empty room alive
-        UnusedRoomTimeout:
-          type: integer
-          description: Minutes to keep an unused room alive
-        AudioOnly:
-          type: boolean
-          description: Create an audio-only room
-    PaginationMeta:
-      type: object
-      properties:
-        page:
-          type: integer
-        page_size:
-          type: integer
-        first_page_url:
-          type: string
-          format: uri
-        previous_page_url:
-          type: string
-          format: uri
-        next_page_url:
-          type: string
-          format: uri
-        url:
-          type: string
-          format: uri
-        key:
-          type: string
-    room_participant_enum_status:
+    room_recording_enum_codec:
       type: string
       enum:
-      - connected
-      - disconnected
-    room_enum_room_status:
-      type: string
-      enum:
-      - in-progress
-      - completed
-      - failed
+      - VP8
+      - H264
+      - OPUS
+      - PCMU
     video.v1.room:
       type: object
       properties:
@@ -2150,6 +1771,250 @@ components:
           - 'null'
           format: uri-map
           description: The URLs of related resources.
+    room_participant_published_track_enum_kind:
+      type: string
+      enum:
+      - audio
+      - video
+      - data
+    video.v1.room.room_participant.room_participant_subscribe_rule:
+      type: object
+      properties:
+        participant_sid:
+          type:
+          - string
+          - 'null'
+          minLength: 34
+          maxLength: 34
+          pattern: ^PA[0-9a-fA-F]{32}$
+          description: The SID of the Participant resource for the Subscribe Rules.
+        room_sid:
+          type:
+          - string
+          - 'null'
+          minLength: 34
+          maxLength: 34
+          pattern: ^RM[0-9a-fA-F]{32}$
+          description: The SID of the Room resource for the Subscribe Rules
+        rules:
+          type:
+          - array
+          - 'null'
+          items:
+            type: object
+            format: subscribe-rule
+            properties:
+              type:
+                type: string
+              all:
+                type: boolean
+              publisher:
+                type: string
+              track:
+                type: string
+              kind:
+                type: string
+              priority:
+                type: string
+          description: A collection of Subscribe Rules that describe how to include or exclude matching tracks. See the [Specifying Subscribe Rules](https://www.twilio.com/docs/video/api/track-subscriptions#specifying-sr) section for further information.
+        date_created:
+          type:
+          - string
+          - 'null'
+          format: date-time
+          description: The date and time in GMT when the resource was created specified in [ISO 8601](https://en.wikipedia.org/wiki/ISO_8601) format.
+        date_updated:
+          type:
+          - string
+          - 'null'
+          format: date-time
+          description: The date and time in GMT when the resource was last updated specified in [ISO 8601](https://en.wikipedia.org/wiki/ISO_8601) format.
+    CreateRoomRequest_2:
+      type: object
+      properties:
+        EnableTurn:
+          type: boolean
+          description: Deprecated, now always considered to be true.
+        Type:
+          type: string
+          $ref: '#/components/schemas/room_enum_room_type'
+          description: 'The type of room. Can be: `go`, `peer-to-peer`, `group-small`, or `group`. The default value is `group`.'
+        UniqueName:
+          type: string
+          description: An application-defined string that uniquely identifies the resource. It can be used as a `room_sid` in place of the resource's `sid` in the URL to address the resource, assuming it does not contain any [reserved characters](https://tools.ietf.org/html/rfc3986#section-2.2) that would need to be URL encoded. This value is unique for `in-progress` rooms. SDK clients can use this name to connect to the room. REST API clients can use this name in place of the Room SID to interact with the room as long as the room is `in-progress`.
+        StatusCallback:
+          type: string
+          format: uri
+          description: The URL we should call using the `status_callback_method` to send status information to your application on every room event. See [Status Callbacks](https://www.twilio.com/docs/video/api/status-callbacks) for more info.
+        StatusCallbackMethod:
+          type: string
+          format: http-method
+          enum:
+          - HEAD
+          - GET
+          - POST
+          - PATCH
+          - PUT
+          - DELETE
+          description: The HTTP method we should use to call `status_callback`. Can be `POST` or `GET`.
+        MaxParticipants:
+          type: integer
+          description: The maximum number of concurrent Participants allowed in the room. Peer-to-peer rooms can have up to 10 Participants. Small Group rooms can have up to 4 Participants. Group rooms can have up to 50 Participants.
+        RecordParticipantsOnConnect:
+          type: boolean
+          description: Whether to start recording when Participants connect. ***This feature is not available in `peer-to-peer` rooms.***
+        VideoCodecs:
+          type: array
+          items:
+            type: string
+            $ref: '#/components/schemas/room_enum_video_codec'
+          description: 'An array of the video codecs that are supported when publishing a track in the room.  Can be: `VP8` and `H264`.  ***This feature is not available in `peer-to-peer` rooms***'
+        MediaRegion:
+          type: string
+          description: 'The region for the media server in Group Rooms.  Can be: one of the [available Media Regions](https://www.twilio.com/docs/video/ip-addresses#group-rooms-media-servers). ***This feature is not available in `peer-to-peer` rooms.***'
+        RecordingRules:
+          description: A collection of Recording Rules that describe how to include or exclude matching tracks for recording
+        AudioOnly:
+          type: boolean
+          description: When set to true, indicates that the participants in the room will only publish audio. No video tracks will be allowed. Group rooms only.
+        MaxParticipantDuration:
+          type: integer
+          description: The maximum number of seconds a Participant can be connected to the room. The maximum possible value is 86400 seconds (24 hours). The default is 14400 seconds (4 hours).
+        EmptyRoomTimeout:
+          type: integer
+          description: Configures how long (in minutes) a room will remain active after last participant leaves. Valid values range from 1 to 60 minutes (no fractions).
+        UnusedRoomTimeout:
+          type: integer
+          description: Configures how long (in minutes) a room will remain active if no one joins. Valid values range from 1 to 60 minutes (no fractions).
+        LargeRoom:
+          type: boolean
+          description: When set to true, indicated that this is the large room.
+    UpdateRoomRequest:
+      type: object
+      required:
+      - Status
+      properties:
+        Status:
+          type: string
+          $ref: '#/components/schemas/room_enum_room_status'
+          description: The new status of the resource. Set to `completed` to end the room.
+    room_participant_subscribed_track_enum_kind:
+      type: string
+      enum:
+      - audio
+      - video
+      - data
+    ListRoomRecordingResponse:
+      type: object
+      properties:
+        recordings:
+          type: array
+          items:
+            $ref: '#/components/schemas/video.v1.room.room_recording'
+        meta:
+          type: object
+          properties:
+            first_page_url:
+              type: string
+              format: uri
+            next_page_url:
+              type:
+              - string
+              - 'null'
+              format: uri
+            page:
+              type: integer
+            page_size:
+              type: integer
+            previous_page_url:
+              type:
+              - string
+              - 'null'
+              format: uri
+            url:
+              type: string
+              format: uri
+            key:
+              type: string
+    ListRoomParticipantResponse:
+      type: object
+      properties:
+        participants:
+          type: array
+          items:
+            $ref: '#/components/schemas/video.v1.room.room_participant'
+        meta:
+          type: object
+          properties:
+            first_page_url:
+              type: string
+              format: uri
+            next_page_url:
+              type:
+              - string
+              - 'null'
+              format: uri
+            page:
+              type: integer
+            page_size:
+              type: integer
+            previous_page_url:
+              type:
+              - string
+              - 'null'
+              format: uri
+            url:
+              type: string
+              format: uri
+            key:
+              type: string
+    video.v1.room.room_recording_rule:
+      type: object
+      properties:
+        room_sid:
+          type:
+          - string
+          - 'null'
+          minLength: 34
+          maxLength: 34
+          pattern: ^RM[0-9a-fA-F]{32}$
+          description: The SID of the Room resource for the Recording Rules
+        rules:
+          type:
+          - array
+          - 'null'
+          items:
+            type: object
+            format: recording-rule
+            properties:
+              type:
+                type: string
+              all:
+                type: boolean
+              publisher:
+                type: string
+              track:
+                type: string
+              kind:
+                type: string
+          description: A collection of Recording Rules that describe how to include or exclude matching tracks for recording
+        date_created:
+          type:
+          - string
+          - 'null'
+          format: date-time
+          description: The date and time in GMT when the resource was created specified in [ISO 8601](https://en.wikipedia.org/wiki/ISO_8601) format.
+        date_updated:
+          type:
+          - string
+          - 'null'
+          format: date-time
+          description: The date and time in GMT when the resource was last updated specified in [ISO 8601](https://en.wikipedia.org/wiki/ISO_8601) format.
+    UpdateRoomRecordingRuleRequest:
+      type: object
+      properties:
+        Rules:
+          description: A JSON-encoded array of recording rules.
     ListRoomParticipantPublishedTrackResponse:
       type: object
       properties:
@@ -2182,13 +2047,164 @@ components:
               format: uri
             key:
               type: string
-    room_enum_room_type:
+    room_participant_enum_status:
       type: string
       enum:
-      - go
-      - peer-to-peer
-      - group
-      - group-small
+      - connected
+      - disconnected
+    room_recording_enum_status:
+      type: string
+      enum:
+      - processing
+      - completed
+      - deleted
+      - failed
+    ListRoomResponse:
+      type: object
+      properties:
+        rooms:
+          type: array
+          items:
+            $ref: '#/components/schemas/video.v1.room'
+        meta:
+          type: object
+          properties:
+            first_page_url:
+              type: string
+              format: uri
+            next_page_url:
+              type:
+              - string
+              - 'null'
+              format: uri
+            page:
+              type: integer
+            page_size:
+              type: integer
+            previous_page_url:
+              type:
+              - string
+              - 'null'
+              format: uri
+            url:
+              type: string
+              format: uri
+            key:
+              type: string
+    video.v1.room.room_participant.room_participant_anonymize:
+      type: object
+      properties:
+        sid:
+          type:
+          - string
+          - 'null'
+          minLength: 34
+          maxLength: 34
+          pattern: ^PA[0-9a-fA-F]{32}$
+          description: The unique string that we created to identify the RoomParticipant resource.
+        room_sid:
+          type:
+          - string
+          - 'null'
+          minLength: 34
+          maxLength: 34
+          pattern: ^RM[0-9a-fA-F]{32}$
+          description: The SID of the participant's room.
+        account_sid:
+          type:
+          - string
+          - 'null'
+          minLength: 34
+          maxLength: 34
+          pattern: ^AC[0-9a-fA-F]{32}$
+          description: The SID of the [Account](https://www.twilio.com/docs/iam/api/account) that created the RoomParticipant resource.
+        status:
+          type:
+          - string
+          - 'null'
+          $ref: '#/components/schemas/room_participant_anonymize_enum_status'
+          description: 'The status of the Participant. Can be: `connected` or `disconnected`.'
+        identity:
+          type:
+          - string
+          - 'null'
+          minLength: 34
+          maxLength: 34
+          pattern: ^PA[0-9a-fA-F]{32}$
+          description: The SID of the participant.
+        date_created:
+          type:
+          - string
+          - 'null'
+          format: date-time
+          description: The date and time in GMT when the resource was created specified in [ISO 8601](https://en.wikipedia.org/wiki/ISO_8601) format.
+        date_updated:
+          type:
+          - string
+          - 'null'
+          format: date-time
+          description: The date and time in GMT when the resource was last updated specified in [ISO 8601](https://en.wikipedia.org/wiki/ISO_8601) format.
+        start_time:
+          type:
+          - string
+          - 'null'
+          format: date-time
+          description: The time of participant connected to the room in [ISO 8601](https://en.wikipedia.org/wiki/ISO_8601#UTC) format.
+        end_time:
+          type:
+          - string
+          - 'null'
+          format: date-time
+          description: The time when the participant disconnected from the room in [ISO 8601](https://en.wikipedia.org/wiki/ISO_8601#UTC) format.
+        duration:
+          type:
+          - integer
+          - 'null'
+          description: The duration in seconds that the participant was `connected`. Populated only after the participant is `disconnected`.
+        url:
+          type:
+          - string
+          - 'null'
+          format: uri
+          description: The absolute URL of the resource.
+    room_enum_room_status:
+      type: string
+      enum:
+      - in-progress
+      - completed
+      - failed
+    ListRoomParticipantSubscribedTrackResponse:
+      type: object
+      properties:
+        subscribed_tracks:
+          type: array
+          items:
+            $ref: '#/components/schemas/video.v1.room.room_participant.room_participant_subscribed_track'
+        meta:
+          type: object
+          properties:
+            first_page_url:
+              type: string
+              format: uri
+            next_page_url:
+              type:
+              - string
+              - 'null'
+              format: uri
+            page:
+              type: integer
+            page_size:
+              type: integer
+            previous_page_url:
+              type:
+              - string
+              - 'null'
+              format: uri
+            url:
+              type: string
+              format: uri
+            key:
+              type: string
   parameters:
     RoomSid:
       name: RoomSid
@@ -2201,6 +2217,13 @@ components:
     accountSid_authToken:
       type: http
       scheme: basic
+      description: Use your Twilio Account SID as the username and Auth Token as the password for HTTP Basic authentication.
+externalDocs:
+  description: Twilio Video API Documentation
+  url: https://www.twilio.com/docs/video
+x-refined-from:
+- twilio-video-openapi.yml
+- video-openapi-original.yml
 x-maturity:
 - name: GA
   description: This product is Generally Available.

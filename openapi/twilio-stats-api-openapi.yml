@@ -1,18 +1,21 @@
 openapi: 3.2.0
 info:
-  title: Twilio - Accounts A2p Stats API
-  description: This is the public Twilio REST API.
-  termsOfService: https://www.twilio.com/legal/tos
+  title: Twilio SendGrid Email Stats API
+  description: Send, manage, and analyze emails at scale using the Twilio SendGrid Email API. Supports transactional and marketing email, dynamic templates, email validation, sender authentication, suppressions management, and real-time analytics.
+  version: '3.0'
   contact:
-    name: Twilio Support
-    url: https://support.twilio.com
-    email: support@twilio.com
+    name: Twilio SendGrid Support
+    url: https://support.sendgrid.com
+    email: support@sendgrid.com
   license:
-    name: Apache 2.0
-    url: https://www.apache.org/licenses/LICENSE-2.0.html
-  version: 1.52.0
+    name: MIT
+    url: https://opensource.org/licenses/MIT
+  termsOfService: https://www.twilio.com/legal/tos
 servers:
-- url: https://accounts.twilio.com
+- url: https://api.sendgrid.com/v3
+  description: SendGrid API v3
+security:
+- bearerAuth: []
 tags:
 - name: Stats
   description: Retrieve email analytics and statistics
@@ -104,11 +107,10 @@ components:
                   processed:
                     type: integer
   securitySchemes:
-    accountSid_authToken:
+    bearerAuth:
       type: http
-      scheme: basic
-x-maturity:
-- name: GA
-  description: This product is Generally Available.
-- name: Beta
-  description: PLEASE NOTE that this is a Beta product that is subject to change. Use it with caution.
+      scheme: bearer
+      description: Use a SendGrid API key as the bearer token for authentication.
+externalDocs:
+  description: Twilio SendGrid API Documentation
+  url: https://www.twilio.com/docs/sendgrid

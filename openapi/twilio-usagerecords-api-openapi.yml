@@ -1,8 +1,7 @@
 openapi: 3.2.0
 info:
-  title: Twilio - Accounts A2p Usage Records API
-  description: This is the public Twilio REST API.
-  termsOfService: https://www.twilio.com/legal/tos
+  title: Twilio Usage Records API
+  version: 1.52.0
   contact:
     name: Twilio Support
     url: https://support.twilio.com
@@ -10,9 +9,11 @@ info:
   license:
     name: Apache 2.0
     url: https://www.apache.org/licenses/LICENSE-2.0.html
-  version: 1.52.0
+  termsOfService: https://www.twilio.com/legal/tos
+  description: 'Operations tagged UsageRecords across 2 of this provider''s published API definitions: super-sim-openapi-original.yml, wireless-openapi-original.yml. Each path carries the servers of the definition it was published in.'
 servers:
-- url: https://accounts.twilio.com
+- url: https://supersim.twilio.com
+- url: https://wireless.twilio.com
 tags:
 - name: UsageRecords
 paths:
@@ -110,6 +111,51 @@ paths:
       - Beta
 components:
   schemas:
+    ListUsageRecordResponse:
+      type: object
+      properties:
+        usage_records:
+          type: array
+          items:
+            $ref: '#/components/schemas/supersim.v1.usage_record'
+        meta:
+          type: object
+          properties:
+            first_page_url:
+              type: string
+              format: uri
+            next_page_url:
+              type:
+              - string
+              - 'null'
+              format: uri
+            page:
+              type: integer
+            page_size:
+              type: integer
+            previous_page_url:
+              type:
+              - string
+              - 'null'
+              format: uri
+            url:
+              type: string
+              format: uri
+            key:
+              type: string
+    usage_record_enum_granularity:
+      type: string
+      enum:
+      - hour
+      - day
+      - all
+    usage_record_enum_group:
+      type: string
+      enum:
+      - sim
+      - fleet
+      - network
+      - isoCountry
     supersim.v1.usage_record:
       type: object
       properties:
@@ -182,13 +228,36 @@ components:
           - 'null'
           format: currency
           description: The currency in which the billed amounts are measured, specified in the 3 letter ISO 4127 format (e.g. `USD`, `EUR`, `JPY`). This can be null when data_toal_billed is 0 and we do not yet have billing information for the corresponding data usage. Refer to [Data Usage Processing](https://www.twilio.com/docs/iot/supersim/api/usage-record-resource#data-usage-processing) for more details.
-    ListUsageRecordResponse:
+    wireless.v1.account_usage_record:
+      type: object
+      properties:
+        account_sid:
+          type:
+          - string
+          - 'null'
+          minLength: 34
+          maxLength: 34
+          pattern: ^AC[0-9a-fA-F]{32}$
+          description: The SID of the [Account](https://www.twilio.com/docs/iam/api/account) that created the AccountUsageRecord resource.
+        period:
+          description: The time period for which usage is reported. Contains `start` and `end` properties that describe the period using GMT date-time values specified in [ISO 8601](https://www.iso.org/iso-8601-date-and-time-format.html) format.
+        commands:
+          description: An object that describes the aggregated Commands usage for all SIMs during the specified period. See [Commands Usage Object](https://www.twilio.com/docs/iot/wireless/api/account-usagerecord-resource#commands-usage-object).
+        data:
+          description: An object that describes the aggregated Data usage for all SIMs over the period. See [Data Usage Object](https://www.twilio.com/docs/iot/wireless/api/account-usagerecord-resource#data-usage-object).
+    account_usage_record_enum_granularity:
+      type: string
+      enum:
+      - hourly
+      - daily
+      - all
+    ListAccountUsageRecordResponse:
       type: object
       properties:
         usage_records:
           type: array
           items:
-            $ref: '#/components/schemas/supersim.v1.usage_record'
+            $ref: '#/components/schemas/wireless.v1.account_usage_record'
         meta:
           type: object
           properties:
@@ -214,23 +283,13 @@ components:
               format: uri
             key:
               type: string
-    usage_record_enum_group:
-      type: string
-      enum:
-      - sim
-      - fleet
-      - network
-      - isoCountry
-    usage_record_enum_granularity:
-      type: string
-      enum:
-      - hour
-      - day
-      - all
   securitySchemes:
     accountSid_authToken:
       type: http
       scheme: basic
+x-refined-from:
+- super-sim-openapi-original.yml
+- wireless-openapi-original.yml
 x-maturity:
 - name: GA
   description: This product is Generally Available.

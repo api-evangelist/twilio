@@ -1,6 +1,6 @@
 openapi: 3.2.0
 info:
-  title: Twilio - Accounts A2p Media Processors API
+  title: Twilio - Media Media Processors API
   description: This is the public Twilio REST API.
   termsOfService: https://www.twilio.com/legal/tos
   contact:
@@ -12,7 +12,7 @@ info:
     url: https://www.apache.org/licenses/LICENSE-2.0.html
   version: 1.52.0
 servers:
-- url: https://accounts.twilio.com
+- url: https://media.twilio.com
 tags:
 - name: MediaProcessors
 paths:
@@ -167,43 +167,62 @@ paths:
               $ref: '#/components/schemas/UpdateMediaProcessorRequest'
 components:
   schemas:
+    UpdateMediaProcessorRequest:
+      type: object
+      required:
+      - Status
+      properties:
+        Status:
+          type: string
+          $ref: '#/components/schemas/media_processor_enum_update_status'
+          description: The status of the MediaProcessor. Can be `ended`.
     media_processor_enum_order:
       type: string
       enum:
       - asc
       - desc
-    ListMediaProcessorResponse:
+    CreateMediaProcessorRequest:
       type: object
+      required:
+      - Extension
+      - ExtensionContext
       properties:
-        media_processors:
-          type: array
-          items:
-            $ref: '#/components/schemas/media.v1.media_processor'
-        meta:
-          type: object
-          properties:
-            first_page_url:
-              type: string
-              format: uri
-            next_page_url:
-              type:
-              - string
-              - 'null'
-              format: uri
-            page:
-              type: integer
-            page_size:
-              type: integer
-            previous_page_url:
-              type:
-              - string
-              - 'null'
-              format: uri
-            url:
-              type: string
-              format: uri
-            key:
-              type: string
+        Extension:
+          type: string
+          description: 'The [Media Extension](/docs/live/media-extensions-overview) name or URL. Ex: `video-composer-v2`'
+        ExtensionContext:
+          type: string
+          description: The context of the Media Extension, represented as a JSON dictionary. See the documentation for the specific [Media Extension](/docs/live/media-extensions-overview) you are using for more information about the context to send.
+        ExtensionEnvironment:
+          description: User-defined environment variables for the Media Extension, represented as a JSON dictionary of key/value strings. See the documentation for the specific [Media Extension](/docs/live/media-extensions-overview) you are using for more information about whether you need to provide this.
+        StatusCallback:
+          type: string
+          format: uri
+          description: The URL to which Twilio will send asynchronous webhook requests for every MediaProcessor event. See [Status Callbacks](/docs/live/api/status-callbacks) for details.
+        StatusCallbackMethod:
+          type: string
+          format: http-method
+          enum:
+          - HEAD
+          - GET
+          - POST
+          - PATCH
+          - PUT
+          - DELETE
+          description: The HTTP method Twilio should use to call the `status_callback` URL. Can be `POST` or `GET` and the default is `POST`.
+        MaxDuration:
+          type: integer
+          description: The maximum time, in seconds, that the MediaProcessor can run before automatically ends. The default value is 300 seconds, and the maximum value is 90000 seconds. Once this maximum duration is reached, Twilio will end the MediaProcessor, regardless of whether media is still streaming.
+    media_processor_enum_update_status:
+      type: string
+      enum:
+      - ended
+    media_processor_enum_status:
+      type: string
+      enum:
+      - failed
+      - started
+      - ended
     media.v1.media_processor:
       type: object
       properties:
@@ -290,57 +309,38 @@ components:
           - integer
           - 'null'
           description: The maximum time, in seconds, that the MediaProcessor can run before automatically ends. The default value is 300 seconds, and the maximum value is 90000 seconds. Once this maximum duration is reached, Twilio will end the MediaProcessor, regardless of whether media is still streaming.
-    media_processor_enum_update_status:
-      type: string
-      enum:
-      - ended
-    media_processor_enum_status:
-      type: string
-      enum:
-      - failed
-      - started
-      - ended
-    UpdateMediaProcessorRequest:
+    ListMediaProcessorResponse:
       type: object
-      required:
-      - Status
       properties:
-        Status:
-          type: string
-          $ref: '#/components/schemas/media_processor_enum_update_status'
-          description: The status of the MediaProcessor. Can be `ended`.
-    CreateMediaProcessorRequest:
-      type: object
-      required:
-      - Extension
-      - ExtensionContext
-      properties:
-        Extension:
-          type: string
-          description: 'The [Media Extension](/docs/live/media-extensions-overview) name or URL. Ex: `video-composer-v2`'
-        ExtensionContext:
-          type: string
-          description: The context of the Media Extension, represented as a JSON dictionary. See the documentation for the specific [Media Extension](/docs/live/media-extensions-overview) you are using for more information about the context to send.
-        ExtensionEnvironment:
-          description: User-defined environment variables for the Media Extension, represented as a JSON dictionary of key/value strings. See the documentation for the specific [Media Extension](/docs/live/media-extensions-overview) you are using for more information about whether you need to provide this.
-        StatusCallback:
-          type: string
-          format: uri
-          description: The URL to which Twilio will send asynchronous webhook requests for every MediaProcessor event. See [Status Callbacks](/docs/live/api/status-callbacks) for details.
-        StatusCallbackMethod:
-          type: string
-          format: http-method
-          enum:
-          - HEAD
-          - GET
-          - POST
-          - PATCH
-          - PUT
-          - DELETE
-          description: The HTTP method Twilio should use to call the `status_callback` URL. Can be `POST` or `GET` and the default is `POST`.
-        MaxDuration:
-          type: integer
-          description: The maximum time, in seconds, that the MediaProcessor can run before automatically ends. The default value is 300 seconds, and the maximum value is 90000 seconds. Once this maximum duration is reached, Twilio will end the MediaProcessor, regardless of whether media is still streaming.
+        media_processors:
+          type: array
+          items:
+            $ref: '#/components/schemas/media.v1.media_processor'
+        meta:
+          type: object
+          properties:
+            first_page_url:
+              type: string
+              format: uri
+            next_page_url:
+              type:
+              - string
+              - 'null'
+              format: uri
+            page:
+              type: integer
+            page_size:
+              type: integer
+            previous_page_url:
+              type:
+              - string
+              - 'null'
+              format: uri
+            url:
+              type: string
+              format: uri
+            key:
+              type: string
   securitySchemes:
     accountSid_authToken:
       type: http
@@ -348,5 +348,5 @@ components:
 x-maturity:
 - name: GA
   description: This product is Generally Available.
-- name: Beta
-  description: PLEASE NOTE that this is a Beta product that is subject to change. Use it with caution.
+- name: Preview
+  description: PLEASE NOTE that this is a Preview product that is subject to change. Use it with caution. If you currently do not have developer preview access, please contact https://www.twilio.com/help/contact.

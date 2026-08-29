@@ -1,6 +1,6 @@
 openapi: 3.2.0
 info:
-  title: Twilio - Accounts A2p Devices API
+  title: Twilio - Microvisor Devices API
   description: This is the public Twilio REST API.
   termsOfService: https://www.twilio.com/legal/tos
   contact:
@@ -12,7 +12,7 @@ info:
     url: https://www.apache.org/licenses/LICENSE-2.0.html
   version: 1.52.0
 servers:
-- url: https://accounts.twilio.com
+- url: https://microvisor.twilio.com
 tags:
 - name: Devices
 paths:
@@ -490,6 +490,34 @@ paths:
       - Preview
 components:
   schemas:
+    CreateDeviceConfigRequest:
+      type: object
+      required:
+      - Key
+      - Value
+      properties:
+        Key:
+          type: string
+          description: The config key; up to 100 characters.
+        Value:
+          type: string
+          description: The config value; up to 4096 characters.
+    UpdateDeviceSecretRequest:
+      type: object
+      required:
+      - Value
+      properties:
+        Value:
+          type: string
+          description: The secret value; up to 4096 characters.
+    UpdateDeviceConfigRequest:
+      type: object
+      required:
+      - Value
+      properties:
+        Value:
+          type: string
+          description: The config value; up to 4096 characters.
     CreateDeviceSecretRequest:
       type: object
       required:
@@ -502,66 +530,38 @@ components:
         Value:
           type: string
           description: The secret value; up to 4096 characters.
-    microvisor.v1.device:
+    microvisor.v1.device.device_config:
       type: object
       properties:
-        sid:
+        device_sid:
           type:
           - string
           - 'null'
           minLength: 34
           maxLength: 34
           pattern: ^UV[0-9a-fA-F]{32}$
-          description: A 34-character string that uniquely identifies this Device.
-        unique_name:
+          description: A 34-character string that uniquely identifies the parent Device.
+        key:
           type:
           - string
           - 'null'
-          description: A developer-defined string that uniquely identifies the Device. This value must be unique for all Devices on this Account. The `unique_name` value may be used as an alternative to the `sid` in the URL path to address the resource.
-        account_sid:
+          description: The config key; up to 100 characters.
+        value:
           type:
           - string
           - 'null'
-          minLength: 34
-          maxLength: 34
-          pattern: ^AC[0-9a-fA-F]{32}$
-          description: The unique SID identifier of the Account.
-        app:
-          description: Information about the target App and the App reported by this Device. Contains the properties `target_sid`, `date_targeted`, `update_status` (one of `up-to-date`, `pending` and `error`), `update_error_code`, `reported_sid` and `date_reported`.
-        logging:
-          description: Object specifying whether application logging is enabled for this Device. Contains the properties `enabled` and `date_expires`.
-        date_created:
-          type:
-          - string
-          - 'null'
-          format: date-time
-          description: The date that this Device was created, given in [ISO 8601](https://en.wikipedia.org/wiki/ISO_8601) format.
+          description: The config value; up to 4096 characters.
         date_updated:
           type:
           - string
           - 'null'
           format: date-time
-          description: The date that this Device was last updated, given in [ISO 8601](https://en.wikipedia.org/wiki/ISO_8601) format.
         url:
           type:
           - string
           - 'null'
           format: uri
-          description: The URL of this resource.
-        links:
-          type:
-          - object
-          - 'null'
-          format: uri-map
-          description: The absolute URLs of related resources.
-    UpdateDeviceSecretRequest:
-      type: object
-      required:
-      - Value
-      properties:
-        Value:
-          type: string
-          description: The secret value; up to 4096 characters.
+          description: The absolute URL of the Config.
     ListDeviceConfigResponse:
       type: object
       properties:
@@ -569,6 +569,80 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/microvisor.v1.device.device_config'
+        meta:
+          type: object
+          properties:
+            first_page_url:
+              type: string
+              format: uri
+            next_page_url:
+              type:
+              - string
+              - 'null'
+              format: uri
+            page:
+              type: integer
+            page_size:
+              type: integer
+            previous_page_url:
+              type:
+              - string
+              - 'null'
+              format: uri
+            url:
+              type: string
+              format: uri
+            key:
+              type: string
+    UpdateDeviceRequest:
+      type: object
+      properties:
+        UniqueName:
+          type: string
+          description: A unique and addressable name to be assigned to this Device by the developer. It may be used in place of the Device SID.
+        TargetApp:
+          type: string
+          description: The SID or unique name of the App to be targeted to the Device.
+        LoggingEnabled:
+          type: boolean
+          description: A Boolean flag specifying whether to enable application logging. Logs will be enabled or extended for 24 hours.
+        RestartApp:
+          type: boolean
+          description: Set to true to restart the App running on the Device.
+    microvisor.v1.device.device_secret:
+      type: object
+      properties:
+        device_sid:
+          type:
+          - string
+          - 'null'
+          minLength: 34
+          maxLength: 34
+          pattern: ^UV[0-9a-fA-F]{32}$
+          description: A 34-character string that uniquely identifies the parent Device.
+        key:
+          type:
+          - string
+          - 'null'
+          description: The secret key; up to 100 characters.
+        date_rotated:
+          type:
+          - string
+          - 'null'
+          format: date-time
+        url:
+          type:
+          - string
+          - 'null'
+          format: uri
+          description: The absolute URL of the Secret.
+    ListDeviceResponse:
+      type: object
+      properties:
+        devices:
+          type: array
+          items:
+            $ref: '#/components/schemas/microvisor.v1.device'
         meta:
           type: object
           properties:
@@ -626,138 +700,62 @@ components:
               format: uri
             key:
               type: string
-    CreateDeviceConfigRequest:
-      type: object
-      required:
-      - Key
-      - Value
-      properties:
-        Key:
-          type: string
-          description: The config key; up to 100 characters.
-        Value:
-          type: string
-          description: The config value; up to 4096 characters.
-    ListDeviceResponse:
+    microvisor.v1.device:
       type: object
       properties:
-        devices:
-          type: array
-          items:
-            $ref: '#/components/schemas/microvisor.v1.device'
-        meta:
-          type: object
-          properties:
-            first_page_url:
-              type: string
-              format: uri
-            next_page_url:
-              type:
-              - string
-              - 'null'
-              format: uri
-            page:
-              type: integer
-            page_size:
-              type: integer
-            previous_page_url:
-              type:
-              - string
-              - 'null'
-              format: uri
-            url:
-              type: string
-              format: uri
-            key:
-              type: string
-    UpdateDeviceRequest:
-      type: object
-      properties:
-        UniqueName:
-          type: string
-          description: A unique and addressable name to be assigned to this Device by the developer. It may be used in place of the Device SID.
-        TargetApp:
-          type: string
-          description: The SID or unique name of the App to be targeted to the Device.
-        LoggingEnabled:
-          type: boolean
-          description: A Boolean flag specifying whether to enable application logging. Logs will be enabled or extended for 24 hours.
-        RestartApp:
-          type: boolean
-          description: Set to true to restart the App running on the Device.
-    microvisor.v1.device.device_config:
-      type: object
-      properties:
-        device_sid:
+        sid:
           type:
           - string
           - 'null'
           minLength: 34
           maxLength: 34
           pattern: ^UV[0-9a-fA-F]{32}$
-          description: A 34-character string that uniquely identifies the parent Device.
-        key:
+          description: A 34-character string that uniquely identifies this Device.
+        unique_name:
           type:
           - string
           - 'null'
-          description: The config key; up to 100 characters.
-        value:
+          description: A developer-defined string that uniquely identifies the Device. This value must be unique for all Devices on this Account. The `unique_name` value may be used as an alternative to the `sid` in the URL path to address the resource.
+        account_sid:
           type:
           - string
           - 'null'
-          description: The config value; up to 4096 characters.
+          minLength: 34
+          maxLength: 34
+          pattern: ^AC[0-9a-fA-F]{32}$
+          description: The unique SID identifier of the Account.
+        app:
+          description: Information about the target App and the App reported by this Device. Contains the properties `target_sid`, `date_targeted`, `update_status` (one of `up-to-date`, `pending` and `error`), `update_error_code`, `reported_sid` and `date_reported`.
+        logging:
+          description: Object specifying whether application logging is enabled for this Device. Contains the properties `enabled` and `date_expires`.
+        date_created:
+          type:
+          - string
+          - 'null'
+          format: date-time
+          description: The date that this Device was created, given in [ISO 8601](https://en.wikipedia.org/wiki/ISO_8601) format.
         date_updated:
           type:
           - string
           - 'null'
           format: date-time
+          description: The date that this Device was last updated, given in [ISO 8601](https://en.wikipedia.org/wiki/ISO_8601) format.
         url:
           type:
           - string
           - 'null'
           format: uri
-          description: The absolute URL of the Config.
-    UpdateDeviceConfigRequest:
-      type: object
-      required:
-      - Value
-      properties:
-        Value:
-          type: string
-          description: The config value; up to 4096 characters.
-    microvisor.v1.device.device_secret:
-      type: object
-      properties:
-        device_sid:
+          description: The URL of this resource.
+        links:
           type:
-          - string
+          - object
           - 'null'
-          minLength: 34
-          maxLength: 34
-          pattern: ^UV[0-9a-fA-F]{32}$
-          description: A 34-character string that uniquely identifies the parent Device.
-        key:
-          type:
-          - string
-          - 'null'
-          description: The secret key; up to 100 characters.
-        date_rotated:
-          type:
-          - string
-          - 'null'
-          format: date-time
-        url:
-          type:
-          - string
-          - 'null'
-          format: uri
-          description: The absolute URL of the Secret.
+          format: uri-map
+          description: The absolute URLs of related resources.
   securitySchemes:
     accountSid_authToken:
       type: http
       scheme: basic
 x-maturity:
-- name: GA
-  description: This product is Generally Available.
-- name: Beta
-  description: PLEASE NOTE that this is a Beta product that is subject to change. Use it with caution.
+- name: Preview
+  description: PLEASE NOTE that this is a Preview product that is subject to change. Use it with caution. If you currently do not have developer preview access, please contact https://www.twilio.com/help/contact.

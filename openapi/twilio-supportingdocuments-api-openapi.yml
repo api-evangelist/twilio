@@ -1,6 +1,6 @@
 openapi: 3.2.0
 info:
-  title: Twilio - Accounts A2p Supporting Documents API
+  title: Twilio - Trusthub Supporting Documents API
   description: This is the public Twilio REST API.
   termsOfService: https://www.twilio.com/legal/tos
   contact:
@@ -12,7 +12,7 @@ info:
     url: https://www.apache.org/licenses/LICENSE-2.0.html
   version: 1.52.0
 servers:
-- url: https://accounts.twilio.com
+- url: https://trusthub.twilio.com
 tags:
 - name: SupportingDocuments
 paths:
@@ -171,69 +171,6 @@ paths:
       - GA
 components:
   schemas:
-    CreateSupportingDocumentRequest:
-      type: object
-      required:
-      - FriendlyName
-      - Type
-      properties:
-        FriendlyName:
-          type: string
-          description: The string that you assigned to describe the resource.
-        Type:
-          type: string
-          description: The type of the Supporting Document.
-        Attributes:
-          description: The set of parameters that are the attributes of the Supporting Documents resource which are derived Supporting Document Types.
-    ListSupportingDocumentResponse:
-      type: object
-      properties:
-        results:
-          type: array
-          items:
-            $ref: '#/components/schemas/trusthub.v1.supporting_document'
-        meta:
-          type: object
-          properties:
-            first_page_url:
-              type: string
-              format: uri
-            next_page_url:
-              type:
-              - string
-              - 'null'
-              format: uri
-            page:
-              type: integer
-            page_size:
-              type: integer
-            previous_page_url:
-              type:
-              - string
-              - 'null'
-              format: uri
-            url:
-              type: string
-              format: uri
-            key:
-              type: string
-    UpdateSupportingDocumentRequest:
-      type: object
-      properties:
-        FriendlyName:
-          type: string
-          description: The string that you assigned to describe the resource.
-        Attributes:
-          description: The set of parameters that are the attributes of the Supporting Document resource which are derived Supporting Document Types.
-    supporting_document_enum_status:
-      type: string
-      enum:
-      - draft
-      - pending-review
-      - rejected
-      - approved
-      - expired
-      - provisionally-approved
     trusthub.v1.supporting_document:
       type: object
       properties:
@@ -298,6 +235,69 @@ components:
           - 'null'
           format: uri
           description: The absolute URL of the Supporting Document resource.
+    CreateSupportingDocumentRequest:
+      type: object
+      required:
+      - FriendlyName
+      - Type
+      properties:
+        FriendlyName:
+          type: string
+          description: The string that you assigned to describe the resource.
+        Type:
+          type: string
+          description: The type of the Supporting Document.
+        Attributes:
+          description: The set of parameters that are the attributes of the Supporting Documents resource which are derived Supporting Document Types.
+    UpdateSupportingDocumentRequest:
+      type: object
+      properties:
+        FriendlyName:
+          type: string
+          description: The string that you assigned to describe the resource.
+        Attributes:
+          description: The set of parameters that are the attributes of the Supporting Document resource which are derived Supporting Document Types.
+    supporting_document_enum_status:
+      type: string
+      enum:
+      - draft
+      - pending-review
+      - rejected
+      - approved
+      - expired
+      - provisionally-approved
+    ListSupportingDocumentResponse:
+      type: object
+      properties:
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/trusthub.v1.supporting_document'
+        meta:
+          type: object
+          properties:
+            first_page_url:
+              type: string
+              format: uri
+            next_page_url:
+              type:
+              - string
+              - 'null'
+              format: uri
+            page:
+              type: integer
+            page_size:
+              type: integer
+            previous_page_url:
+              type:
+              - string
+              - 'null'
+              format: uri
+            url:
+              type: string
+              format: uri
+            key:
+              type: string
   securitySchemes:
     accountSid_authToken:
       type: http
@@ -305,5 +305,3 @@ components:
 x-maturity:
 - name: GA
   description: This product is Generally Available.
-- name: Beta
-  description: PLEASE NOTE that this is a Beta product that is subject to change. Use it with caution.

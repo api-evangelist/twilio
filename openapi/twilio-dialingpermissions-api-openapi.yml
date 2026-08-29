@@ -1,6 +1,6 @@
 openapi: 3.2.0
 info:
-  title: Twilio - Accounts A2p Dialing Permissions API
+  title: Twilio - Voice Dialing Permissions API
   description: This is the public Twilio REST API.
   termsOfService: https://www.twilio.com/legal/tos
   contact:
@@ -12,7 +12,7 @@ info:
     url: https://www.apache.org/licenses/LICENSE-2.0.html
   version: 1.52.0
 servers:
-- url: https://accounts.twilio.com
+- url: https://voice.twilio.com
 tags:
 - name: DialingPermissions
 paths:
@@ -223,59 +223,6 @@ paths:
       - Preview
 components:
   schemas:
-    voice.v1.dialing_permissions.dialing_permissions_country:
-      type: object
-      properties:
-        iso_code:
-          type:
-          - string
-          - 'null'
-          format: iso-country-code
-          description: The [ISO country code](https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2).
-        name:
-          type:
-          - string
-          - 'null'
-          description: The name of the country.
-        continent:
-          type:
-          - string
-          - 'null'
-          description: The name of the continent in which the country is located.
-        country_codes:
-          type:
-          - array
-          - 'null'
-          items:
-            type: string
-          description: The E.164 assigned [country codes(s)](https://www.itu.int/itudoc/itu-t/ob-lists/icc/e164_763.html)
-        low_risk_numbers_enabled:
-          type:
-          - boolean
-          - 'null'
-          description: Whether dialing to low-risk numbers is enabled.
-        high_risk_special_numbers_enabled:
-          type:
-          - boolean
-          - 'null'
-          description: Whether dialing to high-risk special services numbers is enabled. These prefixes include number ranges allocated by the country and include premium numbers, special services, shared cost, and others
-        high_risk_tollfraud_numbers_enabled:
-          type:
-          - boolean
-          - 'null'
-          description: Whether dialing to high-risk [toll fraud](https://www.twilio.com/blog/how-to-protect-your-account-from-toll-fraud-with-voice-dialing-geo-permissions-html) numbers is enabled. These prefixes include narrow number ranges that have a high-risk of international revenue sharing fraud (IRSF) attacks, also known as [toll fraud](https://www.twilio.com/blog/how-to-protect-your-account-from-toll-fraud-with-voice-dialing-geo-permissions-html). These prefixes are collected from anti-fraud databases and verified by analyzing calls on our network. These prefixes are not available for download and are updated frequently
-        url:
-          type:
-          - string
-          - 'null'
-          format: uri
-          description: The absolute URL of this resource.
-        links:
-          type:
-          - object
-          - 'null'
-          format: uri-map
-          description: A list of URLs related to this resource.
     CreateDialingPermissionsCountryBulkUpdateRequest:
       type: object
       required:
@@ -284,34 +231,13 @@ components:
         UpdateRequest:
           type: string
           description: 'URL encoded JSON array of update objects. example : `[ { "iso_code": "GB", "low_risk_numbers_enabled": "true", "high_risk_special_numbers_enabled":"true", "high_risk_tollfraud_numbers_enabled": "false" } ]`'
-    voice.v1.dialing_permissions.dialing_permissions_country.dialing_permissions_hrs_prefixes:
-      type: object
-      properties:
-        prefix:
-          type:
-          - string
-          - 'null'
-          description: A prefix is a contiguous number range for a block of E.164 numbers that includes the E.164 assigned country code. For example, a North American Numbering Plan prefix like `+1510720` written like `+1(510) 720` matches all numbers inclusive from `+1(510) 720-0000` to `+1(510) 720-9999`.
-    voice.v1.dialing_permissions.dialing_permissions_country_bulk_update:
-      type: object
-      properties:
-        update_count:
-          type:
-          - integer
-          - 'null'
-          description: The number of countries updated
-        update_request:
-          type:
-          - string
-          - 'null'
-          description: 'A bulk update request to change voice dialing country permissions stored as a URL-encoded, JSON array of update objects. For example : `[ { "iso_code": "GB", "low_risk_numbers_enabled": "true", "high_risk_special_numbers_enabled":"true", "high_risk_tollfraud_numbers_enabled": "false" } ]`'
-    ListDialingPermissionsCountryResponse:
+    ListDialingPermissionsHrsPrefixesResponse:
       type: object
       properties:
         content:
           type: array
           items:
-            $ref: '#/components/schemas/voice.v1.dialing_permissions.dialing_permissions_country'
+            $ref: '#/components/schemas/voice.v1.dialing_permissions.dialing_permissions_country.dialing_permissions_hrs_prefixes'
         meta:
           type: object
           properties:
@@ -337,6 +263,14 @@ components:
               format: uri
             key:
               type: string
+    voice.v1.dialing_permissions.dialing_permissions_country.dialing_permissions_hrs_prefixes:
+      type: object
+      properties:
+        prefix:
+          type:
+          - string
+          - 'null'
+          description: A prefix is a contiguous number range for a block of E.164 numbers that includes the E.164 assigned country code. For example, a North American Numbering Plan prefix like `+1510720` written like `+1(510) 720` matches all numbers inclusive from `+1(510) 720-0000` to `+1(510) 720-9999`.
     voice.v1.dialing_permissions.dialing_permissions_country-instance:
       type: object
       properties:
@@ -390,13 +324,26 @@ components:
           - 'null'
           format: uri-map
           description: A list of URLs related to this resource.
-    ListDialingPermissionsHrsPrefixesResponse:
+    voice.v1.dialing_permissions.dialing_permissions_country_bulk_update:
+      type: object
+      properties:
+        update_count:
+          type:
+          - integer
+          - 'null'
+          description: The number of countries updated
+        update_request:
+          type:
+          - string
+          - 'null'
+          description: 'A bulk update request to change voice dialing country permissions stored as a URL-encoded, JSON array of update objects. For example : `[ { "iso_code": "GB", "low_risk_numbers_enabled": "true", "high_risk_special_numbers_enabled":"true", "high_risk_tollfraud_numbers_enabled": "false" } ]`'
+    ListDialingPermissionsCountryResponse:
       type: object
       properties:
         content:
           type: array
           items:
-            $ref: '#/components/schemas/voice.v1.dialing_permissions.dialing_permissions_country.dialing_permissions_hrs_prefixes'
+            $ref: '#/components/schemas/voice.v1.dialing_permissions.dialing_permissions_country'
         meta:
           type: object
           properties:
@@ -422,6 +369,59 @@ components:
               format: uri
             key:
               type: string
+    voice.v1.dialing_permissions.dialing_permissions_country:
+      type: object
+      properties:
+        iso_code:
+          type:
+          - string
+          - 'null'
+          format: iso-country-code
+          description: The [ISO country code](https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2).
+        name:
+          type:
+          - string
+          - 'null'
+          description: The name of the country.
+        continent:
+          type:
+          - string
+          - 'null'
+          description: The name of the continent in which the country is located.
+        country_codes:
+          type:
+          - array
+          - 'null'
+          items:
+            type: string
+          description: The E.164 assigned [country codes(s)](https://www.itu.int/itudoc/itu-t/ob-lists/icc/e164_763.html)
+        low_risk_numbers_enabled:
+          type:
+          - boolean
+          - 'null'
+          description: Whether dialing to low-risk numbers is enabled.
+        high_risk_special_numbers_enabled:
+          type:
+          - boolean
+          - 'null'
+          description: Whether dialing to high-risk special services numbers is enabled. These prefixes include number ranges allocated by the country and include premium numbers, special services, shared cost, and others
+        high_risk_tollfraud_numbers_enabled:
+          type:
+          - boolean
+          - 'null'
+          description: Whether dialing to high-risk [toll fraud](https://www.twilio.com/blog/how-to-protect-your-account-from-toll-fraud-with-voice-dialing-geo-permissions-html) numbers is enabled. These prefixes include narrow number ranges that have a high-risk of international revenue sharing fraud (IRSF) attacks, also known as [toll fraud](https://www.twilio.com/blog/how-to-protect-your-account-from-toll-fraud-with-voice-dialing-geo-permissions-html). These prefixes are collected from anti-fraud databases and verified by analyzing calls on our network. These prefixes are not available for download and are updated frequently
+        url:
+          type:
+          - string
+          - 'null'
+          format: uri
+          description: The absolute URL of this resource.
+        links:
+          type:
+          - object
+          - 'null'
+          format: uri-map
+          description: A list of URLs related to this resource.
   securitySchemes:
     accountSid_authToken:
       type: http
@@ -431,3 +431,5 @@ x-maturity:
   description: This product is Generally Available.
 - name: Beta
   description: PLEASE NOTE that this is a Beta product that is subject to change. Use it with caution.
+- name: Preview
+  description: PLEASE NOTE that this is a Preview product that is subject to change. Use it with caution. If you currently do not have developer preview access, please contact https://www.twilio.com/help/contact.

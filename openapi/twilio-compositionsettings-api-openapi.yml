@@ -1,6 +1,6 @@
 openapi: 3.2.0
 info:
-  title: Twilio - Accounts A2p Composition Settings API
+  title: Twilio - Video Composition Settings API
   description: This is the public Twilio REST API.
   termsOfService: https://www.twilio.com/legal/tos
   contact:
@@ -12,7 +12,7 @@ info:
     url: https://www.apache.org/licenses/LICENSE-2.0.html
   version: 1.52.0
 servers:
-- url: https://accounts.twilio.com
+- url: https://video.twilio.com
 tags:
 - name: CompositionSettings
 paths:
@@ -67,6 +67,36 @@ paths:
               $ref: '#/components/schemas/CreateCompositionSettingsRequest'
 components:
   schemas:
+    CreateCompositionSettingsRequest:
+      type: object
+      required:
+      - FriendlyName
+      properties:
+        FriendlyName:
+          type: string
+          description: A descriptive string that you create to describe the resource and show to the user in the console
+        AwsCredentialsSid:
+          type: string
+          minLength: 34
+          maxLength: 34
+          pattern: ^CR[0-9a-fA-F]{32}$
+          description: The SID of the stored Credential resource.
+        EncryptionKeySid:
+          type: string
+          minLength: 34
+          maxLength: 34
+          pattern: ^CR[0-9a-fA-F]{32}$
+          description: The SID of the Public Key resource to use for encryption.
+        AwsS3Url:
+          type: string
+          format: uri
+          description: The URL of the AWS S3 bucket where the compositions should be stored. We only support DNS-compliant URLs like `https://documentation-example-twilio-bucket/compositions`, where `compositions` is the path in which you want the compositions to be stored. This URL accepts only URI-valid characters, as described in the <a href='https://tools.ietf.org/html/rfc3986#section-2'>RFC 3986</a>.
+        AwsStorageEnabled:
+          type: boolean
+          description: Whether all compositions should be written to the `aws_s3_url`. When `false`, all compositions are stored in our cloud.
+        EncryptionEnabled:
+          type: boolean
+          description: Whether all compositions should be stored in an encrypted form. The default is `false`.
     video.v1.composition_settings:
       type: object
       properties:
@@ -121,36 +151,6 @@ components:
           - 'null'
           format: uri
           description: The absolute URL of the resource.
-    CreateCompositionSettingsRequest:
-      type: object
-      required:
-      - FriendlyName
-      properties:
-        FriendlyName:
-          type: string
-          description: A descriptive string that you create to describe the resource and show to the user in the console
-        AwsCredentialsSid:
-          type: string
-          minLength: 34
-          maxLength: 34
-          pattern: ^CR[0-9a-fA-F]{32}$
-          description: The SID of the stored Credential resource.
-        EncryptionKeySid:
-          type: string
-          minLength: 34
-          maxLength: 34
-          pattern: ^CR[0-9a-fA-F]{32}$
-          description: The SID of the Public Key resource to use for encryption.
-        AwsS3Url:
-          type: string
-          format: uri
-          description: The URL of the AWS S3 bucket where the compositions should be stored. We only support DNS-compliant URLs like `https://documentation-example-twilio-bucket/compositions`, where `compositions` is the path in which you want the compositions to be stored. This URL accepts only URI-valid characters, as described in the <a href='https://tools.ietf.org/html/rfc3986#section-2'>RFC 3986</a>.
-        AwsStorageEnabled:
-          type: boolean
-          description: Whether all compositions should be written to the `aws_s3_url`. When `false`, all compositions are stored in our cloud.
-        EncryptionEnabled:
-          type: boolean
-          description: Whether all compositions should be stored in an encrypted form. The default is `false`.
   securitySchemes:
     accountSid_authToken:
       type: http
@@ -158,5 +158,3 @@ components:
 x-maturity:
 - name: GA
   description: This product is Generally Available.
-- name: Beta
-  description: PLEASE NOTE that this is a Beta product that is subject to change. Use it with caution.

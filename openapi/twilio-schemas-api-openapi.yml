@@ -1,6 +1,6 @@
 openapi: 3.2.0
 info:
-  title: Twilio - Accounts A2p Schemas API
+  title: Twilio - Events Schemas API
   description: This is the public Twilio REST API.
   termsOfService: https://www.twilio.com/legal/tos
   contact:
@@ -12,7 +12,7 @@ info:
     url: https://www.apache.org/licenses/LICENSE-2.0.html
   version: 1.52.0
 servers:
-- url: https://accounts.twilio.com
+- url: https://events.twilio.com
 tags:
 - name: Schemas
 paths:
@@ -180,6 +180,36 @@ components:
               format: uri
             key:
               type: string
+    events.v1.schema.schema_version:
+      type: object
+      properties:
+        id:
+          type:
+          - string
+          - 'null'
+          description: The unique identifier of the schema. Each schema can have multiple versions, that share the same id.
+        schema_version:
+          type:
+          - integer
+          - 'null'
+          description: The version of this schema.
+        date_created:
+          type:
+          - string
+          - 'null'
+          format: date-time
+          description: The date the schema version was created, given in ISO 8601 format.
+        url:
+          type:
+          - string
+          - 'null'
+          format: uri
+          description: The URL of this resource.
+        raw:
+          type:
+          - string
+          - 'null'
+          format: uri
     events.v1.schema:
       type: object
       properties:
@@ -211,36 +241,6 @@ components:
           - integer
           - 'null'
           description: The latest version published of this schema.
-    events.v1.schema.schema_version:
-      type: object
-      properties:
-        id:
-          type:
-          - string
-          - 'null'
-          description: The unique identifier of the schema. Each schema can have multiple versions, that share the same id.
-        schema_version:
-          type:
-          - integer
-          - 'null'
-          description: The version of this schema.
-        date_created:
-          type:
-          - string
-          - 'null'
-          format: date-time
-          description: The date the schema version was created, given in ISO 8601 format.
-        url:
-          type:
-          - string
-          - 'null'
-          format: uri
-          description: The URL of this resource.
-        raw:
-          type:
-          - string
-          - 'null'
-          format: uri
   securitySchemes:
     accountSid_authToken:
       type: http
@@ -248,5 +248,3 @@ components:
 x-maturity:
 - name: GA
   description: This product is Generally Available.
-- name: Beta
-  description: PLEASE NOTE that this is a Beta product that is subject to change. Use it with caution.

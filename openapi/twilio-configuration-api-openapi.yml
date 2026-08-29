@@ -1,8 +1,6 @@
 openapi: 3.2.0
 info:
-  title: Twilio - Accounts A2p Configuration API
-  description: This is the public Twilio REST API.
-  termsOfService: https://www.twilio.com/legal/tos
+  title: Twilio Configuration API
   contact:
     name: Twilio Support
     url: https://support.twilio.com
@@ -10,9 +8,15 @@ info:
   license:
     name: Apache 2.0
     url: https://www.apache.org/licenses/LICENSE-2.0.html
-  version: 1.52.0
+  termsOfService: https://www.twilio.com/legal/tos
+  version: '1.0'
+  description: 'Operations tagged Configuration across 2 of this provider''s published API definitions: conversations-openapi-original.yml, twilio-flex-openapi.yml. Each path carries the servers of the definition it was published in.'
 servers:
-- url: https://accounts.twilio.com
+- url: https://conversations.twilio.com
+- url: https://flex-api.twilio.com/v1
+  description: Twilio Flex API v1
+- url: https://flex-api.twilio.com/v2
+  description: Twilio Flex API v2
 tags:
 - name: Configuration
 paths:
@@ -289,6 +293,8 @@ paths:
                 $ref: '#/components/schemas/FlexConfiguration'
         '401':
           description: Unauthorized
+      security:
+      - accountSid_authToken: []
     post:
       operationId: updateConfiguration
       summary: Twilio Update Flex Configuration
@@ -310,19 +316,96 @@ paths:
                 $ref: '#/components/schemas/FlexConfiguration'
         '400':
           description: Invalid request
+      security:
+      - accountSid_authToken: []
+    servers:
+    - url: https://flex-api.twilio.com/v1
+      description: Twilio Flex API v1
+    - url: https://flex-api.twilio.com/v2
+      description: Twilio Flex API v2
 components:
   schemas:
-    configuration_address_enum_method:
-      type: string
-      enum:
-      - GET
-      - POST
+    UpdateConfigurationRequest:
+      type: object
+      properties:
+        DefaultChatServiceSid:
+          type: string
+          minLength: 34
+          maxLength: 34
+          pattern: ^IS[0-9a-fA-F]{32}$
+          description: The SID of the default [Conversation Service](https://www.twilio.com/docs/conversations/api/service-resource) to use when creating a conversation.
+        DefaultMessagingServiceSid:
+          type: string
+          minLength: 34
+          maxLength: 34
+          pattern: ^MG[0-9a-fA-F]{32}$
+          description: The SID of the default [Messaging Service](https://www.twilio.com/docs/messaging/api/service-resource) to use when creating a conversation.
+        DefaultInactiveTimer:
+          type: string
+          description: Default ISO8601 duration when conversation will be switched to `inactive` state. Minimum value for this timer is 1 minute.
+        DefaultClosedTimer:
+          type: string
+          description: Default ISO8601 duration when conversation will be switched to `closed` state. Minimum value for this timer is 10 minutes.
+    conversations.v1.configuration:
+      type: object
+      properties:
+        account_sid:
+          type:
+          - string
+          - 'null'
+          minLength: 34
+          maxLength: 34
+          pattern: ^AC[0-9a-fA-F]{32}$
+          description: The SID of the [Account](https://www.twilio.com/docs/iam/api/account) responsible for this configuration.
+        default_chat_service_sid:
+          type:
+          - string
+          - 'null'
+          minLength: 34
+          maxLength: 34
+          pattern: ^IS[0-9a-fA-F]{32}$
+          description: The SID of the default [Conversation Service](https://www.twilio.com/docs/conversations/api/service-resource) used when creating a conversation.
+        default_messaging_service_sid:
+          type:
+          - string
+          - 'null'
+          minLength: 34
+          maxLength: 34
+          pattern: ^MG[0-9a-fA-F]{32}$
+          description: The SID of the default [Messaging Service](https://www.twilio.com/docs/messaging/api/service-resource) used when creating a conversation.
+        default_inactive_timer:
+          type:
+          - string
+          - 'null'
+          description: Default ISO8601 duration when conversation will be switched to `inactive` state. Minimum value for this timer is 1 minute.
+        default_closed_timer:
+          type:
+          - string
+          - 'null'
+          description: Default ISO8601 duration when conversation will be switched to `closed` state. Minimum value for this timer is 10 minutes.
+        url:
+          type:
+          - string
+          - 'null'
+          format: uri
+          description: An absolute API resource URL for this global configuration.
+        links:
+          type:
+          - object
+          - 'null'
+          format: uri-map
+          description: Contains absolute API resource URLs to access the webhook and default service configurations.
     configuration_address_enum_auto_creation_type:
       type: string
       enum:
       - webhook
       - studio
       - default
+    configuration_webhook_enum_method:
+      type: string
+      enum:
+      - GET
+      - POST
     UpdateConfigurationAddressRequest:
       type: object
       properties:
@@ -416,6 +499,65 @@ components:
         AddressCountry:
           type: string
           description: An ISO 3166-1 alpha-2n country code which the address belongs to. This is currently only applicable to short code addresses.
+    conversations.v1.configuration.configuration_webhook:
+      type: object
+      properties:
+        account_sid:
+          type:
+          - string
+          - 'null'
+          minLength: 34
+          maxLength: 34
+          pattern: ^AC[0-9a-fA-F]{32}$
+          description: The unique ID of the [Account](https://www.twilio.com/docs/iam/api/account) responsible for this conversation.
+        method:
+          type:
+          - string
+          - 'null'
+          $ref: '#/components/schemas/configuration_webhook_enum_method'
+          description: The HTTP method to be used when sending a webhook request.
+        filters:
+          type:
+          - array
+          - 'null'
+          items:
+            type: string
+          description: 'The list of webhook event triggers that are enabled for this Service: `onMessageAdded`, `onMessageUpdated`, `onMessageRemoved`, `onConversationUpdated`, `onConversationRemoved`, `onParticipantAdded`, `onParticipantUpdated`, `onParticipantRemoved`'
+        pre_webhook_url:
+          type:
+          - string
+          - 'null'
+          description: The absolute url the pre-event webhook request should be sent to.
+        post_webhook_url:
+          type:
+          - string
+          - 'null'
+          description: The absolute url the post-event webhook request should be sent to.
+        target:
+          type:
+          - string
+          - 'null'
+          $ref: '#/components/schemas/configuration_webhook_enum_target'
+          description: The routing target of the webhook. Can be ordinary or route internally to Flex
+        url:
+          type:
+          - string
+          - 'null'
+          format: uri
+          description: An absolute API resource API resource URL for this webhook.
+    configuration_address_enum_type:
+      type: string
+      enum:
+      - sms
+      - whatsapp
+      - messenger
+      - gbm
+      - email
+    configuration_address_enum_method:
+      type: string
+      enum:
+      - GET
+      - POST
     ListConfigurationAddressResponse:
       type: object
       properties:
@@ -448,45 +590,6 @@ components:
               format: uri
             key:
               type: string
-    UpdateConfigurationRequest:
-      type: object
-      properties:
-        DefaultChatServiceSid:
-          type: string
-          minLength: 34
-          maxLength: 34
-          pattern: ^IS[0-9a-fA-F]{32}$
-          description: The SID of the default [Conversation Service](https://www.twilio.com/docs/conversations/api/service-resource) to use when creating a conversation.
-        DefaultMessagingServiceSid:
-          type: string
-          minLength: 34
-          maxLength: 34
-          pattern: ^MG[0-9a-fA-F]{32}$
-          description: The SID of the default [Messaging Service](https://www.twilio.com/docs/messaging/api/service-resource) to use when creating a conversation.
-        DefaultInactiveTimer:
-          type: string
-          description: Default ISO8601 duration when conversation will be switched to `inactive` state. Minimum value for this timer is 1 minute.
-        DefaultClosedTimer:
-          type: string
-          description: Default ISO8601 duration when conversation will be switched to `closed` state. Minimum value for this timer is 10 minutes.
-    configuration_webhook_enum_target:
-      type: string
-      enum:
-      - webhook
-      - flex
-    configuration_address_enum_type:
-      type: string
-      enum:
-      - sms
-      - whatsapp
-      - messenger
-      - gbm
-      - email
-    configuration_webhook_enum_method:
-      type: string
-      enum:
-      - GET
-      - POST
     UpdateConfigurationWebhookRequest:
       type: object
       properties:
@@ -508,6 +611,74 @@ components:
           type: string
           $ref: '#/components/schemas/configuration_webhook_enum_target'
           description: The routing target of the webhook.
+    conversations.v1.configuration_address:
+      type: object
+      properties:
+        sid:
+          type:
+          - string
+          - 'null'
+          minLength: 34
+          maxLength: 34
+          pattern: ^IG[0-9a-fA-F]{32}$
+          description: A 34 character string that uniquely identifies this resource.
+        account_sid:
+          type:
+          - string
+          - 'null'
+          minLength: 34
+          maxLength: 34
+          pattern: ^AC[0-9a-fA-F]{32}$
+          description: The unique ID of the [Account](https://www.twilio.com/docs/iam/api/account) the address belongs to
+        type:
+          type:
+          - string
+          - 'null'
+          description: Type of Address, value can be `whatsapp` or `sms`.
+        address:
+          type:
+          - string
+          - 'null'
+          description: The unique address to be configured. The address can be a whatsapp address or phone number
+          x-twilio:
+            pii:
+              handling: standard
+              deleteSla: 30
+        friendly_name:
+          type:
+          - string
+          - 'null'
+          description: The human-readable name of this configuration, limited to 256 characters. Optional.
+        auto_creation:
+          description: Auto Creation configuration for the address.
+        date_created:
+          type:
+          - string
+          - 'null'
+          format: date-time
+          description: The date that this resource was created.
+        date_updated:
+          type:
+          - string
+          - 'null'
+          format: date-time
+          description: The date that this resource was last updated.
+        url:
+          type:
+          - string
+          - 'null'
+          format: uri
+          description: An absolute API resource URL for this address configuration.
+        address_country:
+          type:
+          - string
+          - 'null'
+          description: An ISO 3166-1 alpha-2n country code which the address belongs to. This is currently only applicable to short code addresses.
+    configuration_webhook_enum_target:
+      type: string
+      enum:
+      - webhook
+      - flex
     FlexConfiguration:
       type: object
       properties:
@@ -574,168 +745,16 @@ components:
           type: string
         runtime_domain:
           type: string
-    conversations.v1.configuration.configuration_webhook:
-      type: object
-      properties:
-        account_sid:
-          type:
-          - string
-          - 'null'
-          minLength: 34
-          maxLength: 34
-          pattern: ^AC[0-9a-fA-F]{32}$
-          description: The unique ID of the [Account](https://www.twilio.com/docs/iam/api/account) responsible for this conversation.
-        method:
-          type:
-          - string
-          - 'null'
-          $ref: '#/components/schemas/configuration_webhook_enum_method'
-          description: The HTTP method to be used when sending a webhook request.
-        filters:
-          type:
-          - array
-          - 'null'
-          items:
-            type: string
-          description: 'The list of webhook event triggers that are enabled for this Service: `onMessageAdded`, `onMessageUpdated`, `onMessageRemoved`, `onConversationUpdated`, `onConversationRemoved`, `onParticipantAdded`, `onParticipantUpdated`, `onParticipantRemoved`'
-        pre_webhook_url:
-          type:
-          - string
-          - 'null'
-          description: The absolute url the pre-event webhook request should be sent to.
-        post_webhook_url:
-          type:
-          - string
-          - 'null'
-          description: The absolute url the post-event webhook request should be sent to.
-        target:
-          type:
-          - string
-          - 'null'
-          $ref: '#/components/schemas/configuration_webhook_enum_target'
-          description: The routing target of the webhook. Can be ordinary or route internally to Flex
-        url:
-          type:
-          - string
-          - 'null'
-          format: uri
-          description: An absolute API resource API resource URL for this webhook.
-    conversations.v1.configuration:
-      type: object
-      properties:
-        account_sid:
-          type:
-          - string
-          - 'null'
-          minLength: 34
-          maxLength: 34
-          pattern: ^AC[0-9a-fA-F]{32}$
-          description: The SID of the [Account](https://www.twilio.com/docs/iam/api/account) responsible for this configuration.
-        default_chat_service_sid:
-          type:
-          - string
-          - 'null'
-          minLength: 34
-          maxLength: 34
-          pattern: ^IS[0-9a-fA-F]{32}$
-          description: The SID of the default [Conversation Service](https://www.twilio.com/docs/conversations/api/service-resource) used when creating a conversation.
-        default_messaging_service_sid:
-          type:
-          - string
-          - 'null'
-          minLength: 34
-          maxLength: 34
-          pattern: ^MG[0-9a-fA-F]{32}$
-          description: The SID of the default [Messaging Service](https://www.twilio.com/docs/messaging/api/service-resource) used when creating a conversation.
-        default_inactive_timer:
-          type:
-          - string
-          - 'null'
-          description: Default ISO8601 duration when conversation will be switched to `inactive` state. Minimum value for this timer is 1 minute.
-        default_closed_timer:
-          type:
-          - string
-          - 'null'
-          description: Default ISO8601 duration when conversation will be switched to `closed` state. Minimum value for this timer is 10 minutes.
-        url:
-          type:
-          - string
-          - 'null'
-          format: uri
-          description: An absolute API resource URL for this global configuration.
-        links:
-          type:
-          - object
-          - 'null'
-          format: uri-map
-          description: Contains absolute API resource URLs to access the webhook and default service configurations.
-    conversations.v1.configuration_address:
-      type: object
-      properties:
-        sid:
-          type:
-          - string
-          - 'null'
-          minLength: 34
-          maxLength: 34
-          pattern: ^IG[0-9a-fA-F]{32}$
-          description: A 34 character string that uniquely identifies this resource.
-        account_sid:
-          type:
-          - string
-          - 'null'
-          minLength: 34
-          maxLength: 34
-          pattern: ^AC[0-9a-fA-F]{32}$
-          description: The unique ID of the [Account](https://www.twilio.com/docs/iam/api/account) the address belongs to
-        type:
-          type:
-          - string
-          - 'null'
-          description: Type of Address, value can be `whatsapp` or `sms`.
-        address:
-          type:
-          - string
-          - 'null'
-          description: The unique address to be configured. The address can be a whatsapp address or phone number
-          x-twilio:
-            pii:
-              handling: standard
-              deleteSla: 30
-        friendly_name:
-          type:
-          - string
-          - 'null'
-          description: The human-readable name of this configuration, limited to 256 characters. Optional.
-        auto_creation:
-          description: Auto Creation configuration for the address.
-        date_created:
-          type:
-          - string
-          - 'null'
-          format: date-time
-          description: The date that this resource was created.
-        date_updated:
-          type:
-          - string
-          - 'null'
-          format: date-time
-          description: The date that this resource was last updated.
-        url:
-          type:
-          - string
-          - 'null'
-          format: uri
-          description: An absolute API resource URL for this address configuration.
-        address_country:
-          type:
-          - string
-          - 'null'
-          description: An ISO 3166-1 alpha-2n country code which the address belongs to. This is currently only applicable to short code addresses.
   securitySchemes:
     accountSid_authToken:
       type: http
       scheme: basic
+externalDocs:
+  description: Twilio Flex API Documentation
+  url: https://www.twilio.com/docs/flex
+x-refined-from:
+- conversations-openapi-original.yml
+- twilio-flex-openapi.yml
 x-maturity:
 - name: GA
   description: This product is Generally Available.

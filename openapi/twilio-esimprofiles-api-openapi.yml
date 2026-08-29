@@ -1,6 +1,6 @@
 openapi: 3.2.0
 info:
-  title: Twilio - Accounts A2p E Sim Profiles API
+  title: Twilio - Supersim E Sim Profiles API
   description: This is the public Twilio REST API.
   termsOfService: https://www.twilio.com/legal/tos
   contact:
@@ -12,7 +12,7 @@ info:
     url: https://www.apache.org/licenses/LICENSE-2.0.html
   version: 1.52.0
 servers:
-- url: https://accounts.twilio.com
+- url: https://supersim.twilio.com
 tags:
 - name: ESimProfiles
 paths:
@@ -133,6 +133,70 @@ paths:
       - Beta
 components:
   schemas:
+    CreateEsimProfileRequest:
+      type: object
+      properties:
+        CallbackUrl:
+          type: string
+          description: The URL we should call using the `callback_method` when the status of the eSIM Profile changes. At this stage of the eSIM Profile pilot, the a request to the URL will only be called when the ESimProfile resource changes from `reserving` to `available`.
+        CallbackMethod:
+          type: string
+          format: http-method
+          enum:
+          - HEAD
+          - GET
+          - POST
+          - PATCH
+          - PUT
+          - DELETE
+          description: 'The HTTP method we should use to call `callback_url`. Can be: `GET` or `POST` and the default is POST.'
+        GenerateMatchingId:
+          type: boolean
+          description: When set to `true`, a value for `Eid` does not need to be provided. Instead, when the eSIM profile is reserved, a matching ID will be generated and returned via the `matching_id` property. This identifies the specific eSIM profile that can be used by any capable device to claim and download the profile.
+        Eid:
+          type: string
+          description: Identifier of the eUICC that will claim the eSIM Profile.
+    esim_profile_enum_status:
+      type: string
+      enum:
+      - new
+      - reserving
+      - available
+      - downloaded
+      - installed
+      - failed
+    ListEsimProfileResponse:
+      type: object
+      properties:
+        esim_profiles:
+          type: array
+          items:
+            $ref: '#/components/schemas/supersim.v1.esim_profile'
+        meta:
+          type: object
+          properties:
+            first_page_url:
+              type: string
+              format: uri
+            next_page_url:
+              type:
+              - string
+              - 'null'
+              format: uri
+            page:
+              type: integer
+            page_size:
+              type: integer
+            previous_page_url:
+              type:
+              - string
+              - 'null'
+              format: uri
+            url:
+              type: string
+              format: uri
+            key:
+              type: string
     supersim.v1.esim_profile:
       type: object
       properties:
@@ -224,70 +288,6 @@ components:
           - 'null'
           format: uri
           description: The absolute URL of the eSIM Profile resource.
-    CreateEsimProfileRequest:
-      type: object
-      properties:
-        CallbackUrl:
-          type: string
-          description: The URL we should call using the `callback_method` when the status of the eSIM Profile changes. At this stage of the eSIM Profile pilot, the a request to the URL will only be called when the ESimProfile resource changes from `reserving` to `available`.
-        CallbackMethod:
-          type: string
-          format: http-method
-          enum:
-          - HEAD
-          - GET
-          - POST
-          - PATCH
-          - PUT
-          - DELETE
-          description: 'The HTTP method we should use to call `callback_url`. Can be: `GET` or `POST` and the default is POST.'
-        GenerateMatchingId:
-          type: boolean
-          description: When set to `true`, a value for `Eid` does not need to be provided. Instead, when the eSIM profile is reserved, a matching ID will be generated and returned via the `matching_id` property. This identifies the specific eSIM profile that can be used by any capable device to claim and download the profile.
-        Eid:
-          type: string
-          description: Identifier of the eUICC that will claim the eSIM Profile.
-    ListEsimProfileResponse:
-      type: object
-      properties:
-        esim_profiles:
-          type: array
-          items:
-            $ref: '#/components/schemas/supersim.v1.esim_profile'
-        meta:
-          type: object
-          properties:
-            first_page_url:
-              type: string
-              format: uri
-            next_page_url:
-              type:
-              - string
-              - 'null'
-              format: uri
-            page:
-              type: integer
-            page_size:
-              type: integer
-            previous_page_url:
-              type:
-              - string
-              - 'null'
-              format: uri
-            url:
-              type: string
-              format: uri
-            key:
-              type: string
-    esim_profile_enum_status:
-      type: string
-      enum:
-      - new
-      - reserving
-      - available
-      - downloaded
-      - installed
-      - failed
   securitySchemes:
     accountSid_authToken:
       type: http

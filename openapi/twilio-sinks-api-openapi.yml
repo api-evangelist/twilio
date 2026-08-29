@@ -1,6 +1,6 @@
 openapi: 3.2.0
 info:
-  title: Twilio - Accounts A2p Sinks API
+  title: Twilio - Events Sinks API
   description: This is the public Twilio REST API.
   termsOfService: https://www.twilio.com/legal/tos
   contact:
@@ -12,7 +12,7 @@ info:
     url: https://www.apache.org/licenses/LICENSE-2.0.html
   version: 1.52.0
 servers:
-- url: https://accounts.twilio.com
+- url: https://events.twilio.com
 tags:
 - name: Sinks
 paths:
@@ -286,6 +286,51 @@ paths:
               $ref: '#/components/schemas/CreateSinkValidateRequest'
 components:
   schemas:
+    events.v1.sink.sink_test:
+      type: object
+      properties:
+        result:
+          type:
+          - string
+          - 'null'
+          description: Feedback indicating whether the test event was generated.
+    sink_enum_sink_type:
+      type: string
+      enum:
+      - kinesis
+      - webhook
+      - segment
+    CreateSinkRequest:
+      type: object
+      required:
+      - Description
+      - SinkConfiguration
+      - SinkType
+      properties:
+        Description:
+          type: string
+          description: A human readable description for the Sink **This value should not contain PII.**
+        SinkConfiguration:
+          description: The information required for Twilio to connect to the provided Sink encoded as JSON.
+        SinkType:
+          type: string
+          $ref: '#/components/schemas/sink_enum_sink_type'
+          description: The Sink type. Can only be "kinesis" or "webhook" currently.
+    events.v1.sink.sink_validate:
+      type: object
+      properties:
+        result:
+          type:
+          - string
+          - 'null'
+          description: Feedback indicating whether the given Sink was validated.
+    sink_enum_status:
+      type: string
+      enum:
+      - initialized
+      - validating
+      - active
+      - failed
     ListSinkResponse:
       type: object
       properties:
@@ -318,30 +363,6 @@ components:
               format: uri
             key:
               type: string
-    CreateSinkRequest:
-      type: object
-      required:
-      - Description
-      - SinkConfiguration
-      - SinkType
-      properties:
-        Description:
-          type: string
-          description: A human readable description for the Sink **This value should not contain PII.**
-        SinkConfiguration:
-          description: The information required for Twilio to connect to the provided Sink encoded as JSON.
-        SinkType:
-          type: string
-          $ref: '#/components/schemas/sink_enum_sink_type'
-          description: The Sink type. Can only be "kinesis" or "webhook" currently.
-    UpdateSinkRequest:
-      type: object
-      required:
-      - Description
-      properties:
-        Description:
-          type: string
-          description: A human readable description for the Sink **This value should not contain PII.**
     CreateSinkValidateRequest:
       type: object
       required:
@@ -350,35 +371,6 @@ components:
         TestId:
           type: string
           description: A 34 character string that uniquely identifies the test event for a Sink being validated.
-    sink_enum_sink_type:
-      type: string
-      enum:
-      - kinesis
-      - webhook
-      - segment
-    sink_enum_status:
-      type: string
-      enum:
-      - initialized
-      - validating
-      - active
-      - failed
-    events.v1.sink.sink_validate:
-      type: object
-      properties:
-        result:
-          type:
-          - string
-          - 'null'
-          description: Feedback indicating whether the given Sink was validated.
-    events.v1.sink.sink_test:
-      type: object
-      properties:
-        result:
-          type:
-          - string
-          - 'null'
-          description: Feedback indicating whether the test event was generated.
     events.v1.sink:
       type: object
       properties:
@@ -433,6 +425,14 @@ components:
           - 'null'
           format: uri-map
           description: Contains a dictionary of URL links to nested resources of this Sink.
+    UpdateSinkRequest:
+      type: object
+      required:
+      - Description
+      properties:
+        Description:
+          type: string
+          description: A human readable description for the Sink **This value should not contain PII.**
   securitySchemes:
     accountSid_authToken:
       type: http
@@ -440,5 +440,3 @@ components:
 x-maturity:
 - name: GA
   description: This product is Generally Available.
-- name: Beta
-  description: PLEASE NOTE that this is a Beta product that is subject to change. Use it with caution.

@@ -1,6 +1,6 @@
 openapi: 3.2.0
 info:
-  title: Twilio - Accounts A2p Ip Records API
+  title: Twilio - Voice Ip Records API
   description: This is the public Twilio REST API.
   termsOfService: https://www.twilio.com/legal/tos
   contact:
@@ -12,7 +12,7 @@ info:
     url: https://www.apache.org/licenses/LICENSE-2.0.html
   version: 1.52.0
 servers:
-- url: https://accounts.twilio.com
+- url: https://voice.twilio.com
 tags:
 - name: IpRecords
 paths:
@@ -175,58 +175,6 @@ paths:
       - GA
 components:
   schemas:
-    UpdateIpRecordRequest:
-      type: object
-      properties:
-        FriendlyName:
-          type: string
-          description: A descriptive string that you create to describe the resource. It is not unique and can be up to 255 characters long.
-    ListIpRecordResponse:
-      type: object
-      properties:
-        ip_records:
-          type: array
-          items:
-            $ref: '#/components/schemas/voice.v1.ip_record'
-        meta:
-          type: object
-          properties:
-            first_page_url:
-              type: string
-              format: uri
-            next_page_url:
-              type:
-              - string
-              - 'null'
-              format: uri
-            page:
-              type: integer
-            page_size:
-              type: integer
-            previous_page_url:
-              type:
-              - string
-              - 'null'
-              format: uri
-            url:
-              type: string
-              format: uri
-            key:
-              type: string
-    CreateIpRecordRequest:
-      type: object
-      required:
-      - IpAddress
-      properties:
-        IpAddress:
-          type: string
-          description: An IP address in dotted decimal notation, IPv4 only.
-        FriendlyName:
-          type: string
-          description: A descriptive string that you create to describe the resource. It is not unique and can be up to 255 characters long.
-        CidrPrefixLength:
-          type: integer
-          description: An integer representing the length of the [CIDR](https://tools.ietf.org/html/rfc4632) prefix to use with this IP address. By default the entire IP address is used, which for IPv4 is value 32.
     voice.v1.ip_record:
       type: object
       properties:
@@ -283,6 +231,58 @@ components:
           - 'null'
           format: uri
           description: The absolute URL of the resource.
+    CreateIpRecordRequest:
+      type: object
+      required:
+      - IpAddress
+      properties:
+        IpAddress:
+          type: string
+          description: An IP address in dotted decimal notation, IPv4 only.
+        FriendlyName:
+          type: string
+          description: A descriptive string that you create to describe the resource. It is not unique and can be up to 255 characters long.
+        CidrPrefixLength:
+          type: integer
+          description: An integer representing the length of the [CIDR](https://tools.ietf.org/html/rfc4632) prefix to use with this IP address. By default the entire IP address is used, which for IPv4 is value 32.
+    UpdateIpRecordRequest:
+      type: object
+      properties:
+        FriendlyName:
+          type: string
+          description: A descriptive string that you create to describe the resource. It is not unique and can be up to 255 characters long.
+    ListIpRecordResponse:
+      type: object
+      properties:
+        ip_records:
+          type: array
+          items:
+            $ref: '#/components/schemas/voice.v1.ip_record'
+        meta:
+          type: object
+          properties:
+            first_page_url:
+              type: string
+              format: uri
+            next_page_url:
+              type:
+              - string
+              - 'null'
+              format: uri
+            page:
+              type: integer
+            page_size:
+              type: integer
+            previous_page_url:
+              type:
+              - string
+              - 'null'
+              format: uri
+            url:
+              type: string
+              format: uri
+            key:
+              type: string
   securitySchemes:
     accountSid_authToken:
       type: http
@@ -292,3 +292,5 @@ x-maturity:
   description: This product is Generally Available.
 - name: Beta
   description: PLEASE NOTE that this is a Beta product that is subject to change. Use it with caution.
+- name: Preview
+  description: PLEASE NOTE that this is a Preview product that is subject to change. Use it with caution. If you currently do not have developer preview access, please contact https://www.twilio.com/help/contact.

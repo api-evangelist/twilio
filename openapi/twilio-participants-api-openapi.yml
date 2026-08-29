@@ -1,8 +1,8 @@
 openapi: 3.2.0
 info:
-  title: Twilio - Accounts A2p Participants API
-  description: This is the public Twilio REST API.
-  termsOfService: https://www.twilio.com/legal/tos
+  title: Twilio Video Participants API
+  description: Build real-time video communication applications with Twilio's Video API. Create and manage video rooms, control participants, manage recordings and compositions, and configure recording rules.
+  version: '2.0'
   contact:
     name: Twilio Support
     url: https://support.twilio.com
@@ -10,9 +10,12 @@ info:
   license:
     name: Apache 2.0
     url: https://www.apache.org/licenses/LICENSE-2.0.html
-  version: 1.52.0
+  termsOfService: https://www.twilio.com/legal/tos
 servers:
-- url: https://accounts.twilio.com
+- url: https://video.twilio.com/v1
+  description: Twilio Video API v1
+security:
+- accountSid_authToken: []
 tags:
 - name: Participants
   description: Manage room participants
@@ -155,85 +158,42 @@ paths:
         '200':
           description: Subscribe rules updated
 components:
-  parameters:
-    ParticipantSid:
-      name: ParticipantSid
-      in: path
-      required: true
-      description: The SID of the participant
-      schema:
-        type: string
-        pattern: ^PA[0-9a-fA-F]{32}$
-    RoomSid:
-      name: RoomSid
-      in: path
-      required: true
-      description: The SID or unique name of the room
-      schema:
-        type: string
   schemas:
-    VideoParticipantList:
+    SubscribeRules:
       type: object
       properties:
-        participants:
-          type: array
-          items:
-            $ref: '#/components/schemas/VideoParticipant'
-        meta:
-          $ref: '#/components/schemas/PaginationMeta'
-    PaginationMeta:
-      type: object
-      properties:
-        page:
-          type: integer
-        page_size:
-          type: integer
-        first_page_url:
-          type: string
-          format: uri
-        previous_page_url:
-          type: string
-          format: uri
-        next_page_url:
-          type: string
-          format: uri
-        url:
-          type: string
-          format: uri
-        key:
-          type: string
-    PublishedTrack:
-      type: object
-      properties:
-        sid:
-          type: string
-          pattern: ^MT[0-9a-fA-F]{32}$
         participant_sid:
           type: string
-          pattern: ^PA[0-9a-fA-F]{32}$
         room_sid:
           type: string
-          pattern: ^RM[0-9a-fA-F]{32}$
-        name:
-          type: string
-          description: Track name
-        kind:
-          type: string
-          enum:
-          - audio
-          - video
-          - data
-        enabled:
-          type: boolean
+        rules:
+          type: array
+          items:
+            type: object
+            properties:
+              type:
+                type: string
+                enum:
+                - include
+                - exclude
+              all:
+                type: boolean
+              kind:
+                type: string
+                enum:
+                - audio
+                - video
+                - data
+              publisher:
+                type: string
+              track:
+                type: string
         date_created:
           type: string
           format: date-time
         date_updated:
           type: string
           format: date-time
-        url:
-          type: string
-          format: uri
     VideoParticipant:
       type: object
       properties:
@@ -285,41 +245,59 @@ components:
             subscribed_tracks:
               type: string
               format: uri
-    SubscribeRules:
+    PublishedTrack:
       type: object
       properties:
+        sid:
+          type: string
+          pattern: ^MT[0-9a-fA-F]{32}$
         participant_sid:
           type: string
+          pattern: ^PA[0-9a-fA-F]{32}$
         room_sid:
           type: string
-        rules:
-          type: array
-          items:
-            type: object
-            properties:
-              type:
-                type: string
-                enum:
-                - include
-                - exclude
-              all:
-                type: boolean
-              kind:
-                type: string
-                enum:
-                - audio
-                - video
-                - data
-              publisher:
-                type: string
-              track:
-                type: string
+          pattern: ^RM[0-9a-fA-F]{32}$
+        name:
+          type: string
+          description: Track name
+        kind:
+          type: string
+          enum:
+          - audio
+          - video
+          - data
+        enabled:
+          type: boolean
         date_created:
           type: string
           format: date-time
         date_updated:
           type: string
           format: date-time
+        url:
+          type: string
+          format: uri
+    PaginationMeta:
+      type: object
+      properties:
+        page:
+          type: integer
+        page_size:
+          type: integer
+        first_page_url:
+          type: string
+          format: uri
+        previous_page_url:
+          type: string
+          format: uri
+        next_page_url:
+          type: string
+          format: uri
+        url:
+          type: string
+          format: uri
+        key:
+          type: string
     PublishedTrackList:
       type: object
       properties:
@@ -329,12 +307,36 @@ components:
             $ref: '#/components/schemas/PublishedTrack'
         meta:
           $ref: '#/components/schemas/PaginationMeta'
+    VideoParticipantList:
+      type: object
+      properties:
+        participants:
+          type: array
+          items:
+            $ref: '#/components/schemas/VideoParticipant'
+        meta:
+          $ref: '#/components/schemas/PaginationMeta'
+  parameters:
+    RoomSid:
+      name: RoomSid
+      in: path
+      required: true
+      description: The SID or unique name of the room
+      schema:
+        type: string
+    ParticipantSid:
+      name: ParticipantSid
+      in: path
+      required: true
+      description: The SID of the participant
+      schema:
+        type: string
+        pattern: ^PA[0-9a-fA-F]{32}$
   securitySchemes:
     accountSid_authToken:
       type: http
       scheme: basic
-x-maturity:
-- name: GA
-  description: This product is Generally Available.
-- name: Beta
-  description: PLEASE NOTE that this is a Beta product that is subject to change. Use it with caution.
+      description: Use your Twilio Account SID as the username and Auth Token as the password for HTTP Basic authentication.
+externalDocs:
+  description: Twilio Video API Documentation
+  url: https://www.twilio.com/docs/video

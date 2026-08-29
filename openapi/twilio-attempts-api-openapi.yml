@@ -1,6 +1,6 @@
 openapi: 3.2.0
 info:
-  title: Twilio - Accounts A2p Attempts API
+  title: Twilio - Verify Attempts API
   description: This is the public Twilio REST API.
   termsOfService: https://www.twilio.com/legal/tos
   contact:
@@ -12,7 +12,7 @@ info:
     url: https://www.apache.org/licenses/LICENSE-2.0.html
   version: 1.52.0
 servers:
-- url: https://accounts.twilio.com
+- url: https://verify.twilio.com
 tags:
 - name: Attempts
 paths:
@@ -226,18 +226,6 @@ paths:
       - GA
 components:
   schemas:
-    verification_attempt_enum_conversion_status:
-      type: string
-      enum:
-      - converted
-      - unconverted
-    verification_attempt_enum_channels:
-      type: string
-      enum:
-      - sms
-      - call
-      - email
-      - whatsapp
     ListVerificationAttemptResponse:
       type: object
       properties:
@@ -270,13 +258,39 @@ components:
               format: uri
             key:
               type: string
-    verification_attempts_summary_enum_channels:
+    verify.v2.verification_attempts_summary:
+      type: object
+      properties:
+        total_attempts:
+          type:
+          - integer
+          - 'null'
+          description: Total of attempts made according to the provided filters
+        total_converted:
+          type:
+          - integer
+          - 'null'
+          description: Total of  attempts made that were confirmed by the end user, according to the provided filters.
+        total_unconverted:
+          type:
+          - integer
+          - 'null'
+          description: Total of attempts made that were not confirmed by the end user, according to the provided filters.
+        conversion_rate_percentage:
+          type:
+          - number
+          - 'null'
+          description: 'Percentage of the confirmed messages over the total, defined by (total_converted/total_attempts)*100. '
+        url:
+          type:
+          - string
+          - 'null'
+          format: uri
+    verification_attempt_enum_conversion_status:
       type: string
       enum:
-      - sms
-      - call
-      - email
-      - whatsapp
+      - converted
+      - unconverted
     verify.v2.verification_attempt:
       type: object
       properties:
@@ -345,34 +359,20 @@ components:
           - string
           - 'null'
           format: uri
-    verify.v2.verification_attempts_summary:
-      type: object
-      properties:
-        total_attempts:
-          type:
-          - integer
-          - 'null'
-          description: Total of attempts made according to the provided filters
-        total_converted:
-          type:
-          - integer
-          - 'null'
-          description: Total of  attempts made that were confirmed by the end user, according to the provided filters.
-        total_unconverted:
-          type:
-          - integer
-          - 'null'
-          description: Total of attempts made that were not confirmed by the end user, according to the provided filters.
-        conversion_rate_percentage:
-          type:
-          - number
-          - 'null'
-          description: 'Percentage of the confirmed messages over the total, defined by (total_converted/total_attempts)*100. '
-        url:
-          type:
-          - string
-          - 'null'
-          format: uri
+    verification_attempt_enum_channels:
+      type: string
+      enum:
+      - sms
+      - call
+      - email
+      - whatsapp
+    verification_attempts_summary_enum_channels:
+      type: string
+      enum:
+      - sms
+      - call
+      - email
+      - whatsapp
   securitySchemes:
     accountSid_authToken:
       type: http

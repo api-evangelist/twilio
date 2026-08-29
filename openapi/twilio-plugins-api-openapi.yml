@@ -1,8 +1,8 @@
 openapi: 3.2.0
 info:
-  title: Twilio - Accounts A2p Plugins API
-  description: This is the public Twilio REST API.
-  termsOfService: https://www.twilio.com/legal/tos
+  title: Twilio Flex Plugins API
+  description: Programmable digital engagement center API for building customized omnichannel contact center solutions. Manage Flex configuration, channels, flows, interactions, plugins, and worker insights for customer communication across voice, SMS, chat, WhatsApp, and more.
+  version: '2.0'
   contact:
     name: Twilio Support
     url: https://support.twilio.com
@@ -10,9 +10,14 @@ info:
   license:
     name: Apache 2.0
     url: https://www.apache.org/licenses/LICENSE-2.0.html
-  version: 1.52.0
+  termsOfService: https://www.twilio.com/legal/tos
 servers:
-- url: https://accounts.twilio.com
+- url: https://flex-api.twilio.com/v1
+  description: Twilio Flex API v1
+- url: https://flex-api.twilio.com/v2
+  description: Twilio Flex API v2
+security:
+- accountSid_authToken: []
 tags:
 - name: Plugins
   description: Manage Flex plugins
@@ -63,8 +68,7 @@ components:
     accountSid_authToken:
       type: http
       scheme: basic
-x-maturity:
-- name: GA
-  description: This product is Generally Available.
-- name: Beta
-  description: PLEASE NOTE that this is a Beta product that is subject to change. Use it with caution.
+      description: Use your Twilio Account SID as the username and Auth Token as the password for HTTP Basic authentication.
+externalDocs:
+  description: Twilio Flex API Documentation
+  url: https://www.twilio.com/docs/flex

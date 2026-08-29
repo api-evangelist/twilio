@@ -1,18 +1,13 @@
 openapi: 3.2.0
 info:
-  title: Twilio - Accounts A2p Templates API
-  description: This is the public Twilio REST API.
+  title: Twilio Templates API
   termsOfService: https://www.twilio.com/legal/tos
-  contact:
-    name: Twilio Support
-    url: https://support.twilio.com
-    email: support@twilio.com
-  license:
-    name: Apache 2.0
-    url: https://www.apache.org/licenses/LICENSE-2.0.html
-  version: 1.52.0
+  version: '1.0'
+  description: 'Operations tagged Templates across 2 of this provider''s published API definitions: twilio-sendgrid-openapi.yml, verify-openapi-original.yml. Each path carries the servers of the definition it was published in.'
 servers:
-- url: https://accounts.twilio.com
+- url: https://api.sendgrid.com/v3
+  description: SendGrid API v3
+- url: https://verify.twilio.com
 tags:
 - name: Templates
   description: Manage dynamic email templates
@@ -46,6 +41,8 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/TemplateList'
+      security:
+      - bearerAuth: []
     post:
       operationId: createTemplate
       summary: Twilio Create an Email Template
@@ -77,6 +74,11 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Template'
+      security:
+      - bearerAuth: []
+    servers:
+    - url: https://api.sendgrid.com/v3
+      description: SendGrid API v3
   /templates/{template_id}:
     get:
       operationId: fetchTemplate
@@ -99,6 +101,8 @@ paths:
                 $ref: '#/components/schemas/Template'
         '404':
           description: Template not found
+      security:
+      - bearerAuth: []
     patch:
       operationId: updateTemplate
       summary: Twilio Update a Template
@@ -124,6 +128,8 @@ paths:
       responses:
         '200':
           description: Template updated
+      security:
+      - bearerAuth: []
     delete:
       operationId: deleteTemplate
       summary: Twilio Delete a Template
@@ -139,6 +145,11 @@ paths:
       responses:
         '204':
           description: Template deleted
+      security:
+      - bearerAuth: []
+    servers:
+    - url: https://api.sendgrid.com/v3
+      description: SendGrid API v3
   /templates/{template_id}/versions:
     post:
       operationId: createTemplateVersion
@@ -161,6 +172,11 @@ paths:
       responses:
         '201':
           description: Template version created
+      security:
+      - bearerAuth: []
+    servers:
+    - url: https://api.sendgrid.com/v3
+      description: SendGrid API v3
   /v2/Templates:
     servers:
     - url: https://verify.twilio.com
@@ -212,18 +228,6 @@ paths:
       - GA
 components:
   schemas:
-    TemplateList:
-      type: object
-      properties:
-        result:
-          type: array
-          items:
-            $ref: '#/components/schemas/Template'
-        _metadata:
-          type: object
-          properties:
-            count:
-              type: integer
     TemplateVersion:
       type: object
       properties:
@@ -256,6 +260,18 @@ components:
         updated_at:
           type: string
           format: date-time
+    TemplateList:
+      type: object
+      properties:
+        result:
+          type: array
+          items:
+            $ref: '#/components/schemas/Template'
+        _metadata:
+          type: object
+          properties:
+            count:
+              type: integer
     Template:
       type: object
       properties:
@@ -276,39 +292,6 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/TemplateVersion'
-    verify.v2.verification_template:
-      type: object
-      properties:
-        sid:
-          type:
-          - string
-          - 'null'
-          minLength: 34
-          maxLength: 34
-          pattern: ^HJ[0-9a-fA-F]{32}$
-          description: A 34 character string that uniquely identifies a Verification Template.
-        account_sid:
-          type:
-          - string
-          - 'null'
-          minLength: 34
-          maxLength: 34
-          pattern: ^AC[0-9a-fA-F]{32}$
-          description: The unique SID identifier of the Account.
-        friendly_name:
-          type:
-          - string
-          - 'null'
-          description: A descriptive string that you create to describe a Template. It can be up to 32 characters long.
-        channels:
-          type:
-          - array
-          - 'null'
-          items:
-            type: string
-          description: 'A list of channels that support the Template. Can include: sms, voice.'
-        translations:
-          description: An object that contains the different translations of the template. Every translation is identified by the language short name and contains its respective information as the approval status, text and created/modified date.
     CreateTemplateVersionRequest:
       type: object
       required:
@@ -372,10 +355,53 @@ components:
               format: uri
             key:
               type: string
+    verify.v2.verification_template:
+      type: object
+      properties:
+        sid:
+          type:
+          - string
+          - 'null'
+          minLength: 34
+          maxLength: 34
+          pattern: ^HJ[0-9a-fA-F]{32}$
+          description: A 34 character string that uniquely identifies a Verification Template.
+        account_sid:
+          type:
+          - string
+          - 'null'
+          minLength: 34
+          maxLength: 34
+          pattern: ^AC[0-9a-fA-F]{32}$
+          description: The unique SID identifier of the Account.
+        friendly_name:
+          type:
+          - string
+          - 'null'
+          description: A descriptive string that you create to describe a Template. It can be up to 32 characters long.
+        channels:
+          type:
+          - array
+          - 'null'
+          items:
+            type: string
+          description: 'A list of channels that support the Template. Can include: sms, voice.'
+        translations:
+          description: An object that contains the different translations of the template. Every translation is identified by the language short name and contains its respective information as the approval status, text and created/modified date.
   securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      description: Use a SendGrid API key as the bearer token for authentication.
     accountSid_authToken:
       type: http
       scheme: basic
+externalDocs:
+  description: Twilio SendGrid API Documentation
+  url: https://www.twilio.com/docs/sendgrid
+x-refined-from:
+- twilio-sendgrid-openapi.yml
+- verify-openapi-original.yml
 x-maturity:
 - name: GA
   description: This product is Generally Available.

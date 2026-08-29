@@ -1,8 +1,7 @@
 openapi: 3.2.0
 info:
-  title: Twilio - Accounts A2p Trunks API
-  description: This is the public Twilio REST API.
-  termsOfService: https://www.twilio.com/legal/tos
+  title: Twilio Trunks API
+  version: 1.52.0
   contact:
     name: Twilio Support
     url: https://support.twilio.com
@@ -10,9 +9,11 @@ info:
   license:
     name: Apache 2.0
     url: https://www.apache.org/licenses/LICENSE-2.0.html
-  version: 1.52.0
+  termsOfService: https://www.twilio.com/legal/tos
+  description: 'Operations tagged Trunks across 2 of this provider''s published API definitions: routes-openapi-original.yml, trunking-openapi-original.yml. Each path carries the servers of the definition it was published in.'
 servers:
-- url: https://accounts.twilio.com
+- url: https://routes.twilio.com
+- url: https://trunking.twilio.com
 tags:
 - name: Trunks
 paths:
@@ -1044,92 +1045,131 @@ paths:
       - GA
 components:
   schemas:
-    ListCredentialListResponse:
+    routes.v2.trunks:
       type: object
       properties:
-        credential_lists:
-          type: array
-          items:
-            $ref: '#/components/schemas/trunking.v1.trunk.credential_list'
-        meta:
-          type: object
-          properties:
-            first_page_url:
-              type: string
-              format: uri
-            next_page_url:
-              type:
-              - string
-              - 'null'
-              format: uri
-            page:
-              type: integer
-            page_size:
-              type: integer
-            previous_page_url:
-              type:
-              - string
-              - 'null'
-              format: uri
-            url:
-              type: string
-              format: uri
-            key:
-              type: string
-    UpdateRecordingRequest:
-      type: object
-      properties:
-        Mode:
-          type: string
-          $ref: '#/components/schemas/recording_enum_recording_mode'
-          description: The recording mode for the trunk. Can be do-not-record (default), record-from-ringing, record-from-answer, record-from-ringing-dual, or record-from-answer-dual.
-        Trim:
-          type: string
-          $ref: '#/components/schemas/recording_enum_recording_trim'
-          description: The recording trim setting for the trunk. Can be do-not-trim (default) or trim-silence.
-    ListOriginationUrlResponse:
-      type: object
-      properties:
-        origination_urls:
-          type: array
-          items:
-            $ref: '#/components/schemas/trunking.v1.trunk.origination_url'
-        meta:
-          type: object
-          properties:
-            first_page_url:
-              type: string
-              format: uri
-            next_page_url:
-              type:
-              - string
-              - 'null'
-              format: uri
-            page:
-              type: integer
-            page_size:
-              type: integer
-            previous_page_url:
-              type:
-              - string
-              - 'null'
-              format: uri
-            url:
-              type: string
-              format: uri
-            key:
-              type: string
-    CreateIpAccessControlListRequest:
-      type: object
-      required:
-      - IpAccessControlListSid
-      properties:
-        IpAccessControlListSid:
-          type: string
+        sip_trunk_domain:
+          type:
+          - string
+          - 'null'
+          description: The absolute URL of the SIP Trunk
+        url:
+          type:
+          - string
+          - 'null'
+          format: uri
+          description: The absolute URL of the resource.
+        sid:
+          type:
+          - string
+          - 'null'
           minLength: 34
           maxLength: 34
-          pattern: ^AL[0-9a-fA-F]{32}$
-          description: The SID of the [IP Access Control List](https://www.twilio.com/docs/voice/sip/api/sip-ipaccesscontrollist-resource) that you want to associate with the trunk.
+          pattern: ^QQ[0-9a-fA-F]{32}$
+          description: A 34 character string that uniquely identifies the Inbound Processing Region assignments for this SIP Trunk.
+        account_sid:
+          type:
+          - string
+          - 'null'
+          minLength: 34
+          maxLength: 34
+          pattern: ^AC[0-9a-fA-F]{32}$
+          description: The unique SID identifier of the Account.
+        friendly_name:
+          type:
+          - string
+          - 'null'
+          description: A human readable description of the Inbound Processing Region assignments for this SIP Trunk, up to 64 characters.
+        voice_region:
+          type:
+          - string
+          - 'null'
+          description: The Inbound Processing Region used for this SIP Trunk for voice.
+        date_created:
+          type:
+          - string
+          - 'null'
+          format: date-time
+          description: The date that this SIP Trunk was assigned an Inbound Processing Region, given in ISO 8601 format.
+        date_updated:
+          type:
+          - string
+          - 'null'
+          format: date-time
+          description: The date that the Inbound Processing Region was updated for this SIP Trunk, given in ISO 8601 format.
+    UpdateTrunksRequest:
+      type: object
+      properties:
+        VoiceRegion:
+          type: string
+          description: The Inbound Processing Region used for this SIP Trunk for voice
+        FriendlyName:
+          type: string
+          description: A human readable description of this resource, up to 64 characters.
+    ListTrunkResponse:
+      type: object
+      properties:
+        trunks:
+          type: array
+          items:
+            $ref: '#/components/schemas/trunking.v1.trunk'
+        meta:
+          type: object
+          properties:
+            first_page_url:
+              type: string
+              format: uri
+            next_page_url:
+              type:
+              - string
+              - 'null'
+              format: uri
+            page:
+              type: integer
+            page_size:
+              type: integer
+            previous_page_url:
+              type:
+              - string
+              - 'null'
+              format: uri
+            url:
+              type: string
+              format: uri
+            key:
+              type: string
+    ListPhoneNumberResponse:
+      type: object
+      properties:
+        phone_numbers:
+          type: array
+          items:
+            $ref: '#/components/schemas/trunking.v1.trunk.phone_number'
+        meta:
+          type: object
+          properties:
+            first_page_url:
+              type: string
+              format: uri
+            next_page_url:
+              type:
+              - string
+              - 'null'
+              format: uri
+            page:
+              type: integer
+            page_size:
+              type: integer
+            previous_page_url:
+              type:
+              - string
+              - 'null'
+              format: uri
+            url:
+              type: string
+              format: uri
+            key:
+              type: string
     trunking.v1.trunk.phone_number:
       type: object
       properties:
@@ -1334,25 +1374,23 @@ components:
           - 'null'
           format: uri
           description: The URL we call using the `voice_method` when the phone number receives a call. The `voice_url` is not be used if a `voice_application_sid` or a `trunk_sid` is set.
-    UpdateOriginationUrlRequest:
-      type: object
-      properties:
-        Weight:
-          type: integer
-          description: The value that determines the relative share of the load the URI should receive compared to other URIs with the same priority. Can be an integer from 1 to 65535, inclusive, and the default is 10. URLs with higher values receive more load than those with lower ones with the same priority.
-        Priority:
-          type: integer
-          description: The relative importance of the URI. Can be an integer from 0 to 65535, inclusive, and the default is 10. The lowest number represents the most important URI.
-        Enabled:
-          type: boolean
-          description: Whether the URL is enabled. The default is `true`.
-        FriendlyName:
-          type: string
-          description: A descriptive string that you create to describe the resource. It can be up to 64 characters long.
-        SipUrl:
-          type: string
-          format: uri
-          description: The SIP address you want Twilio to route your Origination calls to. This must be a `sip:` schema. `sips` is NOT supported.
+    recording_enum_recording_trim:
+      type: string
+      enum:
+      - trim-silence
+      - do-not-trim
+    trunk_enum_transfer_caller_id:
+      type: string
+      enum:
+      - from-transferee
+      - from-transferor
+    phone_number_enum_address_requirement:
+      type: string
+      enum:
+      - none
+      - any
+      - local
+      - foreign
     trunking.v1.trunk.recording:
       type: object
       properties:
@@ -1368,88 +1406,13 @@ components:
           - 'null'
           $ref: '#/components/schemas/recording_enum_recording_trim'
           description: The recording trim setting for the trunk. Can be do-not-trim (default) or trim-silence.
-    trunking.v1.trunk.origination_url:
+    ListIpAccessControlListResponse:
       type: object
       properties:
-        account_sid:
-          type:
-          - string
-          - 'null'
-          minLength: 34
-          maxLength: 34
-          pattern: ^AC[0-9a-fA-F]{32}$
-          description: The SID of the [Account](https://www.twilio.com/docs/iam/api/account) that created the OriginationUrl resource.
-        sid:
-          type:
-          - string
-          - 'null'
-          minLength: 34
-          maxLength: 34
-          pattern: ^OU[0-9a-fA-F]{32}$
-          description: The unique string that we created to identify the OriginationUrl resource.
-        trunk_sid:
-          type:
-          - string
-          - 'null'
-          minLength: 34
-          maxLength: 34
-          pattern: ^TK[0-9a-fA-F]{32}$
-          description: The SID of the Trunk that owns the Origination URL.
-        weight:
-          type:
-          - integer
-          - 'null'
-          description: The value that determines the relative share of the load the URI should receive compared to other URIs with the same priority. Can be an integer from 1 to 65535, inclusive, and the default is 10. URLs with higher values receive more load than those with lower ones with the same priority.
-        enabled:
-          type:
-          - boolean
-          - 'null'
-          description: Whether the URL is enabled. The default is `true`.
-        sip_url:
-          type:
-          - string
-          - 'null'
-          format: uri
-          description: The SIP address you want Twilio to route your Origination calls to. This must be a `sip:` schema.
-          x-twilio:
-            pii:
-              handling: standard
-              deleteSla: 30
-        friendly_name:
-          type:
-          - string
-          - 'null'
-          description: The string that you assigned to describe the resource.
-        priority:
-          type:
-          - integer
-          - 'null'
-          description: The relative importance of the URI. Can be an integer from 0 to 65535, inclusive, and the default is 10. The lowest number represents the most important URI.
-        date_created:
-          type:
-          - string
-          - 'null'
-          format: date-time
-          description: The date and time in GMT when the resource was created specified in [RFC 2822](https://www.ietf.org/rfc/rfc2822.txt) format.
-        date_updated:
-          type:
-          - string
-          - 'null'
-          format: date-time
-          description: The date and time in GMT when the resource was last updated specified in [RFC 2822](https://www.ietf.org/rfc/rfc2822.txt) format.
-        url:
-          type:
-          - string
-          - 'null'
-          format: uri
-          description: The absolute URL of the resource.
-    ListTrunkResponse:
-      type: object
-      properties:
-        trunks:
+        ip_access_control_lists:
           type: array
           items:
-            $ref: '#/components/schemas/trunking.v1.trunk'
+            $ref: '#/components/schemas/trunking.v1.trunk.ip_access_control_list'
         meta:
           type: object
           properties:
@@ -1475,69 +1438,6 @@ components:
               format: uri
             key:
               type: string
-    phone_number_enum_address_requirement:
-      type: string
-      enum:
-      - none
-      - any
-      - local
-      - foreign
-    UpdateTrunksRequest:
-      type: object
-      properties:
-        VoiceRegion:
-          type: string
-          description: The Inbound Processing Region used for this SIP Trunk for voice
-        FriendlyName:
-          type: string
-          description: A human readable description of this resource, up to 64 characters.
-    recording_enum_recording_trim:
-      type: string
-      enum:
-      - trim-silence
-      - do-not-trim
-    CreateCredentialListRequest:
-      type: object
-      required:
-      - CredentialListSid
-      properties:
-        CredentialListSid:
-          type: string
-          minLength: 34
-          maxLength: 34
-          pattern: ^CL[0-9a-fA-F]{32}$
-          description: The SID of the [Credential List](https://www.twilio.com/docs/voice/sip/api/sip-credentiallist-resource) that you want to associate with the trunk. Once associated, we will authenticate access to the trunk against this list.
-    CreateOriginationUrlRequest:
-      type: object
-      required:
-      - Weight
-      - Priority
-      - Enabled
-      - FriendlyName
-      - SipUrl
-      properties:
-        Weight:
-          type: integer
-          description: The value that determines the relative share of the load the URI should receive compared to other URIs with the same priority. Can be an integer from 1 to 65535, inclusive, and the default is 10. URLs with higher values receive more load than those with lower ones with the same priority.
-        Priority:
-          type: integer
-          description: The relative importance of the URI. Can be an integer from 0 to 65535, inclusive, and the default is 10. The lowest number represents the most important URI.
-        Enabled:
-          type: boolean
-          description: Whether the URL is enabled. The default is `true`.
-        FriendlyName:
-          type: string
-          description: A descriptive string that you create to describe the resource. It can be up to 64 characters long.
-        SipUrl:
-          type: string
-          format: uri
-          description: The SIP address you want Twilio to route your Origination calls to. This must be a `sip:` schema.
-    trunk_enum_transfer_setting:
-      type: string
-      enum:
-      - disable-all
-      - enable-all
-      - sip-only
     CreateTrunkRequest:
       type: object
       properties:
@@ -1576,124 +1476,82 @@ components:
           type: string
           $ref: '#/components/schemas/trunk_enum_transfer_caller_id'
           description: 'Caller Id for transfer target. Can be: `from-transferee` (default) or `from-transferor`.'
-    CreatePhoneNumberRequest:
-      type: object
-      required:
-      - PhoneNumberSid
-      properties:
-        PhoneNumberSid:
-          type: string
-          minLength: 34
-          maxLength: 34
-          pattern: ^PN[0-9a-fA-F]{32}$
-          description: The SID of the [Incoming Phone Number](https://www.twilio.com/docs/phone-numbers/api/incomingphonenumber-resource) that you want to associate with the trunk.
-    trunking.v1.trunk.ip_access_control_list:
-      type: object
-      properties:
-        account_sid:
-          type:
-          - string
-          - 'null'
-          minLength: 34
-          maxLength: 34
-          pattern: ^AC[0-9a-fA-F]{32}$
-          description: The SID of the [Account](https://www.twilio.com/docs/iam/api/account) that created the IpAccessControlList resource.
-        sid:
-          type:
-          - string
-          - 'null'
-          minLength: 34
-          maxLength: 34
-          pattern: ^AL[0-9a-fA-F]{32}$
-          description: The unique string that we created to identify the IpAccessControlList resource.
-        trunk_sid:
-          type:
-          - string
-          - 'null'
-          minLength: 34
-          maxLength: 34
-          pattern: ^TK[0-9a-fA-F]{32}$
-          description: The SID of the Trunk the resource is associated with.
-        friendly_name:
-          type:
-          - string
-          - 'null'
-          description: The string that you assigned to describe the resource.
-        date_created:
-          type:
-          - string
-          - 'null'
-          format: date-time
-          description: The date and time in GMT when the resource was created specified in [RFC 2822](https://www.ietf.org/rfc/rfc2822.txt) format.
-        date_updated:
-          type:
-          - string
-          - 'null'
-          format: date-time
-          description: The date and time in GMT when the resource was last updated specified in [RFC 2822](https://www.ietf.org/rfc/rfc2822.txt) format.
-        url:
-          type:
-          - string
-          - 'null'
-          format: uri
-          description: The absolute URL of the resource.
-    trunk_enum_transfer_caller_id:
+    trunk_enum_transfer_setting:
       type: string
       enum:
-      - from-transferee
-      - from-transferor
-    routes.v2.trunks:
+      - disable-all
+      - enable-all
+      - sip-only
+    ListCredentialListResponse:
       type: object
       properties:
-        sip_trunk_domain:
-          type:
-          - string
-          - 'null'
-          description: The absolute URL of the SIP Trunk
-        url:
-          type:
-          - string
-          - 'null'
+        credential_lists:
+          type: array
+          items:
+            $ref: '#/components/schemas/trunking.v1.trunk.credential_list'
+        meta:
+          type: object
+          properties:
+            first_page_url:
+              type: string
+              format: uri
+            next_page_url:
+              type:
+              - string
+              - 'null'
+              format: uri
+            page:
+              type: integer
+            page_size:
+              type: integer
+            previous_page_url:
+              type:
+              - string
+              - 'null'
+              format: uri
+            url:
+              type: string
+              format: uri
+            key:
+              type: string
+    UpdateTrunkRequest:
+      type: object
+      properties:
+        FriendlyName:
+          type: string
+          description: A descriptive string that you create to describe the resource. It can be up to 64 characters long.
+        DomainName:
+          type: string
+          description: The unique address you reserve on Twilio to which you route your SIP traffic. Domain names can contain letters, digits, and `-` and must end with `pstn.twilio.com`. See [Termination Settings](https://www.twilio.com/docs/sip-trunking#termination) for more information.
+        DisasterRecoveryUrl:
+          type: string
           format: uri
-          description: The absolute URL of the resource.
-        sid:
-          type:
-          - string
-          - 'null'
-          minLength: 34
-          maxLength: 34
-          pattern: ^QQ[0-9a-fA-F]{32}$
-          description: A 34 character string that uniquely identifies the Inbound Processing Region assignments for this SIP Trunk.
-        account_sid:
-          type:
-          - string
-          - 'null'
-          minLength: 34
-          maxLength: 34
-          pattern: ^AC[0-9a-fA-F]{32}$
-          description: The unique SID identifier of the Account.
-        friendly_name:
-          type:
-          - string
-          - 'null'
-          description: A human readable description of the Inbound Processing Region assignments for this SIP Trunk, up to 64 characters.
-        voice_region:
-          type:
-          - string
-          - 'null'
-          description: The Inbound Processing Region used for this SIP Trunk for voice.
-        date_created:
-          type:
-          - string
-          - 'null'
-          format: date-time
-          description: The date that this SIP Trunk was assigned an Inbound Processing Region, given in ISO 8601 format.
-        date_updated:
-          type:
-          - string
-          - 'null'
-          format: date-time
-          description: The date that the Inbound Processing Region was updated for this SIP Trunk, given in ISO 8601 format.
+          description: The URL we should call using the `disaster_recovery_method` if an error occurs while sending SIP traffic towards the configured Origination URL. We retrieve TwiML from the URL and execute the instructions like any other normal TwiML call. See [Disaster Recovery](https://www.twilio.com/docs/sip-trunking#disaster-recovery) for more information.
+        DisasterRecoveryMethod:
+          type: string
+          format: http-method
+          enum:
+          - HEAD
+          - GET
+          - POST
+          - PATCH
+          - PUT
+          - DELETE
+          description: 'The HTTP method we should use to call the `disaster_recovery_url`. Can be: `GET` or `POST`.'
+        TransferMode:
+          type: string
+          $ref: '#/components/schemas/trunk_enum_transfer_setting'
+          description: 'The call transfer settings for the trunk. Can be: `enable-all`, `sip-only` and `disable-all`. See [Transfer](https://www.twilio.com/docs/sip-trunking/call-transfer) for more information.'
+        Secure:
+          type: boolean
+          description: Whether Secure Trunking is enabled for the trunk. If enabled, all calls going through the trunk will be secure using SRTP for media and TLS for signaling. If disabled, then RTP will be used for media. See [Secure Trunking](https://www.twilio.com/docs/sip-trunking#securetrunking) for more information.
+        CnamLookupEnabled:
+          type: boolean
+          description: Whether Caller ID Name (CNAM) lookup should be enabled for the trunk. If enabled, all inbound calls to the SIP Trunk from the United States and Canada automatically perform a CNAM Lookup and display Caller ID data on your phone. See [CNAM Lookups](https://www.twilio.com/docs/sip-trunking#CNAM) for more information.
+        TransferCallerId:
+          type: string
+          $ref: '#/components/schemas/trunk_enum_transfer_caller_id'
+          description: 'Caller Id for transfer target. Can be: `from-transferee` (default) or `from-transferor`.'
     trunking.v1.trunk:
       type: object
       properties:
@@ -1806,44 +1664,141 @@ components:
           - 'null'
           format: uri-map
           description: The URLs of related resources.
-    UpdateTrunkRequest:
+    CreateIpAccessControlListRequest:
+      type: object
+      required:
+      - IpAccessControlListSid
+      properties:
+        IpAccessControlListSid:
+          type: string
+          minLength: 34
+          maxLength: 34
+          pattern: ^AL[0-9a-fA-F]{32}$
+          description: The SID of the [IP Access Control List](https://www.twilio.com/docs/voice/sip/api/sip-ipaccesscontrollist-resource) that you want to associate with the trunk.
+    CreateCredentialListRequest:
+      type: object
+      required:
+      - CredentialListSid
+      properties:
+        CredentialListSid:
+          type: string
+          minLength: 34
+          maxLength: 34
+          pattern: ^CL[0-9a-fA-F]{32}$
+          description: The SID of the [Credential List](https://www.twilio.com/docs/voice/sip/api/sip-credentiallist-resource) that you want to associate with the trunk. Once associated, we will authenticate access to the trunk against this list.
+    CreatePhoneNumberRequest:
+      type: object
+      required:
+      - PhoneNumberSid
+      properties:
+        PhoneNumberSid:
+          type: string
+          minLength: 34
+          maxLength: 34
+          pattern: ^PN[0-9a-fA-F]{32}$
+          description: The SID of the [Incoming Phone Number](https://www.twilio.com/docs/phone-numbers/api/incomingphonenumber-resource) that you want to associate with the trunk.
+    recording_enum_recording_mode:
+      type: string
+      enum:
+      - do-not-record
+      - record-from-ringing
+      - record-from-answer
+      - record-from-ringing-dual
+      - record-from-answer-dual
+    UpdateOriginationUrlRequest:
       type: object
       properties:
+        Weight:
+          type: integer
+          description: The value that determines the relative share of the load the URI should receive compared to other URIs with the same priority. Can be an integer from 1 to 65535, inclusive, and the default is 10. URLs with higher values receive more load than those with lower ones with the same priority.
+        Priority:
+          type: integer
+          description: The relative importance of the URI. Can be an integer from 0 to 65535, inclusive, and the default is 10. The lowest number represents the most important URI.
+        Enabled:
+          type: boolean
+          description: Whether the URL is enabled. The default is `true`.
         FriendlyName:
           type: string
           description: A descriptive string that you create to describe the resource. It can be up to 64 characters long.
-        DomainName:
-          type: string
-          description: The unique address you reserve on Twilio to which you route your SIP traffic. Domain names can contain letters, digits, and `-` and must end with `pstn.twilio.com`. See [Termination Settings](https://www.twilio.com/docs/sip-trunking#termination) for more information.
-        DisasterRecoveryUrl:
+        SipUrl:
           type: string
           format: uri
-          description: The URL we should call using the `disaster_recovery_method` if an error occurs while sending SIP traffic towards the configured Origination URL. We retrieve TwiML from the URL and execute the instructions like any other normal TwiML call. See [Disaster Recovery](https://www.twilio.com/docs/sip-trunking#disaster-recovery) for more information.
-        DisasterRecoveryMethod:
-          type: string
-          format: http-method
-          enum:
-          - HEAD
-          - GET
-          - POST
-          - PATCH
-          - PUT
-          - DELETE
-          description: 'The HTTP method we should use to call the `disaster_recovery_url`. Can be: `GET` or `POST`.'
-        TransferMode:
-          type: string
-          $ref: '#/components/schemas/trunk_enum_transfer_setting'
-          description: 'The call transfer settings for the trunk. Can be: `enable-all`, `sip-only` and `disable-all`. See [Transfer](https://www.twilio.com/docs/sip-trunking/call-transfer) for more information.'
-        Secure:
-          type: boolean
-          description: Whether Secure Trunking is enabled for the trunk. If enabled, all calls going through the trunk will be secure using SRTP for media and TLS for signaling. If disabled, then RTP will be used for media. See [Secure Trunking](https://www.twilio.com/docs/sip-trunking#securetrunking) for more information.
-        CnamLookupEnabled:
-          type: boolean
-          description: Whether Caller ID Name (CNAM) lookup should be enabled for the trunk. If enabled, all inbound calls to the SIP Trunk from the United States and Canada automatically perform a CNAM Lookup and display Caller ID data on your phone. See [CNAM Lookups](https://www.twilio.com/docs/sip-trunking#CNAM) for more information.
-        TransferCallerId:
-          type: string
-          $ref: '#/components/schemas/trunk_enum_transfer_caller_id'
-          description: 'Caller Id for transfer target. Can be: `from-transferee` (default) or `from-transferor`.'
+          description: The SIP address you want Twilio to route your Origination calls to. This must be a `sip:` schema. `sips` is NOT supported.
+    trunking.v1.trunk.origination_url:
+      type: object
+      properties:
+        account_sid:
+          type:
+          - string
+          - 'null'
+          minLength: 34
+          maxLength: 34
+          pattern: ^AC[0-9a-fA-F]{32}$
+          description: The SID of the [Account](https://www.twilio.com/docs/iam/api/account) that created the OriginationUrl resource.
+        sid:
+          type:
+          - string
+          - 'null'
+          minLength: 34
+          maxLength: 34
+          pattern: ^OU[0-9a-fA-F]{32}$
+          description: The unique string that we created to identify the OriginationUrl resource.
+        trunk_sid:
+          type:
+          - string
+          - 'null'
+          minLength: 34
+          maxLength: 34
+          pattern: ^TK[0-9a-fA-F]{32}$
+          description: The SID of the Trunk that owns the Origination URL.
+        weight:
+          type:
+          - integer
+          - 'null'
+          description: The value that determines the relative share of the load the URI should receive compared to other URIs with the same priority. Can be an integer from 1 to 65535, inclusive, and the default is 10. URLs with higher values receive more load than those with lower ones with the same priority.
+        enabled:
+          type:
+          - boolean
+          - 'null'
+          description: Whether the URL is enabled. The default is `true`.
+        sip_url:
+          type:
+          - string
+          - 'null'
+          format: uri
+          description: The SIP address you want Twilio to route your Origination calls to. This must be a `sip:` schema.
+          x-twilio:
+            pii:
+              handling: standard
+              deleteSla: 30
+        friendly_name:
+          type:
+          - string
+          - 'null'
+          description: The string that you assigned to describe the resource.
+        priority:
+          type:
+          - integer
+          - 'null'
+          description: The relative importance of the URI. Can be an integer from 0 to 65535, inclusive, and the default is 10. The lowest number represents the most important URI.
+        date_created:
+          type:
+          - string
+          - 'null'
+          format: date-time
+          description: The date and time in GMT when the resource was created specified in [RFC 2822](https://www.ietf.org/rfc/rfc2822.txt) format.
+        date_updated:
+          type:
+          - string
+          - 'null'
+          format: date-time
+          description: The date and time in GMT when the resource was last updated specified in [RFC 2822](https://www.ietf.org/rfc/rfc2822.txt) format.
+        url:
+          type:
+          - string
+          - 'null'
+          format: uri
+          description: The absolute URL of the resource.
     trunking.v1.trunk.credential_list:
       type: object
       properties:
@@ -1894,13 +1849,13 @@ components:
           - 'null'
           format: uri
           description: The absolute URL of the resource.
-    ListIpAccessControlListResponse:
+    ListOriginationUrlResponse:
       type: object
       properties:
-        ip_access_control_lists:
+        origination_urls:
           type: array
           items:
-            $ref: '#/components/schemas/trunking.v1.trunk.ip_access_control_list'
+            $ref: '#/components/schemas/trunking.v1.trunk.origination_url'
         meta:
           type: object
           properties:
@@ -1926,50 +1881,99 @@ components:
               format: uri
             key:
               type: string
-    ListPhoneNumberResponse:
+    trunking.v1.trunk.ip_access_control_list:
       type: object
       properties:
-        phone_numbers:
-          type: array
-          items:
-            $ref: '#/components/schemas/trunking.v1.trunk.phone_number'
-        meta:
-          type: object
-          properties:
-            first_page_url:
-              type: string
-              format: uri
-            next_page_url:
-              type:
-              - string
-              - 'null'
-              format: uri
-            page:
-              type: integer
-            page_size:
-              type: integer
-            previous_page_url:
-              type:
-              - string
-              - 'null'
-              format: uri
-            url:
-              type: string
-              format: uri
-            key:
-              type: string
-    recording_enum_recording_mode:
-      type: string
-      enum:
-      - do-not-record
-      - record-from-ringing
-      - record-from-answer
-      - record-from-ringing-dual
-      - record-from-answer-dual
+        account_sid:
+          type:
+          - string
+          - 'null'
+          minLength: 34
+          maxLength: 34
+          pattern: ^AC[0-9a-fA-F]{32}$
+          description: The SID of the [Account](https://www.twilio.com/docs/iam/api/account) that created the IpAccessControlList resource.
+        sid:
+          type:
+          - string
+          - 'null'
+          minLength: 34
+          maxLength: 34
+          pattern: ^AL[0-9a-fA-F]{32}$
+          description: The unique string that we created to identify the IpAccessControlList resource.
+        trunk_sid:
+          type:
+          - string
+          - 'null'
+          minLength: 34
+          maxLength: 34
+          pattern: ^TK[0-9a-fA-F]{32}$
+          description: The SID of the Trunk the resource is associated with.
+        friendly_name:
+          type:
+          - string
+          - 'null'
+          description: The string that you assigned to describe the resource.
+        date_created:
+          type:
+          - string
+          - 'null'
+          format: date-time
+          description: The date and time in GMT when the resource was created specified in [RFC 2822](https://www.ietf.org/rfc/rfc2822.txt) format.
+        date_updated:
+          type:
+          - string
+          - 'null'
+          format: date-time
+          description: The date and time in GMT when the resource was last updated specified in [RFC 2822](https://www.ietf.org/rfc/rfc2822.txt) format.
+        url:
+          type:
+          - string
+          - 'null'
+          format: uri
+          description: The absolute URL of the resource.
+    CreateOriginationUrlRequest:
+      type: object
+      required:
+      - Weight
+      - Priority
+      - Enabled
+      - FriendlyName
+      - SipUrl
+      properties:
+        Weight:
+          type: integer
+          description: The value that determines the relative share of the load the URI should receive compared to other URIs with the same priority. Can be an integer from 1 to 65535, inclusive, and the default is 10. URLs with higher values receive more load than those with lower ones with the same priority.
+        Priority:
+          type: integer
+          description: The relative importance of the URI. Can be an integer from 0 to 65535, inclusive, and the default is 10. The lowest number represents the most important URI.
+        Enabled:
+          type: boolean
+          description: Whether the URL is enabled. The default is `true`.
+        FriendlyName:
+          type: string
+          description: A descriptive string that you create to describe the resource. It can be up to 64 characters long.
+        SipUrl:
+          type: string
+          format: uri
+          description: The SIP address you want Twilio to route your Origination calls to. This must be a `sip:` schema.
+    UpdateRecordingRequest:
+      type: object
+      properties:
+        Mode:
+          type: string
+          $ref: '#/components/schemas/recording_enum_recording_mode'
+          description: The recording mode for the trunk. Can be do-not-record (default), record-from-ringing, record-from-answer, record-from-ringing-dual, or record-from-answer-dual.
+        Trim:
+          type: string
+          $ref: '#/components/schemas/recording_enum_recording_trim'
+          description: The recording trim setting for the trunk. Can be do-not-trim (default) or trim-silence.
   securitySchemes:
     accountSid_authToken:
       type: http
       scheme: basic
+x-refined-from:
+- routes-openapi-original.yml
+- trunking-openapi-original.yml
 x-maturity:
 - name: GA
   description: This product is Generally Available.

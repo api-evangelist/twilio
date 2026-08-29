@@ -1,8 +1,8 @@
 openapi: 3.2.0
 info:
-  title: Twilio - Accounts A2p Verifications API
-  description: This is the public Twilio REST API.
-  termsOfService: https://www.twilio.com/legal/tos
+  title: Twilio Verify Verifications API
+  description: User verification and two-factor authentication API. Send verification codes via SMS, voice, email, WhatsApp, or push notifications. Supports TOTP, push authentication, and silent network authentication for fraud prevention and user identity verification.
+  version: '2.0'
   contact:
     name: Twilio Support
     url: https://support.twilio.com
@@ -10,9 +10,12 @@ info:
   license:
     name: Apache 2.0
     url: https://www.apache.org/licenses/LICENSE-2.0.html
-  version: 1.52.0
+  termsOfService: https://www.twilio.com/legal/tos
 servers:
-- url: https://accounts.twilio.com
+- url: https://verify.twilio.com/v2
+  description: Twilio Verify API v2
+security:
+- accountSid_authToken: []
 tags:
 - name: Verifications
   description: Send and manage verification codes
@@ -96,16 +99,55 @@ paths:
         '200':
           description: Verification updated
 components:
-  parameters:
-    ServiceSid:
-      name: ServiceSid
-      in: path
-      required: true
-      description: The SID of the Verify service
-      schema:
-        type: string
-        pattern: ^VA[0-9a-fA-F]{32}$
   schemas:
+    CreateVerificationRequest:
+      type: object
+      required:
+      - To
+      - Channel
+      properties:
+        To:
+          type: string
+          description: Phone number (E.164) or email address to verify
+        Channel:
+          type: string
+          enum:
+          - sms
+          - call
+          - email
+          - whatsapp
+          - sna
+          description: Channel to use for delivery
+        CustomFriendlyName:
+          type: string
+          description: Custom name shown in the verification message
+        CustomMessage:
+          type: string
+          description: Custom message for SMS verification
+        SendDigits:
+          type: string
+          description: DTMF digits to play before the code (call channel)
+        Locale:
+          type: string
+          description: Locale for the verification message (e.g., en)
+        CustomCode:
+          type: string
+          description: Custom verification code (requires custom code enabled)
+        Amount:
+          type: string
+          description: Amount for PSD2 verification
+        Payee:
+          type: string
+          description: Payee for PSD2 verification
+        RateLimits:
+          type: string
+          description: JSON object of rate limit key-value pairs
+        TemplateSid:
+          type: string
+          description: SID of a custom template
+        TemplateCustomSubstitutions:
+          type: string
+          description: JSON object of template substitution variables
     Verification:
       type: object
       properties:
@@ -172,60 +214,20 @@ components:
         url:
           type: string
           format: uri
-    CreateVerificationRequest:
-      type: object
-      required:
-      - To
-      - Channel
-      properties:
-        To:
-          type: string
-          description: Phone number (E.164) or email address to verify
-        Channel:
-          type: string
-          enum:
-          - sms
-          - call
-          - email
-          - whatsapp
-          - sna
-          description: Channel to use for delivery
-        CustomFriendlyName:
-          type: string
-          description: Custom name shown in the verification message
-        CustomMessage:
-          type: string
-          description: Custom message for SMS verification
-        SendDigits:
-          type: string
-          description: DTMF digits to play before the code (call channel)
-        Locale:
-          type: string
-          description: Locale for the verification message (e.g., en)
-        CustomCode:
-          type: string
-          description: Custom verification code (requires custom code enabled)
-        Amount:
-          type: string
-          description: Amount for PSD2 verification
-        Payee:
-          type: string
-          description: Payee for PSD2 verification
-        RateLimits:
-          type: string
-          description: JSON object of rate limit key-value pairs
-        TemplateSid:
-          type: string
-          description: SID of a custom template
-        TemplateCustomSubstitutions:
-          type: string
-          description: JSON object of template substitution variables
+  parameters:
+    ServiceSid:
+      name: ServiceSid
+      in: path
+      required: true
+      description: The SID of the Verify service
+      schema:
+        type: string
+        pattern: ^VA[0-9a-fA-F]{32}$
   securitySchemes:
     accountSid_authToken:
       type: http
       scheme: basic
-x-maturity:
-- name: GA
-  description: This product is Generally Available.
-- name: Beta
-  description: PLEASE NOTE that this is a Beta product that is subject to change. Use it with caution.
+      description: Use your Twilio Account SID as the username and Auth Token as the password for HTTP Basic authentication.
+externalDocs:
+  description: Twilio Verify API Documentation
+  url: https://www.twilio.com/docs/verify/api

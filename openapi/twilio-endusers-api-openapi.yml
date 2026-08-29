@@ -1,6 +1,6 @@
 openapi: 3.2.0
 info:
-  title: Twilio - Accounts A2p End Users API
+  title: Twilio - Trusthub End Users API
   description: This is the public Twilio REST API.
   termsOfService: https://www.twilio.com/legal/tos
   contact:
@@ -12,7 +12,7 @@ info:
     url: https://www.apache.org/licenses/LICENSE-2.0.html
   version: 1.52.0
 servers:
-- url: https://accounts.twilio.com
+- url: https://trusthub.twilio.com
 tags:
 - name: EndUsers
 paths:
@@ -171,52 +171,6 @@ paths:
       - GA
 components:
   schemas:
-    CreateEndUserRequest:
-      type: object
-      required:
-      - FriendlyName
-      - Type
-      properties:
-        FriendlyName:
-          type: string
-          description: The string that you assigned to describe the resource.
-        Type:
-          type: string
-          description: The type of end user of the Bundle resource - can be `individual` or `business`.
-        Attributes:
-          description: The set of parameters that are the attributes of the End User resource which are derived End User Types.
-    ListEndUserResponse:
-      type: object
-      properties:
-        results:
-          type: array
-          items:
-            $ref: '#/components/schemas/trusthub.v1.end_user'
-        meta:
-          type: object
-          properties:
-            first_page_url:
-              type: string
-              format: uri
-            next_page_url:
-              type:
-              - string
-              - 'null'
-              format: uri
-            page:
-              type: integer
-            page_size:
-              type: integer
-            previous_page_url:
-              type:
-              - string
-              - 'null'
-              format: uri
-            url:
-              type: string
-              format: uri
-            key:
-              type: string
     UpdateEndUserRequest:
       type: object
       properties:
@@ -278,6 +232,52 @@ components:
           - 'null'
           format: uri
           description: The absolute URL of the End User resource.
+    ListEndUserResponse:
+      type: object
+      properties:
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/trusthub.v1.end_user'
+        meta:
+          type: object
+          properties:
+            first_page_url:
+              type: string
+              format: uri
+            next_page_url:
+              type:
+              - string
+              - 'null'
+              format: uri
+            page:
+              type: integer
+            page_size:
+              type: integer
+            previous_page_url:
+              type:
+              - string
+              - 'null'
+              format: uri
+            url:
+              type: string
+              format: uri
+            key:
+              type: string
+    CreateEndUserRequest:
+      type: object
+      required:
+      - FriendlyName
+      - Type
+      properties:
+        FriendlyName:
+          type: string
+          description: The string that you assigned to describe the resource.
+        Type:
+          type: string
+          description: The type of end user of the Bundle resource - can be `individual` or `business`.
+        Attributes:
+          description: The set of parameters that are the attributes of the End User resource which are derived End User Types.
   securitySchemes:
     accountSid_authToken:
       type: http
@@ -285,5 +285,3 @@ components:
 x-maturity:
 - name: GA
   description: This product is Generally Available.
-- name: Beta
-  description: PLEASE NOTE that this is a Beta product that is subject to change. Use it with caution.

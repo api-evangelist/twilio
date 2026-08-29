@@ -1,6 +1,6 @@
 openapi: 3.2.0
 info:
-  title: Twilio - Accounts A2p Compliance Inquiries API
+  title: Twilio - Trusthub Compliance Inquiries API
   description: This is the public Twilio REST API.
   termsOfService: https://www.twilio.com/legal/tos
   contact:
@@ -12,7 +12,7 @@ info:
     url: https://www.apache.org/licenses/LICENSE-2.0.html
   version: 1.52.0
 servers:
-- url: https://accounts.twilio.com
+- url: https://trusthub.twilio.com
 tags:
 - name: ComplianceInquiries
 paths:
@@ -135,30 +135,6 @@ components:
           maxLength: 34
           pattern: ^BU[0-9a-fA-F]{32}$
           description: The unique SID identifier of the Primary Customer Profile that should be used as a parent. Only necessary when creating a secondary Customer Profile.
-    trusthub.v1.compliance_tollfree_inquiry:
-      type: object
-      properties:
-        inquiry_id:
-          type:
-          - string
-          - 'null'
-          description: The unique ID used to start an embedded compliance registration session.
-        inquiry_session_token:
-          type:
-          - string
-          - 'null'
-          description: The session token used to start an embedded compliance registration session.
-        registration_id:
-          type:
-          - string
-          - 'null'
-          description: The TolfreeId matching the Tollfree Profile that should be resumed or resubmitted for editing.
-        url:
-          type:
-          - string
-          - 'null'
-          format: uri
-          description: The URL of this resource.
     CreateComplianceTollfreeInquiryRequest:
       type: object
       required:
@@ -235,6 +211,38 @@ components:
           type: string
           format: phone-number
           description: The phone number of the contact for the business or organization using the Tollfree number.
+    trusthub.v1.compliance_tollfree_inquiry:
+      type: object
+      properties:
+        inquiry_id:
+          type:
+          - string
+          - 'null'
+          description: The unique ID used to start an embedded compliance registration session.
+        inquiry_session_token:
+          type:
+          - string
+          - 'null'
+          description: The session token used to start an embedded compliance registration session.
+        registration_id:
+          type:
+          - string
+          - 'null'
+          description: The TolfreeId matching the Tollfree Profile that should be resumed or resubmitted for editing.
+        url:
+          type:
+          - string
+          - 'null'
+          format: uri
+          description: The URL of this resource.
+    compliance_tollfree_inquiry_enum_opt_in_type:
+      type: string
+      enum:
+      - VERBAL
+      - WEB_FORM
+      - PAPER_FORM
+      - VIA_TEXT
+      - MOBILE_QR_CODE
     trusthub.v1.compliance_inquiry:
       type: object
       properties:
@@ -259,14 +267,6 @@ components:
           - 'null'
           format: uri
           description: The URL of this resource.
-    compliance_tollfree_inquiry_enum_opt_in_type:
-      type: string
-      enum:
-      - VERBAL
-      - WEB_FORM
-      - PAPER_FORM
-      - VIA_TEXT
-      - MOBILE_QR_CODE
     CreateComplianceInquiryRequest:
       type: object
       required:
@@ -285,5 +285,3 @@ components:
 x-maturity:
 - name: GA
   description: This product is Generally Available.
-- name: Beta
-  description: PLEASE NOTE that this is a Beta product that is subject to change. Use it with caution.

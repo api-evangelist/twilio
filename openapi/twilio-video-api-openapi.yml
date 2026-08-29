@@ -1,6 +1,6 @@
 openapi: 3.2.0
 info:
-  title: Twilio - Accounts A2p Video API
+  title: Twilio - Insights Video API
   description: This is the public Twilio REST API.
   termsOfService: https://www.twilio.com/legal/tos
   contact:
@@ -12,7 +12,7 @@ info:
     url: https://www.apache.org/licenses/LICENSE-2.0.html
   version: 1.52.0
 servers:
-- url: https://accounts.twilio.com
+- url: https://insights.twilio.com
 tags:
 - name: Video
 paths:
@@ -225,23 +225,178 @@ paths:
       - Beta
 components:
   schemas:
+    video_room_summary_enum_room_status:
+      type: string
+      enum:
+      - in_progress
+      - completed
+    video_room_summary_enum_edge_location:
+      type: string
+      enum:
+      - ashburn
+      - dublin
+      - frankfurt
+      - singapore
+      - sydney
+      - sao_paulo
+      - roaming
+      - umatilla
+      - tokyo
+    video_room_summary_enum_processing_state:
+      type: string
+      enum:
+      - complete
+      - in_progress
     video_participant_summary_enum_codec:
       type: string
       enum:
       - VP8
       - H264
       - VP9
-    video_room_summary_enum_created_method:
+    video_room_summary_enum_room_type:
       type: string
       enum:
-      - sdk
-      - ad_hoc
-      - api
-    video_room_summary_enum_end_reason:
+      - go
+      - peer_to_peer
+      - group
+      - group_small
+    insights.v1.video_room_summary.video_participant_summary:
+      type: object
+      properties:
+        participant_sid:
+          type:
+          - string
+          - 'null'
+          minLength: 34
+          maxLength: 34
+          pattern: ^PA[0-9a-fA-F]{32}$
+          description: Unique identifier for the participant.
+        participant_identity:
+          type:
+          - string
+          - 'null'
+          description: The application-defined string that uniquely identifies the participant within a Room.
+        join_time:
+          type:
+          - string
+          - 'null'
+          format: date-time
+          description: When the participant joined the room.
+        leave_time:
+          type:
+          - string
+          - 'null'
+          format: date-time
+          description: When the participant left the room.
+        duration_sec:
+          type:
+          - integer
+          - 'null'
+          format: int64
+          description: Amount of time in seconds the participant was in the room.
+        account_sid:
+          type:
+          - string
+          - 'null'
+          minLength: 34
+          maxLength: 34
+          pattern: ^AC[0-9a-fA-F]{32}$
+          description: Account SID associated with the room.
+        room_sid:
+          type:
+          - string
+          - 'null'
+          minLength: 34
+          maxLength: 34
+          pattern: ^RM[0-9a-fA-F]{32}$
+          description: Unique identifier for the room.
+        status:
+          type:
+          - string
+          - 'null'
+          $ref: '#/components/schemas/video_participant_summary_enum_room_status'
+          description: Status of the room. Can be `in_progress` or `completed`.
+        codecs:
+          type:
+          - array
+          - 'null'
+          items:
+            type: string
+            $ref: '#/components/schemas/video_participant_summary_enum_codec'
+          description: Codecs detected from the participant. Can be `VP8`, `H264`, or `VP9`.
+        end_reason:
+          type:
+          - string
+          - 'null'
+          description: Reason the participant left the room. See [the list of possible values here](https://www.twilio.com/docs/video/troubleshooting/video-log-analyzer-api#end_reason).
+        error_code:
+          type:
+          - integer
+          - 'null'
+          description: Errors encountered by the participant.
+        error_code_url:
+          type:
+          - string
+          - 'null'
+          description: Twilio error code dictionary link.
+        media_region:
+          type:
+          - string
+          - 'null'
+          $ref: '#/components/schemas/video_participant_summary_enum_twilio_realm'
+          description: Twilio media region the participant connected to. See [the list of possible media servers here](https://www.twilio.com/docs/video/ip-addresses).
+        properties:
+          description: Object containing information about the participant's data from the room. See [below](https://www.twilio.com/docs/video/troubleshooting/video-log-analyzer-api#properties) for more information.
+        edge_location:
+          type:
+          - string
+          - 'null'
+          $ref: '#/components/schemas/video_participant_summary_enum_edge_location'
+          description: Name of the edge location the participant connected to. See [the list of public edge locations](https://www.twilio.com/docs/global-infrastructure/edge-locations#public-edge-locations) for the possible values.
+        publisher_info:
+          description: Object containing information about the SDK name and version. See [below](https://www.twilio.com/docs/video/troubleshooting/video-log-analyzer-api#publisher_info) for more information.
+        url:
+          type:
+          - string
+          - 'null'
+          format: uri
+          description: URL of the participant resource.
+    video_participant_summary_enum_edge_location:
       type: string
       enum:
-      - room_ended_via_api
-      - timeout
+      - ashburn
+      - dublin
+      - frankfurt
+      - singapore
+      - sydney
+      - sao_paulo
+      - roaming
+      - umatilla
+      - tokyo
+    video_participant_summary_enum_room_status:
+      type: string
+      enum:
+      - in_progress
+      - completed
+    video_room_summary_enum_codec:
+      type: string
+      enum:
+      - VP8
+      - H264
+      - VP9
+    video_room_summary_enum_twilio_realm:
+      type: string
+      enum:
+      - us1
+      - us2
+      - au1
+      - br1
+      - ie1
+      - jp1
+      - sg1
+      - in1
+      - de1
+      - gll
     insights.v1.video_room_summary:
       type: object
       properties:
@@ -407,60 +562,19 @@ components:
           - 'null'
           format: uri-map
           description: Room subresources.
-    video_room_summary_enum_processing_state:
+    video_participant_summary_enum_twilio_realm:
       type: string
       enum:
-      - complete
-      - in_progress
-    ListVideoParticipantSummaryResponse:
-      type: object
-      properties:
-        participants:
-          type: array
-          items:
-            $ref: '#/components/schemas/insights.v1.video_room_summary.video_participant_summary'
-        meta:
-          type: object
-          properties:
-            first_page_url:
-              type: string
-              format: uri
-            next_page_url:
-              type:
-              - string
-              - 'null'
-              format: uri
-            page:
-              type: integer
-            page_size:
-              type: integer
-            previous_page_url:
-              type:
-              - string
-              - 'null'
-              format: uri
-            url:
-              type: string
-              format: uri
-            key:
-              type: string
-    video_room_summary_enum_room_type:
-      type: string
-      enum:
-      - go
-      - peer_to_peer
-      - group
-      - group_small
-    video_room_summary_enum_room_status:
-      type: string
-      enum:
-      - in_progress
-      - completed
-    video_participant_summary_enum_room_status:
-      type: string
-      enum:
-      - in_progress
-      - completed
+      - us1
+      - us2
+      - au1
+      - br1
+      - ie1
+      - jp1
+      - sg1
+      - in1
+      - de1
+      - gll
     ListVideoRoomSummaryResponse:
       type: object
       properties:
@@ -493,163 +607,49 @@ components:
               format: uri
             key:
               type: string
-    insights.v1.video_room_summary.video_participant_summary:
+    ListVideoParticipantSummaryResponse:
       type: object
       properties:
-        participant_sid:
-          type:
-          - string
-          - 'null'
-          minLength: 34
-          maxLength: 34
-          pattern: ^PA[0-9a-fA-F]{32}$
-          description: Unique identifier for the participant.
-        participant_identity:
-          type:
-          - string
-          - 'null'
-          description: The application-defined string that uniquely identifies the participant within a Room.
-        join_time:
-          type:
-          - string
-          - 'null'
-          format: date-time
-          description: When the participant joined the room.
-        leave_time:
-          type:
-          - string
-          - 'null'
-          format: date-time
-          description: When the participant left the room.
-        duration_sec:
-          type:
-          - integer
-          - 'null'
-          format: int64
-          description: Amount of time in seconds the participant was in the room.
-        account_sid:
-          type:
-          - string
-          - 'null'
-          minLength: 34
-          maxLength: 34
-          pattern: ^AC[0-9a-fA-F]{32}$
-          description: Account SID associated with the room.
-        room_sid:
-          type:
-          - string
-          - 'null'
-          minLength: 34
-          maxLength: 34
-          pattern: ^RM[0-9a-fA-F]{32}$
-          description: Unique identifier for the room.
-        status:
-          type:
-          - string
-          - 'null'
-          $ref: '#/components/schemas/video_participant_summary_enum_room_status'
-          description: Status of the room. Can be `in_progress` or `completed`.
-        codecs:
-          type:
-          - array
-          - 'null'
+        participants:
+          type: array
           items:
-            type: string
-            $ref: '#/components/schemas/video_participant_summary_enum_codec'
-          description: Codecs detected from the participant. Can be `VP8`, `H264`, or `VP9`.
-        end_reason:
-          type:
-          - string
-          - 'null'
-          description: Reason the participant left the room. See [the list of possible values here](https://www.twilio.com/docs/video/troubleshooting/video-log-analyzer-api#end_reason).
-        error_code:
-          type:
-          - integer
-          - 'null'
-          description: Errors encountered by the participant.
-        error_code_url:
-          type:
-          - string
-          - 'null'
-          description: Twilio error code dictionary link.
-        media_region:
-          type:
-          - string
-          - 'null'
-          $ref: '#/components/schemas/video_participant_summary_enum_twilio_realm'
-          description: Twilio media region the participant connected to. See [the list of possible media servers here](https://www.twilio.com/docs/video/ip-addresses).
-        properties:
-          description: Object containing information about the participant's data from the room. See [below](https://www.twilio.com/docs/video/troubleshooting/video-log-analyzer-api#properties) for more information.
-        edge_location:
-          type:
-          - string
-          - 'null'
-          $ref: '#/components/schemas/video_participant_summary_enum_edge_location'
-          description: Name of the edge location the participant connected to. See [the list of public edge locations](https://www.twilio.com/docs/global-infrastructure/edge-locations#public-edge-locations) for the possible values.
-        publisher_info:
-          description: Object containing information about the SDK name and version. See [below](https://www.twilio.com/docs/video/troubleshooting/video-log-analyzer-api#publisher_info) for more information.
-        url:
-          type:
-          - string
-          - 'null'
-          format: uri
-          description: URL of the participant resource.
-    video_participant_summary_enum_edge_location:
+            $ref: '#/components/schemas/insights.v1.video_room_summary.video_participant_summary'
+        meta:
+          type: object
+          properties:
+            first_page_url:
+              type: string
+              format: uri
+            next_page_url:
+              type:
+              - string
+              - 'null'
+              format: uri
+            page:
+              type: integer
+            page_size:
+              type: integer
+            previous_page_url:
+              type:
+              - string
+              - 'null'
+              format: uri
+            url:
+              type: string
+              format: uri
+            key:
+              type: string
+    video_room_summary_enum_end_reason:
       type: string
       enum:
-      - ashburn
-      - dublin
-      - frankfurt
-      - singapore
-      - sydney
-      - sao_paulo
-      - roaming
-      - umatilla
-      - tokyo
-    video_room_summary_enum_edge_location:
+      - room_ended_via_api
+      - timeout
+    video_room_summary_enum_created_method:
       type: string
       enum:
-      - ashburn
-      - dublin
-      - frankfurt
-      - singapore
-      - sydney
-      - sao_paulo
-      - roaming
-      - umatilla
-      - tokyo
-    video_room_summary_enum_twilio_realm:
-      type: string
-      enum:
-      - us1
-      - us2
-      - au1
-      - br1
-      - ie1
-      - jp1
-      - sg1
-      - in1
-      - de1
-      - gll
-    video_participant_summary_enum_twilio_realm:
-      type: string
-      enum:
-      - us1
-      - us2
-      - au1
-      - br1
-      - ie1
-      - jp1
-      - sg1
-      - in1
-      - de1
-      - gll
-    video_room_summary_enum_codec:
-      type: string
-      enum:
-      - VP8
-      - H264
-      - VP9
+      - sdk
+      - ad_hoc
+      - api
   securitySchemes:
     accountSid_authToken:
       type: http
@@ -659,3 +659,5 @@ x-maturity:
   description: This product is Generally Available.
 - name: Beta
   description: PLEASE NOTE that this is a Beta product that is subject to change. Use it with caution.
+- name: Preview
+  description: PLEASE NOTE that this is a Preview product that is subject to change. Use it with caution. If you currently do not have developer preview access, please contact https://www.twilio.com/help/contact.

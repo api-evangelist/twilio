@@ -1,6 +1,6 @@
 openapi: 3.2.0
 info:
-  title: Twilio - Accounts A2p Player Streamers API
+  title: Twilio - Media Player Streamers API
   description: This is the public Twilio REST API.
   termsOfService: https://www.twilio.com/legal/tos
   contact:
@@ -12,7 +12,7 @@ info:
     url: https://www.apache.org/licenses/LICENSE-2.0.html
   version: 1.52.0
 servers:
-- url: https://accounts.twilio.com
+- url: https://media.twilio.com
 tags:
 - name: PlayerStreamers
 paths:
@@ -261,6 +261,30 @@ components:
       - max-duration-exceeded
       - stream-disconnected-by-source
       - unexpected-failure
+    CreatePlayerStreamerRequest:
+      type: object
+      properties:
+        Video:
+          type: boolean
+          description: Specifies whether the PlayerStreamer is configured to stream video. Defaults to `true`.
+        StatusCallback:
+          type: string
+          format: uri
+          description: The URL to which Twilio will send asynchronous webhook requests for every PlayerStreamer event. See [Status Callbacks](/docs/live/api/status-callbacks) for more details.
+        StatusCallbackMethod:
+          type: string
+          format: http-method
+          enum:
+          - HEAD
+          - GET
+          - POST
+          - PATCH
+          - PUT
+          - DELETE
+          description: The HTTP method Twilio should use to call the `status_callback` URL. Can be `POST` or `GET` and the default is `POST`.
+        MaxDuration:
+          type: integer
+          description: The maximum time, in seconds, that the PlayerStreamer is active (`created` or `started`) before automatically ends. The default value is 300 seconds, and the maximum value is 90000 seconds. Once this maximum duration is reached, Twilio will end the PlayerStreamer, regardless of whether media is still streaming.
     player_streamer_enum_status:
       type: string
       enum:
@@ -268,6 +292,38 @@ components:
       - started
       - ended
       - failed
+    ListPlayerStreamerResponse:
+      type: object
+      properties:
+        player_streamers:
+          type: array
+          items:
+            $ref: '#/components/schemas/media.v1.player_streamer'
+        meta:
+          type: object
+          properties:
+            first_page_url:
+              type: string
+              format: uri
+            next_page_url:
+              type:
+              - string
+              - 'null'
+              format: uri
+            page:
+              type: integer
+            page_size:
+              type: integer
+            previous_page_url:
+              type:
+              - string
+              - 'null'
+              format: uri
+            url:
+              type: string
+              format: uri
+            key:
+              type: string
     player_streamer_enum_update_status:
       type: string
       enum:
@@ -356,62 +412,6 @@ components:
           - integer
           - 'null'
           description: The maximum time, in seconds, that the PlayerStreamer is active (`created` or `started`) before automatically ends. The default value is 300 seconds, and the maximum value is 90000 seconds. Once this maximum duration is reached, Twilio will end the PlayerStreamer, regardless of whether media is still streaming.
-    ListPlayerStreamerResponse:
-      type: object
-      properties:
-        player_streamers:
-          type: array
-          items:
-            $ref: '#/components/schemas/media.v1.player_streamer'
-        meta:
-          type: object
-          properties:
-            first_page_url:
-              type: string
-              format: uri
-            next_page_url:
-              type:
-              - string
-              - 'null'
-              format: uri
-            page:
-              type: integer
-            page_size:
-              type: integer
-            previous_page_url:
-              type:
-              - string
-              - 'null'
-              format: uri
-            url:
-              type: string
-              format: uri
-            key:
-              type: string
-    CreatePlayerStreamerRequest:
-      type: object
-      properties:
-        Video:
-          type: boolean
-          description: Specifies whether the PlayerStreamer is configured to stream video. Defaults to `true`.
-        StatusCallback:
-          type: string
-          format: uri
-          description: The URL to which Twilio will send asynchronous webhook requests for every PlayerStreamer event. See [Status Callbacks](/docs/live/api/status-callbacks) for more details.
-        StatusCallbackMethod:
-          type: string
-          format: http-method
-          enum:
-          - HEAD
-          - GET
-          - POST
-          - PATCH
-          - PUT
-          - DELETE
-          description: The HTTP method Twilio should use to call the `status_callback` URL. Can be `POST` or `GET` and the default is `POST`.
-        MaxDuration:
-          type: integer
-          description: The maximum time, in seconds, that the PlayerStreamer is active (`created` or `started`) before automatically ends. The default value is 300 seconds, and the maximum value is 90000 seconds. Once this maximum duration is reached, Twilio will end the PlayerStreamer, regardless of whether media is still streaming.
     UpdatePlayerStreamerRequest:
       type: object
       required:
@@ -426,6 +426,15 @@ components:
       enum:
       - asc
       - desc
+    CreatePlayerStreamerPlaybackGrantRequest:
+      type: object
+      properties:
+        Ttl:
+          type: integer
+          description: The time to live of the PlaybackGrant. Default value is 15 seconds. Maximum value is 60 seconds.
+        AccessControlAllowOrigin:
+          type: string
+          description: The full origin URL where the livestream can be streamed. If this is not provided, it can be streamed from any domain.
     media.v1.player_streamer.player_streamer_playback_grant:
       type: object
       properties:
@@ -459,15 +468,6 @@ components:
           description: The date and time in GMT when the resource was created specified in [ISO 8601](https://en.wikipedia.org/wiki/ISO_8601) format.
         grant:
           description: The grant that authorizes the player sdk to connect to the livestream
-    CreatePlayerStreamerPlaybackGrantRequest:
-      type: object
-      properties:
-        Ttl:
-          type: integer
-          description: The time to live of the PlaybackGrant. Default value is 15 seconds. Maximum value is 60 seconds.
-        AccessControlAllowOrigin:
-          type: string
-          description: The full origin URL where the livestream can be streamed. If this is not provided, it can be streamed from any domain.
   securitySchemes:
     accountSid_authToken:
       type: http
@@ -475,5 +475,5 @@ components:
 x-maturity:
 - name: GA
   description: This product is Generally Available.
-- name: Beta
-  description: PLEASE NOTE that this is a Beta product that is subject to change. Use it with caution.
+- name: Preview
+  description: PLEASE NOTE that this is a Preview product that is subject to change. Use it with caution. If you currently do not have developer preview access, please contact https://www.twilio.com/help/contact.

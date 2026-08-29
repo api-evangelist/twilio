@@ -1,6 +1,6 @@
 openapi: 3.2.0
 info:
-  title: Twilio - Accounts A2p Conversations API
+  title: Twilio Conversations API
   description: This is the public Twilio REST API.
   termsOfService: https://www.twilio.com/legal/tos
   contact:
@@ -12,7 +12,7 @@ info:
     url: https://www.apache.org/licenses/LICENSE-2.0.html
   version: 1.52.0
 servers:
-- url: https://accounts.twilio.com
+- url: https://conversations.twilio.com
 tags:
 - name: Conversations
 paths:
@@ -961,6 +961,223 @@ paths:
       - GA
 components:
   schemas:
+    conversations.v1.conversation.conversation_message.conversation_message_receipt:
+      type: object
+      properties:
+        account_sid:
+          type:
+          - string
+          - 'null'
+          minLength: 34
+          maxLength: 34
+          pattern: ^AC[0-9a-fA-F]{32}$
+          description: The unique ID of the [Account](https://www.twilio.com/docs/iam/api/account) responsible for this participant.
+        conversation_sid:
+          type:
+          - string
+          - 'null'
+          minLength: 34
+          maxLength: 34
+          pattern: ^CH[0-9a-fA-F]{32}$
+          description: The unique ID of the [Conversation](https://www.twilio.com/docs/conversations/api/conversation-resource) for this message.
+        sid:
+          type:
+          - string
+          - 'null'
+          minLength: 34
+          maxLength: 34
+          pattern: ^DY[0-9a-fA-F]{32}$
+          description: A 34 character string that uniquely identifies this resource.
+        message_sid:
+          type:
+          - string
+          - 'null'
+          minLength: 34
+          maxLength: 34
+          pattern: ^IM[0-9a-fA-F]{32}$
+          description: The SID of the message within a [Conversation](https://www.twilio.com/docs/conversations/api/conversation-resource) the delivery receipt belongs to
+        channel_message_sid:
+          type:
+          - string
+          - 'null'
+          minLength: 34
+          maxLength: 34
+          pattern: ^[a-zA-Z]{2}[0-9a-fA-F]{32}$
+          description: 'A messaging channel-specific identifier for the message delivered to participant e.g. `SMxx` for SMS, `WAxx` for Whatsapp etc. '
+        participant_sid:
+          type:
+          - string
+          - 'null'
+          minLength: 34
+          maxLength: 34
+          pattern: ^MB[0-9a-fA-F]{32}$
+          description: The unique ID of the participant the delivery receipt belongs to.
+        status:
+          type:
+          - string
+          - 'null'
+          $ref: '#/components/schemas/conversation_message_receipt_enum_delivery_status'
+          description: The message delivery status, can be `read`, `failed`, `delivered`, `undelivered`, `sent` or null.
+        error_code:
+          type:
+          - integer
+          - 'null'
+          description: 'The message [delivery error code](https://www.twilio.com/docs/sms/api/message-resource#delivery-related-errors) for a `failed` status, '
+        date_created:
+          type:
+          - string
+          - 'null'
+          format: date-time
+          description: The date that this resource was created.
+        date_updated:
+          type:
+          - string
+          - 'null'
+          format: date-time
+          description: The date that this resource was last updated. `null` if the delivery receipt has not been updated.
+        url:
+          type:
+          - string
+          - 'null'
+          format: uri
+          description: An absolute API resource URL for this delivery receipt.
+    conversations.v1.conversation:
+      type: object
+      properties:
+        account_sid:
+          type:
+          - string
+          - 'null'
+          minLength: 34
+          maxLength: 34
+          pattern: ^AC[0-9a-fA-F]{32}$
+          description: The unique ID of the [Account](https://www.twilio.com/docs/iam/api/account) responsible for this conversation.
+        chat_service_sid:
+          type:
+          - string
+          - 'null'
+          minLength: 34
+          maxLength: 34
+          pattern: ^IS[0-9a-fA-F]{32}$
+          description: The unique ID of the [Conversation Service](https://www.twilio.com/docs/conversations/api/service-resource) this conversation belongs to.
+        messaging_service_sid:
+          type:
+          - string
+          - 'null'
+          minLength: 34
+          maxLength: 34
+          pattern: ^MG[0-9a-fA-F]{32}$
+          description: The unique ID of the [Messaging Service](https://www.twilio.com/docs/messaging/api/service-resource) this conversation belongs to.
+        sid:
+          type:
+          - string
+          - 'null'
+          minLength: 34
+          maxLength: 34
+          pattern: ^CH[0-9a-fA-F]{32}$
+          description: A 34 character string that uniquely identifies this resource.
+        friendly_name:
+          type:
+          - string
+          - 'null'
+          description: The human-readable name of this conversation, limited to 256 characters. Optional.
+          x-twilio:
+            pii:
+              handling: standard
+              deleteSla: 30
+        unique_name:
+          type:
+          - string
+          - 'null'
+          description: An application-defined string that uniquely identifies the resource. It can be used to address the resource in place of the resource's `sid` in the URL.
+          x-twilio:
+            pii:
+              handling: standard
+              deleteSla: 30
+        attributes:
+          type:
+          - string
+          - 'null'
+          description: An optional string metadata field you can use to store any data you wish. The string value must contain structurally valid JSON if specified.  **Note** that if the attributes are not set "{}" will be returned.
+          x-twilio:
+            pii:
+              handling: sensitive
+              deleteSla: 30
+        state:
+          type:
+          - string
+          - 'null'
+          $ref: '#/components/schemas/conversation_enum_state'
+          description: Current state of this conversation. Can be either `active`, `inactive` or `closed` and defaults to `active`
+        date_created:
+          type:
+          - string
+          - 'null'
+          format: date-time
+          description: The date that this resource was created.
+        date_updated:
+          type:
+          - string
+          - 'null'
+          format: date-time
+          description: The date that this resource was last updated.
+        timers:
+          description: Timer date values representing state update for this conversation.
+        url:
+          type:
+          - string
+          - 'null'
+          format: uri
+          description: An absolute API resource URL for this conversation.
+        links:
+          type:
+          - object
+          - 'null'
+          format: uri-map
+          description: Contains absolute URLs to access the [participants](https://www.twilio.com/docs/conversations/api/conversation-participant-resource), [messages](https://www.twilio.com/docs/conversations/api/conversation-message-resource) and [webhooks](https://www.twilio.com/docs/conversations/api/conversation-scoped-webhook-resource) of this conversation.
+        bindings: {}
+    ListConversationMessageResponse:
+      type: object
+      properties:
+        messages:
+          type: array
+          items:
+            $ref: '#/components/schemas/conversations.v1.conversation.conversation_message'
+        meta:
+          type: object
+          properties:
+            first_page_url:
+              type: string
+              format: uri
+            next_page_url:
+              type:
+              - string
+              - 'null'
+              format: uri
+            page:
+              type: integer
+            page_size:
+              type: integer
+            previous_page_url:
+              type:
+              - string
+              - 'null'
+              format: uri
+            url:
+              type: string
+              format: uri
+            key:
+              type: string
+    conversation_message_enum_webhook_enabled_type:
+      type: string
+      enum:
+      - 'true'
+      - 'false'
+    conversation_participant_enum_webhook_enabled_type:
+      type: string
+      enum:
+      - 'true'
+      - 'false'
     conversations.v1.conversation.conversation_message:
       type: object
       properties:
@@ -1072,18 +1289,20 @@ components:
           maxLength: 34
           pattern: ^HX[0-9a-fA-F]{32}$
           description: The unique ID of the multi-channel [Rich Content](https://www.twilio.com/docs/content) template.
-    CreateConversationParticipantRequest:
+    conversation_message_enum_order_type:
+      type: string
+      enum:
+      - asc
+      - desc
+    CreateConversationMessageRequest:
       type: object
       properties:
-        Identity:
+        Author:
           type: string
-          description: A unique string identifier for the conversation participant as [Conversation User](https://www.twilio.com/docs/conversations/api/user-resource). This parameter is non-null if (and only if) the participant is using the Conversations SDK to communicate. Limited to 256 characters.
-        MessagingBinding.Address:
+          description: The channel specific identifier of the message's author. Defaults to `system`.
+        Body:
           type: string
-          description: The address of the participant's device, e.g. a phone or WhatsApp number. Together with the Proxy address, this determines a participant uniquely. This field (with proxy_address) is only null when the participant is interacting from an SDK endpoint (see the 'identity' field).
-        MessagingBinding.ProxyAddress:
-          type: string
-          description: The address of the Twilio phone number (or WhatsApp number) that the participant is in contact with. This field, together with participant address, is only null when the participant is interacting from an SDK endpoint (see the 'identity' field).
+          description: The content of the message, can be up to 1,600 characters long.
         DateCreated:
           type: string
           format: date-time
@@ -1091,387 +1310,33 @@ components:
         DateUpdated:
           type: string
           format: date-time
-          description: The date that this resource was last updated.
+          description: The date that this resource was last updated. `null` if the message has not been edited.
         Attributes:
           type: string
-          description: An optional string metadata field you can use to store any data you wish. The string value must contain structurally valid JSON if specified.  **Note** that if the attributes are not set "{}" will be returned.
-        MessagingBinding.ProjectedAddress:
-          type: string
-          description: The address of the Twilio phone number that is used in Group MMS. Communication mask for the Conversation participant with Identity.
-        RoleSid:
+          description: A string metadata field you can use to store any data you wish. The string value must contain structurally valid JSON if specified.  **Note** that if the attributes are not set "{}" will be returned.
+        MediaSid:
           type: string
           minLength: 34
           maxLength: 34
-          pattern: ^RL[0-9a-fA-F]{32}$
-          description: The SID of a conversation-level [Role](https://www.twilio.com/docs/conversations/api/role-resource) to assign to the participant.
-    conversations.v1.conversation:
-      type: object
-      properties:
-        account_sid:
-          type:
-          - string
-          - 'null'
-          minLength: 34
-          maxLength: 34
-          pattern: ^AC[0-9a-fA-F]{32}$
-          description: The unique ID of the [Account](https://www.twilio.com/docs/iam/api/account) responsible for this conversation.
-        chat_service_sid:
-          type:
-          - string
-          - 'null'
-          minLength: 34
-          maxLength: 34
-          pattern: ^IS[0-9a-fA-F]{32}$
-          description: The unique ID of the [Conversation Service](https://www.twilio.com/docs/conversations/api/service-resource) this conversation belongs to.
-        messaging_service_sid:
-          type:
-          - string
-          - 'null'
-          minLength: 34
-          maxLength: 34
-          pattern: ^MG[0-9a-fA-F]{32}$
-          description: The unique ID of the [Messaging Service](https://www.twilio.com/docs/messaging/api/service-resource) this conversation belongs to.
-        sid:
-          type:
-          - string
-          - 'null'
-          minLength: 34
-          maxLength: 34
-          pattern: ^CH[0-9a-fA-F]{32}$
-          description: A 34 character string that uniquely identifies this resource.
-        friendly_name:
-          type:
-          - string
-          - 'null'
-          description: The human-readable name of this conversation, limited to 256 characters. Optional.
-          x-twilio:
-            pii:
-              handling: standard
-              deleteSla: 30
-        unique_name:
-          type:
-          - string
-          - 'null'
-          description: An application-defined string that uniquely identifies the resource. It can be used to address the resource in place of the resource's `sid` in the URL.
-          x-twilio:
-            pii:
-              handling: standard
-              deleteSla: 30
-        attributes:
-          type:
-          - string
-          - 'null'
-          description: An optional string metadata field you can use to store any data you wish. The string value must contain structurally valid JSON if specified.  **Note** that if the attributes are not set "{}" will be returned.
-          x-twilio:
-            pii:
-              handling: sensitive
-              deleteSla: 30
-        state:
-          type:
-          - string
-          - 'null'
-          $ref: '#/components/schemas/conversation_enum_state'
-          description: Current state of this conversation. Can be either `active`, `inactive` or `closed` and defaults to `active`
-        date_created:
-          type:
-          - string
-          - 'null'
-          format: date-time
-          description: The date that this resource was created.
-        date_updated:
-          type:
-          - string
-          - 'null'
-          format: date-time
-          description: The date that this resource was last updated.
-        timers:
-          description: Timer date values representing state update for this conversation.
-        url:
-          type:
-          - string
-          - 'null'
-          format: uri
-          description: An absolute API resource URL for this conversation.
-        links:
-          type:
-          - object
-          - 'null'
-          format: uri-map
-          description: Contains absolute URLs to access the [participants](https://www.twilio.com/docs/conversations/api/conversation-participant-resource), [messages](https://www.twilio.com/docs/conversations/api/conversation-message-resource) and [webhooks](https://www.twilio.com/docs/conversations/api/conversation-scoped-webhook-resource) of this conversation.
-        bindings: {}
-    conversation_enum_state:
-      type: string
-      enum:
-      - inactive
-      - active
-      - closed
-    conversation_participant_enum_webhook_enabled_type:
-      type: string
-      enum:
-      - 'true'
-      - 'false'
-    ListConversationResponse:
-      type: object
-      properties:
-        conversations:
-          type: array
-          items:
-            $ref: '#/components/schemas/conversations.v1.conversation'
-        meta:
-          type: object
-          properties:
-            first_page_url:
-              type: string
-              format: uri
-            next_page_url:
-              type:
-              - string
-              - 'null'
-              format: uri
-            page:
-              type: integer
-            page_size:
-              type: integer
-            previous_page_url:
-              type:
-              - string
-              - 'null'
-              format: uri
-            url:
-              type: string
-              format: uri
-            key:
-              type: string
-    conversation_enum_webhook_enabled_type:
-      type: string
-      enum:
-      - 'true'
-      - 'false'
-    ListConversationMessageReceiptResponse:
-      type: object
-      properties:
-        delivery_receipts:
-          type: array
-          items:
-            $ref: '#/components/schemas/conversations.v1.conversation.conversation_message.conversation_message_receipt'
-        meta:
-          type: object
-          properties:
-            first_page_url:
-              type: string
-              format: uri
-            next_page_url:
-              type:
-              - string
-              - 'null'
-              format: uri
-            page:
-              type: integer
-            page_size:
-              type: integer
-            previous_page_url:
-              type:
-              - string
-              - 'null'
-              format: uri
-            url:
-              type: string
-              format: uri
-            key:
-              type: string
-    conversation_message_receipt_enum_delivery_status:
-      type: string
-      enum:
-      - read
-      - failed
-      - delivered
-      - undelivered
-      - sent
-    conversations.v1.conversation.conversation_message.conversation_message_receipt:
-      type: object
-      properties:
-        account_sid:
-          type:
-          - string
-          - 'null'
-          minLength: 34
-          maxLength: 34
-          pattern: ^AC[0-9a-fA-F]{32}$
-          description: The unique ID of the [Account](https://www.twilio.com/docs/iam/api/account) responsible for this participant.
-        conversation_sid:
-          type:
-          - string
-          - 'null'
-          minLength: 34
-          maxLength: 34
-          pattern: ^CH[0-9a-fA-F]{32}$
-          description: The unique ID of the [Conversation](https://www.twilio.com/docs/conversations/api/conversation-resource) for this message.
-        sid:
-          type:
-          - string
-          - 'null'
-          minLength: 34
-          maxLength: 34
-          pattern: ^DY[0-9a-fA-F]{32}$
-          description: A 34 character string that uniquely identifies this resource.
-        message_sid:
-          type:
-          - string
-          - 'null'
-          minLength: 34
-          maxLength: 34
-          pattern: ^IM[0-9a-fA-F]{32}$
-          description: The SID of the message within a [Conversation](https://www.twilio.com/docs/conversations/api/conversation-resource) the delivery receipt belongs to
-        channel_message_sid:
-          type:
-          - string
-          - 'null'
-          minLength: 34
-          maxLength: 34
-          pattern: ^[a-zA-Z]{2}[0-9a-fA-F]{32}$
-          description: 'A messaging channel-specific identifier for the message delivered to participant e.g. `SMxx` for SMS, `WAxx` for Whatsapp etc. '
-        participant_sid:
-          type:
-          - string
-          - 'null'
-          minLength: 34
-          maxLength: 34
-          pattern: ^MB[0-9a-fA-F]{32}$
-          description: The unique ID of the participant the delivery receipt belongs to.
-        status:
-          type:
-          - string
-          - 'null'
-          $ref: '#/components/schemas/conversation_message_receipt_enum_delivery_status'
-          description: The message delivery status, can be `read`, `failed`, `delivered`, `undelivered`, `sent` or null.
-        error_code:
-          type:
-          - integer
-          - 'null'
-          description: 'The message [delivery error code](https://www.twilio.com/docs/sms/api/message-resource#delivery-related-errors) for a `failed` status, '
-        date_created:
-          type:
-          - string
-          - 'null'
-          format: date-time
-          description: The date that this resource was created.
-        date_updated:
-          type:
-          - string
-          - 'null'
-          format: date-time
-          description: The date that this resource was last updated. `null` if the delivery receipt has not been updated.
-        url:
-          type:
-          - string
-          - 'null'
-          format: uri
-          description: An absolute API resource URL for this delivery receipt.
-    conversation_message_enum_webhook_enabled_type:
-      type: string
-      enum:
-      - 'true'
-      - 'false'
-    UpdateConversationScopedWebhookRequest:
-      type: object
-      properties:
-        Configuration.Url:
-          type: string
-          description: The absolute url the webhook request should be sent to.
-        Configuration.Method:
-          type: string
-          $ref: '#/components/schemas/conversation_scoped_webhook_enum_method'
-          description: The HTTP method to be used when sending a webhook request.
-        Configuration.Filters:
-          type: array
-          items:
-            type: string
-          description: The list of events, firing webhook event for this Conversation.
-        Configuration.Triggers:
-          type: array
-          items:
-            type: string
-          description: The list of keywords, firing webhook event for this Conversation.
-        Configuration.FlowSid:
+          pattern: ^ME[0-9a-fA-F]{32}$
+          description: The Media SID to be attached to the new Message.
+        ContentSid:
           type: string
           minLength: 34
           maxLength: 34
-          pattern: ^FW[0-9a-fA-F]{32}$
-          description: The studio flow SID, where the webhook should be sent to.
+          pattern: ^HX[0-9a-fA-F]{32}$
+          description: The unique ID of the multi-channel [Rich Content](https://www.twilio.com/docs/content) template, required for template-generated messages.  **Note** that if this field is set, `Body` and `MediaSid` parameters are ignored.
+        ContentVariables:
+          type: string
+          description: A structurally valid JSON string that contains values to resolve Rich Content template variables.
+        Subject:
+          type: string
+          description: The subject of the message, can be up to 256 characters long.
     conversation_scoped_webhook_enum_method:
       type: string
       enum:
       - GET
       - POST
-    ListConversationParticipantResponse:
-      type: object
-      properties:
-        participants:
-          type: array
-          items:
-            $ref: '#/components/schemas/conversations.v1.conversation.conversation_participant'
-        meta:
-          type: object
-          properties:
-            first_page_url:
-              type: string
-              format: uri
-            next_page_url:
-              type:
-              - string
-              - 'null'
-              format: uri
-            page:
-              type: integer
-            page_size:
-              type: integer
-            previous_page_url:
-              type:
-              - string
-              - 'null'
-              format: uri
-            url:
-              type: string
-              format: uri
-            key:
-              type: string
-    UpdateConversationParticipantRequest:
-      type: object
-      properties:
-        DateCreated:
-          type: string
-          format: date-time
-          description: The date that this resource was created.
-        DateUpdated:
-          type: string
-          format: date-time
-          description: The date that this resource was last updated.
-        Attributes:
-          type: string
-          description: An optional string metadata field you can use to store any data you wish. The string value must contain structurally valid JSON if specified.  **Note** that if the attributes are not set "{}" will be returned.
-        RoleSid:
-          type: string
-          minLength: 34
-          maxLength: 34
-          pattern: ^RL[0-9a-fA-F]{32}$
-          description: The SID of a conversation-level [Role](https://www.twilio.com/docs/conversations/api/role-resource) to assign to the participant.
-        MessagingBinding.ProxyAddress:
-          type: string
-          description: The address of the Twilio phone number that the participant is in contact with. 'null' value will remove it.
-        MessagingBinding.ProjectedAddress:
-          type: string
-          description: The address of the Twilio phone number that is used in Group MMS. 'null' value will remove it.
-        Identity:
-          type: string
-          description: A unique string identifier for the conversation participant as [Conversation User](https://www.twilio.com/docs/conversations/api/user-resource). This parameter is non-null if (and only if) the participant is using the Conversations SDK to communicate. Limited to 256 characters.
-        LastReadMessageIndex:
-          type:
-          - integer
-          - 'null'
-          description: Index of last “read” message in the [Conversation](https://www.twilio.com/docs/conversations/api/conversation-resource) for the Participant.
-        LastReadTimestamp:
-          type: string
-          description: Timestamp of last “read” message in the [Conversation](https://www.twilio.com/docs/conversations/api/conversation-resource) for the Participant.
     conversations.v1.conversation.conversation_participant:
       type: object
       properties:
@@ -1559,73 +1424,12 @@ components:
           - string
           - 'null'
           description: Timestamp of last “read” message in the [Conversation](https://www.twilio.com/docs/conversations/api/conversation-resource) for the Participant.
-    UpdateConversationMessageRequest:
-      type: object
-      properties:
-        Author:
-          type: string
-          description: The channel specific identifier of the message's author. Defaults to `system`.
-        Body:
-          type: string
-          description: The content of the message, can be up to 1,600 characters long.
-        DateCreated:
-          type: string
-          format: date-time
-          description: The date that this resource was created.
-        DateUpdated:
-          type: string
-          format: date-time
-          description: The date that this resource was last updated. `null` if the message has not been edited.
-        Attributes:
-          type: string
-          description: A string metadata field you can use to store any data you wish. The string value must contain structurally valid JSON if specified.  **Note** that if the attributes are not set "{}" will be returned.
-        Subject:
-          type: string
-          description: The subject of the message, can be up to 256 characters long.
-    CreateConversationScopedWebhookRequest:
-      type: object
-      required:
-      - Target
-      properties:
-        Target:
-          type: string
-          $ref: '#/components/schemas/conversation_scoped_webhook_enum_target'
-          description: 'The target of this webhook: `webhook`, `studio`, `trigger`'
-        Configuration.Url:
-          type: string
-          description: The absolute url the webhook request should be sent to.
-        Configuration.Method:
-          type: string
-          $ref: '#/components/schemas/conversation_scoped_webhook_enum_method'
-          description: The HTTP method to be used when sending a webhook request.
-        Configuration.Filters:
-          type: array
-          items:
-            type: string
-          description: The list of events, firing webhook event for this Conversation.
-        Configuration.Triggers:
-          type: array
-          items:
-            type: string
-          description: The list of keywords, firing webhook event for this Conversation.
-        Configuration.FlowSid:
-          type: string
-          minLength: 34
-          maxLength: 34
-          pattern: ^FW[0-9a-fA-F]{32}$
-          description: The studio flow SID, where the webhook should be sent to.
-        Configuration.ReplayAfter:
-          type: integer
-          description: The message index for which and it's successors the webhook will be replayed. Not set by default
-    CreateConversationRequest:
+    UpdateConversationRequest:
       type: object
       properties:
         FriendlyName:
           type: string
           description: The human-readable name of this conversation, limited to 256 characters. Optional.
-        UniqueName:
-          type: string
-          description: An application-defined string that uniquely identifies the resource. It can be used to address the resource in place of the resource's `sid` in the URL.
         DateCreated:
           type: string
           format: date-time
@@ -1634,15 +1438,15 @@ components:
           type: string
           format: date-time
           description: The date that this resource was last updated.
+        Attributes:
+          type: string
+          description: An optional string metadata field you can use to store any data you wish. The string value must contain structurally valid JSON if specified.  **Note** that if the attributes are not set "{}" will be returned.
         MessagingServiceSid:
           type: string
           minLength: 34
           maxLength: 34
           pattern: ^MG[0-9a-fA-F]{32}$
           description: The unique ID of the [Messaging Service](https://www.twilio.com/docs/messaging/api/service-resource) this conversation belongs to.
-        Attributes:
-          type: string
-          description: An optional string metadata field you can use to store any data you wish. The string value must contain structurally valid JSON if specified.  **Note** that if the attributes are not set "{}" will be returned.
         State:
           type: string
           $ref: '#/components/schemas/conversation_enum_state'
@@ -1653,17 +1457,21 @@ components:
         Timers.Closed:
           type: string
           description: ISO8601 duration when conversation will be switched to `closed` state. Minimum value for this timer is 10 minutes.
+        UniqueName:
+          type: string
+          description: An application-defined string that uniquely identifies the resource. It can be used to address the resource in place of the resource's `sid` in the URL.
         Bindings.Email.Address:
           type: string
           description: The default email address that will be used when sending outbound emails in this conversation.
         Bindings.Email.Name:
           type: string
           description: The default name that will be used when sending outbound emails in this conversation.
-    conversation_message_enum_order_type:
+    conversation_scoped_webhook_enum_target:
       type: string
       enum:
-      - asc
-      - desc
+      - webhook
+      - trigger
+      - studio
     conversations.v1.conversation.conversation_scoped_webhook:
       type: object
       properties:
@@ -1716,12 +1524,171 @@ components:
           - 'null'
           format: date-time
           description: The date that this resource was last updated.
-    conversation_scoped_webhook_enum_target:
+    conversation_enum_state:
       type: string
       enum:
-      - webhook
-      - trigger
-      - studio
+      - inactive
+      - active
+      - closed
+    ListConversationResponse:
+      type: object
+      properties:
+        conversations:
+          type: array
+          items:
+            $ref: '#/components/schemas/conversations.v1.conversation'
+        meta:
+          type: object
+          properties:
+            first_page_url:
+              type: string
+              format: uri
+            next_page_url:
+              type:
+              - string
+              - 'null'
+              format: uri
+            page:
+              type: integer
+            page_size:
+              type: integer
+            previous_page_url:
+              type:
+              - string
+              - 'null'
+              format: uri
+            url:
+              type: string
+              format: uri
+            key:
+              type: string
+    CreateConversationScopedWebhookRequest:
+      type: object
+      required:
+      - Target
+      properties:
+        Target:
+          type: string
+          $ref: '#/components/schemas/conversation_scoped_webhook_enum_target'
+          description: 'The target of this webhook: `webhook`, `studio`, `trigger`'
+        Configuration.Url:
+          type: string
+          description: The absolute url the webhook request should be sent to.
+        Configuration.Method:
+          type: string
+          $ref: '#/components/schemas/conversation_scoped_webhook_enum_method'
+          description: The HTTP method to be used when sending a webhook request.
+        Configuration.Filters:
+          type: array
+          items:
+            type: string
+          description: The list of events, firing webhook event for this Conversation.
+        Configuration.Triggers:
+          type: array
+          items:
+            type: string
+          description: The list of keywords, firing webhook event for this Conversation.
+        Configuration.FlowSid:
+          type: string
+          minLength: 34
+          maxLength: 34
+          pattern: ^FW[0-9a-fA-F]{32}$
+          description: The studio flow SID, where the webhook should be sent to.
+        Configuration.ReplayAfter:
+          type: integer
+          description: The message index for which and it's successors the webhook will be replayed. Not set by default
+    UpdateConversationMessageRequest:
+      type: object
+      properties:
+        Author:
+          type: string
+          description: The channel specific identifier of the message's author. Defaults to `system`.
+        Body:
+          type: string
+          description: The content of the message, can be up to 1,600 characters long.
+        DateCreated:
+          type: string
+          format: date-time
+          description: The date that this resource was created.
+        DateUpdated:
+          type: string
+          format: date-time
+          description: The date that this resource was last updated. `null` if the message has not been edited.
+        Attributes:
+          type: string
+          description: A string metadata field you can use to store any data you wish. The string value must contain structurally valid JSON if specified.  **Note** that if the attributes are not set "{}" will be returned.
+        Subject:
+          type: string
+          description: The subject of the message, can be up to 256 characters long.
+    ListConversationParticipantResponse:
+      type: object
+      properties:
+        participants:
+          type: array
+          items:
+            $ref: '#/components/schemas/conversations.v1.conversation.conversation_participant'
+        meta:
+          type: object
+          properties:
+            first_page_url:
+              type: string
+              format: uri
+            next_page_url:
+              type:
+              - string
+              - 'null'
+              format: uri
+            page:
+              type: integer
+            page_size:
+              type: integer
+            previous_page_url:
+              type:
+              - string
+              - 'null'
+              format: uri
+            url:
+              type: string
+              format: uri
+            key:
+              type: string
+    UpdateConversationParticipantRequest:
+      type: object
+      properties:
+        DateCreated:
+          type: string
+          format: date-time
+          description: The date that this resource was created.
+        DateUpdated:
+          type: string
+          format: date-time
+          description: The date that this resource was last updated.
+        Attributes:
+          type: string
+          description: An optional string metadata field you can use to store any data you wish. The string value must contain structurally valid JSON if specified.  **Note** that if the attributes are not set "{}" will be returned.
+        RoleSid:
+          type: string
+          minLength: 34
+          maxLength: 34
+          pattern: ^RL[0-9a-fA-F]{32}$
+          description: The SID of a conversation-level [Role](https://www.twilio.com/docs/conversations/api/role-resource) to assign to the participant.
+        MessagingBinding.ProxyAddress:
+          type: string
+          description: The address of the Twilio phone number that the participant is in contact with. 'null' value will remove it.
+        MessagingBinding.ProjectedAddress:
+          type: string
+          description: The address of the Twilio phone number that is used in Group MMS. 'null' value will remove it.
+        Identity:
+          type: string
+          description: A unique string identifier for the conversation participant as [Conversation User](https://www.twilio.com/docs/conversations/api/user-resource). This parameter is non-null if (and only if) the participant is using the Conversations SDK to communicate. Limited to 256 characters.
+        LastReadMessageIndex:
+          type:
+          - integer
+          - 'null'
+          description: Index of last “read” message in the [Conversation](https://www.twilio.com/docs/conversations/api/conversation-resource) for the Participant.
+        LastReadTimestamp:
+          type: string
+          description: Timestamp of last “read” message in the [Conversation](https://www.twilio.com/docs/conversations/api/conversation-resource) for the Participant.
     ListConversationScopedWebhookResponse:
       type: object
       properties:
@@ -1754,15 +1721,41 @@ components:
               format: uri
             key:
               type: string
-    CreateConversationMessageRequest:
+    UpdateConversationScopedWebhookRequest:
       type: object
       properties:
-        Author:
+        Configuration.Url:
           type: string
-          description: The channel specific identifier of the message's author. Defaults to `system`.
-        Body:
+          description: The absolute url the webhook request should be sent to.
+        Configuration.Method:
           type: string
-          description: The content of the message, can be up to 1,600 characters long.
+          $ref: '#/components/schemas/conversation_scoped_webhook_enum_method'
+          description: The HTTP method to be used when sending a webhook request.
+        Configuration.Filters:
+          type: array
+          items:
+            type: string
+          description: The list of events, firing webhook event for this Conversation.
+        Configuration.Triggers:
+          type: array
+          items:
+            type: string
+          description: The list of keywords, firing webhook event for this Conversation.
+        Configuration.FlowSid:
+          type: string
+          minLength: 34
+          maxLength: 34
+          pattern: ^FW[0-9a-fA-F]{32}$
+          description: The studio flow SID, where the webhook should be sent to.
+    CreateConversationRequest:
+      type: object
+      properties:
+        FriendlyName:
+          type: string
+          description: The human-readable name of this conversation, limited to 256 characters. Optional.
+        UniqueName:
+          type: string
+          description: An application-defined string that uniquely identifies the resource. It can be used to address the resource in place of the resource's `sid` in the URL.
         DateCreated:
           type: string
           format: date-time
@@ -1770,35 +1763,84 @@ components:
         DateUpdated:
           type: string
           format: date-time
-          description: The date that this resource was last updated. `null` if the message has not been edited.
+          description: The date that this resource was last updated.
+        MessagingServiceSid:
+          type: string
+          minLength: 34
+          maxLength: 34
+          pattern: ^MG[0-9a-fA-F]{32}$
+          description: The unique ID of the [Messaging Service](https://www.twilio.com/docs/messaging/api/service-resource) this conversation belongs to.
         Attributes:
           type: string
-          description: A string metadata field you can use to store any data you wish. The string value must contain structurally valid JSON if specified.  **Note** that if the attributes are not set "{}" will be returned.
-        MediaSid:
+          description: An optional string metadata field you can use to store any data you wish. The string value must contain structurally valid JSON if specified.  **Note** that if the attributes are not set "{}" will be returned.
+        State:
           type: string
-          minLength: 34
-          maxLength: 34
-          pattern: ^ME[0-9a-fA-F]{32}$
-          description: The Media SID to be attached to the new Message.
-        ContentSid:
+          $ref: '#/components/schemas/conversation_enum_state'
+          description: Current state of this conversation. Can be either `active`, `inactive` or `closed` and defaults to `active`
+        Timers.Inactive:
           type: string
-          minLength: 34
-          maxLength: 34
-          pattern: ^HX[0-9a-fA-F]{32}$
-          description: The unique ID of the multi-channel [Rich Content](https://www.twilio.com/docs/content) template, required for template-generated messages.  **Note** that if this field is set, `Body` and `MediaSid` parameters are ignored.
-        ContentVariables:
+          description: ISO8601 duration when conversation will be switched to `inactive` state. Minimum value for this timer is 1 minute.
+        Timers.Closed:
           type: string
-          description: A structurally valid JSON string that contains values to resolve Rich Content template variables.
-        Subject:
+          description: ISO8601 duration when conversation will be switched to `closed` state. Minimum value for this timer is 10 minutes.
+        Bindings.Email.Address:
           type: string
-          description: The subject of the message, can be up to 256 characters long.
-    ListConversationMessageResponse:
+          description: The default email address that will be used when sending outbound emails in this conversation.
+        Bindings.Email.Name:
+          type: string
+          description: The default name that will be used when sending outbound emails in this conversation.
+    conversation_message_receipt_enum_delivery_status:
+      type: string
+      enum:
+      - read
+      - failed
+      - delivered
+      - undelivered
+      - sent
+    conversation_enum_webhook_enabled_type:
+      type: string
+      enum:
+      - 'true'
+      - 'false'
+    CreateConversationParticipantRequest:
       type: object
       properties:
-        messages:
+        Identity:
+          type: string
+          description: A unique string identifier for the conversation participant as [Conversation User](https://www.twilio.com/docs/conversations/api/user-resource). This parameter is non-null if (and only if) the participant is using the Conversations SDK to communicate. Limited to 256 characters.
+        MessagingBinding.Address:
+          type: string
+          description: The address of the participant's device, e.g. a phone or WhatsApp number. Together with the Proxy address, this determines a participant uniquely. This field (with proxy_address) is only null when the participant is interacting from an SDK endpoint (see the 'identity' field).
+        MessagingBinding.ProxyAddress:
+          type: string
+          description: The address of the Twilio phone number (or WhatsApp number) that the participant is in contact with. This field, together with participant address, is only null when the participant is interacting from an SDK endpoint (see the 'identity' field).
+        DateCreated:
+          type: string
+          format: date-time
+          description: The date that this resource was created.
+        DateUpdated:
+          type: string
+          format: date-time
+          description: The date that this resource was last updated.
+        Attributes:
+          type: string
+          description: An optional string metadata field you can use to store any data you wish. The string value must contain structurally valid JSON if specified.  **Note** that if the attributes are not set "{}" will be returned.
+        MessagingBinding.ProjectedAddress:
+          type: string
+          description: The address of the Twilio phone number that is used in Group MMS. Communication mask for the Conversation participant with Identity.
+        RoleSid:
+          type: string
+          minLength: 34
+          maxLength: 34
+          pattern: ^RL[0-9a-fA-F]{32}$
+          description: The SID of a conversation-level [Role](https://www.twilio.com/docs/conversations/api/role-resource) to assign to the participant.
+    ListConversationMessageReceiptResponse:
+      type: object
+      properties:
+        delivery_receipts:
           type: array
           items:
-            $ref: '#/components/schemas/conversations.v1.conversation.conversation_message'
+            $ref: '#/components/schemas/conversations.v1.conversation.conversation_message.conversation_message_receipt'
         meta:
           type: object
           properties:
@@ -1824,48 +1866,6 @@ components:
               format: uri
             key:
               type: string
-    UpdateConversationRequest:
-      type: object
-      properties:
-        FriendlyName:
-          type: string
-          description: The human-readable name of this conversation, limited to 256 characters. Optional.
-        DateCreated:
-          type: string
-          format: date-time
-          description: The date that this resource was created.
-        DateUpdated:
-          type: string
-          format: date-time
-          description: The date that this resource was last updated.
-        Attributes:
-          type: string
-          description: An optional string metadata field you can use to store any data you wish. The string value must contain structurally valid JSON if specified.  **Note** that if the attributes are not set "{}" will be returned.
-        MessagingServiceSid:
-          type: string
-          minLength: 34
-          maxLength: 34
-          pattern: ^MG[0-9a-fA-F]{32}$
-          description: The unique ID of the [Messaging Service](https://www.twilio.com/docs/messaging/api/service-resource) this conversation belongs to.
-        State:
-          type: string
-          $ref: '#/components/schemas/conversation_enum_state'
-          description: Current state of this conversation. Can be either `active`, `inactive` or `closed` and defaults to `active`
-        Timers.Inactive:
-          type: string
-          description: ISO8601 duration when conversation will be switched to `inactive` state. Minimum value for this timer is 1 minute.
-        Timers.Closed:
-          type: string
-          description: ISO8601 duration when conversation will be switched to `closed` state. Minimum value for this timer is 10 minutes.
-        UniqueName:
-          type: string
-          description: An application-defined string that uniquely identifies the resource. It can be used to address the resource in place of the resource's `sid` in the URL.
-        Bindings.Email.Address:
-          type: string
-          description: The default email address that will be used when sending outbound emails in this conversation.
-        Bindings.Email.Name:
-          type: string
-          description: The default name that will be used when sending outbound emails in this conversation.
   securitySchemes:
     accountSid_authToken:
       type: http
@@ -1873,5 +1873,3 @@ components:
 x-maturity:
 - name: GA
   description: This product is Generally Available.
-- name: Beta
-  description: PLEASE NOTE that this is a Beta product that is subject to change. Use it with caution.

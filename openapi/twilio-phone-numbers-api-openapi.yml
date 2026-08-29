@@ -1,8 +1,7 @@
 openapi: 3.2.0
 info:
-  title: Twilio - Accounts A2p Phone Numbers API
-  description: This is the public Twilio REST API.
-  termsOfService: https://www.twilio.com/legal/tos
+  title: Twilio Phone Numbers API
+  version: '2.0'
   contact:
     name: Twilio Support
     url: https://support.twilio.com
@@ -10,9 +9,17 @@ info:
   license:
     name: Apache 2.0
     url: https://www.apache.org/licenses/LICENSE-2.0.html
-  version: 1.52.0
+  termsOfService: https://www.twilio.com/legal/tos
+  description: 'Operations tagged Phone Numbers across 2 of this provider''s published API definitions: twilio-lookup-openapi.yml, twilio-messaging-openapi.yml. Each path carries the servers of the definition it was published in.'
 servers:
-- url: https://accounts.twilio.com
+- url: https://lookups.twilio.com/v2
+  description: Twilio Lookup API v2
+- url: https://api.twilio.com/2010-04-01
+  description: Twilio REST API v1
+- url: https://messaging.twilio.com/v1
+  description: Twilio Messaging Service API
+security:
+- accountSid_authToken: []
 tags:
 - name: Phone Numbers
   description: Query phone number data and intelligence
@@ -114,6 +121,9 @@ paths:
           description: Phone number not found
         '429':
           description: Rate limit exceeded
+    servers:
+    - url: https://lookups.twilio.com/v2
+      description: Twilio Lookup API v2
   /Services/{ServiceSid}/PhoneNumbers:
     get:
       operationId: listPhoneNumbers
@@ -159,6 +169,11 @@ paths:
           description: Phone number added
         '400':
           description: Invalid request
+    servers:
+    - url: https://api.twilio.com/2010-04-01
+      description: Twilio REST API v1
+    - url: https://messaging.twilio.com/v1
+      description: Twilio Messaging Service API
 components:
   schemas:
     PhoneNumberLookup:
@@ -405,6 +420,10 @@ components:
     accountSid_authToken:
       type: http
       scheme: basic
+      description: Use your Twilio Account SID as the username and Auth Token as the password for HTTP Basic authentication.
+x-refined-from:
+- twilio-lookup-openapi.yml
+- twilio-messaging-openapi.yml
 x-maturity:
 - name: GA
   description: This product is Generally Available.

@@ -1,8 +1,8 @@
 openapi: 3.2.0
 info:
-  title: Twilio - Accounts A2p Composition Hooks API
-  description: This is the public Twilio REST API.
-  termsOfService: https://www.twilio.com/legal/tos
+  title: Twilio Video Composition Hooks API
+  description: Build real-time video communication applications with Twilio's Video API. Create and manage video rooms, control participants, manage recordings and compositions, and configure recording rules.
+  version: '2.0'
   contact:
     name: Twilio Support
     url: https://support.twilio.com
@@ -10,9 +10,12 @@ info:
   license:
     name: Apache 2.0
     url: https://www.apache.org/licenses/LICENSE-2.0.html
-  version: 1.52.0
+  termsOfService: https://www.twilio.com/legal/tos
 servers:
-- url: https://accounts.twilio.com
+- url: https://video.twilio.com/v1
+  description: Twilio Video API v1
+security:
+- accountSid_authToken: []
 tags:
 - name: Composition Hooks
   description: Configure automatic composition rules
@@ -118,52 +121,6 @@ paths:
           description: Composition hook deleted
 components:
   schemas:
-    CompositionHookList:
-      type: object
-      properties:
-        composition_hooks:
-          type: array
-          items:
-            $ref: '#/components/schemas/CompositionHook'
-        meta:
-          $ref: '#/components/schemas/PaginationMeta'
-    CreateCompositionHookRequest:
-      type: object
-      required:
-      - FriendlyName
-      properties:
-        FriendlyName:
-          type: string
-        Enabled:
-          type: boolean
-          default: true
-        VideoLayout:
-          type: string
-        AudioSources:
-          type: array
-          items:
-            type: string
-        AudioSourcesExcluded:
-          type: array
-          items:
-            type: string
-        Resolution:
-          type: string
-        Format:
-          type: string
-          enum:
-          - mp4
-          - webm
-        Trim:
-          type: boolean
-        StatusCallback:
-          type: string
-          format: uri
-        StatusCallbackMethod:
-          type: string
-          enum:
-          - GET
-          - POST
     CompositionHook:
       type: object
       properties:
@@ -231,12 +188,57 @@ components:
           format: uri
         key:
           type: string
+    CompositionHookList:
+      type: object
+      properties:
+        composition_hooks:
+          type: array
+          items:
+            $ref: '#/components/schemas/CompositionHook'
+        meta:
+          $ref: '#/components/schemas/PaginationMeta'
+    CreateCompositionHookRequest:
+      type: object
+      required:
+      - FriendlyName
+      properties:
+        FriendlyName:
+          type: string
+        Enabled:
+          type: boolean
+          default: true
+        VideoLayout:
+          type: string
+        AudioSources:
+          type: array
+          items:
+            type: string
+        AudioSourcesExcluded:
+          type: array
+          items:
+            type: string
+        Resolution:
+          type: string
+        Format:
+          type: string
+          enum:
+          - mp4
+          - webm
+        Trim:
+          type: boolean
+        StatusCallback:
+          type: string
+          format: uri
+        StatusCallbackMethod:
+          type: string
+          enum:
+          - GET
+          - POST
   securitySchemes:
     accountSid_authToken:
       type: http
       scheme: basic
-x-maturity:
-- name: GA
-  description: This product is Generally Available.
-- name: Beta
-  description: PLEASE NOTE that this is a Beta product that is subject to change. Use it with caution.
+      description: Use your Twilio Account SID as the username and Auth Token as the password for HTTP Basic authentication.
+externalDocs:
+  description: Twilio Video API Documentation
+  url: https://www.twilio.com/docs/video

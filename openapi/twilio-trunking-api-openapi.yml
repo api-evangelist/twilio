@@ -1,6 +1,6 @@
 openapi: 3.2.0
 info:
-  title: Twilio - Accounts A2p Trunking API
+  title: Twilio - Pricing Trunking API
   description: This is the public Twilio REST API.
   termsOfService: https://www.twilio.com/legal/tos
   contact:
@@ -12,7 +12,7 @@ info:
     url: https://www.apache.org/licenses/LICENSE-2.0.html
   version: 1.52.0
 servers:
-- url: https://accounts.twilio.com
+- url: https://pricing.twilio.com
 tags:
 - name: Trunking
 paths:
@@ -135,70 +135,38 @@ paths:
       - GA
 components:
   schemas:
-    pricing.v2.trunking_country-instance:
+    ListTrunkingCountryResponse:
       type: object
       properties:
-        country:
-          type:
-          - string
-          - 'null'
-          description: The name of the country.
-        iso_country:
-          type:
-          - string
-          - 'null'
-          format: iso-country-code
-          description: The [ISO country code](https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2).
-        terminating_prefix_prices:
-          type:
-          - array
-          - 'null'
+        countries:
+          type: array
           items:
-            type: object
-            format: outbound-prefix-price-with-origin
-            properties:
-              origination_prefixes:
-                type: array
-                items:
-                  type: string
-              destination_prefixes:
-                type: array
-                items:
-                  type: string
-              base_price:
-                type: number
-              current_price:
-                type: number
-              friendly_name:
-                type: string
-          description: The list of [TerminatingPrefixPrice](https://www.twilio.com/docs/voice/pricing#outbound-prefix-price-with-origin) records.
-        originating_call_prices:
-          type:
-          - array
-          - 'null'
-          items:
-            type: object
-            format: inbound-call-price
-            properties:
-              base_price:
-                type: number
-              current_price:
-                type: number
-              number_type:
-                type: string
-          description: The list of [OriginatingCallPrice](https://www.twilio.com/docs/voice/pricing#inbound-call-price) records.
-        price_unit:
-          type:
-          - string
-          - 'null'
-          format: currency
-          description: The currency in which prices are measured, specified in [ISO 4127](https://www.iso.org/iso/home/standards/currency_codes.htm) format (e.g. `usd`, `eur`, `jpy`).
-        url:
-          type:
-          - string
-          - 'null'
-          format: uri
-          description: The absolute URL of the resource.
+            $ref: '#/components/schemas/pricing.v2.trunking_country'
+        meta:
+          type: object
+          properties:
+            first_page_url:
+              type: string
+              format: uri
+            next_page_url:
+              type:
+              - string
+              - 'null'
+              format: uri
+            page:
+              type: integer
+            page_size:
+              type: integer
+            previous_page_url:
+              type:
+              - string
+              - 'null'
+              format: uri
+            url:
+              type: string
+              format: uri
+            key:
+              type: string
     pricing.v2.trunking_number:
       type: object
       properties:
@@ -292,38 +260,70 @@ components:
           - 'null'
           format: uri
           description: The absolute URL of the resource.
-    ListTrunkingCountryResponse:
+    pricing.v2.trunking_country-instance:
       type: object
       properties:
-        countries:
-          type: array
+        country:
+          type:
+          - string
+          - 'null'
+          description: The name of the country.
+        iso_country:
+          type:
+          - string
+          - 'null'
+          format: iso-country-code
+          description: The [ISO country code](https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2).
+        terminating_prefix_prices:
+          type:
+          - array
+          - 'null'
           items:
-            $ref: '#/components/schemas/pricing.v2.trunking_country'
-        meta:
-          type: object
-          properties:
-            first_page_url:
-              type: string
-              format: uri
-            next_page_url:
-              type:
-              - string
-              - 'null'
-              format: uri
-            page:
-              type: integer
-            page_size:
-              type: integer
-            previous_page_url:
-              type:
-              - string
-              - 'null'
-              format: uri
-            url:
-              type: string
-              format: uri
-            key:
-              type: string
+            type: object
+            format: outbound-prefix-price-with-origin
+            properties:
+              origination_prefixes:
+                type: array
+                items:
+                  type: string
+              destination_prefixes:
+                type: array
+                items:
+                  type: string
+              base_price:
+                type: number
+              current_price:
+                type: number
+              friendly_name:
+                type: string
+          description: The list of [TerminatingPrefixPrice](https://www.twilio.com/docs/voice/pricing#outbound-prefix-price-with-origin) records.
+        originating_call_prices:
+          type:
+          - array
+          - 'null'
+          items:
+            type: object
+            format: inbound-call-price
+            properties:
+              base_price:
+                type: number
+              current_price:
+                type: number
+              number_type:
+                type: string
+          description: The list of [OriginatingCallPrice](https://www.twilio.com/docs/voice/pricing#inbound-call-price) records.
+        price_unit:
+          type:
+          - string
+          - 'null'
+          format: currency
+          description: The currency in which prices are measured, specified in [ISO 4127](https://www.iso.org/iso/home/standards/currency_codes.htm) format (e.g. `usd`, `eur`, `jpy`).
+        url:
+          type:
+          - string
+          - 'null'
+          format: uri
+          description: The absolute URL of the resource.
   securitySchemes:
     accountSid_authToken:
       type: http
@@ -331,5 +331,3 @@ components:
 x-maturity:
 - name: GA
   description: This product is Generally Available.
-- name: Beta
-  description: PLEASE NOTE that this is a Beta product that is subject to change. Use it with caution.

@@ -1,6 +1,6 @@
 openapi: 3.2.0
 info:
-  title: Twilio - Accounts A2p Policies API
+  title: Twilio - Trusthub Policies API
   description: This is the public Twilio REST API.
   termsOfService: https://www.twilio.com/legal/tos
   contact:
@@ -12,7 +12,7 @@ info:
     url: https://www.apache.org/licenses/LICENSE-2.0.html
   version: 1.52.0
 servers:
-- url: https://accounts.twilio.com
+- url: https://trusthub.twilio.com
 tags:
 - name: Policies
 paths:
@@ -99,30 +99,6 @@ paths:
       - GA
 components:
   schemas:
-    trusthub.v1.policies:
-      type: object
-      properties:
-        sid:
-          type:
-          - string
-          - 'null'
-          minLength: 34
-          maxLength: 34
-          pattern: ^RN[0-9a-fA-F]{32}$
-          description: The unique string that identifies the Policy resource.
-        friendly_name:
-          type:
-          - string
-          - 'null'
-          description: A human-readable description that is assigned to describe the Policy resource. Examples can include Primary Customer profile policy
-        requirements:
-          description: The SID of an object that holds the policy information
-        url:
-          type:
-          - string
-          - 'null'
-          format: uri
-          description: The absolute URL of the Policy resource.
     ListPoliciesResponse:
       type: object
       properties:
@@ -155,6 +131,30 @@ components:
               format: uri
             key:
               type: string
+    trusthub.v1.policies:
+      type: object
+      properties:
+        sid:
+          type:
+          - string
+          - 'null'
+          minLength: 34
+          maxLength: 34
+          pattern: ^RN[0-9a-fA-F]{32}$
+          description: The unique string that identifies the Policy resource.
+        friendly_name:
+          type:
+          - string
+          - 'null'
+          description: A human-readable description that is assigned to describe the Policy resource. Examples can include Primary Customer profile policy
+        requirements:
+          description: The SID of an object that holds the policy information
+        url:
+          type:
+          - string
+          - 'null'
+          format: uri
+          description: The absolute URL of the Policy resource.
   securitySchemes:
     accountSid_authToken:
       type: http
@@ -162,5 +162,3 @@ components:
 x-maturity:
 - name: GA
   description: This product is Generally Available.
-- name: Beta
-  description: PLEASE NOTE that this is a Beta product that is subject to change. Use it with caution.
