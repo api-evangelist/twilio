@@ -11,7 +11,7 @@ capability_model:
   attribution: Turbo EA Capabilities by Vincent Verdet — Turbo EA, https://github.com/vincentmakes/turbo-ea-capabilities,
     CC BY 4.0
   notice: NOTICE
-edge_count: 12
+edge_count: 17
 edges:
 - tag: ESimProfiles
   spec_file: twilio-esimprofiles-api-openapi.yml
@@ -22,6 +22,16 @@ edges:
   evidence: POST /v1/ESimProfiles CreateEsimProfile; schema supersim.v1.esim_profile, esim_profile_enum_status
   reason: The surface creates and tracks the status of eSIM profiles for Twilio's Super SIM IoT connectivity
     — directly SIM & eSIM lifecycle management.
+- tag: Keys
+  spec_file: twilio-keys-api-openapi.yml
+  capability_id: BC-4270.40
+  capability_id_l1: BC-4270
+  capability_name: Developer Identity & Credential Management
+  confidence: 0.85
+  evidence: POST /Accounts/{AccountSid}/Keys.json createKey  Twilio Create an Api Key
+  reason: CRUD over API keys issued to developers for authenticating against Twilio's public APIs — developer
+    credential issuance and stewardship.
+  recovered_from: sweep-20260828T235257Z-edges.json
 - tag: Sims
   spec_file: twilio-sims-api-openapi.yml
   capability_id: BC-2640.20
@@ -43,6 +53,17 @@ edges:
   reason: Flex channels configure the omnichannel contact-centre engagement surface (voice, SMS, chat,
     WhatsApp), which is contact centre operations. Some ambiguity only over whether it belongs under inquiry
     management versus contact-centre operations.
+- tag: Auth Tokens
+  spec_file: twilio-auth-tokens-api-openapi.yml
+  capability_id: BC-4270.40
+  capability_id_l1: BC-4270
+  capability_name: Developer Identity & Credential Management
+  confidence: 0.78
+  evidence: createSecondaryAuthToken  Twilio Create a Secondary Auth Token; promoteAuthToken  Twilio Promote
+    Secondary Auth Token
+  reason: Lifecycle of API auth credentials for the developer account — Developer Identity & Credential
+    Management.
+  recovered_from: sweep-20260828T235257Z-edges.json
 - tag: Flex Flows
   spec_file: twilio-flex-flows-api-openapi.yml
   capability_id: BC-430.30
@@ -75,6 +96,19 @@ edges:
     outbound delivery. That maps to lifecycle management of outbound event/webhook subscriptions and event
     schemas in the developer platform capability. Some residual doubt whether the grader treats this as
     pure plumbing.'
+- tag: Workspaces
+  spec_file: twilio-workspaces-api-openapi.yml
+  capability_id: BC-430.30
+  capability_id_l1: BC-430
+  capability_name: Contact Centre Operations Management
+  confidence: 0.75
+  evidence: taskrouter.v1.workspace.task_queue, taskrouter.v1.workspace.worker.worker_statistics, worker_reservation_enum_status,
+    CreateActivity/CreateTask under /v1/Workspaces/{WorkspaceSid}
+  reason: 'This is Twilio TaskRouter: workspaces containing workers, worker activities (availability states),
+    tasks, task queues, workflows and reservation statistics — the routing and workforce-state engine
+    of a contact centre. Maps to contact centre operations rather than any generic workspace/collaboration
+    notion. Not full confidence because a case could be made for inquiry routing (BC-430.10).'
+  recovered_from: sweep-20260828T235257Z-edges.json
 - tag: Factors
   spec_file: twilio-factors-api-openapi.yml
   capability_id: BC-620.20
@@ -96,6 +130,29 @@ edges:
     solutions ... across voice, SMS, chat, WhatsApp'
   reason: Creates and manages customer interactions and their channels in a contact-centre product — contact
     centre operations. Could alternatively be inquiry handling, hence 0.72.
+- tag: Secrets
+  spec_file: twilio-secrets-api-openapi.yml
+  capability_id: BC-4210.60
+  capability_id_l1: BC-4210
+  capability_name: Configuration & Secrets Management
+  confidence: 0.72
+  evidence: POST /v1/Secrets CreateAccountSecret; schemas microvisor.v1.account_secret, UpdateAccountSecretRequest
+  reason: Full lifecycle (list/create/fetch/update/delete) of named account secrets keyed by {Key} for
+    the Microvisor runtime, which is squarely runtime Configuration & Secrets Management. Not 0.9 because
+    these are secrets consumed by the customer's IoT devices rather than the vendor's own deployment pipeline.
+  recovered_from: sweep-20260828T235257Z-edges.json
+- tag: Accounts
+  spec_file: twilio-accounts-api-openapi.yml
+  capability_id: BC-4230.10
+  capability_id_l1: BC-4230
+  capability_name: Tenant Provisioning & Lifecycle
+  confidence: 0.7
+  evidence: POST /Accounts.json createAccount — 'Twilio Create a Subaccount'; 'Twilio Update an Account';
+    schema 'AccountList'
+  reason: Creation, listing, retrieval and status update of Twilio accounts and subaccounts on the multi-tenant
+    platform — tenant provisioning and lifecycle. Not general customer data management, since the object
+    is the platform tenant/account container itself.
+  recovered_from: sweep-20260828T235257Z-edges.json
 - tag: HostedNumber
   spec_file: twilio-hostednumber-api-openapi.yml
   capability_id: BC-2640
