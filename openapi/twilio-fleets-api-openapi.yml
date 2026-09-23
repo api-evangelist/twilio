@@ -47,6 +47,8 @@ paths:
           application/x-www-form-urlencoded:
             schema:
               $ref: '#/components/schemas/CreateFleetRequest'
+      summary: Create fleet
+      x-summary-source: derived
     get:
       description: Retrieve a list of Fleets from your account.
       tags:
@@ -87,6 +89,8 @@ paths:
       operationId: ListFleet
       x-maturity:
       - Beta
+      summary: List fleet
+      x-summary-source: derived
   /v1/Fleets/{Sid}:
     servers:
     - url: https://supersim.twilio.com
@@ -120,6 +124,8 @@ paths:
       operationId: FetchFleet
       x-maturity:
       - Beta
+      summary: Fetch fleet
+      x-summary-source: derived
     post:
       description: Updates the given properties of a Super SIM Fleet instance from your account.
       tags:
@@ -148,8 +154,42 @@ paths:
           application/x-www-form-urlencoded:
             schema:
               $ref: '#/components/schemas/UpdateFleetRequest'
+      summary: Update fleet
+      x-summary-source: derived
 components:
   schemas:
+    ListFleetResponse:
+      type: object
+      properties:
+        fleets:
+          type: array
+          items:
+            $ref: '#/components/schemas/supersim.v1.fleet'
+        meta:
+          type: object
+          properties:
+            first_page_url:
+              type: string
+              format: uri
+            next_page_url:
+              type:
+              - string
+              - 'null'
+              format: uri
+            page:
+              type: integer
+            page_size:
+              type: integer
+            previous_page_url:
+              type:
+              - string
+              - 'null'
+              format: uri
+            url:
+              type: string
+              format: uri
+            key:
+              type: string
     UpdateFleetRequest:
       type: object
       properties:
@@ -196,6 +236,56 @@ components:
       type: string
       enum:
       - payg
+    CreateFleetRequest:
+      type: object
+      required:
+      - NetworkAccessProfile
+      properties:
+        NetworkAccessProfile:
+          type: string
+          description: The SID or unique name of the Network Access Profile that will control which cellular networks the Fleet's SIMs can connect to.
+        UniqueName:
+          type: string
+          description: An application-defined string that uniquely identifies the resource. It can be used in place of the resource's `sid` in the URL to address the resource.
+        DataEnabled:
+          type: boolean
+          description: Defines whether SIMs in the Fleet are capable of using 2G/3G/4G/LTE/CAT-M data connectivity. Defaults to `true`.
+        DataLimit:
+          type: integer
+          description: The total data usage (download and upload combined) in Megabytes that each Super SIM assigned to the Fleet can consume during a billing period (normally one month). Value must be between 1MB (1) and 2TB (2,000,000). Defaults to 1GB (1,000).
+        IpCommandsUrl:
+          type: string
+          format: uri
+          description: The URL that will receive a webhook when a Super SIM in the Fleet is used to send an IP Command from your device to a special IP address. Your server should respond with an HTTP status code in the 200 range; any response body will be ignored.
+        IpCommandsMethod:
+          type: string
+          format: http-method
+          enum:
+          - HEAD
+          - GET
+          - POST
+          - PATCH
+          - PUT
+          - DELETE
+          description: A string representing the HTTP method to use when making a request to `ip_commands_url`. Can be one of `POST` or `GET`. Defaults to `POST`.
+        SmsCommandsEnabled:
+          type: boolean
+          description: Defines whether SIMs in the Fleet are capable of sending and receiving machine-to-machine SMS via Commands. Defaults to `true`.
+        SmsCommandsUrl:
+          type: string
+          format: uri
+          description: The URL that will receive a webhook when a Super SIM in the Fleet is used to send an SMS from your device to the SMS Commands number. Your server should respond with an HTTP status code in the 200 range; any response body will be ignored.
+        SmsCommandsMethod:
+          type: string
+          format: http-method
+          enum:
+          - HEAD
+          - GET
+          - POST
+          - PATCH
+          - PUT
+          - DELETE
+          description: A string representing the HTTP method to use when making a request to `sms_commands_url`. Can be one of `POST` or `GET`. Defaults to `POST`.
     supersim.v1.fleet:
       type: object
       properties:
@@ -305,88 +395,6 @@ components:
           - PUT
           - DELETE
           description: A string representing the HTTP method to use when making a request to `ip_commands_url`. Can be one of `POST` or `GET`. Defaults to `POST`.
-    ListFleetResponse:
-      type: object
-      properties:
-        fleets:
-          type: array
-          items:
-            $ref: '#/components/schemas/supersim.v1.fleet'
-        meta:
-          type: object
-          properties:
-            first_page_url:
-              type: string
-              format: uri
-            next_page_url:
-              type:
-              - string
-              - 'null'
-              format: uri
-            page:
-              type: integer
-            page_size:
-              type: integer
-            previous_page_url:
-              type:
-              - string
-              - 'null'
-              format: uri
-            url:
-              type: string
-              format: uri
-            key:
-              type: string
-    CreateFleetRequest:
-      type: object
-      required:
-      - NetworkAccessProfile
-      properties:
-        NetworkAccessProfile:
-          type: string
-          description: The SID or unique name of the Network Access Profile that will control which cellular networks the Fleet's SIMs can connect to.
-        UniqueName:
-          type: string
-          description: An application-defined string that uniquely identifies the resource. It can be used in place of the resource's `sid` in the URL to address the resource.
-        DataEnabled:
-          type: boolean
-          description: Defines whether SIMs in the Fleet are capable of using 2G/3G/4G/LTE/CAT-M data connectivity. Defaults to `true`.
-        DataLimit:
-          type: integer
-          description: The total data usage (download and upload combined) in Megabytes that each Super SIM assigned to the Fleet can consume during a billing period (normally one month). Value must be between 1MB (1) and 2TB (2,000,000). Defaults to 1GB (1,000).
-        IpCommandsUrl:
-          type: string
-          format: uri
-          description: The URL that will receive a webhook when a Super SIM in the Fleet is used to send an IP Command from your device to a special IP address. Your server should respond with an HTTP status code in the 200 range; any response body will be ignored.
-        IpCommandsMethod:
-          type: string
-          format: http-method
-          enum:
-          - HEAD
-          - GET
-          - POST
-          - PATCH
-          - PUT
-          - DELETE
-          description: A string representing the HTTP method to use when making a request to `ip_commands_url`. Can be one of `POST` or `GET`. Defaults to `POST`.
-        SmsCommandsEnabled:
-          type: boolean
-          description: Defines whether SIMs in the Fleet are capable of sending and receiving machine-to-machine SMS via Commands. Defaults to `true`.
-        SmsCommandsUrl:
-          type: string
-          format: uri
-          description: The URL that will receive a webhook when a Super SIM in the Fleet is used to send an SMS from your device to the SMS Commands number. Your server should respond with an HTTP status code in the 200 range; any response body will be ignored.
-        SmsCommandsMethod:
-          type: string
-          format: http-method
-          enum:
-          - HEAD
-          - GET
-          - POST
-          - PATCH
-          - PUT
-          - DELETE
-          description: A string representing the HTTP method to use when making a request to `sms_commands_url`. Can be one of `POST` or `GET`. Defaults to `POST`.
   securitySchemes:
     accountSid_authToken:
       type: http

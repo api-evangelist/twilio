@@ -173,6 +173,78 @@ paths:
           description: Message not found
 components:
   schemas:
+    MessageList:
+      type: object
+      properties:
+        messages:
+          type: array
+          items:
+            $ref: '#/components/schemas/Message'
+        first_page_uri:
+          type: string
+        next_page_uri:
+          type: string
+        previous_page_uri:
+          type: string
+        page:
+          type: integer
+        page_size:
+          type: integer
+        uri:
+          type: string
+    CreateMessageRequest:
+      type: object
+      required:
+      - To
+      properties:
+        To:
+          type: string
+          description: Recipient phone number in E.164 format
+        From:
+          type: string
+          description: Twilio phone number, short code, or alphanumeric sender ID
+        Body:
+          type: string
+          description: The text content of the message (max 1600 characters)
+          maxLength: 1600
+        MessagingServiceSid:
+          type: string
+          description: SID of the messaging service to use
+          pattern: ^MG[0-9a-fA-F]{32}$
+        MediaUrl:
+          type: array
+          items:
+            type: string
+            format: uri
+          description: URLs of media to include in MMS messages (max 10)
+          maxItems: 10
+        StatusCallback:
+          type: string
+          format: uri
+          description: URL for status callback notifications
+        MaxPrice:
+          type: number
+          description: Maximum price in USD to pay for the message
+        ValidityPeriod:
+          type: integer
+          description: Validity period in seconds (max 14400)
+          maximum: 14400
+        SendAt:
+          type: string
+          format: date-time
+          description: Time to send a scheduled message (requires messaging service)
+        ScheduleType:
+          type: string
+          enum:
+          - fixed
+          description: Schedule type for scheduled messages
+        ContentSid:
+          type: string
+          description: SID of a content template to use
+          pattern: ^HX[0-9a-fA-F]{32}$
+        ContentVariables:
+          type: string
+          description: JSON string of variables for content templates
     Message:
       type: object
       properties:
@@ -265,78 +337,6 @@ components:
           properties:
             media:
               type: string
-    MessageList:
-      type: object
-      properties:
-        messages:
-          type: array
-          items:
-            $ref: '#/components/schemas/Message'
-        first_page_uri:
-          type: string
-        next_page_uri:
-          type: string
-        previous_page_uri:
-          type: string
-        page:
-          type: integer
-        page_size:
-          type: integer
-        uri:
-          type: string
-    CreateMessageRequest:
-      type: object
-      required:
-      - To
-      properties:
-        To:
-          type: string
-          description: Recipient phone number in E.164 format
-        From:
-          type: string
-          description: Twilio phone number, short code, or alphanumeric sender ID
-        Body:
-          type: string
-          description: The text content of the message (max 1600 characters)
-          maxLength: 1600
-        MessagingServiceSid:
-          type: string
-          description: SID of the messaging service to use
-          pattern: ^MG[0-9a-fA-F]{32}$
-        MediaUrl:
-          type: array
-          items:
-            type: string
-            format: uri
-          description: URLs of media to include in MMS messages (max 10)
-          maxItems: 10
-        StatusCallback:
-          type: string
-          format: uri
-          description: URL for status callback notifications
-        MaxPrice:
-          type: number
-          description: Maximum price in USD to pay for the message
-        ValidityPeriod:
-          type: integer
-          description: Validity period in seconds (max 14400)
-          maximum: 14400
-        SendAt:
-          type: string
-          format: date-time
-          description: Time to send a scheduled message (requires messaging service)
-        ScheduleType:
-          type: string
-          enum:
-          - fixed
-          description: Schedule type for scheduled messages
-        ContentSid:
-          type: string
-          description: SID of a content template to use
-          pattern: ^HX[0-9a-fA-F]{32}$
-        ContentVariables:
-          type: string
-          description: JSON string of variables for content templates
   parameters:
     AccountSid:
       name: AccountSid

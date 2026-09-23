@@ -226,8 +226,53 @@ paths:
       operationId: ListVerificationTemplate
       x-maturity:
       - GA
+      summary: List verification template
+      x-summary-source: derived
 components:
   schemas:
+    CreateTemplateVersionRequest:
+      type: object
+      required:
+      - name
+      - subject
+      properties:
+        name:
+          type: string
+          maxLength: 100
+        subject:
+          type: string
+        html_content:
+          type: string
+        plain_content:
+          type: string
+        active:
+          type: integer
+          enum:
+          - 0
+          - 1
+        editor:
+          type: string
+          enum:
+          - code
+          - design
+        generate_plain_content:
+          type: boolean
+          default: true
+        test_data:
+          type: string
+          description: JSON test data for template preview
+    TemplateList:
+      type: object
+      properties:
+        result:
+          type: array
+          items:
+            $ref: '#/components/schemas/Template'
+        _metadata:
+          type: object
+          properties:
+            count:
+              type: integer
     TemplateVersion:
       type: object
       properties:
@@ -260,18 +305,6 @@ components:
         updated_at:
           type: string
           format: date-time
-    TemplateList:
-      type: object
-      properties:
-        result:
-          type: array
-          items:
-            $ref: '#/components/schemas/Template'
-        _metadata:
-          type: object
-          properties:
-            count:
-              type: integer
     Template:
       type: object
       properties:
@@ -292,69 +325,6 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/TemplateVersion'
-    CreateTemplateVersionRequest:
-      type: object
-      required:
-      - name
-      - subject
-      properties:
-        name:
-          type: string
-          maxLength: 100
-        subject:
-          type: string
-        html_content:
-          type: string
-        plain_content:
-          type: string
-        active:
-          type: integer
-          enum:
-          - 0
-          - 1
-        editor:
-          type: string
-          enum:
-          - code
-          - design
-        generate_plain_content:
-          type: boolean
-          default: true
-        test_data:
-          type: string
-          description: JSON test data for template preview
-    ListVerificationTemplateResponse:
-      type: object
-      properties:
-        templates:
-          type: array
-          items:
-            $ref: '#/components/schemas/verify.v2.verification_template'
-        meta:
-          type: object
-          properties:
-            first_page_url:
-              type: string
-              format: uri
-            next_page_url:
-              type:
-              - string
-              - 'null'
-              format: uri
-            page:
-              type: integer
-            page_size:
-              type: integer
-            previous_page_url:
-              type:
-              - string
-              - 'null'
-              format: uri
-            url:
-              type: string
-              format: uri
-            key:
-              type: string
     verify.v2.verification_template:
       type: object
       properties:
@@ -388,6 +358,38 @@ components:
           description: 'A list of channels that support the Template. Can include: sms, voice.'
         translations:
           description: An object that contains the different translations of the template. Every translation is identified by the language short name and contains its respective information as the approval status, text and created/modified date.
+    ListVerificationTemplateResponse:
+      type: object
+      properties:
+        templates:
+          type: array
+          items:
+            $ref: '#/components/schemas/verify.v2.verification_template'
+        meta:
+          type: object
+          properties:
+            first_page_url:
+              type: string
+              format: uri
+            next_page_url:
+              type:
+              - string
+              - 'null'
+              format: uri
+            page:
+              type: integer
+            page_size:
+              type: integer
+            previous_page_url:
+              type:
+              - string
+              - 'null'
+              format: uri
+            url:
+              type: string
+              format: uri
+            key:
+              type: string
   securitySchemes:
     bearerAuth:
       type: http

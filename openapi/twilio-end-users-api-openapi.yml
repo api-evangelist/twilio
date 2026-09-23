@@ -14,7 +14,7 @@ info:
 servers:
 - url: https://trusthub.twilio.com
 tags:
-- name: EndUsers
+- name: End Users
 paths:
   /v1/EndUsers:
     servers:
@@ -28,7 +28,7 @@ paths:
     post:
       description: Create a new End User.
       tags:
-      - EndUsers
+      - End Users
       responses:
         '201':
           content:
@@ -46,10 +46,12 @@ paths:
           application/x-www-form-urlencoded:
             schema:
               $ref: '#/components/schemas/CreateEndUserRequest'
+      summary: Create end user
+      x-summary-source: derived
     get:
       description: Retrieve a list of all End User for an account.
       tags:
-      - EndUsers
+      - End Users
       parameters:
       - name: PageSize
         in: query
@@ -81,6 +83,8 @@ paths:
       operationId: ListEndUser
       x-maturity:
       - GA
+      summary: List end user
+      x-summary-source: derived
   /v1/EndUsers/{Sid}:
     servers:
     - url: https://trusthub.twilio.com
@@ -93,7 +97,7 @@ paths:
     get:
       description: Fetch specific End User Instance.
       tags:
-      - EndUsers
+      - End Users
       parameters:
       - name: Sid
         in: path
@@ -116,10 +120,12 @@ paths:
       operationId: FetchEndUser
       x-maturity:
       - GA
+      summary: Fetch end user
+      x-summary-source: derived
     post:
       description: Update an existing End User.
       tags:
-      - EndUsers
+      - End Users
       parameters:
       - name: Sid
         in: path
@@ -147,10 +153,12 @@ paths:
           application/x-www-form-urlencoded:
             schema:
               $ref: '#/components/schemas/UpdateEndUserRequest'
+      summary: Update end user
+      x-summary-source: derived
     delete:
       description: Delete a specific End User.
       tags:
-      - EndUsers
+      - End Users
       parameters:
       - name: Sid
         in: path
@@ -169,16 +177,56 @@ paths:
       operationId: DeleteEndUser
       x-maturity:
       - GA
+      summary: Delete end user
+      x-summary-source: derived
 components:
   schemas:
-    UpdateEndUserRequest:
+    CreateEndUserRequest:
       type: object
+      required:
+      - FriendlyName
+      - Type
       properties:
         FriendlyName:
           type: string
           description: The string that you assigned to describe the resource.
+        Type:
+          type: string
+          description: The type of end user of the Bundle resource - can be `individual` or `business`.
         Attributes:
           description: The set of parameters that are the attributes of the End User resource which are derived End User Types.
+    ListEndUserResponse:
+      type: object
+      properties:
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/trusthub.v1.end_user'
+        meta:
+          type: object
+          properties:
+            first_page_url:
+              type: string
+              format: uri
+            next_page_url:
+              type:
+              - string
+              - 'null'
+              format: uri
+            page:
+              type: integer
+            page_size:
+              type: integer
+            previous_page_url:
+              type:
+              - string
+              - 'null'
+              format: uri
+            url:
+              type: string
+              format: uri
+            key:
+              type: string
     trusthub.v1.end_user:
       type: object
       properties:
@@ -232,50 +280,12 @@ components:
           - 'null'
           format: uri
           description: The absolute URL of the End User resource.
-    ListEndUserResponse:
+    UpdateEndUserRequest:
       type: object
-      properties:
-        results:
-          type: array
-          items:
-            $ref: '#/components/schemas/trusthub.v1.end_user'
-        meta:
-          type: object
-          properties:
-            first_page_url:
-              type: string
-              format: uri
-            next_page_url:
-              type:
-              - string
-              - 'null'
-              format: uri
-            page:
-              type: integer
-            page_size:
-              type: integer
-            previous_page_url:
-              type:
-              - string
-              - 'null'
-              format: uri
-            url:
-              type: string
-              format: uri
-            key:
-              type: string
-    CreateEndUserRequest:
-      type: object
-      required:
-      - FriendlyName
-      - Type
       properties:
         FriendlyName:
           type: string
           description: The string that you assigned to describe the resource.
-        Type:
-          type: string
-          description: The type of end user of the Bundle resource - can be `individual` or `business`.
         Attributes:
           description: The set of parameters that are the attributes of the End User resource which are derived End User Types.
   securitySchemes:

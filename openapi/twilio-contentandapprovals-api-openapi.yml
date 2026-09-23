@@ -68,8 +68,42 @@ paths:
       operationId: ListContentAndApprovals
       x-maturity:
       - Preview
+      summary: List content and approvals
+      x-summary-source: derived
 components:
   schemas:
+    ListContentAndApprovalsResponse:
+      type: object
+      properties:
+        contents:
+          type: array
+          items:
+            $ref: '#/components/schemas/content.v1.content_and_approvals'
+        meta:
+          type: object
+          properties:
+            first_page_url:
+              type: string
+              format: uri
+            next_page_url:
+              type:
+              - string
+              - 'null'
+              format: uri
+            page:
+              type: integer
+            page_size:
+              type: integer
+            previous_page_url:
+              type:
+              - string
+              - 'null'
+              format: uri
+            url:
+              type: string
+              format: uri
+            key:
+              type: string
     content.v1.content_and_approvals:
       type: object
       properties:
@@ -117,38 +151,6 @@ components:
           description: The [Content types](https://www.twilio.com/docs/content/content-types-overview) (e.g. twilio/text) for this Content resource.
         approval_requests:
           description: The submitted information and approval request status of the Content resource.
-    ListContentAndApprovalsResponse:
-      type: object
-      properties:
-        contents:
-          type: array
-          items:
-            $ref: '#/components/schemas/content.v1.content_and_approvals'
-        meta:
-          type: object
-          properties:
-            first_page_url:
-              type: string
-              format: uri
-            next_page_url:
-              type:
-              - string
-              - 'null'
-              format: uri
-            page:
-              type: integer
-            page_size:
-              type: integer
-            previous_page_url:
-              type:
-              - string
-              - 'null'
-              format: uri
-            url:
-              type: string
-              format: uri
-            key:
-              type: string
   securitySchemes:
     accountSid_authToken:
       type: http

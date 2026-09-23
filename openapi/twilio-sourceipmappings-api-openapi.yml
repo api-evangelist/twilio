@@ -47,6 +47,8 @@ paths:
           application/x-www-form-urlencoded:
             schema:
               $ref: '#/components/schemas/CreateSourceIpMappingRequest'
+      summary: Create source ip mapping
+      x-summary-source: derived
     get:
       description: ''
       tags:
@@ -82,6 +84,8 @@ paths:
       operationId: ListSourceIpMapping
       x-maturity:
       - GA
+      summary: List source ip mapping
+      x-summary-source: derived
   /v1/SourceIpMappings/{Sid}:
     servers:
     - url: https://voice.twilio.com
@@ -118,6 +122,8 @@ paths:
       operationId: FetchSourceIpMapping
       x-maturity:
       - GA
+      summary: Fetch source ip mapping
+      x-summary-source: derived
     post:
       description: ''
       tags:
@@ -149,6 +155,8 @@ paths:
           application/x-www-form-urlencoded:
             schema:
               $ref: '#/components/schemas/UpdateSourceIpMappingRequest'
+      summary: Update source ip mapping
+      x-summary-source: derived
     delete:
       description: ''
       tags:
@@ -171,8 +179,21 @@ paths:
       operationId: DeleteSourceIpMapping
       x-maturity:
       - GA
+      summary: Delete source ip mapping
+      x-summary-source: derived
 components:
   schemas:
+    UpdateSourceIpMappingRequest:
+      type: object
+      required:
+      - SipDomainSid
+      properties:
+        SipDomainSid:
+          type: string
+          minLength: 34
+          maxLength: 34
+          pattern: ^SD[0-9a-fA-F]{32}$
+          description: The SID of the SIP Domain that the IP Record should be mapped to.
     voice.v1.source_ip_mapping:
       type: object
       properties:
@@ -218,17 +239,6 @@ components:
           - 'null'
           format: uri
           description: The absolute URL of the resource.
-    UpdateSourceIpMappingRequest:
-      type: object
-      required:
-      - SipDomainSid
-      properties:
-        SipDomainSid:
-          type: string
-          minLength: 34
-          maxLength: 34
-          pattern: ^SD[0-9a-fA-F]{32}$
-          description: The SID of the SIP Domain that the IP Record should be mapped to.
     ListSourceIpMappingResponse:
       type: object
       properties:

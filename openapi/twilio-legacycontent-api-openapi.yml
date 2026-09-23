@@ -69,8 +69,42 @@ paths:
       operationId: ListLegacyContent
       x-maturity:
       - Preview
+      summary: List legacy content
+      x-summary-source: derived
 components:
   schemas:
+    ListLegacyContentResponse:
+      type: object
+      properties:
+        contents:
+          type: array
+          items:
+            $ref: '#/components/schemas/content.v1.legacy_content'
+        meta:
+          type: object
+          properties:
+            first_page_url:
+              type: string
+              format: uri
+            next_page_url:
+              type:
+              - string
+              - 'null'
+              format: uri
+            page:
+              type: integer
+            page_size:
+              type: integer
+            previous_page_url:
+              type:
+              - string
+              - 'null'
+              format: uri
+            url:
+              type: string
+              format: uri
+            key:
+              type: string
     content.v1.legacy_content:
       type: object
       properties:
@@ -132,38 +166,6 @@ components:
           - 'null'
           format: uri
           description: The URL of the resource, relative to `https://content.twilio.com`.
-    ListLegacyContentResponse:
-      type: object
-      properties:
-        contents:
-          type: array
-          items:
-            $ref: '#/components/schemas/content.v1.legacy_content'
-        meta:
-          type: object
-          properties:
-            first_page_url:
-              type: string
-              format: uri
-            next_page_url:
-              type:
-              - string
-              - 'null'
-              format: uri
-            page:
-              type: integer
-            page_size:
-              type: integer
-            previous_page_url:
-              type:
-              - string
-              - 'null'
-              format: uri
-            url:
-              type: string
-              format: uri
-            key:
-              type: string
   securitySchemes:
     accountSid_authToken:
       type: http

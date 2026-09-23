@@ -47,6 +47,8 @@ paths:
           application/x-www-form-urlencoded:
             schema:
               $ref: '#/components/schemas/CreateRoleRequest'
+      summary: Create role
+      x-summary-source: derived
     get:
       description: Retrieve a list of all user roles in your account's default service
       tags:
@@ -82,6 +84,8 @@ paths:
       operationId: ListRole
       x-maturity:
       - GA
+      summary: List role
+      x-summary-source: derived
   /v1/Roles/{Sid}:
     servers:
     - url: https://conversations.twilio.com
@@ -123,6 +127,8 @@ paths:
           application/x-www-form-urlencoded:
             schema:
               $ref: '#/components/schemas/UpdateRoleRequest'
+      summary: Update role
+      x-summary-source: derived
     delete:
       description: Remove a user role from your account's default service
       tags:
@@ -145,6 +151,8 @@ paths:
       operationId: DeleteRole
       x-maturity:
       - GA
+      summary: Delete role
+      x-summary-source: derived
     get:
       description: Fetch a user role from your account's default service
       tags:
@@ -171,6 +179,8 @@ paths:
       operationId: FetchRole
       x-maturity:
       - GA
+      summary: Fetch role
+      x-summary-source: derived
 components:
   schemas:
     UpdateRoleRequest:
@@ -183,6 +193,11 @@ components:
           items:
             type: string
           description: A permission that you grant to the role. Only one permission can be granted per parameter. To assign more than one permission, repeat this parameter for each permission value. Note that the update action replaces all previously assigned permissions with those defined in the update action. To remove a permission, do not include it in the subsequent update action. The values for this parameter depend on the role's `type`.
+    role_enum_role_type:
+      type: string
+      enum:
+      - conversation
+      - service
     CreateRoleRequest:
       type: object
       required:
@@ -301,11 +316,6 @@ components:
               format: uri
             key:
               type: string
-    role_enum_role_type:
-      type: string
-      enum:
-      - conversation
-      - service
   securitySchemes:
     accountSid_authToken:
       type: http

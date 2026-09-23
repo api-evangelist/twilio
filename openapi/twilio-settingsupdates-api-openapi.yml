@@ -73,15 +73,42 @@ paths:
       operationId: ListSettingsUpdate
       x-maturity:
       - Beta
+      summary: List settings update
+      x-summary-source: derived
 components:
   schemas:
-    settings_update_enum_status:
-      type: string
-      enum:
-      - scheduled
-      - in-progress
-      - successful
-      - failed
+    ListSettingsUpdateResponse:
+      type: object
+      properties:
+        settings_updates:
+          type: array
+          items:
+            $ref: '#/components/schemas/supersim.v1.settings_update'
+        meta:
+          type: object
+          properties:
+            first_page_url:
+              type: string
+              format: uri
+            next_page_url:
+              type:
+              - string
+              - 'null'
+              format: uri
+            page:
+              type: integer
+            page_size:
+              type: integer
+            previous_page_url:
+              type:
+              - string
+              - 'null'
+              format: uri
+            url:
+              type: string
+              format: uri
+            key:
+              type: string
     supersim.v1.settings_update:
       type: object
       properties:
@@ -136,38 +163,13 @@ components:
           - 'null'
           format: date-time
           description: The date that this Settings Update was updated, given in [ISO 8601](https://en.wikipedia.org/wiki/ISO_8601) format.
-    ListSettingsUpdateResponse:
-      type: object
-      properties:
-        settings_updates:
-          type: array
-          items:
-            $ref: '#/components/schemas/supersim.v1.settings_update'
-        meta:
-          type: object
-          properties:
-            first_page_url:
-              type: string
-              format: uri
-            next_page_url:
-              type:
-              - string
-              - 'null'
-              format: uri
-            page:
-              type: integer
-            page_size:
-              type: integer
-            previous_page_url:
-              type:
-              - string
-              - 'null'
-              format: uri
-            url:
-              type: string
-              format: uri
-            key:
-              type: string
+    settings_update_enum_status:
+      type: string
+      enum:
+      - scheduled
+      - in-progress
+      - successful
+      - failed
   securitySchemes:
     accountSid_authToken:
       type: http

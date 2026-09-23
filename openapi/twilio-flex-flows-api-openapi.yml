@@ -122,51 +122,27 @@ paths:
           description: Flex flow deleted
 components:
   schemas:
-    CreateFlexFlowRequest:
+    PaginationMeta:
       type: object
-      required:
-      - FriendlyName
-      - ChatServiceSid
-      - ChannelType
       properties:
-        FriendlyName:
-          type: string
-        ChatServiceSid:
-          type: string
-        ChannelType:
-          type: string
-          enum:
-          - web
-          - sms
-          - facebook
-          - whatsapp
-          - line
-          - custom
-        ContactIdentity:
-          type: string
-        Enabled:
-          type: boolean
-        IntegrationType:
-          type: string
-          enum:
-          - studio
-          - external
-          - task
-        Integration.FlowSid:
-          type: string
-        Integration.Url:
+        page:
+          type: integer
+        page_size:
+          type: integer
+        first_page_url:
           type: string
           format: uri
-        Integration.WorkspaceSid:
+        previous_page_url:
           type: string
-        Integration.WorkflowSid:
+          format: uri
+        next_page_url:
           type: string
-        Integration.Channel:
+          format: uri
+        url:
           type: string
-        LongLived:
-          type: boolean
-        JanitorEnabled:
-          type: boolean
+          format: uri
+        key:
+          type: string
     FlexFlow:
       type: object
       properties:
@@ -213,27 +189,6 @@ components:
         url:
           type: string
           format: uri
-    PaginationMeta:
-      type: object
-      properties:
-        page:
-          type: integer
-        page_size:
-          type: integer
-        first_page_url:
-          type: string
-          format: uri
-        previous_page_url:
-          type: string
-          format: uri
-        next_page_url:
-          type: string
-          format: uri
-        url:
-          type: string
-          format: uri
-        key:
-          type: string
     FlexFlowList:
       type: object
       properties:
@@ -243,6 +198,51 @@ components:
             $ref: '#/components/schemas/FlexFlow'
         meta:
           $ref: '#/components/schemas/PaginationMeta'
+    CreateFlexFlowRequest:
+      type: object
+      required:
+      - FriendlyName
+      - ChatServiceSid
+      - ChannelType
+      properties:
+        FriendlyName:
+          type: string
+        ChatServiceSid:
+          type: string
+        ChannelType:
+          type: string
+          enum:
+          - web
+          - sms
+          - facebook
+          - whatsapp
+          - line
+          - custom
+        ContactIdentity:
+          type: string
+        Enabled:
+          type: boolean
+        IntegrationType:
+          type: string
+          enum:
+          - studio
+          - external
+          - task
+        Integration.FlowSid:
+          type: string
+        Integration.Url:
+          type: string
+          format: uri
+        Integration.WorkspaceSid:
+          type: string
+        Integration.WorkflowSid:
+          type: string
+        Integration.Channel:
+          type: string
+        LongLived:
+          type: boolean
+        JanitorEnabled:
+          type: boolean
   securitySchemes:
     accountSid_authToken:
       type: http

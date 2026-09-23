@@ -60,6 +60,8 @@ paths:
       operationId: ListTrunkingCountry
       x-maturity:
       - GA
+      summary: List trunking country
+      x-summary-source: derived
   /v2/Trunking/Countries/{IsoCountry}:
     servers:
     - url: https://pricing.twilio.com
@@ -93,6 +95,8 @@ paths:
       operationId: FetchTrunkingCountry
       x-maturity:
       - GA
+      summary: Fetch trunking country
+      x-summary-source: derived
   /v2/Trunking/Numbers/{DestinationNumber}:
     servers:
     - url: https://pricing.twilio.com
@@ -133,8 +137,74 @@ paths:
       operationId: FetchTrunkingNumber
       x-maturity:
       - GA
+      summary: Fetch trunking number
+      x-summary-source: derived
 components:
   schemas:
+    pricing.v2.trunking_country-instance:
+      type: object
+      properties:
+        country:
+          type:
+          - string
+          - 'null'
+          description: The name of the country.
+        iso_country:
+          type:
+          - string
+          - 'null'
+          format: iso-country-code
+          description: The [ISO country code](https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2).
+        terminating_prefix_prices:
+          type:
+          - array
+          - 'null'
+          items:
+            type: object
+            format: outbound-prefix-price-with-origin
+            properties:
+              origination_prefixes:
+                type: array
+                items:
+                  type: string
+              destination_prefixes:
+                type: array
+                items:
+                  type: string
+              base_price:
+                type: number
+              current_price:
+                type: number
+              friendly_name:
+                type: string
+          description: The list of [TerminatingPrefixPrice](https://www.twilio.com/docs/voice/pricing#outbound-prefix-price-with-origin) records.
+        originating_call_prices:
+          type:
+          - array
+          - 'null'
+          items:
+            type: object
+            format: inbound-call-price
+            properties:
+              base_price:
+                type: number
+              current_price:
+                type: number
+              number_type:
+                type: string
+          description: The list of [OriginatingCallPrice](https://www.twilio.com/docs/voice/pricing#inbound-call-price) records.
+        price_unit:
+          type:
+          - string
+          - 'null'
+          format: currency
+          description: The currency in which prices are measured, specified in [ISO 4127](https://www.iso.org/iso/home/standards/currency_codes.htm) format (e.g. `usd`, `eur`, `jpy`).
+        url:
+          type:
+          - string
+          - 'null'
+          format: uri
+          description: The absolute URL of the resource.
     ListTrunkingCountryResponse:
       type: object
       properties:
@@ -167,6 +237,26 @@ components:
               format: uri
             key:
               type: string
+    pricing.v2.trunking_country:
+      type: object
+      properties:
+        country:
+          type:
+          - string
+          - 'null'
+          description: The name of the country.
+        iso_country:
+          type:
+          - string
+          - 'null'
+          format: iso-country-code
+          description: The [ISO country code](https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2).
+        url:
+          type:
+          - string
+          - 'null'
+          format: uri
+          description: The absolute URL of the resource.
     pricing.v2.trunking_number:
       type: object
       properties:
@@ -228,90 +318,6 @@ components:
             number_type:
               type: string
           description: The [OriginatingCallPrice](https://www.twilio.com/docs/voice/pricing#inbound-call-price) record.
-        price_unit:
-          type:
-          - string
-          - 'null'
-          format: currency
-          description: The currency in which prices are measured, specified in [ISO 4127](https://www.iso.org/iso/home/standards/currency_codes.htm) format (e.g. `usd`, `eur`, `jpy`).
-        url:
-          type:
-          - string
-          - 'null'
-          format: uri
-          description: The absolute URL of the resource.
-    pricing.v2.trunking_country:
-      type: object
-      properties:
-        country:
-          type:
-          - string
-          - 'null'
-          description: The name of the country.
-        iso_country:
-          type:
-          - string
-          - 'null'
-          format: iso-country-code
-          description: The [ISO country code](https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2).
-        url:
-          type:
-          - string
-          - 'null'
-          format: uri
-          description: The absolute URL of the resource.
-    pricing.v2.trunking_country-instance:
-      type: object
-      properties:
-        country:
-          type:
-          - string
-          - 'null'
-          description: The name of the country.
-        iso_country:
-          type:
-          - string
-          - 'null'
-          format: iso-country-code
-          description: The [ISO country code](https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2).
-        terminating_prefix_prices:
-          type:
-          - array
-          - 'null'
-          items:
-            type: object
-            format: outbound-prefix-price-with-origin
-            properties:
-              origination_prefixes:
-                type: array
-                items:
-                  type: string
-              destination_prefixes:
-                type: array
-                items:
-                  type: string
-              base_price:
-                type: number
-              current_price:
-                type: number
-              friendly_name:
-                type: string
-          description: The list of [TerminatingPrefixPrice](https://www.twilio.com/docs/voice/pricing#outbound-prefix-price-with-origin) records.
-        originating_call_prices:
-          type:
-          - array
-          - 'null'
-          items:
-            type: object
-            format: inbound-call-price
-            properties:
-              base_price:
-                type: number
-              current_price:
-                type: number
-              number_type:
-                type: string
-          description: The list of [OriginatingCallPrice](https://www.twilio.com/docs/voice/pricing#inbound-call-price) records.
         price_unit:
           type:
           - string

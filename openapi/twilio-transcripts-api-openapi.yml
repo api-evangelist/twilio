@@ -58,6 +58,8 @@ paths:
       operationId: FetchMedia
       x-maturity:
       - Beta
+      summary: Fetch media
+      x-summary-source: derived
   /v2/Transcripts/{TranscriptSid}/OperatorResults:
     servers:
     - url: https://intelligence.twilio.com
@@ -116,6 +118,8 @@ paths:
       operationId: ListOperatorResult
       x-maturity:
       - Beta
+      summary: List operator result
+      x-summary-source: derived
   /v2/Transcripts/{TranscriptSid}/OperatorResults/{OperatorSid}:
     servers:
     - url: https://intelligence.twilio.com
@@ -165,6 +169,8 @@ paths:
       operationId: FetchOperatorResult
       x-maturity:
       - Beta
+      summary: Fetch operator result
+      x-summary-source: derived
   /v2/Transcripts/{TranscriptSid}/Sentences:
     servers:
     - url: https://intelligence.twilio.com
@@ -229,6 +235,8 @@ paths:
       operationId: ListSentence
       x-maturity:
       - Beta
+      summary: List sentence
+      x-summary-source: derived
   /v2/Transcripts:
     servers:
     - url: https://intelligence.twilio.com
@@ -275,6 +283,8 @@ paths:
           application/x-www-form-urlencoded:
             schema:
               $ref: '#/components/schemas/CreateTranscriptRequest'
+      summary: Create transcript
+      x-summary-source: derived
     get:
       description: Retrieve a list of Transcripts for a given service.
       tags:
@@ -353,6 +363,8 @@ paths:
       operationId: ListTranscript
       x-maturity:
       - Beta
+      summary: List transcript
+      x-summary-source: derived
   /v2/Transcripts/{Sid}:
     servers:
     - url: https://intelligence.twilio.com
@@ -404,6 +416,8 @@ paths:
       operationId: FetchTranscript
       x-maturity:
       - Beta
+      summary: Fetch transcript
+      x-summary-source: derived
     delete:
       description: Delete a specific Transcript.
       tags:
@@ -426,6 +440,8 @@ paths:
       operationId: DeleteTranscript
       x-maturity:
       - Beta
+      summary: Delete transcript
+      x-summary-source: derived
 components:
   schemas:
     intelligence.v2.transcript.operator_result:
@@ -506,6 +522,82 @@ components:
           - 'null'
           format: uri
           description: The URL of this resource.
+    CreateTranscriptRequest:
+      type: object
+      required:
+      - ServiceSid
+      - Channel
+      properties:
+        ServiceSid:
+          type: string
+          minLength: 34
+          maxLength: 34
+          pattern: ^GA[0-9a-fA-F]{32}$
+          description: The unique SID identifier of the Service.
+        Channel:
+          description: JSON object describing Media Channel including Source and Participants
+        CustomerKey:
+          type: string
+          description: Used to store client provided metadata. Maximum of 64 double-byte UTF8 characters.
+        MediaStartTime:
+          type: string
+          format: date-time
+          description: The date that this Transcript's media was started, given in ISO 8601 format.
+    transcript_enum_status:
+      type: string
+      enum:
+      - queued
+      - in-progress
+      - completed
+      - failed
+      - canceled
+    operator_result_enum_operator_type:
+      type: string
+      enum:
+      - conversation_classify
+      - utterance_classify
+      - extract
+      - extract_normalize
+      - pii_extract
+    intelligence.v2.transcript.media:
+      type: object
+      properties:
+        account_sid:
+          type:
+          - string
+          - 'null'
+          minLength: 34
+          maxLength: 34
+          pattern: ^AC[0-9a-fA-F]{32}$
+          description: The unique SID identifier of the Account.
+        media_url:
+          type:
+          - string
+          - 'null'
+          format: uri
+          description: Downloadable URL for media, if stored in Twilio AI.
+        service_sid:
+          type:
+          - string
+          - 'null'
+          minLength: 34
+          maxLength: 34
+          pattern: ^GA[0-9a-fA-F]{32}$
+          description: The unique SID identifier of the Service.
+        sid:
+          type:
+          - string
+          - 'null'
+          minLength: 34
+          maxLength: 34
+          pattern: ^GT[0-9a-fA-F]{32}$
+          description: The unique SID identifier of the Transcript.
+        url:
+          type:
+          - string
+          - 'null'
+          format: uri
+          description: The URL of this resource.
     intelligence.v2.transcript.sentence:
       type: object
       properties:
@@ -550,81 +642,45 @@ components:
           type:
           - number
           - 'null'
-    intelligence.v2.transcript.media:
+    ListOperatorResultResponse:
       type: object
       properties:
-        account_sid:
-          type:
-          - string
-          - 'null'
-          minLength: 34
-          maxLength: 34
-          pattern: ^AC[0-9a-fA-F]{32}$
-          description: The unique SID identifier of the Account.
-        media_url:
-          type:
-          - string
-          - 'null'
-          format: uri
-          description: Downloadable URL for media, if stored in Twilio AI.
-        service_sid:
-          type:
-          - string
-          - 'null'
-          minLength: 34
-          maxLength: 34
-          pattern: ^GA[0-9a-fA-F]{32}$
-          description: The unique SID identifier of the Service.
-        sid:
-          type:
-          - string
-          - 'null'
-          minLength: 34
-          maxLength: 34
-          pattern: ^GT[0-9a-fA-F]{32}$
-          description: The unique SID identifier of the Transcript.
-        url:
-          type:
-          - string
-          - 'null'
-          format: uri
-          description: The URL of this resource.
-    operator_result_enum_operator_type:
-      type: string
-      enum:
-      - conversation_classify
-      - utterance_classify
-      - extract
-      - extract_normalize
-      - pii_extract
-    CreateTranscriptRequest:
-      type: object
-      required:
-      - ServiceSid
-      - Channel
-      properties:
-        ServiceSid:
-          type: string
-          minLength: 34
-          maxLength: 34
-          pattern: ^GA[0-9a-fA-F]{32}$
-          description: The unique SID identifier of the Service.
-        Channel:
-          description: JSON object describing Media Channel including Source and Participants
-        CustomerKey:
-          type: string
-          description: Used to store client provided metadata. Maximum of 64 double-byte UTF8 characters.
-        MediaStartTime:
-          type: string
-          format: date-time
-          description: The date that this Transcript's media was started, given in ISO 8601 format.
-    ListTranscriptResponse:
-      type: object
-      properties:
-        transcripts:
+        operator_results:
           type: array
           items:
-            $ref: '#/components/schemas/intelligence.v2.transcript'
+            $ref: '#/components/schemas/intelligence.v2.transcript.operator_result'
+        meta:
+          type: object
+          properties:
+            first_page_url:
+              type: string
+              format: uri
+            next_page_url:
+              type:
+              - string
+              - 'null'
+              format: uri
+            page:
+              type: integer
+            page_size:
+              type: integer
+            previous_page_url:
+              type:
+              - string
+              - 'null'
+              format: uri
+            url:
+              type: string
+              format: uri
+            key:
+              type: string
+    ListSentenceResponse:
+      type: object
+      properties:
+        sentences:
+          type: array
+          items:
+            $ref: '#/components/schemas/intelligence.v2.transcript.sentence'
         meta:
           type: object
           properties:
@@ -740,53 +796,13 @@ components:
           - object
           - 'null'
           format: uri-map
-    ListOperatorResultResponse:
+    ListTranscriptResponse:
       type: object
       properties:
-        operator_results:
+        transcripts:
           type: array
           items:
-            $ref: '#/components/schemas/intelligence.v2.transcript.operator_result'
-        meta:
-          type: object
-          properties:
-            first_page_url:
-              type: string
-              format: uri
-            next_page_url:
-              type:
-              - string
-              - 'null'
-              format: uri
-            page:
-              type: integer
-            page_size:
-              type: integer
-            previous_page_url:
-              type:
-              - string
-              - 'null'
-              format: uri
-            url:
-              type: string
-              format: uri
-            key:
-              type: string
-    transcript_enum_status:
-      type: string
-      enum:
-      - queued
-      - in-progress
-      - completed
-      - failed
-      - canceled
-    ListSentenceResponse:
-      type: object
-      properties:
-        sentences:
-          type: array
-          items:
-            $ref: '#/components/schemas/intelligence.v2.transcript.sentence'
+            $ref: '#/components/schemas/intelligence.v2.transcript'
         meta:
           type: object
           properties:

@@ -65,6 +65,8 @@ paths:
       operationId: FetchSink
       x-maturity:
       - GA
+      summary: Fetch sink
+      x-summary-source: derived
     delete:
       description: Delete a specific Sink.
       tags:
@@ -87,6 +89,8 @@ paths:
       operationId: DeleteSink
       x-maturity:
       - GA
+      summary: Delete sink
+      x-summary-source: derived
     post:
       description: Update a specific Sink
       tags:
@@ -118,6 +122,8 @@ paths:
           application/x-www-form-urlencoded:
             schema:
               $ref: '#/components/schemas/UpdateSinkRequest'
+      summary: Update sink
+      x-summary-source: derived
   /v1/Sinks:
     servers:
     - url: https://events.twilio.com
@@ -162,6 +168,8 @@ paths:
           application/x-www-form-urlencoded:
             schema:
               $ref: '#/components/schemas/CreateSinkRequest'
+      summary: Create sink
+      x-summary-source: derived
     get:
       description: Retrieve a paginated list of Sinks belonging to the account used to make the request.
       tags:
@@ -207,6 +215,8 @@ paths:
       operationId: ListSink
       x-maturity:
       - GA
+      summary: List sink
+      x-summary-source: derived
   /v1/Sinks/{Sid}/Test:
     servers:
     - url: https://events.twilio.com
@@ -243,6 +253,8 @@ paths:
       operationId: CreateSinkTest
       x-maturity:
       - GA
+      summary: Create sink test
+      x-summary-source: derived
   /v1/Sinks/{Sid}/Validate:
     servers:
     - url: https://events.twilio.com
@@ -284,8 +296,41 @@ paths:
           application/x-www-form-urlencoded:
             schema:
               $ref: '#/components/schemas/CreateSinkValidateRequest'
+      summary: Create sink validate
+      x-summary-source: derived
 components:
   schemas:
+    UpdateSinkRequest:
+      type: object
+      required:
+      - Description
+      properties:
+        Description:
+          type: string
+          description: A human readable description for the Sink **This value should not contain PII.**
+    sink_enum_status:
+      type: string
+      enum:
+      - initialized
+      - validating
+      - active
+      - failed
+    CreateSinkValidateRequest:
+      type: object
+      required:
+      - TestId
+      properties:
+        TestId:
+          type: string
+          description: A 34 character string that uniquely identifies the test event for a Sink being validated.
+    events.v1.sink.sink_validate:
+      type: object
+      properties:
+        result:
+          type:
+          - string
+          - 'null'
+          description: Feedback indicating whether the given Sink was validated.
     events.v1.sink.sink_test:
       type: object
       properties:
@@ -300,37 +345,6 @@ components:
       - kinesis
       - webhook
       - segment
-    CreateSinkRequest:
-      type: object
-      required:
-      - Description
-      - SinkConfiguration
-      - SinkType
-      properties:
-        Description:
-          type: string
-          description: A human readable description for the Sink **This value should not contain PII.**
-        SinkConfiguration:
-          description: The information required for Twilio to connect to the provided Sink encoded as JSON.
-        SinkType:
-          type: string
-          $ref: '#/components/schemas/sink_enum_sink_type'
-          description: The Sink type. Can only be "kinesis" or "webhook" currently.
-    events.v1.sink.sink_validate:
-      type: object
-      properties:
-        result:
-          type:
-          - string
-          - 'null'
-          description: Feedback indicating whether the given Sink was validated.
-    sink_enum_status:
-      type: string
-      enum:
-      - initialized
-      - validating
-      - active
-      - failed
     ListSinkResponse:
       type: object
       properties:
@@ -363,14 +377,22 @@ components:
               format: uri
             key:
               type: string
-    CreateSinkValidateRequest:
+    CreateSinkRequest:
       type: object
       required:
-      - TestId
+      - Description
+      - SinkConfiguration
+      - SinkType
       properties:
-        TestId:
+        Description:
           type: string
-          description: A 34 character string that uniquely identifies the test event for a Sink being validated.
+          description: A human readable description for the Sink **This value should not contain PII.**
+        SinkConfiguration:
+          description: The information required for Twilio to connect to the provided Sink encoded as JSON.
+        SinkType:
+          type: string
+          $ref: '#/components/schemas/sink_enum_sink_type'
+          description: The Sink type. Can only be "kinesis" or "webhook" currently.
     events.v1.sink:
       type: object
       properties:
@@ -425,14 +447,6 @@ components:
           - 'null'
           format: uri-map
           description: Contains a dictionary of URL links to nested resources of this Sink.
-    UpdateSinkRequest:
-      type: object
-      required:
-      - Description
-      properties:
-        Description:
-          type: string
-          description: A human readable description for the Sink **This value should not contain PII.**
   securitySchemes:
     accountSid_authToken:
       type: http

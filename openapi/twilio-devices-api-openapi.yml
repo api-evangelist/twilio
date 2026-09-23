@@ -69,6 +69,8 @@ paths:
       operationId: ListDevice
       x-maturity:
       - Preview
+      summary: List device
+      x-summary-source: derived
   /v1/Devices/{Sid}:
     servers:
     - url: https://microvisor.twilio.com
@@ -110,6 +112,8 @@ paths:
       operationId: FetchDevice
       x-maturity:
       - Preview
+      summary: Fetch device
+      x-summary-source: derived
     post:
       description: Update a specific Device.
       tags:
@@ -138,6 +142,8 @@ paths:
           application/x-www-form-urlencoded:
             schema:
               $ref: '#/components/schemas/UpdateDeviceRequest'
+      summary: Update device
+      x-summary-source: derived
   /v1/Devices/{DeviceSid}/Configs:
     servers:
     - url: https://microvisor.twilio.com
@@ -188,6 +194,8 @@ paths:
       operationId: ListDeviceConfig
       x-maturity:
       - Preview
+      summary: List device config
+      x-summary-source: derived
     post:
       description: Create a config for a Microvisor Device.
       tags:
@@ -216,6 +224,8 @@ paths:
           application/x-www-form-urlencoded:
             schema:
               $ref: '#/components/schemas/CreateDeviceConfigRequest'
+      summary: Create device config
+      x-summary-source: derived
   /v1/Devices/{DeviceSid}/Configs/{Key}:
     servers:
     - url: https://microvisor.twilio.com
@@ -254,6 +264,8 @@ paths:
       operationId: FetchDeviceConfig
       x-maturity:
       - Preview
+      summary: Fetch device config
+      x-summary-source: derived
     post:
       description: Update a config for a Microvisor Device.
       tags:
@@ -288,6 +300,8 @@ paths:
           application/x-www-form-urlencoded:
             schema:
               $ref: '#/components/schemas/UpdateDeviceConfigRequest'
+      summary: Update device config
+      x-summary-source: derived
     delete:
       description: Delete a config for a Microvisor Device.
       tags:
@@ -313,6 +327,8 @@ paths:
       operationId: DeleteDeviceConfig
       x-maturity:
       - Preview
+      summary: Delete device config
+      x-summary-source: derived
   /v1/Devices/{DeviceSid}/Secrets:
     servers:
     - url: https://microvisor.twilio.com
@@ -363,6 +379,8 @@ paths:
       operationId: ListDeviceSecret
       x-maturity:
       - Preview
+      summary: List device secret
+      x-summary-source: derived
     post:
       description: Create a secret for a Microvisor Device.
       tags:
@@ -391,6 +409,8 @@ paths:
           application/x-www-form-urlencoded:
             schema:
               $ref: '#/components/schemas/CreateDeviceSecretRequest'
+      summary: Create device secret
+      x-summary-source: derived
   /v1/Devices/{DeviceSid}/Secrets/{Key}:
     servers:
     - url: https://microvisor.twilio.com
@@ -429,6 +449,8 @@ paths:
       operationId: FetchDeviceSecret
       x-maturity:
       - Preview
+      summary: Fetch device secret
+      x-summary-source: derived
     post:
       description: Update a secret for a Microvisor Device.
       tags:
@@ -463,6 +485,8 @@ paths:
           application/x-www-form-urlencoded:
             schema:
               $ref: '#/components/schemas/UpdateDeviceSecretRequest'
+      summary: Update device secret
+      x-summary-source: derived
     delete:
       description: Delete a secret for a Microvisor Device.
       tags:
@@ -488,112 +512,10 @@ paths:
       operationId: DeleteDeviceSecret
       x-maturity:
       - Preview
+      summary: Delete device secret
+      x-summary-source: derived
 components:
   schemas:
-    CreateDeviceConfigRequest:
-      type: object
-      required:
-      - Key
-      - Value
-      properties:
-        Key:
-          type: string
-          description: The config key; up to 100 characters.
-        Value:
-          type: string
-          description: The config value; up to 4096 characters.
-    UpdateDeviceSecretRequest:
-      type: object
-      required:
-      - Value
-      properties:
-        Value:
-          type: string
-          description: The secret value; up to 4096 characters.
-    UpdateDeviceConfigRequest:
-      type: object
-      required:
-      - Value
-      properties:
-        Value:
-          type: string
-          description: The config value; up to 4096 characters.
-    CreateDeviceSecretRequest:
-      type: object
-      required:
-      - Key
-      - Value
-      properties:
-        Key:
-          type: string
-          description: The secret key; up to 100 characters.
-        Value:
-          type: string
-          description: The secret value; up to 4096 characters.
-    microvisor.v1.device.device_config:
-      type: object
-      properties:
-        device_sid:
-          type:
-          - string
-          - 'null'
-          minLength: 34
-          maxLength: 34
-          pattern: ^UV[0-9a-fA-F]{32}$
-          description: A 34-character string that uniquely identifies the parent Device.
-        key:
-          type:
-          - string
-          - 'null'
-          description: The config key; up to 100 characters.
-        value:
-          type:
-          - string
-          - 'null'
-          description: The config value; up to 4096 characters.
-        date_updated:
-          type:
-          - string
-          - 'null'
-          format: date-time
-        url:
-          type:
-          - string
-          - 'null'
-          format: uri
-          description: The absolute URL of the Config.
-    ListDeviceConfigResponse:
-      type: object
-      properties:
-        configs:
-          type: array
-          items:
-            $ref: '#/components/schemas/microvisor.v1.device.device_config'
-        meta:
-          type: object
-          properties:
-            first_page_url:
-              type: string
-              format: uri
-            next_page_url:
-              type:
-              - string
-              - 'null'
-              format: uri
-            page:
-              type: integer
-            page_size:
-              type: integer
-            previous_page_url:
-              type:
-              - string
-              - 'null'
-              format: uri
-            url:
-              type: string
-              format: uri
-            key:
-              type: string
     UpdateDeviceRequest:
       type: object
       properties:
@@ -609,97 +531,6 @@ components:
         RestartApp:
           type: boolean
           description: Set to true to restart the App running on the Device.
-    microvisor.v1.device.device_secret:
-      type: object
-      properties:
-        device_sid:
-          type:
-          - string
-          - 'null'
-          minLength: 34
-          maxLength: 34
-          pattern: ^UV[0-9a-fA-F]{32}$
-          description: A 34-character string that uniquely identifies the parent Device.
-        key:
-          type:
-          - string
-          - 'null'
-          description: The secret key; up to 100 characters.
-        date_rotated:
-          type:
-          - string
-          - 'null'
-          format: date-time
-        url:
-          type:
-          - string
-          - 'null'
-          format: uri
-          description: The absolute URL of the Secret.
-    ListDeviceResponse:
-      type: object
-      properties:
-        devices:
-          type: array
-          items:
-            $ref: '#/components/schemas/microvisor.v1.device'
-        meta:
-          type: object
-          properties:
-            first_page_url:
-              type: string
-              format: uri
-            next_page_url:
-              type:
-              - string
-              - 'null'
-              format: uri
-            page:
-              type: integer
-            page_size:
-              type: integer
-            previous_page_url:
-              type:
-              - string
-              - 'null'
-              format: uri
-            url:
-              type: string
-              format: uri
-            key:
-              type: string
-    ListDeviceSecretResponse:
-      type: object
-      properties:
-        secrets:
-          type: array
-          items:
-            $ref: '#/components/schemas/microvisor.v1.device.device_secret'
-        meta:
-          type: object
-          properties:
-            first_page_url:
-              type: string
-              format: uri
-            next_page_url:
-              type:
-              - string
-              - 'null'
-              format: uri
-            page:
-              type: integer
-            page_size:
-              type: integer
-            previous_page_url:
-              type:
-              - string
-              - 'null'
-              format: uri
-            url:
-              type: string
-              format: uri
-            key:
-              type: string
     microvisor.v1.device:
       type: object
       properties:
@@ -752,6 +583,201 @@ components:
           - 'null'
           format: uri-map
           description: The absolute URLs of related resources.
+    microvisor.v1.device.device_secret:
+      type: object
+      properties:
+        device_sid:
+          type:
+          - string
+          - 'null'
+          minLength: 34
+          maxLength: 34
+          pattern: ^UV[0-9a-fA-F]{32}$
+          description: A 34-character string that uniquely identifies the parent Device.
+        key:
+          type:
+          - string
+          - 'null'
+          description: The secret key; up to 100 characters.
+        date_rotated:
+          type:
+          - string
+          - 'null'
+          format: date-time
+        url:
+          type:
+          - string
+          - 'null'
+          format: uri
+          description: The absolute URL of the Secret.
+    ListDeviceSecretResponse:
+      type: object
+      properties:
+        secrets:
+          type: array
+          items:
+            $ref: '#/components/schemas/microvisor.v1.device.device_secret'
+        meta:
+          type: object
+          properties:
+            first_page_url:
+              type: string
+              format: uri
+            next_page_url:
+              type:
+              - string
+              - 'null'
+              format: uri
+            page:
+              type: integer
+            page_size:
+              type: integer
+            previous_page_url:
+              type:
+              - string
+              - 'null'
+              format: uri
+            url:
+              type: string
+              format: uri
+            key:
+              type: string
+    ListDeviceConfigResponse:
+      type: object
+      properties:
+        configs:
+          type: array
+          items:
+            $ref: '#/components/schemas/microvisor.v1.device.device_config'
+        meta:
+          type: object
+          properties:
+            first_page_url:
+              type: string
+              format: uri
+            next_page_url:
+              type:
+              - string
+              - 'null'
+              format: uri
+            page:
+              type: integer
+            page_size:
+              type: integer
+            previous_page_url:
+              type:
+              - string
+              - 'null'
+              format: uri
+            url:
+              type: string
+              format: uri
+            key:
+              type: string
+    UpdateDeviceSecretRequest:
+      type: object
+      required:
+      - Value
+      properties:
+        Value:
+          type: string
+          description: The secret value; up to 4096 characters.
+    UpdateDeviceConfigRequest:
+      type: object
+      required:
+      - Value
+      properties:
+        Value:
+          type: string
+          description: The config value; up to 4096 characters.
+    ListDeviceResponse:
+      type: object
+      properties:
+        devices:
+          type: array
+          items:
+            $ref: '#/components/schemas/microvisor.v1.device'
+        meta:
+          type: object
+          properties:
+            first_page_url:
+              type: string
+              format: uri
+            next_page_url:
+              type:
+              - string
+              - 'null'
+              format: uri
+            page:
+              type: integer
+            page_size:
+              type: integer
+            previous_page_url:
+              type:
+              - string
+              - 'null'
+              format: uri
+            url:
+              type: string
+              format: uri
+            key:
+              type: string
+    CreateDeviceSecretRequest:
+      type: object
+      required:
+      - Key
+      - Value
+      properties:
+        Key:
+          type: string
+          description: The secret key; up to 100 characters.
+        Value:
+          type: string
+          description: The secret value; up to 4096 characters.
+    microvisor.v1.device.device_config:
+      type: object
+      properties:
+        device_sid:
+          type:
+          - string
+          - 'null'
+          minLength: 34
+          maxLength: 34
+          pattern: ^UV[0-9a-fA-F]{32}$
+          description: A 34-character string that uniquely identifies the parent Device.
+        key:
+          type:
+          - string
+          - 'null'
+          description: The config key; up to 100 characters.
+        value:
+          type:
+          - string
+          - 'null'
+          description: The config value; up to 4096 characters.
+        date_updated:
+          type:
+          - string
+          - 'null'
+          format: date-time
+        url:
+          type:
+          - string
+          - 'null'
+          format: uri
+          description: The absolute URL of the Config.
+    CreateDeviceConfigRequest:
+      type: object
+      required:
+      - Key
+      - Value
+      properties:
+        Key:
+          type: string
+          description: The config key; up to 100 characters.
+        Value:
+          type: string
+          description: The config value; up to 4096 characters.
   securitySchemes:
     accountSid_authToken:
       type: http

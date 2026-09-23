@@ -101,6 +101,36 @@ paths:
           description: Channel deleted
 components:
   schemas:
+    PaginationMeta:
+      type: object
+      properties:
+        page:
+          type: integer
+        page_size:
+          type: integer
+        first_page_url:
+          type: string
+          format: uri
+        previous_page_url:
+          type: string
+          format: uri
+        next_page_url:
+          type: string
+          format: uri
+        url:
+          type: string
+          format: uri
+        key:
+          type: string
+    ChannelList:
+      type: object
+      properties:
+        flex_chat_channels:
+          type: array
+          items:
+            $ref: '#/components/schemas/FlexChannel'
+        meta:
+          $ref: '#/components/schemas/PaginationMeta'
     CreateChannelRequest:
       type: object
       required:
@@ -152,36 +182,6 @@ components:
         url:
           type: string
           format: uri
-    PaginationMeta:
-      type: object
-      properties:
-        page:
-          type: integer
-        page_size:
-          type: integer
-        first_page_url:
-          type: string
-          format: uri
-        previous_page_url:
-          type: string
-          format: uri
-        next_page_url:
-          type: string
-          format: uri
-        url:
-          type: string
-          format: uri
-        key:
-          type: string
-    ChannelList:
-      type: object
-      properties:
-        flex_chat_channels:
-          type: array
-          items:
-            $ref: '#/components/schemas/FlexChannel'
-        meta:
-          $ref: '#/components/schemas/PaginationMeta'
   securitySchemes:
     accountSid_authToken:
       type: http

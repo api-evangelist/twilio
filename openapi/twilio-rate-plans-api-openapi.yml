@@ -14,7 +14,7 @@ info:
 servers:
 - url: https://wireless.twilio.com
 tags:
-- name: RatePlans
+- name: Rate Plans
 paths:
   /v1/RatePlans:
     servers:
@@ -30,7 +30,7 @@ paths:
     get:
       description: ''
       tags:
-      - RatePlans
+      - Rate Plans
       parameters:
       - name: PageSize
         in: query
@@ -62,10 +62,12 @@ paths:
       operationId: ListRatePlan
       x-maturity:
       - GA
+      summary: List rate plan
+      x-summary-source: derived
     post:
       description: ''
       tags:
-      - RatePlans
+      - Rate Plans
       responses:
         '201':
           content:
@@ -83,6 +85,8 @@ paths:
           application/x-www-form-urlencoded:
             schema:
               $ref: '#/components/schemas/CreateRatePlanRequest'
+      summary: Create rate plan
+      x-summary-source: derived
   /v1/RatePlans/{Sid}:
     servers:
     - url: https://wireless.twilio.com
@@ -97,7 +101,7 @@ paths:
     get:
       description: ''
       tags:
-      - RatePlans
+      - Rate Plans
       parameters:
       - name: Sid
         in: path
@@ -117,10 +121,12 @@ paths:
       operationId: FetchRatePlan
       x-maturity:
       - GA
+      summary: Fetch rate plan
+      x-summary-source: derived
     post:
       description: ''
       tags:
-      - RatePlans
+      - Rate Plans
       parameters:
       - name: Sid
         in: path
@@ -145,10 +151,12 @@ paths:
           application/x-www-form-urlencoded:
             schema:
               $ref: '#/components/schemas/UpdateRatePlanRequest'
+      summary: Update rate plan
+      x-summary-source: derived
     delete:
       description: ''
       tags:
-      - RatePlans
+      - Rate Plans
       parameters:
       - name: Sid
         in: path
@@ -164,49 +172,10 @@ paths:
       operationId: DeleteRatePlan
       x-maturity:
       - GA
+      summary: Delete rate plan
+      x-summary-source: derived
 components:
   schemas:
-    ListRatePlanResponse:
-      type: object
-      properties:
-        rate_plans:
-          type: array
-          items:
-            $ref: '#/components/schemas/wireless.v1.rate_plan'
-        meta:
-          type: object
-          properties:
-            first_page_url:
-              type: string
-              format: uri
-            next_page_url:
-              type:
-              - string
-              - 'null'
-              format: uri
-            page:
-              type: integer
-            page_size:
-              type: integer
-            previous_page_url:
-              type:
-              - string
-              - 'null'
-              format: uri
-            url:
-              type: string
-              format: uri
-            key:
-              type: string
-    UpdateRatePlanRequest:
-      type: object
-      properties:
-        UniqueName:
-          type: string
-          description: An application-defined string that uniquely identifies the resource. It can be used in place of the resource's `sid` in the URL to address the resource.
-        FriendlyName:
-          type: string
-          description: A descriptive string that you create to describe the resource. It does not have to be unique.
     wireless.v1.rate_plan:
       type: object
       properties:
@@ -301,6 +270,47 @@ components:
           - 'null'
           format: uri
           description: The absolute URL of the resource.
+    UpdateRatePlanRequest:
+      type: object
+      properties:
+        UniqueName:
+          type: string
+          description: An application-defined string that uniquely identifies the resource. It can be used in place of the resource's `sid` in the URL to address the resource.
+        FriendlyName:
+          type: string
+          description: A descriptive string that you create to describe the resource. It does not have to be unique.
+    ListRatePlanResponse:
+      type: object
+      properties:
+        rate_plans:
+          type: array
+          items:
+            $ref: '#/components/schemas/wireless.v1.rate_plan'
+        meta:
+          type: object
+          properties:
+            first_page_url:
+              type: string
+              format: uri
+            next_page_url:
+              type:
+              - string
+              - 'null'
+              format: uri
+            page:
+              type: integer
+            page_size:
+              type: integer
+            previous_page_url:
+              type:
+              - string
+              - 'null'
+              format: uri
+            url:
+              type: string
+              format: uri
+            key:
+              type: string
     CreateRatePlanRequest:
       type: object
       properties:

@@ -171,97 +171,6 @@ paths:
           description: Call not found
 components:
   schemas:
-    CallList:
-      type: object
-      properties:
-        calls:
-          type: array
-          items:
-            $ref: '#/components/schemas/Call'
-        first_page_uri:
-          type: string
-        next_page_uri:
-          type: string
-        previous_page_uri:
-          type: string
-        page:
-          type: integer
-        page_size:
-          type: integer
-        uri:
-          type: string
-    CreateCallRequest:
-      type: object
-      required:
-      - To
-      - From
-      properties:
-        To:
-          type: string
-          description: Phone number, SIP URI, or client identifier to call
-        From:
-          type: string
-          description: Twilio phone number or verified caller ID
-        Url:
-          type: string
-          format: uri
-          description: TwiML URL for call instructions
-        ApplicationSid:
-          type: string
-          description: SID of the TwiML application to handle the call
-          pattern: ^AP[0-9a-fA-F]{32}$
-        Method:
-          type: string
-          enum:
-          - GET
-          - POST
-          default: POST
-        StatusCallback:
-          type: string
-          format: uri
-          description: URL for call status webhooks
-        StatusCallbackMethod:
-          type: string
-          enum:
-          - GET
-          - POST
-        StatusCallbackEvent:
-          type: array
-          items:
-            type: string
-            enum:
-            - initiated
-            - ringing
-            - answered
-            - completed
-        Timeout:
-          type: integer
-          description: Ring timeout in seconds
-          default: 60
-        Record:
-          type: boolean
-          description: Whether to record the call
-          default: false
-        RecordingChannels:
-          type: string
-          enum:
-          - mono
-          - dual
-        RecordingStatusCallback:
-          type: string
-          format: uri
-        MachineDetection:
-          type: string
-          enum:
-          - Enable
-          - DetectMessageEnd
-          description: Enable answering machine detection
-        Twiml:
-          type: string
-          description: Inline TwiML instructions for the call
-        CallerId:
-          type: string
-          description: Caller ID to display on outbound call
     Call:
       type: object
       properties:
@@ -358,6 +267,97 @@ components:
               type: string
             notifications:
               type: string
+    CreateCallRequest:
+      type: object
+      required:
+      - To
+      - From
+      properties:
+        To:
+          type: string
+          description: Phone number, SIP URI, or client identifier to call
+        From:
+          type: string
+          description: Twilio phone number or verified caller ID
+        Url:
+          type: string
+          format: uri
+          description: TwiML URL for call instructions
+        ApplicationSid:
+          type: string
+          description: SID of the TwiML application to handle the call
+          pattern: ^AP[0-9a-fA-F]{32}$
+        Method:
+          type: string
+          enum:
+          - GET
+          - POST
+          default: POST
+        StatusCallback:
+          type: string
+          format: uri
+          description: URL for call status webhooks
+        StatusCallbackMethod:
+          type: string
+          enum:
+          - GET
+          - POST
+        StatusCallbackEvent:
+          type: array
+          items:
+            type: string
+            enum:
+            - initiated
+            - ringing
+            - answered
+            - completed
+        Timeout:
+          type: integer
+          description: Ring timeout in seconds
+          default: 60
+        Record:
+          type: boolean
+          description: Whether to record the call
+          default: false
+        RecordingChannels:
+          type: string
+          enum:
+          - mono
+          - dual
+        RecordingStatusCallback:
+          type: string
+          format: uri
+        MachineDetection:
+          type: string
+          enum:
+          - Enable
+          - DetectMessageEnd
+          description: Enable answering machine detection
+        Twiml:
+          type: string
+          description: Inline TwiML instructions for the call
+        CallerId:
+          type: string
+          description: Caller ID to display on outbound call
+    CallList:
+      type: object
+      properties:
+        calls:
+          type: array
+          items:
+            $ref: '#/components/schemas/Call'
+        first_page_uri:
+          type: string
+        next_page_uri:
+          type: string
+        previous_page_uri:
+          type: string
+        page:
+          type: integer
+        page_size:
+          type: integer
+        uri:
+          type: string
     UpdateCallRequest:
       type: object
       properties:
@@ -380,14 +380,6 @@ components:
           type: string
           description: Inline TwiML to redirect the call
   parameters:
-    CallSid:
-      name: CallSid
-      in: path
-      required: true
-      description: The unique identifier of the call
-      schema:
-        type: string
-        pattern: ^CA[0-9a-fA-F]{32}$
     AccountSid:
       name: AccountSid
       in: path
@@ -396,6 +388,14 @@ components:
       schema:
         type: string
         pattern: ^AC[0-9a-fA-F]{32}$
+    CallSid:
+      name: CallSid
+      in: path
+      required: true
+      description: The unique identifier of the call
+      schema:
+        type: string
+        pattern: ^CA[0-9a-fA-F]{32}$
   securitySchemes:
     accountSid_authToken:
       type: http

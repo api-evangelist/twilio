@@ -45,7 +45,35 @@ paths:
         '404':
           description: Verification not found or expired
 components:
+  parameters:
+    ServiceSid:
+      name: ServiceSid
+      in: path
+      required: true
+      description: The SID of the Verify service
+      schema:
+        type: string
+        pattern: ^VA[0-9a-fA-F]{32}$
   schemas:
+    CreateVerificationCheckRequest:
+      type: object
+      properties:
+        Code:
+          type: string
+          description: The verification code entered by the user
+        To:
+          type: string
+          description: Phone number or email being verified
+        VerificationSid:
+          type: string
+          description: SID of the verification (alternative to To)
+          pattern: ^VE[0-9a-fA-F]{32}$
+        Amount:
+          type: string
+          description: Amount for PSD2 verification check
+        Payee:
+          type: string
+          description: Payee for PSD2 verification check
     VerificationCheck:
       type: object
       properties:
@@ -91,34 +119,6 @@ components:
         date_updated:
           type: string
           format: date-time
-    CreateVerificationCheckRequest:
-      type: object
-      properties:
-        Code:
-          type: string
-          description: The verification code entered by the user
-        To:
-          type: string
-          description: Phone number or email being verified
-        VerificationSid:
-          type: string
-          description: SID of the verification (alternative to To)
-          pattern: ^VE[0-9a-fA-F]{32}$
-        Amount:
-          type: string
-          description: Amount for PSD2 verification check
-        Payee:
-          type: string
-          description: Payee for PSD2 verification check
-  parameters:
-    ServiceSid:
-      name: ServiceSid
-      in: path
-      required: true
-      description: The SID of the Verify service
-      schema:
-        type: string
-        pattern: ^VA[0-9a-fA-F]{32}$
   securitySchemes:
     accountSid_authToken:
       type: http

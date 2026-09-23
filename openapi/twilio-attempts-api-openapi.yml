@@ -119,6 +119,8 @@ paths:
       operationId: ListVerificationAttempt
       x-maturity:
       - GA
+      summary: List verification attempt
+      x-summary-source: derived
   /v2/Attempts/{Sid}:
     servers:
     - url: https://verify.twilio.com
@@ -158,6 +160,8 @@ paths:
       operationId: FetchVerificationAttempt
       x-maturity:
       - GA
+      summary: Fetch verification attempt
+      x-summary-source: derived
   /v2/Attempts/Summary:
     servers:
     - url: https://verify.twilio.com
@@ -224,73 +228,10 @@ paths:
       operationId: FetchVerificationAttemptsSummary
       x-maturity:
       - GA
+      summary: Fetch verification attempts summary
+      x-summary-source: derived
 components:
   schemas:
-    ListVerificationAttemptResponse:
-      type: object
-      properties:
-        attempts:
-          type: array
-          items:
-            $ref: '#/components/schemas/verify.v2.verification_attempt'
-        meta:
-          type: object
-          properties:
-            first_page_url:
-              type: string
-              format: uri
-            next_page_url:
-              type:
-              - string
-              - 'null'
-              format: uri
-            page:
-              type: integer
-            page_size:
-              type: integer
-            previous_page_url:
-              type:
-              - string
-              - 'null'
-              format: uri
-            url:
-              type: string
-              format: uri
-            key:
-              type: string
-    verify.v2.verification_attempts_summary:
-      type: object
-      properties:
-        total_attempts:
-          type:
-          - integer
-          - 'null'
-          description: Total of attempts made according to the provided filters
-        total_converted:
-          type:
-          - integer
-          - 'null'
-          description: Total of  attempts made that were confirmed by the end user, according to the provided filters.
-        total_unconverted:
-          type:
-          - integer
-          - 'null'
-          description: Total of attempts made that were not confirmed by the end user, according to the provided filters.
-        conversion_rate_percentage:
-          type:
-          - number
-          - 'null'
-          description: 'Percentage of the confirmed messages over the total, defined by (total_converted/total_attempts)*100. '
-        url:
-          type:
-          - string
-          - 'null'
-          format: uri
-    verification_attempt_enum_conversion_status:
-      type: string
-      enum:
-      - converted
-      - unconverted
     verify.v2.verification_attempt:
       type: object
       properties:
@@ -359,13 +300,6 @@ components:
           - string
           - 'null'
           format: uri
-    verification_attempt_enum_channels:
-      type: string
-      enum:
-      - sms
-      - call
-      - email
-      - whatsapp
     verification_attempts_summary_enum_channels:
       type: string
       enum:
@@ -373,6 +307,78 @@ components:
       - call
       - email
       - whatsapp
+    verification_attempt_enum_channels:
+      type: string
+      enum:
+      - sms
+      - call
+      - email
+      - whatsapp
+    verification_attempt_enum_conversion_status:
+      type: string
+      enum:
+      - converted
+      - unconverted
+    ListVerificationAttemptResponse:
+      type: object
+      properties:
+        attempts:
+          type: array
+          items:
+            $ref: '#/components/schemas/verify.v2.verification_attempt'
+        meta:
+          type: object
+          properties:
+            first_page_url:
+              type: string
+              format: uri
+            next_page_url:
+              type:
+              - string
+              - 'null'
+              format: uri
+            page:
+              type: integer
+            page_size:
+              type: integer
+            previous_page_url:
+              type:
+              - string
+              - 'null'
+              format: uri
+            url:
+              type: string
+              format: uri
+            key:
+              type: string
+    verify.v2.verification_attempts_summary:
+      type: object
+      properties:
+        total_attempts:
+          type:
+          - integer
+          - 'null'
+          description: Total of attempts made according to the provided filters
+        total_converted:
+          type:
+          - integer
+          - 'null'
+          description: Total of  attempts made that were confirmed by the end user, according to the provided filters.
+        total_unconverted:
+          type:
+          - integer
+          - 'null'
+          description: Total of attempts made that were not confirmed by the end user, according to the provided filters.
+        conversion_rate_percentage:
+          type:
+          - number
+          - 'null'
+          description: 'Percentage of the confirmed messages over the total, defined by (total_converted/total_attempts)*100. '
+        url:
+          type:
+          - string
+          - 'null'
+          format: uri
   securitySchemes:
     accountSid_authToken:
       type: http

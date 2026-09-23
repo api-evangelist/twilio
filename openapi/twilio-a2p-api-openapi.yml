@@ -53,6 +53,8 @@ paths:
       operationId: CreateBrandRegistrationOtp
       x-maturity:
       - Beta
+      summary: Create brand registration otp
+      x-summary-source: derived
   /v1/a2p/BrandRegistrations/{Sid}:
     servers:
     - url: https://messaging.twilio.com
@@ -97,6 +99,8 @@ paths:
       operationId: FetchBrandRegistrations
       x-maturity:
       - Beta
+      summary: Fetch brand registrations
+      x-summary-source: derived
     post:
       description: ''
       tags:
@@ -123,6 +127,8 @@ paths:
       operationId: UpdateBrandRegistrations
       x-maturity:
       - Beta
+      summary: Update brand registrations
+      x-summary-source: derived
   /v1/a2p/BrandRegistrations:
     servers:
     - url: https://messaging.twilio.com
@@ -176,6 +182,8 @@ paths:
       operationId: ListBrandRegistrations
       x-maturity:
       - Beta
+      summary: List brand registrations
+      x-summary-source: derived
     post:
       description: ''
       tags:
@@ -197,6 +205,8 @@ paths:
           application/x-www-form-urlencoded:
             schema:
               $ref: '#/components/schemas/CreateBrandRegistrationsRequest'
+      summary: Create brand registrations
+      x-summary-source: derived
   /v1/a2p/BrandRegistrations/{BrandSid}/Vettings:
     servers:
     - url: https://messaging.twilio.com
@@ -244,6 +254,8 @@ paths:
           application/x-www-form-urlencoded:
             schema:
               $ref: '#/components/schemas/CreateBrandVettingRequest'
+      summary: Create brand vetting
+      x-summary-source: derived
     get:
       description: ''
       tags:
@@ -294,6 +306,8 @@ paths:
       operationId: ListBrandVetting
       x-maturity:
       - Beta
+      summary: List brand vetting
+      x-summary-source: derived
   /v1/a2p/BrandRegistrations/{BrandSid}/Vettings/{BrandVettingSid}:
     servers:
     - url: https://messaging.twilio.com
@@ -345,8 +359,18 @@ paths:
       operationId: FetchBrandVetting
       x-maturity:
       - Beta
+      summary: Fetch brand vetting
+      x-summary-source: derived
 components:
   schemas:
+    brand_registrations_enum_brand_feedback:
+      type: string
+      enum:
+      - TAX_ID
+      - STOCK_SYMBOL
+      - NONPROFIT
+      - GOVERNMENT_ENTITY
+      - OTHERS
     ListBrandVettingResponse:
       type: object
       properties:
@@ -379,46 +403,48 @@ components:
               format: uri
             key:
               type: string
-    brand_registrations_enum_brand_feedback:
+    brand_registrations_enum_status:
       type: string
       enum:
-      - TAX_ID
-      - STOCK_SYMBOL
-      - NONPROFIT
-      - GOVERNMENT_ENTITY
-      - OTHERS
-    ListBrandRegistrationsResponse:
+      - PENDING
+      - APPROVED
+      - FAILED
+      - IN_REVIEW
+      - DELETED
+    brand_registrations_enum_identity_status:
+      type: string
+      enum:
+      - SELF_DECLARED
+      - UNVERIFIED
+      - VERIFIED
+      - VETTED_VERIFIED
+    CreateBrandRegistrationsRequest:
       type: object
+      required:
+      - CustomerProfileBundleSid
+      - A2PProfileBundleSid
       properties:
-        data:
-          type: array
-          items:
-            $ref: '#/components/schemas/messaging.v1.brand_registrations'
-        meta:
-          type: object
-          properties:
-            first_page_url:
-              type: string
-              format: uri
-            next_page_url:
-              type:
-              - string
-              - 'null'
-              format: uri
-            page:
-              type: integer
-            page_size:
-              type: integer
-            previous_page_url:
-              type:
-              - string
-              - 'null'
-              format: uri
-            url:
-              type: string
-              format: uri
-            key:
-              type: string
+        CustomerProfileBundleSid:
+          type: string
+          minLength: 34
+          maxLength: 34
+          pattern: ^BU[0-9a-fA-F]{32}$
+          description: Customer Profile Bundle Sid.
+        A2PProfileBundleSid:
+          type: string
+          minLength: 34
+          maxLength: 34
+          pattern: ^BU[0-9a-fA-F]{32}$
+          description: A2P Messaging Profile Bundle Sid.
+        BrandType:
+          type: string
+          description: 'Type of brand being created. One of: "STANDARD", "SOLE_PROPRIETOR". SOLE_PROPRIETOR is for low volume, SOLE_PROPRIETOR use cases. STANDARD is for all other use cases.'
+        Mock:
+          type: boolean
+          description: A boolean that specifies whether brand should be a mock or not. If true, brand will be registered as a mock brand. Defaults to false if no value is provided.
+        SkipAutomaticSecVet:
+          type: boolean
+          description: A flag to disable automatic secondary vetting for brands which it would otherwise be done.
     messaging.v1.brand_registrations:
       type: object
       properties:
@@ -542,6 +568,42 @@ components:
           - object
           - 'null'
           format: uri-map
+    ListBrandRegistrationsResponse:
+      type: object
+      properties:
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/messaging.v1.brand_registrations'
+        meta:
+          type: object
+          properties:
+            first_page_url:
+              type: string
+              format: uri
+            next_page_url:
+              type:
+              - string
+              - 'null'
+              format: uri
+            page:
+              type: integer
+            page_size:
+              type: integer
+            previous_page_url:
+              type:
+              - string
+              - 'null'
+              format: uri
+            url:
+              type: string
+              format: uri
+            key:
+              type: string
+    brand_vetting_enum_vetting_provider:
+      type: string
+      enum:
+      - campaign-verify
     messaging.v1.brand_registrations.brand_registration_otp:
       type: object
       properties:
@@ -561,14 +623,6 @@ components:
           maxLength: 34
           pattern: ^BN[0-9a-fA-F]{32}$
           description: The unique string to identify Brand Registration of Sole Proprietor Brand
-    brand_registrations_enum_status:
-      type: string
-      enum:
-      - PENDING
-      - APPROVED
-      - FAILED
-      - IN_REVIEW
-      - DELETED
     messaging.v1.brand_registrations.brand_vetting:
       type: object
       properties:
@@ -635,33 +689,6 @@ components:
           - 'null'
           format: uri
           description: The absolute URL of the Brand Vetting resource.
-    CreateBrandRegistrationsRequest:
-      type: object
-      required:
-      - CustomerProfileBundleSid
-      - A2PProfileBundleSid
-      properties:
-        CustomerProfileBundleSid:
-          type: string
-          minLength: 34
-          maxLength: 34
-          pattern: ^BU[0-9a-fA-F]{32}$
-          description: Customer Profile Bundle Sid.
-        A2PProfileBundleSid:
-          type: string
-          minLength: 34
-          maxLength: 34
-          pattern: ^BU[0-9a-fA-F]{32}$
-          description: A2P Messaging Profile Bundle Sid.
-        BrandType:
-          type: string
-          description: 'Type of brand being created. One of: "STANDARD", "SOLE_PROPRIETOR". SOLE_PROPRIETOR is for low volume, SOLE_PROPRIETOR use cases. STANDARD is for all other use cases.'
-        Mock:
-          type: boolean
-          description: A boolean that specifies whether brand should be a mock or not. If true, brand will be registered as a mock brand. Defaults to false if no value is provided.
-        SkipAutomaticSecVet:
-          type: boolean
-          description: A flag to disable automatic secondary vetting for brands which it would otherwise be done.
     CreateBrandVettingRequest:
       type: object
       required:
@@ -674,17 +701,6 @@ components:
         VettingId:
           type: string
           description: The unique ID of the vetting
-    brand_registrations_enum_identity_status:
-      type: string
-      enum:
-      - SELF_DECLARED
-      - UNVERIFIED
-      - VERIFIED
-      - VETTED_VERIFIED
-    brand_vetting_enum_vetting_provider:
-      type: string
-      enum:
-      - campaign-verify
   securitySchemes:
     accountSid_authToken:
       type: http

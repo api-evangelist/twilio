@@ -46,6 +46,8 @@ paths:
           application/x-www-form-urlencoded:
             schema:
               $ref: '#/components/schemas/CreateSupportingDocumentRequest'
+      summary: Create supporting document
+      x-summary-source: derived
     get:
       description: Retrieve a list of all Supporting Document for an account.
       tags:
@@ -81,6 +83,8 @@ paths:
       operationId: ListSupportingDocument
       x-maturity:
       - GA
+      summary: List supporting document
+      x-summary-source: derived
   /v1/SupportingDocuments/{Sid}:
     servers:
     - url: https://trusthub.twilio.com
@@ -116,6 +120,8 @@ paths:
       operationId: FetchSupportingDocument
       x-maturity:
       - GA
+      summary: Fetch supporting document
+      x-summary-source: derived
     post:
       description: Update an existing Supporting Document.
       tags:
@@ -147,6 +153,8 @@ paths:
           application/x-www-form-urlencoded:
             schema:
               $ref: '#/components/schemas/UpdateSupportingDocumentRequest'
+      summary: Update supporting document
+      x-summary-source: derived
     delete:
       description: Delete a specific Supporting Document.
       tags:
@@ -169,8 +177,33 @@ paths:
       operationId: DeleteSupportingDocument
       x-maturity:
       - GA
+      summary: Delete supporting document
+      x-summary-source: derived
 components:
   schemas:
+    supporting_document_enum_status:
+      type: string
+      enum:
+      - draft
+      - pending-review
+      - rejected
+      - approved
+      - expired
+      - provisionally-approved
+    CreateSupportingDocumentRequest:
+      type: object
+      required:
+      - FriendlyName
+      - Type
+      properties:
+        FriendlyName:
+          type: string
+          description: The string that you assigned to describe the resource.
+        Type:
+          type: string
+          description: The type of the Supporting Document.
+        Attributes:
+          description: The set of parameters that are the attributes of the Supporting Documents resource which are derived Supporting Document Types.
     trusthub.v1.supporting_document:
       type: object
       properties:
@@ -235,20 +268,6 @@ components:
           - 'null'
           format: uri
           description: The absolute URL of the Supporting Document resource.
-    CreateSupportingDocumentRequest:
-      type: object
-      required:
-      - FriendlyName
-      - Type
-      properties:
-        FriendlyName:
-          type: string
-          description: The string that you assigned to describe the resource.
-        Type:
-          type: string
-          description: The type of the Supporting Document.
-        Attributes:
-          description: The set of parameters that are the attributes of the Supporting Documents resource which are derived Supporting Document Types.
     UpdateSupportingDocumentRequest:
       type: object
       properties:
@@ -257,15 +276,6 @@ components:
           description: The string that you assigned to describe the resource.
         Attributes:
           description: The set of parameters that are the attributes of the Supporting Document resource which are derived Supporting Document Types.
-    supporting_document_enum_status:
-      type: string
-      enum:
-      - draft
-      - pending-review
-      - rejected
-      - approved
-      - expired
-      - provisionally-approved
     ListSupportingDocumentResponse:
       type: object
       properties:

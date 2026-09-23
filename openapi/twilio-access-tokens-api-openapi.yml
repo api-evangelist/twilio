@@ -60,6 +60,15 @@ paths:
               schema:
                 $ref: '#/components/schemas/AccessToken'
 components:
+  parameters:
+    ServiceSid:
+      name: ServiceSid
+      in: path
+      required: true
+      description: The SID of the Verify service
+      schema:
+        type: string
+        pattern: ^VA[0-9a-fA-F]{32}$
   schemas:
     AccessToken:
       type: object
@@ -92,15 +101,6 @@ components:
         url:
           type: string
           format: uri
-  parameters:
-    ServiceSid:
-      name: ServiceSid
-      in: path
-      required: true
-      description: The SID of the Verify service
-      schema:
-        type: string
-        pattern: ^VA[0-9a-fA-F]{32}$
   securitySchemes:
     accountSid_authToken:
       type: http

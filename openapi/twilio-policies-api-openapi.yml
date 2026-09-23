@@ -61,6 +61,8 @@ paths:
       operationId: ListPolicies
       x-maturity:
       - GA
+      summary: List policies
+      x-summary-source: derived
   /v1/Policies/{Sid}:
     servers:
     - url: https://trusthub.twilio.com
@@ -97,8 +99,34 @@ paths:
       operationId: FetchPolicies
       x-maturity:
       - GA
+      summary: Fetch policies
+      x-summary-source: derived
 components:
   schemas:
+    trusthub.v1.policies:
+      type: object
+      properties:
+        sid:
+          type:
+          - string
+          - 'null'
+          minLength: 34
+          maxLength: 34
+          pattern: ^RN[0-9a-fA-F]{32}$
+          description: The unique string that identifies the Policy resource.
+        friendly_name:
+          type:
+          - string
+          - 'null'
+          description: A human-readable description that is assigned to describe the Policy resource. Examples can include Primary Customer profile policy
+        requirements:
+          description: The SID of an object that holds the policy information
+        url:
+          type:
+          - string
+          - 'null'
+          format: uri
+          description: The absolute URL of the Policy resource.
     ListPoliciesResponse:
       type: object
       properties:
@@ -131,30 +159,6 @@ components:
               format: uri
             key:
               type: string
-    trusthub.v1.policies:
-      type: object
-      properties:
-        sid:
-          type:
-          - string
-          - 'null'
-          minLength: 34
-          maxLength: 34
-          pattern: ^RN[0-9a-fA-F]{32}$
-          description: The unique string that identifies the Policy resource.
-        friendly_name:
-          type:
-          - string
-          - 'null'
-          description: A human-readable description that is assigned to describe the Policy resource. Examples can include Primary Customer profile policy
-        requirements:
-          description: The SID of an object that holds the policy information
-        url:
-          type:
-          - string
-          - 'null'
-          format: uri
-          description: The absolute URL of the Policy resource.
   securitySchemes:
     accountSid_authToken:
       type: http

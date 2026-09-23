@@ -48,6 +48,8 @@ paths:
           application/x-www-form-urlencoded:
             schema:
               $ref: '#/components/schemas/CreateIpRecordRequest'
+      summary: Create ip record
+      x-summary-source: derived
     get:
       description: ''
       tags:
@@ -83,6 +85,8 @@ paths:
       operationId: ListIpRecord
       x-maturity:
       - GA
+      summary: List ip record
+      x-summary-source: derived
   /v1/IpRecords/{Sid}:
     servers:
     - url: https://voice.twilio.com
@@ -120,6 +124,8 @@ paths:
       operationId: FetchIpRecord
       x-maturity:
       - GA
+      summary: Fetch ip record
+      x-summary-source: derived
     post:
       description: ''
       tags:
@@ -151,6 +157,8 @@ paths:
           application/x-www-form-urlencoded:
             schema:
               $ref: '#/components/schemas/UpdateIpRecordRequest'
+      summary: Update ip record
+      x-summary-source: derived
     delete:
       description: ''
       tags:
@@ -173,6 +181,8 @@ paths:
       operationId: DeleteIpRecord
       x-maturity:
       - GA
+      summary: Delete ip record
+      x-summary-source: derived
 components:
   schemas:
     voice.v1.ip_record:
@@ -231,26 +241,6 @@ components:
           - 'null'
           format: uri
           description: The absolute URL of the resource.
-    CreateIpRecordRequest:
-      type: object
-      required:
-      - IpAddress
-      properties:
-        IpAddress:
-          type: string
-          description: An IP address in dotted decimal notation, IPv4 only.
-        FriendlyName:
-          type: string
-          description: A descriptive string that you create to describe the resource. It is not unique and can be up to 255 characters long.
-        CidrPrefixLength:
-          type: integer
-          description: An integer representing the length of the [CIDR](https://tools.ietf.org/html/rfc4632) prefix to use with this IP address. By default the entire IP address is used, which for IPv4 is value 32.
-    UpdateIpRecordRequest:
-      type: object
-      properties:
-        FriendlyName:
-          type: string
-          description: A descriptive string that you create to describe the resource. It is not unique and can be up to 255 characters long.
     ListIpRecordResponse:
       type: object
       properties:
@@ -283,6 +273,26 @@ components:
               format: uri
             key:
               type: string
+    UpdateIpRecordRequest:
+      type: object
+      properties:
+        FriendlyName:
+          type: string
+          description: A descriptive string that you create to describe the resource. It is not unique and can be up to 255 characters long.
+    CreateIpRecordRequest:
+      type: object
+      required:
+      - IpAddress
+      properties:
+        IpAddress:
+          type: string
+          description: An IP address in dotted decimal notation, IPv4 only.
+        FriendlyName:
+          type: string
+          description: A descriptive string that you create to describe the resource. It is not unique and can be up to 255 characters long.
+        CidrPrefixLength:
+          type: integer
+          description: An integer representing the length of the [CIDR](https://tools.ietf.org/html/rfc4632) prefix to use with this IP address. By default the entire IP address is used, which for IPv4 is value 32.
   securitySchemes:
     accountSid_authToken:
       type: http

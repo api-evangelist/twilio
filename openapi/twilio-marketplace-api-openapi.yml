@@ -54,6 +54,8 @@ paths:
       operationId: FetchMarketplaceAvailableAddOn
       x-maturity:
       - Preview
+      summary: Fetch marketplace available add on
+      x-summary-source: derived
   /marketplace/AvailableAddOns:
     servers:
     - url: https://preview.twilio.com
@@ -101,6 +103,8 @@ paths:
       operationId: ListMarketplaceAvailableAddOn
       x-maturity:
       - Preview
+      summary: List marketplace available add on
+      x-summary-source: derived
   /marketplace/AvailableAddOns/{AvailableAddOnSid}/Extensions/{Sid}:
     servers:
     - url: https://preview.twilio.com
@@ -145,6 +149,8 @@ paths:
       operationId: FetchMarketplaceAvailableAddOnExtension
       x-maturity:
       - Preview
+      summary: Fetch marketplace available add on extension
+      x-summary-source: derived
   /marketplace/AvailableAddOns/{AvailableAddOnSid}/Extensions:
     servers:
     - url: https://preview.twilio.com
@@ -198,6 +204,8 @@ paths:
       operationId: ListMarketplaceAvailableAddOnExtension
       x-maturity:
       - Preview
+      summary: List marketplace available add on extension
+      x-summary-source: derived
   /marketplace/InstalledAddOns:
     servers:
     - url: https://preview.twilio.com
@@ -235,6 +243,8 @@ paths:
           application/x-www-form-urlencoded:
             schema:
               $ref: '#/components/schemas/CreateMarketplaceInstalledAddOnRequest'
+      summary: Create marketplace installed add on
+      x-summary-source: derived
     get:
       description: Retrieve a list of Add-ons currently installed on this Account.
       tags:
@@ -270,6 +280,8 @@ paths:
       operationId: ListMarketplaceInstalledAddOn
       x-maturity:
       - Preview
+      summary: List marketplace installed add on
+      x-summary-source: derived
   /marketplace/InstalledAddOns/{Sid}:
     servers:
     - url: https://preview.twilio.com
@@ -308,6 +320,8 @@ paths:
       operationId: DeleteMarketplaceInstalledAddOn
       x-maturity:
       - Preview
+      summary: Delete marketplace installed add on
+      x-summary-source: derived
     get:
       description: Fetch an instance of an Add-on currently installed on this Account.
       tags:
@@ -334,6 +348,8 @@ paths:
       operationId: FetchMarketplaceInstalledAddOn
       x-maturity:
       - Preview
+      summary: Fetch marketplace installed add on
+      x-summary-source: derived
     post:
       description: Update an Add-on installation for the Account specified.
       tags:
@@ -365,6 +381,8 @@ paths:
           application/x-www-form-urlencoded:
             schema:
               $ref: '#/components/schemas/UpdateMarketplaceInstalledAddOnRequest'
+      summary: Update marketplace installed add on
+      x-summary-source: derived
   /marketplace/InstalledAddOns/{InstalledAddOnSid}/Extensions/{Sid}:
     servers:
     - url: https://preview.twilio.com
@@ -409,6 +427,8 @@ paths:
       operationId: FetchMarketplaceInstalledAddOnExtension
       x-maturity:
       - Preview
+      summary: Fetch marketplace installed add on extension
+      x-summary-source: derived
     post:
       description: Update an Extension for an Add-on installation.
       tags:
@@ -449,6 +469,8 @@ paths:
           application/x-www-form-urlencoded:
             schema:
               $ref: '#/components/schemas/UpdateMarketplaceInstalledAddOnExtensionRequest'
+      summary: Update marketplace installed add on extension
+      x-summary-source: derived
   /marketplace/InstalledAddOns/{InstalledAddOnSid}/Extensions:
     servers:
     - url: https://preview.twilio.com
@@ -502,193 +524,10 @@ paths:
       operationId: ListMarketplaceInstalledAddOnExtension
       x-maturity:
       - Preview
+      summary: List marketplace installed add on extension
+      x-summary-source: derived
 components:
   schemas:
-    preview.marketplace.installed_add_on.installed_add_on_extension:
-      type: object
-      properties:
-        sid:
-          type:
-          - string
-          - 'null'
-          minLength: 34
-          maxLength: 34
-          pattern: ^XF[0-9a-fA-F]{32}$
-          description: The unique string that we created to identify the InstalledAddOn Extension resource.
-        installed_add_on_sid:
-          type:
-          - string
-          - 'null'
-          minLength: 34
-          maxLength: 34
-          pattern: ^XE[0-9a-fA-F]{32}$
-          description: The SID of the InstalledAddOn resource to which this extension applies.
-        friendly_name:
-          type:
-          - string
-          - 'null'
-          description: The string that you assigned to describe the resource.
-        product_name:
-          type:
-          - string
-          - 'null'
-          description: The name of the Product this Extension is used within.
-        unique_name:
-          type:
-          - string
-          - 'null'
-          description: An application-defined string that uniquely identifies the resource.
-        enabled:
-          type:
-          - boolean
-          - 'null'
-          description: Whether the Extension will be invoked.
-        url:
-          type:
-          - string
-          - 'null'
-          format: uri
-          description: The absolute URL of the resource.
-    ListMarketplaceInstalledAddOnExtensionResponse:
-      type: object
-      properties:
-        extensions:
-          type: array
-          items:
-            $ref: '#/components/schemas/preview.marketplace.installed_add_on.installed_add_on_extension'
-        meta:
-          type: object
-          properties:
-            first_page_url:
-              type: string
-              format: uri
-            next_page_url:
-              type:
-              - string
-              - 'null'
-              format: uri
-            page:
-              type: integer
-            page_size:
-              type: integer
-            previous_page_url:
-              type:
-              - string
-              - 'null'
-              format: uri
-            url:
-              type: string
-              format: uri
-            key:
-              type: string
-    UpdateMarketplaceInstalledAddOnExtensionRequest:
-      type: object
-      required:
-      - Enabled
-      properties:
-        Enabled:
-          type: boolean
-          description: Whether the Extension should be invoked.
-    preview.marketplace.available_add_on:
-      type: object
-      properties:
-        sid:
-          type:
-          - string
-          - 'null'
-          minLength: 34
-          maxLength: 34
-          pattern: ^XB[0-9a-fA-F]{32}$
-          description: The unique string that we created to identify the AvailableAddOn resource.
-        friendly_name:
-          type:
-          - string
-          - 'null'
-          description: The string that you assigned to describe the resource.
-        description:
-          type:
-          - string
-          - 'null'
-          description: A short description of the Add-on's functionality.
-        pricing_type:
-          type:
-          - string
-          - 'null'
-          description: How customers are charged for using this Add-on.
-        configuration_schema:
-          description: The JSON object with the configuration that must be provided when installing a given Add-on.
-        url:
-          type:
-          - string
-          - 'null'
-          format: uri
-          description: The absolute URL of the resource.
-        links:
-          type:
-          - object
-          - 'null'
-          format: uri-map
-          description: The URLs of related resources.
-    preview.marketplace.installed_add_on:
-      type: object
-      properties:
-        sid:
-          type:
-          - string
-          - 'null'
-          minLength: 34
-          maxLength: 34
-          pattern: ^XE[0-9a-fA-F]{32}$
-          description: The unique string that we created to identify the InstalledAddOn resource. This Sid can also be found in the Console on that specific Add-ons page as the 'Available Add-on Sid'.
-        account_sid:
-          type:
-          - string
-          - 'null'
-          minLength: 34
-          maxLength: 34
-          pattern: ^AC[0-9a-fA-F]{32}$
-          description: The SID of the [Account](https://www.twilio.com/docs/iam/api/account) that created the InstalledAddOn resource.
-        friendly_name:
-          type:
-          - string
-          - 'null'
-          description: The string that you assigned to describe the resource.
-        description:
-          type:
-          - string
-          - 'null'
-          description: A short description of the Add-on's functionality.
-        configuration:
-          description: The JSON object that represents the current configuration of installed Add-on.
-        unique_name:
-          type:
-          - string
-          - 'null'
-          description: An application-defined string that uniquely identifies the resource.
-        date_created:
-          type:
-          - string
-          - 'null'
-          format: date-time
-          description: The date and time in GMT when the resource was created specified in [ISO 8601](https://en.wikipedia.org/wiki/ISO_8601) format.
-        date_updated:
-          type:
-          - string
-          - 'null'
-          format: date-time
-          description: The date and time in GMT when the resource was last updated specified in [ISO 8601](https://en.wikipedia.org/wiki/ISO_8601) format.
-        url:
-          type:
-          - string
-          - 'null'
-          format: uri
-          description: The absolute URL of the resource.
-        links:
-          type:
-          - object
-          - 'null'
-          format: uri-map
-          description: The URLs of related resources.
     ListMarketplaceInstalledAddOnResponse:
       type: object
       properties:
@@ -761,14 +600,14 @@ components:
           - 'null'
           format: uri
           description: The absolute URL of the resource.
-    UpdateMarketplaceInstalledAddOnRequest:
+    UpdateMarketplaceInstalledAddOnExtensionRequest:
       type: object
+      required:
+      - Enabled
       properties:
-        Configuration:
-          description: Valid JSON object that conform to the configuration schema exposed by the associated AvailableAddOn resource. This is only required by Add-ons that need to be configured
-        UniqueName:
-          type: string
-          description: 'An application-defined string that uniquely identifies the resource. This value must be unique within the Account.  '
+        Enabled:
+          type: boolean
+          description: Whether the Extension should be invoked.
     ListMarketplaceAvailableAddOnExtensionResponse:
       type: object
       properties:
@@ -801,6 +640,106 @@ components:
               format: uri
             key:
               type: string
+    UpdateMarketplaceInstalledAddOnRequest:
+      type: object
+      properties:
+        Configuration:
+          description: Valid JSON object that conform to the configuration schema exposed by the associated AvailableAddOn resource. This is only required by Add-ons that need to be configured
+        UniqueName:
+          type: string
+          description: 'An application-defined string that uniquely identifies the resource. This value must be unique within the Account.  '
+    ListMarketplaceInstalledAddOnExtensionResponse:
+      type: object
+      properties:
+        extensions:
+          type: array
+          items:
+            $ref: '#/components/schemas/preview.marketplace.installed_add_on.installed_add_on_extension'
+        meta:
+          type: object
+          properties:
+            first_page_url:
+              type: string
+              format: uri
+            next_page_url:
+              type:
+              - string
+              - 'null'
+              format: uri
+            page:
+              type: integer
+            page_size:
+              type: integer
+            previous_page_url:
+              type:
+              - string
+              - 'null'
+              format: uri
+            url:
+              type: string
+              format: uri
+            key:
+              type: string
+    preview.marketplace.installed_add_on:
+      type: object
+      properties:
+        sid:
+          type:
+          - string
+          - 'null'
+          minLength: 34
+          maxLength: 34
+          pattern: ^XE[0-9a-fA-F]{32}$
+          description: The unique string that we created to identify the InstalledAddOn resource. This Sid can also be found in the Console on that specific Add-ons page as the 'Available Add-on Sid'.
+        account_sid:
+          type:
+          - string
+          - 'null'
+          minLength: 34
+          maxLength: 34
+          pattern: ^AC[0-9a-fA-F]{32}$
+          description: The SID of the [Account](https://www.twilio.com/docs/iam/api/account) that created the InstalledAddOn resource.
+        friendly_name:
+          type:
+          - string
+          - 'null'
+          description: The string that you assigned to describe the resource.
+        description:
+          type:
+          - string
+          - 'null'
+          description: A short description of the Add-on's functionality.
+        configuration:
+          description: The JSON object that represents the current configuration of installed Add-on.
+        unique_name:
+          type:
+          - string
+          - 'null'
+          description: An application-defined string that uniquely identifies the resource.
+        date_created:
+          type:
+          - string
+          - 'null'
+          format: date-time
+          description: The date and time in GMT when the resource was created specified in [ISO 8601](https://en.wikipedia.org/wiki/ISO_8601) format.
+        date_updated:
+          type:
+          - string
+          - 'null'
+          format: date-time
+          description: The date and time in GMT when the resource was last updated specified in [ISO 8601](https://en.wikipedia.org/wiki/ISO_8601) format.
+        url:
+          type:
+          - string
+          - 'null'
+          format: uri
+          description: The absolute URL of the resource.
+        links:
+          type:
+          - object
+          - 'null'
+          format: uri-map
+          description: The URLs of related resources.
     ListMarketplaceAvailableAddOnResponse:
       type: object
       properties:
@@ -853,6 +792,91 @@ components:
         UniqueName:
           type: string
           description: 'An application-defined string that uniquely identifies the resource. This value must be unique within the Account.  '
+    preview.marketplace.available_add_on:
+      type: object
+      properties:
+        sid:
+          type:
+          - string
+          - 'null'
+          minLength: 34
+          maxLength: 34
+          pattern: ^XB[0-9a-fA-F]{32}$
+          description: The unique string that we created to identify the AvailableAddOn resource.
+        friendly_name:
+          type:
+          - string
+          - 'null'
+          description: The string that you assigned to describe the resource.
+        description:
+          type:
+          - string
+          - 'null'
+          description: A short description of the Add-on's functionality.
+        pricing_type:
+          type:
+          - string
+          - 'null'
+          description: How customers are charged for using this Add-on.
+        configuration_schema:
+          description: The JSON object with the configuration that must be provided when installing a given Add-on.
+        url:
+          type:
+          - string
+          - 'null'
+          format: uri
+          description: The absolute URL of the resource.
+        links:
+          type:
+          - object
+          - 'null'
+          format: uri-map
+          description: The URLs of related resources.
+    preview.marketplace.installed_add_on.installed_add_on_extension:
+      type: object
+      properties:
+        sid:
+          type:
+          - string
+          - 'null'
+          minLength: 34
+          maxLength: 34
+          pattern: ^XF[0-9a-fA-F]{32}$
+          description: The unique string that we created to identify the InstalledAddOn Extension resource.
+        installed_add_on_sid:
+          type:
+          - string
+          - 'null'
+          minLength: 34
+          maxLength: 34
+          pattern: ^XE[0-9a-fA-F]{32}$
+          description: The SID of the InstalledAddOn resource to which this extension applies.
+        friendly_name:
+          type:
+          - string
+          - 'null'
+          description: The string that you assigned to describe the resource.
+        product_name:
+          type:
+          - string
+          - 'null'
+          description: The name of the Product this Extension is used within.
+        unique_name:
+          type:
+          - string
+          - 'null'
+          description: An application-defined string that uniquely identifies the resource.
+        enabled:
+          type:
+          - boolean
+          - 'null'
+          description: Whether the Extension will be invoked.
+        url:
+          type:
+          - string
+          - 'null'
+          format: uri
+          description: The absolute URL of the resource.
   securitySchemes:
     accountSid_authToken:
       type: http

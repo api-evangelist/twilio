@@ -58,6 +58,8 @@ paths:
       operationId: FetchConference
       x-maturity:
       - GA
+      summary: Fetch conference
+      x-summary-source: derived
   /v1/Conferences:
     servers:
     - url: https://insights.twilio.com
@@ -164,6 +166,8 @@ paths:
       operationId: ListConference
       x-maturity:
       - GA
+      summary: List conference
+      x-summary-source: derived
   /v1/Conferences/{ConferenceSid}/Participants/{ParticipantSid}:
     servers:
     - url: https://insights.twilio.com
@@ -222,6 +226,8 @@ paths:
       operationId: FetchConferenceParticipant
       x-maturity:
       - GA
+      summary: Fetch conference participant
+      x-summary-source: derived
   /v1/Conferences/{ConferenceSid}/Participants:
     servers:
     - url: https://insights.twilio.com
@@ -298,6 +304,8 @@ paths:
       operationId: ListConferenceParticipant
       x-maturity:
       - GA
+      summary: List conference participant
+      x-summary-source: derived
   /Accounts/{AccountSid}/Conferences.json:
     get:
       operationId: listConferences
@@ -490,83 +498,13 @@ paths:
       description: Twilio REST API v1
 components:
   schemas:
-    conference_participant_enum_call_status:
+    conference_participant_enum_jitter_buffer_size:
       type: string
       enum:
-      - answered
-      - completed
-      - busy
-      - fail
-      - noanswer
-      - ringing
-      - canceled
-    conference_enum_region:
-      type: string
-      enum:
-      - us1
-      - au1
-      - br1
-      - ie1
-      - jp1
-      - sg1
-      - de1
-    conference_enum_conference_end_reason:
-      type: string
-      enum:
-      - last_participant_left
-      - conference_ended_via_api
-      - participant_with_end_conference_on_exit_left
-      - last_participant_kicked
-      - participant_with_end_conference_on_exit_kicked
-    ListConferenceResponse:
-      type: object
-      properties:
-        conferences:
-          type: array
-          items:
-            $ref: '#/components/schemas/insights.v1.conference'
-        meta:
-          type: object
-          properties:
-            first_page_url:
-              type: string
-              format: uri
-            next_page_url:
-              type:
-              - string
-              - 'null'
-              format: uri
-            page:
-              type: integer
-            page_size:
-              type: integer
-            previous_page_url:
-              type:
-              - string
-              - 'null'
-              format: uri
-            url:
-              type: string
-              format: uri
-            key:
-              type: string
-    conference_enum_processing_state:
-      type: string
-      enum:
-      - complete
-      - in_progress
-      - timeout
-    conference_participant_enum_region:
-      type: string
-      enum:
-      - us1
-      - us2
-      - au1
-      - br1
-      - ie1
-      - jp1
-      - sg1
-      - de1
+      - large
+      - small
+      - medium
+      - 'off'
     conference_enum_tag:
       type: string
       enum:
@@ -581,18 +519,6 @@ components:
       - high_latency
       - low_mos
       - detected_silence
-    conference_participant_enum_jitter_buffer_size:
-      type: string
-      enum:
-      - large
-      - small
-      - medium
-      - 'off'
-    conference_participant_enum_call_direction:
-      type: string
-      enum:
-      - inbound
-      - outbound
     insights.v1.conference.conference_participant:
       type: object
       properties:
@@ -758,13 +684,6 @@ components:
           - 'null'
           format: uri
           description: The URL of this resource.
-    conference_enum_conference_status:
-      type: string
-      enum:
-      - in_progress
-      - not_started
-      - completed
-      - summary_timeout
     insights.v1.conference:
       type: object
       properties:
@@ -903,12 +822,65 @@ components:
           - 'null'
           format: uri-map
           description: Contains a dictionary of URL links to nested resources of this Conference.
+    conference_enum_region:
+      type: string
+      enum:
+      - us1
+      - au1
+      - br1
+      - ie1
+      - jp1
+      - sg1
+      - de1
+    conference_participant_enum_processing_state:
+      type: string
+      enum:
+      - complete
+      - in_progress
+      - timeout
+    conference_enum_conference_end_reason:
+      type: string
+      enum:
+      - last_participant_left
+      - conference_ended_via_api
+      - participant_with_end_conference_on_exit_left
+      - last_participant_kicked
+      - participant_with_end_conference_on_exit_kicked
+    conference_enum_processing_state:
+      type: string
+      enum:
+      - complete
+      - in_progress
+      - timeout
+    conference_participant_enum_call_direction:
+      type: string
+      enum:
+      - inbound
+      - outbound
     conference_participant_enum_call_type:
       type: string
       enum:
       - carrier
       - client
       - sip
+    conference_participant_enum_region:
+      type: string
+      enum:
+      - us1
+      - us2
+      - au1
+      - br1
+      - ie1
+      - jp1
+      - sg1
+      - de1
+    conference_enum_conference_status:
+      type: string
+      enum:
+      - in_progress
+      - not_started
+      - completed
+      - summary_timeout
     ListConferenceParticipantResponse:
       type: object
       properties:
@@ -941,12 +913,48 @@ components:
               format: uri
             key:
               type: string
-    conference_participant_enum_processing_state:
+    conference_participant_enum_call_status:
       type: string
       enum:
-      - complete
-      - in_progress
-      - timeout
+      - answered
+      - completed
+      - busy
+      - fail
+      - noanswer
+      - ringing
+      - canceled
+    ListConferenceResponse:
+      type: object
+      properties:
+        conferences:
+          type: array
+          items:
+            $ref: '#/components/schemas/insights.v1.conference'
+        meta:
+          type: object
+          properties:
+            first_page_url:
+              type: string
+              format: uri
+            next_page_url:
+              type:
+              - string
+              - 'null'
+              format: uri
+            page:
+              type: integer
+            page_size:
+              type: integer
+            previous_page_url:
+              type:
+              - string
+              - 'null'
+              format: uri
+            url:
+              type: string
+              format: uri
+            key:
+              type: string
     Participant:
       type: object
       properties:

@@ -51,6 +51,8 @@ paths:
           application/x-www-form-urlencoded:
             schema:
               $ref: '#/components/schemas/CreateConnectionPolicyRequest'
+      summary: Create connection policy
+      x-summary-source: derived
     get:
       description: ''
       tags:
@@ -86,6 +88,8 @@ paths:
       operationId: ListConnectionPolicy
       x-maturity:
       - GA
+      summary: List connection policy
+      x-summary-source: derived
   /v1/ConnectionPolicies/{Sid}:
     servers:
     - url: https://voice.twilio.com
@@ -126,6 +130,8 @@ paths:
       operationId: FetchConnectionPolicy
       x-maturity:
       - GA
+      summary: Fetch connection policy
+      x-summary-source: derived
     post:
       description: ''
       tags:
@@ -157,6 +163,8 @@ paths:
           application/x-www-form-urlencoded:
             schema:
               $ref: '#/components/schemas/UpdateConnectionPolicyRequest'
+      summary: Update connection policy
+      x-summary-source: derived
     delete:
       description: ''
       tags:
@@ -179,6 +187,8 @@ paths:
       operationId: DeleteConnectionPolicy
       x-maturity:
       - GA
+      summary: Delete connection policy
+      x-summary-source: derived
   /v1/ConnectionPolicies/{ConnectionPolicySid}/Targets:
     servers:
     - url: https://voice.twilio.com
@@ -223,6 +233,8 @@ paths:
           application/x-www-form-urlencoded:
             schema:
               $ref: '#/components/schemas/CreateConnectionPolicyTargetRequest'
+      summary: Create connection policy target
+      x-summary-source: derived
     get:
       description: ''
       tags:
@@ -267,6 +279,8 @@ paths:
       operationId: ListConnectionPolicyTarget
       x-maturity:
       - GA
+      summary: List connection policy target
+      x-summary-source: derived
   /v1/ConnectionPolicies/{ConnectionPolicySid}/Targets/{Sid}:
     servers:
     - url: https://voice.twilio.com
@@ -315,6 +329,8 @@ paths:
       operationId: FetchConnectionPolicyTarget
       x-maturity:
       - GA
+      summary: Fetch connection policy target
+      x-summary-source: derived
     post:
       description: ''
       tags:
@@ -355,6 +371,8 @@ paths:
           application/x-www-form-urlencoded:
             schema:
               $ref: '#/components/schemas/UpdateConnectionPolicyTargetRequest'
+      summary: Update connection policy target
+      x-summary-source: derived
     delete:
       description: ''
       tags:
@@ -386,8 +404,120 @@ paths:
       operationId: DeleteConnectionPolicyTarget
       x-maturity:
       - GA
+      summary: Delete connection policy target
+      x-summary-source: derived
 components:
   schemas:
+    ListConnectionPolicyTargetResponse:
+      type: object
+      properties:
+        targets:
+          type: array
+          items:
+            $ref: '#/components/schemas/voice.v1.connection_policy.connection_policy_target'
+        meta:
+          type: object
+          properties:
+            first_page_url:
+              type: string
+              format: uri
+            next_page_url:
+              type:
+              - string
+              - 'null'
+              format: uri
+            page:
+              type: integer
+            page_size:
+              type: integer
+            previous_page_url:
+              type:
+              - string
+              - 'null'
+              format: uri
+            url:
+              type: string
+              format: uri
+            key:
+              type: string
+    ListConnectionPolicyResponse:
+      type: object
+      properties:
+        connection_policies:
+          type: array
+          items:
+            $ref: '#/components/schemas/voice.v1.connection_policy'
+        meta:
+          type: object
+          properties:
+            first_page_url:
+              type: string
+              format: uri
+            next_page_url:
+              type:
+              - string
+              - 'null'
+              format: uri
+            page:
+              type: integer
+            page_size:
+              type: integer
+            previous_page_url:
+              type:
+              - string
+              - 'null'
+              format: uri
+            url:
+              type: string
+              format: uri
+            key:
+              type: string
+    UpdateConnectionPolicyTargetRequest:
+      type: object
+      properties:
+        FriendlyName:
+          type: string
+          description: A descriptive string that you create to describe the resource. It is not unique and can be up to 255 characters long.
+        Target:
+          type: string
+          format: uri
+          description: The SIP address you want Twilio to route your calls to. This must be a `sip:` schema. `sips` is NOT supported.
+        Priority:
+          type: integer
+          description: The relative importance of the target. Can be an integer from 0 to 65535, inclusive. The lowest number represents the most important target.
+        Weight:
+          type: integer
+          description: The value that determines the relative share of the load the Target should receive compared to other Targets with the same priority. Can be an integer from 1 to 65535, inclusive. Targets with higher values receive more load than those with lower ones with the same priority.
+        Enabled:
+          type: boolean
+          description: Whether the Target is enabled.
+    UpdateConnectionPolicyRequest:
+      type: object
+      properties:
+        FriendlyName:
+          type: string
+          description: A descriptive string that you create to describe the resource. It is not unique and can be up to 255 characters long.
+    CreateConnectionPolicyTargetRequest:
+      type: object
+      required:
+      - Target
+      properties:
+        Target:
+          type: string
+          format: uri
+          description: The SIP address you want Twilio to route your calls to. This must be a `sip:` schema. `sips` is NOT supported.
+        FriendlyName:
+          type: string
+          description: A descriptive string that you create to describe the resource. It is not unique and can be up to 255 characters long.
+        Priority:
+          type: integer
+          description: The relative importance of the target. Can be an integer from 0 to 65535, inclusive, and the default is 10. The lowest number represents the most important target.
+        Weight:
+          type: integer
+          description: The value that determines the relative share of the load the Target should receive compared to other Targets with the same priority. Can be an integer from 1 to 65535, inclusive, and the default is 10. Targets with higher values receive more load than those with lower ones with the same priority.
+        Enabled:
+          type: boolean
+          description: Whether the Target is enabled. The default is `true`.
     voice.v1.connection_policy.connection_policy_target:
       type: object
       properties:
@@ -463,6 +593,12 @@ components:
           - 'null'
           format: uri
           description: The absolute URL of the resource.
+    CreateConnectionPolicyRequest:
+      type: object
+      properties:
+        FriendlyName:
+          type: string
+          description: A descriptive string that you create to describe the resource. It is not unique and can be up to 255 characters long.
     voice.v1.connection_policy:
       type: object
       properties:
@@ -511,122 +647,6 @@ components:
           - 'null'
           format: uri-map
           description: The URLs of related resources.
-    CreateConnectionPolicyRequest:
-      type: object
-      properties:
-        FriendlyName:
-          type: string
-          description: A descriptive string that you create to describe the resource. It is not unique and can be up to 255 characters long.
-    UpdateConnectionPolicyRequest:
-      type: object
-      properties:
-        FriendlyName:
-          type: string
-          description: A descriptive string that you create to describe the resource. It is not unique and can be up to 255 characters long.
-    ListConnectionPolicyResponse:
-      type: object
-      properties:
-        connection_policies:
-          type: array
-          items:
-            $ref: '#/components/schemas/voice.v1.connection_policy'
-        meta:
-          type: object
-          properties:
-            first_page_url:
-              type: string
-              format: uri
-            next_page_url:
-              type:
-              - string
-              - 'null'
-              format: uri
-            page:
-              type: integer
-            page_size:
-              type: integer
-            previous_page_url:
-              type:
-              - string
-              - 'null'
-              format: uri
-            url:
-              type: string
-              format: uri
-            key:
-              type: string
-    UpdateConnectionPolicyTargetRequest:
-      type: object
-      properties:
-        FriendlyName:
-          type: string
-          description: A descriptive string that you create to describe the resource. It is not unique and can be up to 255 characters long.
-        Target:
-          type: string
-          format: uri
-          description: The SIP address you want Twilio to route your calls to. This must be a `sip:` schema. `sips` is NOT supported.
-        Priority:
-          type: integer
-          description: The relative importance of the target. Can be an integer from 0 to 65535, inclusive. The lowest number represents the most important target.
-        Weight:
-          type: integer
-          description: The value that determines the relative share of the load the Target should receive compared to other Targets with the same priority. Can be an integer from 1 to 65535, inclusive. Targets with higher values receive more load than those with lower ones with the same priority.
-        Enabled:
-          type: boolean
-          description: Whether the Target is enabled.
-    CreateConnectionPolicyTargetRequest:
-      type: object
-      required:
-      - Target
-      properties:
-        Target:
-          type: string
-          format: uri
-          description: The SIP address you want Twilio to route your calls to. This must be a `sip:` schema. `sips` is NOT supported.
-        FriendlyName:
-          type: string
-          description: A descriptive string that you create to describe the resource. It is not unique and can be up to 255 characters long.
-        Priority:
-          type: integer
-          description: The relative importance of the target. Can be an integer from 0 to 65535, inclusive, and the default is 10. The lowest number represents the most important target.
-        Weight:
-          type: integer
-          description: The value that determines the relative share of the load the Target should receive compared to other Targets with the same priority. Can be an integer from 1 to 65535, inclusive, and the default is 10. Targets with higher values receive more load than those with lower ones with the same priority.
-        Enabled:
-          type: boolean
-          description: Whether the Target is enabled. The default is `true`.
-    ListConnectionPolicyTargetResponse:
-      type: object
-      properties:
-        targets:
-          type: array
-          items:
-            $ref: '#/components/schemas/voice.v1.connection_policy.connection_policy_target'
-        meta:
-          type: object
-          properties:
-            first_page_url:
-              type: string
-              format: uri
-            next_page_url:
-              type:
-              - string
-              - 'null'
-              format: uri
-            page:
-              type: integer
-            page_size:
-              type: integer
-            previous_page_url:
-              type:
-              - string
-              - 'null'
-              format: uri
-            url:
-              type: string
-              format: uri
-            key:
-              type: string
   securitySchemes:
     accountSid_authToken:
       type: http

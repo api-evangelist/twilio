@@ -1,7 +1,8 @@
 openapi: 3.2.0
 info:
-  title: Twilio Users API
-  version: 1.52.0
+  title: Twilio - Conversations Users API
+  description: This is the public Twilio REST API.
+  termsOfService: https://www.twilio.com/legal/tos
   contact:
     name: Twilio Support
     url: https://support.twilio.com
@@ -9,11 +10,9 @@ info:
   license:
     name: Apache 2.0
     url: https://www.apache.org/licenses/LICENSE-2.0.html
-  termsOfService: https://www.twilio.com/legal/tos
-  description: 'Operations tagged Users across 2 of this provider''s published API definitions: conversations-openapi-original.yml, frontline-openapi-original.yml. Each path carries the servers of the definition it was published in.'
+  version: 1.52.0
 servers:
 - url: https://conversations.twilio.com
-- url: https://frontline-api.twilio.com
 tags:
 - name: Users
 paths:
@@ -59,6 +58,8 @@ paths:
           application/x-www-form-urlencoded:
             schema:
               $ref: '#/components/schemas/CreateUserRequest'
+      summary: Create user
+      x-summary-source: derived
     get:
       description: Retrieve a list of all conversation users in your account's default service
       tags:
@@ -94,6 +95,8 @@ paths:
       operationId: ListUser
       x-maturity:
       - GA
+      summary: List user
+      x-summary-source: derived
   /v1/Users/{Sid}:
     servers:
     - url: https://conversations.twilio.com
@@ -142,6 +145,8 @@ paths:
           application/x-www-form-urlencoded:
             schema:
               $ref: '#/components/schemas/UpdateUserRequest'
+      summary: Update user
+      x-summary-source: derived
     delete:
       description: Remove a conversation user from your account's default service
       tags:
@@ -167,6 +172,8 @@ paths:
       operationId: DeleteUser
       x-maturity:
       - GA
+      summary: Delete user
+      x-summary-source: derived
     get:
       description: Fetch a conversation user from your account's default service
       tags:
@@ -190,6 +197,8 @@ paths:
       operationId: FetchUser
       x-maturity:
       - GA
+      summary: Fetch user
+      x-summary-source: derived
   /v1/Users/{UserSid}/Conversations/{ConversationSid}:
     servers:
     - url: https://conversations.twilio.com
@@ -238,6 +247,8 @@ paths:
           application/x-www-form-urlencoded:
             schema:
               $ref: '#/components/schemas/UpdateUserConversationRequest'
+      summary: Update user conversation
+      x-summary-source: derived
     delete:
       description: Delete a specific User Conversation.
       tags:
@@ -263,6 +274,8 @@ paths:
       operationId: DeleteUserConversation
       x-maturity:
       - GA
+      summary: Delete user conversation
+      x-summary-source: derived
     get:
       description: Fetch a specific User Conversation.
       tags:
@@ -292,6 +305,8 @@ paths:
       operationId: FetchUserConversation
       x-maturity:
       - GA
+      summary: Fetch user conversation
+      x-summary-source: derived
   /v1/Users/{UserSid}/Conversations:
     servers:
     - url: https://conversations.twilio.com
@@ -347,13 +362,231 @@ paths:
       operationId: ListUserConversation
       x-maturity:
       - GA
+      summary: List user conversation
+      x-summary-source: derived
 components:
   schemas:
-    user_enum_webhook_enabled_type:
+    ListUserResponse:
+      type: object
+      properties:
+        users:
+          type: array
+          items:
+            $ref: '#/components/schemas/conversations.v1.user'
+        meta:
+          type: object
+          properties:
+            first_page_url:
+              type: string
+              format: uri
+            next_page_url:
+              type:
+              - string
+              - 'null'
+              format: uri
+            page:
+              type: integer
+            page_size:
+              type: integer
+            previous_page_url:
+              type:
+              - string
+              - 'null'
+              format: uri
+            url:
+              type: string
+              format: uri
+            key:
+              type: string
+    user_conversation_enum_state:
       type: string
       enum:
-      - 'true'
-      - 'false'
+      - inactive
+      - active
+      - closed
+    ListUserConversationResponse:
+      type: object
+      properties:
+        conversations:
+          type: array
+          items:
+            $ref: '#/components/schemas/conversations.v1.user.user_conversation'
+        meta:
+          type: object
+          properties:
+            first_page_url:
+              type: string
+              format: uri
+            next_page_url:
+              type:
+              - string
+              - 'null'
+              format: uri
+            page:
+              type: integer
+            page_size:
+              type: integer
+            previous_page_url:
+              type:
+              - string
+              - 'null'
+              format: uri
+            url:
+              type: string
+              format: uri
+            key:
+              type: string
+    user_conversation_enum_notification_level:
+      type: string
+      enum:
+      - default
+      - muted
+    UpdateUserRequest:
+      type: object
+      properties:
+        FriendlyName:
+          type: string
+          description: The string that you assigned to describe the resource.
+        Attributes:
+          type: string
+          description: The JSON Object string that stores application-specific data. If attributes have not been set, `{}` is returned.
+        RoleSid:
+          type: string
+          minLength: 34
+          maxLength: 34
+          pattern: ^RL[0-9a-fA-F]{32}$
+          description: The SID of a service-level [Role](https://www.twilio.com/docs/conversations/api/role-resource) to assign to the user.
+    CreateUserRequest:
+      type: object
+      required:
+      - Identity
+      properties:
+        Identity:
+          type: string
+          description: The application-defined string that uniquely identifies the resource's User within the [Conversation Service](https://www.twilio.com/docs/conversations/api/service-resource). This value is often a username or an email address, and is case-sensitive.
+        FriendlyName:
+          type: string
+          description: The string that you assigned to describe the resource.
+        Attributes:
+          type: string
+          description: The JSON Object string that stores application-specific data. If attributes have not been set, `{}` is returned.
+        RoleSid:
+          type: string
+          minLength: 34
+          maxLength: 34
+          pattern: ^RL[0-9a-fA-F]{32}$
+          description: The SID of a service-level [Role](https://www.twilio.com/docs/conversations/api/role-resource) to assign to the user.
+    conversations.v1.user:
+      type: object
+      properties:
+        sid:
+          type:
+          - string
+          - 'null'
+          minLength: 34
+          maxLength: 34
+          pattern: ^US[0-9a-fA-F]{32}$
+          description: The unique string that we created to identify the User resource.
+        account_sid:
+          type:
+          - string
+          - 'null'
+          minLength: 34
+          maxLength: 34
+          pattern: ^AC[0-9a-fA-F]{32}$
+          description: The SID of the [Account](https://www.twilio.com/docs/iam/api/account) that created the User resource.
+        chat_service_sid:
+          type:
+          - string
+          - 'null'
+          minLength: 34
+          maxLength: 34
+          pattern: ^IS[0-9a-fA-F]{32}$
+          description: The SID of the [Conversation Service](https://www.twilio.com/docs/conversations/api/service-resource) the User resource is associated with.
+        role_sid:
+          type:
+          - string
+          - 'null'
+          minLength: 34
+          maxLength: 34
+          pattern: ^RL[0-9a-fA-F]{32}$
+          description: The SID of a service-level [Role](https://www.twilio.com/docs/conversations/api/role-resource) assigned to the user.
+        identity:
+          type:
+          - string
+          - 'null'
+          description: The application-defined string that uniquely identifies the resource's User within the [Conversation Service](https://www.twilio.com/docs/conversations/api/service-resource). This value is often a username or an email address, and is case-sensitive.
+          x-twilio:
+            pii:
+              handling: standard
+              deleteSla: 30
+        friendly_name:
+          type:
+          - string
+          - 'null'
+          description: The string that you assigned to describe the resource.
+          x-twilio:
+            pii:
+              handling: standard
+              deleteSla: 30
+        attributes:
+          type:
+          - string
+          - 'null'
+          description: The JSON Object string that stores application-specific data. If attributes have not been set, `{}` is returned.
+          x-twilio:
+            pii:
+              handling: sensitive
+              deleteSla: 30
+        is_online:
+          type:
+          - boolean
+          - 'null'
+          description: Whether the User is actively connected to this Conversations Service and online. This value is only returned by Fetch actions that return a single resource and `null` is always returned by a Read action. This value is `null` if the Service's `reachability_enabled` is `false`, if the User has never been online for this Conversations Service, even if the Service's `reachability_enabled` is `true`.
+        is_notifiable:
+          type:
+          - boolean
+          - 'null'
+          description: Whether the User has a potentially valid Push Notification registration (APN or GCM) for this Conversations Service. If at least one registration exists, `true`; otherwise `false`. This value is only returned by Fetch actions that return a single resource and `null` is always returned by a Read action. This value is `null` if the Service's `reachability_enabled` is `false`, and if the User has never had a notification registration, even if the Service's `reachability_enabled` is `true`.
+        date_created:
+          type:
+          - string
+          - 'null'
+          format: date-time
+          description: The date and time in GMT when the resource was created specified in [ISO 8601](https://en.wikipedia.org/wiki/ISO_8601) format.
+        date_updated:
+          type:
+          - string
+          - 'null'
+          format: date-time
+          description: The date and time in GMT when the resource was last updated specified in [ISO 8601](https://en.wikipedia.org/wiki/ISO_8601) format.
+        url:
+          type:
+          - string
+          - 'null'
+          format: uri
+          description: An absolute API resource URL for this user.
+        links:
+          type:
+          - object
+          - 'null'
+          format: uri-map
+    UpdateUserConversationRequest:
+      type: object
+      properties:
+        NotificationLevel:
+          type: string
+          $ref: '#/components/schemas/user_conversation_enum_notification_level'
+          description: The Notification Level of this User Conversation. One of `default` or `muted`.
+        LastReadTimestamp:
+          type: string
+          format: date-time
+          description: The date of the last message read in conversation by the user, given in ISO 8601 format.
+        LastReadMessageIndex:
+          type:
+          - integer
+          - 'null'
+          description: The index of the last Message in the Conversation that the Participant has read.
     conversations.v1.user.user_conversation:
       type: object
       properties:
@@ -476,308 +709,15 @@ components:
           - 'null'
           format: uri-map
           description: Contains absolute URLs to access the [participant](https://www.twilio.com/docs/conversations/api/conversation-participant-resource) and [conversation](https://www.twilio.com/docs/conversations/api/conversation-resource) of this conversation.
-    user_conversation_enum_notification_level:
+    user_enum_webhook_enabled_type:
       type: string
       enum:
-      - default
-      - muted
-    UpdateUserRequest:
-      type: object
-      properties:
-        FriendlyName:
-          type: string
-          description: The string that you assigned to describe the resource.
-        Attributes:
-          type: string
-          description: The JSON Object string that stores application-specific data. If attributes have not been set, `{}` is returned.
-        RoleSid:
-          type: string
-          minLength: 34
-          maxLength: 34
-          pattern: ^RL[0-9a-fA-F]{32}$
-          description: The SID of a service-level [Role](https://www.twilio.com/docs/conversations/api/role-resource) to assign to the user.
-    UpdateUserConversationRequest:
-      type: object
-      properties:
-        NotificationLevel:
-          type: string
-          $ref: '#/components/schemas/user_conversation_enum_notification_level'
-          description: The Notification Level of this User Conversation. One of `default` or `muted`.
-        LastReadTimestamp:
-          type: string
-          format: date-time
-          description: The date of the last message read in conversation by the user, given in ISO 8601 format.
-        LastReadMessageIndex:
-          type:
-          - integer
-          - 'null'
-          description: The index of the last Message in the Conversation that the Participant has read.
-    CreateUserRequest:
-      type: object
-      required:
-      - Identity
-      properties:
-        Identity:
-          type: string
-          description: The application-defined string that uniquely identifies the resource's User within the [Conversation Service](https://www.twilio.com/docs/conversations/api/service-resource). This value is often a username or an email address, and is case-sensitive.
-        FriendlyName:
-          type: string
-          description: The string that you assigned to describe the resource.
-        Attributes:
-          type: string
-          description: The JSON Object string that stores application-specific data. If attributes have not been set, `{}` is returned.
-        RoleSid:
-          type: string
-          minLength: 34
-          maxLength: 34
-          pattern: ^RL[0-9a-fA-F]{32}$
-          description: The SID of a service-level [Role](https://www.twilio.com/docs/conversations/api/role-resource) to assign to the user.
-    ListUserResponse:
-      type: object
-      properties:
-        users:
-          type: array
-          items:
-            $ref: '#/components/schemas/conversations.v1.user'
-        meta:
-          type: object
-          properties:
-            first_page_url:
-              type: string
-              format: uri
-            next_page_url:
-              type:
-              - string
-              - 'null'
-              format: uri
-            page:
-              type: integer
-            page_size:
-              type: integer
-            previous_page_url:
-              type:
-              - string
-              - 'null'
-              format: uri
-            url:
-              type: string
-              format: uri
-            key:
-              type: string
-    user_conversation_enum_state:
-      type: string
-      enum:
-      - inactive
-      - active
-      - closed
-    conversations.v1.user:
-      type: object
-      properties:
-        sid:
-          type:
-          - string
-          - 'null'
-          minLength: 34
-          maxLength: 34
-          pattern: ^US[0-9a-fA-F]{32}$
-          description: The unique string that we created to identify the User resource.
-        account_sid:
-          type:
-          - string
-          - 'null'
-          minLength: 34
-          maxLength: 34
-          pattern: ^AC[0-9a-fA-F]{32}$
-          description: The SID of the [Account](https://www.twilio.com/docs/iam/api/account) that created the User resource.
-        chat_service_sid:
-          type:
-          - string
-          - 'null'
-          minLength: 34
-          maxLength: 34
-          pattern: ^IS[0-9a-fA-F]{32}$
-          description: The SID of the [Conversation Service](https://www.twilio.com/docs/conversations/api/service-resource) the User resource is associated with.
-        role_sid:
-          type:
-          - string
-          - 'null'
-          minLength: 34
-          maxLength: 34
-          pattern: ^RL[0-9a-fA-F]{32}$
-          description: The SID of a service-level [Role](https://www.twilio.com/docs/conversations/api/role-resource) assigned to the user.
-        identity:
-          type:
-          - string
-          - 'null'
-          description: The application-defined string that uniquely identifies the resource's User within the [Conversation Service](https://www.twilio.com/docs/conversations/api/service-resource). This value is often a username or an email address, and is case-sensitive.
-          x-twilio:
-            pii:
-              handling: standard
-              deleteSla: 30
-        friendly_name:
-          type:
-          - string
-          - 'null'
-          description: The string that you assigned to describe the resource.
-          x-twilio:
-            pii:
-              handling: standard
-              deleteSla: 30
-        attributes:
-          type:
-          - string
-          - 'null'
-          description: The JSON Object string that stores application-specific data. If attributes have not been set, `{}` is returned.
-          x-twilio:
-            pii:
-              handling: sensitive
-              deleteSla: 30
-        is_online:
-          type:
-          - boolean
-          - 'null'
-          description: Whether the User is actively connected to this Conversations Service and online. This value is only returned by Fetch actions that return a single resource and `null` is always returned by a Read action. This value is `null` if the Service's `reachability_enabled` is `false`, if the User has never been online for this Conversations Service, even if the Service's `reachability_enabled` is `true`.
-        is_notifiable:
-          type:
-          - boolean
-          - 'null'
-          description: Whether the User has a potentially valid Push Notification registration (APN or GCM) for this Conversations Service. If at least one registration exists, `true`; otherwise `false`. This value is only returned by Fetch actions that return a single resource and `null` is always returned by a Read action. This value is `null` if the Service's `reachability_enabled` is `false`, and if the User has never had a notification registration, even if the Service's `reachability_enabled` is `true`.
-        date_created:
-          type:
-          - string
-          - 'null'
-          format: date-time
-          description: The date and time in GMT when the resource was created specified in [ISO 8601](https://en.wikipedia.org/wiki/ISO_8601) format.
-        date_updated:
-          type:
-          - string
-          - 'null'
-          format: date-time
-          description: The date and time in GMT when the resource was last updated specified in [ISO 8601](https://en.wikipedia.org/wiki/ISO_8601) format.
-        url:
-          type:
-          - string
-          - 'null'
-          format: uri
-          description: An absolute API resource URL for this user.
-        links:
-          type:
-          - object
-          - 'null'
-          format: uri-map
-    ListUserConversationResponse:
-      type: object
-      properties:
-        conversations:
-          type: array
-          items:
-            $ref: '#/components/schemas/conversations.v1.user.user_conversation'
-        meta:
-          type: object
-          properties:
-            first_page_url:
-              type: string
-              format: uri
-            next_page_url:
-              type:
-              - string
-              - 'null'
-              format: uri
-            page:
-              type: integer
-            page_size:
-              type: integer
-            previous_page_url:
-              type:
-              - string
-              - 'null'
-              format: uri
-            url:
-              type: string
-              format: uri
-            key:
-              type: string
-    user_enum_state_type:
-      type: string
-      enum:
-      - active
-      - deactivated
-    UpdateUserRequest_2:
-      type: object
-      properties:
-        FriendlyName:
-          type: string
-          description: The string that you assigned to describe the User.
-        Avatar:
-          type: string
-          description: The avatar URL which will be shown in Frontline application.
-        State:
-          type: string
-          $ref: '#/components/schemas/user_enum_state_type'
-          description: Current state of this user. Can be either `active` or `deactivated`.
-        IsAvailable:
-          type: boolean
-          description: Whether the User is available for new conversations. Set to `false` to prevent User from receiving new inbound conversations if you are using [Pool Routing](https://www.twilio.com/docs/frontline/handle-incoming-conversations#3-pool-routing).
-    frontline.v1.user:
-      type: object
-      properties:
-        sid:
-          type:
-          - string
-          - 'null'
-          minLength: 34
-          maxLength: 34
-          pattern: ^US[0-9a-fA-F]{32}$
-          description: The unique string that we created to identify the User resource.
-        identity:
-          type:
-          - string
-          - 'null'
-          description: The application-defined string that uniquely identifies the resource's User. This value is often a username or an email address, and is case-sensitive.
-          x-twilio:
-            pii:
-              handling: standard
-              deleteSla: 30
-        friendly_name:
-          type:
-          - string
-          - 'null'
-          description: The string that you assigned to describe the User.
-          x-twilio:
-            pii:
-              handling: standard
-              deleteSla: 30
-        avatar:
-          type:
-          - string
-          - 'null'
-          description: The avatar URL which will be shown in Frontline application.
-        state:
-          type:
-          - string
-          - 'null'
-          $ref: '#/components/schemas/user_enum_state_type'
-          description: Current state of this user. Can be either `active` or `deactivated` and defaults to `active`
-        is_available:
-          type:
-          - boolean
-          - 'null'
-          description: Whether the User is available for new conversations. Defaults to `false` for new users.
-        url:
-          type:
-          - string
-          - 'null'
-          format: uri
-          description: An absolute API resource URL for this user.
+      - 'true'
+      - 'false'
   securitySchemes:
     accountSid_authToken:
       type: http
       scheme: basic
-x-refined-from:
-- conversations-openapi-original.yml
-- frontline-openapi-original.yml
 x-maturity:
 - name: GA
   description: This product is Generally Available.
-- name: Beta
-  description: PLEASE NOTE that this is a Beta product that is subject to change. Use it with caution.

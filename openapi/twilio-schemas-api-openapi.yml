@@ -52,6 +52,8 @@ paths:
       operationId: FetchSchema
       x-maturity:
       - GA
+      summary: Fetch schema
+      x-summary-source: derived
   /v1/Schemas/{Id}/Versions:
     servers:
     - url: https://events.twilio.com
@@ -105,6 +107,8 @@ paths:
       operationId: ListSchemaVersion
       x-maturity:
       - GA
+      summary: List schema version
+      x-summary-source: derived
   /v1/Schemas/{Id}/Versions/{SchemaVersion}:
     servers:
     - url: https://events.twilio.com
@@ -146,8 +150,41 @@ paths:
       operationId: FetchSchemaVersion
       x-maturity:
       - GA
+      summary: Fetch schema version
+      x-summary-source: derived
 components:
   schemas:
+    events.v1.schema:
+      type: object
+      properties:
+        id:
+          type:
+          - string
+          - 'null'
+          description: The unique identifier of the schema. Each schema can have multiple versions, that share the same id.
+        url:
+          type:
+          - string
+          - 'null'
+          format: uri
+          description: The URL of this resource.
+        links:
+          type:
+          - object
+          - 'null'
+          format: uri-map
+          description: Contains a dictionary of URL links to nested resources of this schema.
+        latest_version_date_created:
+          type:
+          - string
+          - 'null'
+          format: date-time
+          description: The date that the latest schema version was created, given in ISO 8601 format.
+        latest_version:
+          type:
+          - integer
+          - 'null'
+          description: The latest version published of this schema.
     ListSchemaVersionResponse:
       type: object
       properties:
@@ -210,37 +247,6 @@ components:
           - string
           - 'null'
           format: uri
-    events.v1.schema:
-      type: object
-      properties:
-        id:
-          type:
-          - string
-          - 'null'
-          description: The unique identifier of the schema. Each schema can have multiple versions, that share the same id.
-        url:
-          type:
-          - string
-          - 'null'
-          format: uri
-          description: The URL of this resource.
-        links:
-          type:
-          - object
-          - 'null'
-          format: uri-map
-          description: Contains a dictionary of URL links to nested resources of this schema.
-        latest_version_date_created:
-          type:
-          - string
-          - 'null'
-          format: date-time
-          description: The date that the latest schema version was created, given in ISO 8601 format.
-        latest_version:
-          type:
-          - integer
-          - 'null'
-          description: The latest version published of this schema.
   securitySchemes:
     accountSid_authToken:
       type: http

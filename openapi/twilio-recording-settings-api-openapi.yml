@@ -14,7 +14,7 @@ info:
 servers:
 - url: https://video.twilio.com
 tags:
-- name: RecordingSettings
+- name: Recording Settings
 paths:
   /v1/RecordingSettings/Default:
     servers:
@@ -31,7 +31,7 @@ paths:
     get:
       description: ''
       tags:
-      - RecordingSettings
+      - Recording Settings
       responses:
         '200':
           content:
@@ -44,10 +44,12 @@ paths:
       operationId: FetchRecordingSettings
       x-maturity:
       - GA
+      summary: Fetch recording settings
+      x-summary-source: derived
     post:
       description: ''
       tags:
-      - RecordingSettings
+      - Recording Settings
       responses:
         '201':
           content:
@@ -65,38 +67,10 @@ paths:
           application/x-www-form-urlencoded:
             schema:
               $ref: '#/components/schemas/CreateRecordingSettingsRequest'
+      summary: Create recording settings
+      x-summary-source: derived
 components:
   schemas:
-    CreateRecordingSettingsRequest:
-      type: object
-      required:
-      - FriendlyName
-      properties:
-        FriendlyName:
-          type: string
-          description: A descriptive string that you create to describe the resource and be shown to users in the console
-        AwsCredentialsSid:
-          type: string
-          minLength: 34
-          maxLength: 34
-          pattern: ^CR[0-9a-fA-F]{32}$
-          description: The SID of the stored Credential resource.
-        EncryptionKeySid:
-          type: string
-          minLength: 34
-          maxLength: 34
-          pattern: ^CR[0-9a-fA-F]{32}$
-          description: The SID of the Public Key resource to use for encryption.
-        AwsS3Url:
-          type: string
-          format: uri
-          description: The URL of the AWS S3 bucket where the recordings should be stored. We only support DNS-compliant URLs like `https://documentation-example-twilio-bucket/recordings`, where `recordings` is the path in which you want the recordings to be stored. This URL accepts only URI-valid characters, as described in the <a href='https://tools.ietf.org/html/rfc3986#section-2'>RFC 3986</a>.
-        AwsStorageEnabled:
-          type: boolean
-          description: Whether all recordings should be written to the `aws_s3_url`. When `false`, all recordings are stored in our cloud.
-        EncryptionEnabled:
-          type: boolean
-          description: Whether all recordings should be stored in an encrypted form. The default is `false`.
     video.v1.recording_settings:
       type: object
       properties:
@@ -151,6 +125,36 @@ components:
           - 'null'
           format: uri
           description: The absolute URL of the resource.
+    CreateRecordingSettingsRequest:
+      type: object
+      required:
+      - FriendlyName
+      properties:
+        FriendlyName:
+          type: string
+          description: A descriptive string that you create to describe the resource and be shown to users in the console
+        AwsCredentialsSid:
+          type: string
+          minLength: 34
+          maxLength: 34
+          pattern: ^CR[0-9a-fA-F]{32}$
+          description: The SID of the stored Credential resource.
+        EncryptionKeySid:
+          type: string
+          minLength: 34
+          maxLength: 34
+          pattern: ^CR[0-9a-fA-F]{32}$
+          description: The SID of the Public Key resource to use for encryption.
+        AwsS3Url:
+          type: string
+          format: uri
+          description: The URL of the AWS S3 bucket where the recordings should be stored. We only support DNS-compliant URLs like `https://documentation-example-twilio-bucket/recordings`, where `recordings` is the path in which you want the recordings to be stored. This URL accepts only URI-valid characters, as described in the <a href='https://tools.ietf.org/html/rfc3986#section-2'>RFC 3986</a>.
+        AwsStorageEnabled:
+          type: boolean
+          description: Whether all recordings should be written to the `aws_s3_url`. When `false`, all recordings are stored in our cloud.
+        EncryptionEnabled:
+          type: boolean
+          description: Whether all recordings should be stored in an encrypted form. The default is `false`.
   securitySchemes:
     accountSid_authToken:
       type: http

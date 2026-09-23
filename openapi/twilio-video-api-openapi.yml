@@ -54,6 +54,8 @@ paths:
       operationId: FetchVideoParticipantSummary
       x-maturity:
       - Beta
+      summary: Fetch video participant summary
+      x-summary-source: derived
   /v1/Video/Rooms/{RoomSid}/Participants:
     servers:
     - url: https://insights.twilio.com
@@ -104,6 +106,8 @@ paths:
       operationId: ListVideoParticipantSummary
       x-maturity:
       - Beta
+      summary: List video participant summary
+      x-summary-source: derived
   /v1/Video/Rooms/{RoomSid}:
     servers:
     - url: https://insights.twilio.com
@@ -141,6 +145,8 @@ paths:
       operationId: FetchVideoRoomSummary
       x-maturity:
       - Beta
+      summary: Fetch video room summary
+      x-summary-source: derived
   /v1/Video/Rooms:
     servers:
     - url: https://insights.twilio.com
@@ -223,43 +229,55 @@ paths:
       operationId: ListVideoRoomSummary
       x-maturity:
       - Beta
+      summary: List video room summary
+      x-summary-source: derived
 components:
   schemas:
-    video_room_summary_enum_room_status:
+    video_room_summary_enum_twilio_realm:
       type: string
       enum:
-      - in_progress
-      - completed
-    video_room_summary_enum_edge_location:
-      type: string
-      enum:
-      - ashburn
-      - dublin
-      - frankfurt
-      - singapore
-      - sydney
-      - sao_paulo
-      - roaming
-      - umatilla
-      - tokyo
-    video_room_summary_enum_processing_state:
-      type: string
-      enum:
-      - complete
-      - in_progress
-    video_participant_summary_enum_codec:
-      type: string
-      enum:
-      - VP8
-      - H264
-      - VP9
-    video_room_summary_enum_room_type:
-      type: string
-      enum:
-      - go
-      - peer_to_peer
-      - group
-      - group_small
+      - us1
+      - us2
+      - au1
+      - br1
+      - ie1
+      - jp1
+      - sg1
+      - in1
+      - de1
+      - gll
+    ListVideoRoomSummaryResponse:
+      type: object
+      properties:
+        rooms:
+          type: array
+          items:
+            $ref: '#/components/schemas/insights.v1.video_room_summary'
+        meta:
+          type: object
+          properties:
+            first_page_url:
+              type: string
+              format: uri
+            next_page_url:
+              type:
+              - string
+              - 'null'
+              format: uri
+            page:
+              type: integer
+            page_size:
+              type: integer
+            previous_page_url:
+              type:
+              - string
+              - 'null'
+              format: uri
+            url:
+              type: string
+              format: uri
+            key:
+              type: string
     insights.v1.video_room_summary.video_participant_summary:
       type: object
       properties:
@@ -361,42 +379,22 @@ components:
           - 'null'
           format: uri
           description: URL of the participant resource.
-    video_participant_summary_enum_edge_location:
-      type: string
-      enum:
-      - ashburn
-      - dublin
-      - frankfurt
-      - singapore
-      - sydney
-      - sao_paulo
-      - roaming
-      - umatilla
-      - tokyo
-    video_participant_summary_enum_room_status:
-      type: string
-      enum:
-      - in_progress
-      - completed
     video_room_summary_enum_codec:
       type: string
       enum:
       - VP8
       - H264
       - VP9
-    video_room_summary_enum_twilio_realm:
+    video_room_summary_enum_room_status:
       type: string
       enum:
-      - us1
-      - us2
-      - au1
-      - br1
-      - ie1
-      - jp1
-      - sg1
-      - in1
-      - de1
-      - gll
+      - in_progress
+      - completed
+    video_room_summary_enum_processing_state:
+      type: string
+      enum:
+      - complete
+      - in_progress
     insights.v1.video_room_summary:
       type: object
       properties:
@@ -562,51 +560,23 @@ components:
           - 'null'
           format: uri-map
           description: Room subresources.
-    video_participant_summary_enum_twilio_realm:
+    video_room_summary_enum_end_reason:
       type: string
       enum:
-      - us1
-      - us2
-      - au1
-      - br1
-      - ie1
-      - jp1
-      - sg1
-      - in1
-      - de1
-      - gll
-    ListVideoRoomSummaryResponse:
-      type: object
-      properties:
-        rooms:
-          type: array
-          items:
-            $ref: '#/components/schemas/insights.v1.video_room_summary'
-        meta:
-          type: object
-          properties:
-            first_page_url:
-              type: string
-              format: uri
-            next_page_url:
-              type:
-              - string
-              - 'null'
-              format: uri
-            page:
-              type: integer
-            page_size:
-              type: integer
-            previous_page_url:
-              type:
-              - string
-              - 'null'
-              format: uri
-            url:
-              type: string
-              format: uri
-            key:
-              type: string
+      - room_ended_via_api
+      - timeout
+    video_room_summary_enum_edge_location:
+      type: string
+      enum:
+      - ashburn
+      - dublin
+      - frankfurt
+      - singapore
+      - sydney
+      - sao_paulo
+      - roaming
+      - umatilla
+      - tokyo
     ListVideoParticipantSummaryResponse:
       type: object
       properties:
@@ -639,17 +609,55 @@ components:
               format: uri
             key:
               type: string
-    video_room_summary_enum_end_reason:
+    video_participant_summary_enum_edge_location:
       type: string
       enum:
-      - room_ended_via_api
-      - timeout
+      - ashburn
+      - dublin
+      - frankfurt
+      - singapore
+      - sydney
+      - sao_paulo
+      - roaming
+      - umatilla
+      - tokyo
+    video_participant_summary_enum_room_status:
+      type: string
+      enum:
+      - in_progress
+      - completed
+    video_participant_summary_enum_twilio_realm:
+      type: string
+      enum:
+      - us1
+      - us2
+      - au1
+      - br1
+      - ie1
+      - jp1
+      - sg1
+      - in1
+      - de1
+      - gll
+    video_room_summary_enum_room_type:
+      type: string
+      enum:
+      - go
+      - peer_to_peer
+      - group
+      - group_small
     video_room_summary_enum_created_method:
       type: string
       enum:
       - sdk
       - ad_hoc
       - api
+    video_participant_summary_enum_codec:
+      type: string
+      enum:
+      - VP8
+      - H264
+      - VP9
   securitySchemes:
     accountSid_authToken:
       type: http

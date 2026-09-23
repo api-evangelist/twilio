@@ -52,6 +52,8 @@ paths:
           application/x-www-form-urlencoded:
             schema:
               $ref: '#/components/schemas/CreateNetworkAccessProfileRequest'
+      summary: Create network access profile
+      x-summary-source: derived
     get:
       description: Retrieve a list of Network Access Profiles from your account.
       tags:
@@ -87,6 +89,8 @@ paths:
       operationId: ListNetworkAccessProfile
       x-maturity:
       - Beta
+      summary: List network access profile
+      x-summary-source: derived
   /v1/NetworkAccessProfiles/{Sid}:
     servers:
     - url: https://supersim.twilio.com
@@ -125,6 +129,8 @@ paths:
       operationId: FetchNetworkAccessProfile
       x-maturity:
       - Beta
+      summary: Fetch network access profile
+      x-summary-source: derived
     post:
       description: Updates the given properties of a Network Access Profile in your account.
       tags:
@@ -153,6 +159,8 @@ paths:
           application/x-www-form-urlencoded:
             schema:
               $ref: '#/components/schemas/UpdateNetworkAccessProfileRequest'
+      summary: Update network access profile
+      x-summary-source: derived
   /v1/NetworkAccessProfiles/{NetworkAccessProfileSid}/Networks:
     servers:
     - url: https://supersim.twilio.com
@@ -204,6 +212,8 @@ paths:
       operationId: ListNetworkAccessProfileNetwork
       x-maturity:
       - Beta
+      summary: List network access profile network
+      x-summary-source: derived
     post:
       description: Add a Network resource to the Network Access Profile resource.
       tags:
@@ -232,6 +242,8 @@ paths:
           application/x-www-form-urlencoded:
             schema:
               $ref: '#/components/schemas/CreateNetworkAccessProfileNetworkRequest'
+      summary: Create network access profile network
+      x-summary-source: derived
   /v1/NetworkAccessProfiles/{NetworkAccessProfileSid}/Networks/{Sid}:
     servers:
     - url: https://supersim.twilio.com
@@ -273,6 +285,8 @@ paths:
       operationId: DeleteNetworkAccessProfileNetwork
       x-maturity:
       - Beta
+      summary: Delete network access profile network
+      x-summary-source: derived
     get:
       description: Fetch a Network Access Profile resource's Network resource.
       tags:
@@ -305,8 +319,21 @@ paths:
       operationId: FetchNetworkAccessProfileNetwork
       x-maturity:
       - Beta
+      summary: Fetch network access profile network
+      x-summary-source: derived
 components:
   schemas:
+    CreateNetworkAccessProfileRequest:
+      type: object
+      properties:
+        UniqueName:
+          type: string
+          description: An application-defined string that uniquely identifies the resource. It can be used in place of the resource's `sid` in the URL to address the resource.
+        Networks:
+          type: array
+          items:
+            type: string
+          description: List of Network SIDs that this Network Access Profile will allow connections to.
     supersim.v1.network_access_profile:
       type: object
       properties:
@@ -386,34 +413,6 @@ components:
               format: uri
             key:
               type: string
-    CreateNetworkAccessProfileRequest:
-      type: object
-      properties:
-        UniqueName:
-          type: string
-          description: An application-defined string that uniquely identifies the resource. It can be used in place of the resource's `sid` in the URL to address the resource.
-        Networks:
-          type: array
-          items:
-            type: string
-          description: List of Network SIDs that this Network Access Profile will allow connections to.
-    CreateNetworkAccessProfileNetworkRequest:
-      type: object
-      required:
-      - Network
-      properties:
-        Network:
-          type: string
-          minLength: 34
-          maxLength: 34
-          pattern: ^HW[0-9a-fA-F]{32}$
-          description: The SID of the Network resource to be added to the Network Access Profile resource.
-    UpdateNetworkAccessProfileRequest:
-      type: object
-      properties:
-        UniqueName:
-          type: string
-          description: The new unique name of the Network Access Profile.
     ListNetworkAccessProfileResponse:
       type: object
       properties:
@@ -446,6 +445,23 @@ components:
               format: uri
             key:
               type: string
+    CreateNetworkAccessProfileNetworkRequest:
+      type: object
+      required:
+      - Network
+      properties:
+        Network:
+          type: string
+          minLength: 34
+          maxLength: 34
+          pattern: ^HW[0-9a-fA-F]{32}$
+          description: The SID of the Network resource to be added to the Network Access Profile resource.
+    UpdateNetworkAccessProfileRequest:
+      type: object
+      properties:
+        UniqueName:
+          type: string
+          description: The new unique name of the Network Access Profile.
     supersim.v1.network_access_profile.network_access_profile_network:
       type: object
       properties:

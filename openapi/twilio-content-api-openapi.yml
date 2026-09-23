@@ -54,6 +54,8 @@ paths:
       operationId: FetchApprovalFetch
       x-maturity:
       - Preview
+      summary: Fetch approval fetch
+      x-summary-source: derived
   /v1/Content/{Sid}:
     servers:
     - url: https://content.twilio.com
@@ -105,6 +107,8 @@ paths:
       operationId: FetchContent
       x-maturity:
       - Preview
+      summary: Fetch content
+      x-summary-source: derived
     delete:
       description: Deletes a Content resource
       tags:
@@ -127,6 +131,8 @@ paths:
       operationId: DeleteContent
       x-maturity:
       - Preview
+      summary: Delete content
+      x-summary-source: derived
   /v1/Content:
     servers:
     - url: https://content.twilio.com
@@ -187,6 +193,8 @@ paths:
       operationId: ListContent
       x-maturity:
       - Preview
+      summary: List content
+      x-summary-source: derived
 components:
   schemas:
     ListContentResponse:
@@ -221,6 +229,33 @@ components:
               format: uri
             key:
               type: string
+    content.v1.content.approval_fetch:
+      type: object
+      properties:
+        sid:
+          type:
+          - string
+          - 'null'
+          minLength: 34
+          maxLength: 34
+          pattern: ^HX[0-9a-fA-F]{32}$
+          description: The unique string that that we created to identify the Content resource.
+        account_sid:
+          type:
+          - string
+          - 'null'
+          minLength: 34
+          maxLength: 34
+          pattern: ^AC[0-9a-fA-F]{32}$
+          description: The SID of the [Account](https://www.twilio.com/docs/usage/api/account) that created Content resource.
+        whatsapp:
+          description: Contains the whatsapp approval information for the Content resource, with fields such as approval status, rejection reason, and category, amongst others.
+        url:
+          type:
+          - string
+          - 'null'
+          format: uri
+          description: The URL of the resource, relative to `https://content.twilio.com`.
     content.v1.content:
       type: object
       properties:
@@ -278,33 +313,6 @@ components:
           - 'null'
           format: uri-map
           description: A list of links related to the Content resource, such as approval_fetch and approval_create
-    content.v1.content.approval_fetch:
-      type: object
-      properties:
-        sid:
-          type:
-          - string
-          - 'null'
-          minLength: 34
-          maxLength: 34
-          pattern: ^HX[0-9a-fA-F]{32}$
-          description: The unique string that that we created to identify the Content resource.
-        account_sid:
-          type:
-          - string
-          - 'null'
-          minLength: 34
-          maxLength: 34
-          pattern: ^AC[0-9a-fA-F]{32}$
-          description: The SID of the [Account](https://www.twilio.com/docs/usage/api/account) that created Content resource.
-        whatsapp:
-          description: Contains the whatsapp approval information for the Content resource, with fields such as approval status, rejection reason, and category, amongst others.
-        url:
-          type:
-          - string
-          - 'null'
-          format: uri
-          description: The URL of the resource, relative to `https://content.twilio.com`.
   securitySchemes:
     accountSid_authToken:
       type: http

@@ -42,6 +42,8 @@ paths:
       operationId: FetchDialingPermissionsSettings
       x-maturity:
       - Preview
+      summary: Fetch dialing permissions settings
+      x-summary-source: derived
     post:
       description: Update voice dialing permissions inheritance for the sub-account
       tags:
@@ -63,14 +65,10 @@ paths:
           application/x-www-form-urlencoded:
             schema:
               $ref: '#/components/schemas/UpdateDialingPermissionsSettingsRequest'
+      summary: Update dialing permissions settings
+      x-summary-source: derived
 components:
   schemas:
-    UpdateDialingPermissionsSettingsRequest:
-      type: object
-      properties:
-        DialingPermissionsInheritance:
-          type: boolean
-          description: '`true` for the sub-account to inherit voice dialing permissions from the Master Project; otherwise `false`.'
     voice.v1.dialing_permissions.dialing_permissions_settings:
       type: object
       properties:
@@ -85,6 +83,12 @@ components:
           - 'null'
           format: uri
           description: The absolute URL of this resource.
+    UpdateDialingPermissionsSettingsRequest:
+      type: object
+      properties:
+        DialingPermissionsInheritance:
+          type: boolean
+          description: '`true` for the sub-account to inherit voice dialing permissions from the Master Project; otherwise `false`.'
   securitySchemes:
     accountSid_authToken:
       type: http

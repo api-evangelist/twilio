@@ -47,6 +47,8 @@ paths:
           application/x-www-form-urlencoded:
             schema:
               $ref: '#/components/schemas/CreateSmsCommandRequest'
+      summary: Create sms command
+      x-summary-source: derived
     get:
       description: Retrieve a list of SMS Commands from your account.
       tags:
@@ -99,6 +101,8 @@ paths:
       operationId: ListSmsCommand
       x-maturity:
       - Beta
+      summary: List sms command
+      x-summary-source: derived
   /v1/SmsCommands/{Sid}:
     servers:
     - url: https://supersim.twilio.com
@@ -135,67 +139,10 @@ paths:
       operationId: FetchSmsCommand
       x-maturity:
       - Beta
+      summary: Fetch sms command
+      x-summary-source: derived
 components:
   schemas:
-    CreateSmsCommandRequest:
-      type: object
-      required:
-      - Sim
-      - Payload
-      properties:
-        Sim:
-          type: string
-          description: The `sid` or `unique_name` of the [SIM](https://www.twilio.com/docs/iot/supersim/api/sim-resource) to send the SMS Command to.
-        Payload:
-          type: string
-          description: The message body of the SMS Command.
-        CallbackMethod:
-          type: string
-          format: http-method
-          enum:
-          - HEAD
-          - GET
-          - POST
-          - PATCH
-          - PUT
-          - DELETE
-          description: 'The HTTP method we should use to call `callback_url`. Can be: `GET` or `POST` and the default is POST.'
-        CallbackUrl:
-          type: string
-          format: uri
-          description: The URL we should call using the `callback_method` after we have sent the command.
-    ListSmsCommandResponse:
-      type: object
-      properties:
-        sms_commands:
-          type: array
-          items:
-            $ref: '#/components/schemas/supersim.v1.sms_command'
-        meta:
-          type: object
-          properties:
-            first_page_url:
-              type: string
-              format: uri
-            next_page_url:
-              type:
-              - string
-              - 'null'
-              format: uri
-            page:
-              type: integer
-            page_size:
-              type: integer
-            previous_page_url:
-              type:
-              - string
-              - 'null'
-              format: uri
-            url:
-              type: string
-              format: uri
-            key:
-              type: string
     supersim.v1.sms_command:
       type: object
       properties:
@@ -270,6 +217,65 @@ components:
       - delivered
       - received
       - failed
+    ListSmsCommandResponse:
+      type: object
+      properties:
+        sms_commands:
+          type: array
+          items:
+            $ref: '#/components/schemas/supersim.v1.sms_command'
+        meta:
+          type: object
+          properties:
+            first_page_url:
+              type: string
+              format: uri
+            next_page_url:
+              type:
+              - string
+              - 'null'
+              format: uri
+            page:
+              type: integer
+            page_size:
+              type: integer
+            previous_page_url:
+              type:
+              - string
+              - 'null'
+              format: uri
+            url:
+              type: string
+              format: uri
+            key:
+              type: string
+    CreateSmsCommandRequest:
+      type: object
+      required:
+      - Sim
+      - Payload
+      properties:
+        Sim:
+          type: string
+          description: The `sid` or `unique_name` of the [SIM](https://www.twilio.com/docs/iot/supersim/api/sim-resource) to send the SMS Command to.
+        Payload:
+          type: string
+          description: The message body of the SMS Command.
+        CallbackMethod:
+          type: string
+          format: http-method
+          enum:
+          - HEAD
+          - GET
+          - POST
+          - PATCH
+          - PUT
+          - DELETE
+          description: 'The HTTP method we should use to call `callback_url`. Can be: `GET` or `POST` and the default is POST.'
+        CallbackUrl:
+          type: string
+          format: uri
+          description: The URL we should call using the `callback_method` after we have sent the command.
     sms_command_enum_direction:
       type: string
       enum:

@@ -60,6 +60,8 @@ paths:
       operationId: ListEndUserType
       x-maturity:
       - GA
+      summary: List end user type
+      x-summary-source: derived
   /v1/EndUserTypes/{Sid}:
     servers:
     - url: https://trusthub.twilio.com
@@ -92,40 +94,10 @@ paths:
       operationId: FetchEndUserType
       x-maturity:
       - GA
+      summary: Fetch end user type
+      x-summary-source: derived
 components:
   schemas:
-    ListEndUserTypeResponse:
-      type: object
-      properties:
-        end_user_types:
-          type: array
-          items:
-            $ref: '#/components/schemas/trusthub.v1.end_user_type'
-        meta:
-          type: object
-          properties:
-            first_page_url:
-              type: string
-              format: uri
-            next_page_url:
-              type:
-              - string
-              - 'null'
-              format: uri
-            page:
-              type: integer
-            page_size:
-              type: integer
-            previous_page_url:
-              type:
-              - string
-              - 'null'
-              format: uri
-            url:
-              type: string
-              format: uri
-            key:
-              type: string
     trusthub.v1.end_user_type:
       type: object
       properties:
@@ -159,6 +131,38 @@ components:
           - 'null'
           format: uri
           description: The absolute URL of the End-User Type resource.
+    ListEndUserTypeResponse:
+      type: object
+      properties:
+        end_user_types:
+          type: array
+          items:
+            $ref: '#/components/schemas/trusthub.v1.end_user_type'
+        meta:
+          type: object
+          properties:
+            first_page_url:
+              type: string
+              format: uri
+            next_page_url:
+              type:
+              - string
+              - 'null'
+              format: uri
+            page:
+              type: integer
+            page_size:
+              type: integer
+            previous_page_url:
+              type:
+              - string
+              - 'null'
+              format: uri
+            url:
+              type: string
+              format: uri
+            key:
+              type: string
   securitySchemes:
     accountSid_authToken:
       type: http

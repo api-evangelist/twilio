@@ -56,6 +56,8 @@ paths:
       operationId: FetchDialingPermissionsCountry
       x-maturity:
       - Preview
+      summary: Fetch dialing permissions country
+      x-summary-source: derived
   /v1/DialingPermissions/Countries:
     servers:
     - url: https://voice.twilio.com
@@ -138,6 +140,8 @@ paths:
       operationId: ListDialingPermissionsCountry
       x-maturity:
       - Preview
+      summary: List dialing permissions country
+      x-summary-source: derived
   /v1/DialingPermissions/BulkCountryUpdates:
     servers:
     - url: https://voice.twilio.com
@@ -149,7 +153,7 @@ paths:
       pathType: list
       parent: /DialingPermissions
     post:
-      description: Create a bulk update request to change voice dialing country permissions of one or more countries identified by the corresponding [ISO country code](https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2)
+      description: Create a bulk update request to change voice dialing country permissions of one or more countries identified by the corresponding ISO country code
       tags:
       - DialingPermissions
       responses:
@@ -169,6 +173,8 @@ paths:
           application/x-www-form-urlencoded:
             schema:
               $ref: '#/components/schemas/CreateDialingPermissionsCountryBulkUpdateRequest'
+      summary: Create dialing permissions country bulk update
+      x-summary-source: derived
   /v1/DialingPermissions/Countries/{IsoCode}/HighRiskSpecialPrefixes:
     servers:
     - url: https://voice.twilio.com
@@ -180,7 +186,7 @@ paths:
       parent: /DialingPermissions/Countries/{IsoCode}
       mountName: highrisk_special_prefixes
     get:
-      description: Fetch the high-risk special services prefixes from the country resource corresponding to the [ISO country code](https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2)
+      description: Fetch the high-risk special services prefixes from the country resource corresponding to the ISO country code
       tags:
       - DialingPermissions
       parameters:
@@ -221,154 +227,10 @@ paths:
       operationId: ListDialingPermissionsHrsPrefixes
       x-maturity:
       - Preview
+      summary: List dialing permissions hrs prefixes
+      x-summary-source: derived
 components:
   schemas:
-    CreateDialingPermissionsCountryBulkUpdateRequest:
-      type: object
-      required:
-      - UpdateRequest
-      properties:
-        UpdateRequest:
-          type: string
-          description: 'URL encoded JSON array of update objects. example : `[ { "iso_code": "GB", "low_risk_numbers_enabled": "true", "high_risk_special_numbers_enabled":"true", "high_risk_tollfraud_numbers_enabled": "false" } ]`'
-    ListDialingPermissionsHrsPrefixesResponse:
-      type: object
-      properties:
-        content:
-          type: array
-          items:
-            $ref: '#/components/schemas/voice.v1.dialing_permissions.dialing_permissions_country.dialing_permissions_hrs_prefixes'
-        meta:
-          type: object
-          properties:
-            first_page_url:
-              type: string
-              format: uri
-            next_page_url:
-              type:
-              - string
-              - 'null'
-              format: uri
-            page:
-              type: integer
-            page_size:
-              type: integer
-            previous_page_url:
-              type:
-              - string
-              - 'null'
-              format: uri
-            url:
-              type: string
-              format: uri
-            key:
-              type: string
-    voice.v1.dialing_permissions.dialing_permissions_country.dialing_permissions_hrs_prefixes:
-      type: object
-      properties:
-        prefix:
-          type:
-          - string
-          - 'null'
-          description: A prefix is a contiguous number range for a block of E.164 numbers that includes the E.164 assigned country code. For example, a North American Numbering Plan prefix like `+1510720` written like `+1(510) 720` matches all numbers inclusive from `+1(510) 720-0000` to `+1(510) 720-9999`.
-    voice.v1.dialing_permissions.dialing_permissions_country-instance:
-      type: object
-      properties:
-        iso_code:
-          type:
-          - string
-          - 'null'
-          format: iso-country-code
-          description: The [ISO country code](https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2).
-        name:
-          type:
-          - string
-          - 'null'
-          description: The name of the country.
-        continent:
-          type:
-          - string
-          - 'null'
-          description: The name of the continent in which the country is located.
-        country_codes:
-          type:
-          - array
-          - 'null'
-          items:
-            type: string
-          description: The E.164 assigned [country codes(s)](https://www.itu.int/itudoc/itu-t/ob-lists/icc/e164_763.html)
-        low_risk_numbers_enabled:
-          type:
-          - boolean
-          - 'null'
-          description: Whether dialing to low-risk numbers is enabled.
-        high_risk_special_numbers_enabled:
-          type:
-          - boolean
-          - 'null'
-          description: Whether dialing to high-risk special services numbers is enabled. These prefixes include number ranges allocated by the country and include premium numbers, special services, shared cost, and others
-        high_risk_tollfraud_numbers_enabled:
-          type:
-          - boolean
-          - 'null'
-          description: Whether dialing to high-risk [toll fraud](https://www.twilio.com/blog/how-to-protect-your-account-from-toll-fraud-with-voice-dialing-geo-permissions-html) numbers is enabled. These prefixes include narrow number ranges that have a high-risk of international revenue sharing fraud (IRSF) attacks, also known as [toll fraud](https://www.twilio.com/blog/how-to-protect-your-account-from-toll-fraud-with-voice-dialing-geo-permissions-html). These prefixes are collected from anti-fraud databases and verified by analyzing calls on our network. These prefixes are not available for download and are updated frequently
-        url:
-          type:
-          - string
-          - 'null'
-          format: uri
-          description: The absolute URL of this resource.
-        links:
-          type:
-          - object
-          - 'null'
-          format: uri-map
-          description: A list of URLs related to this resource.
-    voice.v1.dialing_permissions.dialing_permissions_country_bulk_update:
-      type: object
-      properties:
-        update_count:
-          type:
-          - integer
-          - 'null'
-          description: The number of countries updated
-        update_request:
-          type:
-          - string
-          - 'null'
-          description: 'A bulk update request to change voice dialing country permissions stored as a URL-encoded, JSON array of update objects. For example : `[ { "iso_code": "GB", "low_risk_numbers_enabled": "true", "high_risk_special_numbers_enabled":"true", "high_risk_tollfraud_numbers_enabled": "false" } ]`'
-    ListDialingPermissionsCountryResponse:
-      type: object
-      properties:
-        content:
-          type: array
-          items:
-            $ref: '#/components/schemas/voice.v1.dialing_permissions.dialing_permissions_country'
-        meta:
-          type: object
-          properties:
-            first_page_url:
-              type: string
-              format: uri
-            next_page_url:
-              type:
-              - string
-              - 'null'
-              format: uri
-            page:
-              type: integer
-            page_size:
-              type: integer
-            previous_page_url:
-              type:
-              - string
-              - 'null'
-              format: uri
-            url:
-              type: string
-              format: uri
-            key:
-              type: string
     voice.v1.dialing_permissions.dialing_permissions_country:
       type: object
       properties:
@@ -422,6 +284,152 @@ components:
           - 'null'
           format: uri-map
           description: A list of URLs related to this resource.
+    CreateDialingPermissionsCountryBulkUpdateRequest:
+      type: object
+      required:
+      - UpdateRequest
+      properties:
+        UpdateRequest:
+          type: string
+          description: 'URL encoded JSON array of update objects. example : `[ { "iso_code": "GB", "low_risk_numbers_enabled": "true", "high_risk_special_numbers_enabled":"true", "high_risk_tollfraud_numbers_enabled": "false" } ]`'
+    ListDialingPermissionsHrsPrefixesResponse:
+      type: object
+      properties:
+        content:
+          type: array
+          items:
+            $ref: '#/components/schemas/voice.v1.dialing_permissions.dialing_permissions_country.dialing_permissions_hrs_prefixes'
+        meta:
+          type: object
+          properties:
+            first_page_url:
+              type: string
+              format: uri
+            next_page_url:
+              type:
+              - string
+              - 'null'
+              format: uri
+            page:
+              type: integer
+            page_size:
+              type: integer
+            previous_page_url:
+              type:
+              - string
+              - 'null'
+              format: uri
+            url:
+              type: string
+              format: uri
+            key:
+              type: string
+    ListDialingPermissionsCountryResponse:
+      type: object
+      properties:
+        content:
+          type: array
+          items:
+            $ref: '#/components/schemas/voice.v1.dialing_permissions.dialing_permissions_country'
+        meta:
+          type: object
+          properties:
+            first_page_url:
+              type: string
+              format: uri
+            next_page_url:
+              type:
+              - string
+              - 'null'
+              format: uri
+            page:
+              type: integer
+            page_size:
+              type: integer
+            previous_page_url:
+              type:
+              - string
+              - 'null'
+              format: uri
+            url:
+              type: string
+              format: uri
+            key:
+              type: string
+    voice.v1.dialing_permissions.dialing_permissions_country_bulk_update:
+      type: object
+      properties:
+        update_count:
+          type:
+          - integer
+          - 'null'
+          description: The number of countries updated
+        update_request:
+          type:
+          - string
+          - 'null'
+          description: 'A bulk update request to change voice dialing country permissions stored as a URL-encoded, JSON array of update objects. For example : `[ { "iso_code": "GB", "low_risk_numbers_enabled": "true", "high_risk_special_numbers_enabled":"true", "high_risk_tollfraud_numbers_enabled": "false" } ]`'
+    voice.v1.dialing_permissions.dialing_permissions_country-instance:
+      type: object
+      properties:
+        iso_code:
+          type:
+          - string
+          - 'null'
+          format: iso-country-code
+          description: The [ISO country code](https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2).
+        name:
+          type:
+          - string
+          - 'null'
+          description: The name of the country.
+        continent:
+          type:
+          - string
+          - 'null'
+          description: The name of the continent in which the country is located.
+        country_codes:
+          type:
+          - array
+          - 'null'
+          items:
+            type: string
+          description: The E.164 assigned [country codes(s)](https://www.itu.int/itudoc/itu-t/ob-lists/icc/e164_763.html)
+        low_risk_numbers_enabled:
+          type:
+          - boolean
+          - 'null'
+          description: Whether dialing to low-risk numbers is enabled.
+        high_risk_special_numbers_enabled:
+          type:
+          - boolean
+          - 'null'
+          description: Whether dialing to high-risk special services numbers is enabled. These prefixes include number ranges allocated by the country and include premium numbers, special services, shared cost, and others
+        high_risk_tollfraud_numbers_enabled:
+          type:
+          - boolean
+          - 'null'
+          description: Whether dialing to high-risk [toll fraud](https://www.twilio.com/blog/how-to-protect-your-account-from-toll-fraud-with-voice-dialing-geo-permissions-html) numbers is enabled. These prefixes include narrow number ranges that have a high-risk of international revenue sharing fraud (IRSF) attacks, also known as [toll fraud](https://www.twilio.com/blog/how-to-protect-your-account-from-toll-fraud-with-voice-dialing-geo-permissions-html). These prefixes are collected from anti-fraud databases and verified by analyzing calls on our network. These prefixes are not available for download and are updated frequently
+        url:
+          type:
+          - string
+          - 'null'
+          format: uri
+          description: The absolute URL of this resource.
+        links:
+          type:
+          - object
+          - 'null'
+          format: uri-map
+          description: A list of URLs related to this resource.
+    voice.v1.dialing_permissions.dialing_permissions_country.dialing_permissions_hrs_prefixes:
+      type: object
+      properties:
+        prefix:
+          type:
+          - string
+          - 'null'
+          description: A prefix is a contiguous number range for a block of E.164 numbers that includes the E.164 assigned country code. For example, a North American Numbering Plan prefix like `+1510720` written like `+1(510) 720` matches all numbers inclusive from `+1(510) 720-0000` to `+1(510) 720-9999`.
   securitySchemes:
     accountSid_authToken:
       type: http

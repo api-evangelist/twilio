@@ -133,6 +133,15 @@ paths:
         '204':
           description: Key deleted
 components:
+  parameters:
+    AccountSid:
+      name: AccountSid
+      in: path
+      required: true
+      description: The unique identifier of the Twilio account
+      schema:
+        type: string
+        pattern: ^AC[0-9a-fA-F]{32}$
   schemas:
     KeyList:
       type: object
@@ -178,15 +187,6 @@ components:
         date_updated:
           type: string
           format: date-time
-  parameters:
-    AccountSid:
-      name: AccountSid
-      in: path
-      required: true
-      description: The unique identifier of the Twilio account
-      schema:
-        type: string
-        pattern: ^AC[0-9a-fA-F]{32}$
   securitySchemes:
     accountSid_authToken:
       type: http

@@ -140,6 +140,21 @@ paths:
           description: Account not found
 components:
   schemas:
+    AccountList:
+      type: object
+      properties:
+        accounts:
+          type: array
+          items:
+            $ref: '#/components/schemas/Account'
+        first_page_uri:
+          type: string
+        next_page_uri:
+          type: string
+        page:
+          type: integer
+        page_size:
+          type: integer
     Account:
       type: object
       properties:
@@ -188,21 +203,6 @@ components:
               type: string
             keys:
               type: string
-    AccountList:
-      type: object
-      properties:
-        accounts:
-          type: array
-          items:
-            $ref: '#/components/schemas/Account'
-        first_page_uri:
-          type: string
-        next_page_uri:
-          type: string
-        page:
-          type: integer
-        page_size:
-          type: integer
   parameters:
     AccountSid:
       name: AccountSid

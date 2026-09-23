@@ -53,6 +53,8 @@ paths:
       operationId: FetchEvent
       x-maturity:
       - GA
+      summary: Fetch event
+      x-summary-source: derived
   /v1/Events:
     servers:
     - url: https://monitor.twilio.com
@@ -137,8 +139,42 @@ paths:
       operationId: ListEvent
       x-maturity:
       - GA
+      summary: List event
+      x-summary-source: derived
 components:
   schemas:
+    ListEventResponse:
+      type: object
+      properties:
+        events:
+          type: array
+          items:
+            $ref: '#/components/schemas/monitor.v1.event'
+        meta:
+          type: object
+          properties:
+            first_page_url:
+              type: string
+              format: uri
+            next_page_url:
+              type:
+              - string
+              - 'null'
+              format: uri
+            page:
+              type: integer
+            page_size:
+              type: integer
+            previous_page_url:
+              type:
+              - string
+              - 'null'
+              format: uri
+            url:
+              type: string
+              format: uri
+            key:
+              type: string
     monitor.v1.event:
       type: object
       properties:
@@ -224,38 +260,6 @@ components:
           - 'null'
           format: uri-map
           description: The absolute URLs of related resources.
-    ListEventResponse:
-      type: object
-      properties:
-        events:
-          type: array
-          items:
-            $ref: '#/components/schemas/monitor.v1.event'
-        meta:
-          type: object
-          properties:
-            first_page_url:
-              type: string
-              format: uri
-            next_page_url:
-              type:
-              - string
-              - 'null'
-              format: uri
-            page:
-              type: integer
-            page_size:
-              type: integer
-            previous_page_url:
-              type:
-              - string
-              - 'null'
-              format: uri
-            url:
-              type: string
-              format: uri
-            key:
-              type: string
   securitySchemes:
     accountSid_authToken:
       type: http

@@ -52,6 +52,8 @@ paths:
           application/x-www-form-urlencoded:
             schema:
               $ref: '#/components/schemas/CreateSafelistRequest'
+      summary: Create safelist
+      x-summary-source: derived
     get:
       description: Check if a phone number exists in SafeList.
       tags:
@@ -78,6 +80,8 @@ paths:
       operationId: FetchSafelist
       x-maturity:
       - Beta
+      summary: Fetch safelist
+      x-summary-source: derived
     delete:
       description: Remove a phone number from SafeList.
       tags:
@@ -100,6 +104,8 @@ paths:
       operationId: DeleteSafelist
       x-maturity:
       - Beta
+      summary: Delete safelist
+      x-summary-source: derived
   /SafeList/Numbers:
     post:
       operationId: createSafelistNumber
@@ -200,6 +206,8 @@ paths:
           application/x-www-form-urlencoded:
             schema:
               $ref: '#/components/schemas/CreateSafelistRequest'
+      summary: Create safelist
+      x-summary-source: derived
   /v2/SafeList/Numbers/{PhoneNumber}:
     servers:
     - url: https://verify.twilio.com
@@ -237,6 +245,8 @@ paths:
       operationId: FetchSafelist
       x-maturity:
       - Beta
+      summary: Fetch safelist
+      x-summary-source: derived
     delete:
       description: Remove a phone number from SafeList.
       tags:
@@ -260,8 +270,18 @@ paths:
       operationId: DeleteSafelist
       x-maturity:
       - Beta
+      summary: Delete safelist
+      x-summary-source: derived
 components:
   schemas:
+    CreateSafelistRequest:
+      type: object
+      required:
+      - PhoneNumber
+      properties:
+        PhoneNumber:
+          type: string
+          description: The phone number to be added in SafeList. Phone numbers must be in [E.164 format](https://www.twilio.com/docs/glossary/what-e164).
     accounts.v1.safelist:
       type: object
       properties:
@@ -282,14 +302,6 @@ components:
             pii:
               handling: standard
               deleteSla: 0
-    CreateSafelistRequest:
-      type: object
-      required:
-      - PhoneNumber
-      properties:
-        PhoneNumber:
-          type: string
-          description: The phone number to be added in SafeList. Phone numbers must be in [E.164 format](https://www.twilio.com/docs/glossary/what-e164).
     verify.v2.safelist:
       type: object
       properties:

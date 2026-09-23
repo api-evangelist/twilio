@@ -59,6 +59,8 @@ paths:
       operationId: ListAccountConfig
       x-maturity:
       - Preview
+      summary: List account config
+      x-summary-source: derived
     post:
       description: Create a config for an Account.
       tags:
@@ -80,6 +82,8 @@ paths:
           application/x-www-form-urlencoded:
             schema:
               $ref: '#/components/schemas/CreateAccountConfigRequest'
+      summary: Create account config
+      x-summary-source: derived
   /v1/Configs/{Key}:
     servers:
     - url: https://microvisor.twilio.com
@@ -111,6 +115,8 @@ paths:
       operationId: FetchAccountConfig
       x-maturity:
       - Preview
+      summary: Fetch account config
+      x-summary-source: derived
     post:
       description: Update a config for an Account.
       tags:
@@ -139,6 +145,8 @@ paths:
           application/x-www-form-urlencoded:
             schema:
               $ref: '#/components/schemas/UpdateAccountConfigRequest'
+      summary: Update account config
+      x-summary-source: derived
     delete:
       description: Delete a config for an Account.
       tags:
@@ -158,8 +166,34 @@ paths:
       operationId: DeleteAccountConfig
       x-maturity:
       - Preview
+      summary: Delete account config
+      x-summary-source: derived
 components:
   schemas:
+    microvisor.v1.account_config:
+      type: object
+      properties:
+        key:
+          type:
+          - string
+          - 'null'
+          description: The config key; up to 100 characters.
+        date_updated:
+          type:
+          - string
+          - 'null'
+          format: date-time
+        value:
+          type:
+          - string
+          - 'null'
+          description: The config value; up to 4096 characters.
+        url:
+          type:
+          - string
+          - 'null'
+          format: uri
+          description: The absolute URL of the Config.
     ListAccountConfigResponse:
       type: object
       properties:
@@ -192,30 +226,14 @@ components:
               format: uri
             key:
               type: string
-    microvisor.v1.account_config:
+    UpdateAccountConfigRequest:
       type: object
+      required:
+      - Value
       properties:
-        key:
-          type:
-          - string
-          - 'null'
-          description: The config key; up to 100 characters.
-        date_updated:
-          type:
-          - string
-          - 'null'
-          format: date-time
-        value:
-          type:
-          - string
-          - 'null'
+        Value:
+          type: string
           description: The config value; up to 4096 characters.
-        url:
-          type:
-          - string
-          - 'null'
-          format: uri
-          description: The absolute URL of the Config.
     CreateAccountConfigRequest:
       type: object
       required:
@@ -225,14 +243,6 @@ components:
         Key:
           type: string
           description: The config key; up to 100 characters.
-        Value:
-          type: string
-          description: The config value; up to 4096 characters.
-    UpdateAccountConfigRequest:
-      type: object
-      required:
-      - Value
-      properties:
         Value:
           type: string
           description: The config value; up to 4096 characters.

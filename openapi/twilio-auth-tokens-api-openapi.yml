@@ -58,6 +58,78 @@ paths:
       responses:
         '204':
           description: Secondary auth token deleted
+  /v1/AuthTokens/Promote:
+    servers:
+    - url: https://accounts.twilio.com
+    description: Auth Token promotion
+    x-twilio:
+      defaultOutputProperties:
+      - account_sid
+      - auth_token
+      - date_created
+      pathType: instance
+      mountName: auth_token_promotion
+    post:
+      description: Promote the secondary Auth Token to primary. After promoting the new token, all requests to Twilio using your old primary Auth Token will result in an error.
+      tags:
+      - Auth Tokens
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/accounts.v1.auth_token_promotion'
+          description: OK
+      security:
+      - accountSid_authToken: []
+      operationId: UpdateAuthTokenPromotion
+      x-maturity:
+      - GA
+      summary: Update auth token promotion
+      x-summary-source: derived
+  /v1/AuthTokens/Secondary:
+    servers:
+    - url: https://accounts.twilio.com
+    description: Secondary Auth Token
+    x-twilio:
+      defaultOutputProperties:
+      - account_sid
+      - secondary_auth_token
+      - date_created
+      pathType: instance
+      mountName: secondary_auth_token
+    post:
+      description: Create a new secondary Auth Token
+      tags:
+      - Auth Tokens
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/accounts.v1.secondary_auth_token'
+          description: Created
+      security:
+      - accountSid_authToken: []
+      operationId: CreateSecondaryAuthToken
+      x-maturity:
+      - GA
+      summary: Create secondary auth token
+      x-summary-source: derived
+    delete:
+      description: Delete the secondary Auth Token from your account
+      tags:
+      - Auth Tokens
+      responses:
+        '204':
+          description: The resource was deleted successfully.
+      security:
+      - accountSid_authToken: []
+      operationId: DeleteSecondaryAuthToken
+      x-maturity:
+      - GA
+      summary: Delete secondary auth token
+      x-summary-source: derived
 components:
   schemas:
     AuthTokenPromotion:
@@ -96,6 +168,82 @@ components:
         url:
           type: string
           format: uri
+    accounts.v1.auth_token_promotion:
+      type: object
+      properties:
+        account_sid:
+          type:
+          - string
+          - 'null'
+          minLength: 34
+          maxLength: 34
+          pattern: ^AC[0-9a-fA-F]{32}$
+          description: The SID of the [Account](https://www.twilio.com/docs/iam/api/account) that the secondary Auth Token was created for.
+        auth_token:
+          type:
+          - string
+          - 'null'
+          description: The promoted Auth Token that must be used to authenticate future API requests.
+          x-twilio:
+            pii:
+              handling: sensitive
+              deleteSla: 0
+        date_created:
+          type:
+          - string
+          - 'null'
+          format: date-time
+          description: The date and time in UTC when the resource was created specified in [ISO 8601](https://en.wikipedia.org/wiki/ISO_8601) format.
+        date_updated:
+          type:
+          - string
+          - 'null'
+          format: date-time
+          description: The date and time in GMT when the resource was last updated specified in [ISO 8601](https://en.wikipedia.org/wiki/ISO_8601) format.
+        url:
+          type:
+          - string
+          - 'null'
+          format: uri
+          description: The URI for this resource, relative to `https://accounts.twilio.com`
+    accounts.v1.secondary_auth_token:
+      type: object
+      properties:
+        account_sid:
+          type:
+          - string
+          - 'null'
+          minLength: 34
+          maxLength: 34
+          pattern: ^AC[0-9a-fA-F]{32}$
+          description: The SID of the [Account](https://www.twilio.com/docs/iam/api/account) that the secondary Auth Token was created for.
+        date_created:
+          type:
+          - string
+          - 'null'
+          format: date-time
+          description: The date and time in UTC when the resource was created specified in [ISO 8601](https://en.wikipedia.org/wiki/ISO_8601) format.
+        date_updated:
+          type:
+          - string
+          - 'null'
+          format: date-time
+          description: The date and time in UTC when the resource was last updated specified in [ISO 8601](https://en.wikipedia.org/wiki/ISO_8601) format.
+        secondary_auth_token:
+          type:
+          - string
+          - 'null'
+          description: The generated secondary Auth Token that can be used to authenticate future API requests.
+          x-twilio:
+            pii:
+              handling: sensitive
+              deleteSla: 0
+        url:
+          type:
+          - string
+          - 'null'
+          format: uri
+          description: The URI for this resource, relative to `https://accounts.twilio.com`
   securitySchemes:
     accountSid_authToken:
       type: http
