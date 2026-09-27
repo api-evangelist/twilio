@@ -264,7 +264,7 @@ paths:
       description: Twilio REST API v1
   /Accounts/{AccountSid}/Recordings/{RecordingSid}.json:
     get:
-      operationId: fetchRecording
+      operationId: getAccountsByAccountSidRecordings{RecordingSid}Json
       summary: Twilio Fetch a Recording
       tags:
       - Recordings
@@ -282,8 +282,10 @@ paths:
           description: Recording not found
       security:
       - accountSid_authToken: []
+      x-operation-id-source: normalized
+      x-operation-id-original: fetchRecording
     delete:
-      operationId: deleteRecording
+      operationId: deleteAccountsByAccountSidRecordings{RecordingSid}Json
       summary: Twilio Delete a Recording
       tags:
       - Recordings
@@ -297,6 +299,8 @@ paths:
           description: Recording not found
       security:
       - accountSid_authToken: []
+      x-operation-id-source: normalized
+      x-operation-id-original: deleteRecording
     servers:
     - url: https://api.twilio.com/2010-04-01
       description: Twilio REST API v1
@@ -469,6 +473,27 @@ paths:
       x-summary-source: derived
 components:
   schemas:
+    PaginationMeta:
+      type: object
+      properties:
+        page:
+          type: integer
+        page_size:
+          type: integer
+        first_page_url:
+          type: string
+          format: uri
+        previous_page_url:
+          type: string
+          format: uri
+        next_page_url:
+          type: string
+          format: uri
+        url:
+          type: string
+          format: uri
+        key:
+          type: string
     VideoRecording:
       type: object
       properties:
@@ -541,27 +566,6 @@ components:
             media:
               type: string
               format: uri
-    PaginationMeta:
-      type: object
-      properties:
-        page:
-          type: integer
-        page_size:
-          type: integer
-        first_page_url:
-          type: string
-          format: uri
-        previous_page_url:
-          type: string
-          format: uri
-        next_page_url:
-          type: string
-          format: uri
-        url:
-          type: string
-          format: uri
-        key:
-          type: string
     VideoRecordingList:
       type: object
       properties:
@@ -593,6 +597,23 @@ components:
         url:
           type: string
           format: uri
+    RecordingList:
+      type: object
+      properties:
+        recordings:
+          type: array
+          items:
+            $ref: '#/components/schemas/Recording'
+        first_page_uri:
+          type: string
+        next_page_uri:
+          type: string
+        page:
+          type: integer
+        page_size:
+          type: integer
+        uri:
+          type: string
     Recording:
       type: object
       properties:
@@ -644,23 +665,6 @@ components:
           format: date-time
         uri:
           type: string
-    RecordingList:
-      type: object
-      properties:
-        recordings:
-          type: array
-          items:
-            $ref: '#/components/schemas/Recording'
-        first_page_uri:
-          type: string
-        next_page_uri:
-          type: string
-        page:
-          type: integer
-        page_size:
-          type: integer
-        uri:
-          type: string
     recording_enum_codec:
       type: string
       enum:
@@ -668,45 +672,12 @@ components:
       - H264
       - OPUS
       - PCMU
-    recording_enum_status:
+    recording_enum_type:
       type: string
       enum:
-      - processing
-      - completed
-      - deleted
-      - failed
-    ListRecordingResponse:
-      type: object
-      properties:
-        recordings:
-          type: array
-          items:
-            $ref: '#/components/schemas/video.v1.recording'
-        meta:
-          type: object
-          properties:
-            first_page_url:
-              type: string
-              format: uri
-            next_page_url:
-              type:
-              - string
-              - 'null'
-              format: uri
-            page:
-              type: integer
-            page_size:
-              type: integer
-            previous_page_url:
-              type:
-              - string
-              - 'null'
-              format: uri
-            url:
-              type: string
-              format: uri
-            key:
-              type: string
+      - audio
+      - video
+      - data
     video.v1.recording:
       type: object
       properties:
@@ -829,17 +800,50 @@ components:
           - 'null'
           format: uri-map
           description: The URLs of related resources.
+    ListRecordingResponse:
+      type: object
+      properties:
+        recordings:
+          type: array
+          items:
+            $ref: '#/components/schemas/video.v1.recording'
+        meta:
+          type: object
+          properties:
+            first_page_url:
+              type: string
+              format: uri
+            next_page_url:
+              type:
+              - string
+              - 'null'
+              format: uri
+            page:
+              type: integer
+            page_size:
+              type: integer
+            previous_page_url:
+              type:
+              - string
+              - 'null'
+              format: uri
+            url:
+              type: string
+              format: uri
+            key:
+              type: string
+    recording_enum_status:
+      type: string
+      enum:
+      - processing
+      - completed
+      - deleted
+      - failed
     recording_enum_format:
       type: string
       enum:
       - mka
       - mkv
-    recording_enum_type:
-      type: string
-      enum:
-      - audio
-      - video
-      - data
   parameters:
     RoomSid:
       name: RoomSid
@@ -848,14 +852,6 @@ components:
       description: The SID or unique name of the room
       schema:
         type: string
-    AccountSid:
-      name: AccountSid
-      in: path
-      required: true
-      description: The unique identifier of the Twilio account
-      schema:
-        type: string
-        pattern: ^AC[0-9a-fA-F]{32}$
     CallSid:
       name: CallSid
       in: path
@@ -864,6 +860,14 @@ components:
       schema:
         type: string
         pattern: ^CA[0-9a-fA-F]{32}$
+    AccountSid:
+      name: AccountSid
+      in: path
+      required: true
+      description: The unique identifier of the Twilio account
+      schema:
+        type: string
+        pattern: ^AC[0-9a-fA-F]{32}$
     RecordingSid:
       name: RecordingSid
       in: path

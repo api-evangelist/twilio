@@ -173,55 +173,6 @@ paths:
       x-summary-source: derived
 components:
   schemas:
-    media_recording_enum_status:
-      type: string
-      enum:
-      - processing
-      - completed
-      - deleted
-      - failed
-    ListMediaRecordingResponse:
-      type: object
-      properties:
-        media_recordings:
-          type: array
-          items:
-            $ref: '#/components/schemas/media.v1.media_recording'
-        meta:
-          type: object
-          properties:
-            first_page_url:
-              type: string
-              format: uri
-            next_page_url:
-              type:
-              - string
-              - 'null'
-              format: uri
-            page:
-              type: integer
-            page_size:
-              type: integer
-            previous_page_url:
-              type:
-              - string
-              - 'null'
-              format: uri
-            url:
-              type: string
-              format: uri
-            key:
-              type: string
-    media_recording_enum_format:
-      type: string
-      enum:
-      - mp4
-      - webm
-    media_recording_enum_order:
-      type: string
-      enum:
-      - asc
-      - desc
     media.v1.media_recording:
       type: object
       properties:
@@ -328,6 +279,55 @@ components:
           - 'null'
           format: uri
           description: The absolute URL of the resource.
+    media_recording_enum_order:
+      type: string
+      enum:
+      - asc
+      - desc
+    media_recording_enum_status:
+      type: string
+      enum:
+      - processing
+      - completed
+      - deleted
+      - failed
+    ListMediaRecordingResponse:
+      type: object
+      properties:
+        media_recordings:
+          type: array
+          items:
+            $ref: '#/components/schemas/media.v1.media_recording'
+        meta:
+          type: object
+          properties:
+            first_page_url:
+              type: string
+              format: uri
+            next_page_url:
+              type:
+              - string
+              - 'null'
+              format: uri
+            page:
+              type: integer
+            page_size:
+              type: integer
+            previous_page_url:
+              type:
+              - string
+              - 'null'
+              format: uri
+            url:
+              type: string
+              format: uri
+            key:
+              type: string
+    media_recording_enum_format:
+      type: string
+      enum:
+      - mp4
+      - webm
   securitySchemes:
     accountSid_authToken:
       type: http

@@ -334,6 +334,128 @@ components:
           items:
             type: string
           description: List of Network SIDs that this Network Access Profile will allow connections to.
+    supersim.v1.network_access_profile.network_access_profile_network:
+      type: object
+      properties:
+        sid:
+          type:
+          - string
+          - 'null'
+          minLength: 34
+          maxLength: 34
+          pattern: ^HW[0-9a-fA-F]{32}$
+          description: The unique string that identifies the Network resource.
+        network_access_profile_sid:
+          type:
+          - string
+          - 'null'
+          minLength: 34
+          maxLength: 34
+          pattern: ^HA[0-9a-fA-F]{32}$
+          description: The unique string that identifies the Network resource's Network Access Profile resource.
+        friendly_name:
+          type:
+          - string
+          - 'null'
+          description: A human readable identifier of the Network this resource refers to.
+        iso_country:
+          type:
+          - string
+          - 'null'
+          description: The [ISO country code](https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2) of the Network resource.
+        identifiers:
+          type:
+          - array
+          - 'null'
+          items: {}
+          description: Array of objects identifying the [MCC-MNCs](https://en.wikipedia.org/wiki/Mobile_country_code) that are included in the Network resource.
+        url:
+          type:
+          - string
+          - 'null'
+          format: uri
+          description: The absolute URL of the Network resource.
+    ListNetworkAccessProfileNetworkResponse:
+      type: object
+      properties:
+        networks:
+          type: array
+          items:
+            $ref: '#/components/schemas/supersim.v1.network_access_profile.network_access_profile_network'
+        meta:
+          type: object
+          properties:
+            first_page_url:
+              type: string
+              format: uri
+            next_page_url:
+              type:
+              - string
+              - 'null'
+              format: uri
+            page:
+              type: integer
+            page_size:
+              type: integer
+            previous_page_url:
+              type:
+              - string
+              - 'null'
+              format: uri
+            url:
+              type: string
+              format: uri
+            key:
+              type: string
+    UpdateNetworkAccessProfileRequest:
+      type: object
+      properties:
+        UniqueName:
+          type: string
+          description: The new unique name of the Network Access Profile.
+    ListNetworkAccessProfileResponse:
+      type: object
+      properties:
+        network_access_profiles:
+          type: array
+          items:
+            $ref: '#/components/schemas/supersim.v1.network_access_profile'
+        meta:
+          type: object
+          properties:
+            first_page_url:
+              type: string
+              format: uri
+            next_page_url:
+              type:
+              - string
+              - 'null'
+              format: uri
+            page:
+              type: integer
+            page_size:
+              type: integer
+            previous_page_url:
+              type:
+              - string
+              - 'null'
+              format: uri
+            url:
+              type: string
+              format: uri
+            key:
+              type: string
+    CreateNetworkAccessProfileNetworkRequest:
+      type: object
+      required:
+      - Network
+      properties:
+        Network:
+          type: string
+          minLength: 34
+          maxLength: 34
+          pattern: ^HW[0-9a-fA-F]{32}$
+          description: The SID of the Network resource to be added to the Network Access Profile resource.
     supersim.v1.network_access_profile:
       type: object
       properties:
@@ -381,128 +503,6 @@ components:
           - object
           - 'null'
           format: uri-map
-    ListNetworkAccessProfileNetworkResponse:
-      type: object
-      properties:
-        networks:
-          type: array
-          items:
-            $ref: '#/components/schemas/supersim.v1.network_access_profile.network_access_profile_network'
-        meta:
-          type: object
-          properties:
-            first_page_url:
-              type: string
-              format: uri
-            next_page_url:
-              type:
-              - string
-              - 'null'
-              format: uri
-            page:
-              type: integer
-            page_size:
-              type: integer
-            previous_page_url:
-              type:
-              - string
-              - 'null'
-              format: uri
-            url:
-              type: string
-              format: uri
-            key:
-              type: string
-    ListNetworkAccessProfileResponse:
-      type: object
-      properties:
-        network_access_profiles:
-          type: array
-          items:
-            $ref: '#/components/schemas/supersim.v1.network_access_profile'
-        meta:
-          type: object
-          properties:
-            first_page_url:
-              type: string
-              format: uri
-            next_page_url:
-              type:
-              - string
-              - 'null'
-              format: uri
-            page:
-              type: integer
-            page_size:
-              type: integer
-            previous_page_url:
-              type:
-              - string
-              - 'null'
-              format: uri
-            url:
-              type: string
-              format: uri
-            key:
-              type: string
-    CreateNetworkAccessProfileNetworkRequest:
-      type: object
-      required:
-      - Network
-      properties:
-        Network:
-          type: string
-          minLength: 34
-          maxLength: 34
-          pattern: ^HW[0-9a-fA-F]{32}$
-          description: The SID of the Network resource to be added to the Network Access Profile resource.
-    UpdateNetworkAccessProfileRequest:
-      type: object
-      properties:
-        UniqueName:
-          type: string
-          description: The new unique name of the Network Access Profile.
-    supersim.v1.network_access_profile.network_access_profile_network:
-      type: object
-      properties:
-        sid:
-          type:
-          - string
-          - 'null'
-          minLength: 34
-          maxLength: 34
-          pattern: ^HW[0-9a-fA-F]{32}$
-          description: The unique string that identifies the Network resource.
-        network_access_profile_sid:
-          type:
-          - string
-          - 'null'
-          minLength: 34
-          maxLength: 34
-          pattern: ^HA[0-9a-fA-F]{32}$
-          description: The unique string that identifies the Network resource's Network Access Profile resource.
-        friendly_name:
-          type:
-          - string
-          - 'null'
-          description: A human readable identifier of the Network this resource refers to.
-        iso_country:
-          type:
-          - string
-          - 'null'
-          description: The [ISO country code](https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2) of the Network resource.
-        identifiers:
-          type:
-          - array
-          - 'null'
-          items: {}
-          description: Array of objects identifying the [MCC-MNCs](https://en.wikipedia.org/wiki/Mobile_country_code) that are included in the Network resource.
-        url:
-          type:
-          - string
-          - 'null'
-          format: uri
-          description: The absolute URL of the Network resource.
   securitySchemes:
     accountSid_authToken:
       type: http

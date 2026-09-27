@@ -444,84 +444,6 @@ paths:
       x-summary-source: derived
 components:
   schemas:
-    intelligence.v2.transcript.operator_result:
-      type: object
-      properties:
-        operator_type:
-          type:
-          - string
-          - 'null'
-          $ref: '#/components/schemas/operator_result_enum_operator_type'
-          description: The type of the applied Language Understanding Operator. One of conversation-classify, utterance-classify, extract, extract-normalize, or pii-extract
-        name:
-          type:
-          - string
-          - 'null'
-          description: The name of the applied Language Understanding.
-        operator_sid:
-          type:
-          - string
-          - 'null'
-          minLength: 34
-          maxLength: 34
-          pattern: ^LY[0-9a-fA-F]{32}$
-          description: A 34 character string that identifies this Language Understanding operator sid.
-        extract_match:
-          type:
-          - boolean
-          - 'null'
-          description: Boolean to tell if extract Language Understanding Processing model matches results.
-        match_probability:
-          type:
-          - number
-          - 'null'
-          description: Percentage of 'matching' class needed to consider a sentence matches
-        normalized_result:
-          type:
-          - string
-          - 'null'
-          description: Normalized output of extraction stage which matches Label.
-        utterance_results:
-          type:
-          - array
-          - 'null'
-          items: {}
-          description: List of mapped utterance object which matches sentences.
-        utterance_match:
-          type:
-          - boolean
-          - 'null'
-          description: Boolean to tell if Utterance matches results.
-        predicted_label:
-          type:
-          - string
-          - 'null'
-          description: The 'matching' class. This might be available on conversation classify model outputs.
-        predicted_probability:
-          type:
-          - number
-          - 'null'
-          description: Percentage of 'matching' class needed to consider a sentence matches.
-        label_probabilities:
-          description: The labels probabilities. This might be available on conversation classify model outputs.
-        extract_results:
-          description: List of text extraction results. This might be available on classify-extract model outputs.
-        text_generation_results:
-          description: Output of a text generation operator for example Conversation Sumamary.
-        transcript_sid:
-          type:
-          - string
-          - 'null'
-          minLength: 34
-          maxLength: 34
-          pattern: ^GT[0-9a-fA-F]{32}$
-          description: A 34 character string that uniquely identifies this Transcript.
-        url:
-          type:
-          - string
-          - 'null'
-          format: uri
-          description: The URL of this resource.
     CreateTranscriptRequest:
       type: object
       required:
@@ -551,97 +473,38 @@ components:
       - completed
       - failed
       - canceled
-    operator_result_enum_operator_type:
-      type: string
-      enum:
-      - conversation_classify
-      - utterance_classify
-      - extract
-      - extract_normalize
-      - pii_extract
-    intelligence.v2.transcript.media:
+    ListSentenceResponse:
       type: object
       properties:
-        account_sid:
-          type:
-          - string
-          - 'null'
-          minLength: 34
-          maxLength: 34
-          pattern: ^AC[0-9a-fA-F]{32}$
-          description: The unique SID identifier of the Account.
-        media_url:
-          type:
-          - string
-          - 'null'
-          format: uri
-          description: Downloadable URL for media, if stored in Twilio AI.
-        service_sid:
-          type:
-          - string
-          - 'null'
-          minLength: 34
-          maxLength: 34
-          pattern: ^GA[0-9a-fA-F]{32}$
-          description: The unique SID identifier of the Service.
-        sid:
-          type:
-          - string
-          - 'null'
-          minLength: 34
-          maxLength: 34
-          pattern: ^GT[0-9a-fA-F]{32}$
-          description: The unique SID identifier of the Transcript.
-        url:
-          type:
-          - string
-          - 'null'
-          format: uri
-          description: The URL of this resource.
-    intelligence.v2.transcript.sentence:
-      type: object
-      properties:
-        media_channel:
-          type:
-          - integer
-          - 'null'
-          description: The channel number.
-        sentence_index:
-          type:
-          - integer
-          - 'null'
-          description: The index of the sentence in the transcript.
-        start_time:
-          type:
-          - number
-          - 'null'
-          description: Offset from the beginning of the transcript when this sentence starts.
-        end_time:
-          type:
-          - number
-          - 'null'
-          description: Offset from the beginning of the transcript when this sentence ends.
-        transcript:
-          type:
-          - string
-          - 'null'
-          description: Transcript text.
-          x-twilio:
-            pii:
-              handling: sensitive
-              deleteSla: 30
-        sid:
-          type:
-          - string
-          - 'null'
-          minLength: 34
-          maxLength: 34
-          pattern: ^GX[0-9a-fA-F]{32}$
-          description: A 34 character string that uniquely identifies this Sentence.
-        confidence:
-          type:
-          - number
-          - 'null'
+        sentences:
+          type: array
+          items:
+            $ref: '#/components/schemas/intelligence.v2.transcript.sentence'
+        meta:
+          type: object
+          properties:
+            first_page_url:
+              type: string
+              format: uri
+            next_page_url:
+              type:
+              - string
+              - 'null'
+              format: uri
+            page:
+              type: integer
+            page_size:
+              type: integer
+            previous_page_url:
+              type:
+              - string
+              - 'null'
+              format: uri
+            url:
+              type: string
+              format: uri
+            key:
+              type: string
     ListOperatorResultResponse:
       type: object
       properties:
@@ -674,13 +537,13 @@ components:
               format: uri
             key:
               type: string
-    ListSentenceResponse:
+    ListTranscriptResponse:
       type: object
       properties:
-        sentences:
+        transcripts:
           type: array
           items:
-            $ref: '#/components/schemas/intelligence.v2.transcript.sentence'
+            $ref: '#/components/schemas/intelligence.v2.transcript'
         meta:
           type: object
           properties:
@@ -796,38 +659,175 @@ components:
           - object
           - 'null'
           format: uri-map
-    ListTranscriptResponse:
+    intelligence.v2.transcript.sentence:
       type: object
       properties:
-        transcripts:
-          type: array
-          items:
-            $ref: '#/components/schemas/intelligence.v2.transcript'
-        meta:
-          type: object
-          properties:
-            first_page_url:
-              type: string
-              format: uri
-            next_page_url:
-              type:
-              - string
-              - 'null'
-              format: uri
-            page:
-              type: integer
-            page_size:
-              type: integer
-            previous_page_url:
-              type:
-              - string
-              - 'null'
-              format: uri
-            url:
-              type: string
-              format: uri
-            key:
-              type: string
+        media_channel:
+          type:
+          - integer
+          - 'null'
+          description: The channel number.
+        sentence_index:
+          type:
+          - integer
+          - 'null'
+          description: The index of the sentence in the transcript.
+        start_time:
+          type:
+          - number
+          - 'null'
+          description: Offset from the beginning of the transcript when this sentence starts.
+        end_time:
+          type:
+          - number
+          - 'null'
+          description: Offset from the beginning of the transcript when this sentence ends.
+        transcript:
+          type:
+          - string
+          - 'null'
+          description: Transcript text.
+          x-twilio:
+            pii:
+              handling: sensitive
+              deleteSla: 30
+        sid:
+          type:
+          - string
+          - 'null'
+          minLength: 34
+          maxLength: 34
+          pattern: ^GX[0-9a-fA-F]{32}$
+          description: A 34 character string that uniquely identifies this Sentence.
+        confidence:
+          type:
+          - number
+          - 'null'
+    operator_result_enum_operator_type:
+      type: string
+      enum:
+      - conversation_classify
+      - utterance_classify
+      - extract
+      - extract_normalize
+      - pii_extract
+    intelligence.v2.transcript.media:
+      type: object
+      properties:
+        account_sid:
+          type:
+          - string
+          - 'null'
+          minLength: 34
+          maxLength: 34
+          pattern: ^AC[0-9a-fA-F]{32}$
+          description: The unique SID identifier of the Account.
+        media_url:
+          type:
+          - string
+          - 'null'
+          format: uri
+          description: Downloadable URL for media, if stored in Twilio AI.
+        service_sid:
+          type:
+          - string
+          - 'null'
+          minLength: 34
+          maxLength: 34
+          pattern: ^GA[0-9a-fA-F]{32}$
+          description: The unique SID identifier of the Service.
+        sid:
+          type:
+          - string
+          - 'null'
+          minLength: 34
+          maxLength: 34
+          pattern: ^GT[0-9a-fA-F]{32}$
+          description: The unique SID identifier of the Transcript.
+        url:
+          type:
+          - string
+          - 'null'
+          format: uri
+          description: The URL of this resource.
+    intelligence.v2.transcript.operator_result:
+      type: object
+      properties:
+        operator_type:
+          type:
+          - string
+          - 'null'
+          $ref: '#/components/schemas/operator_result_enum_operator_type'
+          description: The type of the applied Language Understanding Operator. One of conversation-classify, utterance-classify, extract, extract-normalize, or pii-extract
+        name:
+          type:
+          - string
+          - 'null'
+          description: The name of the applied Language Understanding.
+        operator_sid:
+          type:
+          - string
+          - 'null'
+          minLength: 34
+          maxLength: 34
+          pattern: ^LY[0-9a-fA-F]{32}$
+          description: A 34 character string that identifies this Language Understanding operator sid.
+        extract_match:
+          type:
+          - boolean
+          - 'null'
+          description: Boolean to tell if extract Language Understanding Processing model matches results.
+        match_probability:
+          type:
+          - number
+          - 'null'
+          description: Percentage of 'matching' class needed to consider a sentence matches
+        normalized_result:
+          type:
+          - string
+          - 'null'
+          description: Normalized output of extraction stage which matches Label.
+        utterance_results:
+          type:
+          - array
+          - 'null'
+          items: {}
+          description: List of mapped utterance object which matches sentences.
+        utterance_match:
+          type:
+          - boolean
+          - 'null'
+          description: Boolean to tell if Utterance matches results.
+        predicted_label:
+          type:
+          - string
+          - 'null'
+          description: The 'matching' class. This might be available on conversation classify model outputs.
+        predicted_probability:
+          type:
+          - number
+          - 'null'
+          description: Percentage of 'matching' class needed to consider a sentence matches.
+        label_probabilities:
+          description: The labels probabilities. This might be available on conversation classify model outputs.
+        extract_results:
+          description: List of text extraction results. This might be available on classify-extract model outputs.
+        text_generation_results:
+          description: Output of a text generation operator for example Conversation Sumamary.
+        transcript_sid:
+          type:
+          - string
+          - 'null'
+          minLength: 34
+          maxLength: 34
+          pattern: ^GT[0-9a-fA-F]{32}$
+          description: A 34 character string that uniquely identifies this Transcript.
+        url:
+          type:
+          - string
+          - 'null'
+          format: uri
+          description: The URL of this resource.
   securitySchemes:
     accountSid_authToken:
       type: http

@@ -198,7 +198,7 @@ paths:
           description: Created
       security:
       - accountSid_authToken: []
-      operationId: CreateSafelist
+      operationId: postV2SafeListNumbers
       x-maturity:
       - Beta
       requestBody:
@@ -208,6 +208,8 @@ paths:
               $ref: '#/components/schemas/CreateSafelistRequest'
       summary: Create safelist
       x-summary-source: derived
+      x-operation-id-source: normalized
+      x-operation-id-original: CreateSafelist
   /v2/SafeList/Numbers/{PhoneNumber}:
     servers:
     - url: https://verify.twilio.com
@@ -242,11 +244,13 @@ paths:
           description: OK
       security:
       - accountSid_authToken: []
-      operationId: FetchSafelist
+      operationId: getV2SafeListNumbersByPhoneNumber
       x-maturity:
       - Beta
       summary: Fetch safelist
       x-summary-source: derived
+      x-operation-id-source: normalized
+      x-operation-id-original: FetchSafelist
     delete:
       description: Remove a phone number from SafeList.
       tags:
@@ -267,11 +271,13 @@ paths:
           description: The resource was deleted successfully.
       security:
       - accountSid_authToken: []
-      operationId: DeleteSafelist
+      operationId: deleteV2SafeListNumbersByPhoneNumber
       x-maturity:
       - Beta
       summary: Delete safelist
       x-summary-source: derived
+      x-operation-id-source: normalized
+      x-operation-id-original: DeleteSafelist
 components:
   schemas:
     CreateSafelistRequest:

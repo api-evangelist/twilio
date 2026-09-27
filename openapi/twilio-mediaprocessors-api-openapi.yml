@@ -175,6 +175,15 @@ paths:
       x-summary-source: derived
 components:
   schemas:
+    UpdateMediaProcessorRequest:
+      type: object
+      required:
+      - Status
+      properties:
+        Status:
+          type: string
+          $ref: '#/components/schemas/media_processor_enum_update_status'
+          description: The status of the MediaProcessor. Can be `ended`.
     media.v1.media_processor:
       type: object
       properties:
@@ -261,21 +270,42 @@ components:
           - integer
           - 'null'
           description: The maximum time, in seconds, that the MediaProcessor can run before automatically ends. The default value is 300 seconds, and the maximum value is 90000 seconds. Once this maximum duration is reached, Twilio will end the MediaProcessor, regardless of whether media is still streaming.
-    UpdateMediaProcessorRequest:
-      type: object
-      required:
-      - Status
-      properties:
-        Status:
-          type: string
-          $ref: '#/components/schemas/media_processor_enum_update_status'
-          description: The status of the MediaProcessor. Can be `ended`.
-    media_processor_enum_status:
+    media_processor_enum_update_status:
       type: string
       enum:
-      - failed
-      - started
       - ended
+    ListMediaProcessorResponse:
+      type: object
+      properties:
+        media_processors:
+          type: array
+          items:
+            $ref: '#/components/schemas/media.v1.media_processor'
+        meta:
+          type: object
+          properties:
+            first_page_url:
+              type: string
+              format: uri
+            next_page_url:
+              type:
+              - string
+              - 'null'
+              format: uri
+            page:
+              type: integer
+            page_size:
+              type: integer
+            previous_page_url:
+              type:
+              - string
+              - 'null'
+              format: uri
+            url:
+              type: string
+              format: uri
+            key:
+              type: string
     CreateMediaProcessorRequest:
       type: object
       required:
@@ -313,41 +343,11 @@ components:
       enum:
       - asc
       - desc
-    ListMediaProcessorResponse:
-      type: object
-      properties:
-        media_processors:
-          type: array
-          items:
-            $ref: '#/components/schemas/media.v1.media_processor'
-        meta:
-          type: object
-          properties:
-            first_page_url:
-              type: string
-              format: uri
-            next_page_url:
-              type:
-              - string
-              - 'null'
-              format: uri
-            page:
-              type: integer
-            page_size:
-              type: integer
-            previous_page_url:
-              type:
-              - string
-              - 'null'
-              format: uri
-            url:
-              type: string
-              format: uri
-            key:
-              type: string
-    media_processor_enum_update_status:
+    media_processor_enum_status:
       type: string
       enum:
+      - failed
+      - started
       - ended
   securitySchemes:
     accountSid_authToken:

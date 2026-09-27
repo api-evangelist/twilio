@@ -176,6 +176,38 @@ paths:
       x-summary-source: derived
 components:
   schemas:
+    ListRatePlanResponse:
+      type: object
+      properties:
+        rate_plans:
+          type: array
+          items:
+            $ref: '#/components/schemas/wireless.v1.rate_plan'
+        meta:
+          type: object
+          properties:
+            first_page_url:
+              type: string
+              format: uri
+            next_page_url:
+              type:
+              - string
+              - 'null'
+              format: uri
+            page:
+              type: integer
+            page_size:
+              type: integer
+            previous_page_url:
+              type:
+              - string
+              - 'null'
+              format: uri
+            url:
+              type: string
+              format: uri
+            key:
+              type: string
     wireless.v1.rate_plan:
       type: object
       properties:
@@ -270,47 +302,6 @@ components:
           - 'null'
           format: uri
           description: The absolute URL of the resource.
-    UpdateRatePlanRequest:
-      type: object
-      properties:
-        UniqueName:
-          type: string
-          description: An application-defined string that uniquely identifies the resource. It can be used in place of the resource's `sid` in the URL to address the resource.
-        FriendlyName:
-          type: string
-          description: A descriptive string that you create to describe the resource. It does not have to be unique.
-    ListRatePlanResponse:
-      type: object
-      properties:
-        rate_plans:
-          type: array
-          items:
-            $ref: '#/components/schemas/wireless.v1.rate_plan'
-        meta:
-          type: object
-          properties:
-            first_page_url:
-              type: string
-              format: uri
-            next_page_url:
-              type:
-              - string
-              - 'null'
-              format: uri
-            page:
-              type: integer
-            page_size:
-              type: integer
-            previous_page_url:
-              type:
-              - string
-              - 'null'
-              format: uri
-            url:
-              type: string
-              format: uri
-            key:
-              type: string
     CreateRatePlanRequest:
       type: object
       properties:
@@ -349,6 +340,15 @@ components:
         InternationalRoamingDataLimit:
           type: integer
           description: The total data usage (download and upload combined) in Megabytes that the Network allows during one month when roaming outside the United States. Can be up to 2TB.
+    UpdateRatePlanRequest:
+      type: object
+      properties:
+        UniqueName:
+          type: string
+          description: An application-defined string that uniquely identifies the resource. It can be used in place of the resource's `sid` in the URL to address the resource.
+        FriendlyName:
+          type: string
+          description: A descriptive string that you create to describe the resource. It does not have to be unique.
   securitySchemes:
     accountSid_authToken:
       type: http

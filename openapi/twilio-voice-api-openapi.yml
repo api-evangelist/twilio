@@ -700,31 +700,56 @@ paths:
       x-summary-source: derived
 components:
   schemas:
-    annotation_enum_connectivity_issue:
+    metric_enum_stream_direction:
       type: string
       enum:
-      - unknown_connectivity_issue
-      - no_connectivity_issue
-      - invalid_number
-      - caller_id
-      - dropped_call
-      - number_reachability
-    summary_enum_call_state:
+      - unknown
+      - inbound
+      - outbound
+      - both
+    insights.v1.call:
+      type: object
+      properties:
+        sid:
+          type:
+          - string
+          - 'null'
+          minLength: 34
+          maxLength: 34
+          pattern: ^CA[0-9a-fA-F]{32}$
+        url:
+          type:
+          - string
+          - 'null'
+          format: uri
+        links:
+          type:
+          - object
+          - 'null'
+          format: uri-map
+    summary_enum_call_type:
       type: string
       enum:
-      - ringing
-      - completed
-      - busy
-      - fail
-      - noanswer
-      - canceled
-      - answered
-      - undialed
-    summary_enum_processing_state:
+      - carrier
+      - sip
+      - trunking
+      - client
+    event_enum_twilio_edge:
       type: string
       enum:
-      - complete
-      - partial
+      - unknown_edge
+      - carrier_edge
+      - sip_edge
+      - sdk_edge
+      - client_edge
+    event_enum_level:
+      type: string
+      enum:
+      - UNKNOWN
+      - DEBUG
+      - INFO
+      - WARNING
+      - ERROR
     insights.v1.call.summary:
       type: object
       properties:
@@ -837,13 +862,47 @@ components:
           description: Contains trusted communications details including Branded Call and verified caller ID.
         annotation:
           description: Programmatically labeled annotations for the Call. Developers can update the Call Summary records with Annotation during or after a Call. Annotations can be updated as long as the Call Summary record is addressable via the API.
-    metric_enum_stream_direction:
+    ListEventResponse:
+      type: object
+      properties:
+        events:
+          type: array
+          items:
+            $ref: '#/components/schemas/insights.v1.call.event'
+        meta:
+          type: object
+          properties:
+            first_page_url:
+              type: string
+              format: uri
+            next_page_url:
+              type:
+              - string
+              - 'null'
+              format: uri
+            page:
+              type: integer
+            page_size:
+              type: integer
+            previous_page_url:
+              type:
+              - string
+              - 'null'
+              format: uri
+            url:
+              type: string
+              format: uri
+            key:
+              type: string
+    annotation_enum_connectivity_issue:
       type: string
       enum:
-      - unknown
-      - inbound
-      - outbound
-      - both
+      - unknown_connectivity_issue
+      - no_connectivity_issue
+      - invalid_number
+      - caller_id
+      - dropped_call
+      - number_reachability
     insights.v1.call.metric:
       type: object
       properties:
@@ -888,6 +947,32 @@ components:
           description: Contains metrics and properties for the SDK sensor library for Client calls.
         client_edge:
           description: Contains metrics and properties for the Twilio media gateway of a Client call.
+    call_summaries_enum_sort_by:
+      type: string
+      enum:
+      - start_time
+      - end_time
+    UpdateAccountSettingsRequest:
+      type: object
+      properties:
+        AdvancedFeatures:
+          type: boolean
+          description: A boolean flag to enable Advanced Features for Voice Insights.
+        VoiceTrace:
+          type: boolean
+          description: A boolean flag to enable Voice Trace.
+        SubaccountSid:
+          type: string
+          minLength: 34
+          maxLength: 34
+          pattern: ^AC[0-9a-fA-F]{32}$
+          description: The unique SID identifier of the Subaccount.
+    annotation_enum_answered_by:
+      type: string
+      enum:
+      - unknown_answered_by
+      - human
+      - machine
     call_summaries_enum_call_type:
       type: string
       enum:
@@ -1006,44 +1091,14 @@ components:
         trust:
           description: Contains trusted communications details including Branded Call and verified caller ID.
         annotation: {}
-    call_summaries_enum_processing_state:
+    metric_enum_twilio_edge:
       type: string
       enum:
-      - complete
-      - partial
-    UpdateAnnotationRequest:
-      type: object
-      properties:
-        AnsweredBy:
-          type: string
-          $ref: '#/components/schemas/annotation_enum_answered_by'
-          description: 'Specify which entity answered the call as determined by Answering Machine Detection. Use this to provide feedback on Answering Machine Detection accuracy. Possible enumerated values, one of: `human`, `machine`. `human` indicates the call was answered by a person. `machine` indicates the call was answered by an answering machine.'
-        ConnectivityIssue:
-          type: string
-          $ref: '#/components/schemas/annotation_enum_connectivity_issue'
-          description: Specify if the call had any connectivity issues. Possible enumerated values, one of `no_connectivity_issue`, `invalid_number`, `caller_id`, `dropped_call`, or `number_reachability`.
-        QualityIssues:
-          type: string
-          description: Specify if the call had any subjective quality issues. Possible values, one or more of `no_quality_issue`, `low_volume`, `choppy_robotic`, `echo`, `dtmf`, `latency`, `owa`, `static_noise`. Use comma separated values to indicate multiple quality issues for the same call.
-        Spam:
-          type: boolean
-          description: A boolean flag to indicate if the call was a spam call. Use this to provide feedback on whether calls placed from your account were marked as spam, or if inbound calls received by your account were unwanted spam. Use `true` if the call was a spam call.
-        CallScore:
-          type:
-          - integer
-          - 'null'
-          description: 'Specify the call score. This is of type integer. Use a range of 1-5 to indicate the call experience score, with the following mapping as a reference for rating the call [5: Excellent, 4: Good, 3 : Fair, 2 : Poor, 1: Bad].'
-        Comment:
-          type: string
-          description: Specify any comments pertaining to the call. `comment` has a maximum character limit of 100. Twilio does not treat this field as PII, so no PII should be included in the `comment`.
-        Incident:
-          type: string
-          description: Associate this call with an incident or support ticket. The `incident` parameter is of type string with a maximum character limit of 100. Twilio does not treat this field as PII, so no PII should be included in `incident`.
-    call_summaries_enum_sort_by:
-      type: string
-      enum:
-      - start_time
-      - end_time
+      - unknown_edge
+      - carrier_edge
+      - sip_edge
+      - sdk_edge
+      - client_edge
     insights.v1.call.event:
       type: object
       properties:
@@ -1098,29 +1153,38 @@ components:
           description: Represents the Voice SDK running locally in the browser or in the Android/iOS application. The events here are emitted by the Voice SDK in response to certain call progress events, network changes, or call quality conditions.
         client_edge:
           description: Represents the Twilio media gateway for Client calls. The events here describe the call lifecycle as reported by Twilio's Voice SDK media gateways.
-    metric_enum_twilio_edge:
-      type: string
-      enum:
-      - unknown_edge
-      - carrier_edge
-      - sip_edge
-      - sdk_edge
-      - client_edge
-    UpdateAccountSettingsRequest:
+    ListCallSummariesResponse:
       type: object
       properties:
-        AdvancedFeatures:
-          type: boolean
-          description: A boolean flag to enable Advanced Features for Voice Insights.
-        VoiceTrace:
-          type: boolean
-          description: A boolean flag to enable Voice Trace.
-        SubaccountSid:
-          type: string
-          minLength: 34
-          maxLength: 34
-          pattern: ^AC[0-9a-fA-F]{32}$
-          description: The unique SID identifier of the Subaccount.
+        call_summaries:
+          type: array
+          items:
+            $ref: '#/components/schemas/insights.v1.call_summaries'
+        meta:
+          type: object
+          properties:
+            first_page_url:
+              type: string
+              format: uri
+            next_page_url:
+              type:
+              - string
+              - 'null'
+              format: uri
+            page:
+              type: integer
+            page_size:
+              type: integer
+            previous_page_url:
+              type:
+              - string
+              - 'null'
+              format: uri
+            url:
+              type: string
+              format: uri
+            key:
+              type: string
     insights.v1.account_settings:
       type: object
       properties:
@@ -1148,6 +1212,88 @@ components:
           - 'null'
           format: uri
           description: The URL of this resource.
+    call_summaries_enum_call_state:
+      type: string
+      enum:
+      - ringing
+      - completed
+      - busy
+      - fail
+      - noanswer
+      - canceled
+      - answered
+      - undialed
+    call_summaries_enum_answered_by:
+      type: string
+      enum:
+      - unknown
+      - machine_start
+      - machine_end_beep
+      - machine_end_silence
+      - machine_end_other
+      - human
+      - fax
+    summary_enum_answered_by:
+      type: string
+      enum:
+      - unknown
+      - machine_start
+      - machine_end_beep
+      - machine_end_silence
+      - machine_end_other
+      - human
+      - fax
+    summary_enum_call_state:
+      type: string
+      enum:
+      - ringing
+      - completed
+      - busy
+      - fail
+      - noanswer
+      - canceled
+      - answered
+      - undialed
+    call_summaries_enum_processing_state:
+      type: string
+      enum:
+      - complete
+      - partial
+    UpdateAnnotationRequest:
+      type: object
+      properties:
+        AnsweredBy:
+          type: string
+          $ref: '#/components/schemas/annotation_enum_answered_by'
+          description: 'Specify which entity answered the call as determined by Answering Machine Detection. Use this to provide feedback on Answering Machine Detection accuracy. Possible enumerated values, one of: `human`, `machine`. `human` indicates the call was answered by a person. `machine` indicates the call was answered by an answering machine.'
+        ConnectivityIssue:
+          type: string
+          $ref: '#/components/schemas/annotation_enum_connectivity_issue'
+          description: Specify if the call had any connectivity issues. Possible enumerated values, one of `no_connectivity_issue`, `invalid_number`, `caller_id`, `dropped_call`, or `number_reachability`.
+        QualityIssues:
+          type: string
+          description: Specify if the call had any subjective quality issues. Possible values, one or more of `no_quality_issue`, `low_volume`, `choppy_robotic`, `echo`, `dtmf`, `latency`, `owa`, `static_noise`. Use comma separated values to indicate multiple quality issues for the same call.
+        Spam:
+          type: boolean
+          description: A boolean flag to indicate if the call was a spam call. Use this to provide feedback on whether calls placed from your account were marked as spam, or if inbound calls received by your account were unwanted spam. Use `true` if the call was a spam call.
+        CallScore:
+          type:
+          - integer
+          - 'null'
+          description: 'Specify the call score. This is of type integer. Use a range of 1-5 to indicate the call experience score, with the following mapping as a reference for rating the call [5: Excellent, 4: Good, 3 : Fair, 2 : Poor, 1: Bad].'
+        Comment:
+          type: string
+          description: Specify any comments pertaining to the call. `comment` has a maximum character limit of 100. Twilio does not treat this field as PII, so no PII should be included in the `comment`.
+        Incident:
+          type: string
+          description: Associate this call with an incident or support ticket. The `incident` parameter is of type string with a maximum character limit of 100. Twilio does not treat this field as PII, so no PII should be included in `incident`.
+    call_summaries_enum_processing_state_request:
+      type: string
+      enum:
+      - completed
+      - started
+      - partial
+      - all
     insights.v1.call.annotation:
       type: object
       properties:
@@ -1211,23 +1357,6 @@ components:
           - string
           - 'null'
           format: uri
-    summary_enum_call_type:
-      type: string
-      enum:
-      - carrier
-      - sip
-      - trunking
-      - client
-    call_summaries_enum_answered_by:
-      type: string
-      enum:
-      - unknown
-      - machine_start
-      - machine_end_beep
-      - machine_end_silence
-      - machine_end_other
-      - human
-      - fax
     ListMetricResponse:
       type: object
       properties:
@@ -1260,236 +1389,11 @@ components:
               format: uri
             key:
               type: string
-    ListCallSummariesResponse:
-      type: object
-      properties:
-        call_summaries:
-          type: array
-          items:
-            $ref: '#/components/schemas/insights.v1.call_summaries'
-        meta:
-          type: object
-          properties:
-            first_page_url:
-              type: string
-              format: uri
-            next_page_url:
-              type:
-              - string
-              - 'null'
-              format: uri
-            page:
-              type: integer
-            page_size:
-              type: integer
-            previous_page_url:
-              type:
-              - string
-              - 'null'
-              format: uri
-            url:
-              type: string
-              format: uri
-            key:
-              type: string
-    event_enum_level:
+    summary_enum_processing_state:
       type: string
       enum:
-      - UNKNOWN
-      - DEBUG
-      - INFO
-      - WARNING
-      - ERROR
-    summary_enum_answered_by:
-      type: string
-      enum:
-      - unknown
-      - machine_start
-      - machine_end_beep
-      - machine_end_silence
-      - machine_end_other
-      - human
-      - fax
-    call_summaries_enum_processing_state_request:
-      type: string
-      enum:
-      - completed
-      - started
+      - complete
       - partial
-      - all
-    ListEventResponse:
-      type: object
-      properties:
-        events:
-          type: array
-          items:
-            $ref: '#/components/schemas/insights.v1.call.event'
-        meta:
-          type: object
-          properties:
-            first_page_url:
-              type: string
-              format: uri
-            next_page_url:
-              type:
-              - string
-              - 'null'
-              format: uri
-            page:
-              type: integer
-            page_size:
-              type: integer
-            previous_page_url:
-              type:
-              - string
-              - 'null'
-              format: uri
-            url:
-              type: string
-              format: uri
-            key:
-              type: string
-    insights.v1.call:
-      type: object
-      properties:
-        sid:
-          type:
-          - string
-          - 'null'
-          minLength: 34
-          maxLength: 34
-          pattern: ^CA[0-9a-fA-F]{32}$
-        url:
-          type:
-          - string
-          - 'null'
-          format: uri
-        links:
-          type:
-          - object
-          - 'null'
-          format: uri-map
-    call_summaries_enum_call_state:
-      type: string
-      enum:
-      - ringing
-      - completed
-      - busy
-      - fail
-      - noanswer
-      - canceled
-      - answered
-      - undialed
-    annotation_enum_answered_by:
-      type: string
-      enum:
-      - unknown_answered_by
-      - human
-      - machine
-    event_enum_twilio_edge:
-      type: string
-      enum:
-      - unknown_edge
-      - carrier_edge
-      - sip_edge
-      - sdk_edge
-      - client_edge
-    ListVoiceCountryResponse:
-      type: object
-      properties:
-        countries:
-          type: array
-          items:
-            $ref: '#/components/schemas/pricing.v2.voice.voice_country'
-        meta:
-          type: object
-          properties:
-            first_page_url:
-              type: string
-              format: uri
-            next_page_url:
-              type:
-              - string
-              - 'null'
-              format: uri
-            page:
-              type: integer
-            page_size:
-              type: integer
-            previous_page_url:
-              type:
-              - string
-              - 'null'
-              format: uri
-            url:
-              type: string
-              format: uri
-            key:
-              type: string
-    pricing.v2.voice.voice_country-instance:
-      type: object
-      properties:
-        country:
-          type:
-          - string
-          - 'null'
-          description: The name of the country.
-        iso_country:
-          type:
-          - string
-          - 'null'
-          format: iso-country-code
-          description: The [ISO country code](https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2).
-        outbound_prefix_prices:
-          type:
-          - array
-          - 'null'
-          items:
-            type: object
-            format: outbound-prefix-price-with-origin
-            properties:
-              origination_prefixes:
-                type: array
-                items:
-                  type: string
-              destination_prefixes:
-                type: array
-                items:
-                  type: string
-              base_price:
-                type: number
-              current_price:
-                type: number
-              friendly_name:
-                type: string
-          description: The list of [OutboundPrefixPriceWithOrigin](https://www.twilio.com/docs/voice/pricing#outbound-prefix-price-with-origin) records.
-        inbound_call_prices:
-          type:
-          - array
-          - 'null'
-          items:
-            type: object
-            format: inbound-call-price
-            properties:
-              base_price:
-                type: number
-              current_price:
-                type: number
-              number_type:
-                type: string
-          description: The list of [InboundCallPrice](https://www.twilio.com/docs/voice/pricing#inbound-call-price) records.
-        price_unit:
-          type:
-          - string
-          - 'null'
-          format: currency
-          description: The currency in which prices are measured, specified in [ISO 4127](https://www.iso.org/iso/home/standards/currency_codes.htm) format (e.g. `usd`, `eur`, `jpy`).
-        url:
-          type:
-          - string
-          - 'null'
-          format: uri
-          description: The absolute URL of the resource.
     pricing.v2.voice.voice_country:
       type: object
       properties:
@@ -1578,6 +1482,102 @@ components:
           - 'null'
           format: uri
           description: The absolute URL of the resource.
+    pricing.v2.voice.voice_country-instance:
+      type: object
+      properties:
+        country:
+          type:
+          - string
+          - 'null'
+          description: The name of the country.
+        iso_country:
+          type:
+          - string
+          - 'null'
+          format: iso-country-code
+          description: The [ISO country code](https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2).
+        outbound_prefix_prices:
+          type:
+          - array
+          - 'null'
+          items:
+            type: object
+            format: outbound-prefix-price-with-origin
+            properties:
+              origination_prefixes:
+                type: array
+                items:
+                  type: string
+              destination_prefixes:
+                type: array
+                items:
+                  type: string
+              base_price:
+                type: number
+              current_price:
+                type: number
+              friendly_name:
+                type: string
+          description: The list of [OutboundPrefixPriceWithOrigin](https://www.twilio.com/docs/voice/pricing#outbound-prefix-price-with-origin) records.
+        inbound_call_prices:
+          type:
+          - array
+          - 'null'
+          items:
+            type: object
+            format: inbound-call-price
+            properties:
+              base_price:
+                type: number
+              current_price:
+                type: number
+              number_type:
+                type: string
+          description: The list of [InboundCallPrice](https://www.twilio.com/docs/voice/pricing#inbound-call-price) records.
+        price_unit:
+          type:
+          - string
+          - 'null'
+          format: currency
+          description: The currency in which prices are measured, specified in [ISO 4127](https://www.iso.org/iso/home/standards/currency_codes.htm) format (e.g. `usd`, `eur`, `jpy`).
+        url:
+          type:
+          - string
+          - 'null'
+          format: uri
+          description: The absolute URL of the resource.
+    ListVoiceCountryResponse:
+      type: object
+      properties:
+        countries:
+          type: array
+          items:
+            $ref: '#/components/schemas/pricing.v2.voice.voice_country'
+        meta:
+          type: object
+          properties:
+            first_page_url:
+              type: string
+              format: uri
+            next_page_url:
+              type:
+              - string
+              - 'null'
+              format: uri
+            page:
+              type: integer
+            page_size:
+              type: integer
+            previous_page_url:
+              type:
+              - string
+              - 'null'
+              format: uri
+            url:
+              type: string
+              format: uri
+            key:
+              type: string
   securitySchemes:
     accountSid_authToken:
       type: http

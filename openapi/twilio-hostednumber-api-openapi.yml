@@ -459,12 +459,6 @@ paths:
       x-summary-source: derived
 components:
   schemas:
-    bulk_hosted_number_order_enum_request_status:
-      type: string
-      enum:
-      - QUEUED
-      - IN_PROGRESS
-      - PROCESSED
     ListDependentHostedNumberOrderResponse:
       type: object
       properties:
@@ -472,221 +466,6 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/numbers.v2.authorization_document.dependent_hosted_number_order'
-        meta:
-          type: object
-          properties:
-            first_page_url:
-              type: string
-              format: uri
-            next_page_url:
-              type:
-              - string
-              - 'null'
-              format: uri
-            page:
-              type: integer
-            page_size:
-              type: integer
-            previous_page_url:
-              type:
-              - string
-              - 'null'
-              format: uri
-            url:
-              type: string
-              format: uri
-            key:
-              type: string
-    dependent_hosted_number_order_enum_status:
-      type: string
-      enum:
-      - received
-      - verified
-      - pending-loa
-      - carrier-processing
-      - completed
-      - failed
-      - action-required
-    numbers.v2.authorization_document:
-      type: object
-      properties:
-        sid:
-          type:
-          - string
-          - 'null'
-          minLength: 34
-          maxLength: 34
-          pattern: ^PX[0-9a-fA-F]{32}$
-          description: A 34 character string that uniquely identifies this AuthorizationDocument.
-        address_sid:
-          type:
-          - string
-          - 'null'
-          minLength: 34
-          maxLength: 34
-          pattern: ^AD[0-9a-fA-F]{32}$
-          description: A 34 character string that uniquely identifies the Address resource that is associated with this AuthorizationDocument.
-        status:
-          type:
-          - string
-          - 'null'
-          $ref: '#/components/schemas/authorization_document_enum_status'
-          description: 'Status of an instance resource. It can hold one of the values: 1. opened 2. signing, 3. signed LOA, 4. canceled, 5. failed. See the section entitled [Status Values](https://www.twilio.com/docs/phone-numbers/hosted-numbers/hosted-numbers-api/authorization-document-resource#status-values) for more information on each of these statuses.'
-        email:
-          type:
-          - string
-          - 'null'
-          description: Email that this AuthorizationDocument will be sent to for signing.
-          x-twilio:
-            pii:
-              handling: standard
-              deleteSla: 30
-        cc_emails:
-          type:
-          - array
-          - 'null'
-          items:
-            type: string
-          description: Email recipients who will be informed when an Authorization Document has been sent and signed.
-          x-twilio:
-            pii:
-              handling: standard
-              deleteSla: 30
-        date_created:
-          type:
-          - string
-          - 'null'
-          format: date-time
-          description: The date this resource was created, given as [GMT RFC 2822](http://www.ietf.org/rfc/rfc2822.txt) format.
-        date_updated:
-          type:
-          - string
-          - 'null'
-          format: date-time
-          description: The date that this resource was updated, given as [GMT RFC 2822](http://www.ietf.org/rfc/rfc2822.txt) format.
-        url:
-          type:
-          - string
-          - 'null'
-          format: uri
-        links:
-          type:
-          - object
-          - 'null'
-          format: uri-map
-    CreateHostedNumberOrderRequest:
-      type: object
-      required:
-      - PhoneNumber
-      - ContactPhoneNumber
-      - AddressSid
-      - Email
-      properties:
-        PhoneNumber:
-          type: string
-          format: phone-number
-          description: The number to host in [+E.164](https://en.wikipedia.org/wiki/E.164) format
-        ContactPhoneNumber:
-          type: string
-          format: phone-number
-          description: The contact phone number of the person authorized to sign the Authorization Document.
-        AddressSid:
-          type: string
-          minLength: 34
-          maxLength: 34
-          pattern: ^AD[0-9a-fA-F]{32}$
-          description: Optional. A 34 character string that uniquely identifies the Address resource that represents the address of the owner of this phone number.
-        Email:
-          type: string
-          description: Optional. Email of the owner of this phone number that is being hosted.
-        AccountSid:
-          type: string
-          minLength: 34
-          maxLength: 34
-          pattern: ^AC[0-9a-fA-F]{32}$
-          description: This defaults to the AccountSid of the authorization the user is using. This can be provided to specify a subaccount to add the HostedNumberOrder to.
-        FriendlyName:
-          type: string
-          description: A 128 character string that is a human readable text that describes this resource.
-        CcEmails:
-          type: array
-          items:
-            type: string
-          description: Optional. A list of emails that the LOA document for this HostedNumberOrder will be carbon copied to.
-        SmsUrl:
-          type: string
-          format: uri
-          description: The URL that Twilio should request when somebody sends an SMS to the phone number. This will be copied onto the IncomingPhoneNumber resource.
-        SmsMethod:
-          type: string
-          format: http-method
-          enum:
-          - HEAD
-          - GET
-          - POST
-          - PATCH
-          - PUT
-          - DELETE
-          description: The HTTP method that should be used to request the SmsUrl. Must be either `GET` or `POST`.  This will be copied onto the IncomingPhoneNumber resource.
-        SmsFallbackUrl:
-          type: string
-          format: uri
-          description: A URL that Twilio will request if an error occurs requesting or executing the TwiML defined by SmsUrl. This will be copied onto the IncomingPhoneNumber resource.
-        SmsCapability:
-          type: boolean
-          description: Used to specify that the SMS capability will be hosted on Twilio's platform.
-        SmsFallbackMethod:
-          type: string
-          format: http-method
-          enum:
-          - HEAD
-          - GET
-          - POST
-          - PATCH
-          - PUT
-          - DELETE
-          description: The HTTP method that should be used to request the SmsFallbackUrl. Must be either `GET` or `POST`. This will be copied onto the IncomingPhoneNumber resource.
-        StatusCallbackUrl:
-          type: string
-          format: uri
-          description: Optional. The Status Callback URL attached to the IncomingPhoneNumber resource.
-        StatusCallbackMethod:
-          type: string
-          format: http-method
-          enum:
-          - HEAD
-          - GET
-          - POST
-          - PATCH
-          - PUT
-          - DELETE
-          description: Optional. The Status Callback Method attached to the IncomingPhoneNumber resource.
-        SmsApplicationSid:
-          type: string
-          minLength: 34
-          maxLength: 34
-          pattern: ^AP[0-9a-fA-F]{32}$
-          description: Optional. The 34 character sid of the application Twilio should use to handle SMS messages sent to this number. If a `SmsApplicationSid` is present, Twilio will ignore all of the SMS urls above and use those set on the application.
-        ContactTitle:
-          type: string
-          description: The title of the person authorized to sign the Authorization Document for this phone number.
-    hosted_number_order_enum_status:
-      type: string
-      enum:
-      - received
-      - verified
-      - pending-loa
-      - carrier-processing
-      - completed
-      - failed
-      - action-required
-    ListAuthorizationDocumentResponse:
-      type: object
-      properties:
-        items:
-          type: array
-          items:
-            $ref: '#/components/schemas/numbers.v2.authorization_document'
         meta:
           type: object
           properties:
@@ -896,74 +675,176 @@ components:
           - string
           - 'null'
           description: The next step you need to take to complete the hosted number order and request it successfully.
-    numbers.v2.bulk_hosted_number_order:
+    ListHostedNumberOrderResponse:
       type: object
       properties:
-        bulk_hosting_sid:
-          type:
-          - string
-          - 'null'
+        items:
+          type: array
+          items:
+            $ref: '#/components/schemas/numbers.v2.hosted_number_order'
+        meta:
+          type: object
+          properties:
+            first_page_url:
+              type: string
+              format: uri
+            next_page_url:
+              type:
+              - string
+              - 'null'
+              format: uri
+            page:
+              type: integer
+            page_size:
+              type: integer
+            previous_page_url:
+              type:
+              - string
+              - 'null'
+              format: uri
+            url:
+              type: string
+              format: uri
+            key:
+              type: string
+    hosted_number_order_enum_status:
+      type: string
+      enum:
+      - received
+      - verified
+      - pending-loa
+      - carrier-processing
+      - completed
+      - failed
+      - action-required
+    CreateHostedNumberOrderRequest:
+      type: object
+      required:
+      - PhoneNumber
+      - ContactPhoneNumber
+      - AddressSid
+      - Email
+      properties:
+        PhoneNumber:
+          type: string
+          format: phone-number
+          description: The number to host in [+E.164](https://en.wikipedia.org/wiki/E.164) format
+        ContactPhoneNumber:
+          type: string
+          format: phone-number
+          description: The contact phone number of the person authorized to sign the Authorization Document.
+        AddressSid:
+          type: string
           minLength: 34
           maxLength: 34
-          pattern: ^BH[0-9a-fA-F]{32}$
-          description: A 34 character string that uniquely identifies this BulkHostedNumberOrder.
-        request_status:
-          type:
-          - string
-          - 'null'
-          $ref: '#/components/schemas/bulk_hosted_number_order_enum_request_status'
-          description: 'A string that shows the status of the current Bulk Hosting request, it can vary between these values: ''QUEUED'',''IN_PROGRESS'',''PROCESSED'''
-        friendly_name:
-          type:
-          - string
-          - 'null'
-          description: A 128 character string that is a human-readable text that describes this resource.
-          x-twilio:
-            pii:
-              handling: standard
-              deleteSla: 30
-        notification_email:
-          type:
-          - string
-          - 'null'
-          description: Email address used for send notifications about this Bulk hosted number request.
-          x-twilio:
-            pii:
-              handling: standard
-              deleteSla: 30
-        date_created:
-          type:
-          - string
-          - 'null'
-          format: date-time
-          description: The date this resource was created, given as [GMT RFC 2822](http://www.ietf.org/rfc/rfc2822.txt) format.
-        date_completed:
-          type:
-          - string
-          - 'null'
-          format: date-time
-          description: The date that this resource was completed, given as [GMT RFC 2822](http://www.ietf.org/rfc/rfc2822.txt) format.
-        url:
-          type:
-          - string
-          - 'null'
+          pattern: ^AD[0-9a-fA-F]{32}$
+          description: Optional. A 34 character string that uniquely identifies the Address resource that represents the address of the owner of this phone number.
+        Email:
+          type: string
+          description: Optional. Email of the owner of this phone number that is being hosted.
+        AccountSid:
+          type: string
+          minLength: 34
+          maxLength: 34
+          pattern: ^AC[0-9a-fA-F]{32}$
+          description: This defaults to the AccountSid of the authorization the user is using. This can be provided to specify a subaccount to add the HostedNumberOrder to.
+        FriendlyName:
+          type: string
+          description: A 128 character string that is a human readable text that describes this resource.
+        CcEmails:
+          type: array
+          items:
+            type: string
+          description: Optional. A list of emails that the LOA document for this HostedNumberOrder will be carbon copied to.
+        SmsUrl:
+          type: string
           format: uri
-          description: The URL of this BulkHostedNumberOrder resource.
-        total_count:
-          type:
-          - integer
-          - 'null'
-          description: The total count of phone numbers in this Bulk hosting request.
-        results:
-          type:
-          - array
-          - 'null'
-          items: {}
-          description: Contains a list of all the individual hosting orders and their information, for this Bulk request. Each result object is grouped by its order status. To see a complete list of order status, please check 'https://www.twilio.com/docs/phone-numbers/hosted-numbers/hosted-numbers-api/hosted-number-order-resource#status-values'.
-          x-twilio:
-            pii:
-              handling: standard
-              deleteSla: 30
+          description: The URL that Twilio should request when somebody sends an SMS to the phone number. This will be copied onto the IncomingPhoneNumber resource.
+        SmsMethod:
+          type: string
+          format: http-method
+          enum:
+          - HEAD
+          - GET
+          - POST
+          - PATCH
+          - PUT
+          - DELETE
+          description: The HTTP method that should be used to request the SmsUrl. Must be either `GET` or `POST`.  This will be copied onto the IncomingPhoneNumber resource.
+        SmsFallbackUrl:
+          type: string
+          format: uri
+          description: A URL that Twilio will request if an error occurs requesting or executing the TwiML defined by SmsUrl. This will be copied onto the IncomingPhoneNumber resource.
+        SmsCapability:
+          type: boolean
+          description: Used to specify that the SMS capability will be hosted on Twilio's platform.
+        SmsFallbackMethod:
+          type: string
+          format: http-method
+          enum:
+          - HEAD
+          - GET
+          - POST
+          - PATCH
+          - PUT
+          - DELETE
+          description: The HTTP method that should be used to request the SmsFallbackUrl. Must be either `GET` or `POST`. This will be copied onto the IncomingPhoneNumber resource.
+        StatusCallbackUrl:
+          type: string
+          format: uri
+          description: Optional. The Status Callback URL attached to the IncomingPhoneNumber resource.
+        StatusCallbackMethod:
+          type: string
+          format: http-method
+          enum:
+          - HEAD
+          - GET
+          - POST
+          - PATCH
+          - PUT
+          - DELETE
+          description: Optional. The Status Callback Method attached to the IncomingPhoneNumber resource.
+        SmsApplicationSid:
+          type: string
+          minLength: 34
+          maxLength: 34
+          pattern: ^AP[0-9a-fA-F]{32}$
+          description: Optional. The 34 character sid of the application Twilio should use to handle SMS messages sent to this number. If a `SmsApplicationSid` is present, Twilio will ignore all of the SMS urls above and use those set on the application.
+        ContactTitle:
+          type: string
+          description: The title of the person authorized to sign the Authorization Document for this phone number.
+    ListAuthorizationDocumentResponse:
+      type: object
+      properties:
+        items:
+          type: array
+          items:
+            $ref: '#/components/schemas/numbers.v2.authorization_document'
+        meta:
+          type: object
+          properties:
+            first_page_url:
+              type: string
+              format: uri
+            next_page_url:
+              type:
+              - string
+              - 'null'
+              format: uri
+            page:
+              type: integer
+            page_size:
+              type: integer
+            previous_page_url:
+              type:
+              - string
+              - 'null'
+              format: uri
+            url:
+              type: string
+              format: uri
+            key:
+              type: string
     numbers.v2.authorization_document.dependent_hosted_number_order:
       type: object
       properties:
@@ -1104,38 +985,6 @@ components:
           - 'null'
           format: phone-number
           description: The contact phone number of the person authorized to sign the Authorization Document.
-    ListHostedNumberOrderResponse:
-      type: object
-      properties:
-        items:
-          type: array
-          items:
-            $ref: '#/components/schemas/numbers.v2.hosted_number_order'
-        meta:
-          type: object
-          properties:
-            first_page_url:
-              type: string
-              format: uri
-            next_page_url:
-              type:
-              - string
-              - 'null'
-              format: uri
-            page:
-              type: integer
-            page_size:
-              type: integer
-            previous_page_url:
-              type:
-              - string
-              - 'null'
-              format: uri
-            url:
-              type: string
-              format: uri
-            key:
-              type: string
     authorization_document_enum_status:
       type: string
       enum:
@@ -1144,6 +993,157 @@ components:
       - signed
       - canceled
       - failed
+    dependent_hosted_number_order_enum_status:
+      type: string
+      enum:
+      - received
+      - verified
+      - pending-loa
+      - carrier-processing
+      - completed
+      - failed
+      - action-required
+    numbers.v2.authorization_document:
+      type: object
+      properties:
+        sid:
+          type:
+          - string
+          - 'null'
+          minLength: 34
+          maxLength: 34
+          pattern: ^PX[0-9a-fA-F]{32}$
+          description: A 34 character string that uniquely identifies this AuthorizationDocument.
+        address_sid:
+          type:
+          - string
+          - 'null'
+          minLength: 34
+          maxLength: 34
+          pattern: ^AD[0-9a-fA-F]{32}$
+          description: A 34 character string that uniquely identifies the Address resource that is associated with this AuthorizationDocument.
+        status:
+          type:
+          - string
+          - 'null'
+          $ref: '#/components/schemas/authorization_document_enum_status'
+          description: 'Status of an instance resource. It can hold one of the values: 1. opened 2. signing, 3. signed LOA, 4. canceled, 5. failed. See the section entitled [Status Values](https://www.twilio.com/docs/phone-numbers/hosted-numbers/hosted-numbers-api/authorization-document-resource#status-values) for more information on each of these statuses.'
+        email:
+          type:
+          - string
+          - 'null'
+          description: Email that this AuthorizationDocument will be sent to for signing.
+          x-twilio:
+            pii:
+              handling: standard
+              deleteSla: 30
+        cc_emails:
+          type:
+          - array
+          - 'null'
+          items:
+            type: string
+          description: Email recipients who will be informed when an Authorization Document has been sent and signed.
+          x-twilio:
+            pii:
+              handling: standard
+              deleteSla: 30
+        date_created:
+          type:
+          - string
+          - 'null'
+          format: date-time
+          description: The date this resource was created, given as [GMT RFC 2822](http://www.ietf.org/rfc/rfc2822.txt) format.
+        date_updated:
+          type:
+          - string
+          - 'null'
+          format: date-time
+          description: The date that this resource was updated, given as [GMT RFC 2822](http://www.ietf.org/rfc/rfc2822.txt) format.
+        url:
+          type:
+          - string
+          - 'null'
+          format: uri
+        links:
+          type:
+          - object
+          - 'null'
+          format: uri-map
+    numbers.v2.bulk_hosted_number_order:
+      type: object
+      properties:
+        bulk_hosting_sid:
+          type:
+          - string
+          - 'null'
+          minLength: 34
+          maxLength: 34
+          pattern: ^BH[0-9a-fA-F]{32}$
+          description: A 34 character string that uniquely identifies this BulkHostedNumberOrder.
+        request_status:
+          type:
+          - string
+          - 'null'
+          $ref: '#/components/schemas/bulk_hosted_number_order_enum_request_status'
+          description: 'A string that shows the status of the current Bulk Hosting request, it can vary between these values: ''QUEUED'',''IN_PROGRESS'',''PROCESSED'''
+        friendly_name:
+          type:
+          - string
+          - 'null'
+          description: A 128 character string that is a human-readable text that describes this resource.
+          x-twilio:
+            pii:
+              handling: standard
+              deleteSla: 30
+        notification_email:
+          type:
+          - string
+          - 'null'
+          description: Email address used for send notifications about this Bulk hosted number request.
+          x-twilio:
+            pii:
+              handling: standard
+              deleteSla: 30
+        date_created:
+          type:
+          - string
+          - 'null'
+          format: date-time
+          description: The date this resource was created, given as [GMT RFC 2822](http://www.ietf.org/rfc/rfc2822.txt) format.
+        date_completed:
+          type:
+          - string
+          - 'null'
+          format: date-time
+          description: The date that this resource was completed, given as [GMT RFC 2822](http://www.ietf.org/rfc/rfc2822.txt) format.
+        url:
+          type:
+          - string
+          - 'null'
+          format: uri
+          description: The URL of this BulkHostedNumberOrder resource.
+        total_count:
+          type:
+          - integer
+          - 'null'
+          description: The total count of phone numbers in this Bulk hosting request.
+        results:
+          type:
+          - array
+          - 'null'
+          items: {}
+          description: Contains a list of all the individual hosting orders and their information, for this Bulk request. Each result object is grouped by its order status. To see a complete list of order status, please check 'https://www.twilio.com/docs/phone-numbers/hosted-numbers/hosted-numbers-api/hosted-number-order-resource#status-values'.
+          x-twilio:
+            pii:
+              handling: standard
+              deleteSla: 30
+    bulk_hosted_number_order_enum_request_status:
+      type: string
+      enum:
+      - QUEUED
+      - IN_PROGRESS
+      - PROCESSED
   securitySchemes:
     accountSid_authToken:
       type: http

@@ -185,6 +185,44 @@ paths:
       x-summary-source: derived
 components:
   schemas:
+    UpdateIpRecordRequest:
+      type: object
+      properties:
+        FriendlyName:
+          type: string
+          description: A descriptive string that you create to describe the resource. It is not unique and can be up to 255 characters long.
+    ListIpRecordResponse:
+      type: object
+      properties:
+        ip_records:
+          type: array
+          items:
+            $ref: '#/components/schemas/voice.v1.ip_record'
+        meta:
+          type: object
+          properties:
+            first_page_url:
+              type: string
+              format: uri
+            next_page_url:
+              type:
+              - string
+              - 'null'
+              format: uri
+            page:
+              type: integer
+            page_size:
+              type: integer
+            previous_page_url:
+              type:
+              - string
+              - 'null'
+              format: uri
+            url:
+              type: string
+              format: uri
+            key:
+              type: string
     voice.v1.ip_record:
       type: object
       properties:
@@ -241,44 +279,6 @@ components:
           - 'null'
           format: uri
           description: The absolute URL of the resource.
-    ListIpRecordResponse:
-      type: object
-      properties:
-        ip_records:
-          type: array
-          items:
-            $ref: '#/components/schemas/voice.v1.ip_record'
-        meta:
-          type: object
-          properties:
-            first_page_url:
-              type: string
-              format: uri
-            next_page_url:
-              type:
-              - string
-              - 'null'
-              format: uri
-            page:
-              type: integer
-            page_size:
-              type: integer
-            previous_page_url:
-              type:
-              - string
-              - 'null'
-              format: uri
-            url:
-              type: string
-              format: uri
-            key:
-              type: string
-    UpdateIpRecordRequest:
-      type: object
-      properties:
-        FriendlyName:
-          type: string
-          description: A descriptive string that you create to describe the resource. It is not unique and can be up to 255 characters long.
     CreateIpRecordRequest:
       type: object
       required:

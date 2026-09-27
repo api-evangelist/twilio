@@ -266,6 +266,15 @@ paths:
       x-summary-source: derived
 components:
   schemas:
+    CreatePlayerStreamerPlaybackGrantRequest:
+      type: object
+      properties:
+        Ttl:
+          type: integer
+          description: The time to live of the PlaybackGrant. Default value is 15 seconds. Maximum value is 60 seconds.
+        AccessControlAllowOrigin:
+          type: string
+          description: The full origin URL where the livestream can be streamed. If this is not provided, it can be streamed from any domain.
     player_streamer_enum_status:
       type: string
       enum:
@@ -273,6 +282,27 @@ components:
       - started
       - ended
       - failed
+    player_streamer_enum_ended_reason:
+      type: string
+      enum:
+      - ended-via-api
+      - max-duration-exceeded
+      - stream-disconnected-by-source
+      - unexpected-failure
+    player_streamer_enum_order:
+      type: string
+      enum:
+      - asc
+      - desc
+    UpdatePlayerStreamerRequest:
+      type: object
+      required:
+      - Status
+      properties:
+        Status:
+          type: string
+          $ref: '#/components/schemas/player_streamer_enum_update_status'
+          description: 'The status the PlayerStreamer should be transitioned to. Can be: `ended`.'
     media.v1.player_streamer:
       type: object
       properties:
@@ -418,22 +448,6 @@ components:
         MaxDuration:
           type: integer
           description: The maximum time, in seconds, that the PlayerStreamer is active (`created` or `started`) before automatically ends. The default value is 300 seconds, and the maximum value is 90000 seconds. Once this maximum duration is reached, Twilio will end the PlayerStreamer, regardless of whether media is still streaming.
-    CreatePlayerStreamerPlaybackGrantRequest:
-      type: object
-      properties:
-        Ttl:
-          type: integer
-          description: The time to live of the PlaybackGrant. Default value is 15 seconds. Maximum value is 60 seconds.
-        AccessControlAllowOrigin:
-          type: string
-          description: The full origin URL where the livestream can be streamed. If this is not provided, it can be streamed from any domain.
-    player_streamer_enum_ended_reason:
-      type: string
-      enum:
-      - ended-via-api
-      - max-duration-exceeded
-      - stream-disconnected-by-source
-      - unexpected-failure
     ListPlayerStreamerResponse:
       type: object
       properties:
@@ -466,20 +480,6 @@ components:
               format: uri
             key:
               type: string
-    player_streamer_enum_order:
-      type: string
-      enum:
-      - asc
-      - desc
-    UpdatePlayerStreamerRequest:
-      type: object
-      required:
-      - Status
-      properties:
-        Status:
-          type: string
-          $ref: '#/components/schemas/player_streamer_enum_update_status'
-          description: 'The status the PlayerStreamer should be transitioned to. Can be: `ended`.'
   securitySchemes:
     accountSid_authToken:
       type: http

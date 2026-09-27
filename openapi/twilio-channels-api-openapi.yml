@@ -101,6 +101,29 @@ paths:
           description: Channel deleted
 components:
   schemas:
+    FlexChannel:
+      type: object
+      properties:
+        sid:
+          type: string
+        account_sid:
+          type: string
+          pattern: ^AC[0-9a-fA-F]{32}$
+        flex_flow_sid:
+          type: string
+        user_sid:
+          type: string
+        task_sid:
+          type: string
+        date_created:
+          type: string
+          format: date-time
+        date_updated:
+          type: string
+          format: date-time
+        url:
+          type: string
+          format: uri
     PaginationMeta:
       type: object
       properties:
@@ -122,15 +145,6 @@ components:
           format: uri
         key:
           type: string
-    ChannelList:
-      type: object
-      properties:
-        flex_chat_channels:
-          type: array
-          items:
-            $ref: '#/components/schemas/FlexChannel'
-        meta:
-          $ref: '#/components/schemas/PaginationMeta'
     CreateChannelRequest:
       type: object
       required:
@@ -159,29 +173,15 @@ components:
           type: string
         LongLived:
           type: boolean
-    FlexChannel:
+    ChannelList:
       type: object
       properties:
-        sid:
-          type: string
-        account_sid:
-          type: string
-          pattern: ^AC[0-9a-fA-F]{32}$
-        flex_flow_sid:
-          type: string
-        user_sid:
-          type: string
-        task_sid:
-          type: string
-        date_created:
-          type: string
-          format: date-time
-        date_updated:
-          type: string
-          format: date-time
-        url:
-          type: string
-          format: uri
+        flex_chat_channels:
+          type: array
+          items:
+            $ref: '#/components/schemas/FlexChannel'
+        meta:
+          $ref: '#/components/schemas/PaginationMeta'
   securitySchemes:
     accountSid_authToken:
       type: http

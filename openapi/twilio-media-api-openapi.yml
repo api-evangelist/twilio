@@ -94,6 +94,23 @@ paths:
         '404':
           description: Media not found
 components:
+  parameters:
+    AccountSid:
+      name: AccountSid
+      in: path
+      required: true
+      description: The unique identifier of the Twilio account
+      schema:
+        type: string
+        pattern: ^AC[0-9a-fA-F]{32}$
+    MessageSid:
+      name: MessageSid
+      in: path
+      required: true
+      description: The unique identifier of the message
+      schema:
+        type: string
+        pattern: ^(SM|MM)[0-9a-fA-F]{32}$
   schemas:
     MediaList:
       type: object
@@ -132,23 +149,6 @@ components:
           format: date-time
         uri:
           type: string
-  parameters:
-    AccountSid:
-      name: AccountSid
-      in: path
-      required: true
-      description: The unique identifier of the Twilio account
-      schema:
-        type: string
-        pattern: ^AC[0-9a-fA-F]{32}$
-    MessageSid:
-      name: MessageSid
-      in: path
-      required: true
-      description: The unique identifier of the message
-      schema:
-        type: string
-        pattern: ^(SM|MM)[0-9a-fA-F]{32}$
   securitySchemes:
     accountSid_authToken:
       type: http

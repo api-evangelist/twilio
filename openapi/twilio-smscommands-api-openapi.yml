@@ -209,14 +209,11 @@ components:
           - 'null'
           format: uri
           description: The absolute URL of the SMS Command resource.
-    sms_command_enum_status:
+    sms_command_enum_direction:
       type: string
       enum:
-      - queued
-      - sent
-      - delivered
-      - received
-      - failed
+      - to_sim
+      - from_sim
     ListSmsCommandResponse:
       type: object
       properties:
@@ -276,11 +273,14 @@ components:
           type: string
           format: uri
           description: The URL we should call using the `callback_method` after we have sent the command.
-    sms_command_enum_direction:
+    sms_command_enum_status:
       type: string
       enum:
-      - to_sim
-      - from_sim
+      - queued
+      - sent
+      - delivered
+      - received
+      - failed
   securitySchemes:
     accountSid_authToken:
       type: http

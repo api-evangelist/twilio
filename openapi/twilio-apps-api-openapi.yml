@@ -195,33 +195,6 @@ components:
               format: uri
             key:
               type: string
-    microvisor.v1.app.app_manifest:
-      type: object
-      properties:
-        app_sid:
-          type:
-          - string
-          - 'null'
-          minLength: 34
-          maxLength: 34
-          pattern: ^KA[0-9a-fA-F]{32}$
-          description: A 34-character string that uniquely identifies this App.
-        hash:
-          type:
-          - string
-          - 'null'
-          description: App manifest hash represented as `hash_algorithm:hash_value`.
-        encoded_bytes:
-          type:
-          - string
-          - 'null'
-          description: The base-64 encoded manifest
-        url:
-          type:
-          - string
-          - 'null'
-          format: uri
-          description: The absolute URL of this Manifest.
     microvisor.v1.app:
       type: object
       properties:
@@ -274,6 +247,33 @@ components:
           - object
           - 'null'
           format: uri-map
+    microvisor.v1.app.app_manifest:
+      type: object
+      properties:
+        app_sid:
+          type:
+          - string
+          - 'null'
+          minLength: 34
+          maxLength: 34
+          pattern: ^KA[0-9a-fA-F]{32}$
+          description: A 34-character string that uniquely identifies this App.
+        hash:
+          type:
+          - string
+          - 'null'
+          description: App manifest hash represented as `hash_algorithm:hash_value`.
+        encoded_bytes:
+          type:
+          - string
+          - 'null'
+          description: The base-64 encoded manifest
+        url:
+          type:
+          - string
+          - 'null'
+          format: uri
+          description: The absolute URL of this Manifest.
   securitySchemes:
     accountSid_authToken:
       type: http

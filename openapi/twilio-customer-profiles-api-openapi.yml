@@ -721,307 +721,17 @@ paths:
       x-summary-source: derived
 components:
   schemas:
-    trusthub.v1.customer_profile:
-      type: object
-      properties:
-        sid:
-          type:
-          - string
-          - 'null'
-          minLength: 34
-          maxLength: 34
-          pattern: ^BU[0-9a-fA-F]{32}$
-          description: The unique string that we created to identify the Customer-Profile resource.
-        account_sid:
-          type:
-          - string
-          - 'null'
-          minLength: 34
-          maxLength: 34
-          pattern: ^AC[0-9a-fA-F]{32}$
-          description: The SID of the [Account](https://www.twilio.com/docs/iam/api/account) that created the Customer-Profile resource.
-        policy_sid:
-          type:
-          - string
-          - 'null'
-          minLength: 34
-          maxLength: 34
-          pattern: ^RN[0-9a-fA-F]{32}$
-          description: The unique string of a policy that is associated to the Customer-Profile resource.
-        friendly_name:
-          type:
-          - string
-          - 'null'
-          description: The string that you assigned to describe the resource.
-        status:
-          type:
-          - string
-          - 'null'
-          $ref: '#/components/schemas/customer_profile_enum_status'
-          description: The verification status of the Customer-Profile resource.
-        valid_until:
-          type:
-          - string
-          - 'null'
-          format: date-time
-          description: The date and time in GMT in [ISO 8601](https://en.wikipedia.org/wiki/ISO_8601) format when the resource will be valid until.
-        email:
-          type:
-          - string
-          - 'null'
-          description: The email address that will receive updates when the Customer-Profile resource changes status.
-        status_callback:
-          type:
-          - string
-          - 'null'
-          format: uri
-          description: The URL we call to inform your application of status changes.
-        date_created:
-          type:
-          - string
-          - 'null'
-          format: date-time
-          description: The date and time in GMT when the resource was created specified in [ISO 8601](https://en.wikipedia.org/wiki/ISO_8601) format.
-        date_updated:
-          type:
-          - string
-          - 'null'
-          format: date-time
-          description: The date and time in GMT when the resource was last updated specified in [ISO 8601](https://en.wikipedia.org/wiki/ISO_8601) format.
-        url:
-          type:
-          - string
-          - 'null'
-          format: uri
-          description: The absolute URL of the Customer-Profile resource.
-        links:
-          type:
-          - object
-          - 'null'
-          format: uri-map
-          description: The URLs of the Assigned Items of the Customer-Profile resource.
-    ListCustomerProfileEntityAssignmentResponse:
-      type: object
-      properties:
-        results:
-          type: array
-          items:
-            $ref: '#/components/schemas/trusthub.v1.customer_profile.customer_profile_entity_assignment'
-        meta:
-          type: object
-          properties:
-            first_page_url:
-              type: string
-              format: uri
-            next_page_url:
-              type:
-              - string
-              - 'null'
-              format: uri
-            page:
-              type: integer
-            page_size:
-              type: integer
-            previous_page_url:
-              type:
-              - string
-              - 'null'
-              format: uri
-            url:
-              type: string
-              format: uri
-            key:
-              type: string
-    CreateCustomerProfileEntityAssignmentRequest:
+    CreateCustomerProfileEvaluationRequest:
       type: object
       required:
-      - ObjectSid
-      properties:
-        ObjectSid:
-          type: string
-          minLength: 34
-          maxLength: 34
-          pattern: ^[a-zA-Z]{2}[0-9a-fA-F]{32}$
-          description: The SID of an object bag that holds information of the different items.
-    CreateCustomerProfileRequest:
-      type: object
-      required:
-      - FriendlyName
-      - Email
       - PolicySid
       properties:
-        FriendlyName:
-          type: string
-          description: The string that you assigned to describe the resource.
-        Email:
-          type: string
-          description: The email address that will receive updates when the Customer-Profile resource changes status.
         PolicySid:
           type: string
           minLength: 34
           maxLength: 34
           pattern: ^RN[0-9a-fA-F]{32}$
-          description: The unique string of a policy that is associated to the Customer-Profile resource.
-        StatusCallback:
-          type: string
-          format: uri
-          description: The URL we call to inform your application of status changes.
-    trusthub.v1.customer_profile.customer_profile_entity_assignment:
-      type: object
-      properties:
-        sid:
-          type:
-          - string
-          - 'null'
-          minLength: 34
-          maxLength: 34
-          pattern: ^BV[0-9a-fA-F]{32}$
-          description: The unique string that we created to identify the Item Assignment resource.
-        customer_profile_sid:
-          type:
-          - string
-          - 'null'
-          minLength: 34
-          maxLength: 34
-          pattern: ^BU[0-9a-fA-F]{32}$
-          description: The unique string that we created to identify the CustomerProfile resource.
-        account_sid:
-          type:
-          - string
-          - 'null'
-          minLength: 34
-          maxLength: 34
-          pattern: ^AC[0-9a-fA-F]{32}$
-          description: The SID of the [Account](https://www.twilio.com/docs/iam/api/account) that created the Item Assignment resource.
-        object_sid:
-          type:
-          - string
-          - 'null'
-          minLength: 34
-          maxLength: 34
-          pattern: ^[a-zA-Z]{2}[0-9a-fA-F]{32}$
-          description: The SID of an object bag that holds information of the different items.
-        date_created:
-          type:
-          - string
-          - 'null'
-          format: date-time
-          description: The date and time in GMT when the resource was created specified in [ISO 8601](https://en.wikipedia.org/wiki/ISO_8601) format.
-        url:
-          type:
-          - string
-          - 'null'
-          format: uri
-          description: The absolute URL of the Identity resource.
-    customer_profile_enum_status:
-      type: string
-      enum:
-      - draft
-      - pending-review
-      - in-review
-      - twilio-rejected
-      - twilio-approved
-    customer_profile_evaluation_enum_status:
-      type: string
-      enum:
-      - compliant
-      - noncompliant
-    ListCustomerProfileEvaluationResponse:
-      type: object
-      properties:
-        results:
-          type: array
-          items:
-            $ref: '#/components/schemas/trusthub.v1.customer_profile.customer_profile_evaluation'
-        meta:
-          type: object
-          properties:
-            first_page_url:
-              type: string
-              format: uri
-            next_page_url:
-              type:
-              - string
-              - 'null'
-              format: uri
-            page:
-              type: integer
-            page_size:
-              type: integer
-            previous_page_url:
-              type:
-              - string
-              - 'null'
-              format: uri
-            url:
-              type: string
-              format: uri
-            key:
-              type: string
-    ListCustomerProfileResponse:
-      type: object
-      properties:
-        results:
-          type: array
-          items:
-            $ref: '#/components/schemas/trusthub.v1.customer_profile'
-        meta:
-          type: object
-          properties:
-            first_page_url:
-              type: string
-              format: uri
-            next_page_url:
-              type:
-              - string
-              - 'null'
-              format: uri
-            page:
-              type: integer
-            page_size:
-              type: integer
-            previous_page_url:
-              type:
-              - string
-              - 'null'
-              format: uri
-            url:
-              type: string
-              format: uri
-            key:
-              type: string
-    UpdateCustomerProfileRequest:
-      type: object
-      properties:
-        Status:
-          type: string
-          $ref: '#/components/schemas/customer_profile_enum_status'
-          description: The verification status of the Customer-Profile resource.
-        StatusCallback:
-          type: string
-          format: uri
-          description: The URL we call to inform your application of status changes.
-        FriendlyName:
-          type: string
-          description: The string that you assigned to describe the resource.
-        Email:
-          type: string
-          description: The email address that will receive updates when the Customer-Profile resource changes status.
-    CreateCustomerProfileChannelEndpointAssignmentRequest:
-      type: object
-      required:
-      - ChannelEndpointType
-      - ChannelEndpointSid
-      properties:
-        ChannelEndpointType:
-          type: string
-          description: 'The type of channel endpoint. eg: phone-number'
-        ChannelEndpointSid:
-          type: string
-          minLength: 34
-          maxLength: 34
-          pattern: ^[a-zA-Z]{2}[0-9a-fA-F]{32}$
-          description: The SID of an channel endpoint
+          description: The unique string of a policy that is associated to the customer_profile resource.
     trusthub.v1.customer_profile.customer_profile_channel_endpoint_assignment:
       type: object
       properties:
@@ -1074,13 +784,76 @@ components:
           - 'null'
           format: uri
           description: The absolute URL of the Identity resource.
-    ListCustomerProfileChannelEndpointAssignmentResponse:
+    CreateCustomerProfileChannelEndpointAssignmentRequest:
+      type: object
+      required:
+      - ChannelEndpointType
+      - ChannelEndpointSid
+      properties:
+        ChannelEndpointType:
+          type: string
+          description: 'The type of channel endpoint. eg: phone-number'
+        ChannelEndpointSid:
+          type: string
+          minLength: 34
+          maxLength: 34
+          pattern: ^[a-zA-Z]{2}[0-9a-fA-F]{32}$
+          description: The SID of an channel endpoint
+    ListCustomerProfileEvaluationResponse:
       type: object
       properties:
         results:
           type: array
           items:
-            $ref: '#/components/schemas/trusthub.v1.customer_profile.customer_profile_channel_endpoint_assignment'
+            $ref: '#/components/schemas/trusthub.v1.customer_profile.customer_profile_evaluation'
+        meta:
+          type: object
+          properties:
+            first_page_url:
+              type: string
+              format: uri
+            next_page_url:
+              type:
+              - string
+              - 'null'
+              format: uri
+            page:
+              type: integer
+            page_size:
+              type: integer
+            previous_page_url:
+              type:
+              - string
+              - 'null'
+              format: uri
+            url:
+              type: string
+              format: uri
+            key:
+              type: string
+    customer_profile_evaluation_enum_status:
+      type: string
+      enum:
+      - compliant
+      - noncompliant
+    CreateCustomerProfileEntityAssignmentRequest:
+      type: object
+      required:
+      - ObjectSid
+      properties:
+        ObjectSid:
+          type: string
+          minLength: 34
+          maxLength: 34
+          pattern: ^[a-zA-Z]{2}[0-9a-fA-F]{32}$
+          description: The SID of an object bag that holds information of the different items.
+    ListCustomerProfileResponse:
+      type: object
+      properties:
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/trusthub.v1.customer_profile'
         meta:
           type: object
           properties:
@@ -1163,17 +936,244 @@ components:
           - string
           - 'null'
           format: uri
-    CreateCustomerProfileEvaluationRequest:
+    ListCustomerProfileEntityAssignmentResponse:
+      type: object
+      properties:
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/trusthub.v1.customer_profile.customer_profile_entity_assignment'
+        meta:
+          type: object
+          properties:
+            first_page_url:
+              type: string
+              format: uri
+            next_page_url:
+              type:
+              - string
+              - 'null'
+              format: uri
+            page:
+              type: integer
+            page_size:
+              type: integer
+            previous_page_url:
+              type:
+              - string
+              - 'null'
+              format: uri
+            url:
+              type: string
+              format: uri
+            key:
+              type: string
+    UpdateCustomerProfileRequest:
+      type: object
+      properties:
+        Status:
+          type: string
+          $ref: '#/components/schemas/customer_profile_enum_status'
+          description: The verification status of the Customer-Profile resource.
+        StatusCallback:
+          type: string
+          format: uri
+          description: The URL we call to inform your application of status changes.
+        FriendlyName:
+          type: string
+          description: The string that you assigned to describe the resource.
+        Email:
+          type: string
+          description: The email address that will receive updates when the Customer-Profile resource changes status.
+    ListCustomerProfileChannelEndpointAssignmentResponse:
+      type: object
+      properties:
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/trusthub.v1.customer_profile.customer_profile_channel_endpoint_assignment'
+        meta:
+          type: object
+          properties:
+            first_page_url:
+              type: string
+              format: uri
+            next_page_url:
+              type:
+              - string
+              - 'null'
+              format: uri
+            page:
+              type: integer
+            page_size:
+              type: integer
+            previous_page_url:
+              type:
+              - string
+              - 'null'
+              format: uri
+            url:
+              type: string
+              format: uri
+            key:
+              type: string
+    trusthub.v1.customer_profile.customer_profile_entity_assignment:
+      type: object
+      properties:
+        sid:
+          type:
+          - string
+          - 'null'
+          minLength: 34
+          maxLength: 34
+          pattern: ^BV[0-9a-fA-F]{32}$
+          description: The unique string that we created to identify the Item Assignment resource.
+        customer_profile_sid:
+          type:
+          - string
+          - 'null'
+          minLength: 34
+          maxLength: 34
+          pattern: ^BU[0-9a-fA-F]{32}$
+          description: The unique string that we created to identify the CustomerProfile resource.
+        account_sid:
+          type:
+          - string
+          - 'null'
+          minLength: 34
+          maxLength: 34
+          pattern: ^AC[0-9a-fA-F]{32}$
+          description: The SID of the [Account](https://www.twilio.com/docs/iam/api/account) that created the Item Assignment resource.
+        object_sid:
+          type:
+          - string
+          - 'null'
+          minLength: 34
+          maxLength: 34
+          pattern: ^[a-zA-Z]{2}[0-9a-fA-F]{32}$
+          description: The SID of an object bag that holds information of the different items.
+        date_created:
+          type:
+          - string
+          - 'null'
+          format: date-time
+          description: The date and time in GMT when the resource was created specified in [ISO 8601](https://en.wikipedia.org/wiki/ISO_8601) format.
+        url:
+          type:
+          - string
+          - 'null'
+          format: uri
+          description: The absolute URL of the Identity resource.
+    customer_profile_enum_status:
+      type: string
+      enum:
+      - draft
+      - pending-review
+      - in-review
+      - twilio-rejected
+      - twilio-approved
+    CreateCustomerProfileRequest:
       type: object
       required:
+      - FriendlyName
+      - Email
       - PolicySid
       properties:
+        FriendlyName:
+          type: string
+          description: The string that you assigned to describe the resource.
+        Email:
+          type: string
+          description: The email address that will receive updates when the Customer-Profile resource changes status.
         PolicySid:
           type: string
           minLength: 34
           maxLength: 34
           pattern: ^RN[0-9a-fA-F]{32}$
-          description: The unique string of a policy that is associated to the customer_profile resource.
+          description: The unique string of a policy that is associated to the Customer-Profile resource.
+        StatusCallback:
+          type: string
+          format: uri
+          description: The URL we call to inform your application of status changes.
+    trusthub.v1.customer_profile:
+      type: object
+      properties:
+        sid:
+          type:
+          - string
+          - 'null'
+          minLength: 34
+          maxLength: 34
+          pattern: ^BU[0-9a-fA-F]{32}$
+          description: The unique string that we created to identify the Customer-Profile resource.
+        account_sid:
+          type:
+          - string
+          - 'null'
+          minLength: 34
+          maxLength: 34
+          pattern: ^AC[0-9a-fA-F]{32}$
+          description: The SID of the [Account](https://www.twilio.com/docs/iam/api/account) that created the Customer-Profile resource.
+        policy_sid:
+          type:
+          - string
+          - 'null'
+          minLength: 34
+          maxLength: 34
+          pattern: ^RN[0-9a-fA-F]{32}$
+          description: The unique string of a policy that is associated to the Customer-Profile resource.
+        friendly_name:
+          type:
+          - string
+          - 'null'
+          description: The string that you assigned to describe the resource.
+        status:
+          type:
+          - string
+          - 'null'
+          $ref: '#/components/schemas/customer_profile_enum_status'
+          description: The verification status of the Customer-Profile resource.
+        valid_until:
+          type:
+          - string
+          - 'null'
+          format: date-time
+          description: The date and time in GMT in [ISO 8601](https://en.wikipedia.org/wiki/ISO_8601) format when the resource will be valid until.
+        email:
+          type:
+          - string
+          - 'null'
+          description: The email address that will receive updates when the Customer-Profile resource changes status.
+        status_callback:
+          type:
+          - string
+          - 'null'
+          format: uri
+          description: The URL we call to inform your application of status changes.
+        date_created:
+          type:
+          - string
+          - 'null'
+          format: date-time
+          description: The date and time in GMT when the resource was created specified in [ISO 8601](https://en.wikipedia.org/wiki/ISO_8601) format.
+        date_updated:
+          type:
+          - string
+          - 'null'
+          format: date-time
+          description: The date and time in GMT when the resource was last updated specified in [ISO 8601](https://en.wikipedia.org/wiki/ISO_8601) format.
+        url:
+          type:
+          - string
+          - 'null'
+          format: uri
+          description: The absolute URL of the Customer-Profile resource.
+        links:
+          type:
+          - object
+          - 'null'
+          format: uri-map
+          description: The URLs of the Assigned Items of the Customer-Profile resource.
   securitySchemes:
     accountSid_authToken:
       type: http

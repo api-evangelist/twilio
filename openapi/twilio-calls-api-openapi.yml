@@ -170,103 +170,24 @@ paths:
         '404':
           description: Call not found
 components:
+  parameters:
+    CallSid:
+      name: CallSid
+      in: path
+      required: true
+      description: The unique identifier of the call
+      schema:
+        type: string
+        pattern: ^CA[0-9a-fA-F]{32}$
+    AccountSid:
+      name: AccountSid
+      in: path
+      required: true
+      description: The unique identifier of the Twilio account
+      schema:
+        type: string
+        pattern: ^AC[0-9a-fA-F]{32}$
   schemas:
-    Call:
-      type: object
-      properties:
-        sid:
-          type: string
-          pattern: ^CA[0-9a-fA-F]{32}$
-          description: Unique identifier for the call
-        account_sid:
-          type: string
-          pattern: ^AC[0-9a-fA-F]{32}$
-        parent_call_sid:
-          type: string
-          description: SID of the parent call (for child legs)
-        to:
-          type: string
-          description: Phone number or SIP URI that received the call
-        to_formatted:
-          type: string
-          description: Formatted version of the To number
-        from:
-          type: string
-          description: Phone number or client ID that made the call
-        from_formatted:
-          type: string
-          description: Formatted version of the From number
-        phone_number_sid:
-          type: string
-          description: SID of the incoming phone number
-        status:
-          type: string
-          enum:
-          - queued
-          - ringing
-          - in-progress
-          - canceled
-          - completed
-          - failed
-          - busy
-          - no-answer
-          description: Current status of the call
-        direction:
-          type: string
-          enum:
-          - inbound
-          - outbound-api
-          - outbound-dial
-          description: Direction of the call
-        price:
-          type: string
-          description: Price of the call
-        price_unit:
-          type: string
-          description: Currency unit for the price
-        duration:
-          type: string
-          description: Duration of the call in seconds
-        start_time:
-          type: string
-          format: date-time
-          description: When the call started
-        end_time:
-          type: string
-          format: date-time
-          description: When the call ended
-        date_created:
-          type: string
-          format: date-time
-        date_updated:
-          type: string
-          format: date-time
-        answered_by:
-          type: string
-          enum:
-          - human
-          - machine
-          description: Whether the call was answered by a human or machine
-        caller_name:
-          type: string
-          description: Caller name if available via CNAM lookup
-        forwarded_from:
-          type: string
-          description: Number that forwarded the call
-        group_sid:
-          type: string
-          description: SID that identifies the call group
-        uri:
-          type: string
-        api_version:
-          type: string
-        subresource_uris:
-          type: object
-          properties:
-            recordings:
-              type: string
-            notifications:
-              type: string
     CreateCallRequest:
       type: object
       required:
@@ -379,23 +300,102 @@ components:
         Twiml:
           type: string
           description: Inline TwiML to redirect the call
-  parameters:
-    AccountSid:
-      name: AccountSid
-      in: path
-      required: true
-      description: The unique identifier of the Twilio account
-      schema:
-        type: string
-        pattern: ^AC[0-9a-fA-F]{32}$
-    CallSid:
-      name: CallSid
-      in: path
-      required: true
-      description: The unique identifier of the call
-      schema:
-        type: string
-        pattern: ^CA[0-9a-fA-F]{32}$
+    Call:
+      type: object
+      properties:
+        sid:
+          type: string
+          pattern: ^CA[0-9a-fA-F]{32}$
+          description: Unique identifier for the call
+        account_sid:
+          type: string
+          pattern: ^AC[0-9a-fA-F]{32}$
+        parent_call_sid:
+          type: string
+          description: SID of the parent call (for child legs)
+        to:
+          type: string
+          description: Phone number or SIP URI that received the call
+        to_formatted:
+          type: string
+          description: Formatted version of the To number
+        from:
+          type: string
+          description: Phone number or client ID that made the call
+        from_formatted:
+          type: string
+          description: Formatted version of the From number
+        phone_number_sid:
+          type: string
+          description: SID of the incoming phone number
+        status:
+          type: string
+          enum:
+          - queued
+          - ringing
+          - in-progress
+          - canceled
+          - completed
+          - failed
+          - busy
+          - no-answer
+          description: Current status of the call
+        direction:
+          type: string
+          enum:
+          - inbound
+          - outbound-api
+          - outbound-dial
+          description: Direction of the call
+        price:
+          type: string
+          description: Price of the call
+        price_unit:
+          type: string
+          description: Currency unit for the price
+        duration:
+          type: string
+          description: Duration of the call in seconds
+        start_time:
+          type: string
+          format: date-time
+          description: When the call started
+        end_time:
+          type: string
+          format: date-time
+          description: When the call ended
+        date_created:
+          type: string
+          format: date-time
+        date_updated:
+          type: string
+          format: date-time
+        answered_by:
+          type: string
+          enum:
+          - human
+          - machine
+          description: Whether the call was answered by a human or machine
+        caller_name:
+          type: string
+          description: Caller name if available via CNAM lookup
+        forwarded_from:
+          type: string
+          description: Number that forwarded the call
+        group_sid:
+          type: string
+          description: SID that identifies the call group
+        uri:
+          type: string
+        api_version:
+          type: string
+        subresource_uris:
+          type: object
+          properties:
+            recordings:
+              type: string
+            notifications:
+              type: string
   securitySchemes:
     accountSid_authToken:
       type: http

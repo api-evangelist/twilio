@@ -83,29 +83,6 @@ components:
             type: string
         send_at:
           type: integer
-    Attachment:
-      type: object
-      required:
-      - content
-      - filename
-      properties:
-        content:
-          type: string
-          description: Base64 encoded attachment content
-        filename:
-          type: string
-        type:
-          type: string
-          description: MIME type of the attachment
-        disposition:
-          type: string
-          enum:
-          - inline
-          - attachment
-          default: attachment
-        content_id:
-          type: string
-          description: Content ID for inline attachments
     SendEmailRequest:
       type: object
       required:
@@ -204,6 +181,29 @@ components:
               properties:
                 enable:
                   type: boolean
+    Attachment:
+      type: object
+      required:
+      - content
+      - filename
+      properties:
+        content:
+          type: string
+          description: Base64 encoded attachment content
+        filename:
+          type: string
+        type:
+          type: string
+          description: MIME type of the attachment
+        disposition:
+          type: string
+          enum:
+          - inline
+          - attachment
+          default: attachment
+        content_id:
+          type: string
+          description: Content ID for inline attachments
     EmailAddress:
       type: object
       required:
