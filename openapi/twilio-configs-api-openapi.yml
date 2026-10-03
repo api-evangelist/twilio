@@ -170,11 +170,15 @@ paths:
       x-summary-source: derived
 components:
   schemas:
-    UpdateAccountConfigRequest:
+    CreateAccountConfigRequest:
       type: object
       required:
+      - Key
       - Value
       properties:
+        Key:
+          type: string
+          description: The config key; up to 100 characters.
         Value:
           type: string
           description: The config value; up to 4096 characters.
@@ -202,6 +206,14 @@ components:
           - 'null'
           format: uri
           description: The absolute URL of the Config.
+    UpdateAccountConfigRequest:
+      type: object
+      required:
+      - Value
+      properties:
+        Value:
+          type: string
+          description: The config value; up to 4096 characters.
     ListAccountConfigResponse:
       type: object
       properties:
@@ -234,18 +246,6 @@ components:
               format: uri
             key:
               type: string
-    CreateAccountConfigRequest:
-      type: object
-      required:
-      - Key
-      - Value
-      properties:
-        Key:
-          type: string
-          description: The config key; up to 100 characters.
-        Value:
-          type: string
-          description: The config value; up to 4096 characters.
   securitySchemes:
     accountSid_authToken:
       type: http

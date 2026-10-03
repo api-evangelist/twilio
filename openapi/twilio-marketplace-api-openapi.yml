@@ -528,38 +528,6 @@ paths:
       x-summary-source: derived
 components:
   schemas:
-    ListMarketplaceAvailableAddOnExtensionResponse:
-      type: object
-      properties:
-        extensions:
-          type: array
-          items:
-            $ref: '#/components/schemas/preview.marketplace.available_add_on.available_add_on_extension'
-        meta:
-          type: object
-          properties:
-            first_page_url:
-              type: string
-              format: uri
-            next_page_url:
-              type:
-              - string
-              - 'null'
-              format: uri
-            page:
-              type: integer
-            page_size:
-              type: integer
-            previous_page_url:
-              type:
-              - string
-              - 'null'
-              format: uri
-            url:
-              type: string
-              format: uri
-            key:
-              type: string
     ListMarketplaceInstalledAddOnExtensionResponse:
       type: object
       properties:
@@ -592,6 +560,46 @@ components:
               format: uri
             key:
               type: string
+    preview.marketplace.available_add_on:
+      type: object
+      properties:
+        sid:
+          type:
+          - string
+          - 'null'
+          minLength: 34
+          maxLength: 34
+          pattern: ^XB[0-9a-fA-F]{32}$
+          description: The unique string that we created to identify the AvailableAddOn resource.
+        friendly_name:
+          type:
+          - string
+          - 'null'
+          description: The string that you assigned to describe the resource.
+        description:
+          type:
+          - string
+          - 'null'
+          description: A short description of the Add-on's functionality.
+        pricing_type:
+          type:
+          - string
+          - 'null'
+          description: How customers are charged for using this Add-on.
+        configuration_schema:
+          description: The JSON object with the configuration that must be provided when installing a given Add-on.
+        url:
+          type:
+          - string
+          - 'null'
+          format: uri
+          description: The absolute URL of the resource.
+        links:
+          type:
+          - object
+          - 'null'
+          format: uri-map
+          description: The URLs of related resources.
     UpdateMarketplaceInstalledAddOnRequest:
       type: object
       properties:
@@ -640,14 +648,135 @@ components:
           - 'null'
           format: uri
           description: The absolute URL of the resource.
-    UpdateMarketplaceInstalledAddOnExtensionRequest:
+    ListMarketplaceInstalledAddOnResponse:
+      type: object
+      properties:
+        installed_add_ons:
+          type: array
+          items:
+            $ref: '#/components/schemas/preview.marketplace.installed_add_on'
+        meta:
+          type: object
+          properties:
+            first_page_url:
+              type: string
+              format: uri
+            next_page_url:
+              type:
+              - string
+              - 'null'
+              format: uri
+            page:
+              type: integer
+            page_size:
+              type: integer
+            previous_page_url:
+              type:
+              - string
+              - 'null'
+              format: uri
+            url:
+              type: string
+              format: uri
+            key:
+              type: string
+    ListMarketplaceAvailableAddOnResponse:
+      type: object
+      properties:
+        available_add_ons:
+          type: array
+          items:
+            $ref: '#/components/schemas/preview.marketplace.available_add_on'
+        meta:
+          type: object
+          properties:
+            first_page_url:
+              type: string
+              format: uri
+            next_page_url:
+              type:
+              - string
+              - 'null'
+              format: uri
+            page:
+              type: integer
+            page_size:
+              type: integer
+            previous_page_url:
+              type:
+              - string
+              - 'null'
+              format: uri
+            url:
+              type: string
+              format: uri
+            key:
+              type: string
+    CreateMarketplaceInstalledAddOnRequest:
       type: object
       required:
-      - Enabled
+      - AvailableAddOnSid
+      - AcceptTermsOfService
       properties:
-        Enabled:
+        AvailableAddOnSid:
+          type: string
+          minLength: 34
+          maxLength: 34
+          pattern: ^XB[0-9a-fA-F]{32}$
+          description: The SID of the AvaliableAddOn to install.
+        AcceptTermsOfService:
           type: boolean
-          description: Whether the Extension should be invoked.
+          description: Whether the Terms of Service were accepted.
+        Configuration:
+          description: The JSON object that represents the configuration of the new Add-on being installed.
+        UniqueName:
+          type: string
+          description: 'An application-defined string that uniquely identifies the resource. This value must be unique within the Account.  '
+    preview.marketplace.installed_add_on.installed_add_on_extension:
+      type: object
+      properties:
+        sid:
+          type:
+          - string
+          - 'null'
+          minLength: 34
+          maxLength: 34
+          pattern: ^XF[0-9a-fA-F]{32}$
+          description: The unique string that we created to identify the InstalledAddOn Extension resource.
+        installed_add_on_sid:
+          type:
+          - string
+          - 'null'
+          minLength: 34
+          maxLength: 34
+          pattern: ^XE[0-9a-fA-F]{32}$
+          description: The SID of the InstalledAddOn resource to which this extension applies.
+        friendly_name:
+          type:
+          - string
+          - 'null'
+          description: The string that you assigned to describe the resource.
+        product_name:
+          type:
+          - string
+          - 'null'
+          description: The name of the Product this Extension is used within.
+        unique_name:
+          type:
+          - string
+          - 'null'
+          description: An application-defined string that uniquely identifies the resource.
+        enabled:
+          type:
+          - boolean
+          - 'null'
+          description: Whether the Extension will be invoked.
+        url:
+          type:
+          - string
+          - 'null'
+          format: uri
+          description: The absolute URL of the resource.
     preview.marketplace.installed_add_on:
       type: object
       properties:
@@ -708,53 +837,13 @@ components:
           - 'null'
           format: uri-map
           description: The URLs of related resources.
-    preview.marketplace.available_add_on:
+    ListMarketplaceAvailableAddOnExtensionResponse:
       type: object
       properties:
-        sid:
-          type:
-          - string
-          - 'null'
-          minLength: 34
-          maxLength: 34
-          pattern: ^XB[0-9a-fA-F]{32}$
-          description: The unique string that we created to identify the AvailableAddOn resource.
-        friendly_name:
-          type:
-          - string
-          - 'null'
-          description: The string that you assigned to describe the resource.
-        description:
-          type:
-          - string
-          - 'null'
-          description: A short description of the Add-on's functionality.
-        pricing_type:
-          type:
-          - string
-          - 'null'
-          description: How customers are charged for using this Add-on.
-        configuration_schema:
-          description: The JSON object with the configuration that must be provided when installing a given Add-on.
-        url:
-          type:
-          - string
-          - 'null'
-          format: uri
-          description: The absolute URL of the resource.
-        links:
-          type:
-          - object
-          - 'null'
-          format: uri-map
-          description: The URLs of related resources.
-    ListMarketplaceInstalledAddOnResponse:
-      type: object
-      properties:
-        installed_add_ons:
+        extensions:
           type: array
           items:
-            $ref: '#/components/schemas/preview.marketplace.installed_add_on'
+            $ref: '#/components/schemas/preview.marketplace.available_add_on.available_add_on_extension'
         meta:
           type: object
           properties:
@@ -780,103 +869,14 @@ components:
               format: uri
             key:
               type: string
-    CreateMarketplaceInstalledAddOnRequest:
+    UpdateMarketplaceInstalledAddOnExtensionRequest:
       type: object
       required:
-      - AvailableAddOnSid
-      - AcceptTermsOfService
+      - Enabled
       properties:
-        AvailableAddOnSid:
-          type: string
-          minLength: 34
-          maxLength: 34
-          pattern: ^XB[0-9a-fA-F]{32}$
-          description: The SID of the AvaliableAddOn to install.
-        AcceptTermsOfService:
+        Enabled:
           type: boolean
-          description: Whether the Terms of Service were accepted.
-        Configuration:
-          description: The JSON object that represents the configuration of the new Add-on being installed.
-        UniqueName:
-          type: string
-          description: 'An application-defined string that uniquely identifies the resource. This value must be unique within the Account.  '
-    ListMarketplaceAvailableAddOnResponse:
-      type: object
-      properties:
-        available_add_ons:
-          type: array
-          items:
-            $ref: '#/components/schemas/preview.marketplace.available_add_on'
-        meta:
-          type: object
-          properties:
-            first_page_url:
-              type: string
-              format: uri
-            next_page_url:
-              type:
-              - string
-              - 'null'
-              format: uri
-            page:
-              type: integer
-            page_size:
-              type: integer
-            previous_page_url:
-              type:
-              - string
-              - 'null'
-              format: uri
-            url:
-              type: string
-              format: uri
-            key:
-              type: string
-    preview.marketplace.installed_add_on.installed_add_on_extension:
-      type: object
-      properties:
-        sid:
-          type:
-          - string
-          - 'null'
-          minLength: 34
-          maxLength: 34
-          pattern: ^XF[0-9a-fA-F]{32}$
-          description: The unique string that we created to identify the InstalledAddOn Extension resource.
-        installed_add_on_sid:
-          type:
-          - string
-          - 'null'
-          minLength: 34
-          maxLength: 34
-          pattern: ^XE[0-9a-fA-F]{32}$
-          description: The SID of the InstalledAddOn resource to which this extension applies.
-        friendly_name:
-          type:
-          - string
-          - 'null'
-          description: The string that you assigned to describe the resource.
-        product_name:
-          type:
-          - string
-          - 'null'
-          description: The name of the Product this Extension is used within.
-        unique_name:
-          type:
-          - string
-          - 'null'
-          description: An application-defined string that uniquely identifies the resource.
-        enabled:
-          type:
-          - boolean
-          - 'null'
-          description: Whether the Extension will be invoked.
-        url:
-          type:
-          - string
-          - 'null'
-          format: uri
-          description: The absolute URL of the resource.
+          description: Whether the Extension should be invoked.
   securitySchemes:
     accountSid_authToken:
       type: http

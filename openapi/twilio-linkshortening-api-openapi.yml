@@ -381,6 +381,30 @@ components:
         TlsCert:
           type: string
           description: 'Contains the full TLS certificate and private for this domain in PEM format: https://en.wikipedia.org/wiki/Privacy-Enhanced_Mail. Twilio uses this information to process HTTPS traffic sent to your domain.'
+    messaging.v1.linkshortening_messaging_service:
+      type: object
+      properties:
+        domain_sid:
+          type:
+          - string
+          - 'null'
+          minLength: 34
+          maxLength: 34
+          pattern: ^DN[0-9a-fA-F]{32}$
+          description: The unique string identifies the domain resource
+        messaging_service_sid:
+          type:
+          - string
+          - 'null'
+          minLength: 34
+          maxLength: 34
+          pattern: ^MG[0-9a-fA-F]{32}$
+          description: The unique string that identifies the messaging service
+        url:
+          type:
+          - string
+          - 'null'
+          format: uri
     messaging.v1.domain_config_messaging_service:
       type: object
       properties:
@@ -442,7 +466,7 @@ components:
           - string
           - 'null'
           format: uri
-    messaging.v1.linkshortening_messaging_service_domain_association:
+    messaging.v1.domain_cert_v4:
       type: object
       properties:
         domain_sid:
@@ -453,19 +477,45 @@ components:
           maxLength: 34
           pattern: ^DN[0-9a-fA-F]{32}$
           description: The unique string that we created to identify the Domain resource.
-        messaging_service_sid:
+        date_updated:
+          type:
+          - string
+          - 'null'
+          format: date-time
+          description: Date that this Domain was last updated.
+        date_expires:
+          type:
+          - string
+          - 'null'
+          format: date-time
+          description: Date that the private certificate associated with this domain expires. You will need to update the certificate before that date to ensure your shortened links will continue to work.
+        date_created:
+          type:
+          - string
+          - 'null'
+          format: date-time
+          description: Date that this Domain was registered to the Twilio platform to create a new Domain object.
+        domain_name:
+          type:
+          - string
+          - 'null'
+          format: uri
+          description: Full url path for this domain.
+        certificate_sid:
           type:
           - string
           - 'null'
           minLength: 34
           maxLength: 34
-          pattern: ^MG[0-9a-fA-F]{32}$
-          description: The unique string that identifies the messaging service
+          pattern: ^CW[0-9a-fA-F]{32}$
+          description: The unique string that we created to identify this Certificate resource.
         url:
           type:
           - string
           - 'null'
           format: uri
+        cert_in_validation:
+          description: Optional JSON field describing the status and upload date of a new certificate in the process of validation
     messaging.v1.domain_config:
       type: object
       properties:
@@ -524,56 +574,6 @@ components:
           - boolean
           - 'null'
           description: Customer's choice to send links with/without "https://" attached to shortened url. If true, messages will not be sent with https:// at the beginning of the url. If false, messages will be sent with https:// at the beginning of the url. False is the default behavior if it is not specified.
-    messaging.v1.domain_cert_v4:
-      type: object
-      properties:
-        domain_sid:
-          type:
-          - string
-          - 'null'
-          minLength: 34
-          maxLength: 34
-          pattern: ^DN[0-9a-fA-F]{32}$
-          description: The unique string that we created to identify the Domain resource.
-        date_updated:
-          type:
-          - string
-          - 'null'
-          format: date-time
-          description: Date that this Domain was last updated.
-        date_expires:
-          type:
-          - string
-          - 'null'
-          format: date-time
-          description: Date that the private certificate associated with this domain expires. You will need to update the certificate before that date to ensure your shortened links will continue to work.
-        date_created:
-          type:
-          - string
-          - 'null'
-          format: date-time
-          description: Date that this Domain was registered to the Twilio platform to create a new Domain object.
-        domain_name:
-          type:
-          - string
-          - 'null'
-          format: uri
-          description: Full url path for this domain.
-        certificate_sid:
-          type:
-          - string
-          - 'null'
-          minLength: 34
-          maxLength: 34
-          pattern: ^CW[0-9a-fA-F]{32}$
-          description: The unique string that we created to identify this Certificate resource.
-        url:
-          type:
-          - string
-          - 'null'
-          format: uri
-        cert_in_validation:
-          description: Optional JSON field describing the status and upload date of a new certificate in the process of validation
     UpdateDomainConfigRequest:
       type: object
       properties:
@@ -591,7 +591,7 @@ components:
         DisableHttps:
           type: boolean
           description: Customer's choice to send links with/without "https://" attached to shortened url. If true, messages will not be sent with https:// at the beginning of the url. If false, messages will be sent with https:// at the beginning of the url. False is the default behavior if it is not specified.
-    messaging.v1.linkshortening_messaging_service:
+    messaging.v1.linkshortening_messaging_service_domain_association:
       type: object
       properties:
         domain_sid:
@@ -601,7 +601,7 @@ components:
           minLength: 34
           maxLength: 34
           pattern: ^DN[0-9a-fA-F]{32}$
-          description: The unique string identifies the domain resource
+          description: The unique string that we created to identify the Domain resource.
         messaging_service_sid:
           type:
           - string

@@ -1858,175 +1858,13 @@ paths:
       x-summary-source: derived
 components:
   schemas:
-    CreateUnderstandFieldTypeRequest:
-      type: object
-      required:
-      - UniqueName
-      properties:
-        UniqueName:
-          type: string
-          description: A user-provided string that uniquely identifies this resource as an alternative to the sid. Unique up to 64 characters long.
-        FriendlyName:
-          type: string
-          description: 'A user-provided string that identifies this resource. It is non-unique and can up to 255 characters long.  '
-    UpdateUnderstandSampleRequest:
+    ListUnderstandSampleResponse:
       type: object
       properties:
-        Language:
-          type: string
-          description: An ISO language-country string of the sample.
-        TaggedText:
-          type: string
-          description: The text example of how end-users may express this task. The sample may contain Field tag blocks.
-        SourceChannel:
-          type: string
-          description: 'The communication channel the sample was captured. It can be: *voice*, *sms*, *chat*, *alexa*, *google-assistant*, or *slack*. If not included the value will be null  '
-    preview.understand.assistant.field_type.field_value:
-      type: object
-      properties:
-        account_sid:
-          type:
-          - string
-          - 'null'
-          minLength: 34
-          maxLength: 34
-          pattern: ^AC[0-9a-fA-F]{32}$
-          description: The unique ID of the Account that created this Field Value.
-        date_created:
-          type:
-          - string
-          - 'null'
-          format: date-time
-          description: The date that this resource was created
-        date_updated:
-          type:
-          - string
-          - 'null'
-          format: date-time
-          description: The date that this resource was last updated
-        field_type_sid:
-          type:
-          - string
-          - 'null'
-          minLength: 34
-          maxLength: 34
-          pattern: ^UB[0-9a-fA-F]{32}$
-          description: The unique ID of the Field Type associated with this Field Value.
-        language:
-          type:
-          - string
-          - 'null'
-          description: An ISO language-country string of the value.
-        assistant_sid:
-          type:
-          - string
-          - 'null'
-          minLength: 34
-          maxLength: 34
-          pattern: ^UA[0-9a-fA-F]{32}$
-          description: The unique ID of the Assistant.
-        sid:
-          type:
-          - string
-          - 'null'
-          minLength: 34
-          maxLength: 34
-          pattern: ^UC[0-9a-fA-F]{32}$
-          description: A 34 character string that uniquely identifies this resource.
-        value:
-          type:
-          - string
-          - 'null'
-          description: The Field Value itself.
-        url:
-          type:
-          - string
-          - 'null'
-          format: uri
-        synonym_of:
-          type:
-          - string
-          - 'null'
-          minLength: 34
-          maxLength: 34
-          pattern: ^UC[0-9a-fA-F]{32}$
-          description: A value that indicates this field value is a synonym of. Empty if the value is not a synonym.
-    UpdateUnderstandTaskActionsRequest:
-      type: object
-      properties:
-        Actions:
-          description: 'The JSON actions that instruct the Assistant how to perform this task.  '
-    UpdateUnderstandAssistantFallbackActionsRequest:
-      type: object
-      properties:
-        FallbackActions:
-          description: ''
-    ListUnderstandModelBuildResponse:
-      type: object
-      properties:
-        model_builds:
+        samples:
           type: array
           items:
-            $ref: '#/components/schemas/preview.understand.assistant.model_build'
-        meta:
-          type: object
-          properties:
-            first_page_url:
-              type: string
-              format: uri
-            next_page_url:
-              type:
-              - string
-              - 'null'
-              format: uri
-            page:
-              type: integer
-            page_size:
-              type: integer
-            previous_page_url:
-              type:
-              - string
-              - 'null'
-              format: uri
-            url:
-              type: string
-              format: uri
-            key:
-              type: string
-    CreateUnderstandModelBuildRequest:
-      type: object
-      properties:
-        StatusCallback:
-          type: string
-          format: uri
-          description: ''
-        UniqueName:
-          type: string
-          description: 'A user-provided string that uniquely identifies this resource as an alternative to the sid. Unique up to 64 characters long. For example: v0.1  '
-    CreateUnderstandTaskRequest:
-      type: object
-      required:
-      - UniqueName
-      properties:
-        UniqueName:
-          type: string
-          description: A user-provided string that uniquely identifies this resource as an alternative to the sid. Unique up to 64 characters long.
-        FriendlyName:
-          type: string
-          description: A user-provided string that identifies this resource. It is non-unique and can up to 255 characters long.
-        Actions:
-          description: A user-provided JSON object encoded as a string to specify the actions for this task. It is optional and non-unique.
-        ActionsUrl:
-          type: string
-          format: uri
-          description: User-provided HTTP endpoint where from the assistant fetches actions
-    ListUnderstandFieldValueResponse:
-      type: object
-      properties:
-        field_values:
-          type: array
-          items:
-            $ref: '#/components/schemas/preview.understand.assistant.field_type.field_value'
+            $ref: '#/components/schemas/preview.understand.assistant.task.sample'
         meta:
           type: object
           properties:
@@ -2084,6 +1922,107 @@ components:
               format: uri
             key:
               type: string
+    preview.understand.assistant.assistant_fallback_actions:
+      type: object
+      properties:
+        account_sid:
+          type:
+          - string
+          - 'null'
+          minLength: 34
+          maxLength: 34
+          pattern: ^AC[0-9a-fA-F]{32}$
+        assistant_sid:
+          type:
+          - string
+          - 'null'
+          minLength: 34
+          maxLength: 34
+          pattern: ^UA[0-9a-fA-F]{32}$
+        url:
+          type:
+          - string
+          - 'null'
+          format: uri
+        data: {}
+    preview.understand.assistant.field_type:
+      type: object
+      properties:
+        account_sid:
+          type:
+          - string
+          - 'null'
+          minLength: 34
+          maxLength: 34
+          pattern: ^AC[0-9a-fA-F]{32}$
+          description: The unique ID of the Account that created this Field Type.
+        date_created:
+          type:
+          - string
+          - 'null'
+          format: date-time
+          description: The date that this resource was created
+        date_updated:
+          type:
+          - string
+          - 'null'
+          format: date-time
+          description: The date that this resource was last updated
+        friendly_name:
+          type:
+          - string
+          - 'null'
+          description: A user-provided string that identifies this resource. It is non-unique and can up to 255 characters long.
+        links:
+          type:
+          - object
+          - 'null'
+          format: uri-map
+        assistant_sid:
+          type:
+          - string
+          - 'null'
+          minLength: 34
+          maxLength: 34
+          pattern: ^UA[0-9a-fA-F]{32}$
+          description: The unique ID of the Assistant.
+        sid:
+          type:
+          - string
+          - 'null'
+          minLength: 34
+          maxLength: 34
+          pattern: ^UB[0-9a-fA-F]{32}$
+          description: A 34 character string that uniquely identifies this resource.
+        unique_name:
+          type:
+          - string
+          - 'null'
+          description: A user-provided string that uniquely identifies this resource as an alternative to the sid. Unique up to 64 characters long.
+        url:
+          type:
+          - string
+          - 'null'
+          format: uri
+    CreateUnderstandFieldTypeRequest:
+      type: object
+      required:
+      - UniqueName
+      properties:
+        UniqueName:
+          type: string
+          description: A user-provided string that uniquely identifies this resource as an alternative to the sid. Unique up to 64 characters long.
+        FriendlyName:
+          type: string
+          description: 'A user-provided string that identifies this resource. It is non-unique and can up to 255 characters long.  '
+    model_build_enum_status:
+      type: string
+      enum:
+      - enqueued
+      - building
+      - completed
+      - failed
+      - canceled
     ListUnderstandQueryResponse:
       type: object
       properties:
@@ -2116,6 +2055,34 @@ components:
               format: uri
             key:
               type: string
+    CreateUnderstandModelBuildRequest:
+      type: object
+      properties:
+        StatusCallback:
+          type: string
+          format: uri
+          description: ''
+        UniqueName:
+          type: string
+          description: 'A user-provided string that uniquely identifies this resource as an alternative to the sid. Unique up to 64 characters long. For example: v0.1  '
+    UpdateUnderstandModelBuildRequest:
+      type: object
+      properties:
+        UniqueName:
+          type: string
+          description: 'A user-provided string that uniquely identifies this resource as an alternative to the sid. Unique up to 64 characters long. For example: v0.1  '
+    CreateUnderstandFieldRequest:
+      type: object
+      required:
+      - FieldType
+      - UniqueName
+      properties:
+        FieldType:
+          type: string
+          description: The unique name or sid of the FieldType. It can be any [Built-in Field Type](https://www.twilio.com/docs/assistant/api/built-in-field-types) or the unique_name or the Field Type sid of a custom Field Type.
+        UniqueName:
+          type: string
+          description: 'A user-provided string that uniquely identifies this resource as an alternative to the sid. Unique up to 64 characters long.  '
     UpdateUnderstandTaskRequest:
       type: object
       properties:
@@ -2131,198 +2098,13 @@ components:
           type: string
           format: uri
           description: User-provided HTTP endpoint where from the assistant fetches actions
-    preview.understand.assistant:
+    ListUnderstandFieldTypeResponse:
       type: object
       properties:
-        account_sid:
-          type:
-          - string
-          - 'null'
-          minLength: 34
-          maxLength: 34
-          pattern: ^AC[0-9a-fA-F]{32}$
-          description: The unique ID of the Account that created this Assistant.
-        date_created:
-          type:
-          - string
-          - 'null'
-          format: date-time
-          description: The date that this resource was created
-        date_updated:
-          type:
-          - string
-          - 'null'
-          format: date-time
-          description: The date that this resource was last updated
-        friendly_name:
-          type:
-          - string
-          - 'null'
-          description: A text description for the Assistant. It is non-unique and can up to 255 characters long.
-        latest_model_build_sid:
-          type:
-          - string
-          - 'null'
-          minLength: 34
-          maxLength: 34
-          pattern: ^UG[0-9a-fA-F]{32}$
-          description: The unique ID (Sid) of the latest model build. Null if no model has been built.
-        links:
-          type:
-          - object
-          - 'null'
-          format: uri-map
-        log_queries:
-          type:
-          - boolean
-          - 'null'
-          description: A boolean that specifies whether queries should be logged for 30 days further training. If false, no queries will be stored, if true, queries will be stored for 30 days and deleted thereafter.
-        sid:
-          type:
-          - string
-          - 'null'
-          minLength: 34
-          maxLength: 34
-          pattern: ^UA[0-9a-fA-F]{32}$
-          description: A 34 character string that uniquely identifies this resource.
-        unique_name:
-          type:
-          - string
-          - 'null'
-          description: A user-provided string that uniquely identifies this resource as an alternative to the sid. You can use the unique name in the URL path. Unique up to 64 characters long.
-        url:
-          type:
-          - string
-          - 'null'
-          format: uri
-        callback_url:
-          type:
-          - string
-          - 'null'
-          format: uri
-          description: A user-provided URL to send event callbacks to.
-        callback_events:
-          type:
-          - string
-          - 'null'
-          description: Space-separated list of callback events that will trigger callbacks.
-    preview.understand.assistant.task.field:
-      type: object
-      properties:
-        account_sid:
-          type:
-          - string
-          - 'null'
-          minLength: 34
-          maxLength: 34
-          pattern: ^AC[0-9a-fA-F]{32}$
-          description: The unique ID of the Account that created this Field.
-        date_created:
-          type:
-          - string
-          - 'null'
-          format: date-time
-          description: The date that this resource was created
-        date_updated:
-          type:
-          - string
-          - 'null'
-          format: date-time
-          description: The date that this resource was last updated
-        field_type:
-          type:
-          - string
-          - 'null'
-          description: The Field Type of this field. It can be any [Built-in Field Type](https://www.twilio.com/docs/assistant/api/built-in-field-types) or the unique_name or sid of a custom Field Type.
-        task_sid:
-          type:
-          - string
-          - 'null'
-          minLength: 34
-          maxLength: 34
-          pattern: ^UD[0-9a-fA-F]{32}$
-          description: The unique ID of the Task associated with this Field.
-        assistant_sid:
-          type:
-          - string
-          - 'null'
-          minLength: 34
-          maxLength: 34
-          pattern: ^UA[0-9a-fA-F]{32}$
-          description: The unique ID of the parent Assistant.
-        sid:
-          type:
-          - string
-          - 'null'
-          minLength: 34
-          maxLength: 34
-          pattern: ^UE[0-9a-fA-F]{32}$
-          description: A 34 character string that uniquely identifies this resource.
-        unique_name:
-          type:
-          - string
-          - 'null'
-          description: A user-provided string that uniquely identifies this resource as an alternative to the sid. Unique up to 64 characters long.
-        url:
-          type:
-          - string
-          - 'null'
-          format: uri
-    UpdateUnderstandFieldTypeRequest:
-      type: object
-      properties:
-        FriendlyName:
-          type: string
-          description: A user-provided string that identifies this resource. It is non-unique and can up to 255 characters long.
-        UniqueName:
-          type: string
-          description: 'A user-provided string that uniquely identifies this resource as an alternative to the sid. Unique up to 64 characters long.  '
-    UpdateUnderstandAssistantRequest:
-      type: object
-      properties:
-        FriendlyName:
-          type: string
-          description: A text description for the Assistant. It is non-unique and can up to 255 characters long.
-        LogQueries:
-          type: boolean
-          description: A boolean that specifies whether queries should be logged for 30 days further training. If false, no queries will be stored, if true, queries will be stored for 30 days and deleted thereafter. Defaults to true if no value is provided.
-        UniqueName:
-          type: string
-          description: A user-provided string that uniquely identifies this resource as an alternative to the sid. Unique up to 64 characters long.
-        CallbackUrl:
-          type: string
-          format: uri
-          description: A user-provided URL to send event callbacks to.
-        CallbackEvents:
-          type: string
-          description: Space-separated list of callback events that will trigger callbacks.
-        FallbackActions:
-          description: The JSON actions to be executed when the user's input is not recognized as matching any Task.
-        InitiationActions:
-          description: The JSON actions to be executed on inbound phone calls when the Assistant has to say something first.
-        StyleSheet:
-          description: The JSON object that holds the style sheet for the assistant
-    UpdateUnderstandModelBuildRequest:
-      type: object
-      properties:
-        UniqueName:
-          type: string
-          description: 'A user-provided string that uniquely identifies this resource as an alternative to the sid. Unique up to 64 characters long. For example: v0.1  '
-    model_build_enum_status:
-      type: string
-      enum:
-      - enqueued
-      - building
-      - completed
-      - failed
-      - canceled
-    ListUnderstandTaskResponse:
-      type: object
-      properties:
-        tasks:
+        field_types:
           type: array
           items:
-            $ref: '#/components/schemas/preview.understand.assistant.task'
+            $ref: '#/components/schemas/preview.understand.assistant.field_type'
         meta:
           type: object
           properties:
@@ -2348,6 +2130,26 @@ components:
               format: uri
             key:
               type: string
+    UpdateUnderstandTaskActionsRequest:
+      type: object
+      properties:
+        Actions:
+          description: 'The JSON actions that instruct the Assistant how to perform this task.  '
+    CreateUnderstandSampleRequest:
+      type: object
+      required:
+      - Language
+      - TaggedText
+      properties:
+        Language:
+          type: string
+          description: An ISO language-country string of the sample.
+        TaggedText:
+          type: string
+          description: The text example of how end-users may express this task. The sample may contain Field tag blocks.
+        SourceChannel:
+          type: string
+          description: 'The communication channel the sample was captured. It can be: *voice*, *sms*, *chat*, *alexa*, *google-assistant*, or *slack*. If not included the value will be null  '
     preview.understand.assistant.query:
       type: object
       properties:
@@ -2434,200 +2236,16 @@ components:
           - string
           - 'null'
           description: The communication channel where this end-user input came from
-    CreateUnderstandSampleRequest:
-      type: object
-      required:
-      - Language
-      - TaggedText
-      properties:
-        Language:
-          type: string
-          description: An ISO language-country string of the sample.
-        TaggedText:
-          type: string
-          description: The text example of how end-users may express this task. The sample may contain Field tag blocks.
-        SourceChannel:
-          type: string
-          description: 'The communication channel the sample was captured. It can be: *voice*, *sms*, *chat*, *alexa*, *google-assistant*, or *slack*. If not included the value will be null  '
-    preview.understand.assistant.assistant_fallback_actions:
+    UpdateUnderstandFieldTypeRequest:
       type: object
       properties:
-        account_sid:
-          type:
-          - string
-          - 'null'
-          minLength: 34
-          maxLength: 34
-          pattern: ^AC[0-9a-fA-F]{32}$
-        assistant_sid:
-          type:
-          - string
-          - 'null'
-          minLength: 34
-          maxLength: 34
-          pattern: ^UA[0-9a-fA-F]{32}$
-        url:
-          type:
-          - string
-          - 'null'
-          format: uri
-        data: {}
-    UpdateUnderstandStyleSheetRequest:
-      type: object
-      properties:
-        StyleSheet:
-          description: The JSON Style sheet string
-    CreateUnderstandFieldValueRequest:
-      type: object
-      required:
-      - Language
-      - Value
-      properties:
-        Language:
+        FriendlyName:
           type: string
-          description: An ISO language-country string of the value.
-        Value:
-          type: string
-          description: A user-provided string that uniquely identifies this resource as an alternative to the sid. Unique up to 64 characters long.
-        SynonymOf:
-          type: string
-          description: 'A value that indicates this field value is a synonym of. Empty if the value is not a synonym.  '
-    UpdateUnderstandQueryRequest:
-      type: object
-      properties:
-        SampleSid:
-          type: string
-          minLength: 34
-          maxLength: 34
-          pattern: ^UF[0-9a-fA-F]{32}$
-          description: An optional reference to the Sample created from this query.
-        Status:
-          type: string
-          description: 'A string that described the query status. The values can be: pending_review, reviewed, discarded  '
-    preview.understand.assistant.field_type:
-      type: object
-      properties:
-        account_sid:
-          type:
-          - string
-          - 'null'
-          minLength: 34
-          maxLength: 34
-          pattern: ^AC[0-9a-fA-F]{32}$
-          description: The unique ID of the Account that created this Field Type.
-        date_created:
-          type:
-          - string
-          - 'null'
-          format: date-time
-          description: The date that this resource was created
-        date_updated:
-          type:
-          - string
-          - 'null'
-          format: date-time
-          description: The date that this resource was last updated
-        friendly_name:
-          type:
-          - string
-          - 'null'
           description: A user-provided string that identifies this resource. It is non-unique and can up to 255 characters long.
-        links:
-          type:
-          - object
-          - 'null'
-          format: uri-map
-        assistant_sid:
-          type:
-          - string
-          - 'null'
-          minLength: 34
-          maxLength: 34
-          pattern: ^UA[0-9a-fA-F]{32}$
-          description: The unique ID of the Assistant.
-        sid:
-          type:
-          - string
-          - 'null'
-          minLength: 34
-          maxLength: 34
-          pattern: ^UB[0-9a-fA-F]{32}$
-          description: A 34 character string that uniquely identifies this resource.
-        unique_name:
-          type:
-          - string
-          - 'null'
-          description: A user-provided string that uniquely identifies this resource as an alternative to the sid. Unique up to 64 characters long.
-        url:
-          type:
-          - string
-          - 'null'
-          format: uri
-    preview.understand.assistant.model_build:
-      type: object
-      properties:
-        account_sid:
-          type:
-          - string
-          - 'null'
-          minLength: 34
-          maxLength: 34
-          pattern: ^AC[0-9a-fA-F]{32}$
-          description: The unique ID of the Account that created this Model Build.
-        date_created:
-          type:
-          - string
-          - 'null'
-          format: date-time
-          description: The date that this resource was created
-        date_updated:
-          type:
-          - string
-          - 'null'
-          format: date-time
-          description: The date that this resource was last updated
-        assistant_sid:
-          type:
-          - string
-          - 'null'
-          minLength: 34
-          maxLength: 34
-          pattern: ^UA[0-9a-fA-F]{32}$
-          description: The unique ID of the parent Assistant.
-        sid:
-          type:
-          - string
-          - 'null'
-          minLength: 34
-          maxLength: 34
-          pattern: ^UG[0-9a-fA-F]{32}$
-          description: A 34 character string that uniquely identifies this resource.
-        status:
-          type:
-          - string
-          - 'null'
-          $ref: '#/components/schemas/model_build_enum_status'
-          description: 'A string that described the model build status. The values can be: enqueued, building, completed, failed'
-        unique_name:
-          type:
-          - string
-          - 'null'
-          description: A user-provided string that uniquely identifies this resource as an alternative to the sid. Unique up to 64 characters long.
-        url:
-          type:
-          - string
-          - 'null'
-          format: uri
-        build_duration:
-          type:
-          - integer
-          - 'null'
-          description: The time in seconds it took to build the model.
-        error_code:
-          type:
-          - integer
-          - 'null'
-    preview.understand.assistant.task.task_statistics:
+        UniqueName:
+          type: string
+          description: 'A user-provided string that uniquely identifies this resource as an alternative to the sid. Unique up to 64 characters long.  '
+    preview.understand.assistant.dialogue:
       type: object
       properties:
         account_sid:
@@ -2646,29 +2264,174 @@ components:
           maxLength: 34
           pattern: ^UA[0-9a-fA-F]{32}$
           description: The unique ID of the parent Assistant.
-        task_sid:
+        sid:
           type:
           - string
           - 'null'
           minLength: 34
           maxLength: 34
-          pattern: ^UD[0-9a-fA-F]{32}$
-          description: The unique ID of the Task associated with this Field.
-        samples_count:
-          type:
-          - integer
-          - 'null'
-          description: The total number of Samples associated with this Task.
-        fields_count:
-          type:
-          - integer
-          - 'null'
-          description: The total number of Fields associated with this Task.
+          pattern: ^UK[0-9a-fA-F]{32}$
+          description: The unique ID of the Dialogue
+        data:
+          description: The dialogue memory object as json
         url:
           type:
           - string
           - 'null'
           format: uri
+    UpdateUnderstandAssistantRequest:
+      type: object
+      properties:
+        FriendlyName:
+          type: string
+          description: A text description for the Assistant. It is non-unique and can up to 255 characters long.
+        LogQueries:
+          type: boolean
+          description: A boolean that specifies whether queries should be logged for 30 days further training. If false, no queries will be stored, if true, queries will be stored for 30 days and deleted thereafter. Defaults to true if no value is provided.
+        UniqueName:
+          type: string
+          description: A user-provided string that uniquely identifies this resource as an alternative to the sid. Unique up to 64 characters long.
+        CallbackUrl:
+          type: string
+          format: uri
+          description: A user-provided URL to send event callbacks to.
+        CallbackEvents:
+          type: string
+          description: Space-separated list of callback events that will trigger callbacks.
+        FallbackActions:
+          description: The JSON actions to be executed when the user's input is not recognized as matching any Task.
+        InitiationActions:
+          description: The JSON actions to be executed on inbound phone calls when the Assistant has to say something first.
+        StyleSheet:
+          description: The JSON object that holds the style sheet for the assistant
+    preview.understand.assistant.style_sheet:
+      type: object
+      properties:
+        account_sid:
+          type:
+          - string
+          - 'null'
+          minLength: 34
+          maxLength: 34
+          pattern: ^AC[0-9a-fA-F]{32}$
+          description: The unique ID of the Account that created this Assistant
+        assistant_sid:
+          type:
+          - string
+          - 'null'
+          minLength: 34
+          maxLength: 34
+          pattern: ^UA[0-9a-fA-F]{32}$
+          description: The unique ID of the Assistant
+        url:
+          type:
+          - string
+          - 'null'
+          format: uri
+        data:
+          description: The JSON style sheet object
+    preview.understand.assistant.field_type.field_value:
+      type: object
+      properties:
+        account_sid:
+          type:
+          - string
+          - 'null'
+          minLength: 34
+          maxLength: 34
+          pattern: ^AC[0-9a-fA-F]{32}$
+          description: The unique ID of the Account that created this Field Value.
+        date_created:
+          type:
+          - string
+          - 'null'
+          format: date-time
+          description: The date that this resource was created
+        date_updated:
+          type:
+          - string
+          - 'null'
+          format: date-time
+          description: The date that this resource was last updated
+        field_type_sid:
+          type:
+          - string
+          - 'null'
+          minLength: 34
+          maxLength: 34
+          pattern: ^UB[0-9a-fA-F]{32}$
+          description: The unique ID of the Field Type associated with this Field Value.
+        language:
+          type:
+          - string
+          - 'null'
+          description: An ISO language-country string of the value.
+        assistant_sid:
+          type:
+          - string
+          - 'null'
+          minLength: 34
+          maxLength: 34
+          pattern: ^UA[0-9a-fA-F]{32}$
+          description: The unique ID of the Assistant.
+        sid:
+          type:
+          - string
+          - 'null'
+          minLength: 34
+          maxLength: 34
+          pattern: ^UC[0-9a-fA-F]{32}$
+          description: A 34 character string that uniquely identifies this resource.
+        value:
+          type:
+          - string
+          - 'null'
+          description: The Field Value itself.
+        url:
+          type:
+          - string
+          - 'null'
+          format: uri
+        synonym_of:
+          type:
+          - string
+          - 'null'
+          minLength: 34
+          maxLength: 34
+          pattern: ^UC[0-9a-fA-F]{32}$
+          description: A value that indicates this field value is a synonym of. Empty if the value is not a synonym.
+    UpdateUnderstandAssistantFallbackActionsRequest:
+      type: object
+      properties:
+        FallbackActions:
+          description: ''
+    CreateUnderstandFieldValueRequest:
+      type: object
+      required:
+      - Language
+      - Value
+      properties:
+        Language:
+          type: string
+          description: An ISO language-country string of the value.
+        Value:
+          type: string
+          description: A user-provided string that uniquely identifies this resource as an alternative to the sid. Unique up to 64 characters long.
+        SynonymOf:
+          type: string
+          description: 'A value that indicates this field value is a synonym of. Empty if the value is not a synonym.  '
+    UpdateUnderstandSampleRequest:
+      type: object
+      properties:
+        Language:
+          type: string
+          description: An ISO language-country string of the sample.
+        TaggedText:
+          type: string
+          description: The text example of how end-users may express this task. The sample may contain Field tag blocks.
+        SourceChannel:
+          type: string
+          description: 'The communication channel the sample was captured. It can be: *voice*, *sms*, *chat*, *alexa*, *google-assistant*, or *slack*. If not included the value will be null  '
     preview.understand.assistant.task.task_actions:
       type: object
       properties:
@@ -2702,62 +2465,13 @@ components:
           - 'null'
           format: uri
         data: {}
-    preview.understand.assistant.assistant_initiation_actions:
+    ListUnderstandTaskResponse:
       type: object
       properties:
-        account_sid:
-          type:
-          - string
-          - 'null'
-          minLength: 34
-          maxLength: 34
-          pattern: ^AC[0-9a-fA-F]{32}$
-        assistant_sid:
-          type:
-          - string
-          - 'null'
-          minLength: 34
-          maxLength: 34
-          pattern: ^UA[0-9a-fA-F]{32}$
-        url:
-          type:
-          - string
-          - 'null'
-          format: uri
-        data: {}
-    preview.understand.assistant.style_sheet:
-      type: object
-      properties:
-        account_sid:
-          type:
-          - string
-          - 'null'
-          minLength: 34
-          maxLength: 34
-          pattern: ^AC[0-9a-fA-F]{32}$
-          description: The unique ID of the Account that created this Assistant
-        assistant_sid:
-          type:
-          - string
-          - 'null'
-          minLength: 34
-          maxLength: 34
-          pattern: ^UA[0-9a-fA-F]{32}$
-          description: The unique ID of the Assistant
-        url:
-          type:
-          - string
-          - 'null'
-          format: uri
-        data:
-          description: The JSON style sheet object
-    ListUnderstandFieldTypeResponse:
-      type: object
-      properties:
-        field_types:
+        tasks:
           type: array
           items:
-            $ref: '#/components/schemas/preview.understand.assistant.field_type'
+            $ref: '#/components/schemas/preview.understand.assistant.task'
         meta:
           type: object
           properties:
@@ -2783,23 +2497,6 @@ components:
               format: uri
             key:
               type: string
-    UpdateUnderstandAssistantInitiationActionsRequest:
-      type: object
-      properties:
-        InitiationActions:
-          description: ''
-    CreateUnderstandFieldRequest:
-      type: object
-      required:
-      - FieldType
-      - UniqueName
-      properties:
-        FieldType:
-          type: string
-          description: The unique name or sid of the FieldType. It can be any [Built-in Field Type](https://www.twilio.com/docs/assistant/api/built-in-field-types) or the unique_name or the Field Type sid of a custom Field Type.
-        UniqueName:
-          type: string
-          description: 'A user-provided string that uniquely identifies this resource as an alternative to the sid. Unique up to 64 characters long.  '
     CreateUnderstandQueryRequest:
       type: object
       required:
@@ -2821,6 +2518,34 @@ components:
         Field:
           type: string
           description: 'Constraints the query to a given Field with an task. Useful when you know the Field you are expecting. It accepts one field in the format *task-unique-name-1*:*field-unique-name*  '
+    preview.understand.assistant.assistant_initiation_actions:
+      type: object
+      properties:
+        account_sid:
+          type:
+          - string
+          - 'null'
+          minLength: 34
+          maxLength: 34
+          pattern: ^AC[0-9a-fA-F]{32}$
+        assistant_sid:
+          type:
+          - string
+          - 'null'
+          minLength: 34
+          maxLength: 34
+          pattern: ^UA[0-9a-fA-F]{32}$
+        url:
+          type:
+          - string
+          - 'null'
+          format: uri
+        data: {}
+    UpdateUnderstandAssistantInitiationActionsRequest:
+      type: object
+      properties:
+        InitiationActions:
+          description: ''
     preview.understand.assistant.task.sample:
       type: object
       properties:
@@ -2888,6 +2613,253 @@ components:
           - string
           - 'null'
           description: 'The communication channel the sample was captured. It can be: *voice*, *sms*, *chat*, *alexa*, *google-assistant*, or *slack*. If not included the value will be null'
+    ListUnderstandFieldValueResponse:
+      type: object
+      properties:
+        field_values:
+          type: array
+          items:
+            $ref: '#/components/schemas/preview.understand.assistant.field_type.field_value'
+        meta:
+          type: object
+          properties:
+            first_page_url:
+              type: string
+              format: uri
+            next_page_url:
+              type:
+              - string
+              - 'null'
+              format: uri
+            page:
+              type: integer
+            page_size:
+              type: integer
+            previous_page_url:
+              type:
+              - string
+              - 'null'
+              format: uri
+            url:
+              type: string
+              format: uri
+            key:
+              type: string
+    preview.understand.assistant.task.task_statistics:
+      type: object
+      properties:
+        account_sid:
+          type:
+          - string
+          - 'null'
+          minLength: 34
+          maxLength: 34
+          pattern: ^AC[0-9a-fA-F]{32}$
+          description: The unique ID of the Account that created this Field.
+        assistant_sid:
+          type:
+          - string
+          - 'null'
+          minLength: 34
+          maxLength: 34
+          pattern: ^UA[0-9a-fA-F]{32}$
+          description: The unique ID of the parent Assistant.
+        task_sid:
+          type:
+          - string
+          - 'null'
+          minLength: 34
+          maxLength: 34
+          pattern: ^UD[0-9a-fA-F]{32}$
+          description: The unique ID of the Task associated with this Field.
+        samples_count:
+          type:
+          - integer
+          - 'null'
+          description: The total number of Samples associated with this Task.
+        fields_count:
+          type:
+          - integer
+          - 'null'
+          description: The total number of Fields associated with this Task.
+        url:
+          type:
+          - string
+          - 'null'
+          format: uri
+    UpdateUnderstandQueryRequest:
+      type: object
+      properties:
+        SampleSid:
+          type: string
+          minLength: 34
+          maxLength: 34
+          pattern: ^UF[0-9a-fA-F]{32}$
+          description: An optional reference to the Sample created from this query.
+        Status:
+          type: string
+          description: 'A string that described the query status. The values can be: pending_review, reviewed, discarded  '
+    preview.understand.assistant.model_build:
+      type: object
+      properties:
+        account_sid:
+          type:
+          - string
+          - 'null'
+          minLength: 34
+          maxLength: 34
+          pattern: ^AC[0-9a-fA-F]{32}$
+          description: The unique ID of the Account that created this Model Build.
+        date_created:
+          type:
+          - string
+          - 'null'
+          format: date-time
+          description: The date that this resource was created
+        date_updated:
+          type:
+          - string
+          - 'null'
+          format: date-time
+          description: The date that this resource was last updated
+        assistant_sid:
+          type:
+          - string
+          - 'null'
+          minLength: 34
+          maxLength: 34
+          pattern: ^UA[0-9a-fA-F]{32}$
+          description: The unique ID of the parent Assistant.
+        sid:
+          type:
+          - string
+          - 'null'
+          minLength: 34
+          maxLength: 34
+          pattern: ^UG[0-9a-fA-F]{32}$
+          description: A 34 character string that uniquely identifies this resource.
+        status:
+          type:
+          - string
+          - 'null'
+          $ref: '#/components/schemas/model_build_enum_status'
+          description: 'A string that described the model build status. The values can be: enqueued, building, completed, failed'
+        unique_name:
+          type:
+          - string
+          - 'null'
+          description: A user-provided string that uniquely identifies this resource as an alternative to the sid. Unique up to 64 characters long.
+        url:
+          type:
+          - string
+          - 'null'
+          format: uri
+        build_duration:
+          type:
+          - integer
+          - 'null'
+          description: The time in seconds it took to build the model.
+        error_code:
+          type:
+          - integer
+          - 'null'
+    CreateUnderstandTaskRequest:
+      type: object
+      required:
+      - UniqueName
+      properties:
+        UniqueName:
+          type: string
+          description: A user-provided string that uniquely identifies this resource as an alternative to the sid. Unique up to 64 characters long.
+        FriendlyName:
+          type: string
+          description: A user-provided string that identifies this resource. It is non-unique and can up to 255 characters long.
+        Actions:
+          description: A user-provided JSON object encoded as a string to specify the actions for this task. It is optional and non-unique.
+        ActionsUrl:
+          type: string
+          format: uri
+          description: User-provided HTTP endpoint where from the assistant fetches actions
+    UpdateUnderstandStyleSheetRequest:
+      type: object
+      properties:
+        StyleSheet:
+          description: The JSON Style sheet string
+    preview.understand.assistant:
+      type: object
+      properties:
+        account_sid:
+          type:
+          - string
+          - 'null'
+          minLength: 34
+          maxLength: 34
+          pattern: ^AC[0-9a-fA-F]{32}$
+          description: The unique ID of the Account that created this Assistant.
+        date_created:
+          type:
+          - string
+          - 'null'
+          format: date-time
+          description: The date that this resource was created
+        date_updated:
+          type:
+          - string
+          - 'null'
+          format: date-time
+          description: The date that this resource was last updated
+        friendly_name:
+          type:
+          - string
+          - 'null'
+          description: A text description for the Assistant. It is non-unique and can up to 255 characters long.
+        latest_model_build_sid:
+          type:
+          - string
+          - 'null'
+          minLength: 34
+          maxLength: 34
+          pattern: ^UG[0-9a-fA-F]{32}$
+          description: The unique ID (Sid) of the latest model build. Null if no model has been built.
+        links:
+          type:
+          - object
+          - 'null'
+          format: uri-map
+        log_queries:
+          type:
+          - boolean
+          - 'null'
+          description: A boolean that specifies whether queries should be logged for 30 days further training. If false, no queries will be stored, if true, queries will be stored for 30 days and deleted thereafter.
+        sid:
+          type:
+          - string
+          - 'null'
+          minLength: 34
+          maxLength: 34
+          pattern: ^UA[0-9a-fA-F]{32}$
+          description: A 34 character string that uniquely identifies this resource.
+        unique_name:
+          type:
+          - string
+          - 'null'
+          description: A user-provided string that uniquely identifies this resource as an alternative to the sid. You can use the unique name in the URL path. Unique up to 64 characters long.
+        url:
+          type:
+          - string
+          - 'null'
+          format: uri
+        callback_url:
+          type:
+          - string
+          - 'null'
+          format: uri
+          description: A user-provided URL to send event callbacks to.
+        callback_events:
+          type:
+          - string
+          - 'null'
+          description: Space-separated list of callback events that will trigger callbacks.
     preview.understand.assistant.task:
       type: object
       properties:
@@ -2953,13 +2925,75 @@ components:
           - string
           - 'null'
           format: uri
-    ListUnderstandSampleResponse:
+    preview.understand.assistant.task.field:
       type: object
       properties:
-        samples:
+        account_sid:
+          type:
+          - string
+          - 'null'
+          minLength: 34
+          maxLength: 34
+          pattern: ^AC[0-9a-fA-F]{32}$
+          description: The unique ID of the Account that created this Field.
+        date_created:
+          type:
+          - string
+          - 'null'
+          format: date-time
+          description: The date that this resource was created
+        date_updated:
+          type:
+          - string
+          - 'null'
+          format: date-time
+          description: The date that this resource was last updated
+        field_type:
+          type:
+          - string
+          - 'null'
+          description: The Field Type of this field. It can be any [Built-in Field Type](https://www.twilio.com/docs/assistant/api/built-in-field-types) or the unique_name or sid of a custom Field Type.
+        task_sid:
+          type:
+          - string
+          - 'null'
+          minLength: 34
+          maxLength: 34
+          pattern: ^UD[0-9a-fA-F]{32}$
+          description: The unique ID of the Task associated with this Field.
+        assistant_sid:
+          type:
+          - string
+          - 'null'
+          minLength: 34
+          maxLength: 34
+          pattern: ^UA[0-9a-fA-F]{32}$
+          description: The unique ID of the parent Assistant.
+        sid:
+          type:
+          - string
+          - 'null'
+          minLength: 34
+          maxLength: 34
+          pattern: ^UE[0-9a-fA-F]{32}$
+          description: A 34 character string that uniquely identifies this resource.
+        unique_name:
+          type:
+          - string
+          - 'null'
+          description: A user-provided string that uniquely identifies this resource as an alternative to the sid. Unique up to 64 characters long.
+        url:
+          type:
+          - string
+          - 'null'
+          format: uri
+    ListUnderstandModelBuildResponse:
+      type: object
+      properties:
+        model_builds:
           type: array
           items:
-            $ref: '#/components/schemas/preview.understand.assistant.task.sample'
+            $ref: '#/components/schemas/preview.understand.assistant.model_build'
         meta:
           type: object
           properties:
@@ -2985,40 +3019,6 @@ components:
               format: uri
             key:
               type: string
-    preview.understand.assistant.dialogue:
-      type: object
-      properties:
-        account_sid:
-          type:
-          - string
-          - 'null'
-          minLength: 34
-          maxLength: 34
-          pattern: ^AC[0-9a-fA-F]{32}$
-          description: The unique ID of the Account that created this Field.
-        assistant_sid:
-          type:
-          - string
-          - 'null'
-          minLength: 34
-          maxLength: 34
-          pattern: ^UA[0-9a-fA-F]{32}$
-          description: The unique ID of the parent Assistant.
-        sid:
-          type:
-          - string
-          - 'null'
-          minLength: 34
-          maxLength: 34
-          pattern: ^UK[0-9a-fA-F]{32}$
-          description: The unique ID of the Dialogue
-        data:
-          description: The dialogue memory object as json
-        url:
-          type:
-          - string
-          - 'null'
-          format: uri
   securitySchemes:
     accountSid_authToken:
       type: http

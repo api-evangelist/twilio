@@ -46,43 +46,16 @@ paths:
           description: Rate limit exceeded
 components:
   schemas:
-    Personalization:
+    EmailAddress:
       type: object
       required:
-      - to
+      - email
       properties:
-        to:
-          type: array
-          items:
-            $ref: '#/components/schemas/EmailAddress'
-          minItems: 1
-        cc:
-          type: array
-          items:
-            $ref: '#/components/schemas/EmailAddress'
-        bcc:
-          type: array
-          items:
-            $ref: '#/components/schemas/EmailAddress'
-        subject:
+        email:
           type: string
-        headers:
-          type: object
-          additionalProperties:
-            type: string
-        substitutions:
-          type: object
-          additionalProperties:
-            type: string
-        dynamic_template_data:
-          type: object
-          description: Dynamic template handlebars data
-        custom_args:
-          type: object
-          additionalProperties:
-            type: string
-        send_at:
-          type: integer
+          format: email
+        name:
+          type: string
     SendEmailRequest:
       type: object
       required:
@@ -181,6 +154,43 @@ components:
               properties:
                 enable:
                   type: boolean
+    Personalization:
+      type: object
+      required:
+      - to
+      properties:
+        to:
+          type: array
+          items:
+            $ref: '#/components/schemas/EmailAddress'
+          minItems: 1
+        cc:
+          type: array
+          items:
+            $ref: '#/components/schemas/EmailAddress'
+        bcc:
+          type: array
+          items:
+            $ref: '#/components/schemas/EmailAddress'
+        subject:
+          type: string
+        headers:
+          type: object
+          additionalProperties:
+            type: string
+        substitutions:
+          type: object
+          additionalProperties:
+            type: string
+        dynamic_template_data:
+          type: object
+          description: Dynamic template handlebars data
+        custom_args:
+          type: object
+          additionalProperties:
+            type: string
+        send_at:
+          type: integer
     Attachment:
       type: object
       required:
@@ -204,16 +214,6 @@ components:
         content_id:
           type: string
           description: Content ID for inline attachments
-    EmailAddress:
-      type: object
-      required:
-      - email
-      properties:
-        email:
-          type: string
-          format: email
-        name:
-          type: string
   securitySchemes:
     bearerAuth:
       type: http

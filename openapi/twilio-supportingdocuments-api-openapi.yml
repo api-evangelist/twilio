@@ -181,69 +181,6 @@ paths:
       x-summary-source: derived
 components:
   schemas:
-    ListSupportingDocumentResponse:
-      type: object
-      properties:
-        results:
-          type: array
-          items:
-            $ref: '#/components/schemas/trusthub.v1.supporting_document'
-        meta:
-          type: object
-          properties:
-            first_page_url:
-              type: string
-              format: uri
-            next_page_url:
-              type:
-              - string
-              - 'null'
-              format: uri
-            page:
-              type: integer
-            page_size:
-              type: integer
-            previous_page_url:
-              type:
-              - string
-              - 'null'
-              format: uri
-            url:
-              type: string
-              format: uri
-            key:
-              type: string
-    supporting_document_enum_status:
-      type: string
-      enum:
-      - draft
-      - pending-review
-      - rejected
-      - approved
-      - expired
-      - provisionally-approved
-    CreateSupportingDocumentRequest:
-      type: object
-      required:
-      - FriendlyName
-      - Type
-      properties:
-        FriendlyName:
-          type: string
-          description: The string that you assigned to describe the resource.
-        Type:
-          type: string
-          description: The type of the Supporting Document.
-        Attributes:
-          description: The set of parameters that are the attributes of the Supporting Documents resource which are derived Supporting Document Types.
-    UpdateSupportingDocumentRequest:
-      type: object
-      properties:
-        FriendlyName:
-          type: string
-          description: The string that you assigned to describe the resource.
-        Attributes:
-          description: The set of parameters that are the attributes of the Supporting Document resource which are derived Supporting Document Types.
     trusthub.v1.supporting_document:
       type: object
       properties:
@@ -308,6 +245,69 @@ components:
           - 'null'
           format: uri
           description: The absolute URL of the Supporting Document resource.
+    ListSupportingDocumentResponse:
+      type: object
+      properties:
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/trusthub.v1.supporting_document'
+        meta:
+          type: object
+          properties:
+            first_page_url:
+              type: string
+              format: uri
+            next_page_url:
+              type:
+              - string
+              - 'null'
+              format: uri
+            page:
+              type: integer
+            page_size:
+              type: integer
+            previous_page_url:
+              type:
+              - string
+              - 'null'
+              format: uri
+            url:
+              type: string
+              format: uri
+            key:
+              type: string
+    CreateSupportingDocumentRequest:
+      type: object
+      required:
+      - FriendlyName
+      - Type
+      properties:
+        FriendlyName:
+          type: string
+          description: The string that you assigned to describe the resource.
+        Type:
+          type: string
+          description: The type of the Supporting Document.
+        Attributes:
+          description: The set of parameters that are the attributes of the Supporting Documents resource which are derived Supporting Document Types.
+    UpdateSupportingDocumentRequest:
+      type: object
+      properties:
+        FriendlyName:
+          type: string
+          description: The string that you assigned to describe the resource.
+        Attributes:
+          description: The set of parameters that are the attributes of the Supporting Document resource which are derived Supporting Document Types.
+    supporting_document_enum_status:
+      type: string
+      enum:
+      - draft
+      - pending-review
+      - rejected
+      - approved
+      - expired
+      - provisionally-approved
   securitySchemes:
     accountSid_authToken:
       type: http

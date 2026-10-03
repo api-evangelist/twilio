@@ -910,15 +910,226 @@ paths:
       x-summary-source: derived
 components:
   schemas:
-    UpdateExecutionRequest:
+    studio.v2.flow.execution.execution_step:
+      type: object
+      properties:
+        sid:
+          type:
+          - string
+          - 'null'
+          minLength: 34
+          maxLength: 34
+          pattern: ^FT[0-9a-fA-F]{32}$
+          description: The unique string that we created to identify the ExecutionStep resource.
+        account_sid:
+          type:
+          - string
+          - 'null'
+          minLength: 34
+          maxLength: 34
+          pattern: ^AC[0-9a-fA-F]{32}$
+          description: The SID of the [Account](https://www.twilio.com/docs/iam/api/account) that created the ExecutionStep resource.
+        flow_sid:
+          type:
+          - string
+          - 'null'
+          minLength: 34
+          maxLength: 34
+          pattern: ^FW[0-9a-fA-F]{32}$
+          description: The SID of the Flow.
+        execution_sid:
+          type:
+          - string
+          - 'null'
+          minLength: 34
+          maxLength: 34
+          pattern: ^FN[0-9a-fA-F]{32}$
+          description: The SID of the Step's Execution resource.
+        name:
+          type:
+          - string
+          - 'null'
+          description: The event that caused the Flow to transition to the Step.
+        context:
+          description: The current state of the Flow's Execution. As a flow executes, we save its state in this context. We save data that your widgets can access as variables in configuration fields or in text areas as variable substitution.
+          x-twilio:
+            pii:
+              handling: standard
+              deleteSla: 30
+        transitioned_from:
+          type:
+          - string
+          - 'null'
+          description: The Widget that preceded the Widget for the Step.
+        transitioned_to:
+          type:
+          - string
+          - 'null'
+          description: The Widget that will follow the Widget for the Step.
+        date_created:
+          type:
+          - string
+          - 'null'
+          format: date-time
+          description: The date and time in GMT when the resource was created specified in [ISO 8601](https://en.wikipedia.org/wiki/ISO_8601) format.
+        date_updated:
+          type:
+          - string
+          - 'null'
+          format: date-time
+          description: The date and time in GMT when the resource was last updated specified in [ISO 8601](https://en.wikipedia.org/wiki/ISO_8601) format.
+        url:
+          type:
+          - string
+          - 'null'
+          format: uri
+          description: The absolute URL of the resource.
+        links:
+          type:
+          - object
+          - 'null'
+          format: uri-map
+          description: The URLs of related resources.
+    ListExecutionStepResponse:
+      type: object
+      properties:
+        steps:
+          type: array
+          items:
+            $ref: '#/components/schemas/studio.v2.flow.execution.execution_step'
+        meta:
+          type: object
+          properties:
+            first_page_url:
+              type: string
+              format: uri
+            next_page_url:
+              type:
+              - string
+              - 'null'
+              format: uri
+            page:
+              type: integer
+            page_size:
+              type: integer
+            previous_page_url:
+              type:
+              - string
+              - 'null'
+              format: uri
+            url:
+              type: string
+              format: uri
+            key:
+              type: string
+    ListFlowRevisionResponse:
+      type: object
+      properties:
+        revisions:
+          type: array
+          items:
+            $ref: '#/components/schemas/studio.v2.flow.flow_revision'
+        meta:
+          type: object
+          properties:
+            first_page_url:
+              type: string
+              format: uri
+            next_page_url:
+              type:
+              - string
+              - 'null'
+              format: uri
+            page:
+              type: integer
+            page_size:
+              type: integer
+            previous_page_url:
+              type:
+              - string
+              - 'null'
+              format: uri
+            url:
+              type: string
+              format: uri
+            key:
+              type: string
+    studio.v2.flow_validate:
+      type: object
+      properties:
+        valid:
+          type:
+          - boolean
+          - 'null'
+          description: Boolean if the flow definition is valid.
+    ListExecutionResponse:
+      type: object
+      properties:
+        executions:
+          type: array
+          items:
+            $ref: '#/components/schemas/studio.v2.flow.execution'
+        meta:
+          type: object
+          properties:
+            first_page_url:
+              type: string
+              format: uri
+            next_page_url:
+              type:
+              - string
+              - 'null'
+              format: uri
+            page:
+              type: integer
+            page_size:
+              type: integer
+            previous_page_url:
+              type:
+              - string
+              - 'null'
+              format: uri
+            url:
+              type: string
+              format: uri
+            key:
+              type: string
+    UpdateFlowValidateRequest:
+      type: object
+      required:
+      - FriendlyName
+      - Status
+      - Definition
+      properties:
+        FriendlyName:
+          type: string
+          description: The string that you assigned to describe the Flow.
+        Status:
+          type: string
+          $ref: '#/components/schemas/flow_validate_enum_status'
+          description: 'The status of the Flow. Can be: `draft` or `published`.'
+        Definition:
+          description: JSON representation of flow definition.
+        CommitMessage:
+          type: string
+          description: Description of change made in the revision.
+    UpdateFlowRequest:
       type: object
       required:
       - Status
       properties:
         Status:
           type: string
-          $ref: '#/components/schemas/execution_enum_status'
-          description: The status of the Execution. Can only be `ended`.
+          $ref: '#/components/schemas/flow_enum_status'
+          description: 'The status of the Flow. Can be: `draft` or `published`.'
+        FriendlyName:
+          type: string
+          description: The string that you assigned to describe the Flow.
+        Definition:
+          description: JSON representation of flow definition.
+        CommitMessage:
+          type: string
+          description: Description of change made in the revision.
     studio.v2.flow:
       type: object
       properties:
@@ -1007,56 +1218,127 @@ components:
           - 'null'
           format: uri-map
           description: The URLs of the Flow's nested resources.
-    UpdateFlowRequest:
+    CreateFlowRequest:
       type: object
       required:
+      - FriendlyName
       - Status
+      - Definition
       properties:
+        FriendlyName:
+          type: string
+          description: The string that you assigned to describe the Flow.
         Status:
           type: string
           $ref: '#/components/schemas/flow_enum_status'
           description: 'The status of the Flow. Can be: `draft` or `published`.'
-        FriendlyName:
-          type: string
-          description: The string that you assigned to describe the Flow.
         Definition:
           description: JSON representation of flow definition.
         CommitMessage:
           type: string
           description: Description of change made in the revision.
-    ListExecutionResponse:
+    UpdateTestUserRequest:
       type: object
+      required:
+      - TestUsers
       properties:
-        executions:
+        TestUsers:
           type: array
           items:
-            $ref: '#/components/schemas/studio.v2.flow.execution'
-        meta:
-          type: object
-          properties:
-            first_page_url:
-              type: string
-              format: uri
-            next_page_url:
-              type:
-              - string
-              - 'null'
-              format: uri
-            page:
-              type: integer
-            page_size:
-              type: integer
-            previous_page_url:
-              type:
-              - string
-              - 'null'
-              format: uri
-            url:
-              type: string
-              format: uri
-            key:
-              type: string
-    studio.v2.flow.flow_revision:
+            type: string
+          description: List of test user identities that can test draft versions of the flow.
+    studio.v2.flow.execution.execution_step.execution_step_context:
+      type: object
+      properties:
+        account_sid:
+          type:
+          - string
+          - 'null'
+          minLength: 34
+          maxLength: 34
+          pattern: ^AC[0-9a-fA-F]{32}$
+          description: The SID of the [Account](https://www.twilio.com/docs/iam/api/account) that created the ExecutionStepContext resource.
+        context:
+          description: The current state of the Flow's Execution. As a flow executes, we save its state in this context. We save data that your widgets can access as variables in configuration fields or in text areas as variable substitution.
+          x-twilio:
+            pii:
+              handling: standard
+              deleteSla: 30
+        execution_sid:
+          type:
+          - string
+          - 'null'
+          minLength: 34
+          maxLength: 34
+          pattern: ^FN[0-9a-fA-F]{32}$
+          description: The SID of the context's Execution resource.
+        flow_sid:
+          type:
+          - string
+          - 'null'
+          minLength: 34
+          maxLength: 34
+          pattern: ^FW[0-9a-fA-F]{32}$
+          description: The SID of the Flow.
+        step_sid:
+          type:
+          - string
+          - 'null'
+          minLength: 34
+          maxLength: 34
+          pattern: ^FT[0-9a-fA-F]{32}$
+          description: The SID of the Step that the context is associated with.
+        url:
+          type:
+          - string
+          - 'null'
+          format: uri
+          description: The absolute URL of the resource.
+    studio.v2.flow.execution.execution_context:
+      type: object
+      properties:
+        account_sid:
+          type:
+          - string
+          - 'null'
+          minLength: 34
+          maxLength: 34
+          pattern: ^AC[0-9a-fA-F]{32}$
+          description: The SID of the [Account](https://www.twilio.com/docs/iam/api/account) that created the ExecutionContext resource.
+        context:
+          description: The current state of the Flow's Execution. As a flow executes, we save its state in this context. We save data that your widgets can access as variables in configuration fields or in text areas as variable substitution.
+          x-twilio:
+            pii:
+              handling: standard
+              deleteSla: 30
+        flow_sid:
+          type:
+          - string
+          - 'null'
+          minLength: 34
+          maxLength: 34
+          pattern: ^FW[0-9a-fA-F]{32}$
+          description: The SID of the Flow.
+        execution_sid:
+          type:
+          - string
+          - 'null'
+          minLength: 34
+          maxLength: 34
+          pattern: ^FN[0-9a-fA-F]{32}$
+          description: The SID of the context's Execution resource.
+        url:
+          type:
+          - string
+          - 'null'
+          format: uri
+          description: The absolute URL of the resource.
+    flow_revision_enum_status:
+      type: string
+      enum:
+      - draft
+      - published
+    studio.v2.flow.test_user:
       type: object
       properties:
         sid:
@@ -1066,75 +1348,20 @@ components:
           minLength: 34
           maxLength: 34
           pattern: ^FW[0-9a-fA-F]{32}$
-          description: The unique string that we created to identify the Flow resource.
-        account_sid:
-          type:
-          - string
-          - 'null'
-          minLength: 34
-          maxLength: 34
-          pattern: ^AC[0-9a-fA-F]{32}$
-          description: The SID of the [Account](https://www.twilio.com/docs/iam/api/account) that created the Flow resource.
-        friendly_name:
-          type:
-          - string
-          - 'null'
-          description: The string that you assigned to describe the Flow.
-        definition:
-          description: JSON representation of flow definition.
-        status:
-          type:
-          - string
-          - 'null'
-          $ref: '#/components/schemas/flow_revision_enum_status'
-          description: 'The status of the Flow. Can be: `draft` or `published`.'
-        revision:
-          type:
-          - integer
-          - 'null'
-          description: The latest revision number of the Flow's definition.
-        commit_message:
-          type:
-          - string
-          - 'null'
-          description: Description of change made in the revision.
-        valid:
-          type:
-          - boolean
-          - 'null'
-          description: Boolean if the flow definition is valid.
-        errors:
+          description: Unique identifier of the flow.
+        test_users:
           type:
           - array
           - 'null'
-          items: {}
-          description: List of error in the flow definition.
-        date_created:
-          type:
-          - string
-          - 'null'
-          format: date-time
-          description: The date and time in GMT when the resource was created specified in [ISO 8601](https://en.wikipedia.org/wiki/ISO_8601) format.
-        date_updated:
-          type:
-          - string
-          - 'null'
-          format: date-time
-          description: The date and time in GMT when the resource was last updated specified in [ISO 8601](https://en.wikipedia.org/wiki/ISO_8601) format.
+          items:
+            type: string
+          description: List of test user identities that can test draft versions of the flow.
         url:
           type:
           - string
           - 'null'
           format: uri
-          description: The absolute URL of the resource.
-    studio.v2.flow_validate:
-      type: object
-      properties:
-        valid:
-          type:
-          - boolean
-          - 'null'
-          description: Boolean if the flow definition is valid.
+          description: The URL of this resource.
     CreateExecutionRequest:
       type: object
       required:
@@ -1151,67 +1378,20 @@ components:
           description: The Twilio phone number to send messages or initiate calls from during the Flow's Execution. Available as variable `{{flow.channel.address}}`. For SMS, this can also be a Messaging Service SID.
         Parameters:
           description: 'JSON data that will be added to the Flow''s context and that can be accessed as variables inside your Flow. For example, if you pass in `Parameters={"name":"Zeke"}`, a widget in your Flow can reference the variable `{{flow.data.name}}`, which returns "Zeke". Note: the JSON value must explicitly be passed as a string, not as a hash object. Depending on your particular HTTP library, you may need to add quotes or URL encode the JSON string.'
-    UpdateFlowValidateRequest:
-      type: object
-      required:
-      - FriendlyName
-      - Status
-      - Definition
-      properties:
-        FriendlyName:
-          type: string
-          description: The string that you assigned to describe the Flow.
-        Status:
-          type: string
-          $ref: '#/components/schemas/flow_validate_enum_status'
-          description: 'The status of the Flow. Can be: `draft` or `published`.'
-        Definition:
-          description: JSON representation of flow definition.
-        CommitMessage:
-          type: string
-          description: Description of change made in the revision.
     execution_enum_status:
       type: string
       enum:
       - active
       - ended
-    flow_enum_status:
-      type: string
-      enum:
-      - draft
-      - published
-    ListFlowRevisionResponse:
+    UpdateExecutionRequest:
       type: object
+      required:
+      - Status
       properties:
-        revisions:
-          type: array
-          items:
-            $ref: '#/components/schemas/studio.v2.flow.flow_revision'
-        meta:
-          type: object
-          properties:
-            first_page_url:
-              type: string
-              format: uri
-            next_page_url:
-              type:
-              - string
-              - 'null'
-              format: uri
-            page:
-              type: integer
-            page_size:
-              type: integer
-            previous_page_url:
-              type:
-              - string
-              - 'null'
-              format: uri
-            url:
-              type: string
-              format: uri
-            key:
-              type: string
+        Status:
+          type: string
+          $ref: '#/components/schemas/execution_enum_status'
+          description: The status of the Execution. Can only be `ended`.
     studio.v2.flow.execution:
       type: object
       properties:
@@ -1284,115 +1464,12 @@ components:
           - 'null'
           format: uri-map
           description: The URLs of nested resources.
-    ListExecutionStepResponse:
-      type: object
-      properties:
-        steps:
-          type: array
-          items:
-            $ref: '#/components/schemas/studio.v2.flow.execution.execution_step'
-        meta:
-          type: object
-          properties:
-            first_page_url:
-              type: string
-              format: uri
-            next_page_url:
-              type:
-              - string
-              - 'null'
-              format: uri
-            page:
-              type: integer
-            page_size:
-              type: integer
-            previous_page_url:
-              type:
-              - string
-              - 'null'
-              format: uri
-            url:
-              type: string
-              format: uri
-            key:
-              type: string
-    studio.v2.flow.execution.execution_step.execution_step_context:
-      type: object
-      properties:
-        account_sid:
-          type:
-          - string
-          - 'null'
-          minLength: 34
-          maxLength: 34
-          pattern: ^AC[0-9a-fA-F]{32}$
-          description: The SID of the [Account](https://www.twilio.com/docs/iam/api/account) that created the ExecutionStepContext resource.
-        context:
-          description: The current state of the Flow's Execution. As a flow executes, we save its state in this context. We save data that your widgets can access as variables in configuration fields or in text areas as variable substitution.
-          x-twilio:
-            pii:
-              handling: standard
-              deleteSla: 30
-        execution_sid:
-          type:
-          - string
-          - 'null'
-          minLength: 34
-          maxLength: 34
-          pattern: ^FN[0-9a-fA-F]{32}$
-          description: The SID of the context's Execution resource.
-        flow_sid:
-          type:
-          - string
-          - 'null'
-          minLength: 34
-          maxLength: 34
-          pattern: ^FW[0-9a-fA-F]{32}$
-          description: The SID of the Flow.
-        step_sid:
-          type:
-          - string
-          - 'null'
-          minLength: 34
-          maxLength: 34
-          pattern: ^FT[0-9a-fA-F]{32}$
-          description: The SID of the Step that the context is associated with.
-        url:
-          type:
-          - string
-          - 'null'
-          format: uri
-          description: The absolute URL of the resource.
-    CreateFlowRequest:
-      type: object
-      required:
-      - FriendlyName
-      - Status
-      - Definition
-      properties:
-        FriendlyName:
-          type: string
-          description: The string that you assigned to describe the Flow.
-        Status:
-          type: string
-          $ref: '#/components/schemas/flow_enum_status'
-          description: 'The status of the Flow. Can be: `draft` or `published`.'
-        Definition:
-          description: JSON representation of flow definition.
-        CommitMessage:
-          type: string
-          description: Description of change made in the revision.
     flow_validate_enum_status:
       type: string
       enum:
       - draft
       - published
-    flow_revision_enum_status:
-      type: string
-      enum:
-      - draft
-      - published
-    studio.v2.flow.execution.execution_step:
+    studio.v2.flow.flow_revision:
       type: object
       properties:
         sid:
@@ -1401,8 +1478,8 @@ components:
           - 'null'
           minLength: 34
           maxLength: 34
-          pattern: ^FT[0-9a-fA-F]{32}$
-          description: The unique string that we created to identify the ExecutionStep resource.
+          pattern: ^FW[0-9a-fA-F]{32}$
+          description: The unique string that we created to identify the Flow resource.
         account_sid:
           type:
           - string
@@ -1410,44 +1487,41 @@ components:
           minLength: 34
           maxLength: 34
           pattern: ^AC[0-9a-fA-F]{32}$
-          description: The SID of the [Account](https://www.twilio.com/docs/iam/api/account) that created the ExecutionStep resource.
-        flow_sid:
+          description: The SID of the [Account](https://www.twilio.com/docs/iam/api/account) that created the Flow resource.
+        friendly_name:
           type:
           - string
           - 'null'
-          minLength: 34
-          maxLength: 34
-          pattern: ^FW[0-9a-fA-F]{32}$
-          description: The SID of the Flow.
-        execution_sid:
+          description: The string that you assigned to describe the Flow.
+        definition:
+          description: JSON representation of flow definition.
+        status:
           type:
           - string
           - 'null'
-          minLength: 34
-          maxLength: 34
-          pattern: ^FN[0-9a-fA-F]{32}$
-          description: The SID of the Step's Execution resource.
-        name:
+          $ref: '#/components/schemas/flow_revision_enum_status'
+          description: 'The status of the Flow. Can be: `draft` or `published`.'
+        revision:
+          type:
+          - integer
+          - 'null'
+          description: The latest revision number of the Flow's definition.
+        commit_message:
           type:
           - string
           - 'null'
-          description: The event that caused the Flow to transition to the Step.
-        context:
-          description: The current state of the Flow's Execution. As a flow executes, we save its state in this context. We save data that your widgets can access as variables in configuration fields or in text areas as variable substitution.
-          x-twilio:
-            pii:
-              handling: standard
-              deleteSla: 30
-        transitioned_from:
+          description: Description of change made in the revision.
+        valid:
           type:
-          - string
+          - boolean
           - 'null'
-          description: The Widget that preceded the Widget for the Step.
-        transitioned_to:
+          description: Boolean if the flow definition is valid.
+        errors:
           type:
-          - string
+          - array
           - 'null'
-          description: The Widget that will follow the Widget for the Step.
+          items: {}
+          description: List of error in the flow definition.
         date_created:
           type:
           - string
@@ -1466,12 +1540,6 @@ components:
           - 'null'
           format: uri
           description: The absolute URL of the resource.
-        links:
-          type:
-          - object
-          - 'null'
-          format: uri-map
-          description: The URLs of related resources.
     ListFlowResponse:
       type: object
       properties:
@@ -1504,79 +1572,11 @@ components:
               format: uri
             key:
               type: string
-    studio.v2.flow.test_user:
-      type: object
-      properties:
-        sid:
-          type:
-          - string
-          - 'null'
-          minLength: 34
-          maxLength: 34
-          pattern: ^FW[0-9a-fA-F]{32}$
-          description: Unique identifier of the flow.
-        test_users:
-          type:
-          - array
-          - 'null'
-          items:
-            type: string
-          description: List of test user identities that can test draft versions of the flow.
-        url:
-          type:
-          - string
-          - 'null'
-          format: uri
-          description: The URL of this resource.
-    studio.v2.flow.execution.execution_context:
-      type: object
-      properties:
-        account_sid:
-          type:
-          - string
-          - 'null'
-          minLength: 34
-          maxLength: 34
-          pattern: ^AC[0-9a-fA-F]{32}$
-          description: The SID of the [Account](https://www.twilio.com/docs/iam/api/account) that created the ExecutionContext resource.
-        context:
-          description: The current state of the Flow's Execution. As a flow executes, we save its state in this context. We save data that your widgets can access as variables in configuration fields or in text areas as variable substitution.
-          x-twilio:
-            pii:
-              handling: standard
-              deleteSla: 30
-        flow_sid:
-          type:
-          - string
-          - 'null'
-          minLength: 34
-          maxLength: 34
-          pattern: ^FW[0-9a-fA-F]{32}$
-          description: The SID of the Flow.
-        execution_sid:
-          type:
-          - string
-          - 'null'
-          minLength: 34
-          maxLength: 34
-          pattern: ^FN[0-9a-fA-F]{32}$
-          description: The SID of the context's Execution resource.
-        url:
-          type:
-          - string
-          - 'null'
-          format: uri
-          description: The absolute URL of the resource.
-    UpdateTestUserRequest:
-      type: object
-      required:
-      - TestUsers
-      properties:
-        TestUsers:
-          type: array
-          items:
-            type: string
-          description: List of test user identities that can test draft versions of the flow.
+    flow_enum_status:
+      type: string
+      enum:
+      - draft
+      - published
   securitySchemes:
     accountSid_authToken:
       type: http

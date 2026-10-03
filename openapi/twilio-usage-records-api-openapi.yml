@@ -113,6 +113,51 @@ paths:
       x-summary-source: derived
 components:
   schemas:
+    ListUsageRecordResponse:
+      type: object
+      properties:
+        usage_records:
+          type: array
+          items:
+            $ref: '#/components/schemas/supersim.v1.usage_record'
+        meta:
+          type: object
+          properties:
+            first_page_url:
+              type: string
+              format: uri
+            next_page_url:
+              type:
+              - string
+              - 'null'
+              format: uri
+            page:
+              type: integer
+            page_size:
+              type: integer
+            previous_page_url:
+              type:
+              - string
+              - 'null'
+              format: uri
+            url:
+              type: string
+              format: uri
+            key:
+              type: string
+    usage_record_enum_granularity:
+      type: string
+      enum:
+      - hour
+      - day
+      - all
+    usage_record_enum_group:
+      type: string
+      enum:
+      - sim
+      - fleet
+      - network
+      - isoCountry
     supersim.v1.usage_record:
       type: object
       properties:
@@ -185,50 +230,11 @@ components:
           - 'null'
           format: currency
           description: The currency in which the billed amounts are measured, specified in the 3 letter ISO 4127 format (e.g. `USD`, `EUR`, `JPY`). This can be null when data_toal_billed is 0 and we do not yet have billing information for the corresponding data usage. Refer to [Data Usage Processing](https://www.twilio.com/docs/iot/supersim/api/usage-record-resource#data-usage-processing) for more details.
-    ListUsageRecordResponse:
-      type: object
-      properties:
-        usage_records:
-          type: array
-          items:
-            $ref: '#/components/schemas/supersim.v1.usage_record'
-        meta:
-          type: object
-          properties:
-            first_page_url:
-              type: string
-              format: uri
-            next_page_url:
-              type:
-              - string
-              - 'null'
-              format: uri
-            page:
-              type: integer
-            page_size:
-              type: integer
-            previous_page_url:
-              type:
-              - string
-              - 'null'
-              format: uri
-            url:
-              type: string
-              format: uri
-            key:
-              type: string
-    usage_record_enum_group:
+    account_usage_record_enum_granularity:
       type: string
       enum:
-      - sim
-      - fleet
-      - network
-      - isoCountry
-    usage_record_enum_granularity:
-      type: string
-      enum:
-      - hour
-      - day
+      - hourly
+      - daily
       - all
     ListAccountUsageRecordResponse:
       type: object
@@ -279,12 +285,6 @@ components:
           description: An object that describes the aggregated Commands usage for all SIMs during the specified period. See [Commands Usage Object](https://www.twilio.com/docs/iot/wireless/api/account-usagerecord-resource#commands-usage-object).
         data:
           description: An object that describes the aggregated Data usage for all SIMs over the period. See [Data Usage Object](https://www.twilio.com/docs/iot/wireless/api/account-usagerecord-resource#data-usage-object).
-    account_usage_record_enum_granularity:
-      type: string
-      enum:
-      - hourly
-      - daily
-      - all
   securitySchemes:
     accountSid_authToken:
       type: http

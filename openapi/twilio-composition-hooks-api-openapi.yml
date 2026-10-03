@@ -308,64 +308,15 @@ paths:
       x-summary-source: derived
 components:
   schemas:
-    PaginationMeta:
+    CompositionHookList:
       type: object
       properties:
-        page:
-          type: integer
-        page_size:
-          type: integer
-        first_page_url:
-          type: string
-          format: uri
-        previous_page_url:
-          type: string
-          format: uri
-        next_page_url:
-          type: string
-          format: uri
-        url:
-          type: string
-          format: uri
-        key:
-          type: string
-    CreateCompositionHookRequest:
-      type: object
-      required:
-      - FriendlyName
-      properties:
-        FriendlyName:
-          type: string
-        Enabled:
-          type: boolean
-          default: true
-        VideoLayout:
-          type: string
-        AudioSources:
+        composition_hooks:
           type: array
           items:
-            type: string
-        AudioSourcesExcluded:
-          type: array
-          items:
-            type: string
-        Resolution:
-          type: string
-        Format:
-          type: string
-          enum:
-          - mp4
-          - webm
-        Trim:
-          type: boolean
-        StatusCallback:
-          type: string
-          format: uri
-        StatusCallbackMethod:
-          type: string
-          enum:
-          - GET
-          - POST
+            $ref: '#/components/schemas/CompositionHook'
+        meta:
+          $ref: '#/components/schemas/PaginationMeta'
     CompositionHook:
       type: object
       properties:
@@ -412,15 +363,64 @@ components:
         url:
           type: string
           format: uri
-    CompositionHookList:
+    CreateCompositionHookRequest:
       type: object
+      required:
+      - FriendlyName
       properties:
-        composition_hooks:
+        FriendlyName:
+          type: string
+        Enabled:
+          type: boolean
+          default: true
+        VideoLayout:
+          type: string
+        AudioSources:
           type: array
           items:
-            $ref: '#/components/schemas/CompositionHook'
-        meta:
-          $ref: '#/components/schemas/PaginationMeta'
+            type: string
+        AudioSourcesExcluded:
+          type: array
+          items:
+            type: string
+        Resolution:
+          type: string
+        Format:
+          type: string
+          enum:
+          - mp4
+          - webm
+        Trim:
+          type: boolean
+        StatusCallback:
+          type: string
+          format: uri
+        StatusCallbackMethod:
+          type: string
+          enum:
+          - GET
+          - POST
+    PaginationMeta:
+      type: object
+      properties:
+        page:
+          type: integer
+        page_size:
+          type: integer
+        first_page_url:
+          type: string
+          format: uri
+        previous_page_url:
+          type: string
+          format: uri
+        next_page_url:
+          type: string
+          format: uri
+        url:
+          type: string
+          format: uri
+        key:
+          type: string
     UpdateCompositionHookRequest:
       type: object
       required:
@@ -469,38 +469,6 @@ components:
           - PUT
           - DELETE
           description: 'The HTTP method we should use to call `status_callback`. Can be: `POST` or `GET` and the default is `POST`.'
-    ListCompositionHookResponse:
-      type: object
-      properties:
-        composition_hooks:
-          type: array
-          items:
-            $ref: '#/components/schemas/video.v1.composition_hook'
-        meta:
-          type: object
-          properties:
-            first_page_url:
-              type: string
-              format: uri
-            next_page_url:
-              type:
-              - string
-              - 'null'
-              format: uri
-            page:
-              type: integer
-            page_size:
-              type: integer
-            previous_page_url:
-              type:
-              - string
-              - 'null'
-              format: uri
-            url:
-              type: string
-              format: uri
-            key:
-              type: string
     composition_hook_enum_format:
       type: string
       enum:
@@ -616,6 +584,38 @@ components:
           - 'null'
           format: uri
           description: The absolute URL of the resource.
+    ListCompositionHookResponse:
+      type: object
+      properties:
+        composition_hooks:
+          type: array
+          items:
+            $ref: '#/components/schemas/video.v1.composition_hook'
+        meta:
+          type: object
+          properties:
+            first_page_url:
+              type: string
+              format: uri
+            next_page_url:
+              type:
+              - string
+              - 'null'
+              format: uri
+            page:
+              type: integer
+            page_size:
+              type: integer
+            previous_page_url:
+              type:
+              - string
+              - 'null'
+              format: uri
+            url:
+              type: string
+              format: uri
+            key:
+              type: string
   securitySchemes:
     accountSid_authToken:
       type: http

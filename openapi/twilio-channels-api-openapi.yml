@@ -124,6 +124,15 @@ components:
         url:
           type: string
           format: uri
+    ChannelList:
+      type: object
+      properties:
+        flex_chat_channels:
+          type: array
+          items:
+            $ref: '#/components/schemas/FlexChannel'
+        meta:
+          $ref: '#/components/schemas/PaginationMeta'
     PaginationMeta:
       type: object
       properties:
@@ -173,15 +182,6 @@ components:
           type: string
         LongLived:
           type: boolean
-    ChannelList:
-      type: object
-      properties:
-        flex_chat_channels:
-          type: array
-          items:
-            $ref: '#/components/schemas/FlexChannel'
-        meta:
-          $ref: '#/components/schemas/PaginationMeta'
   securitySchemes:
     accountSid_authToken:
       type: http

@@ -245,17 +245,64 @@ components:
       - roaming
       - umatilla
       - tokyo
-    video_room_summary_enum_codec:
+    video_participant_summary_enum_codec:
       type: string
       enum:
       - VP8
       - H264
       - VP9
-    video_room_summary_enum_end_reason:
+    video_room_summary_enum_room_type:
       type: string
       enum:
-      - room_ended_via_api
-      - timeout
+      - go
+      - peer_to_peer
+      - group
+      - group_small
+    ListVideoRoomSummaryResponse:
+      type: object
+      properties:
+        rooms:
+          type: array
+          items:
+            $ref: '#/components/schemas/insights.v1.video_room_summary'
+        meta:
+          type: object
+          properties:
+            first_page_url:
+              type: string
+              format: uri
+            next_page_url:
+              type:
+              - string
+              - 'null'
+              format: uri
+            page:
+              type: integer
+            page_size:
+              type: integer
+            previous_page_url:
+              type:
+              - string
+              - 'null'
+              format: uri
+            url:
+              type: string
+              format: uri
+            key:
+              type: string
+    video_participant_summary_enum_twilio_realm:
+      type: string
+      enum:
+      - us1
+      - us2
+      - au1
+      - br1
+      - ie1
+      - jp1
+      - sg1
+      - in1
+      - de1
+      - gll
     insights.v1.video_room_summary.video_participant_summary:
       type: object
       properties:
@@ -357,81 +404,36 @@ components:
           - 'null'
           format: uri
           description: URL of the participant resource.
+    video_room_summary_enum_processing_state:
+      type: string
+      enum:
+      - complete
+      - in_progress
+    video_room_summary_enum_codec:
+      type: string
+      enum:
+      - VP8
+      - H264
+      - VP9
     video_room_summary_enum_created_method:
       type: string
       enum:
       - sdk
       - ad_hoc
       - api
-    video_room_summary_enum_room_status:
+    video_room_summary_enum_twilio_realm:
       type: string
       enum:
-      - in_progress
-      - completed
-    ListVideoRoomSummaryResponse:
-      type: object
-      properties:
-        rooms:
-          type: array
-          items:
-            $ref: '#/components/schemas/insights.v1.video_room_summary'
-        meta:
-          type: object
-          properties:
-            first_page_url:
-              type: string
-              format: uri
-            next_page_url:
-              type:
-              - string
-              - 'null'
-              format: uri
-            page:
-              type: integer
-            page_size:
-              type: integer
-            previous_page_url:
-              type:
-              - string
-              - 'null'
-              format: uri
-            url:
-              type: string
-              format: uri
-            key:
-              type: string
-    ListVideoParticipantSummaryResponse:
-      type: object
-      properties:
-        participants:
-          type: array
-          items:
-            $ref: '#/components/schemas/insights.v1.video_room_summary.video_participant_summary'
-        meta:
-          type: object
-          properties:
-            first_page_url:
-              type: string
-              format: uri
-            next_page_url:
-              type:
-              - string
-              - 'null'
-              format: uri
-            page:
-              type: integer
-            page_size:
-              type: integer
-            previous_page_url:
-              type:
-              - string
-              - 'null'
-              format: uri
-            url:
-              type: string
-              format: uri
-            key:
-              type: string
+      - us1
+      - us2
+      - au1
+      - br1
+      - ie1
+      - jp1
+      - sg1
+      - in1
+      - de1
+      - gll
     insights.v1.video_room_summary:
       type: object
       properties:
@@ -597,55 +599,38 @@ components:
           - 'null'
           format: uri-map
           description: Room subresources.
-    video_room_summary_enum_room_type:
-      type: string
-      enum:
-      - go
-      - peer_to_peer
-      - group
-      - group_small
-    video_participant_summary_enum_twilio_realm:
-      type: string
-      enum:
-      - us1
-      - us2
-      - au1
-      - br1
-      - ie1
-      - jp1
-      - sg1
-      - in1
-      - de1
-      - gll
-    video_participant_summary_enum_room_status:
-      type: string
-      enum:
-      - in_progress
-      - completed
-    video_room_summary_enum_processing_state:
-      type: string
-      enum:
-      - complete
-      - in_progress
-    video_participant_summary_enum_codec:
-      type: string
-      enum:
-      - VP8
-      - H264
-      - VP9
-    video_room_summary_enum_twilio_realm:
-      type: string
-      enum:
-      - us1
-      - us2
-      - au1
-      - br1
-      - ie1
-      - jp1
-      - sg1
-      - in1
-      - de1
-      - gll
+    ListVideoParticipantSummaryResponse:
+      type: object
+      properties:
+        participants:
+          type: array
+          items:
+            $ref: '#/components/schemas/insights.v1.video_room_summary.video_participant_summary'
+        meta:
+          type: object
+          properties:
+            first_page_url:
+              type: string
+              format: uri
+            next_page_url:
+              type:
+              - string
+              - 'null'
+              format: uri
+            page:
+              type: integer
+            page_size:
+              type: integer
+            previous_page_url:
+              type:
+              - string
+              - 'null'
+              format: uri
+            url:
+              type: string
+              format: uri
+            key:
+              type: string
     video_room_summary_enum_edge_location:
       type: string
       enum:
@@ -658,6 +643,21 @@ components:
       - roaming
       - umatilla
       - tokyo
+    video_participant_summary_enum_room_status:
+      type: string
+      enum:
+      - in_progress
+      - completed
+    video_room_summary_enum_room_status:
+      type: string
+      enum:
+      - in_progress
+      - completed
+    video_room_summary_enum_end_reason:
+      type: string
+      enum:
+      - room_ended_via_api
+      - timeout
   securitySchemes:
     accountSid_authToken:
       type: http

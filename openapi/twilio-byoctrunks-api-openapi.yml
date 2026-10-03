@@ -183,7 +183,7 @@ paths:
       x-summary-source: derived
 components:
   schemas:
-    UpdateByocTrunkRequest:
+    CreateByocTrunkRequest:
       type: object
       properties:
         FriendlyName:
@@ -203,11 +203,11 @@ components:
           - PATCH
           - PUT
           - DELETE
-          description: The HTTP method we should use to call `voice_url`
+          description: 'The HTTP method we should use to call `voice_url`. Can be: `GET` or `POST`.'
         VoiceFallbackUrl:
           type: string
           format: uri
-          description: The URL that we should call when an error occurs while retrieving or executing the TwiML requested by `voice_url`.
+          description: The URL that we should call when an error occurs while retrieving or executing the TwiML from `voice_url`.
         VoiceFallbackMethod:
           type: string
           format: http-method
@@ -381,7 +381,39 @@ components:
           - 'null'
           format: uri
           description: The absolute URL of the resource.
-    CreateByocTrunkRequest:
+    ListByocTrunkResponse:
+      type: object
+      properties:
+        byoc_trunks:
+          type: array
+          items:
+            $ref: '#/components/schemas/voice.v1.byoc_trunk'
+        meta:
+          type: object
+          properties:
+            first_page_url:
+              type: string
+              format: uri
+            next_page_url:
+              type:
+              - string
+              - 'null'
+              format: uri
+            page:
+              type: integer
+            page_size:
+              type: integer
+            previous_page_url:
+              type:
+              - string
+              - 'null'
+              format: uri
+            url:
+              type: string
+              format: uri
+            key:
+              type: string
+    UpdateByocTrunkRequest:
       type: object
       properties:
         FriendlyName:
@@ -401,11 +433,11 @@ components:
           - PATCH
           - PUT
           - DELETE
-          description: 'The HTTP method we should use to call `voice_url`. Can be: `GET` or `POST`.'
+          description: The HTTP method we should use to call `voice_url`
         VoiceFallbackUrl:
           type: string
           format: uri
-          description: The URL that we should call when an error occurs while retrieving or executing the TwiML from `voice_url`.
+          description: The URL that we should call when an error occurs while retrieving or executing the TwiML requested by `voice_url`.
         VoiceFallbackMethod:
           type: string
           format: http-method
@@ -447,38 +479,6 @@ components:
           maxLength: 34
           pattern: ^SD[0-9a-fA-F]{32}$
           description: The SID of the SIP Domain that should be used in the `From` header of originating calls sent to your SIP infrastructure. If your SIP infrastructure allows users to "call back" an incoming call, configure this with a [SIP Domain](https://www.twilio.com/docs/voice/api/sending-sip) to ensure proper routing. If not configured, the from domain will default to "sip.twilio.com".
-    ListByocTrunkResponse:
-      type: object
-      properties:
-        byoc_trunks:
-          type: array
-          items:
-            $ref: '#/components/schemas/voice.v1.byoc_trunk'
-        meta:
-          type: object
-          properties:
-            first_page_url:
-              type: string
-              format: uri
-            next_page_url:
-              type:
-              - string
-              - 'null'
-              format: uri
-            page:
-              type: integer
-            page_size:
-              type: integer
-            previous_page_url:
-              type:
-              - string
-              - 'null'
-              format: uri
-            url:
-              type: string
-              format: uri
-            key:
-              type: string
   securitySchemes:
     accountSid_authToken:
       type: http

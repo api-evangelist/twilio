@@ -352,67 +352,6 @@ paths:
       x-summary-source: derived
 components:
   schemas:
-    PaginationMeta:
-      type: object
-      properties:
-        page:
-          type: integer
-        page_size:
-          type: integer
-        first_page_url:
-          type: string
-          format: uri
-        previous_page_url:
-          type: string
-          format: uri
-        next_page_url:
-          type: string
-          format: uri
-        url:
-          type: string
-          format: uri
-        key:
-          type: string
-    CreateCompositionRequest:
-      type: object
-      required:
-      - RoomSid
-      properties:
-        RoomSid:
-          type: string
-          description: SID of the room to compose
-          pattern: ^RM[0-9a-fA-F]{32}$
-        VideoLayout:
-          type: string
-          description: JSON object defining the video layout
-        AudioSources:
-          type: array
-          items:
-            type: string
-        AudioSourcesExcluded:
-          type: array
-          items:
-            type: string
-        Resolution:
-          type: string
-          description: Resolution in WxH format (e.g., 1280x720)
-        Format:
-          type: string
-          enum:
-          - mp4
-          - webm
-          default: webm
-        Trim:
-          type: boolean
-          default: true
-        StatusCallback:
-          type: string
-          format: uri
-        StatusCallbackMethod:
-          type: string
-          enum:
-          - GET
-          - POST
     CompositionSettings:
       type: object
       properties:
@@ -514,6 +453,80 @@ components:
             media:
               type: string
               format: uri
+    CreateCompositionRequest:
+      type: object
+      required:
+      - RoomSid
+      properties:
+        RoomSid:
+          type: string
+          description: SID of the room to compose
+          pattern: ^RM[0-9a-fA-F]{32}$
+        VideoLayout:
+          type: string
+          description: JSON object defining the video layout
+        AudioSources:
+          type: array
+          items:
+            type: string
+        AudioSourcesExcluded:
+          type: array
+          items:
+            type: string
+        Resolution:
+          type: string
+          description: Resolution in WxH format (e.g., 1280x720)
+        Format:
+          type: string
+          enum:
+          - mp4
+          - webm
+          default: webm
+        Trim:
+          type: boolean
+          default: true
+        StatusCallback:
+          type: string
+          format: uri
+        StatusCallbackMethod:
+          type: string
+          enum:
+          - GET
+          - POST
+    PaginationMeta:
+      type: object
+      properties:
+        page:
+          type: integer
+        page_size:
+          type: integer
+        first_page_url:
+          type: string
+          format: uri
+        previous_page_url:
+          type: string
+          format: uri
+        next_page_url:
+          type: string
+          format: uri
+        url:
+          type: string
+          format: uri
+        key:
+          type: string
+    composition_enum_format:
+      type: string
+      enum:
+      - mp4
+      - webm
+    composition_enum_status:
+      type: string
+      enum:
+      - enqueued
+      - processing
+      - completed
+      - deleted
+      - failed
     CreateCompositionRequest_2:
       type: object
       required:
@@ -710,11 +723,6 @@ components:
           - 'null'
           format: uri-map
           description: The URL of the media file associated with the composition.
-    composition_enum_format:
-      type: string
-      enum:
-      - mp4
-      - webm
     ListCompositionResponse:
       type: object
       properties:
@@ -747,14 +755,6 @@ components:
               format: uri
             key:
               type: string
-    composition_enum_status:
-      type: string
-      enum:
-      - enqueued
-      - processing
-      - completed
-      - deleted
-      - failed
   securitySchemes:
     accountSid_authToken:
       type: http

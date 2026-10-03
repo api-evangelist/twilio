@@ -120,28 +120,16 @@ paths:
         '404':
           description: Service not found
 components:
+  parameters:
+    ServiceSid:
+      name: ServiceSid
+      in: path
+      required: true
+      description: The unique identifier of the messaging service
+      schema:
+        type: string
+        pattern: ^MG[0-9a-fA-F]{32}$
   schemas:
-    PaginationMeta:
-      type: object
-      properties:
-        page:
-          type: integer
-        page_size:
-          type: integer
-        first_page_url:
-          type: string
-          format: uri
-        previous_page_url:
-          type: string
-          format: uri
-        next_page_url:
-          type: string
-          format: uri
-        url:
-          type: string
-          format: uri
-        key:
-          type: string
     MessagingService:
       type: object
       properties:
@@ -197,15 +185,6 @@ components:
         url:
           type: string
           format: uri
-    MessagingServiceList:
-      type: object
-      properties:
-        services:
-          type: array
-          items:
-            $ref: '#/components/schemas/MessagingService'
-        meta:
-          $ref: '#/components/schemas/PaginationMeta'
     CreateMessagingServiceRequest:
       type: object
       required:
@@ -241,15 +220,36 @@ components:
           type: boolean
         ValidityPeriod:
           type: integer
-  parameters:
-    ServiceSid:
-      name: ServiceSid
-      in: path
-      required: true
-      description: The unique identifier of the messaging service
-      schema:
-        type: string
-        pattern: ^MG[0-9a-fA-F]{32}$
+    MessagingServiceList:
+      type: object
+      properties:
+        services:
+          type: array
+          items:
+            $ref: '#/components/schemas/MessagingService'
+        meta:
+          $ref: '#/components/schemas/PaginationMeta'
+    PaginationMeta:
+      type: object
+      properties:
+        page:
+          type: integer
+        page_size:
+          type: integer
+        first_page_url:
+          type: string
+          format: uri
+        previous_page_url:
+          type: string
+          format: uri
+        next_page_url:
+          type: string
+          format: uri
+        url:
+          type: string
+          format: uri
+        key:
+          type: string
   securitySchemes:
     accountSid_authToken:
       type: http

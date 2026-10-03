@@ -109,6 +109,15 @@ paths:
         '201':
           description: Bucket created
 components:
+  parameters:
+    ServiceSid:
+      name: ServiceSid
+      in: path
+      required: true
+      description: The SID of the Verify service
+      schema:
+        type: string
+        pattern: ^VA[0-9a-fA-F]{32}$
   schemas:
     RateLimitList:
       type: object
@@ -161,15 +170,6 @@ components:
           format: uri
         key:
           type: string
-  parameters:
-    ServiceSid:
-      name: ServiceSid
-      in: path
-      required: true
-      description: The SID of the Verify service
-      schema:
-        type: string
-        pattern: ^VA[0-9a-fA-F]{32}$
   securitySchemes:
     accountSid_authToken:
       type: http

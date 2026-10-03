@@ -68,15 +68,6 @@ paths:
         '400':
           description: Invalid request
 components:
-  parameters:
-    ServiceSid:
-      name: ServiceSid
-      in: path
-      required: true
-      description: The unique identifier of the messaging service
-      schema:
-        type: string
-        pattern: ^MG[0-9a-fA-F]{32}$
   schemas:
     ShortCode:
       type: object
@@ -95,6 +86,15 @@ components:
         date_created:
           type: string
           format: date-time
+  parameters:
+    ServiceSid:
+      name: ServiceSid
+      in: path
+      required: true
+      description: The unique identifier of the messaging service
+      schema:
+        type: string
+        pattern: ^MG[0-9a-fA-F]{32}$
   securitySchemes:
     accountSid_authToken:
       type: http
