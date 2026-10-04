@@ -1,0 +1,113 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/api-evangelist/twilio/main/json-schema/twilio-studio-v2-flow-execution-schema.json",
+  "title": "studio.v2.flow.execution",
+  "x-generated": "2026-10-04",
+  "x-method": "derived",
+  "x-generator": "derive-json-schema.py",
+  "x-source": "openapi/twilio-flows-api-openapi.yml#/components/schemas/studio.v2.flow.execution",
+  "type": "object",
+  "properties": {
+    "sid": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "minLength": 34,
+      "maxLength": 34,
+      "pattern": "^FN[0-9a-fA-F]{32}$",
+      "description": "The unique string that we created to identify the Execution resource."
+    },
+    "account_sid": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "minLength": 34,
+      "maxLength": 34,
+      "pattern": "^AC[0-9a-fA-F]{32}$",
+      "description": "The SID of the [Account](https://www.twilio.com/docs/iam/api/account) that created the Execution resource."
+    },
+    "flow_sid": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "minLength": 34,
+      "maxLength": 34,
+      "pattern": "^FW[0-9a-fA-F]{32}$",
+      "description": "The SID of the Flow."
+    },
+    "contact_channel_address": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "description": "The phone number, SIP address or Client identifier that triggered the Execution. Phone numbers are in E.164 format (e.g. +16175551212). SIP addresses are formatted as `name@company.com`. Client identifiers are formatted `client:name`.",
+      "x-twilio": {
+        "pii": {
+          "handling": "standard",
+          "deleteSla": 30
+        }
+      }
+    },
+    "context": {
+      "description": "The current state of the Flow's Execution. As a flow executes, we save its state in this context. We save data that your widgets can access as variables in configuration fields or in text areas as variable substitution.",
+      "x-twilio": {
+        "pii": {
+          "handling": "standard",
+          "deleteSla": 30
+        }
+      }
+    },
+    "status": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "$ref": "#/$defs/execution_enum_status",
+      "description": "The status of the Execution. Can be: `active` or `ended`."
+    },
+    "date_created": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "format": "date-time",
+      "description": "The date and time in GMT when the resource was created specified in [ISO 8601](https://en.wikipedia.org/wiki/ISO_8601) format."
+    },
+    "date_updated": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "format": "date-time",
+      "description": "The date and time in GMT when the resource was last updated specified in [ISO 8601](https://en.wikipedia.org/wiki/ISO_8601) format."
+    },
+    "url": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "format": "uri",
+      "description": "The absolute URL of the resource."
+    },
+    "links": {
+      "type": [
+        "object",
+        "null"
+      ],
+      "format": "uri-map",
+      "description": "The URLs of nested resources."
+    }
+  },
+  "$defs": {
+    "execution_enum_status": {
+      "type": "string",
+      "enum": [
+        "active",
+        "ended"
+      ]
+    }
+  }
+}

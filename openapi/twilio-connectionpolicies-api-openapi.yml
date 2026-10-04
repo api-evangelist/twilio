@@ -408,6 +408,38 @@ paths:
       x-summary-source: derived
 components:
   schemas:
+    ListConnectionPolicyResponse:
+      type: object
+      properties:
+        connection_policies:
+          type: array
+          items:
+            $ref: '#/components/schemas/voice.v1.connection_policy'
+        meta:
+          type: object
+          properties:
+            first_page_url:
+              type: string
+              format: uri
+            next_page_url:
+              type:
+              - string
+              - 'null'
+              format: uri
+            page:
+              type: integer
+            page_size:
+              type: integer
+            previous_page_url:
+              type:
+              - string
+              - 'null'
+              format: uri
+            url:
+              type: string
+              format: uri
+            key:
+              type: string
     voice.v1.connection_policy.connection_policy_target:
       type: object
       properties:
@@ -483,38 +515,18 @@ components:
           - 'null'
           format: uri
           description: The absolute URL of the resource.
-    ListConnectionPolicyTargetResponse:
+    UpdateConnectionPolicyRequest:
       type: object
       properties:
-        targets:
-          type: array
-          items:
-            $ref: '#/components/schemas/voice.v1.connection_policy.connection_policy_target'
-        meta:
-          type: object
-          properties:
-            first_page_url:
-              type: string
-              format: uri
-            next_page_url:
-              type:
-              - string
-              - 'null'
-              format: uri
-            page:
-              type: integer
-            page_size:
-              type: integer
-            previous_page_url:
-              type:
-              - string
-              - 'null'
-              format: uri
-            url:
-              type: string
-              format: uri
-            key:
-              type: string
+        FriendlyName:
+          type: string
+          description: A descriptive string that you create to describe the resource. It is not unique and can be up to 255 characters long.
+    CreateConnectionPolicyRequest:
+      type: object
+      properties:
+        FriendlyName:
+          type: string
+          description: A descriptive string that you create to describe the resource. It is not unique and can be up to 255 characters long.
     UpdateConnectionPolicyTargetRequest:
       type: object
       properties:
@@ -534,13 +546,13 @@ components:
         Enabled:
           type: boolean
           description: Whether the Target is enabled.
-    ListConnectionPolicyResponse:
+    ListConnectionPolicyTargetResponse:
       type: object
       properties:
-        connection_policies:
+        targets:
           type: array
           items:
-            $ref: '#/components/schemas/voice.v1.connection_policy'
+            $ref: '#/components/schemas/voice.v1.connection_policy.connection_policy_target'
         meta:
           type: object
           properties:
@@ -587,12 +599,6 @@ components:
         Enabled:
           type: boolean
           description: Whether the Target is enabled. The default is `true`.
-    CreateConnectionPolicyRequest:
-      type: object
-      properties:
-        FriendlyName:
-          type: string
-          description: A descriptive string that you create to describe the resource. It is not unique and can be up to 255 characters long.
     voice.v1.connection_policy:
       type: object
       properties:
@@ -641,12 +647,6 @@ components:
           - 'null'
           format: uri-map
           description: The URLs of related resources.
-    UpdateConnectionPolicyRequest:
-      type: object
-      properties:
-        FriendlyName:
-          type: string
-          description: A descriptive string that you create to describe the resource. It is not unique and can be up to 255 characters long.
   securitySchemes:
     accountSid_authToken:
       type: http

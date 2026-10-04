@@ -148,11 +148,13 @@ paths:
       x-summary-source: derived
 components:
   schemas:
-    ip_command_enum_payload_type:
+    ip_command_enum_status:
       type: string
       enum:
-      - text
-      - binary
+      - queued
+      - sent
+      - received
+      - failed
     ListIpCommandResponse:
       type: object
       properties:
@@ -185,48 +187,6 @@ components:
               format: uri
             key:
               type: string
-    CreateIpCommandRequest:
-      type: object
-      required:
-      - Sim
-      - Payload
-      - DevicePort
-      properties:
-        Sim:
-          type: string
-          description: The `sid` or `unique_name` of the [Super SIM](https://www.twilio.com/docs/iot/supersim/api/sim-resource) to send the IP Command to.
-        Payload:
-          type: string
-          description: The data that will be sent to the device. The payload cannot exceed 1300 bytes. If the PayloadType is set to text, the payload is encoded in UTF-8. If PayloadType is set to binary, the payload is encoded in Base64.
-        DevicePort:
-          type: integer
-          description: The device port to which the IP Command will be sent.
-        PayloadType:
-          type: string
-          $ref: '#/components/schemas/ip_command_enum_payload_type'
-          description: Indicates how the payload is encoded. Either `text` or `binary`. Defaults to `text`.
-        CallbackUrl:
-          type: string
-          format: uri
-          description: The URL we should call using the `callback_method` after we have sent the IP Command.
-        CallbackMethod:
-          type: string
-          format: http-method
-          enum:
-          - HEAD
-          - GET
-          - POST
-          - PATCH
-          - PUT
-          - DELETE
-          description: The HTTP method we should use to call `callback_url`. Can be `GET` or `POST`, and the default is `POST`.
-    ip_command_enum_status:
-      type: string
-      enum:
-      - queued
-      - sent
-      - received
-      - failed
     supersim.v1.ip_command:
       type: object
       properties:
@@ -325,6 +285,46 @@ components:
       enum:
       - to_sim
       - from_sim
+    ip_command_enum_payload_type:
+      type: string
+      enum:
+      - text
+      - binary
+    CreateIpCommandRequest:
+      type: object
+      required:
+      - Sim
+      - Payload
+      - DevicePort
+      properties:
+        Sim:
+          type: string
+          description: The `sid` or `unique_name` of the [Super SIM](https://www.twilio.com/docs/iot/supersim/api/sim-resource) to send the IP Command to.
+        Payload:
+          type: string
+          description: The data that will be sent to the device. The payload cannot exceed 1300 bytes. If the PayloadType is set to text, the payload is encoded in UTF-8. If PayloadType is set to binary, the payload is encoded in Base64.
+        DevicePort:
+          type: integer
+          description: The device port to which the IP Command will be sent.
+        PayloadType:
+          type: string
+          $ref: '#/components/schemas/ip_command_enum_payload_type'
+          description: Indicates how the payload is encoded. Either `text` or `binary`. Defaults to `text`.
+        CallbackUrl:
+          type: string
+          format: uri
+          description: The URL we should call using the `callback_method` after we have sent the IP Command.
+        CallbackMethod:
+          type: string
+          format: http-method
+          enum:
+          - HEAD
+          - GET
+          - POST
+          - PATCH
+          - PUT
+          - DELETE
+          description: The HTTP method we should use to call `callback_url`. Can be `GET` or `POST`, and the default is `POST`.
   securitySchemes:
     accountSid_authToken:
       type: http

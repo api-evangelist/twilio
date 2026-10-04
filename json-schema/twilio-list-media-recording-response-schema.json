@@ -1,0 +1,211 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/api-evangelist/twilio/main/json-schema/twilio-list-media-recording-response-schema.json",
+  "title": "ListMediaRecordingResponse",
+  "x-generated": "2026-10-04",
+  "x-method": "derived",
+  "x-generator": "derive-json-schema.py",
+  "x-source": "openapi/twilio-mediarecordings-api-openapi.yml#/components/schemas/ListMediaRecordingResponse",
+  "type": "object",
+  "properties": {
+    "media_recordings": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/media.v1.media_recording"
+      }
+    },
+    "meta": {
+      "type": "object",
+      "properties": {
+        "first_page_url": {
+          "type": "string",
+          "format": "uri"
+        },
+        "next_page_url": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "format": "uri"
+        },
+        "page": {
+          "type": "integer"
+        },
+        "page_size": {
+          "type": "integer"
+        },
+        "previous_page_url": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "format": "uri"
+        },
+        "url": {
+          "type": "string",
+          "format": "uri"
+        },
+        "key": {
+          "type": "string"
+        }
+      }
+    }
+  },
+  "$defs": {
+    "media.v1.media_recording": {
+      "type": "object",
+      "properties": {
+        "account_sid": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "minLength": 34,
+          "maxLength": 34,
+          "pattern": "^AC[0-9a-fA-F]{32}$",
+          "description": "The SID of the [Account](https://www.twilio.com/docs/iam/api/account) that created the MediaRecording resource."
+        },
+        "date_created": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "format": "date-time",
+          "description": "The date and time in GMT when the resource was created specified in [ISO 8601](https://en.wikipedia.org/wiki/ISO_8601) format."
+        },
+        "date_updated": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "format": "date-time",
+          "description": "The date and time in GMT when the resource was last updated specified in [ISO 8601](https://en.wikipedia.org/wiki/ISO_8601) format."
+        },
+        "duration": {
+          "type": [
+            "integer",
+            "null"
+          ],
+          "description": "The duration of the MediaRecording in seconds."
+        },
+        "format": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "$ref": "#/$defs/media_recording_enum_format",
+          "description": "The format of the MediaRecording, either `mp4` or `webm`."
+        },
+        "links": {
+          "type": [
+            "object",
+            "null"
+          ],
+          "format": "uri-map",
+          "description": "The URLs of related resources."
+        },
+        "processor_sid": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "minLength": 34,
+          "maxLength": 34,
+          "pattern": "^ZX[0-9a-fA-F]{32}$",
+          "description": "The SID of the MediaProcessor resource which produced the MediaRecording."
+        },
+        "resolution": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "description": "The dimensions of the video image in pixels expressed as columns (width) and rows (height)."
+        },
+        "source_sid": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "minLength": 34,
+          "maxLength": 34,
+          "pattern": "^[a-zA-Z]{2}[0-9a-fA-F]{32}$",
+          "description": "The SID of the resource that generated the original media track(s) of the MediaRecording."
+        },
+        "sid": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "minLength": 34,
+          "maxLength": 34,
+          "pattern": "^KV[0-9a-fA-F]{32}$",
+          "description": "The unique string generated to identify the MediaRecording resource."
+        },
+        "media_size": {
+          "type": [
+            "integer",
+            "null"
+          ],
+          "format": "int64",
+          "description": "The size of the recording media in bytes."
+        },
+        "status": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "$ref": "#/$defs/media_recording_enum_status",
+          "description": "The status of the MediaRecording. Can be: `processing`, `completed`, `deleted`, or `failed`."
+        },
+        "status_callback": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "format": "uri",
+          "description": "The URL to which Twilio will send asynchronous webhook requests for every MediaRecording event. See [Status Callbacks](/docs/live/api/status-callbacks) for more details."
+        },
+        "status_callback_method": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "format": "http-method",
+          "enum": [
+            "HEAD",
+            "GET",
+            "POST",
+            "PATCH",
+            "PUT",
+            "DELETE"
+          ],
+          "description": "The HTTP method Twilio should use to call the `status_callback` URL. Can be `POST` or `GET` and the default is `POST`."
+        },
+        "url": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "format": "uri",
+          "description": "The absolute URL of the resource."
+        }
+      }
+    },
+    "media_recording_enum_format": {
+      "type": "string",
+      "enum": [
+        "mp4",
+        "webm"
+      ]
+    },
+    "media_recording_enum_status": {
+      "type": "string",
+      "enum": [
+        "processing",
+        "completed",
+        "deleted",
+        "failed"
+      ]
+    }
+  }
+}

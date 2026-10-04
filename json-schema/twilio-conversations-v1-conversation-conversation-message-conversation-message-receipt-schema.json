@@ -1,0 +1,123 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/api-evangelist/twilio/main/json-schema/twilio-conversations-v1-conversation-conversation-message-conversation-message-receipt-schema.json",
+  "title": "conversations.v1.conversation.conversation_message.conversation_message_receipt",
+  "x-generated": "2026-10-03",
+  "x-method": "derived",
+  "x-generator": "derive-json-schema.py",
+  "x-source": "openapi/twilio-conversations-api-openapi.yml#/components/schemas/conversations.v1.conversation.conversation_message.conversation_message_receipt",
+  "type": "object",
+  "properties": {
+    "account_sid": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "minLength": 34,
+      "maxLength": 34,
+      "pattern": "^AC[0-9a-fA-F]{32}$",
+      "description": "The unique ID of the [Account](https://www.twilio.com/docs/iam/api/account) responsible for this participant."
+    },
+    "conversation_sid": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "minLength": 34,
+      "maxLength": 34,
+      "pattern": "^CH[0-9a-fA-F]{32}$",
+      "description": "The unique ID of the [Conversation](https://www.twilio.com/docs/conversations/api/conversation-resource) for this message."
+    },
+    "sid": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "minLength": 34,
+      "maxLength": 34,
+      "pattern": "^DY[0-9a-fA-F]{32}$",
+      "description": "A 34 character string that uniquely identifies this resource."
+    },
+    "message_sid": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "minLength": 34,
+      "maxLength": 34,
+      "pattern": "^IM[0-9a-fA-F]{32}$",
+      "description": "The SID of the message within a [Conversation](https://www.twilio.com/docs/conversations/api/conversation-resource) the delivery receipt belongs to"
+    },
+    "channel_message_sid": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "minLength": 34,
+      "maxLength": 34,
+      "pattern": "^[a-zA-Z]{2}[0-9a-fA-F]{32}$",
+      "description": "A messaging channel-specific identifier for the message delivered to participant e.g. `SMxx` for SMS, `WAxx` for Whatsapp etc. "
+    },
+    "participant_sid": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "minLength": 34,
+      "maxLength": 34,
+      "pattern": "^MB[0-9a-fA-F]{32}$",
+      "description": "The unique ID of the participant the delivery receipt belongs to."
+    },
+    "status": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "$ref": "#/$defs/conversation_message_receipt_enum_delivery_status",
+      "description": "The message delivery status, can be `read`, `failed`, `delivered`, `undelivered`, `sent` or null."
+    },
+    "error_code": {
+      "type": [
+        "integer",
+        "null"
+      ],
+      "description": "The message [delivery error code](https://www.twilio.com/docs/sms/api/message-resource#delivery-related-errors) for a `failed` status, "
+    },
+    "date_created": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "format": "date-time",
+      "description": "The date that this resource was created."
+    },
+    "date_updated": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "format": "date-time",
+      "description": "The date that this resource was last updated. `null` if the delivery receipt has not been updated."
+    },
+    "url": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "format": "uri",
+      "description": "An absolute API resource URL for this delivery receipt."
+    }
+  },
+  "$defs": {
+    "conversation_message_receipt_enum_delivery_status": {
+      "type": "string",
+      "enum": [
+        "read",
+        "failed",
+        "delivered",
+        "undelivered",
+        "sent"
+      ]
+    }
+  }
+}

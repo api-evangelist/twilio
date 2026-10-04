@@ -1,0 +1,108 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/api-evangelist/twilio/main/json-schema/twilio-voice-v1-connection-policy-connection-policy-target-schema.json",
+  "title": "voice.v1.connection_policy.connection_policy_target",
+  "x-generated": "2026-10-03",
+  "x-method": "derived",
+  "x-generator": "derive-json-schema.py",
+  "x-source": "openapi/twilio-connectionpolicies-api-openapi.yml#/components/schemas/voice.v1.connection_policy.connection_policy_target",
+  "type": "object",
+  "properties": {
+    "account_sid": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "minLength": 34,
+      "maxLength": 34,
+      "pattern": "^AC[0-9a-fA-F]{32}$",
+      "description": "The SID of the [Account](https://www.twilio.com/docs/iam/api/account) that created the Target resource."
+    },
+    "connection_policy_sid": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "minLength": 34,
+      "maxLength": 34,
+      "pattern": "^NY[0-9a-fA-F]{32}$",
+      "description": "The SID of the Connection Policy that owns the Target."
+    },
+    "sid": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "minLength": 34,
+      "maxLength": 34,
+      "pattern": "^NE[0-9a-fA-F]{32}$",
+      "description": "The unique string that we created to identify the Target resource."
+    },
+    "friendly_name": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "description": "The string that you assigned to describe the resource."
+    },
+    "target": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "format": "uri",
+      "description": "The SIP address you want Twilio to route your calls to. This must be a `sip:` schema. `sips` is NOT supported.",
+      "x-twilio": {
+        "pii": {
+          "handling": "standard",
+          "deleteSla": 30
+        }
+      }
+    },
+    "priority": {
+      "type": [
+        "integer",
+        "null"
+      ],
+      "description": "The relative importance of the target. Can be an integer from 0 to 65535, inclusive, and the default is 10. The lowest number represents the most important target."
+    },
+    "weight": {
+      "type": [
+        "integer",
+        "null"
+      ],
+      "description": "The value that determines the relative share of the load the Target should receive compared to other Targets with the same priority. Can be an integer from 1 to 65535, inclusive, and the default is 10. Targets with higher values receive more load than those with lower ones with the same priority."
+    },
+    "enabled": {
+      "type": [
+        "boolean",
+        "null"
+      ],
+      "description": "Whether the target is enabled. The default is `true`."
+    },
+    "date_created": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "format": "date-time",
+      "description": "The date and time in GMT when the resource was created specified in [RFC 2822](https://www.ietf.org/rfc/rfc2822.txt) format."
+    },
+    "date_updated": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "format": "date-time",
+      "description": "The date and time in GMT when the resource was last updated specified in [RFC 2822](https://www.ietf.org/rfc/rfc2822.txt) format."
+    },
+    "url": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "format": "uri",
+      "description": "The absolute URL of the resource."
+    }
+  }
+}

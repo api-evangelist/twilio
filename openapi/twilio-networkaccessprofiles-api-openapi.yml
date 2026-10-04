@@ -323,38 +323,6 @@ paths:
       x-summary-source: derived
 components:
   schemas:
-    ListNetworkAccessProfileResponse:
-      type: object
-      properties:
-        network_access_profiles:
-          type: array
-          items:
-            $ref: '#/components/schemas/supersim.v1.network_access_profile'
-        meta:
-          type: object
-          properties:
-            first_page_url:
-              type: string
-              format: uri
-            next_page_url:
-              type:
-              - string
-              - 'null'
-              format: uri
-            page:
-              type: integer
-            page_size:
-              type: integer
-            previous_page_url:
-              type:
-              - string
-              - 'null'
-              format: uri
-            url:
-              type: string
-              format: uri
-            key:
-              type: string
     supersim.v1.network_access_profile:
       type: object
       properties:
@@ -402,6 +370,81 @@ components:
           - object
           - 'null'
           format: uri-map
+    ListNetworkAccessProfileResponse:
+      type: object
+      properties:
+        network_access_profiles:
+          type: array
+          items:
+            $ref: '#/components/schemas/supersim.v1.network_access_profile'
+        meta:
+          type: object
+          properties:
+            first_page_url:
+              type: string
+              format: uri
+            next_page_url:
+              type:
+              - string
+              - 'null'
+              format: uri
+            page:
+              type: integer
+            page_size:
+              type: integer
+            previous_page_url:
+              type:
+              - string
+              - 'null'
+              format: uri
+            url:
+              type: string
+              format: uri
+            key:
+              type: string
+    ListNetworkAccessProfileNetworkResponse:
+      type: object
+      properties:
+        networks:
+          type: array
+          items:
+            $ref: '#/components/schemas/supersim.v1.network_access_profile.network_access_profile_network'
+        meta:
+          type: object
+          properties:
+            first_page_url:
+              type: string
+              format: uri
+            next_page_url:
+              type:
+              - string
+              - 'null'
+              format: uri
+            page:
+              type: integer
+            page_size:
+              type: integer
+            previous_page_url:
+              type:
+              - string
+              - 'null'
+              format: uri
+            url:
+              type: string
+              format: uri
+            key:
+              type: string
+    CreateNetworkAccessProfileRequest:
+      type: object
+      properties:
+        UniqueName:
+          type: string
+          description: An application-defined string that uniquely identifies the resource. It can be used in place of the resource's `sid` in the URL to address the resource.
+        Networks:
+          type: array
+          items:
+            type: string
+          description: List of Network SIDs that this Network Access Profile will allow connections to.
     UpdateNetworkAccessProfileRequest:
       type: object
       properties:
@@ -460,49 +503,6 @@ components:
           - 'null'
           format: uri
           description: The absolute URL of the Network resource.
-    ListNetworkAccessProfileNetworkResponse:
-      type: object
-      properties:
-        networks:
-          type: array
-          items:
-            $ref: '#/components/schemas/supersim.v1.network_access_profile.network_access_profile_network'
-        meta:
-          type: object
-          properties:
-            first_page_url:
-              type: string
-              format: uri
-            next_page_url:
-              type:
-              - string
-              - 'null'
-              format: uri
-            page:
-              type: integer
-            page_size:
-              type: integer
-            previous_page_url:
-              type:
-              - string
-              - 'null'
-              format: uri
-            url:
-              type: string
-              format: uri
-            key:
-              type: string
-    CreateNetworkAccessProfileRequest:
-      type: object
-      properties:
-        UniqueName:
-          type: string
-          description: An application-defined string that uniquely identifies the resource. It can be used in place of the resource's `sid` in the URL to address the resource.
-        Networks:
-          type: array
-          items:
-            type: string
-          description: List of Network SIDs that this Network Access Profile will allow connections to.
   securitySchemes:
     accountSid_authToken:
       type: http

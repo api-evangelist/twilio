@@ -444,21 +444,34 @@ paths:
       x-summary-source: derived
 components:
   schemas:
-    transcript_enum_status:
-      type: string
-      enum:
-      - queued
-      - in-progress
-      - completed
-      - failed
-      - canceled
-    ListOperatorResultResponse:
+    CreateTranscriptRequest:
+      type: object
+      required:
+      - ServiceSid
+      - Channel
+      properties:
+        ServiceSid:
+          type: string
+          minLength: 34
+          maxLength: 34
+          pattern: ^GA[0-9a-fA-F]{32}$
+          description: The unique SID identifier of the Service.
+        Channel:
+          description: JSON object describing Media Channel including Source and Participants
+        CustomerKey:
+          type: string
+          description: Used to store client provided metadata. Maximum of 64 double-byte UTF8 characters.
+        MediaStartTime:
+          type: string
+          format: date-time
+          description: The date that this Transcript's media was started, given in ISO 8601 format.
+    ListSentenceResponse:
       type: object
       properties:
-        operator_results:
+        sentences:
           type: array
           items:
-            $ref: '#/components/schemas/intelligence.v2.transcript.operator_result'
+            $ref: '#/components/schemas/intelligence.v2.transcript.sentence'
         meta:
           type: object
           properties:
@@ -528,38 +541,14 @@ components:
           type:
           - number
           - 'null'
-    ListTranscriptResponse:
-      type: object
-      properties:
-        transcripts:
-          type: array
-          items:
-            $ref: '#/components/schemas/intelligence.v2.transcript'
-        meta:
-          type: object
-          properties:
-            first_page_url:
-              type: string
-              format: uri
-            next_page_url:
-              type:
-              - string
-              - 'null'
-              format: uri
-            page:
-              type: integer
-            page_size:
-              type: integer
-            previous_page_url:
-              type:
-              - string
-              - 'null'
-              format: uri
-            url:
-              type: string
-              format: uri
-            key:
-              type: string
+    operator_result_enum_operator_type:
+      type: string
+      enum:
+      - conversation_classify
+      - utterance_classify
+      - extract
+      - extract_normalize
+      - pii_extract
     intelligence.v2.transcript:
       type: object
       properties:
@@ -650,6 +639,78 @@ components:
           - object
           - 'null'
           format: uri-map
+    ListOperatorResultResponse:
+      type: object
+      properties:
+        operator_results:
+          type: array
+          items:
+            $ref: '#/components/schemas/intelligence.v2.transcript.operator_result'
+        meta:
+          type: object
+          properties:
+            first_page_url:
+              type: string
+              format: uri
+            next_page_url:
+              type:
+              - string
+              - 'null'
+              format: uri
+            page:
+              type: integer
+            page_size:
+              type: integer
+            previous_page_url:
+              type:
+              - string
+              - 'null'
+              format: uri
+            url:
+              type: string
+              format: uri
+            key:
+              type: string
+    transcript_enum_status:
+      type: string
+      enum:
+      - queued
+      - in-progress
+      - completed
+      - failed
+      - canceled
+    ListTranscriptResponse:
+      type: object
+      properties:
+        transcripts:
+          type: array
+          items:
+            $ref: '#/components/schemas/intelligence.v2.transcript'
+        meta:
+          type: object
+          properties:
+            first_page_url:
+              type: string
+              format: uri
+            next_page_url:
+              type:
+              - string
+              - 'null'
+              format: uri
+            page:
+              type: integer
+            page_size:
+              type: integer
+            previous_page_url:
+              type:
+              - string
+              - 'null'
+              format: uri
+            url:
+              type: string
+              format: uri
+            key:
+              type: string
     intelligence.v2.transcript.operator_result:
       type: object
       properties:
@@ -728,46 +789,6 @@ components:
           - 'null'
           format: uri
           description: The URL of this resource.
-    ListSentenceResponse:
-      type: object
-      properties:
-        sentences:
-          type: array
-          items:
-            $ref: '#/components/schemas/intelligence.v2.transcript.sentence'
-        meta:
-          type: object
-          properties:
-            first_page_url:
-              type: string
-              format: uri
-            next_page_url:
-              type:
-              - string
-              - 'null'
-              format: uri
-            page:
-              type: integer
-            page_size:
-              type: integer
-            previous_page_url:
-              type:
-              - string
-              - 'null'
-              format: uri
-            url:
-              type: string
-              format: uri
-            key:
-              type: string
-    operator_result_enum_operator_type:
-      type: string
-      enum:
-      - conversation_classify
-      - utterance_classify
-      - extract
-      - extract_normalize
-      - pii_extract
     intelligence.v2.transcript.media:
       type: object
       properties:
@@ -807,27 +828,6 @@ components:
           - 'null'
           format: uri
           description: The URL of this resource.
-    CreateTranscriptRequest:
-      type: object
-      required:
-      - ServiceSid
-      - Channel
-      properties:
-        ServiceSid:
-          type: string
-          minLength: 34
-          maxLength: 34
-          pattern: ^GA[0-9a-fA-F]{32}$
-          description: The unique SID identifier of the Service.
-        Channel:
-          description: JSON object describing Media Channel including Source and Participants
-        CustomerKey:
-          type: string
-          description: Used to store client provided metadata. Maximum of 64 double-byte UTF8 characters.
-        MediaStartTime:
-          type: string
-          format: date-time
-          description: The date that this Transcript's media was started, given in ISO 8601 format.
   securitySchemes:
     accountSid_authToken:
       type: http

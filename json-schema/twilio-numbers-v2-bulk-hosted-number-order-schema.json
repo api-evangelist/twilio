@@ -1,0 +1,111 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/api-evangelist/twilio/main/json-schema/twilio-numbers-v2-bulk-hosted-number-order-schema.json",
+  "title": "numbers.v2.bulk_hosted_number_order",
+  "x-generated": "2026-10-04",
+  "x-method": "derived",
+  "x-generator": "derive-json-schema.py",
+  "x-source": "openapi/twilio-hostednumber-api-openapi.yml#/components/schemas/numbers.v2.bulk_hosted_number_order",
+  "type": "object",
+  "properties": {
+    "bulk_hosting_sid": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "minLength": 34,
+      "maxLength": 34,
+      "pattern": "^BH[0-9a-fA-F]{32}$",
+      "description": "A 34 character string that uniquely identifies this BulkHostedNumberOrder."
+    },
+    "request_status": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "$ref": "#/$defs/bulk_hosted_number_order_enum_request_status",
+      "description": "A string that shows the status of the current Bulk Hosting request, it can vary between these values: 'QUEUED','IN_PROGRESS','PROCESSED'"
+    },
+    "friendly_name": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "description": "A 128 character string that is a human-readable text that describes this resource.",
+      "x-twilio": {
+        "pii": {
+          "handling": "standard",
+          "deleteSla": 30
+        }
+      }
+    },
+    "notification_email": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "description": "Email address used for send notifications about this Bulk hosted number request.",
+      "x-twilio": {
+        "pii": {
+          "handling": "standard",
+          "deleteSla": 30
+        }
+      }
+    },
+    "date_created": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "format": "date-time",
+      "description": "The date this resource was created, given as [GMT RFC 2822](http://www.ietf.org/rfc/rfc2822.txt) format."
+    },
+    "date_completed": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "format": "date-time",
+      "description": "The date that this resource was completed, given as [GMT RFC 2822](http://www.ietf.org/rfc/rfc2822.txt) format."
+    },
+    "url": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "format": "uri",
+      "description": "The URL of this BulkHostedNumberOrder resource."
+    },
+    "total_count": {
+      "type": [
+        "integer",
+        "null"
+      ],
+      "description": "The total count of phone numbers in this Bulk hosting request."
+    },
+    "results": {
+      "type": [
+        "array",
+        "null"
+      ],
+      "items": {},
+      "description": "Contains a list of all the individual hosting orders and their information, for this Bulk request. Each result object is grouped by its order status. To see a complete list of order status, please check 'https://www.twilio.com/docs/phone-numbers/hosted-numbers/hosted-numbers-api/hosted-number-order-resource#status-values'.",
+      "x-twilio": {
+        "pii": {
+          "handling": "standard",
+          "deleteSla": 30
+        }
+      }
+    }
+  },
+  "$defs": {
+    "bulk_hosted_number_order_enum_request_status": {
+      "type": "string",
+      "enum": [
+        "QUEUED",
+        "IN_PROGRESS",
+        "PROCESSED"
+      ]
+    }
+  }
+}

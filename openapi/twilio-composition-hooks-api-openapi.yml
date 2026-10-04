@@ -308,15 +308,27 @@ paths:
       x-summary-source: derived
 components:
   schemas:
-    CompositionHookList:
+    PaginationMeta:
       type: object
       properties:
-        composition_hooks:
-          type: array
-          items:
-            $ref: '#/components/schemas/CompositionHook'
-        meta:
-          $ref: '#/components/schemas/PaginationMeta'
+        page:
+          type: integer
+        page_size:
+          type: integer
+        first_page_url:
+          type: string
+          format: uri
+        previous_page_url:
+          type: string
+          format: uri
+        next_page_url:
+          type: string
+          format: uri
+        url:
+          type: string
+          format: uri
+        key:
+          type: string
     CompositionHook:
       type: object
       properties:
@@ -363,6 +375,15 @@ components:
         url:
           type: string
           format: uri
+    CompositionHookList:
+      type: object
+      properties:
+        composition_hooks:
+          type: array
+          items:
+            $ref: '#/components/schemas/CompositionHook'
+        meta:
+          $ref: '#/components/schemas/PaginationMeta'
     CreateCompositionHookRequest:
       type: object
       required:
@@ -400,27 +421,38 @@ components:
           enum:
           - GET
           - POST
-    PaginationMeta:
+    ListCompositionHookResponse:
       type: object
       properties:
-        page:
-          type: integer
-        page_size:
-          type: integer
-        first_page_url:
-          type: string
-          format: uri
-        previous_page_url:
-          type: string
-          format: uri
-        next_page_url:
-          type: string
-          format: uri
-        url:
-          type: string
-          format: uri
-        key:
-          type: string
+        composition_hooks:
+          type: array
+          items:
+            $ref: '#/components/schemas/video.v1.composition_hook'
+        meta:
+          type: object
+          properties:
+            first_page_url:
+              type: string
+              format: uri
+            next_page_url:
+              type:
+              - string
+              - 'null'
+              format: uri
+            page:
+              type: integer
+            page_size:
+              type: integer
+            previous_page_url:
+              type:
+              - string
+              - 'null'
+              format: uri
+            url:
+              type: string
+              format: uri
+            key:
+              type: string
     UpdateCompositionHookRequest:
       type: object
       required:
@@ -469,11 +501,6 @@ components:
           - PUT
           - DELETE
           description: 'The HTTP method we should use to call `status_callback`. Can be: `POST` or `GET` and the default is `POST`.'
-    composition_hook_enum_format:
-      type: string
-      enum:
-      - mp4
-      - webm
     video.v1.composition_hook:
       type: object
       properties:
@@ -584,38 +611,11 @@ components:
           - 'null'
           format: uri
           description: The absolute URL of the resource.
-    ListCompositionHookResponse:
-      type: object
-      properties:
-        composition_hooks:
-          type: array
-          items:
-            $ref: '#/components/schemas/video.v1.composition_hook'
-        meta:
-          type: object
-          properties:
-            first_page_url:
-              type: string
-              format: uri
-            next_page_url:
-              type:
-              - string
-              - 'null'
-              format: uri
-            page:
-              type: integer
-            page_size:
-              type: integer
-            previous_page_url:
-              type:
-              - string
-              - 'null'
-              format: uri
-            url:
-              type: string
-              format: uri
-            key:
-              type: string
+    composition_hook_enum_format:
+      type: string
+      enum:
+      - mp4
+      - webm
   securitySchemes:
     accountSid_authToken:
       type: http

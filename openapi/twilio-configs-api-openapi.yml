@@ -170,50 +170,6 @@ paths:
       x-summary-source: derived
 components:
   schemas:
-    CreateAccountConfigRequest:
-      type: object
-      required:
-      - Key
-      - Value
-      properties:
-        Key:
-          type: string
-          description: The config key; up to 100 characters.
-        Value:
-          type: string
-          description: The config value; up to 4096 characters.
-    microvisor.v1.account_config:
-      type: object
-      properties:
-        key:
-          type:
-          - string
-          - 'null'
-          description: The config key; up to 100 characters.
-        date_updated:
-          type:
-          - string
-          - 'null'
-          format: date-time
-        value:
-          type:
-          - string
-          - 'null'
-          description: The config value; up to 4096 characters.
-        url:
-          type:
-          - string
-          - 'null'
-          format: uri
-          description: The absolute URL of the Config.
-    UpdateAccountConfigRequest:
-      type: object
-      required:
-      - Value
-      properties:
-        Value:
-          type: string
-          description: The config value; up to 4096 characters.
     ListAccountConfigResponse:
       type: object
       properties:
@@ -246,6 +202,50 @@ components:
               format: uri
             key:
               type: string
+    UpdateAccountConfigRequest:
+      type: object
+      required:
+      - Value
+      properties:
+        Value:
+          type: string
+          description: The config value; up to 4096 characters.
+    microvisor.v1.account_config:
+      type: object
+      properties:
+        key:
+          type:
+          - string
+          - 'null'
+          description: The config key; up to 100 characters.
+        date_updated:
+          type:
+          - string
+          - 'null'
+          format: date-time
+        value:
+          type:
+          - string
+          - 'null'
+          description: The config value; up to 4096 characters.
+        url:
+          type:
+          - string
+          - 'null'
+          format: uri
+          description: The absolute URL of the Config.
+    CreateAccountConfigRequest:
+      type: object
+      required:
+      - Key
+      - Value
+      properties:
+        Key:
+          type: string
+          description: The config key; up to 100 characters.
+        Value:
+          type: string
+          description: The config value; up to 4096 characters.
   securitySchemes:
     accountSid_authToken:
       type: http

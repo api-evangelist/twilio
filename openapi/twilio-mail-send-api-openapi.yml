@@ -46,6 +46,66 @@ paths:
           description: Rate limit exceeded
 components:
   schemas:
+    Attachment:
+      type: object
+      required:
+      - content
+      - filename
+      properties:
+        content:
+          type: string
+          description: Base64 encoded attachment content
+        filename:
+          type: string
+        type:
+          type: string
+          description: MIME type of the attachment
+        disposition:
+          type: string
+          enum:
+          - inline
+          - attachment
+          default: attachment
+        content_id:
+          type: string
+          description: Content ID for inline attachments
+    Personalization:
+      type: object
+      required:
+      - to
+      properties:
+        to:
+          type: array
+          items:
+            $ref: '#/components/schemas/EmailAddress'
+          minItems: 1
+        cc:
+          type: array
+          items:
+            $ref: '#/components/schemas/EmailAddress'
+        bcc:
+          type: array
+          items:
+            $ref: '#/components/schemas/EmailAddress'
+        subject:
+          type: string
+        headers:
+          type: object
+          additionalProperties:
+            type: string
+        substitutions:
+          type: object
+          additionalProperties:
+            type: string
+        dynamic_template_data:
+          type: object
+          description: Dynamic template handlebars data
+        custom_args:
+          type: object
+          additionalProperties:
+            type: string
+        send_at:
+          type: integer
     EmailAddress:
       type: object
       required:
@@ -154,66 +214,6 @@ components:
               properties:
                 enable:
                   type: boolean
-    Personalization:
-      type: object
-      required:
-      - to
-      properties:
-        to:
-          type: array
-          items:
-            $ref: '#/components/schemas/EmailAddress'
-          minItems: 1
-        cc:
-          type: array
-          items:
-            $ref: '#/components/schemas/EmailAddress'
-        bcc:
-          type: array
-          items:
-            $ref: '#/components/schemas/EmailAddress'
-        subject:
-          type: string
-        headers:
-          type: object
-          additionalProperties:
-            type: string
-        substitutions:
-          type: object
-          additionalProperties:
-            type: string
-        dynamic_template_data:
-          type: object
-          description: Dynamic template handlebars data
-        custom_args:
-          type: object
-          additionalProperties:
-            type: string
-        send_at:
-          type: integer
-    Attachment:
-      type: object
-      required:
-      - content
-      - filename
-      properties:
-        content:
-          type: string
-          description: Base64 encoded attachment content
-        filename:
-          type: string
-        type:
-          type: string
-          description: MIME type of the attachment
-        disposition:
-          type: string
-          enum:
-          - inline
-          - attachment
-          default: attachment
-        content_id:
-          type: string
-          description: Content ID for inline attachments
   securitySchemes:
     bearerAuth:
       type: http

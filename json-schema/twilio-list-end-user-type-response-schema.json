@@ -1,0 +1,101 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/api-evangelist/twilio/main/json-schema/twilio-list-end-user-type-response-schema.json",
+  "title": "ListEndUserTypeResponse",
+  "x-generated": "2026-10-03",
+  "x-method": "derived",
+  "x-generator": "derive-json-schema.py",
+  "x-source": "openapi/twilio-endusertypes-api-openapi.yml#/components/schemas/ListEndUserTypeResponse",
+  "type": "object",
+  "properties": {
+    "end_user_types": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/trusthub.v1.end_user_type"
+      }
+    },
+    "meta": {
+      "type": "object",
+      "properties": {
+        "first_page_url": {
+          "type": "string",
+          "format": "uri"
+        },
+        "next_page_url": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "format": "uri"
+        },
+        "page": {
+          "type": "integer"
+        },
+        "page_size": {
+          "type": "integer"
+        },
+        "previous_page_url": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "format": "uri"
+        },
+        "url": {
+          "type": "string",
+          "format": "uri"
+        },
+        "key": {
+          "type": "string"
+        }
+      }
+    }
+  },
+  "$defs": {
+    "trusthub.v1.end_user_type": {
+      "type": "object",
+      "properties": {
+        "sid": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "minLength": 34,
+          "maxLength": 34,
+          "pattern": "^OY[0-9a-fA-F]{32}$",
+          "description": "The unique string that identifies the End-User Type resource."
+        },
+        "friendly_name": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "description": "A human-readable description that is assigned to describe the End-User Type resource. Examples can include first name, last name, email, business name, etc"
+        },
+        "machine_name": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "description": "A machine-readable description of the End-User Type resource. Examples can include first_name, last_name, email, business_name, etc."
+        },
+        "fields": {
+          "type": [
+            "array",
+            "null"
+          ],
+          "items": {},
+          "description": "The required information for creating an End-User. The required fields will change as regulatory needs change and will differ for businesses and individuals."
+        },
+        "url": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "format": "uri",
+          "description": "The absolute URL of the End-User Type resource."
+        }
+      }
+    }
+  }
+}

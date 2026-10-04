@@ -366,37 +366,43 @@ paths:
       x-summary-source: derived
 components:
   schemas:
-    UpdateUserRequest:
+    ListUserConversationResponse:
       type: object
       properties:
-        FriendlyName:
-          type: string
-          description: The string that you assigned to describe the resource.
-        Attributes:
-          type: string
-          description: The JSON Object string that stores application-specific data. If attributes have not been set, `{}` is returned.
-        RoleSid:
-          type: string
-          minLength: 34
-          maxLength: 34
-          pattern: ^RL[0-9a-fA-F]{32}$
-          description: The SID of a service-level [Role](https://www.twilio.com/docs/conversations/api/role-resource) to assign to the user.
-    UpdateUserConversationRequest:
-      type: object
-      properties:
-        NotificationLevel:
-          type: string
-          $ref: '#/components/schemas/user_conversation_enum_notification_level'
-          description: The Notification Level of this User Conversation. One of `default` or `muted`.
-        LastReadTimestamp:
-          type: string
-          format: date-time
-          description: The date of the last message read in conversation by the user, given in ISO 8601 format.
-        LastReadMessageIndex:
-          type:
-          - integer
-          - 'null'
-          description: The index of the last Message in the Conversation that the Participant has read.
+        conversations:
+          type: array
+          items:
+            $ref: '#/components/schemas/conversations.v1.user.user_conversation'
+        meta:
+          type: object
+          properties:
+            first_page_url:
+              type: string
+              format: uri
+            next_page_url:
+              type:
+              - string
+              - 'null'
+              format: uri
+            page:
+              type: integer
+            page_size:
+              type: integer
+            previous_page_url:
+              type:
+              - string
+              - 'null'
+              format: uri
+            url:
+              type: string
+              format: uri
+            key:
+              type: string
+    user_enum_webhook_enabled_type:
+      type: string
+      enum:
+      - 'true'
+      - 'false'
     user_conversation_enum_notification_level:
       type: string
       enum:
@@ -524,32 +530,6 @@ components:
           - 'null'
           format: uri-map
           description: Contains absolute URLs to access the [participant](https://www.twilio.com/docs/conversations/api/conversation-participant-resource) and [conversation](https://www.twilio.com/docs/conversations/api/conversation-resource) of this conversation.
-    CreateUserRequest:
-      type: object
-      required:
-      - Identity
-      properties:
-        Identity:
-          type: string
-          description: The application-defined string that uniquely identifies the resource's User within the [Conversation Service](https://www.twilio.com/docs/conversations/api/service-resource). This value is often a username or an email address, and is case-sensitive.
-        FriendlyName:
-          type: string
-          description: The string that you assigned to describe the resource.
-        Attributes:
-          type: string
-          description: The JSON Object string that stores application-specific data. If attributes have not been set, `{}` is returned.
-        RoleSid:
-          type: string
-          minLength: 34
-          maxLength: 34
-          pattern: ^RL[0-9a-fA-F]{32}$
-          description: The SID of a service-level [Role](https://www.twilio.com/docs/conversations/api/role-resource) to assign to the user.
-    user_conversation_enum_state:
-      type: string
-      enum:
-      - inactive
-      - active
-      - closed
     ListUserResponse:
       type: object
       properties:
@@ -582,11 +562,28 @@ components:
               format: uri
             key:
               type: string
-    user_enum_webhook_enabled_type:
+    user_conversation_enum_state:
       type: string
       enum:
-      - 'true'
-      - 'false'
+      - inactive
+      - active
+      - closed
+    UpdateUserConversationRequest:
+      type: object
+      properties:
+        NotificationLevel:
+          type: string
+          $ref: '#/components/schemas/user_conversation_enum_notification_level'
+          description: The Notification Level of this User Conversation. One of `default` or `muted`.
+        LastReadTimestamp:
+          type: string
+          format: date-time
+          description: The date of the last message read in conversation by the user, given in ISO 8601 format.
+        LastReadMessageIndex:
+          type:
+          - integer
+          - 'null'
+          description: The index of the last Message in the Conversation that the Participant has read.
     conversations.v1.user:
       type: object
       properties:
@@ -682,38 +679,41 @@ components:
           - object
           - 'null'
           format: uri-map
-    ListUserConversationResponse:
+    UpdateUserRequest:
       type: object
       properties:
-        conversations:
-          type: array
-          items:
-            $ref: '#/components/schemas/conversations.v1.user.user_conversation'
-        meta:
-          type: object
-          properties:
-            first_page_url:
-              type: string
-              format: uri
-            next_page_url:
-              type:
-              - string
-              - 'null'
-              format: uri
-            page:
-              type: integer
-            page_size:
-              type: integer
-            previous_page_url:
-              type:
-              - string
-              - 'null'
-              format: uri
-            url:
-              type: string
-              format: uri
-            key:
-              type: string
+        FriendlyName:
+          type: string
+          description: The string that you assigned to describe the resource.
+        Attributes:
+          type: string
+          description: The JSON Object string that stores application-specific data. If attributes have not been set, `{}` is returned.
+        RoleSid:
+          type: string
+          minLength: 34
+          maxLength: 34
+          pattern: ^RL[0-9a-fA-F]{32}$
+          description: The SID of a service-level [Role](https://www.twilio.com/docs/conversations/api/role-resource) to assign to the user.
+    CreateUserRequest:
+      type: object
+      required:
+      - Identity
+      properties:
+        Identity:
+          type: string
+          description: The application-defined string that uniquely identifies the resource's User within the [Conversation Service](https://www.twilio.com/docs/conversations/api/service-resource). This value is often a username or an email address, and is case-sensitive.
+        FriendlyName:
+          type: string
+          description: The string that you assigned to describe the resource.
+        Attributes:
+          type: string
+          description: The JSON Object string that stores application-specific data. If attributes have not been set, `{}` is returned.
+        RoleSid:
+          type: string
+          minLength: 34
+          maxLength: 34
+          pattern: ^RL[0-9a-fA-F]{32}$
+          description: The SID of a service-level [Role](https://www.twilio.com/docs/conversations/api/role-resource) to assign to the user.
   securitySchemes:
     accountSid_authToken:
       type: http

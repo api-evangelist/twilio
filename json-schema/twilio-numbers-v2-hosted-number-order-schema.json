@@ -1,0 +1,225 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/api-evangelist/twilio/main/json-schema/twilio-numbers-v2-hosted-number-order-schema.json",
+  "title": "numbers.v2.hosted_number_order",
+  "x-generated": "2026-10-04",
+  "x-method": "derived",
+  "x-generator": "derive-json-schema.py",
+  "x-source": "openapi/twilio-hostednumber-api-openapi.yml#/components/schemas/numbers.v2.hosted_number_order",
+  "type": "object",
+  "properties": {
+    "sid": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "minLength": 34,
+      "maxLength": 34,
+      "pattern": "^HR[0-9a-fA-F]{32}$",
+      "description": "A 34 character string that uniquely identifies this HostedNumberOrder."
+    },
+    "account_sid": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "minLength": 34,
+      "maxLength": 34,
+      "pattern": "^AC[0-9a-fA-F]{32}$",
+      "description": "A 34 character string that uniquely identifies the account."
+    },
+    "incoming_phone_number_sid": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "minLength": 34,
+      "maxLength": 34,
+      "pattern": "^PN[0-9a-fA-F]{32}$",
+      "description": "A 34 character string that uniquely identifies the [IncomingPhoneNumber](https://www.twilio.com/docs/phone-numbers/api/incomingphonenumber-resource) resource that represents the phone number being hosted."
+    },
+    "address_sid": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "minLength": 34,
+      "maxLength": 34,
+      "pattern": "^AD[0-9a-fA-F]{32}$",
+      "description": "A 34 character string that uniquely identifies the Address resource that represents the address of the owner of this phone number."
+    },
+    "signing_document_sid": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "minLength": 34,
+      "maxLength": 34,
+      "pattern": "^PX[0-9a-fA-F]{32}$",
+      "description": "A 34 character string that uniquely identifies the [Authorization Document](https://www.twilio.com/docs/phone-numbers/hosted-numbers/hosted-numbers-api/authorization-document-resource) the user needs to sign."
+    },
+    "phone_number": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "format": "phone-number",
+      "description": "Phone number to be hosted. This must be in [E.164](https://en.wikipedia.org/wiki/E.164) format, e.g., +16175551212",
+      "x-twilio": {
+        "pii": {
+          "handling": "standard",
+          "deleteSla": 30
+        }
+      }
+    },
+    "capabilities": {
+      "type": [
+        "object",
+        "null"
+      ],
+      "format": "phone-number-capabilities",
+      "properties": {
+        "mms": {
+          "type": "boolean"
+        },
+        "sms": {
+          "type": "boolean"
+        },
+        "voice": {
+          "type": "boolean"
+        },
+        "fax": {
+          "type": "boolean"
+        }
+      },
+      "description": "Set of booleans describing the capabilities hosted on Twilio's platform. SMS is currently only supported."
+    },
+    "friendly_name": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "description": "A 128 character string that is a human-readable text that describes this resource.",
+      "x-twilio": {
+        "pii": {
+          "handling": "standard",
+          "deleteSla": 30
+        }
+      }
+    },
+    "status": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "$ref": "#/$defs/hosted_number_order_enum_status",
+      "description": "Status of this resource. It can hold one of the values: 1. Twilio Processing 2. Received, 3. Pending LOA, 4. Carrier Processing, 5. Completed, 6. Action Required, 7. Failed. See the [HostedNumberOrders Status Values](https://www.twilio.com/docs/phone-numbers/hosted-numbers/hosted-numbers-api/hosted-number-order-resource#status-values) section for more information on each of these statuses."
+    },
+    "failure_reason": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "description": "A message that explains why a hosted_number_order went to status \"action-required\""
+    },
+    "date_created": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "format": "date-time",
+      "description": "The date this resource was created, given as [GMT RFC 2822](http://www.ietf.org/rfc/rfc2822.txt) format."
+    },
+    "date_updated": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "format": "date-time",
+      "description": "The date that this resource was updated, given as [GMT RFC 2822](http://www.ietf.org/rfc/rfc2822.txt) format."
+    },
+    "email": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "description": "Email of the owner of this phone number that is being hosted.",
+      "x-twilio": {
+        "pii": {
+          "handling": "standard",
+          "deleteSla": 30
+        }
+      }
+    },
+    "cc_emails": {
+      "type": [
+        "array",
+        "null"
+      ],
+      "items": {
+        "type": "string"
+      },
+      "description": "A list of emails that LOA document for this HostedNumberOrder will be carbon copied to.",
+      "x-twilio": {
+        "pii": {
+          "handling": "standard",
+          "deleteSla": 30
+        }
+      }
+    },
+    "url": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "format": "uri",
+      "description": "The URL of this HostedNumberOrder."
+    },
+    "contact_title": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "description": "The title of the person authorized to sign the Authorization Document for this phone number."
+    },
+    "contact_phone_number": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "format": "phone-number",
+      "description": "The contact phone number of the person authorized to sign the Authorization Document."
+    },
+    "bulk_hosting_request_sid": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "minLength": 34,
+      "maxLength": 34,
+      "pattern": "^BH[0-9a-fA-F]{32}$",
+      "description": "A 34 character string that uniquely identifies the bulk hosting request associated with this HostedNumberOrder."
+    },
+    "next_step": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "description": "The next step you need to take to complete the hosted number order and request it successfully."
+    }
+  },
+  "$defs": {
+    "hosted_number_order_enum_status": {
+      "type": "string",
+      "enum": [
+        "received",
+        "verified",
+        "pending-loa",
+        "carrier-processing",
+        "completed",
+        "failed",
+        "action-required"
+      ]
+    }
+  }
+}

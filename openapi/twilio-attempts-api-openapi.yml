@@ -232,6 +232,39 @@ paths:
       x-summary-source: derived
 components:
   schemas:
+    verification_attempt_enum_conversion_status:
+      type: string
+      enum:
+      - converted
+      - unconverted
+    verify.v2.verification_attempts_summary:
+      type: object
+      properties:
+        total_attempts:
+          type:
+          - integer
+          - 'null'
+          description: Total of attempts made according to the provided filters
+        total_converted:
+          type:
+          - integer
+          - 'null'
+          description: Total of  attempts made that were confirmed by the end user, according to the provided filters.
+        total_unconverted:
+          type:
+          - integer
+          - 'null'
+          description: Total of attempts made that were not confirmed by the end user, according to the provided filters.
+        conversion_rate_percentage:
+          type:
+          - number
+          - 'null'
+          description: 'Percentage of the confirmed messages over the total, defined by (total_converted/total_attempts)*100. '
+        url:
+          type:
+          - string
+          - 'null'
+          format: uri
     ListVerificationAttemptResponse:
       type: object
       properties:
@@ -264,34 +297,6 @@ components:
               format: uri
             key:
               type: string
-    verify.v2.verification_attempts_summary:
-      type: object
-      properties:
-        total_attempts:
-          type:
-          - integer
-          - 'null'
-          description: Total of attempts made according to the provided filters
-        total_converted:
-          type:
-          - integer
-          - 'null'
-          description: Total of  attempts made that were confirmed by the end user, according to the provided filters.
-        total_unconverted:
-          type:
-          - integer
-          - 'null'
-          description: Total of attempts made that were not confirmed by the end user, according to the provided filters.
-        conversion_rate_percentage:
-          type:
-          - number
-          - 'null'
-          description: 'Percentage of the confirmed messages over the total, defined by (total_converted/total_attempts)*100. '
-        url:
-          type:
-          - string
-          - 'null'
-          format: uri
     verify.v2.verification_attempt:
       type: object
       properties:
@@ -360,11 +365,6 @@ components:
           - string
           - 'null'
           format: uri
-    verification_attempt_enum_conversion_status:
-      type: string
-      enum:
-      - converted
-      - unconverted
     verification_attempts_summary_enum_channels:
       type: string
       enum:

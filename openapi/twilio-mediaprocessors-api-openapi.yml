@@ -175,6 +175,26 @@ paths:
       x-summary-source: derived
 components:
   schemas:
+    media_processor_enum_status:
+      type: string
+      enum:
+      - failed
+      - started
+      - ended
+    media_processor_enum_order:
+      type: string
+      enum:
+      - asc
+      - desc
+    UpdateMediaProcessorRequest:
+      type: object
+      required:
+      - Status
+      properties:
+        Status:
+          type: string
+          $ref: '#/components/schemas/media_processor_enum_update_status'
+          description: The status of the MediaProcessor. Can be `ended`.
     CreateMediaProcessorRequest:
       type: object
       required:
@@ -207,6 +227,10 @@ components:
         MaxDuration:
           type: integer
           description: The maximum time, in seconds, that the MediaProcessor can run before automatically ends. The default value is 300 seconds, and the maximum value is 90000 seconds. Once this maximum duration is reached, Twilio will end the MediaProcessor, regardless of whether media is still streaming.
+    media_processor_enum_update_status:
+      type: string
+      enum:
+      - ended
     ListMediaProcessorResponse:
       type: object
       properties:
@@ -325,30 +349,6 @@ components:
           - integer
           - 'null'
           description: The maximum time, in seconds, that the MediaProcessor can run before automatically ends. The default value is 300 seconds, and the maximum value is 90000 seconds. Once this maximum duration is reached, Twilio will end the MediaProcessor, regardless of whether media is still streaming.
-    media_processor_enum_update_status:
-      type: string
-      enum:
-      - ended
-    UpdateMediaProcessorRequest:
-      type: object
-      required:
-      - Status
-      properties:
-        Status:
-          type: string
-          $ref: '#/components/schemas/media_processor_enum_update_status'
-          description: The status of the MediaProcessor. Can be `ended`.
-    media_processor_enum_status:
-      type: string
-      enum:
-      - failed
-      - started
-      - ended
-    media_processor_enum_order:
-      type: string
-      enum:
-      - asc
-      - desc
   securitySchemes:
     accountSid_authToken:
       type: http

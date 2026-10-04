@@ -1,0 +1,37 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/api-evangelist/twilio/main/json-schema/twilio-create-esim-profile-request-schema.json",
+  "title": "CreateEsimProfileRequest",
+  "x-generated": "2026-10-03",
+  "x-method": "derived",
+  "x-generator": "derive-json-schema.py",
+  "x-source": "openapi/twilio-esimprofiles-api-openapi.yml#/components/schemas/CreateEsimProfileRequest",
+  "type": "object",
+  "properties": {
+    "CallbackUrl": {
+      "type": "string",
+      "description": "The URL we should call using the `callback_method` when the status of the eSIM Profile changes. At this stage of the eSIM Profile pilot, the a request to the URL will only be called when the ESimProfile resource changes from `reserving` to `available`."
+    },
+    "CallbackMethod": {
+      "type": "string",
+      "format": "http-method",
+      "enum": [
+        "HEAD",
+        "GET",
+        "POST",
+        "PATCH",
+        "PUT",
+        "DELETE"
+      ],
+      "description": "The HTTP method we should use to call `callback_url`. Can be: `GET` or `POST` and the default is POST."
+    },
+    "GenerateMatchingId": {
+      "type": "boolean",
+      "description": "When set to `true`, a value for `Eid` does not need to be provided. Instead, when the eSIM profile is reserved, a matching ID will be generated and returned via the `matching_id` property. This identifies the specific eSIM profile that can be used by any capable device to claim and download the profile."
+    },
+    "Eid": {
+      "type": "string",
+      "description": "Identifier of the eUICC that will claim the eSIM Profile."
+    }
+  }
+}

@@ -1304,7 +1304,128 @@ paths:
       x-summary-source: derived
 components:
   schemas:
-    numbers.v2.regulatory_compliance.end_user:
+    bundle_enum_end_user_type:
+      type: string
+      enum:
+      - individual
+      - business
+    ListRegulationResponse:
+      type: object
+      properties:
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/numbers.v2.regulatory_compliance.regulation'
+        meta:
+          type: object
+          properties:
+            first_page_url:
+              type: string
+              format: uri
+            next_page_url:
+              type:
+              - string
+              - 'null'
+              format: uri
+            page:
+              type: integer
+            page_size:
+              type: integer
+            previous_page_url:
+              type:
+              - string
+              - 'null'
+              format: uri
+            url:
+              type: string
+              format: uri
+            key:
+              type: string
+    bundle_enum_sort_by:
+      type: string
+      enum:
+      - valid-until
+      - date-updated
+    ListEndUserTypeResponse:
+      type: object
+      properties:
+        end_user_types:
+          type: array
+          items:
+            $ref: '#/components/schemas/numbers.v2.regulatory_compliance.end_user_type'
+        meta:
+          type: object
+          properties:
+            first_page_url:
+              type: string
+              format: uri
+            next_page_url:
+              type:
+              - string
+              - 'null'
+              format: uri
+            page:
+              type: integer
+            page_size:
+              type: integer
+            previous_page_url:
+              type:
+              - string
+              - 'null'
+              format: uri
+            url:
+              type: string
+              format: uri
+            key:
+              type: string
+    CreateEndUserRequest:
+      type: object
+      required:
+      - FriendlyName
+      - Type
+      properties:
+        FriendlyName:
+          type: string
+          description: The string that you assigned to describe the resource.
+        Type:
+          type: string
+          $ref: '#/components/schemas/end_user_enum_type'
+          description: The type of end user of the Bundle resource - can be `individual` or `business`.
+        Attributes:
+          description: The set of parameters that are the attributes of the End User resource which are derived End User Types.
+    CreateBundleRequest:
+      type: object
+      required:
+      - FriendlyName
+      - Email
+      properties:
+        FriendlyName:
+          type: string
+          description: The string that you assigned to describe the resource.
+        Email:
+          type: string
+          description: The email address that will receive updates when the Bundle resource changes status.
+        StatusCallback:
+          type: string
+          format: uri
+          description: The URL we call to inform your application of status changes.
+        RegulationSid:
+          type: string
+          minLength: 34
+          maxLength: 34
+          pattern: ^RN[0-9a-fA-F]{32}$
+          description: The unique string of a regulation that is associated to the Bundle resource.
+        IsoCountry:
+          type: string
+          description: The [ISO country code](https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2) of the Bundle's phone number country ownership request.
+        EndUserType:
+          type: string
+          $ref: '#/components/schemas/bundle_enum_end_user_type'
+          description: The [type of End User](https://www.twilio.com/docs/phone-numbers/regulatory/api/end-user-types) of the Bundle resource.
+        NumberType:
+          type: string
+          description: The type of phone number of the Bundle's ownership request. Can be `local`, `mobile`, `national`, or `toll free`.
+    numbers.v2.regulatory_compliance.bundle.item_assignment:
       type: object
       properties:
         sid:
@@ -1313,8 +1434,16 @@ components:
           - 'null'
           minLength: 34
           maxLength: 34
-          pattern: ^IT[0-9a-fA-F]{32}$
-          description: The unique string created by Twilio to identify the End User resource.
+          pattern: ^BV[0-9a-fA-F]{32}$
+          description: The unique string that we created to identify the Item Assignment resource.
+        bundle_sid:
+          type:
+          - string
+          - 'null'
+          minLength: 34
+          maxLength: 34
+          pattern: ^BU[0-9a-fA-F]{32}$
+          description: The unique string that we created to identify the Bundle resource.
         account_sid:
           type:
           - string
@@ -1322,24 +1451,182 @@ components:
           minLength: 34
           maxLength: 34
           pattern: ^AC[0-9a-fA-F]{32}$
-          description: The SID of the [Account](https://www.twilio.com/docs/iam/api/account) that created the End User resource.
+          description: The SID of the [Account](https://www.twilio.com/docs/iam/api/account) that created the Item Assignment resource.
+        object_sid:
+          type:
+          - string
+          - 'null'
+          minLength: 34
+          maxLength: 34
+          pattern: ^[a-zA-Z]{2}[0-9a-fA-F]{32}$
+          description: The SID of an object bag that holds information of the different items.
+        date_created:
+          type:
+          - string
+          - 'null'
+          format: date-time
+          description: The date and time in GMT when the resource was created specified in [ISO 8601](https://en.wikipedia.org/wiki/ISO_8601) format.
+        url:
+          type:
+          - string
+          - 'null'
+          format: uri
+          description: The absolute URL of the Identity resource.
+    numbers.v2.regulatory_compliance.bundle.evaluation:
+      type: object
+      properties:
+        sid:
+          type:
+          - string
+          - 'null'
+          minLength: 34
+          maxLength: 34
+          pattern: ^EL[0-9a-fA-F]{32}$
+          description: The unique string that identifies the Evaluation resource.
+        account_sid:
+          type:
+          - string
+          - 'null'
+          minLength: 34
+          maxLength: 34
+          pattern: ^AC[0-9a-fA-F]{32}$
+          description: The SID of the [Account](https://www.twilio.com/docs/iam/api/account) that created the Bundle resource.
+        regulation_sid:
+          type:
+          - string
+          - 'null'
+          minLength: 34
+          maxLength: 34
+          pattern: ^RN[0-9a-fA-F]{32}$
+          description: The unique string of a regulation that is associated to the Bundle resource.
+        bundle_sid:
+          type:
+          - string
+          - 'null'
+          minLength: 34
+          maxLength: 34
+          pattern: ^BU[0-9a-fA-F]{32}$
+          description: The unique string that we created to identify the Bundle resource.
+        status:
+          type:
+          - string
+          - 'null'
+          $ref: '#/components/schemas/evaluation_enum_status'
+          description: The compliance status of the Evaluation resource.
+        results:
+          type:
+          - array
+          - 'null'
+          items: {}
+          description: The results of the Evaluation which includes the valid and invalid attributes.
+        date_created:
+          type:
+          - string
+          - 'null'
+          format: date-time
+        url:
+          type:
+          - string
+          - 'null'
+          format: uri
+    CreateItemAssignmentRequest:
+      type: object
+      required:
+      - ObjectSid
+      properties:
+        ObjectSid:
+          type: string
+          minLength: 34
+          maxLength: 34
+          pattern: ^[a-zA-Z]{2}[0-9a-fA-F]{32}$
+          description: The SID of an object bag that holds information of the different items.
+    ListEvaluationResponse:
+      type: object
+      properties:
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/numbers.v2.regulatory_compliance.bundle.evaluation'
+        meta:
+          type: object
+          properties:
+            first_page_url:
+              type: string
+              format: uri
+            next_page_url:
+              type:
+              - string
+              - 'null'
+              format: uri
+            page:
+              type: integer
+            page_size:
+              type: integer
+            previous_page_url:
+              type:
+              - string
+              - 'null'
+              format: uri
+            url:
+              type: string
+              format: uri
+            key:
+              type: string
+    numbers.v2.regulatory_compliance.bundle:
+      type: object
+      properties:
+        sid:
+          type:
+          - string
+          - 'null'
+          minLength: 34
+          maxLength: 34
+          pattern: ^BU[0-9a-fA-F]{32}$
+          description: The unique string that we created to identify the Bundle resource.
+        account_sid:
+          type:
+          - string
+          - 'null'
+          minLength: 34
+          maxLength: 34
+          pattern: ^AC[0-9a-fA-F]{32}$
+          description: The SID of the [Account](https://www.twilio.com/docs/iam/api/account) that created the Bundle resource.
+        regulation_sid:
+          type:
+          - string
+          - 'null'
+          minLength: 34
+          maxLength: 34
+          pattern: ^RN[0-9a-fA-F]{32}$
+          description: The unique string of a regulation that is associated to the Bundle resource.
         friendly_name:
           type:
           - string
           - 'null'
           description: The string that you assigned to describe the resource.
-        type:
+        status:
           type:
           - string
           - 'null'
-          $ref: '#/components/schemas/end_user_enum_type'
-          description: The type of end user of the Bundle resource - can be `individual` or `business`.
-        attributes:
-          description: The set of parameters that are the attributes of the End Users resource which are listed in the End User Types.
-          x-twilio:
-            pii:
-              handling: standard
-              deleteSla: 30
+          $ref: '#/components/schemas/bundle_enum_status'
+          description: The verification status of the Bundle resource.
+        valid_until:
+          type:
+          - string
+          - 'null'
+          format: date-time
+          description: The date and time in GMT in [ISO 8601](https://en.wikipedia.org/wiki/ISO_8601) format when the resource will be valid until.
+        email:
+          type:
+          - string
+          - 'null'
+          description: The email address that will receive updates when the Bundle resource changes status.
+        status_callback:
+          type:
+          - string
+          - 'null'
+          format: uri
+          description: The URL we call to inform your application of status changes.
         date_created:
           type:
           - string
@@ -1357,7 +1644,92 @@ components:
           - string
           - 'null'
           format: uri
-          description: The absolute URL of the End User resource.
+          description: The absolute URL of the Bundle resource.
+        links:
+          type:
+          - object
+          - 'null'
+          format: uri-map
+          description: The URLs of the Assigned Items of the Bundle resource.
+    bundle_enum_status:
+      type: string
+      enum:
+      - draft
+      - pending-review
+      - in-review
+      - twilio-rejected
+      - twilio-approved
+      - provisionally-approved
+    numbers.v2.regulatory_compliance.regulation:
+      type: object
+      properties:
+        sid:
+          type:
+          - string
+          - 'null'
+          minLength: 34
+          maxLength: 34
+          pattern: ^RN[0-9a-fA-F]{32}$
+          description: The unique string that identifies the Regulation resource.
+        friendly_name:
+          type:
+          - string
+          - 'null'
+          description: 'A human-readable description that is assigned to describe the Regulation resource. Examples can include Germany: Mobile - Business.'
+        iso_country:
+          type:
+          - string
+          - 'null'
+          description: The ISO country code of the phone number's country.
+        number_type:
+          type:
+          - string
+          - 'null'
+          description: The type of phone number restricted by the regulatory requirement. For example, Germany mobile phone numbers provisioned by businesses require a business name with commercial register proof from the Handelsregisterauszug and a proof of address from Handelsregisterauszug or a trade license by Gewerbeanmeldung.
+        end_user_type:
+          type:
+          - string
+          - 'null'
+          $ref: '#/components/schemas/regulation_enum_end_user_type'
+          description: The type of End User the regulation requires - can be `individual` or `business`.
+        requirements:
+          description: The SID of an object that holds the regulatory information of the phone number country, phone number type, and end user type.
+        url:
+          type:
+          - string
+          - 'null'
+          format: uri
+          description: The absolute URL of the Regulation resource.
+    CreateSupportingDocumentRequest:
+      type: object
+      required:
+      - FriendlyName
+      - Type
+      properties:
+        FriendlyName:
+          type: string
+          description: The string that you assigned to describe the resource.
+        Type:
+          type: string
+          description: The type of the Supporting Document.
+        Attributes:
+          description: The set of parameters that are the attributes of the Supporting Documents resource which are derived Supporting Document Types.
+    end_user_enum_type:
+      type: string
+      enum:
+      - individual
+      - business
+    bundle_enum_sort_direction:
+      type: string
+      enum:
+      - ASC
+      - DESC
+    CreateBundleCopyRequest:
+      type: object
+      properties:
+        FriendlyName:
+          type: string
+          description: The string that you assigned to describe the copied bundle.
     numbers.v2.regulatory_compliance.supporting_document:
       type: object
       properties:
@@ -1427,11 +1799,39 @@ components:
           - 'null'
           format: uri
           description: The absolute URL of the Supporting Document resource.
-    bundle_enum_sort_direction:
-      type: string
-      enum:
-      - ASC
-      - DESC
+    numbers.v2.regulatory_compliance.supporting_document_type:
+      type: object
+      properties:
+        sid:
+          type:
+          - string
+          - 'null'
+          minLength: 34
+          maxLength: 34
+          pattern: ^OY[0-9a-fA-F]{32}$
+          description: The unique string that identifies the Supporting Document Type resource.
+        friendly_name:
+          type:
+          - string
+          - 'null'
+          description: A human-readable description of the Supporting Document Type resource.
+        machine_name:
+          type:
+          - string
+          - 'null'
+          description: The machine-readable description of the Supporting Document Type resource.
+        fields:
+          type:
+          - array
+          - 'null'
+          items: {}
+          description: The required information for creating a Supporting Document. The required fields will change as regulatory needs change and will differ for businesses and individuals.
+        url:
+          type:
+          - string
+          - 'null'
+          format: uri
+          description: The absolute URL of the Supporting Document Type resource.
     ListBundleResponse:
       type: object
       properties:
@@ -1464,7 +1864,7 @@ components:
               format: uri
             key:
               type: string
-    bundle_enum_status:
+    replace_items_enum_status:
       type: string
       enum:
       - draft
@@ -1473,18 +1873,22 @@ components:
       - twilio-rejected
       - twilio-approved
       - provisionally-approved
-    regulation_enum_end_user_type:
+    supporting_document_enum_status:
       type: string
       enum:
-      - individual
-      - business
-    ListRegulationResponse:
+      - draft
+      - pending-review
+      - rejected
+      - approved
+      - expired
+      - provisionally-approved
+    ListItemAssignmentResponse:
       type: object
       properties:
         results:
           type: array
           items:
-            $ref: '#/components/schemas/numbers.v2.regulatory_compliance.regulation'
+            $ref: '#/components/schemas/numbers.v2.regulatory_compliance.bundle.item_assignment'
         meta:
           type: object
           properties:
@@ -1510,35 +1914,15 @@ components:
               format: uri
             key:
               type: string
-    UpdateEndUserRequest:
-      type: object
-      properties:
-        FriendlyName:
-          type: string
-          description: The string that you assigned to describe the resource.
-        Attributes:
-          description: The set of parameters that are the attributes of the End User resource which are derived End User Types.
-    bundle_copy_enum_status:
+    regulation_enum_end_user_type:
       type: string
       enum:
-      - draft
-      - pending-review
-      - in-review
-      - twilio-rejected
-      - twilio-approved
-      - provisionally-approved
-    numbers.v2.regulatory_compliance.bundle.item_assignment:
+      - individual
+      - business
+    numbers.v2.regulatory_compliance.bundle.bundle_copy:
       type: object
       properties:
         sid:
-          type:
-          - string
-          - 'null'
-          minLength: 34
-          maxLength: 34
-          pattern: ^BV[0-9a-fA-F]{32}$
-          description: The unique string that we created to identify the Item Assignment resource.
-        bundle_sid:
           type:
           - string
           - 'null'
@@ -1553,34 +1937,157 @@ components:
           minLength: 34
           maxLength: 34
           pattern: ^AC[0-9a-fA-F]{32}$
-          description: The SID of the [Account](https://www.twilio.com/docs/iam/api/account) that created the Item Assignment resource.
-        object_sid:
+          description: The SID of the [Account](https://www.twilio.com/docs/iam/api/account) that created the Bundle resource.
+        regulation_sid:
           type:
           - string
           - 'null'
           minLength: 34
           maxLength: 34
-          pattern: ^[a-zA-Z]{2}[0-9a-fA-F]{32}$
-          description: The SID of an object bag that holds information of the different items.
+          pattern: ^RN[0-9a-fA-F]{32}$
+          description: The unique string of a regulation that is associated to the Bundle resource.
+        friendly_name:
+          type:
+          - string
+          - 'null'
+          description: The string that you assigned to describe the resource.
+        status:
+          type:
+          - string
+          - 'null'
+          $ref: '#/components/schemas/bundle_copy_enum_status'
+          description: The verification status of the Bundle resource.
+        valid_until:
+          type:
+          - string
+          - 'null'
+          format: date-time
+          description: The date and time in GMT in [ISO 8601](https://en.wikipedia.org/wiki/ISO_8601) format when the resource will be valid until.
+        email:
+          type:
+          - string
+          - 'null'
+          description: The email address that will receive updates when the Bundle resource changes status.
+        status_callback:
+          type:
+          - string
+          - 'null'
+          format: uri
+          description: The URL we call to inform your application of status changes.
         date_created:
           type:
           - string
           - 'null'
           format: date-time
           description: The date and time in GMT when the resource was created specified in [ISO 8601](https://en.wikipedia.org/wiki/ISO_8601) format.
+        date_updated:
+          type:
+          - string
+          - 'null'
+          format: date-time
+          description: The date and time in GMT when the resource was last updated specified in [ISO 8601](https://en.wikipedia.org/wiki/ISO_8601) format.
+    numbers.v2.regulatory_compliance.end_user:
+      type: object
+      properties:
+        sid:
+          type:
+          - string
+          - 'null'
+          minLength: 34
+          maxLength: 34
+          pattern: ^IT[0-9a-fA-F]{32}$
+          description: The unique string created by Twilio to identify the End User resource.
+        account_sid:
+          type:
+          - string
+          - 'null'
+          minLength: 34
+          maxLength: 34
+          pattern: ^AC[0-9a-fA-F]{32}$
+          description: The SID of the [Account](https://www.twilio.com/docs/iam/api/account) that created the End User resource.
+        friendly_name:
+          type:
+          - string
+          - 'null'
+          description: The string that you assigned to describe the resource.
+        type:
+          type:
+          - string
+          - 'null'
+          $ref: '#/components/schemas/end_user_enum_type'
+          description: The type of end user of the Bundle resource - can be `individual` or `business`.
+        attributes:
+          description: The set of parameters that are the attributes of the End Users resource which are listed in the End User Types.
+          x-twilio:
+            pii:
+              handling: standard
+              deleteSla: 30
+        date_created:
+          type:
+          - string
+          - 'null'
+          format: date-time
+          description: The date and time in GMT when the resource was created specified in [ISO 8601](https://en.wikipedia.org/wiki/ISO_8601) format.
+        date_updated:
+          type:
+          - string
+          - 'null'
+          format: date-time
+          description: The date and time in GMT when the resource was last updated specified in [ISO 8601](https://en.wikipedia.org/wiki/ISO_8601) format.
         url:
           type:
           - string
           - 'null'
           format: uri
-          description: The absolute URL of the Identity resource.
-    ListItemAssignmentResponse:
+          description: The absolute URL of the End User resource.
+    UpdateSupportingDocumentRequest:
       type: object
       properties:
-        results:
+        FriendlyName:
+          type: string
+          description: The string that you assigned to describe the resource.
+        Attributes:
+          description: The set of parameters that are the attributes of the Supporting Document resource which are derived Supporting Document Types.
+    numbers.v2.regulatory_compliance.end_user_type:
+      type: object
+      properties:
+        sid:
+          type:
+          - string
+          - 'null'
+          minLength: 34
+          maxLength: 34
+          pattern: ^OY[0-9a-fA-F]{32}$
+          description: The unique string that identifies the End-User Type resource.
+        friendly_name:
+          type:
+          - string
+          - 'null'
+          description: A human-readable description that is assigned to describe the End-User Type resource. Examples can include first name, last name, email, business name, etc
+        machine_name:
+          type:
+          - string
+          - 'null'
+          description: A machine-readable description of the End-User Type resource. Examples can include first_name, last_name, email, business_name, etc.
+        fields:
+          type:
+          - array
+          - 'null'
+          items: {}
+          description: The required information for creating an End-User. The required fields will change as regulatory needs change and will differ for businesses and individuals.
+        url:
+          type:
+          - string
+          - 'null'
+          format: uri
+          description: The absolute URL of the End-User Type resource.
+    ListSupportingDocumentTypeResponse:
+      type: object
+      properties:
+        supporting_document_types:
           type: array
           items:
-            $ref: '#/components/schemas/numbers.v2.regulatory_compliance.bundle.item_assignment'
+            $ref: '#/components/schemas/numbers.v2.regulatory_compliance.supporting_document_type'
         meta:
           type: object
           properties:
@@ -1673,32 +2180,22 @@ components:
           - 'null'
           format: date-time
           description: The date and time in GMT when the resource was last updated specified in [ISO 8601](https://en.wikipedia.org/wiki/ISO_8601) format.
-    CreateSupportingDocumentRequest:
-      type: object
-      required:
-      - FriendlyName
-      - Type
-      properties:
-        FriendlyName:
-          type: string
-          description: The string that you assigned to describe the resource.
-        Type:
-          type: string
-          description: The type of the Supporting Document.
-        Attributes:
-          description: The set of parameters that are the attributes of the Supporting Documents resource which are derived Supporting Document Types.
-    bundle_enum_sort_by:
+    bundle_copy_enum_status:
       type: string
       enum:
-      - valid-until
-      - date-updated
-    ListSupportingDocumentTypeResponse:
+      - draft
+      - pending-review
+      - in-review
+      - twilio-rejected
+      - twilio-approved
+      - provisionally-approved
+    ListSupportingDocumentResponse:
       type: object
       properties:
-        supporting_document_types:
+        results:
           type: array
           items:
-            $ref: '#/components/schemas/numbers.v2.regulatory_compliance.supporting_document_type'
+            $ref: '#/components/schemas/numbers.v2.regulatory_compliance.supporting_document'
         meta:
           type: object
           properties:
@@ -1756,116 +2253,14 @@ components:
               format: uri
             key:
               type: string
-    CreateEndUserRequest:
+    UpdateEndUserRequest:
       type: object
-      required:
-      - FriendlyName
-      - Type
       properties:
         FriendlyName:
           type: string
           description: The string that you assigned to describe the resource.
-        Type:
-          type: string
-          $ref: '#/components/schemas/end_user_enum_type'
-          description: The type of end user of the Bundle resource - can be `individual` or `business`.
         Attributes:
           description: The set of parameters that are the attributes of the End User resource which are derived End User Types.
-    numbers.v2.regulatory_compliance.bundle.evaluation:
-      type: object
-      properties:
-        sid:
-          type:
-          - string
-          - 'null'
-          minLength: 34
-          maxLength: 34
-          pattern: ^EL[0-9a-fA-F]{32}$
-          description: The unique string that identifies the Evaluation resource.
-        account_sid:
-          type:
-          - string
-          - 'null'
-          minLength: 34
-          maxLength: 34
-          pattern: ^AC[0-9a-fA-F]{32}$
-          description: The SID of the [Account](https://www.twilio.com/docs/iam/api/account) that created the Bundle resource.
-        regulation_sid:
-          type:
-          - string
-          - 'null'
-          minLength: 34
-          maxLength: 34
-          pattern: ^RN[0-9a-fA-F]{32}$
-          description: The unique string of a regulation that is associated to the Bundle resource.
-        bundle_sid:
-          type:
-          - string
-          - 'null'
-          minLength: 34
-          maxLength: 34
-          pattern: ^BU[0-9a-fA-F]{32}$
-          description: The unique string that we created to identify the Bundle resource.
-        status:
-          type:
-          - string
-          - 'null'
-          $ref: '#/components/schemas/evaluation_enum_status'
-          description: The compliance status of the Evaluation resource.
-        results:
-          type:
-          - array
-          - 'null'
-          items: {}
-          description: The results of the Evaluation which includes the valid and invalid attributes.
-        date_created:
-          type:
-          - string
-          - 'null'
-          format: date-time
-        url:
-          type:
-          - string
-          - 'null'
-          format: uri
-    numbers.v2.regulatory_compliance.end_user_type:
-      type: object
-      properties:
-        sid:
-          type:
-          - string
-          - 'null'
-          minLength: 34
-          maxLength: 34
-          pattern: ^OY[0-9a-fA-F]{32}$
-          description: The unique string that identifies the End-User Type resource.
-        friendly_name:
-          type:
-          - string
-          - 'null'
-          description: A human-readable description that is assigned to describe the End-User Type resource. Examples can include first name, last name, email, business name, etc
-        machine_name:
-          type:
-          - string
-          - 'null'
-          description: A machine-readable description of the End-User Type resource. Examples can include first_name, last_name, email, business_name, etc.
-        fields:
-          type:
-          - array
-          - 'null'
-          items: {}
-          description: The required information for creating an End-User. The required fields will change as regulatory needs change and will differ for businesses and individuals.
-        url:
-          type:
-          - string
-          - 'null'
-          format: uri
-          description: The absolute URL of the End-User Type resource.
-    evaluation_enum_status:
-      type: string
-      enum:
-      - compliant
-      - noncompliant
     ListBundleCopyResponse:
       type: object
       properties:
@@ -1898,160 +2293,22 @@ components:
               format: uri
             key:
               type: string
-    CreateBundleRequest:
+    CreateReplaceItemsRequest:
       type: object
       required:
-      - FriendlyName
-      - Email
+      - FromBundleSid
       properties:
-        FriendlyName:
+        FromBundleSid:
           type: string
-          description: The string that you assigned to describe the resource.
-        Email:
-          type: string
-          description: The email address that will receive updates when the Bundle resource changes status.
-        StatusCallback:
-          type: string
-          format: uri
-          description: The URL we call to inform your application of status changes.
-        RegulationSid:
-          type: string
-          minLength: 34
-          maxLength: 34
-          pattern: ^RN[0-9a-fA-F]{32}$
-          description: The unique string of a regulation that is associated to the Bundle resource.
-        IsoCountry:
-          type: string
-          description: The [ISO country code](https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2) of the Bundle's phone number country ownership request.
-        EndUserType:
-          type: string
-          $ref: '#/components/schemas/bundle_enum_end_user_type'
-          description: The [type of End User](https://www.twilio.com/docs/phone-numbers/regulatory/api/end-user-types) of the Bundle resource.
-        NumberType:
-          type: string
-          description: The type of phone number of the Bundle's ownership request. Can be `local`, `mobile`, `national`, or `toll free`.
-    supporting_document_enum_status:
-      type: string
-      enum:
-      - draft
-      - pending-review
-      - rejected
-      - approved
-      - expired
-      - provisionally-approved
-    ListEndUserTypeResponse:
-      type: object
-      properties:
-        end_user_types:
-          type: array
-          items:
-            $ref: '#/components/schemas/numbers.v2.regulatory_compliance.end_user_type'
-        meta:
-          type: object
-          properties:
-            first_page_url:
-              type: string
-              format: uri
-            next_page_url:
-              type:
-              - string
-              - 'null'
-              format: uri
-            page:
-              type: integer
-            page_size:
-              type: integer
-            previous_page_url:
-              type:
-              - string
-              - 'null'
-              format: uri
-            url:
-              type: string
-              format: uri
-            key:
-              type: string
-    bundle_enum_end_user_type:
-      type: string
-      enum:
-      - individual
-      - business
-    replace_items_enum_status:
-      type: string
-      enum:
-      - draft
-      - pending-review
-      - in-review
-      - twilio-rejected
-      - twilio-approved
-      - provisionally-approved
-    numbers.v2.regulatory_compliance.bundle.bundle_copy:
-      type: object
-      properties:
-        sid:
-          type:
-          - string
-          - 'null'
           minLength: 34
           maxLength: 34
           pattern: ^BU[0-9a-fA-F]{32}$
-          description: The unique string that we created to identify the Bundle resource.
-        account_sid:
-          type:
-          - string
-          - 'null'
-          minLength: 34
-          maxLength: 34
-          pattern: ^AC[0-9a-fA-F]{32}$
-          description: The SID of the [Account](https://www.twilio.com/docs/iam/api/account) that created the Bundle resource.
-        regulation_sid:
-          type:
-          - string
-          - 'null'
-          minLength: 34
-          maxLength: 34
-          pattern: ^RN[0-9a-fA-F]{32}$
-          description: The unique string of a regulation that is associated to the Bundle resource.
-        friendly_name:
-          type:
-          - string
-          - 'null'
-          description: The string that you assigned to describe the resource.
-        status:
-          type:
-          - string
-          - 'null'
-          $ref: '#/components/schemas/bundle_copy_enum_status'
-          description: The verification status of the Bundle resource.
-        valid_until:
-          type:
-          - string
-          - 'null'
-          format: date-time
-          description: The date and time in GMT in [ISO 8601](https://en.wikipedia.org/wiki/ISO_8601) format when the resource will be valid until.
-        email:
-          type:
-          - string
-          - 'null'
-          description: The email address that will receive updates when the Bundle resource changes status.
-        status_callback:
-          type:
-          - string
-          - 'null'
-          format: uri
-          description: The URL we call to inform your application of status changes.
-        date_created:
-          type:
-          - string
-          - 'null'
-          format: date-time
-          description: The date and time in GMT when the resource was created specified in [ISO 8601](https://en.wikipedia.org/wiki/ISO_8601) format.
-        date_updated:
-          type:
-          - string
-          - 'null'
-          format: date-time
-          description: The date and time in GMT when the resource was last updated specified in [ISO 8601](https://en.wikipedia.org/wiki/ISO_8601) format.
+          description: The source bundle sid to copy the item assignments from.
+    evaluation_enum_status:
+      type: string
+      enum:
+      - compliant
+      - noncompliant
     UpdateBundleRequest:
       type: object
       properties:
@@ -2069,263 +2326,6 @@ components:
         Email:
           type: string
           description: The email address that will receive updates when the Bundle resource changes status.
-    end_user_enum_type:
-      type: string
-      enum:
-      - individual
-      - business
-    numbers.v2.regulatory_compliance.supporting_document_type:
-      type: object
-      properties:
-        sid:
-          type:
-          - string
-          - 'null'
-          minLength: 34
-          maxLength: 34
-          pattern: ^OY[0-9a-fA-F]{32}$
-          description: The unique string that identifies the Supporting Document Type resource.
-        friendly_name:
-          type:
-          - string
-          - 'null'
-          description: A human-readable description of the Supporting Document Type resource.
-        machine_name:
-          type:
-          - string
-          - 'null'
-          description: The machine-readable description of the Supporting Document Type resource.
-        fields:
-          type:
-          - array
-          - 'null'
-          items: {}
-          description: The required information for creating a Supporting Document. The required fields will change as regulatory needs change and will differ for businesses and individuals.
-        url:
-          type:
-          - string
-          - 'null'
-          format: uri
-          description: The absolute URL of the Supporting Document Type resource.
-    CreateReplaceItemsRequest:
-      type: object
-      required:
-      - FromBundleSid
-      properties:
-        FromBundleSid:
-          type: string
-          minLength: 34
-          maxLength: 34
-          pattern: ^BU[0-9a-fA-F]{32}$
-          description: The source bundle sid to copy the item assignments from.
-    CreateItemAssignmentRequest:
-      type: object
-      required:
-      - ObjectSid
-      properties:
-        ObjectSid:
-          type: string
-          minLength: 34
-          maxLength: 34
-          pattern: ^[a-zA-Z]{2}[0-9a-fA-F]{32}$
-          description: The SID of an object bag that holds information of the different items.
-    ListSupportingDocumentResponse:
-      type: object
-      properties:
-        results:
-          type: array
-          items:
-            $ref: '#/components/schemas/numbers.v2.regulatory_compliance.supporting_document'
-        meta:
-          type: object
-          properties:
-            first_page_url:
-              type: string
-              format: uri
-            next_page_url:
-              type:
-              - string
-              - 'null'
-              format: uri
-            page:
-              type: integer
-            page_size:
-              type: integer
-            previous_page_url:
-              type:
-              - string
-              - 'null'
-              format: uri
-            url:
-              type: string
-              format: uri
-            key:
-              type: string
-    numbers.v2.regulatory_compliance.regulation:
-      type: object
-      properties:
-        sid:
-          type:
-          - string
-          - 'null'
-          minLength: 34
-          maxLength: 34
-          pattern: ^RN[0-9a-fA-F]{32}$
-          description: The unique string that identifies the Regulation resource.
-        friendly_name:
-          type:
-          - string
-          - 'null'
-          description: 'A human-readable description that is assigned to describe the Regulation resource. Examples can include Germany: Mobile - Business.'
-        iso_country:
-          type:
-          - string
-          - 'null'
-          description: The ISO country code of the phone number's country.
-        number_type:
-          type:
-          - string
-          - 'null'
-          description: The type of phone number restricted by the regulatory requirement. For example, Germany mobile phone numbers provisioned by businesses require a business name with commercial register proof from the Handelsregisterauszug and a proof of address from Handelsregisterauszug or a trade license by Gewerbeanmeldung.
-        end_user_type:
-          type:
-          - string
-          - 'null'
-          $ref: '#/components/schemas/regulation_enum_end_user_type'
-          description: The type of End User the regulation requires - can be `individual` or `business`.
-        requirements:
-          description: The SID of an object that holds the regulatory information of the phone number country, phone number type, and end user type.
-        url:
-          type:
-          - string
-          - 'null'
-          format: uri
-          description: The absolute URL of the Regulation resource.
-    ListEvaluationResponse:
-      type: object
-      properties:
-        results:
-          type: array
-          items:
-            $ref: '#/components/schemas/numbers.v2.regulatory_compliance.bundle.evaluation'
-        meta:
-          type: object
-          properties:
-            first_page_url:
-              type: string
-              format: uri
-            next_page_url:
-              type:
-              - string
-              - 'null'
-              format: uri
-            page:
-              type: integer
-            page_size:
-              type: integer
-            previous_page_url:
-              type:
-              - string
-              - 'null'
-              format: uri
-            url:
-              type: string
-              format: uri
-            key:
-              type: string
-    UpdateSupportingDocumentRequest:
-      type: object
-      properties:
-        FriendlyName:
-          type: string
-          description: The string that you assigned to describe the resource.
-        Attributes:
-          description: The set of parameters that are the attributes of the Supporting Document resource which are derived Supporting Document Types.
-    CreateBundleCopyRequest:
-      type: object
-      properties:
-        FriendlyName:
-          type: string
-          description: The string that you assigned to describe the copied bundle.
-    numbers.v2.regulatory_compliance.bundle:
-      type: object
-      properties:
-        sid:
-          type:
-          - string
-          - 'null'
-          minLength: 34
-          maxLength: 34
-          pattern: ^BU[0-9a-fA-F]{32}$
-          description: The unique string that we created to identify the Bundle resource.
-        account_sid:
-          type:
-          - string
-          - 'null'
-          minLength: 34
-          maxLength: 34
-          pattern: ^AC[0-9a-fA-F]{32}$
-          description: The SID of the [Account](https://www.twilio.com/docs/iam/api/account) that created the Bundle resource.
-        regulation_sid:
-          type:
-          - string
-          - 'null'
-          minLength: 34
-          maxLength: 34
-          pattern: ^RN[0-9a-fA-F]{32}$
-          description: The unique string of a regulation that is associated to the Bundle resource.
-        friendly_name:
-          type:
-          - string
-          - 'null'
-          description: The string that you assigned to describe the resource.
-        status:
-          type:
-          - string
-          - 'null'
-          $ref: '#/components/schemas/bundle_enum_status'
-          description: The verification status of the Bundle resource.
-        valid_until:
-          type:
-          - string
-          - 'null'
-          format: date-time
-          description: The date and time in GMT in [ISO 8601](https://en.wikipedia.org/wiki/ISO_8601) format when the resource will be valid until.
-        email:
-          type:
-          - string
-          - 'null'
-          description: The email address that will receive updates when the Bundle resource changes status.
-        status_callback:
-          type:
-          - string
-          - 'null'
-          format: uri
-          description: The URL we call to inform your application of status changes.
-        date_created:
-          type:
-          - string
-          - 'null'
-          format: date-time
-          description: The date and time in GMT when the resource was created specified in [ISO 8601](https://en.wikipedia.org/wiki/ISO_8601) format.
-        date_updated:
-          type:
-          - string
-          - 'null'
-          format: date-time
-          description: The date and time in GMT when the resource was last updated specified in [ISO 8601](https://en.wikipedia.org/wiki/ISO_8601) format.
-        url:
-          type:
-          - string
-          - 'null'
-          format: uri
-          description: The absolute URL of the Bundle resource.
-        links:
-          type:
-          - object
-          - 'null'
-          format: uri-map
-          description: The URLs of the Assigned Items of the Bundle resource.
   securitySchemes:
     accountSid_authToken:
       type: http

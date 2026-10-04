@@ -231,6 +231,14 @@ paths:
       x-summary-source: derived
 components:
   schemas:
+    voice.v1.dialing_permissions.dialing_permissions_country.dialing_permissions_hrs_prefixes:
+      type: object
+      properties:
+        prefix:
+          type:
+          - string
+          - 'null'
+          description: A prefix is a contiguous number range for a block of E.164 numbers that includes the E.164 assigned country code. For example, a North American Numbering Plan prefix like `+1510720` written like `+1(510) 720` matches all numbers inclusive from `+1(510) 720-0000` to `+1(510) 720-9999`.
     voice.v1.dialing_permissions.dialing_permissions_country_bulk_update:
       type: object
       properties:
@@ -276,14 +284,38 @@ components:
               format: uri
             key:
               type: string
-    CreateDialingPermissionsCountryBulkUpdateRequest:
+    ListDialingPermissionsCountryResponse:
       type: object
-      required:
-      - UpdateRequest
       properties:
-        UpdateRequest:
-          type: string
-          description: 'URL encoded JSON array of update objects. example : `[ { "iso_code": "GB", "low_risk_numbers_enabled": "true", "high_risk_special_numbers_enabled":"true", "high_risk_tollfraud_numbers_enabled": "false" } ]`'
+        content:
+          type: array
+          items:
+            $ref: '#/components/schemas/voice.v1.dialing_permissions.dialing_permissions_country'
+        meta:
+          type: object
+          properties:
+            first_page_url:
+              type: string
+              format: uri
+            next_page_url:
+              type:
+              - string
+              - 'null'
+              format: uri
+            page:
+              type: integer
+            page_size:
+              type: integer
+            previous_page_url:
+              type:
+              - string
+              - 'null'
+              format: uri
+            url:
+              type: string
+              format: uri
+            key:
+              type: string
     voice.v1.dialing_permissions.dialing_permissions_country-instance:
       type: object
       properties:
@@ -337,38 +369,14 @@ components:
           - 'null'
           format: uri-map
           description: A list of URLs related to this resource.
-    ListDialingPermissionsCountryResponse:
+    CreateDialingPermissionsCountryBulkUpdateRequest:
       type: object
+      required:
+      - UpdateRequest
       properties:
-        content:
-          type: array
-          items:
-            $ref: '#/components/schemas/voice.v1.dialing_permissions.dialing_permissions_country'
-        meta:
-          type: object
-          properties:
-            first_page_url:
-              type: string
-              format: uri
-            next_page_url:
-              type:
-              - string
-              - 'null'
-              format: uri
-            page:
-              type: integer
-            page_size:
-              type: integer
-            previous_page_url:
-              type:
-              - string
-              - 'null'
-              format: uri
-            url:
-              type: string
-              format: uri
-            key:
-              type: string
+        UpdateRequest:
+          type: string
+          description: 'URL encoded JSON array of update objects. example : `[ { "iso_code": "GB", "low_risk_numbers_enabled": "true", "high_risk_special_numbers_enabled":"true", "high_risk_tollfraud_numbers_enabled": "false" } ]`'
     voice.v1.dialing_permissions.dialing_permissions_country:
       type: object
       properties:
@@ -422,14 +430,6 @@ components:
           - 'null'
           format: uri-map
           description: A list of URLs related to this resource.
-    voice.v1.dialing_permissions.dialing_permissions_country.dialing_permissions_hrs_prefixes:
-      type: object
-      properties:
-        prefix:
-          type:
-          - string
-          - 'null'
-          description: A prefix is a contiguous number range for a block of E.164 numbers that includes the E.164 assigned country code. For example, a North American Numbering Plan prefix like `+1510720` written like `+1(510) 720` matches all numbers inclusive from `+1(510) 720-0000` to `+1(510) 720-9999`.
   securitySchemes:
     accountSid_authToken:
       type: http

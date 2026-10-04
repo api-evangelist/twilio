@@ -194,6 +194,27 @@ components:
         date_updated:
           type: string
           format: date-time
+    PaginationMeta:
+      type: object
+      properties:
+        page:
+          type: integer
+        page_size:
+          type: integer
+        first_page_url:
+          type: string
+          format: uri
+        previous_page_url:
+          type: string
+          format: uri
+        next_page_url:
+          type: string
+          format: uri
+        url:
+          type: string
+          format: uri
+        key:
+          type: string
     VideoParticipantList:
       type: object
       properties:
@@ -203,6 +224,47 @@ components:
             $ref: '#/components/schemas/VideoParticipant'
         meta:
           $ref: '#/components/schemas/PaginationMeta'
+    PublishedTrackList:
+      type: object
+      properties:
+        published_tracks:
+          type: array
+          items:
+            $ref: '#/components/schemas/PublishedTrack'
+        meta:
+          $ref: '#/components/schemas/PaginationMeta'
+    PublishedTrack:
+      type: object
+      properties:
+        sid:
+          type: string
+          pattern: ^MT[0-9a-fA-F]{32}$
+        participant_sid:
+          type: string
+          pattern: ^PA[0-9a-fA-F]{32}$
+        room_sid:
+          type: string
+          pattern: ^RM[0-9a-fA-F]{32}$
+        name:
+          type: string
+          description: Track name
+        kind:
+          type: string
+          enum:
+          - audio
+          - video
+          - data
+        enabled:
+          type: boolean
+        date_created:
+          type: string
+          format: date-time
+        date_updated:
+          type: string
+          format: date-time
+        url:
+          type: string
+          format: uri
     VideoParticipant:
       type: object
       properties:
@@ -254,69 +316,14 @@ components:
             subscribed_tracks:
               type: string
               format: uri
-    PublishedTrackList:
-      type: object
-      properties:
-        published_tracks:
-          type: array
-          items:
-            $ref: '#/components/schemas/PublishedTrack'
-        meta:
-          $ref: '#/components/schemas/PaginationMeta'
-    PublishedTrack:
-      type: object
-      properties:
-        sid:
-          type: string
-          pattern: ^MT[0-9a-fA-F]{32}$
-        participant_sid:
-          type: string
-          pattern: ^PA[0-9a-fA-F]{32}$
-        room_sid:
-          type: string
-          pattern: ^RM[0-9a-fA-F]{32}$
-        name:
-          type: string
-          description: Track name
-        kind:
-          type: string
-          enum:
-          - audio
-          - video
-          - data
-        enabled:
-          type: boolean
-        date_created:
-          type: string
-          format: date-time
-        date_updated:
-          type: string
-          format: date-time
-        url:
-          type: string
-          format: uri
-    PaginationMeta:
-      type: object
-      properties:
-        page:
-          type: integer
-        page_size:
-          type: integer
-        first_page_url:
-          type: string
-          format: uri
-        previous_page_url:
-          type: string
-          format: uri
-        next_page_url:
-          type: string
-          format: uri
-        url:
-          type: string
-          format: uri
-        key:
-          type: string
   parameters:
+    RoomSid:
+      name: RoomSid
+      in: path
+      required: true
+      description: The SID or unique name of the room
+      schema:
+        type: string
     ParticipantSid:
       name: ParticipantSid
       in: path
@@ -325,13 +332,6 @@ components:
       schema:
         type: string
         pattern: ^PA[0-9a-fA-F]{32}$
-    RoomSid:
-      name: RoomSid
-      in: path
-      required: true
-      description: The SID or unique name of the room
-      schema:
-        type: string
   securitySchemes:
     accountSid_authToken:
       type: http

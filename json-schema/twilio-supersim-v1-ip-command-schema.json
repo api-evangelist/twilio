@@ -1,0 +1,149 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/api-evangelist/twilio/main/json-schema/twilio-supersim-v1-ip-command-schema.json",
+  "title": "supersim.v1.ip_command",
+  "x-generated": "2026-10-04",
+  "x-method": "derived",
+  "x-generator": "derive-json-schema.py",
+  "x-source": "openapi/twilio-ipcommands-api-openapi.yml#/components/schemas/supersim.v1.ip_command",
+  "type": "object",
+  "properties": {
+    "sid": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "minLength": 34,
+      "maxLength": 34,
+      "pattern": "^HG[0-9a-fA-F]{32}$",
+      "description": "The unique string that we created to identify the IP Command resource."
+    },
+    "account_sid": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "minLength": 34,
+      "maxLength": 34,
+      "pattern": "^AC[0-9a-fA-F]{32}$",
+      "description": "The SID of the [Account](https://www.twilio.com/docs/iam/api/account) that created the IP Command resource."
+    },
+    "sim_sid": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "minLength": 34,
+      "maxLength": 34,
+      "pattern": "^HS[0-9a-fA-F]{32}$",
+      "description": "The SID of the [Super SIM](https://www.twilio.com/docs/iot/supersim/api/sim-resource) that this IP Command was sent to or from."
+    },
+    "sim_iccid": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "description": "The [ICCID](https://en.wikipedia.org/wiki/Subscriber_identity_module#ICCID) of the [Super SIM](https://www.twilio.com/docs/iot/supersim/api/sim-resource) that this IP Command was sent to or from."
+    },
+    "status": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "$ref": "#/$defs/ip_command_enum_status",
+      "description": "The delivery status of the IP Command. This is one of the following: “queued”, “sent”, “failed” or “received”."
+    },
+    "direction": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "$ref": "#/$defs/ip_command_enum_direction",
+      "description": "Either `to_sim` or `from_sim`. Indicates whether the IP Command resource was sent from or to the Super SIM."
+    },
+    "device_ip": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "description": "The IP address of the device that the IP Command was sent to or received from. For an IP Command sent to a Super SIM, `device_ip` starts out as `null`, and once the IP Command is “sent”, the `device_ip` will be filled out. An IP Command sent from a Super SIM have its `device_ip` always set."
+    },
+    "device_port": {
+      "type": [
+        "integer",
+        "null"
+      ],
+      "description": "For an IP Command sent to a Super SIM, it would be the destination port of the IP message. For an IP Command sent from a Super SIM, it would be the source port of the IP message."
+    },
+    "payload_type": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "$ref": "#/$defs/ip_command_enum_payload_type",
+      "description": "Either “text” or “binary”. For an IP Command sent to a Super SIM, `payload_type` is configurable. For an IP Command sent from a Super SIM, `payload_type` is always “binary”."
+    },
+    "payload": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "description": "The payload that is carried in the IP/UDP message. The payload can be encoded in either text or binary format. For text payload, UTF-8 encoding must be used.\n\nFor an IP Command sent to a Super SIM, the payload is appended to the IP/UDP message “as is”. The payload should not exceed 1300 bytes.\n\nFor an IP Command sent from a Super SIM, the payload from the received IP/UDP message is extracted and sent in binary encoding. For an IP Command sent from a Super SIM, the payload should not exceed 1300 bytes. If it is larger than 1300 bytes, there might be fragmentation on the upstream and the message may appear truncated.",
+      "x-twilio": {
+        "pii": {
+          "handling": "standard",
+          "deleteSla": 30
+        }
+      }
+    },
+    "date_created": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "format": "date-time",
+      "description": "The date and time in GMT when the resource was created specified in [ISO 8601](https://en.wikipedia.org/wiki/ISO_8601) format."
+    },
+    "date_updated": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "format": "date-time",
+      "description": "The date and time in GMT when the resource was last updated specified in [ISO 8601](https://en.wikipedia.org/wiki/ISO_8601) format."
+    },
+    "url": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "format": "uri",
+      "description": "The absolute URL of the IP Command resource."
+    }
+  },
+  "$defs": {
+    "ip_command_enum_direction": {
+      "type": "string",
+      "enum": [
+        "to_sim",
+        "from_sim"
+      ]
+    },
+    "ip_command_enum_payload_type": {
+      "type": "string",
+      "enum": [
+        "text",
+        "binary"
+      ]
+    },
+    "ip_command_enum_status": {
+      "type": "string",
+      "enum": [
+        "queued",
+        "sent",
+        "received",
+        "failed"
+      ]
+    }
+  }
+}

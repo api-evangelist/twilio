@@ -143,46 +143,38 @@ paths:
       x-summary-source: derived
 components:
   schemas:
-    sms_command_enum_status:
-      type: string
-      enum:
-      - queued
-      - sent
-      - delivered
-      - received
-      - failed
-    CreateSmsCommandRequest:
+    ListSmsCommandResponse:
       type: object
-      required:
-      - Sim
-      - Payload
       properties:
-        Sim:
-          type: string
-          description: The `sid` or `unique_name` of the [SIM](https://www.twilio.com/docs/iot/supersim/api/sim-resource) to send the SMS Command to.
-        Payload:
-          type: string
-          description: The message body of the SMS Command.
-        CallbackMethod:
-          type: string
-          format: http-method
-          enum:
-          - HEAD
-          - GET
-          - POST
-          - PATCH
-          - PUT
-          - DELETE
-          description: 'The HTTP method we should use to call `callback_url`. Can be: `GET` or `POST` and the default is POST.'
-        CallbackUrl:
-          type: string
-          format: uri
-          description: The URL we should call using the `callback_method` after we have sent the command.
-    sms_command_enum_direction:
-      type: string
-      enum:
-      - to_sim
-      - from_sim
+        sms_commands:
+          type: array
+          items:
+            $ref: '#/components/schemas/supersim.v1.sms_command'
+        meta:
+          type: object
+          properties:
+            first_page_url:
+              type: string
+              format: uri
+            next_page_url:
+              type:
+              - string
+              - 'null'
+              format: uri
+            page:
+              type: integer
+            page_size:
+              type: integer
+            previous_page_url:
+              type:
+              - string
+              - 'null'
+              format: uri
+            url:
+              type: string
+              format: uri
+            key:
+              type: string
     supersim.v1.sms_command:
       type: object
       properties:
@@ -249,38 +241,46 @@ components:
           - 'null'
           format: uri
           description: The absolute URL of the SMS Command resource.
-    ListSmsCommandResponse:
+    sms_command_enum_status:
+      type: string
+      enum:
+      - queued
+      - sent
+      - delivered
+      - received
+      - failed
+    sms_command_enum_direction:
+      type: string
+      enum:
+      - to_sim
+      - from_sim
+    CreateSmsCommandRequest:
       type: object
+      required:
+      - Sim
+      - Payload
       properties:
-        sms_commands:
-          type: array
-          items:
-            $ref: '#/components/schemas/supersim.v1.sms_command'
-        meta:
-          type: object
-          properties:
-            first_page_url:
-              type: string
-              format: uri
-            next_page_url:
-              type:
-              - string
-              - 'null'
-              format: uri
-            page:
-              type: integer
-            page_size:
-              type: integer
-            previous_page_url:
-              type:
-              - string
-              - 'null'
-              format: uri
-            url:
-              type: string
-              format: uri
-            key:
-              type: string
+        Sim:
+          type: string
+          description: The `sid` or `unique_name` of the [SIM](https://www.twilio.com/docs/iot/supersim/api/sim-resource) to send the SMS Command to.
+        Payload:
+          type: string
+          description: The message body of the SMS Command.
+        CallbackMethod:
+          type: string
+          format: http-method
+          enum:
+          - HEAD
+          - GET
+          - POST
+          - PATCH
+          - PUT
+          - DELETE
+          description: 'The HTTP method we should use to call `callback_url`. Can be: `GET` or `POST` and the default is POST.'
+        CallbackUrl:
+          type: string
+          format: uri
+          description: The URL we should call using the `callback_method` after we have sent the command.
   securitySchemes:
     accountSid_authToken:
       type: http

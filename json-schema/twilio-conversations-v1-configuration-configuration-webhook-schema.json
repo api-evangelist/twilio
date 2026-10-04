@@ -1,0 +1,86 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/api-evangelist/twilio/main/json-schema/twilio-conversations-v1-configuration-configuration-webhook-schema.json",
+  "title": "conversations.v1.configuration.configuration_webhook",
+  "x-generated": "2026-10-03",
+  "x-method": "derived",
+  "x-generator": "derive-json-schema.py",
+  "x-source": "openapi/twilio-configuration-api-openapi.yml#/components/schemas/conversations.v1.configuration.configuration_webhook",
+  "type": "object",
+  "properties": {
+    "account_sid": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "minLength": 34,
+      "maxLength": 34,
+      "pattern": "^AC[0-9a-fA-F]{32}$",
+      "description": "The unique ID of the [Account](https://www.twilio.com/docs/iam/api/account) responsible for this conversation."
+    },
+    "method": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "$ref": "#/$defs/configuration_webhook_enum_method",
+      "description": "The HTTP method to be used when sending a webhook request."
+    },
+    "filters": {
+      "type": [
+        "array",
+        "null"
+      ],
+      "items": {
+        "type": "string"
+      },
+      "description": "The list of webhook event triggers that are enabled for this Service: `onMessageAdded`, `onMessageUpdated`, `onMessageRemoved`, `onConversationUpdated`, `onConversationRemoved`, `onParticipantAdded`, `onParticipantUpdated`, `onParticipantRemoved`"
+    },
+    "pre_webhook_url": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "description": "The absolute url the pre-event webhook request should be sent to."
+    },
+    "post_webhook_url": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "description": "The absolute url the post-event webhook request should be sent to."
+    },
+    "target": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "$ref": "#/$defs/configuration_webhook_enum_target",
+      "description": "The routing target of the webhook. Can be ordinary or route internally to Flex"
+    },
+    "url": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "format": "uri",
+      "description": "An absolute API resource API resource URL for this webhook."
+    }
+  },
+  "$defs": {
+    "configuration_webhook_enum_method": {
+      "type": "string",
+      "enum": [
+        "GET",
+        "POST"
+      ]
+    },
+    "configuration_webhook_enum_target": {
+      "type": "string",
+      "enum": [
+        "webhook",
+        "flex"
+      ]
+    }
+  }
+}

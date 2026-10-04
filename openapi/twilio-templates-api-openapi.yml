@@ -230,6 +230,18 @@ paths:
       x-summary-source: derived
 components:
   schemas:
+    TemplateList:
+      type: object
+      properties:
+        result:
+          type: array
+          items:
+            $ref: '#/components/schemas/Template'
+        _metadata:
+          type: object
+          properties:
+            count:
+              type: integer
     CreateTemplateVersionRequest:
       type: object
       required:
@@ -293,18 +305,6 @@ components:
         updated_at:
           type: string
           format: date-time
-    TemplateList:
-      type: object
-      properties:
-        result:
-          type: array
-          items:
-            $ref: '#/components/schemas/Template'
-        _metadata:
-          type: object
-          properties:
-            count:
-              type: integer
     Template:
       type: object
       properties:
@@ -325,6 +325,38 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/TemplateVersion'
+    ListVerificationTemplateResponse:
+      type: object
+      properties:
+        templates:
+          type: array
+          items:
+            $ref: '#/components/schemas/verify.v2.verification_template'
+        meta:
+          type: object
+          properties:
+            first_page_url:
+              type: string
+              format: uri
+            next_page_url:
+              type:
+              - string
+              - 'null'
+              format: uri
+            page:
+              type: integer
+            page_size:
+              type: integer
+            previous_page_url:
+              type:
+              - string
+              - 'null'
+              format: uri
+            url:
+              type: string
+              format: uri
+            key:
+              type: string
     verify.v2.verification_template:
       type: object
       properties:
@@ -358,38 +390,6 @@ components:
           description: 'A list of channels that support the Template. Can include: sms, voice.'
         translations:
           description: An object that contains the different translations of the template. Every translation is identified by the language short name and contains its respective information as the approval status, text and created/modified date.
-    ListVerificationTemplateResponse:
-      type: object
-      properties:
-        templates:
-          type: array
-          items:
-            $ref: '#/components/schemas/verify.v2.verification_template'
-        meta:
-          type: object
-          properties:
-            first_page_url:
-              type: string
-              format: uri
-            next_page_url:
-              type:
-              - string
-              - 'null'
-              format: uri
-            page:
-              type: integer
-            page_size:
-              type: integer
-            previous_page_url:
-              type:
-              - string
-              - 'null'
-              format: uri
-            url:
-              type: string
-              format: uri
-            key:
-              type: string
   securitySchemes:
     bearerAuth:
       type: http

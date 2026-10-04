@@ -1,0 +1,86 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/api-evangelist/twilio/main/json-schema/twilio-channel-list-schema.json",
+  "title": "ChannelList",
+  "x-generated": "2026-10-03",
+  "x-method": "derived",
+  "x-generator": "derive-json-schema.py",
+  "x-source": "openapi/twilio-channels-api-openapi.yml#/components/schemas/ChannelList",
+  "type": "object",
+  "properties": {
+    "flex_chat_channels": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/FlexChannel"
+      }
+    },
+    "meta": {
+      "$ref": "#/$defs/PaginationMeta"
+    }
+  },
+  "$defs": {
+    "FlexChannel": {
+      "type": "object",
+      "properties": {
+        "sid": {
+          "type": "string"
+        },
+        "account_sid": {
+          "type": "string",
+          "pattern": "^AC[0-9a-fA-F]{32}$"
+        },
+        "flex_flow_sid": {
+          "type": "string"
+        },
+        "user_sid": {
+          "type": "string"
+        },
+        "task_sid": {
+          "type": "string"
+        },
+        "date_created": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "date_updated": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "url": {
+          "type": "string",
+          "format": "uri"
+        }
+      }
+    },
+    "PaginationMeta": {
+      "type": "object",
+      "properties": {
+        "page": {
+          "type": "integer"
+        },
+        "page_size": {
+          "type": "integer"
+        },
+        "first_page_url": {
+          "type": "string",
+          "format": "uri"
+        },
+        "previous_page_url": {
+          "type": "string",
+          "format": "uri"
+        },
+        "next_page_url": {
+          "type": "string",
+          "format": "uri"
+        },
+        "url": {
+          "type": "string",
+          "format": "uri"
+        },
+        "key": {
+          "type": "string"
+        }
+      }
+    }
+  }
+}

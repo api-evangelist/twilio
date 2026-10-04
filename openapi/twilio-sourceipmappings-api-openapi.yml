@@ -183,6 +183,49 @@ paths:
       x-summary-source: derived
 components:
   schemas:
+    ListSourceIpMappingResponse:
+      type: object
+      properties:
+        source_ip_mappings:
+          type: array
+          items:
+            $ref: '#/components/schemas/voice.v1.source_ip_mapping'
+        meta:
+          type: object
+          properties:
+            first_page_url:
+              type: string
+              format: uri
+            next_page_url:
+              type:
+              - string
+              - 'null'
+              format: uri
+            page:
+              type: integer
+            page_size:
+              type: integer
+            previous_page_url:
+              type:
+              - string
+              - 'null'
+              format: uri
+            url:
+              type: string
+              format: uri
+            key:
+              type: string
+    UpdateSourceIpMappingRequest:
+      type: object
+      required:
+      - SipDomainSid
+      properties:
+        SipDomainSid:
+          type: string
+          minLength: 34
+          maxLength: 34
+          pattern: ^SD[0-9a-fA-F]{32}$
+          description: The SID of the SIP Domain that the IP Record should be mapped to.
     voice.v1.source_ip_mapping:
       type: object
       properties:
@@ -228,49 +271,6 @@ components:
           - 'null'
           format: uri
           description: The absolute URL of the resource.
-    ListSourceIpMappingResponse:
-      type: object
-      properties:
-        source_ip_mappings:
-          type: array
-          items:
-            $ref: '#/components/schemas/voice.v1.source_ip_mapping'
-        meta:
-          type: object
-          properties:
-            first_page_url:
-              type: string
-              format: uri
-            next_page_url:
-              type:
-              - string
-              - 'null'
-              format: uri
-            page:
-              type: integer
-            page_size:
-              type: integer
-            previous_page_url:
-              type:
-              - string
-              - 'null'
-              format: uri
-            url:
-              type: string
-              format: uri
-            key:
-              type: string
-    UpdateSourceIpMappingRequest:
-      type: object
-      required:
-      - SipDomainSid
-      properties:
-        SipDomainSid:
-          type: string
-          minLength: 34
-          maxLength: 34
-          pattern: ^SD[0-9a-fA-F]{32}$
-          description: The SID of the SIP Domain that the IP Record should be mapped to.
     CreateSourceIpMappingRequest:
       type: object
       required:

@@ -162,6 +162,38 @@ components:
         Eid:
           type: string
           description: Identifier of the eUICC that will claim the eSIM Profile.
+    ListEsimProfileResponse:
+      type: object
+      properties:
+        esim_profiles:
+          type: array
+          items:
+            $ref: '#/components/schemas/supersim.v1.esim_profile'
+        meta:
+          type: object
+          properties:
+            first_page_url:
+              type: string
+              format: uri
+            next_page_url:
+              type:
+              - string
+              - 'null'
+              format: uri
+            page:
+              type: integer
+            page_size:
+              type: integer
+            previous_page_url:
+              type:
+              - string
+              - 'null'
+              format: uri
+            url:
+              type: string
+              format: uri
+            key:
+              type: string
     esim_profile_enum_status:
       type: string
       enum:
@@ -262,38 +294,6 @@ components:
           - 'null'
           format: uri
           description: The absolute URL of the eSIM Profile resource.
-    ListEsimProfileResponse:
-      type: object
-      properties:
-        esim_profiles:
-          type: array
-          items:
-            $ref: '#/components/schemas/supersim.v1.esim_profile'
-        meta:
-          type: object
-          properties:
-            first_page_url:
-              type: string
-              format: uri
-            next_page_url:
-              type:
-              - string
-              - 'null'
-              format: uri
-            page:
-              type: integer
-            page_size:
-              type: integer
-            previous_page_url:
-              type:
-              - string
-              - 'null'
-              format: uri
-            url:
-              type: string
-              format: uri
-            key:
-              type: string
   securitySchemes:
     accountSid_authToken:
       type: http
