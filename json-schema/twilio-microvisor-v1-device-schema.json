@@ -1,0 +1,77 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/api-evangelist/twilio/main/json-schema/twilio-microvisor-v1-device-schema.json",
+  "title": "microvisor.v1.device",
+  "x-generated": "2026-10-08",
+  "x-method": "derived",
+  "x-generator": "derive-json-schema.py",
+  "x-source": "openapi/twilio-devices-api-openapi.yml#/components/schemas/microvisor.v1.device",
+  "type": "object",
+  "properties": {
+    "sid": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "minLength": 34,
+      "maxLength": 34,
+      "pattern": "^UV[0-9a-fA-F]{32}$",
+      "description": "A 34-character string that uniquely identifies this Device."
+    },
+    "unique_name": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "description": "A developer-defined string that uniquely identifies the Device. This value must be unique for all Devices on this Account. The `unique_name` value may be used as an alternative to the `sid` in the URL path to address the resource."
+    },
+    "account_sid": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "minLength": 34,
+      "maxLength": 34,
+      "pattern": "^AC[0-9a-fA-F]{32}$",
+      "description": "The unique SID identifier of the Account."
+    },
+    "app": {
+      "description": "Information about the target App and the App reported by this Device. Contains the properties `target_sid`, `date_targeted`, `update_status` (one of `up-to-date`, `pending` and `error`), `update_error_code`, `reported_sid` and `date_reported`."
+    },
+    "logging": {
+      "description": "Object specifying whether application logging is enabled for this Device. Contains the properties `enabled` and `date_expires`."
+    },
+    "date_created": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "format": "date-time",
+      "description": "The date that this Device was created, given in [ISO 8601](https://en.wikipedia.org/wiki/ISO_8601) format."
+    },
+    "date_updated": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "format": "date-time",
+      "description": "The date that this Device was last updated, given in [ISO 8601](https://en.wikipedia.org/wiki/ISO_8601) format."
+    },
+    "url": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "format": "uri",
+      "description": "The URL of this resource."
+    },
+    "links": {
+      "type": [
+        "object",
+        "null"
+      ],
+      "format": "uri-map",
+      "description": "The absolute URLs of related resources."
+    }
+  }
+}

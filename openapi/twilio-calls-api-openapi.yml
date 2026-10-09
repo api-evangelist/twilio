@@ -171,27 +171,25 @@ paths:
           description: Call not found
 components:
   schemas:
-    UpdateCallRequest:
+    CallList:
       type: object
       properties:
-        Url:
+        calls:
+          type: array
+          items:
+            $ref: '#/components/schemas/Call'
+        first_page_uri:
           type: string
-          format: uri
-          description: Redirect the call to a new TwiML URL
-        Method:
+        next_page_uri:
           type: string
-          enum:
-          - GET
-          - POST
-        Status:
+        previous_page_uri:
           type: string
-          enum:
-          - canceled
-          - completed
-          description: Set to completed to end the call
-        Twiml:
+        page:
+          type: integer
+        page_size:
+          type: integer
+        uri:
           type: string
-          description: Inline TwiML to redirect the call
     Call:
       type: object
       properties:
@@ -288,25 +286,27 @@ components:
               type: string
             notifications:
               type: string
-    CallList:
+    UpdateCallRequest:
       type: object
       properties:
-        calls:
-          type: array
-          items:
-            $ref: '#/components/schemas/Call'
-        first_page_uri:
+        Url:
           type: string
-        next_page_uri:
+          format: uri
+          description: Redirect the call to a new TwiML URL
+        Method:
           type: string
-        previous_page_uri:
+          enum:
+          - GET
+          - POST
+        Status:
           type: string
-        page:
-          type: integer
-        page_size:
-          type: integer
-        uri:
+          enum:
+          - canceled
+          - completed
+          description: Set to completed to end the call
+        Twiml:
           type: string
+          description: Inline TwiML to redirect the call
     CreateCallRequest:
       type: object
       required:
@@ -380,14 +380,6 @@ components:
           type: string
           description: Caller ID to display on outbound call
   parameters:
-    AccountSid:
-      name: AccountSid
-      in: path
-      required: true
-      description: The unique identifier of the Twilio account
-      schema:
-        type: string
-        pattern: ^AC[0-9a-fA-F]{32}$
     CallSid:
       name: CallSid
       in: path
@@ -396,6 +388,14 @@ components:
       schema:
         type: string
         pattern: ^CA[0-9a-fA-F]{32}$
+    AccountSid:
+      name: AccountSid
+      in: path
+      required: true
+      description: The unique identifier of the Twilio account
+      schema:
+        type: string
+        pattern: ^AC[0-9a-fA-F]{32}$
   securitySchemes:
     accountSid_authToken:
       type: http

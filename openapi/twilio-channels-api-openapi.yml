@@ -101,29 +101,34 @@ paths:
           description: Channel deleted
 components:
   schemas:
-    FlexChannel:
+    CreateChannelRequest:
       type: object
+      required:
+      - FlexFlowSid
+      - Identity
+      - ChatUserFriendlyName
+      - ChatFriendlyName
       properties:
-        sid:
+        FlexFlowSid:
           type: string
-        account_sid:
+        Identity:
           type: string
-          pattern: ^AC[0-9a-fA-F]{32}$
-        flex_flow_sid:
+        ChatUserFriendlyName:
           type: string
-        user_sid:
+        ChatFriendlyName:
           type: string
-        task_sid:
+        Target:
           type: string
-        date_created:
+        ChatUniqueName:
           type: string
-          format: date-time
-        date_updated:
+        PreEngagementData:
           type: string
-          format: date-time
-        url:
+        TaskSid:
           type: string
-          format: uri
+        TaskAttributes:
+          type: string
+        LongLived:
+          type: boolean
     ChannelList:
       type: object
       properties:
@@ -154,34 +159,29 @@ components:
           format: uri
         key:
           type: string
-    CreateChannelRequest:
+    FlexChannel:
       type: object
-      required:
-      - FlexFlowSid
-      - Identity
-      - ChatUserFriendlyName
-      - ChatFriendlyName
       properties:
-        FlexFlowSid:
+        sid:
           type: string
-        Identity:
+        account_sid:
           type: string
-        ChatUserFriendlyName:
+          pattern: ^AC[0-9a-fA-F]{32}$
+        flex_flow_sid:
           type: string
-        ChatFriendlyName:
+        user_sid:
           type: string
-        Target:
+        task_sid:
           type: string
-        ChatUniqueName:
+        date_created:
           type: string
-        PreEngagementData:
+          format: date-time
+        date_updated:
           type: string
-        TaskSid:
+          format: date-time
+        url:
           type: string
-        TaskAttributes:
-          type: string
-        LongLived:
-          type: boolean
+          format: uri
   securitySchemes:
     accountSid_authToken:
       type: http

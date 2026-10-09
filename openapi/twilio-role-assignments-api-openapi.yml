@@ -1,0 +1,568 @@
+openapi: 3.2.0
+info:
+  title: Organization Public Role Assignments API
+  contact:
+    name: Twilio Support
+    url: https://support.twilio.com
+    email: support@twilio.com
+  license:
+    name: Apache 2.0
+    url: https://www.apache.org/licenses/LICENSE-2.0.html
+  version: 1.0.0
+  x-twilio:
+    apiStandards: v0.1
+  description: Role assignment operations
+servers:
+- url: https://preview-iam.twilio.com
+security:
+- oAuth2ClientCredentials: []
+tags:
+- name: Role Assignments
+  description: Role assignment operations
+paths:
+  /Organizations/{OrganizationSid}/RoleAssignments:
+    servers:
+    - url: https://preview-iam.twilio.com
+    get:
+      tags:
+      - Role Assignments
+      summary: List role assignments
+      description: List role assignments for the given organization
+      operationId: ListRoleAssignments
+      parameters:
+      - name: OrganizationSid
+        in: path
+        required: true
+        schema:
+          pattern: OR[0-9a-f]{32}
+          type: string
+          format: OrganizationSid
+          example: OR33f4f3aa6fffe840d000f8ef22e883db
+      - name: PageSize
+        in: query
+        schema:
+          maximum: 100
+          minimum: 1
+          type: integer
+          format: int32
+          default: 100
+      - name: PageToken
+        in: query
+        schema:
+          maxLength: 4096
+          minLength: 1
+          type: string
+      - name: Identity
+        in: query
+        required: false
+        schema:
+          pattern: ^[A-Z]{2}[0-9a-fA-F]{32}$
+          type: string
+          format: Sid
+          example: USa36de9717566c7eb6363671f54b87ba9
+      - name: Scope
+        in: query
+        required: false
+        schema:
+          pattern: ^[A-Z]{2}[0-9a-fA-F]{32}$
+          type: string
+          format: Sid
+          example: REDACTED_TWILIO_ACCOUNT_SID
+      - name: ResourceType
+        in: query
+        required: false
+        description: Filter by resource type for resource-level role assignments
+        schema:
+          type: string
+      - name: ResourceId
+        in: query
+        required: false
+        description: Filter by resource id for resource-level role assignments
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Returned list of role assignments
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PublicApiCreateRoleAssignmentResponsePage'
+          headers:
+            Access-Control-Allow-Origin:
+              description: Specify the origin(s) allowed to access the resource
+              schema:
+                type: string
+              example: '*'
+            Access-Control-Allow-Methods:
+              description: Specify the HTTP methods allowed when accessing the resource
+              schema:
+                type: string
+              example: POST, OPTIONS
+            Access-Control-Allow-Headers:
+              description: Specify the headers allowed when accessing the resource
+              schema:
+                type: string
+              example: Content-Type, Authorization
+            Access-Control-Allow-Credentials:
+              description: Indicates whether the browser should include credentials
+              schema:
+                type: boolean
+            Access-Control-Expose-Headers:
+              description: Headers exposed to the client
+              schema:
+                type: string
+                example: X-Custom-Header1, X-Custom-Header2
+        '400':
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    description: Twilio-specific error code
+                    type: integer
+                    format: int32
+                  message:
+                    description: Error message
+                    type: string
+                  more_info:
+                    description: Link to Error Code References
+                    type: string
+                  status:
+                    description: HTTP response status code
+                    type: integer
+                    format: int32
+          headers:
+            Access-Control-Allow-Origin:
+              description: Specify the origin(s) allowed to access the resource
+              schema:
+                type: string
+              example: '*'
+            Access-Control-Allow-Methods:
+              description: Specify the HTTP methods allowed when accessing the resource
+              schema:
+                type: string
+              example: POST, OPTIONS
+            Access-Control-Allow-Headers:
+              description: Specify the headers allowed when accessing the resource
+              schema:
+                type: string
+              example: Content-Type, Authorization
+            Access-Control-Allow-Credentials:
+              description: Indicates whether the browser should include credentials
+              schema:
+                type: boolean
+            Access-Control-Expose-Headers:
+              description: Headers exposed to the client
+              schema:
+                type: string
+                example: X-Custom-Header1, X-Custom-Header2
+        '403':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    description: Twilio-specific error code
+                    type: integer
+                    format: int32
+                  message:
+                    description: Error message
+                    type: string
+                  more_info:
+                    description: Link to Error Code References
+                    type: string
+                  status:
+                    description: HTTP response status code
+                    type: integer
+                    format: int32
+          headers:
+            Access-Control-Allow-Origin:
+              description: Specify the origin(s) allowed to access the resource
+              schema:
+                type: string
+              example: '*'
+            Access-Control-Allow-Methods:
+              description: Specify the HTTP methods allowed when accessing the resource
+              schema:
+                type: string
+              example: POST, OPTIONS
+            Access-Control-Allow-Headers:
+              description: Specify the headers allowed when accessing the resource
+              schema:
+                type: string
+              example: Content-Type, Authorization
+            Access-Control-Allow-Credentials:
+              description: Indicates whether the browser should include credentials
+              schema:
+                type: boolean
+            Access-Control-Expose-Headers:
+              description: Headers exposed to the client
+              schema:
+                type: string
+                example: X-Custom-Header1, X-Custom-Header2
+    post:
+      tags:
+      - Role Assignments
+      summary: Create a role assignment
+      description: Create a role assignment for the given organization
+      operationId: CreateRoleAssignment
+      parameters:
+      - name: OrganizationSid
+        in: path
+        required: true
+        schema:
+          pattern: OR[0-9a-f]{32}
+          type: string
+          format: OrganizationSid
+          example: ORa36de9717566c7eb6363671f54b87ba9
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PublicApiCreateRoleAssignmentRequest'
+        required: true
+      responses:
+        '201':
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PublicApiRoleAssignmentResponse'
+          headers:
+            Access-Control-Allow-Origin:
+              description: Specify the origin(s) allowed to access the resource
+              schema:
+                type: string
+              example: '*'
+            Access-Control-Allow-Methods:
+              description: Specify the HTTP methods allowed when accessing the resource
+              schema:
+                type: string
+              example: POST, OPTIONS
+            Access-Control-Allow-Headers:
+              description: Specify the headers allowed when accessing the resource
+              schema:
+                type: string
+              example: Content-Type, Authorization
+            Access-Control-Allow-Credentials:
+              description: Indicates whether the browser should include credentials
+              schema:
+                type: boolean
+            Access-Control-Expose-Headers:
+              description: Headers exposed to the client
+              schema:
+                type: string
+                example: X-Custom-Header1, X-Custom-Header2
+        '400':
+          description: Bad request or business rules violation
+          content:
+            application/scim+json:
+              schema:
+                $ref: '#/components/schemas/TwilioServiceErrorResponse'
+          headers:
+            Access-Control-Allow-Origin:
+              description: Specify the origin(s) allowed to access the resource
+              schema:
+                type: string
+              example: '*'
+            Access-Control-Allow-Methods:
+              description: Specify the HTTP methods allowed when accessing the resource
+              schema:
+                type: string
+              example: POST, OPTIONS
+            Access-Control-Allow-Headers:
+              description: Specify the headers allowed when accessing the resource
+              schema:
+                type: string
+              example: Content-Type, Authorization
+            Access-Control-Allow-Credentials:
+              description: Indicates whether the browser should include credentials
+              schema:
+                type: boolean
+            Access-Control-Expose-Headers:
+              description: Headers exposed to the client
+              schema:
+                type: string
+                example: X-Custom-Header1, X-Custom-Header2
+        '403':
+          description: Unauthorized
+          content:
+            application/scim+json:
+              schema:
+                $ref: '#/components/schemas/TwilioServiceErrorResponse'
+          headers:
+            Access-Control-Allow-Origin:
+              description: Specify the origin(s) allowed to access the resource
+              schema:
+                type: string
+              example: '*'
+            Access-Control-Allow-Methods:
+              description: Specify the HTTP methods allowed when accessing the resource
+              schema:
+                type: string
+              example: POST, OPTIONS
+            Access-Control-Allow-Headers:
+              description: Specify the headers allowed when accessing the resource
+              schema:
+                type: string
+              example: Content-Type, Authorization
+            Access-Control-Allow-Credentials:
+              description: Indicates whether the browser should include credentials
+              schema:
+                type: boolean
+            Access-Control-Expose-Headers:
+              description: Headers exposed to the client
+              schema:
+                type: string
+                example: X-Custom-Header1, X-Custom-Header2
+  /Organizations/{OrganizationSid}/RoleAssignments/{RoleAssignmentSid}:
+    servers:
+    - url: https://preview-iam.twilio.com
+    delete:
+      tags:
+      - Role Assignments
+      summary: Delete a role assignment
+      description: Delete a role assignment for the given organization
+      operationId: DeleteRoleAssignment
+      parameters:
+      - name: OrganizationSid
+        in: path
+        required: true
+        schema:
+          pattern: OR[0-9a-f]{32}
+          type: string
+          format: OrganizationSid
+          example: ORa36de9717566c7eb6363671f54b87ba9
+      - name: RoleAssignmentSid
+        in: path
+        required: true
+        schema:
+          pattern: IY[0-9a-f]{32}
+          type: string
+          format: IamRoleAssignmentSid
+          example: IYa36de9717566c7eb6363671f54b87ba9
+      responses:
+        '204':
+          description: No content
+          headers:
+            Access-Control-Allow-Origin:
+              description: Specify the origin(s) allowed to access the resource
+              schema:
+                type: string
+              example: '*'
+            Access-Control-Allow-Methods:
+              description: Specify the HTTP methods allowed when accessing the resource
+              schema:
+                type: string
+              example: POST, OPTIONS
+            Access-Control-Allow-Headers:
+              description: Specify the headers allowed when accessing the resource
+              schema:
+                type: string
+              example: Content-Type, Authorization
+            Access-Control-Allow-Credentials:
+              description: Indicates whether the browser should include credentials
+              schema:
+                type: boolean
+            Access-Control-Expose-Headers:
+              description: Headers exposed to the client
+              schema:
+                type: string
+                example: X-Custom-Header1, X-Custom-Header2
+        '400':
+          description: Invalid request provided
+          content:
+            application/scim+json:
+              schema:
+                $ref: '#/components/schemas/TwilioServiceErrorResponse'
+          headers:
+            Access-Control-Allow-Origin:
+              description: Specify the origin(s) allowed to access the resource
+              schema:
+                type: string
+              example: '*'
+            Access-Control-Allow-Methods:
+              description: Specify the HTTP methods allowed when accessing the resource
+              schema:
+                type: string
+              example: POST, OPTIONS
+            Access-Control-Allow-Headers:
+              description: Specify the headers allowed when accessing the resource
+              schema:
+                type: string
+              example: Content-Type, Authorization
+            Access-Control-Allow-Credentials:
+              description: Indicates whether the browser should include credentials
+              schema:
+                type: boolean
+            Access-Control-Expose-Headers:
+              description: Headers exposed to the client
+              schema:
+                type: string
+                example: X-Custom-Header1, X-Custom-Header2
+        '403':
+          description: Unauthorized
+          content:
+            application/scim+json:
+              schema:
+                $ref: '#/components/schemas/TwilioServiceErrorResponse'
+          headers:
+            Access-Control-Allow-Origin:
+              description: Specify the origin(s) allowed to access the resource
+              schema:
+                type: string
+              example: '*'
+            Access-Control-Allow-Methods:
+              description: Specify the HTTP methods allowed when accessing the resource
+              schema:
+                type: string
+              example: POST, OPTIONS
+            Access-Control-Allow-Headers:
+              description: Specify the headers allowed when accessing the resource
+              schema:
+                type: string
+              example: Content-Type, Authorization
+            Access-Control-Allow-Credentials:
+              description: Indicates whether the browser should include credentials
+              schema:
+                type: boolean
+            Access-Control-Expose-Headers:
+              description: Headers exposed to the client
+              schema:
+                type: string
+                example: X-Custom-Header1, X-Custom-Header2
+components:
+  schemas:
+    TwilioServiceErrorResponse:
+      type: object
+      properties:
+        code:
+          description: Twilio-specific error code
+          type: integer
+          format: int32
+        message:
+          description: Error message
+          type: string
+        moreInfo:
+          description: Link to Error Code References
+          type: string
+        status:
+          description: HTTP response status code
+          type: integer
+          format: int32
+    PublicApiCreateRoleAssignmentResponsePage:
+      type: object
+      properties:
+        content:
+          type: array
+          description: Page content
+          items:
+            $ref: '#/components/schemas/PublicApiRoleAssignmentResponse'
+        meta:
+          properties:
+            first_page_url:
+              format: uri
+              type: string
+            key:
+              type: string
+            next_page_url:
+              format: uri
+              type:
+              - string
+              - 'null'
+            page:
+              type: integer
+            page_size:
+              type: integer
+            previous_page_url:
+              format: uri
+              type:
+              - string
+              - 'null'
+            url:
+              format: uri
+              type: string
+          type: object
+    PublicApiRoleAssignmentResponse:
+      type: object
+      properties:
+        sid:
+          pattern: IY[0-9a-f]{32}
+          type: string
+          description: Twilio Role Assignment Sid representing this role assignment
+          format: IamRoleAssignmentSid
+          example: IYc4ddb9d0befdb122b0eff334e3084544
+        role_sid:
+          pattern: IX[0-9a-f]{32}
+          type: string
+          description: Twilio Role Sid representing assigned role
+          format: IamRoleSid
+          example: IXc4ddb9d0befdb122b0eff334e3084544
+        scope:
+          pattern: ^[A-Z]{2}[0-9a-fA-F]{32}$
+          type: string
+          description: Twilio Sid representing identity of this assignment
+          format: Sid
+          example: REDACTED_TWILIO_ACCOUNT_SID
+        identity:
+          pattern: ^[A-Z]{2}[0-9a-fA-F]{32}$
+          type: string
+          description: Twilio Sid representing scope of this assignment
+          format: Sid
+          example: USc4ddb9d0befdb122b0eff334e3084544
+        resource_type:
+          type:
+          - string
+          - 'null'
+          description: The resource type for resource-level role assignments
+        resource_id:
+          type:
+          - string
+          - 'null'
+          description: The resource id for resource-level role assignments
+    PublicApiCreateRoleAssignmentRequest:
+      required:
+      - role_sid
+      - scope
+      - identity
+      type: object
+      properties:
+        role_sid:
+          pattern: IX[0-9a-f]{32}
+          type: string
+          description: Twilio Role Sid representing assigned role
+          format: IamRoleSid
+          example: IXc4ddb9d0befdb122b0eff334e3084544
+        scope:
+          pattern: ^[A-Z]{2}[0-9a-fA-F]{32}$
+          type: string
+          description: Twilio Sid representing scope of this assignment
+          format: Sid
+          example: REDACTED_TWILIO_ACCOUNT_SID
+        identity:
+          pattern: ^[A-Z]{2}[0-9a-fA-F]{32}$
+          type: string
+          description: Twilio Sid representing identity of this assignment
+          format: Sid
+          example: USc4ddb9d0befdb122b0eff334e3084544
+        resource_type:
+          type:
+          - string
+          - 'null'
+          description: The resource type for resource-level role assignments
+        resource_id:
+          type:
+          - string
+          - 'null'
+          description: The resource id for resource-level role assignments
+  securitySchemes:
+    oAuth2ClientCredentials:
+      type: oauth2
+      flows:
+        clientCredentials:
+          tokenUrl: https://preview-iam.twilio.com/v1/token
+          scopes: {}

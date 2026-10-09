@@ -1,0 +1,191 @@
+openapi: 3.2.0
+info:
+  title: User OAuth OAUTH V2Token API
+  description: User OAuth API
+  termsOfService: https://www.twilio.com/legal/tos
+  contact:
+    name: Twilio Support
+    url: https://support.twilio.com
+    email: support@twilio.com
+  license:
+    name: Apache 2.0
+    url: https://www.apache.org/licenses/LICENSE-2.0.html
+  version: 1.0.0
+  x-twilio:
+    apiStandards: v0.1
+servers:
+- url: https://oauth.twilio.com
+security:
+- accountSid_authToken: []
+tags:
+- name: OauthV2Token
+paths:
+  /v2/token:
+    x-twilio:
+      defaultOutputProperties: []
+      pathType: list
+    post:
+      security: []
+      tags:
+      - OauthV2Token
+      summary: Issues a new Access token (optionally identity_token & refresh_token) in…
+      operationId: CreateOauth2Token
+      parameters:
+      - name: account_sid
+        in: query
+        required: false
+        schema:
+          type: string
+        description: Optional Account SID to perform on behalf of requests.
+      requestBody:
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              type: object
+              title: CreateTokenRequest
+              required:
+              - grant_type
+              properties:
+                grant_type:
+                  type: string
+                  description: Grant type is a credential representing resource owner's authorization which can be used by client to obtain access token.
+                client_id:
+                  type: string
+                  description: A 34 character string that uniquely identifies this OAuth App.
+                client_secret:
+                  type: string
+                  description: The credential for confidential OAuth App.
+                code:
+                  type: string
+                  description: JWT token related to the authorization code grant type.
+                redirect_uri:
+                  type: string
+                  description: The redirect uri
+                audience:
+                  type: string
+                  description: The targeted audience uri
+                refresh_token:
+                  type: string
+                  description: JWT token related to refresh access token.
+                scope:
+                  type: string
+                  description: The scope of token
+                code_verifier:
+                  type: string
+                  description: The PKCE code verifier used to generate the code_challenge in the authorization request.
+            examples:
+              create:
+                value:
+                  client_id: OQ7cda1a615f05a95634e643aaaf7081d7
+                  client_secret: sUWblrQ4wx_aYkdAWjHXNvHinynkYOgBoiRyEQUeEntpgDEG47qnBFD98yoEzsTh
+                  grant_type: client_credentials
+                  redirect_uri: ''
+                  audience: ''
+                  code: ''
+                  refresh_token: refresh_token
+                  scope: scope
+        required: true
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/V2Oauth2TokenResponse'
+              examples:
+                create:
+                  value:
+                    access_token: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c
+                    refresh_token: ghjbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c
+                    id_token: eyJhbdGciOiIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c
+                    expires_in: 3600
+                    token_type: bearer
+          description: Created
+        '400':
+          $ref: '#/components/responses/ErrorClientErrorResponse'
+        '500':
+          $ref: '#/components/responses/ErrorResponse'
+components:
+  responses:
+    ErrorResponse:
+      description: Generic error response
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+          examples:
+            internal_server_error:
+              value:
+                code: 20500
+                message: internal server error
+                more_info: https://www.twilio.com/docs/errors/20500
+                status: 500
+    ErrorClientErrorResponse:
+      description: Client provided invalid parameters response
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+          examples:
+            client_error:
+              value:
+                code: 400
+                message: bad request
+                more_info: https://www.twilio.com/docs/errors/400
+                status: 400
+  schemas:
+    V2Oauth2TokenResponse:
+      type: object
+      properties:
+        access_token:
+          type:
+          - string
+          - 'null'
+          description: Token which carries the necessary information to access a Twilio resource directly.
+        refresh_token:
+          type:
+          - string
+          - 'null'
+          description: Token which carries the information necessary to get a new access token.
+        id_token:
+          type:
+          - string
+          - 'null'
+          description: Token which carries the information necessary of user profile.
+        token_type:
+          type:
+          - string
+          - 'null'
+          description: Token type
+        expires_in:
+          type:
+          - integer
+          - 'null'
+          format: int64
+    Error:
+      description: Generic error
+      type: object
+      properties:
+        code:
+          description: Twilio-specific error code
+          type: integer
+          format: int32
+        message:
+          description: Error message
+          type: string
+        more_info:
+          description: Link to Error Code References
+          type: string
+        status:
+          description: HTTP response status code
+          type: integer
+          format: int32
+  securitySchemes:
+    accountSid_authToken:
+      scheme: basic
+      type: http
+    v2_oauth2_client_credentials:
+      type: oauth2
+      flows:
+        clientCredentials:
+          tokenUrl: https://oauth.twilio.com/v2/token
+          scopes: {}

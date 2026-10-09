@@ -1,0 +1,309 @@
+openapi: 3.2.0
+info:
+  title: Twilio Operations API
+  version: '1.0'
+  contact:
+    name: Twilio Support
+    url: https://support.twilio.com
+    email: support@twilio.com
+  license:
+    name: Apache 2.0
+    url: https://www.apache.org/licenses/LICENSE-2.0.html
+  termsOfService: https://www.twilio.com/legal/tos
+  x-twilio:
+    apiStandards: v1.0
+  description: 'Operations tagged Operations across 2 of this provider''s published API definitions: knowledge-openapi-original.yml, memory-openapi-original.yml. Each path carries the servers of the definition it was published in.'
+servers:
+- url: https://knowledge.twilio.com
+- url: https://memory.twilio.com
+security:
+- accountSid_authToken: []
+tags:
+- name: Operations
+  description: Retrieve the status and result of asynchronous operations. Write endpoints that trigger long-running processes return an operation ID that can be used here to check status.
+paths:
+  /v2/ControlPlane/Operations/{operationId}:
+    servers:
+    - url: https://knowledge.twilio.com
+    parameters:
+    - name: operationId
+      in: path
+      required: true
+      schema:
+        type: string
+        maxLength: 512
+      description: The operation ID returned from a write endpoint.
+    x-twilio:
+      pathType: instance
+    get:
+      operationId: FetchOperation
+      summary: Get Operation Status
+      description: Retrieve the status and result of an asynchronous operation.
+      tags:
+      - Operations
+      responses:
+        '200':
+          description: Operation status retrieved successfully.
+          headers:
+            Operation-Id:
+              $ref: '#/components/headers/OperationId'
+            Retry-After:
+              $ref: '#/components/headers/OperationRetryAfter'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/OperationStatus'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '429':
+          $ref: '#/components/responses/TooManyRequests'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+        '503':
+          $ref: '#/components/responses/ServiceUnavailable'
+  /v1/ControlPlane/Operations/{operationId}:
+    servers:
+    - url: https://memory.twilio.com
+    parameters:
+    - name: operationId
+      in: path
+      required: true
+      schema:
+        type: string
+        maxLength: 512
+      description: The operation ID returned from a write endpoint.
+    x-twilio:
+      pathType: instance
+    get:
+      operationId: getV1ControlPlaneOperationsByOperationId
+      summary: Get Operation Status
+      description: Retrieve the status and result of an asynchronous operation.
+      tags:
+      - Operations
+      responses:
+        '200':
+          description: Operation status retrieved successfully.
+          headers:
+            Operation-Id:
+              $ref: '#/components/headers/OperationId'
+            Retry-After:
+              $ref: '#/components/headers/OperationRetryAfter'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/OperationStatus'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '429':
+          $ref: '#/components/responses/TooManyRequests'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+        '503':
+          $ref: '#/components/responses/ServiceUnavailable'
+      x-operation-id-source: normalized
+      x-operation-id-original: FetchOperation
+components:
+  schemas:
+    OperationResult:
+      description: Operation-specific output. Present when status is COMPLETED.
+      oneOf:
+      - $ref: '#/components/schemas/OperationResultResourceId'
+      discriminator:
+        propertyName: type
+        mapping:
+          RESOURCE_ID: '#/components/schemas/OperationResultResourceId'
+    OperationStatus:
+      type: object
+      additionalProperties: false
+      required:
+      - operationId
+      - status
+      - createdAt
+      properties:
+        operationId:
+          type: string
+          description: The unique identifier for this operation.
+          maxLength: 512
+        status:
+          type: string
+          description: The current status of the operation.
+          enum:
+          - PENDING
+          - RUNNING
+          - CANCELLED
+          - COMPLETED
+          - FAILED
+          example: COMPLETED
+        createdAt:
+          type: string
+          format: date-time
+          description: When the operation was created.
+          example: '2025-11-14T20:29:21Z'
+        statusUrl:
+          type: string
+          format: uri
+          description: URI to check operation status.
+        completedAt:
+          type: string
+          format: date-time
+          description: When the operation completed or failed.
+        result:
+          $ref: '#/components/schemas/OperationResult'
+        error:
+          type: object
+          properties:
+            type:
+              type: string
+              format: uri
+              description: A URI reference identifying the problem type.
+            title:
+              type: string
+              maxLength: 128
+              description: A short, human-readable summary of the problem type.
+            code:
+              type: integer
+              description: The numeric Twilio error code.
+            detail:
+              type: string
+              maxLength: 1024
+              description: A human-readable explanation specific to this occurrence of the problem.
+        resultUrl:
+          type: string
+          format: uri
+          description: URL to fetch the resulting resource.
+    TwilioError:
+      type: object
+      additionalProperties: false
+      maxProperties: 10
+      description: A generic error object communicating client and server side API errors.
+      properties:
+        code:
+          type: integer
+          minimum: 100
+          maximum: 999999
+          description: The Twilio error code.
+          format: int32
+        message:
+          type: string
+          maxLength: 1024
+          description: A human readable message describing the error.
+        more_info:
+          type: string
+          description: A URL to a [Twilio error directory](https://www.twilio.com/docs/api/errors) page with more information about the error code.
+        status:
+          type: integer
+          minimum: 100
+          maximum: 599
+          description: The HTTP status code for the error.
+          format: int32
+      example:
+        code: 21614
+        message: The address specified in the request is not a valid phone number.
+        more_info: https://www.twilio.com/docs/api/errors/21614
+        status: 400
+    OperationResultResourceId:
+      type: object
+      properties:
+        id:
+          type: string
+          maxLength: 128
+          description: The identifier of the created or affected resource.
+        type:
+          type: string
+          enum:
+          - RESOURCE_ID
+      required:
+      - type
+      - id
+  responses:
+    ServiceUnavailable:
+      description: Service Unavailable
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/TwilioError'
+          example:
+            code: 20503
+            message: Service Unavailable
+            more_info: https://www.twilio.com/docs/api/errors/20503
+            status: 503
+    TooManyRequests:
+      description: This error indicates that you have sent too many requests to the API. You should retry according to the `Retry-After` response header.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/TwilioError'
+          example:
+            code: 20429
+            message: Too many requests. Please retry according to the Retry-After response header.
+            more_info: https://www.twilio.com/docs/api/errors/20429
+            status: 429
+      headers:
+        Retry-After:
+          description: The amount of time in seconds that the customer should wait before issuing a new request towards the API.
+          schema:
+            type: string
+            pattern: ^[0-9]+$
+    BadRequest:
+      description: Bad Request
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/TwilioError'
+          example:
+            code: 400
+            message: Failed to complete request due to a bad request
+            more_info: https://www.twilio.com/docs/api/errors/400
+            status: 400
+    InternalServerError:
+      description: Internal Server Error
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/TwilioError'
+          example:
+            code: 20500
+            message: Internal Server Error
+            more_info: https://www.twilio.com/docs/api/errors/20500
+            status: 500
+    NotFound:
+      description: Not Found
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/TwilioError'
+          example:
+            code: 20404
+            message: Not Found
+            more_info: https://www.twilio.com/docs/api/errors/20404
+            status: 404
+  headers:
+    OperationId:
+      description: The operation identifier.
+      schema:
+        type: string
+        maxLength: 512
+    OperationRetryAfter:
+      description: Suggested number of seconds to wait before checking status again.
+      schema:
+        type: integer
+  securitySchemes:
+    accountSid_authToken:
+      scheme: basic
+      type: http
+    basic_apikey_or_accountsid:
+      scheme: basic
+      type: http
+      description: This API uses [basic authentication](https://www.twilio.com/docs/glossary/what-is-basic-authentication). Use an [API key](https://www.twilio.com/docs/iam/api-keys) as the username and the API key secret as the password. You can also use your account SID and auth token, but limit their use to local testing.
+x-refined-from:
+- knowledge-openapi-original.yml
+- memory-openapi-original.yml
+x-maturity:
+- name: GA
+  description: This product is Generally Available.
+- name: Beta
+  description: PLEASE NOTE that this is a Beta product that is subject to change. Use it with caution.

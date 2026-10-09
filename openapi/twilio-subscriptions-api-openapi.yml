@@ -411,6 +411,76 @@ paths:
       x-summary-source: derived
 components:
   schemas:
+    ListSubscriptionResponse:
+      type: object
+      properties:
+        subscriptions:
+          type: array
+          items:
+            $ref: '#/components/schemas/events.v1.subscription'
+        meta:
+          type: object
+          properties:
+            first_page_url:
+              type: string
+              format: uri
+            next_page_url:
+              type:
+              - string
+              - 'null'
+              format: uri
+            page:
+              type: integer
+            page_size:
+              type: integer
+            previous_page_url:
+              type:
+              - string
+              - 'null'
+              format: uri
+            url:
+              type: string
+              format: uri
+            key:
+              type: string
+    UpdateSubscriptionRequest:
+      type: object
+      properties:
+        Description:
+          type: string
+          description: A human readable description for the Subscription.
+        SinkSid:
+          type: string
+          minLength: 34
+          maxLength: 34
+          pattern: ^DG[0-9a-fA-F]{32}$
+          description: The SID of the sink that events selected by this subscription should be sent to. Sink must be active for the subscription to be created.
+    CreateSubscriptionRequest:
+      type: object
+      required:
+      - Description
+      - SinkSid
+      - Types
+      properties:
+        Description:
+          type: string
+          description: A human readable description for the Subscription **This value should not contain PII.**
+        SinkSid:
+          type: string
+          minLength: 34
+          maxLength: 34
+          pattern: ^DG[0-9a-fA-F]{32}$
+          description: The SID of the sink that events selected by this subscription should be sent to. Sink must be active for the subscription to be created.
+        Types:
+          type: array
+          items: {}
+          description: An array of objects containing the subscribed Event Types
+    UpdateSubscribedEventRequest:
+      type: object
+      properties:
+        SchemaVersion:
+          type: integer
+          description: The schema version that the Subscription should use.
     events.v1.subscription:
       type: object
       properties:
@@ -467,26 +537,17 @@ components:
           - 'null'
           format: uri-map
           description: Contains a dictionary of URL links to nested resources of this Subscription.
-    CreateSubscriptionRequest:
+    CreateSubscribedEventRequest:
       type: object
       required:
-      - Description
-      - SinkSid
-      - Types
+      - Type
       properties:
-        Description:
+        Type:
           type: string
-          description: A human readable description for the Subscription **This value should not contain PII.**
-        SinkSid:
-          type: string
-          minLength: 34
-          maxLength: 34
-          pattern: ^DG[0-9a-fA-F]{32}$
-          description: The SID of the sink that events selected by this subscription should be sent to. Sink must be active for the subscription to be created.
-        Types:
-          type: array
-          items: {}
-          description: An array of objects containing the subscribed Event Types
+          description: Type of event being subscribed to.
+        SchemaVersion:
+          type: integer
+          description: The schema version that the Subscription should use.
     events.v1.subscription.subscribed_event:
       type: object
       properties:
@@ -554,67 +615,6 @@ components:
               format: uri
             key:
               type: string
-    ListSubscriptionResponse:
-      type: object
-      properties:
-        subscriptions:
-          type: array
-          items:
-            $ref: '#/components/schemas/events.v1.subscription'
-        meta:
-          type: object
-          properties:
-            first_page_url:
-              type: string
-              format: uri
-            next_page_url:
-              type:
-              - string
-              - 'null'
-              format: uri
-            page:
-              type: integer
-            page_size:
-              type: integer
-            previous_page_url:
-              type:
-              - string
-              - 'null'
-              format: uri
-            url:
-              type: string
-              format: uri
-            key:
-              type: string
-    CreateSubscribedEventRequest:
-      type: object
-      required:
-      - Type
-      properties:
-        Type:
-          type: string
-          description: Type of event being subscribed to.
-        SchemaVersion:
-          type: integer
-          description: The schema version that the Subscription should use.
-    UpdateSubscribedEventRequest:
-      type: object
-      properties:
-        SchemaVersion:
-          type: integer
-          description: The schema version that the Subscription should use.
-    UpdateSubscriptionRequest:
-      type: object
-      properties:
-        Description:
-          type: string
-          description: A human readable description for the Subscription.
-        SinkSid:
-          type: string
-          minLength: 34
-          maxLength: 34
-          pattern: ^DG[0-9a-fA-F]{32}$
-          description: The SID of the sink that events selected by this subscription should be sent to. Sink must be active for the subscription to be created.
   securitySchemes:
     accountSid_authToken:
       type: http

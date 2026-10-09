@@ -1,0 +1,93 @@
+openapi: 3.2.0
+info:
+  title: Organization Public OAUTH V1Authorize API
+  contact:
+    name: Twilio Support
+    url: https://support.twilio.com
+    email: support@twilio.com
+  license:
+    name: Apache 2.0
+    url: https://www.apache.org/licenses/LICENSE-2.0.html
+  version: 1.0.0
+  x-twilio:
+    apiStandards: v0.1
+servers:
+- url: https://preview-iam.twilio.com
+security:
+- oAuth2ClientCredentials: []
+tags:
+- name: OauthV1Authorize
+paths:
+  /v1/authorize:
+    servers:
+    - url: https://preview-iam.twilio.com
+    x-twilio:
+      defaultOutputProperties:
+      - redirect_to
+      pathType: list
+    get:
+      tags:
+      - OauthV1Authorize
+      security: []
+      summary: Retrieves authorize uri
+      operationId: FetchAuthorize
+      parameters:
+      - name: response_type
+        in: query
+        description: Response Type
+        schema:
+          type: string
+          example: code
+      - name: client_id
+        in: query
+        description: The Client Identifier
+        schema:
+          type: string
+          example: OQ7cda1a615f05a95634e643aaaf7081d7
+      - name: redirect_uri
+        in: query
+        description: The url to which response will be redirected to
+        schema:
+          type: string
+          example: www.twilio.com
+      - name: scope
+        in: query
+        description: The scope of the access request
+        schema:
+          type: string
+          example: offline_access
+      - name: state
+        in: query
+        description: An opaque value which can be used to maintain state between the request and callback
+        schema:
+          type: string
+          example: xvz
+      responses:
+        '302':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/oauth.v1.authorize'
+              examples:
+                fetch:
+                  value:
+                    redirect_to: https://www.twilio.com/authorize?response_type=code&client_id=OQ7cda1a615f05a95634e643aaaf7081d7&redirect_uri=www.twilio.com&scope=offline_access&state=xvz
+          description: Found
+components:
+  schemas:
+    oauth.v1.authorize:
+      type: object
+      properties:
+        redirect_to:
+          type:
+          - string
+          - 'null'
+          format: uri
+          description: The callback URL
+  securitySchemes:
+    oAuth2ClientCredentials:
+      type: oauth2
+      flows:
+        clientCredentials:
+          tokenUrl: https://preview-iam.twilio.com/v1/token
+          scopes: {}

@@ -1,0 +1,298 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/api-evangelist/twilio/main/json-schema/twilio-list-conference-response-schema.json",
+  "title": "ListConferenceResponse",
+  "x-generated": "2026-10-08",
+  "x-method": "derived",
+  "x-generator": "derive-json-schema.py",
+  "x-source": "openapi/twilio-conferences-api-openapi.yml#/components/schemas/ListConferenceResponse",
+  "type": "object",
+  "properties": {
+    "conferences": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/insights.v1.conference"
+      }
+    },
+    "meta": {
+      "type": "object",
+      "properties": {
+        "first_page_url": {
+          "type": "string",
+          "format": "uri"
+        },
+        "next_page_url": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "format": "uri"
+        },
+        "page": {
+          "type": "integer"
+        },
+        "page_size": {
+          "type": "integer"
+        },
+        "previous_page_url": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "format": "uri"
+        },
+        "url": {
+          "type": "string",
+          "format": "uri"
+        },
+        "key": {
+          "type": "string"
+        }
+      }
+    }
+  },
+  "$defs": {
+    "conference_enum_conference_end_reason": {
+      "type": "string",
+      "enum": [
+        "last_participant_left",
+        "conference_ended_via_api",
+        "participant_with_end_conference_on_exit_left",
+        "last_participant_kicked",
+        "participant_with_end_conference_on_exit_kicked"
+      ]
+    },
+    "conference_enum_conference_status": {
+      "type": "string",
+      "enum": [
+        "in_progress",
+        "not_started",
+        "completed",
+        "summary_timeout"
+      ]
+    },
+    "conference_enum_processing_state": {
+      "type": "string",
+      "enum": [
+        "complete",
+        "in_progress",
+        "timeout"
+      ]
+    },
+    "conference_enum_region": {
+      "type": "string",
+      "enum": [
+        "us1",
+        "au1",
+        "br1",
+        "ie1",
+        "jp1",
+        "sg1",
+        "de1"
+      ]
+    },
+    "conference_enum_tag": {
+      "type": "string",
+      "enum": [
+        "invalid_requested_region",
+        "duplicate_identity",
+        "start_failure",
+        "region_configuration_issues",
+        "quality_warnings",
+        "participant_behavior_issues",
+        "high_packet_loss",
+        "high_jitter",
+        "high_latency",
+        "low_mos",
+        "detected_silence"
+      ]
+    },
+    "insights.v1.conference": {
+      "type": "object",
+      "properties": {
+        "conference_sid": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "minLength": 34,
+          "maxLength": 34,
+          "pattern": "^CF[0-9a-fA-F]{32}$",
+          "description": "The unique SID identifier of the Conference."
+        },
+        "account_sid": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "minLength": 34,
+          "maxLength": 34,
+          "pattern": "^AC[0-9a-fA-F]{32}$",
+          "description": "The unique SID identifier of the Account."
+        },
+        "friendly_name": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "description": "Custom label for the conference resource, up to 64 characters.",
+          "x-twilio": {
+            "pii": {
+              "handling": "standard",
+              "deleteSla": 30
+            }
+          }
+        },
+        "create_time": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "format": "date-time",
+          "description": "Conference creation date and time in ISO 8601 format."
+        },
+        "start_time": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "format": "date-time",
+          "description": "Timestamp in ISO 8601 format when the conference started. Conferences do not start until at least two participants join, at least one of whom has startConferenceOnEnter=true."
+        },
+        "end_time": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "format": "date-time",
+          "description": "Conference end date and time in ISO 8601 format."
+        },
+        "duration_seconds": {
+          "type": [
+            "integer",
+            "null"
+          ],
+          "description": "Conference duration in seconds."
+        },
+        "connect_duration_seconds": {
+          "type": [
+            "integer",
+            "null"
+          ],
+          "description": "Duration of the between conference start event and conference end event in seconds."
+        },
+        "status": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "$ref": "#/$defs/conference_enum_conference_status",
+          "description": "Status of this Conference; `in_progress`, `not_started`, `completed` or `summary_timeout`. if Twilio don't receive `last_participant_left` event, summary will be timeout after 24 hours"
+        },
+        "max_participants": {
+          "type": [
+            "integer",
+            "null"
+          ],
+          "description": "Maximum number of concurrent participants as specified by the configuration."
+        },
+        "max_concurrent_participants": {
+          "type": [
+            "integer",
+            "null"
+          ],
+          "description": "Actual maximum number of concurrent participants in the conference."
+        },
+        "unique_participants": {
+          "type": [
+            "integer",
+            "null"
+          ],
+          "description": "Unique conference participants based on caller ID."
+        },
+        "end_reason": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "$ref": "#/$defs/conference_enum_conference_end_reason",
+          "description": "Conference end reason; e.g. last participant left, modified by API, etc."
+        },
+        "ended_by": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "minLength": 34,
+          "maxLength": 34,
+          "pattern": "^CA[0-9a-fA-F]{32}$",
+          "description": "Call SID of the participant whose actions ended the conference."
+        },
+        "mixer_region": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "$ref": "#/$defs/conference_enum_region",
+          "description": "Twilio region where the conference media was mixed."
+        },
+        "mixer_region_requested": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "$ref": "#/$defs/conference_enum_region",
+          "description": "Twilio region where conference mixed was specified to be mixed in configuration."
+        },
+        "recording_enabled": {
+          "type": [
+            "boolean",
+            "null"
+          ],
+          "description": "Boolean. Indicates whether recording was enabled at the conference mixer."
+        },
+        "detected_issues": {
+          "description": "Potential issues detected by Twilio during the conference."
+        },
+        "tags": {
+          "type": [
+            "array",
+            "null"
+          ],
+          "items": {
+            "type": "string",
+            "$ref": "#/$defs/conference_enum_tag"
+          },
+          "description": "Tags for detected conference conditions and participant behaviors which may be of interest."
+        },
+        "tag_info": {
+          "description": "Object. Contains details about conference tags including severity."
+        },
+        "processing_state": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "$ref": "#/$defs/conference_enum_processing_state",
+          "description": "Processing state for the Conference Summary resource. Will be `in_progress` while data is being aggregated, `timeout` if Twilio couldn't process the summary in 24hrs, and `complete` once aggregations and analysis has ended."
+        },
+        "url": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "format": "uri",
+          "description": "The URL of this resource."
+        },
+        "links": {
+          "type": [
+            "object",
+            "null"
+          ],
+          "format": "uri-map",
+          "description": "Contains a dictionary of URL links to nested resources of this Conference."
+        }
+      }
+    }
+  }
+}

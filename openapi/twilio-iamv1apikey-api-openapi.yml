@@ -1,0 +1,268 @@
+openapi: 3.2.0
+info:
+  title: Twilio - Iam Iam V1Api Key API
+  description: This is the public Twilio REST API.
+  termsOfService: https://www.twilio.com/legal/tos
+  contact:
+    name: Twilio Support
+    url: https://support.twilio.com
+    email: support@twilio.com
+  license:
+    name: Apache 2.0
+    url: https://www.apache.org/licenses/LICENSE-2.0.html
+  version: 1.0.0
+  x-twilio:
+    apiStandards: v0.1
+servers:
+- url: https://iam.twilio.com
+security:
+- accountSid_authToken: []
+tags:
+- name: IamV1ApiKey
+paths:
+  /v1/Keys/{Sid}:
+    servers:
+    - url: https://iam.twilio.com
+    description: API keys
+    x-twilio:
+      defaultOutputProperties:
+      - sid
+      - friendly_name
+      - date_created
+      mountName: api_key
+      pathType: instance
+    get:
+      description: Fetch a specific Key.
+      tags:
+      - IamV1ApiKey
+      parameters:
+      - name: Sid
+        in: path
+        description: The Twilio-provided string that uniquely identifies the Key resource to fetch.
+        schema:
+          type: string
+          minLength: 34
+          maxLength: 34
+          pattern: ^SK[0-9a-fA-F]{32}$
+        required: true
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/iam.v1.key'
+              examples:
+                fetchStandardKey:
+                  value:
+                    sid: REDACTED_TWILIO_API_KEY_SID
+                    friendly_name: foo
+                    date_created: Mon, 13 Jun 2016 22:50:08 +0000
+                    date_updated: Mon, 13 Jun 2016 22:50:08 +0000
+                    policy: null
+                fetchRestrictedKey:
+                  value:
+                    sid: REDACTED_TWILIO_API_KEY_SID
+                    friendly_name: foo
+                    date_created: Mon, 13 Jun 2016 22:50:08 +0000
+                    date_updated: Mon, 13 Jun 2016 22:50:08 +0000
+                    policy:
+                      allow:
+                      - /twilio/messaging/messages/read
+          headers:
+            Access-Control-Allow-Origin:
+              description: Specify the origin(s) allowed to access the resource
+              schema:
+                type: string
+              example: '*'
+            Access-Control-Allow-Methods:
+              description: Specify the HTTP methods allowed when accessing the resource
+              schema:
+                type: string
+              example: POST, OPTIONS
+            Access-Control-Allow-Headers:
+              description: Specify the headers allowed when accessing the resource
+              schema:
+                type: string
+              example: Content-Type, Authorization
+            Access-Control-Allow-Credentials:
+              description: Indicates whether the browser should include credentials
+              schema:
+                type: boolean
+            Access-Control-Expose-Headers:
+              description: Headers exposed to the client
+              schema:
+                type: string
+                example: X-Custom-Header1, X-Custom-Header2
+          description: OK
+      security:
+      - accountSid_authToken: []
+      operationId: FetchKey
+      summary: Fetch key
+      x-summary-source: derived
+    post:
+      description: Update a specific Key.
+      tags:
+      - IamV1ApiKey
+      parameters:
+      - name: Sid
+        in: path
+        description: The Twilio-provided string that uniquely identifies the Key resource to update.
+        schema:
+          type: string
+          minLength: 34
+          maxLength: 34
+          pattern: ^SK[0-9a-fA-F]{32}$
+        required: true
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/iam.v1.key'
+              examples:
+                updateStandardKey:
+                  value:
+                    sid: REDACTED_TWILIO_API_KEY_SID
+                    friendly_name: foo
+                    date_created: Mon, 13 Jun 2016 22:50:08 +0000
+                    date_updated: Mon, 13 Jun 2016 22:50:08 +0000
+                    policy: null
+                updateRestrictedKey:
+                  value:
+                    sid: REDACTED_TWILIO_API_KEY_SID
+                    friendly_name: foo
+                    date_created: Mon, 13 Jun 2016 22:50:08 +0000
+                    date_updated: Mon, 13 Jun 2016 22:50:08 +0000
+                    policy:
+                      allow:
+                      - /twilio/messaging/messages/read
+                      - /twilio/messaging/messages/update
+          headers:
+            Access-Control-Allow-Origin:
+              description: Specify the origin(s) allowed to access the resource
+              schema:
+                type: string
+              example: '*'
+            Access-Control-Allow-Methods:
+              description: Specify the HTTP methods allowed when accessing the resource
+              schema:
+                type: string
+              example: POST, OPTIONS
+            Access-Control-Allow-Headers:
+              description: Specify the headers allowed when accessing the resource
+              schema:
+                type: string
+              example: Content-Type, Authorization
+            Access-Control-Allow-Credentials:
+              description: Indicates whether the browser should include credentials
+              schema:
+                type: boolean
+            Access-Control-Expose-Headers:
+              description: Headers exposed to the client
+              schema:
+                type: string
+                example: X-Custom-Header1, X-Custom-Header2
+          description: OK
+      security:
+      - accountSid_authToken: []
+      operationId: UpdateKey
+      requestBody:
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              type: object
+              title: UpdateKeyRequest
+              properties:
+                FriendlyName:
+                  type: string
+                  description: A descriptive string that you create to describe the resource. It can be up to 64 characters long.
+                Policy:
+                  description: 'The \`Policy\` object is a collection that specifies the allowed Twilio permissions for the restricted key.
+
+                    For more information on the permissions available with restricted API keys, refer to the [Twilio documentation](https://www.twilio.com/docs/iam/api-keys/restricted-api-keys#permissions-available-with-restricted-api-keys).'
+            examples:
+              updateStandardKey:
+                value:
+                  FriendlyName: foo
+              updateRestrictedKey:
+                value:
+                  FriendlyName: foo
+                  Policy: '{"allow":["/twilio/messaging/messages/read", "/twilio/messaging/messages/update"]}'
+      summary: Update key
+      x-summary-source: derived
+    delete:
+      description: Delete a specific Key.
+      tags:
+      - IamV1ApiKey
+      parameters:
+      - name: Sid
+        in: path
+        description: The Twilio-provided string that uniquely identifies the Key resource to delete.
+        schema:
+          type: string
+          minLength: 34
+          maxLength: 34
+          pattern: ^SK[0-9a-fA-F]{32}$
+        required: true
+      responses:
+        '204':
+          description: The resource was deleted successfully.
+      security:
+      - accountSid_authToken: []
+      operationId: DeleteKey
+      summary: Delete key
+      x-summary-source: derived
+components:
+  schemas:
+    iam.v1.key:
+      type: object
+      properties:
+        sid:
+          type:
+          - string
+          - 'null'
+          minLength: 34
+          maxLength: 34
+          pattern: ^SK[0-9a-fA-F]{32}$
+          description: The unique string that we created to identify the Key resource.
+        friendly_name:
+          type:
+          - string
+          - 'null'
+          description: The string that you assigned to describe the resource.
+          x-twilio:
+            pii:
+              handling: standard
+              deleteSla: 30
+        date_created:
+          type:
+          - string
+          - 'null'
+          format: date-time-rfc-2822
+          description: The date and time in GMT that the resource was created specified in [RFC 2822](https://www.ietf.org/rfc/rfc2822.txt) format.
+        date_updated:
+          type:
+          - string
+          - 'null'
+          format: date-time-rfc-2822
+          description: The date and time in GMT that the resource was last updated specified in [RFC 2822](https://www.ietf.org/rfc/rfc2822.txt) format.
+        policy:
+          type:
+          - object
+          - 'null'
+          description: 'The \`Policy\` object is a collection that specifies the allowed Twilio permissions for the restricted key.
+
+            For more information on the permissions available with restricted API keys, refer to the [Twilio documentation](https://www.twilio.com/docs/iam/api-keys/restricted-api-keys#permissions-available-with-restricted-api-keys).'
+  securitySchemes:
+    accountSid_authToken:
+      scheme: basic
+      type: http
+    access_token_bearer:
+      type: http
+      scheme: bearer
+      bearerFormat: access_token
+    m2mOauth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+      description: M2M Access Token

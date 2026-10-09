@@ -143,14 +143,43 @@ paths:
       x-summary-source: derived
 components:
   schemas:
-    sms_command_enum_status:
+    ListSmsCommandResponse:
+      type: object
+      properties:
+        sms_commands:
+          type: array
+          items:
+            $ref: '#/components/schemas/supersim.v1.sms_command'
+        meta:
+          type: object
+          properties:
+            first_page_url:
+              type: string
+              format: uri
+            next_page_url:
+              type:
+              - string
+              - 'null'
+              format: uri
+            page:
+              type: integer
+            page_size:
+              type: integer
+            previous_page_url:
+              type:
+              - string
+              - 'null'
+              format: uri
+            url:
+              type: string
+              format: uri
+            key:
+              type: string
+    sms_command_enum_direction:
       type: string
       enum:
-      - queued
-      - sent
-      - delivered
-      - received
-      - failed
+      - to_sim
+      - from_sim
     CreateSmsCommandRequest:
       type: object
       required:
@@ -178,11 +207,14 @@ components:
           type: string
           format: uri
           description: The URL we should call using the `callback_method` after we have sent the command.
-    sms_command_enum_direction:
+    sms_command_enum_status:
       type: string
       enum:
-      - to_sim
-      - from_sim
+      - queued
+      - sent
+      - delivered
+      - received
+      - failed
     supersim.v1.sms_command:
       type: object
       properties:
@@ -249,38 +281,6 @@ components:
           - 'null'
           format: uri
           description: The absolute URL of the SMS Command resource.
-    ListSmsCommandResponse:
-      type: object
-      properties:
-        sms_commands:
-          type: array
-          items:
-            $ref: '#/components/schemas/supersim.v1.sms_command'
-        meta:
-          type: object
-          properties:
-            first_page_url:
-              type: string
-              format: uri
-            next_page_url:
-              type:
-              - string
-              - 'null'
-              format: uri
-            page:
-              type: integer
-            page_size:
-              type: integer
-            previous_page_url:
-              type:
-              - string
-              - 'null'
-              format: uri
-            url:
-              type: string
-              format: uri
-            key:
-              type: string
   securitySchemes:
     accountSid_authToken:
       type: http

@@ -1,0 +1,1193 @@
+openapi: 3.2.0
+info:
+  title: Twilio Conversational Intelligence Configurations API
+  description: The Conversational Intelligence API includes resources to create and manage intelligence configurations, define and run language operators, and retrieve processed conversations and operator results.
+  termsOfService: https://www.twilio.com/legal/tos
+  contact:
+    name: Twilio Support
+    url: https://support.twilio.com
+    email: support@twilio.com
+  license:
+    name: Apache 2.0
+    url: https://www.apache.org/licenses/LICENSE-2.0.html
+  version: v3
+  x-twilio:
+    apiStandards: v1.0
+servers:
+- url: https://intelligence.twilio.com
+  description: Twilio Intelligence API
+security:
+- basic_apikey_or_accountsid: []
+tags:
+- name: Configurations
+  description: Define and manage intelligence configuration.
+paths:
+  /v3/ControlPlane/Configurations:
+    x-twilio:
+      pathType: list
+    post:
+      summary: Create an Intelligence Configuration
+      tags:
+      - Configurations
+      security:
+      - basic_apikey_or_accountsid: []
+      operationId: CreateConfiguration
+      description: 'Create an Intelligence Configuration to control how and when language operators analyze conversations.
+
+
+        You must include the `rules` field in the request. You can pass an empty array (`"rules": []`), but an Intelligence Configuration with an empty `rules` array doesn''t execute any language operators. To add rules later, make a `PUT /v3/ControlPlane/Configurations/{id}` request.
+
+
+        After creating an Intelligence Configuration, you must attach it to a Conversations Configuration by using the Conversations API.'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              description: Request body for creating a new Intelligence Configuration.
+              properties:
+                displayName:
+                  type: string
+                  description: The display name of the Intelligence Configuration describing its purpose.
+                  minLength: 1
+                  maxLength: 128
+                description:
+                  type: string
+                  description: The description of the Intelligence Configuration further explaining its purpose.
+                rules:
+                  description: 'List of Intelligence Configuration Rules that govern when and how Language Operators run.
+
+                    Each Rule represents a bundle of Operators, Triggers, Context, and Actions to be executed by
+
+                    the Intelligence Configuration on a Conversation. A maximum of five (5) Rules are allowed per
+
+                    Intelligence Configuration.
+
+
+                    To create an Intelligence Configuration without any Rules configured yet, pass an empty array
+
+                    (`"rules": []`). The Configuration will not execute any Language Operators until at least one Rule
+
+                    has been added.
+
+                    '
+                  type: array
+                  items:
+                    $ref: '#/components/schemas/RuleCreationRequestPayload'
+                  maxItems: 5
+              required:
+              - displayName
+              - rules
+            examples:
+              createConfigurationRequest:
+                $ref: '#/components/examples/CreateConfigurationRequestExample'
+      responses:
+        '201':
+          description: Intelligence Configuration resource created.
+          content:
+            application/json:
+              schema:
+                type: object
+                description: "An Intelligence Configuration defines how and when Language Operators execute for a given conversation.\n\nTo activate an Intelligence Configuration and trigger Operator execution, two conditions must be met:\n1. The Intelligence Configuration must include at least one Rule.\n2. The Intelligence Configuration must be attached to a Conversations Configuration via the Conversations API.\n   Conversation traffic received by that Conversations Configuration determines when Rules are evaluated\n   and executed.\n\nAn Intelligence Configuration that has no Rules or is not attached to a Conversations Configuration will not execute.\n"
+                required:
+                - accountId
+                - id
+                - displayName
+                - version
+                - rules
+                - dateCreated
+                - dateUpdated
+                properties:
+                  accountId:
+                    type: string
+                    example: REDACTED_TWILIO_ACCOUNT_SID
+                    x-jvm-type: com.twilio.sids.AccountSid
+                    description: The ID of the Account that created the Intelligence Configuration.
+                  id:
+                    type: string
+                    description: The unique identifier for the Intelligence Configuration. Assigned by Twilio (TTID).
+                  displayName:
+                    type: string
+                    description: The display name of the Intelligence Configuration describing its purpose.
+                    minLength: 1
+                    maxLength: 128
+                  description:
+                    type: string
+                    description: The description of the Intelligence Configuration further explaining its purpose.
+                  version:
+                    type: integer
+                    description: The numeric version of the Intelligence Configuration. Automatically incremented with each update on the resource, used to ensure integrity when updating the Configuration.
+                  rules:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Rule'
+                    maxItems: 5
+                    description: 'List of Intelligence Configuration Rules that govern when and how Language Operators run.
+
+                      Each Rule represents a bundle of Operators, Triggers, Context, and Actions to be executed by
+
+                      the Intelligence Configuration on a Conversation. A maximum of five (5) Rules are allowed per
+
+                      Intelligence Configuration.
+
+                      '
+                  dateCreated:
+                    description: Timestamp of when the Intelligence Configuration was created.
+                    type: string
+                    format: date-time
+                  dateUpdated:
+                    description: Timestamp of when the Intelligence Configuration was last updated.
+                    type: string
+                    format: date-time
+              examples:
+                createConfigurationResponse:
+                  $ref: '#/components/examples/IntelligenceConfigurationExample'
+        '400':
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    description: Twilio-specific error code
+                    type: integer
+                    format: int32
+                  message:
+                    description: A human readable error message
+                    type: string
+                  httpStatusCode:
+                    description: HTTP response status code
+                    type: integer
+                    format: int32
+                  userError:
+                    description: Whether the error is a user error (true) or a system error (false)
+                    type: boolean
+                  params:
+                    description: A map of parameters related to the error, for example, a `params.twilioErrorCodeUrl` might hold a URL or link to additional information
+                    type: object
+                    additionalProperties:
+                      type: string
+                required:
+                - code
+                - message
+                - httpStatusCode
+        '429':
+          description: Too Many requests (rate limit exceeded for request originating from public API)
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    description: Twilio-specific error code
+                    type: integer
+                    format: int32
+                  message:
+                    description: A human readable error message
+                    type: string
+                  httpStatusCode:
+                    description: HTTP response status code
+                    type: integer
+                    format: int32
+                  userError:
+                    description: Whether the error is a user error (true) or a system error (false)
+                    type: boolean
+                  params:
+                    description: A map of parameters related to the error, for example, a `params.twilioErrorCodeUrl` might hold a URL or link to additional information
+                    type: object
+                    additionalProperties:
+                      type: string
+                required:
+                - code
+                - message
+                - httpStatusCode
+          headers:
+            X-RateLimit-Limit:
+              schema:
+                type: string
+            X-RateLimit-Remaining:
+              schema:
+                type: string
+            X-RateLimit-Reset:
+              schema:
+                type: string
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    description: Twilio-specific error code
+                    type: integer
+                    format: int32
+                  message:
+                    description: A human readable error message
+                    type: string
+                  httpStatusCode:
+                    description: HTTP response status code
+                    type: integer
+                    format: int32
+                  userError:
+                    description: Whether the error is a user error (true) or a system error (false)
+                    type: boolean
+                  params:
+                    description: A map of parameters related to the error, for example, a `params.twilioErrorCodeUrl` might hold a URL or link to additional information
+                    type: object
+                    additionalProperties:
+                      type: string
+                required:
+                - code
+                - message
+                - httpStatusCode
+    get:
+      summary: Retrieve a list of Intelligence Configurations
+      tags:
+      - Configurations
+      security:
+      - basic_apikey_or_accountsid: []
+      operationId: ListConfigurations
+      parameters:
+      - name: pageSize
+        in: query
+        description: The maximum number of resources to return
+        required: false
+        schema:
+          type: integer
+          minimum: 1
+          maximum: 1000
+          default: 50
+      - name: pageToken
+        in: query
+        description: Token for pagination
+        required: false
+        schema:
+          type: string
+      responses:
+        '200':
+          description: An array of Intelligence Configurations.
+          content:
+            application/json:
+              schema:
+                type: object
+                description: The response object returned when listing Intelligence Configurations.
+                required:
+                - items
+                - meta
+                properties:
+                  items:
+                    type: array
+                    description: The list of Intelligence Configurations owned by this account.
+                    items:
+                      $ref: '#/components/schemas/IntelligenceConfiguration'
+                  meta:
+                    type: object
+                    description: The metadata for Pagination
+                    properties:
+                      key:
+                        description: A key, sibling to the `meta` object that holds the actual list of resources
+                        type: string
+                      pageSize:
+                        description: The actual number of resources returned in the response
+                        type: integer
+                      previousToken:
+                        type: string
+                      nextToken:
+                        type: string
+                    required:
+                    - key
+                    - pageSize
+              examples:
+                listConfigurationsResponse:
+                  $ref: '#/components/examples/PaginatedConfigurationResponseExample'
+        '429':
+          description: Too Many requests (rate limit exceeded for request originating from public API)
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    description: Twilio-specific error code
+                    type: integer
+                    format: int32
+                  message:
+                    description: A human readable error message
+                    type: string
+                  httpStatusCode:
+                    description: HTTP response status code
+                    type: integer
+                    format: int32
+                  userError:
+                    description: Whether the error is a user error (true) or a system error (false)
+                    type: boolean
+                  params:
+                    description: A map of parameters related to the error, for example, a `params.twilioErrorCodeUrl` might hold a URL or link to additional information
+                    type: object
+                    additionalProperties:
+                      type: string
+                required:
+                - code
+                - message
+                - httpStatusCode
+          headers:
+            X-RateLimit-Limit:
+              schema:
+                type: string
+            X-RateLimit-Remaining:
+              schema:
+                type: string
+            X-RateLimit-Reset:
+              schema:
+                type: string
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    description: Twilio-specific error code
+                    type: integer
+                    format: int32
+                  message:
+                    description: A human readable error message
+                    type: string
+                  httpStatusCode:
+                    description: HTTP response status code
+                    type: integer
+                    format: int32
+                  userError:
+                    description: Whether the error is a user error (true) or a system error (false)
+                    type: boolean
+                  params:
+                    description: A map of parameters related to the error, for example, a `params.twilioErrorCodeUrl` might hold a URL or link to additional information
+                    type: object
+                    additionalProperties:
+                      type: string
+                required:
+                - code
+                - message
+                - httpStatusCode
+  /v3/ControlPlane/Configurations/{id}:
+    x-twilio:
+      pathType: instance
+    parameters:
+    - name: id
+      in: path
+      required: true
+      description: The unique identifier of the Intelligence Configuration.
+      schema:
+        type: string
+        pattern: ^intelligence_configuration_[0-7][0-9a-z]{25}$
+        description: Unique identifier for a Intelligence Configuration that generated the Operator Result. Assigned by Twilio (TTID).
+        example: intelligence_configuration_01k6fc25s7epm9qtk8rszbv3q5
+    get:
+      summary: Retrieve an Intelligence Configuration
+      tags:
+      - Configurations
+      security:
+      - basic_apikey_or_accountsid: []
+      operationId: FetchConfiguration
+      responses:
+        '200':
+          description: A single Intelligence Configuration resource.
+          content:
+            application/json:
+              schema:
+                type: object
+                description: "An Intelligence Configuration defines how and when Language Operators execute for a given conversation.\n\nTo activate an Intelligence Configuration and trigger Operator execution, two conditions must be met:\n1. The Intelligence Configuration must include at least one Rule.\n2. The Intelligence Configuration must be attached to a Conversations Configuration via the Conversations API.\n   Conversation traffic received by that Conversations Configuration determines when Rules are evaluated\n   and executed.\n\nAn Intelligence Configuration that has no Rules or is not attached to a Conversations Configuration will not execute.\n"
+                required:
+                - accountId
+                - id
+                - displayName
+                - version
+                - rules
+                - dateCreated
+                - dateUpdated
+                properties:
+                  accountId:
+                    type: string
+                    example: REDACTED_TWILIO_ACCOUNT_SID
+                    x-jvm-type: com.twilio.sids.AccountSid
+                    description: The ID of the Account that created the Intelligence Configuration.
+                  id:
+                    type: string
+                    description: The unique identifier for the Intelligence Configuration. Assigned by Twilio (TTID).
+                  displayName:
+                    type: string
+                    description: The display name of the Intelligence Configuration describing its purpose.
+                    minLength: 1
+                    maxLength: 128
+                  description:
+                    type: string
+                    description: The description of the Intelligence Configuration further explaining its purpose.
+                  version:
+                    type: integer
+                    description: The numeric version of the Intelligence Configuration. Automatically incremented with each update on the resource, used to ensure integrity when updating the Configuration.
+                  rules:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Rule'
+                    maxItems: 5
+                    description: 'List of Intelligence Configuration Rules that govern when and how Language Operators run.
+
+                      Each Rule represents a bundle of Operators, Triggers, Context, and Actions to be executed by
+
+                      the Intelligence Configuration on a Conversation. A maximum of five (5) Rules are allowed per
+
+                      Intelligence Configuration.
+
+                      '
+                  dateCreated:
+                    description: Timestamp of when the Intelligence Configuration was created.
+                    type: string
+                    format: date-time
+                  dateUpdated:
+                    description: Timestamp of when the Intelligence Configuration was last updated.
+                    type: string
+                    format: date-time
+              examples:
+                fetchConfigurationResponse:
+                  $ref: '#/components/examples/IntelligenceConfigurationExample'
+        '404':
+          description: Resource not found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    description: Twilio-specific error code
+                    type: integer
+                    format: int32
+                  message:
+                    description: A human readable error message
+                    type: string
+                  httpStatusCode:
+                    description: HTTP response status code
+                    type: integer
+                    format: int32
+                  userError:
+                    description: Whether the error is a user error (true) or a system error (false)
+                    type: boolean
+                  params:
+                    description: A map of parameters related to the error, for example, a `params.twilioErrorCodeUrl` might hold a URL or link to additional information
+                    type: object
+                    additionalProperties:
+                      type: string
+                required:
+                - code
+                - message
+                - httpStatusCode
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    description: Twilio-specific error code
+                    type: integer
+                    format: int32
+                  message:
+                    description: A human readable error message
+                    type: string
+                  httpStatusCode:
+                    description: HTTP response status code
+                    type: integer
+                    format: int32
+                  userError:
+                    description: Whether the error is a user error (true) or a system error (false)
+                    type: boolean
+                  params:
+                    description: A map of parameters related to the error, for example, a `params.twilioErrorCodeUrl` might hold a URL or link to additional information
+                    type: object
+                    additionalProperties:
+                      type: string
+                required:
+                - code
+                - message
+                - httpStatusCode
+    put:
+      summary: Update an Intelligence Configuration
+      description: Update an Intelligence Configuration, including its metadata and rules. The request must include all required fields.
+      tags:
+      - Configurations
+      security:
+      - basic_apikey_or_accountsid: []
+      operationId: UpdateConfiguration
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+              - displayName
+              - rules
+              properties:
+                displayName:
+                  type: string
+                  description: The display name of the Intelligence Configuration describing its purpose.
+                  minLength: 1
+                  maxLength: 128
+                description:
+                  type: string
+                  description: The description of the Intelligence Configuration further explaining its purpose.
+                rules:
+                  type: array
+                  description: 'List of Intelligence Configuration Rules that govern when and how Language Operators run.
+
+                    Each Rule represents a bundle of Operators, Triggers, Context, and Actions to be executed by
+
+                    the Intelligence Configuration on a Conversation. A maximum of five (5) Rules are allowed per
+
+                    Intelligence Configuration.
+
+                    '
+                  items:
+                    $ref: '#/components/schemas/RuleUpdateRequestPayload'
+                  maxItems: 5
+            examples:
+              updateConfigurationRequest:
+                $ref: '#/components/examples/UpdateConfigurationRequestExample'
+      responses:
+        '200':
+          description: Intelligence configuration resource updated.
+          content:
+            application/json:
+              schema:
+                type: object
+                description: "An Intelligence Configuration defines how and when Language Operators execute for a given conversation.\n\nTo activate an Intelligence Configuration and trigger Operator execution, two conditions must be met:\n1. The Intelligence Configuration must include at least one Rule.\n2. The Intelligence Configuration must be attached to a Conversations Configuration via the Conversations API.\n   Conversation traffic received by that Conversations Configuration determines when Rules are evaluated\n   and executed.\n\nAn Intelligence Configuration that has no Rules or is not attached to a Conversations Configuration will not execute.\n"
+                required:
+                - accountId
+                - id
+                - displayName
+                - version
+                - rules
+                - dateCreated
+                - dateUpdated
+                properties:
+                  accountId:
+                    type: string
+                    example: REDACTED_TWILIO_ACCOUNT_SID
+                    x-jvm-type: com.twilio.sids.AccountSid
+                    description: The ID of the Account that created the Intelligence Configuration.
+                  id:
+                    type: string
+                    description: The unique identifier for the Intelligence Configuration. Assigned by Twilio (TTID).
+                  displayName:
+                    type: string
+                    description: The display name of the Intelligence Configuration describing its purpose.
+                    minLength: 1
+                    maxLength: 128
+                  description:
+                    type: string
+                    description: The description of the Intelligence Configuration further explaining its purpose.
+                  version:
+                    type: integer
+                    description: The numeric version of the Intelligence Configuration. Automatically incremented with each update on the resource, used to ensure integrity when updating the Configuration.
+                  rules:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Rule'
+                    maxItems: 5
+                    description: 'List of Intelligence Configuration Rules that govern when and how Language Operators run.
+
+                      Each Rule represents a bundle of Operators, Triggers, Context, and Actions to be executed by
+
+                      the Intelligence Configuration on a Conversation. A maximum of five (5) Rules are allowed per
+
+                      Intelligence Configuration.
+
+                      '
+                  dateCreated:
+                    description: Timestamp of when the Intelligence Configuration was created.
+                    type: string
+                    format: date-time
+                  dateUpdated:
+                    description: Timestamp of when the Intelligence Configuration was last updated.
+                    type: string
+                    format: date-time
+              examples:
+                updateConfigurationResponse:
+                  $ref: '#/components/examples/IntelligenceConfigurationExample'
+        '400':
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    description: Twilio-specific error code
+                    type: integer
+                    format: int32
+                  message:
+                    description: A human readable error message
+                    type: string
+                  httpStatusCode:
+                    description: HTTP response status code
+                    type: integer
+                    format: int32
+                  userError:
+                    description: Whether the error is a user error (true) or a system error (false)
+                    type: boolean
+                  params:
+                    description: A map of parameters related to the error, for example, a `params.twilioErrorCodeUrl` might hold a URL or link to additional information
+                    type: object
+                    additionalProperties:
+                      type: string
+                required:
+                - code
+                - message
+                - httpStatusCode
+        '404':
+          description: Resource not found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    description: Twilio-specific error code
+                    type: integer
+                    format: int32
+                  message:
+                    description: A human readable error message
+                    type: string
+                  httpStatusCode:
+                    description: HTTP response status code
+                    type: integer
+                    format: int32
+                  userError:
+                    description: Whether the error is a user error (true) or a system error (false)
+                    type: boolean
+                  params:
+                    description: A map of parameters related to the error, for example, a `params.twilioErrorCodeUrl` might hold a URL or link to additional information
+                    type: object
+                    additionalProperties:
+                      type: string
+                required:
+                - code
+                - message
+                - httpStatusCode
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    description: Twilio-specific error code
+                    type: integer
+                    format: int32
+                  message:
+                    description: A human readable error message
+                    type: string
+                  httpStatusCode:
+                    description: HTTP response status code
+                    type: integer
+                    format: int32
+                  userError:
+                    description: Whether the error is a user error (true) or a system error (false)
+                    type: boolean
+                  params:
+                    description: A map of parameters related to the error, for example, a `params.twilioErrorCodeUrl` might hold a URL or link to additional information
+                    type: object
+                    additionalProperties:
+                      type: string
+                required:
+                - code
+                - message
+                - httpStatusCode
+    delete:
+      summary: Delete an Intelligence Configuration
+      tags:
+      - Configurations
+      security:
+      - basic_apikey_or_accountsid: []
+      operationId: DeleteConfiguration
+      responses:
+        '204':
+          description: Intelligence Configuration resource deleted.
+        '404':
+          description: Resource not found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    description: Twilio-specific error code
+                    type: integer
+                    format: int32
+                  message:
+                    description: A human readable error message
+                    type: string
+                  httpStatusCode:
+                    description: HTTP response status code
+                    type: integer
+                    format: int32
+                  userError:
+                    description: Whether the error is a user error (true) or a system error (false)
+                    type: boolean
+                  params:
+                    description: A map of parameters related to the error, for example, a `params.twilioErrorCodeUrl` might hold a URL or link to additional information
+                    type: object
+                    additionalProperties:
+                      type: string
+                required:
+                - code
+                - message
+                - httpStatusCode
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    description: Twilio-specific error code
+                    type: integer
+                    format: int32
+                  message:
+                    description: A human readable error message
+                    type: string
+                  httpStatusCode:
+                    description: HTTP response status code
+                    type: integer
+                    format: int32
+                  userError:
+                    description: Whether the error is a user error (true) or a system error (false)
+                    type: boolean
+                  params:
+                    description: A map of parameters related to the error, for example, a `params.twilioErrorCodeUrl` might hold a URL or link to additional information
+                    type: object
+                    additionalProperties:
+                      type: string
+                required:
+                - code
+                - message
+                - httpStatusCode
+components:
+  schemas:
+    Rule:
+      type: object
+      required:
+      - id
+      - operators
+      - triggers
+      - actions
+      properties:
+        id:
+          type: string
+          description: The unique identifier for the Rule. Assigned by Twilio (TTID).
+        operators:
+          type: array
+          items:
+            $ref: '#/components/schemas/Operator'
+          maxItems: 5
+          description: List of Operators to be executed by the Rule. Maximum of five (5) Operators allowed per Rule.
+        triggers:
+          type: array
+          items:
+            $ref: '#/components/schemas/Trigger'
+          maxItems: 1
+          description: List of Triggers that determine when to activate the Rule. Maximum of one (1) Trigger allowed per Rule.
+        actions:
+          type: array
+          items:
+            $ref: '#/components/schemas/Action'
+          maxItems: 2
+          description: List of Actions to be performed after the Rule is triggered. Maximum of two (2) Actions allowed per Rule.
+        context:
+          $ref: '#/components/schemas/Context'
+    Action:
+      type: object
+      required:
+      - type
+      - method
+      - url
+      properties:
+        type:
+          type: string
+          enum:
+          - WEBHOOK
+          description: 'The type of Action to be performed after the Rule is triggered. Supported Actions are:
+
+            - `WEBHOOK`: A webhook Action sends an HTTP request to a specified URL with Rule execution results.
+
+            '
+        method:
+          type: string
+          enum:
+          - POST
+          description: The HTTP method to be used when performing the Action. Must be set to `POST`.
+        url:
+          type: string
+          format: uri
+          description: The URL endpoint where the Action will send the HTTP request containing the Rule execution results.
+    RuleUpdateRequestPayload:
+      type: object
+      required:
+      - operators
+      - actions
+      properties:
+        id:
+          type: string
+          description: 'Optional field used when updating an existing Rule within an Intelligence Configuration.
+
+            When provided, the Rule with this `id` is updated; when omitted, a new Rule is created.
+
+            '
+        operators:
+          type: array
+          description: List of Operators to be executed by the Rule. Minimum of one (1) and maximum of five (5) Operators allowed per Rule.
+          items:
+            $ref: '#/components/schemas/Operator'
+          minItems: 1
+          maxItems: 5
+        triggers:
+          type: array
+          description: List of Triggers that determine when to activate the Rule. Maximum of one (1) Trigger allowed per Rule.
+          items:
+            $ref: '#/components/schemas/Trigger'
+          maxItems: 1
+        actions:
+          type: array
+          description: List of Actions to be performed after the Rule is triggered. Maximum of two (2) Actions allowed per Rule.
+          items:
+            $ref: '#/components/schemas/Action'
+          maxItems: 2
+        context:
+          $ref: '#/components/schemas/Context'
+    Context:
+      type: object
+      description: Controls what additional customer and enterprise context is made available to Language Operators when this Rule executes.
+      properties:
+        memory:
+          type: object
+          description: Configuration for passing Memory as context to Operators in this Rule (available only for Memory–enabled accounts).
+          properties:
+            enabled:
+              type: boolean
+              description: 'When set to `true`, allows this Intelligence Configuration Rule to pass the Profile
+
+                into attached Language Operators. The profile is only passed to Language Operators
+
+                that have Memory as a context source enabled.
+
+                '
+        knowledge:
+          type: object
+          description: Configuration for passing Enterprise Knowledge as context to Operators in this Rule (available only for Enterprise Knowledge–enabled accounts).
+          properties:
+            bases:
+              type: array
+              description: 'Specifies the Knowledge Base(s) and corresponding Source(s) to pass to Language
+
+                Operators in this Rule as context. Only applied to Language Operators that have
+
+                Knowledge as a context source enabled.
+
+                '
+              items:
+                type: string
+              minItems: 1
+          required:
+          - bases
+    Operator:
+      type: object
+      required:
+      - id
+      properties:
+        id:
+          type: string
+          description: The unique identifier for the Language Operator to be executed by the Rule. Assigned by Twilio (TTID).
+        version:
+          type: integer
+          description: 'The specific version of the Language Operator to execute. When provided, the Rule will use this exact version of the Operator.
+
+            When omitted, the latest active version of the Operator is used at execution time.
+
+            '
+        parameters:
+          type: object
+          description: 'Key-value mapping for parameters defined as part of the Operator schema. The key and value passed by the Rule must match the name and data type of the parameter defined in the Operator, respectively.
+
+            These parameters will customize the behavior of the Operator when executed by the Rule via runtime substitution into the prompt.
+
+            Note: For parameters of type `knowledge_base_and_source_ids`, the value must be passed in the following format: `knowledge_base_id:knowledge_source_id`.
+
+            '
+    RuleCreationRequestPayload:
+      type: object
+      required:
+      - operators
+      - actions
+      properties:
+        operators:
+          type: array
+          description: List of Operators to be executed by the Rule. Minimum of one (1) and maximum of five (5) Operators allowed per Rule.
+          items:
+            $ref: '#/components/schemas/Operator'
+          minItems: 1
+          maxItems: 5
+        triggers:
+          type: array
+          description: List of Triggers that determine when to activate the Rule. Maximum of one (1) Trigger allowed per Rule.
+          items:
+            $ref: '#/components/schemas/Trigger'
+          maxItems: 1
+        actions:
+          type: array
+          description: List of Actions to be performed after the Rule is triggered. Maximum of two (2) Actions allowed per Rule.
+          items:
+            $ref: '#/components/schemas/Action'
+          maxItems: 2
+        context:
+          $ref: '#/components/schemas/Context'
+    Trigger:
+      type: object
+      required:
+      - 'on'
+      properties:
+        'on':
+          type: string
+          description: 'The conversational lifecycle event that will activate execution of the Rule.
+
+            Available values are:
+
+            - `COMMUNICATION`: Trigger the Rule on each communication within the Conversation.
+
+            - `CONVERSATION_END`: Trigger the Rule when the Conversation moves to the `closed` state
+
+            - `CONVERSATION_INACTIVE`: Trigger the Rule when the Conversation moves to `inactive` state
+
+            '
+          enum:
+          - COMMUNICATION
+          - CONVERSATION_END
+          - CONVERSATION_INACTIVE
+        parameters:
+          type: object
+          description: Additional configuration to modify Trigger behavior. Only applies to certain Trigger types.
+          properties:
+            count:
+              type: integer
+              description: 'When `on` is set to `COMMUNICATION`, this value controls how often the Rule should
+
+                run. A value of `1` executes the Rule for every communication event. Higher values
+
+                delay execution until the specified number of communications have occurred since the last execution.
+
+                '
+              minimum: 1
+              maximum: 20
+              default: 1
+    IntelligenceConfiguration:
+      type: object
+      description: "An Intelligence Configuration defines how and when Language Operators execute for a given conversation.\n\nTo activate an Intelligence Configuration and trigger Operator execution, two conditions must be met:\n1. The Intelligence Configuration must include at least one Rule.\n2. The Intelligence Configuration must be attached to a Conversations Configuration via the Conversations API.\n   Conversation traffic received by that Conversations Configuration determines when Rules are evaluated\n   and executed.\n\nAn Intelligence Configuration that has no Rules or is not attached to a Conversations Configuration will not execute.\n"
+      required:
+      - accountId
+      - id
+      - displayName
+      - version
+      - rules
+      - dateCreated
+      - dateUpdated
+      properties:
+        accountId:
+          type: string
+          example: REDACTED_TWILIO_ACCOUNT_SID
+          x-jvm-type: com.twilio.sids.AccountSid
+          description: The ID of the Account that created the Intelligence Configuration.
+        id:
+          type: string
+          description: The unique identifier for the Intelligence Configuration. Assigned by Twilio (TTID).
+        displayName:
+          type: string
+          description: The display name of the Intelligence Configuration describing its purpose.
+          minLength: 1
+          maxLength: 128
+        description:
+          type: string
+          description: The description of the Intelligence Configuration further explaining its purpose.
+        version:
+          type: integer
+          description: The numeric version of the Intelligence Configuration. Automatically incremented with each update on the resource, used to ensure integrity when updating the Configuration.
+        rules:
+          type: array
+          items:
+            $ref: '#/components/schemas/Rule'
+          maxItems: 5
+          description: 'List of Intelligence Configuration Rules that govern when and how Language Operators run.
+
+            Each Rule represents a bundle of Operators, Triggers, Context, and Actions to be executed by
+
+            the Intelligence Configuration on a Conversation. A maximum of five (5) Rules are allowed per
+
+            Intelligence Configuration.
+
+            '
+        dateCreated:
+          description: Timestamp of when the Intelligence Configuration was created.
+          type: string
+          format: date-time
+        dateUpdated:
+          description: Timestamp of when the Intelligence Configuration was last updated.
+          type: string
+          format: date-time
+  examples:
+    PaginatedConfigurationResponseExample:
+      summary: Paginated Configuration Response
+      value:
+        items:
+        - accountId: REDACTED_TWILIO_ACCOUNT_SID
+          id: intelligence_configuration_01kermhm82e5mr98nbeh1hpmbn
+          displayName: real-time-intelligence-config
+          description: Intelligence configuration to trigger real-time script adherence operator
+          version: 1
+          rules:
+          - id: intelligence_configurationrule_01kermhm81fwfvy7j0f7h7v5mr
+            operators:
+            - id: intelligence_operator_01kcgy1ew0e9x8re6jq542zt8b
+              version: 4
+              parameters:
+                scale: 2
+            triggers:
+            - 'on': COMMUNICATION
+              parameters:
+                count: 3
+            actions:
+            - type: WEBHOOK
+              method: POST
+              url: https://my-webhook-endpoint.com/rule-action
+            context:
+              memory:
+                enabled: true
+              knowledge:
+                bases:
+                - knowledge_base_id
+          dateCreated: '2026-01-12T08:18:17Z'
+          dateUpdated: '2026-01-12T08:18:17Z'
+        - accountId: REDACTED_TWILIO_ACCOUNT_SID
+          id: intelligence_configuration_01kermhm92e5mr98nbeh1hpmbz
+          displayName: post-call-analytics-config
+          description: Intelligence configuration for post-call analytics
+          version: 2
+          rules:
+          - id: intelligence_configurationrule_01kermhm91fwfvy7j0f7h7v5ms
+            operators:
+            - id: intelligence_operator_01kcgy1ew0e9x8re6jq542zt9c
+            triggers:
+            - 'on': CONVERSATION_END
+            actions:
+            - type: WEBHOOK
+              method: POST
+              url: https://my-webhook-endpoint.com/analytics
+            context:
+              memory:
+                enabled: false
+          dateCreated: '2026-01-10T10:30:00Z'
+          dateUpdated: '2026-01-11T14:22:00Z'
+        meta:
+          key: items
+          pageSize: 2
+          nextToken: next_page_token_example
+    CreateConfigurationRequestExample:
+      summary: Create Intelligence Configuration Request
+      value:
+        displayName: real-time-intelligence-config
+        description: Intelligence configuration to trigger real-time script adherence operator
+        rules:
+        - operators:
+          - id: intelligence_operator_01kcgy1ew0e9x8re6jq542zt8b
+            version: 4
+            parameters:
+              scale: 2
+          triggers:
+          - 'on': COMMUNICATION
+            parameters:
+              count: 3
+          actions:
+          - type: WEBHOOK
+            method: POST
+            url: https://my-webhook-endpoint.com/rule-action
+          context:
+            memory:
+              enabled: true
+            knowledge:
+              bases:
+              - knowledge_base_id
+    UpdateConfigurationRequestExample:
+      summary: Update Intelligence Configuration Request
+      value:
+        displayName: real-time-intelligence-config
+        description: Intelligence configuration to trigger real-time script adherence operator
+        rules:
+        - id: intelligence_configurationrule_01kermhm81fwfvy7j0f7h7v5mr
+          operators:
+          - id: intelligence_operator_01kcgy1ew0e9x8re6jq542zt8b
+            version: 4
+            parameters:
+              scale: 2
+          triggers:
+          - 'on': COMMUNICATION
+            parameters:
+              count: 2
+          actions:
+          - type: WEBHOOK
+            method: POST
+            url: https://my-webhook-endpoint.com/rule-action
+          context:
+            memory:
+              enabled: true
+            knowledge:
+              bases:
+              - knowledge_base_id
+    IntelligenceConfigurationExample:
+      summary: Intelligence Configuration Response
+      value:
+        accountId: REDACTED_TWILIO_ACCOUNT_SID
+        id: intelligence_configuration_01kermhm82e5mr98nbeh1hpmbn
+        displayName: real-time-intelligence-config
+        description: Intelligence configuration to trigger real-time script adherence operator
+        version: 1
+        rules:
+        - id: intelligence_configurationrule_01kermhm81fwfvy7j0f7h7v5mr
+          operators:
+          - id: intelligence_operator_01kcgy1ew0e9x8re6jq542zt8b
+            version: 4
+            parameters:
+              scale: 2
+          triggers:
+          - 'on': COMMUNICATION
+            parameters:
+              count: 3
+          actions:
+          - type: WEBHOOK
+            method: POST
+            url: https://my-webhook-endpoint.com/rule-action
+          context:
+            memory:
+              enabled: true
+            knowledge:
+              bases:
+              - knowledge_base_id
+        dateCreated: '2026-01-12T08:18:17Z'
+        dateUpdated: '2026-01-12T08:18:17Z'
+  securitySchemes:
+    basic_apikey_or_accountsid:
+      scheme: basic
+      type: http
+      description: This API uses [basic authentication](https://www.twilio.com/docs/glossary/what-is-basic-authentication). Use an [API key](https://www.twilio.com/docs/iam/api-keys) as the username and the API key secret as the password. You can also use your account SID and auth token, but limit their use to local testing.

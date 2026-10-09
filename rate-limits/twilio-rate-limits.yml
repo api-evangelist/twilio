@@ -1,15 +1,80 @@
-# Rate limits transcribed from the provider's own documentation — see provenance. Quoted, not derived.
-generated: '2026-09-20'
+# Rate limits transcribed from the provider's own documentation - quoted, not derived.
+generated: '2026-10-08'
 method: searched
-source: https://www.twilio.com/docs/verify/api/service-rate-limits
+name: Twilio API rate limits
+source: https://www.twilio.com/docs/verify/api/rate-limits-and-timeouts
 sources:
-- https://www.twilio.com/docs/verify/api/service-rate-limits
-provenance:
-  tool: planning/api-economics/harvest_ratelimits.py
-  run: 20260920T133210
-  grounding: every limit_text was found verbatim in the fetched page text
-published: false
-note: API reference for creating/managing customer-defined Verify Service Rate Limit resources; no numeric
-  rate limits are stated (only pagination page size values).
-limit_count: 0
-limits: []
+- https://www.twilio.com/docs/verify/api/rate-limits-and-timeouts
+- https://www.twilio.com/docs/usage/rest-api-best-practices
+- https://www.twilio.com/docs/verify/api/safe-list
+- https://www.twilio.com/docs/sendgrid/api-reference/how-to-use-the-sendgrid-v3-api/rate-limits
+published: true
+note: Twilio publishes rate limits per product rather than one platform-wide table. The rows under limits[] are the
+  numeric limits on the source page (Verify status-check limits); other_documented_limits[] carries limits quoted from
+  other product pages, each with its own page URL. The core REST API enforces per-account concurrency limits whose
+  numbers are not published; exhaustion is signalled with 429 and the Twilio-Concurrent-Requests header.
+limit_count: 3
+limits:
+- name: Verify status check per minute
+  limit_text: 60 requests in one minute
+  limit: 60
+  window: minute
+  scope: per verification status check
+  endpoint: FetchVerification
+  product: Verify
+- name: Verify status check per hour
+  limit_text: 180 requests in one hour
+  limit: 180
+  window: hour
+  scope: per verification status check
+  endpoint: FetchVerification
+  product: Verify
+- name: Verify status check per day
+  limit_text: 250 requests in one day
+  limit: 250
+  window: day
+  scope: per verification status check
+  endpoint: FetchVerification
+  product: Verify
+other_documented_limits:
+- name: Verify Safe List API
+  limit_text: Safe List API provides a built-in rate limit of 30 requests per minute.
+  limit: 30
+  window: minute
+  scope: per account
+  endpoint: /v2/SafeList/Numbers
+  source: https://www.twilio.com/docs/verify/api/safe-list
+  exhaustion: 'If you reach this limit, you will start receiving HTTP 429 "Too Many Requests" responses.'
+- name: Verify code validity
+  limit_text: Tokens are valid for a default period of 10 minutes once generated.
+  kind: validity-window
+  source: https://www.twilio.com/docs/verify/api/rate-limits-and-timeouts
+- name: Core REST API concurrency
+  limit_text: you might exceed your account's concurrency limits and receive a `429 Too Many Requests` response
+  kind: concurrency
+  scope: per account (subaccount requests do not roll up to the parent)
+  source: https://www.twilio.com/docs/usage/rest-api-best-practices
+  note: the concurrency number itself is not published
+- name: SendGrid Web API v3 per-endpoint limits
+  limit_text: Each endpoint permits a fixed number of requests per refresh period. If you exceed that limit, the API returns an HTTP `429` (Too Many Requests) status code.
+  kind: per-endpoint
+  scope: per endpoint per refresh period
+  source: https://www.twilio.com/docs/sendgrid/api-reference/how-to-use-the-sendgrid-v3-api/rate-limits
+headers:
+- name: Twilio-Concurrent-Requests
+  meaning: The current number of concurrent requests for your account. Subaccount requests don't roll up to the primary account. This count includes requests that receive a 429 Too Many Requests.
+  source: https://www.twilio.com/docs/usage/rest-api-best-practices
+- name: Twilio-Request-Duration
+  meaning: The time it took for the request to be completed within the Twilio platform.
+  source: https://www.twilio.com/docs/usage/rest-api-best-practices
+- name: X-RateLimit-Limit
+  meaning: SendGrid Web API v3 - requests permitted in the current refresh period
+  source: https://www.twilio.com/docs/sendgrid/api-reference/how-to-use-the-sendgrid-v3-api/rate-limits
+- name: X-RateLimit-Remaining
+  meaning: SendGrid Web API v3 - requests remaining in the current refresh period
+  source: https://www.twilio.com/docs/sendgrid/api-reference/how-to-use-the-sendgrid-v3-api/rate-limits
+- name: X-RateLimit-Reset
+  meaning: SendGrid Web API v3 - Unix timestamp when the refresh period resets
+  source: https://www.twilio.com/docs/sendgrid/api-reference/how-to-use-the-sendgrid-v3-api/rate-limits
+exhaustion_status: 429
+retry_guidance: Twilio recommends retries with exponential backoff; a 429 means the request wasn't processed and can safely be retried (https://www.twilio.com/docs/usage/rest-api-best-practices).

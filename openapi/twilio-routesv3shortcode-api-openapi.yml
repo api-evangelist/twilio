@@ -1,0 +1,232 @@
+openapi: 3.2.0
+info:
+  title: Twilio - Routes Routes V3Short Code API
+  description: This is the public Twilio REST API.
+  termsOfService: https://www.twilio.com/legal/tos
+  contact:
+    name: Twilio Support
+    url: https://support.twilio.com
+    email: support@twilio.com
+  license:
+    name: Apache 2.0
+    url: https://www.apache.org/licenses/LICENSE-2.0.html
+  version: 1.0.0
+  x-twilio:
+    apiStandards: v1.0
+servers:
+- url: https://routes.twilio.com
+security:
+- accountSid_authToken: []
+tags:
+- name: RoutesV3ShortCode
+paths:
+  /v3/ShortCodes/{isoCountryCode}/{shortCode}:
+    servers:
+    - url: https://routes.twilio.com
+    description: ''
+    x-twilio:
+      defaultOutputProperties:
+      - friendlyName
+      - dateCreated
+      pathType: instance
+    post:
+      description: Assign an Processing Region to a short code. Short codes only support a Messaging region; Voice is not supported.
+      summary: Assign an Processing Region to a short code
+      tags:
+      - RoutesV3ShortCode
+      parameters:
+      - name: isoCountryCode
+        in: path
+        description: The ISO country code of the short code
+        schema:
+          type: string
+        required: true
+      - name: shortCode
+        in: path
+        description: The short code
+        schema:
+          type: string
+        required: true
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/routes.v3.short_code'
+              examples:
+                update:
+                  value:
+                    isoCountryCode: US
+                    shortCode: '12345'
+                    url: https://routes.twilio.com/v3/ShortCodes/US/12345
+                    accountSid: REDACTED_TWILIO_ACCOUNT_SID
+                    friendlyName: friendly_name
+                    messagingRegion: us1
+                    dateCreated: '2015-07-30T20:00:00Z'
+                    dateUpdated: '2015-07-30T20:00:00Z'
+          headers:
+            Access-Control-Allow-Origin:
+              description: Specify the origin(s) allowed to access the resource
+              schema:
+                type: string
+              example: '*'
+            Access-Control-Allow-Methods:
+              description: Specify the HTTP methods allowed when accessing the resource
+              schema:
+                type: string
+              example: POST, OPTIONS
+            Access-Control-Allow-Headers:
+              description: Specify the headers allowed when accessing the resource
+              schema:
+                type: string
+              example: Content-Type, Authorization
+            Access-Control-Allow-Credentials:
+              description: Indicates whether the browser should include credentials
+              schema:
+                type: boolean
+            Access-Control-Expose-Headers:
+              description: Headers exposed to the client
+              schema:
+                type: string
+                example: X-Custom-Header1, X-Custom-Header2
+          description: OK
+      security:
+      - accountSid_authToken: []
+      operationId: UpdateShortCode
+      requestBody:
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              type: object
+              title: UpdateShortCodeRequest
+              properties:
+                messagingRegion:
+                  type: string
+                  description: The Processing Region used for this short code for messaging
+                friendlyName:
+                  type: string
+                  description: A human readable description of this resource, up to 64 characters.
+            examples:
+              update:
+                value:
+                  friendlyName: friendly_name
+                  messagingRegion: us1
+    get:
+      description: Fetch the Processing Region assigned to a short code. Short codes only support a Messaging region; Voice is not supported.
+      summary: Fetch the Processing Region assigned to a short code
+      tags:
+      - RoutesV3ShortCode
+      parameters:
+      - name: isoCountryCode
+        in: path
+        description: The ISO country code of the short code
+        schema:
+          type: string
+        required: true
+      - name: shortCode
+        in: path
+        description: The short code
+        schema:
+          type: string
+        required: true
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/routes.v3.short_code'
+              examples:
+                fetch:
+                  value:
+                    isoCountryCode: US
+                    shortCode: '12345'
+                    url: https://routes.twilio.com/v3/ShortCodes/US/12345
+                    accountSid: REDACTED_TWILIO_ACCOUNT_SID
+                    friendlyName: friendly_name
+                    messagingRegion: us1
+                    dateCreated: '2015-07-30T20:00:00Z'
+                    dateUpdated: '2015-07-30T20:00:00Z'
+          headers:
+            Access-Control-Allow-Origin:
+              description: Specify the origin(s) allowed to access the resource
+              schema:
+                type: string
+              example: '*'
+            Access-Control-Allow-Methods:
+              description: Specify the HTTP methods allowed when accessing the resource
+              schema:
+                type: string
+              example: POST, OPTIONS
+            Access-Control-Allow-Headers:
+              description: Specify the headers allowed when accessing the resource
+              schema:
+                type: string
+              example: Content-Type, Authorization
+            Access-Control-Allow-Credentials:
+              description: Indicates whether the browser should include credentials
+              schema:
+                type: boolean
+            Access-Control-Expose-Headers:
+              description: Headers exposed to the client
+              schema:
+                type: string
+                example: X-Custom-Header1, X-Custom-Header2
+          description: OK
+      security:
+      - accountSid_authToken: []
+      operationId: FetchShortCode
+components:
+  schemas:
+    routes.v3.short_code:
+      type: object
+      properties:
+        isoCountryCode:
+          type:
+          - string
+          - 'null'
+          description: The ISO country code of the short code
+        shortCode:
+          type:
+          - string
+          - 'null'
+          description: The short code
+        url:
+          type:
+          - string
+          - 'null'
+          format: uri
+          description: The absolute URL of the resource.
+        accountSid:
+          type:
+          - string
+          - 'null'
+          minLength: 34
+          maxLength: 34
+          pattern: ^AC[0-9a-fA-F]{32}$
+          description: The unique SID identifier of the Account.
+        friendlyName:
+          type:
+          - string
+          - 'null'
+          description: A human readable description of the Inbound Processing Region assignment for this short code, up to 64 characters.
+        messagingRegion:
+          type:
+          - string
+          - 'null'
+          description: The Inbound Processing Region used for this short code for messaging.
+        dateCreated:
+          type:
+          - string
+          - 'null'
+          format: date-time
+          description: The date that this short code was assigned an Inbound Processing Region, given in ISO 8601 format.
+        dateUpdated:
+          type:
+          - string
+          - 'null'
+          format: date-time
+          description: The date that the Inbound Processing Region was updated for this short code, given in ISO 8601 format.
+  securitySchemes:
+    accountSid_authToken:
+      scheme: basic
+      type: http

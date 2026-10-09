@@ -393,6 +393,63 @@ paths:
       x-summary-source: derived
 components:
   schemas:
+    CreateExportCustomJobRequest:
+      type: object
+      required:
+      - StartDay
+      - EndDay
+      - FriendlyName
+      properties:
+        StartDay:
+          type: string
+          description: The start day for the custom export specified as a string in the format of yyyy-mm-dd
+        EndDay:
+          type: string
+          description: The end day for the custom export specified as a string in the format of yyyy-mm-dd. End day is inclusive and must be 2 days earlier than the current UTC day.
+        FriendlyName:
+          type: string
+          description: The friendly name specified when creating the job
+        WebhookUrl:
+          type: string
+          description: The optional webhook url called on completion of the job. If this is supplied, `WebhookMethod` must also be supplied. If you set neither webhook nor email, you will have to check your job's status manually.
+        WebhookMethod:
+          type: string
+          description: This is the method used to call the webhook on completion of the job. If this is supplied, `WebhookUrl` must also be supplied.
+        Email:
+          type: string
+          description: The optional email to send the completion notification to. You can set both webhook, and email, or one or the other. If you set neither, the job will run but you will have to query to determine your job's status.
+    ListDayResponse:
+      type: object
+      properties:
+        days:
+          type: array
+          items:
+            $ref: '#/components/schemas/bulkexports.v1.export.day'
+        meta:
+          type: object
+          properties:
+            first_page_url:
+              type: string
+              format: uri
+            next_page_url:
+              type:
+              - string
+              - 'null'
+              format: uri
+            page:
+              type: integer
+            page_size:
+              type: integer
+            previous_page_url:
+              type:
+              - string
+              - 'null'
+              format: uri
+            url:
+              type: string
+              format: uri
+            key:
+              type: string
     bulkexports.v1.export.job:
       type: object
       properties:
@@ -456,31 +513,49 @@ components:
           - string
           - 'null'
           description: this is the time estimated until your job is complete. This is calculated each time you request the job list. The time is calculated based on the current rate of job completion (which may vary) and your job queue position
-    CreateExportCustomJobRequest:
+    UpdateExportConfigurationRequest:
       type: object
-      required:
-      - StartDay
-      - EndDay
-      - FriendlyName
       properties:
-        StartDay:
-          type: string
-          description: The start day for the custom export specified as a string in the format of yyyy-mm-dd
-        EndDay:
-          type: string
-          description: The end day for the custom export specified as a string in the format of yyyy-mm-dd. End day is inclusive and must be 2 days earlier than the current UTC day.
-        FriendlyName:
-          type: string
-          description: The friendly name specified when creating the job
+        Enabled:
+          type: boolean
+          description: If true, Twilio will automatically generate every day's file when the day is over.
         WebhookUrl:
           type: string
-          description: The optional webhook url called on completion of the job. If this is supplied, `WebhookMethod` must also be supplied. If you set neither webhook nor email, you will have to check your job's status manually.
+          format: uri
+          description: Stores the URL destination for the method specified in webhook_method.
         WebhookMethod:
           type: string
-          description: This is the method used to call the webhook on completion of the job. If this is supplied, `WebhookUrl` must also be supplied.
-        Email:
-          type: string
-          description: The optional email to send the completion notification to. You can set both webhook, and email, or one or the other. If you set neither, the job will run but you will have to query to determine your job's status.
+          description: Sets whether Twilio should call a webhook URL when the automatic generation is complete, using GET or POST. The actual destination is set in the webhook_url
+    bulkexports.v1.export_configuration:
+      type: object
+      properties:
+        enabled:
+          type:
+          - boolean
+          - 'null'
+          description: If true, Twilio will automatically generate every day's file when the day is over.
+        webhook_url:
+          type:
+          - string
+          - 'null'
+          format: uri
+          description: Stores the URL destination for the method specified in webhook_method.
+        webhook_method:
+          type:
+          - string
+          - 'null'
+          description: Sets whether Twilio should call a webhook URL when the automatic generation is complete, using GET or POST. The actual destination is set in the webhook_url
+        resource_type:
+          type:
+          - string
+          - 'null'
+          description: The type of communication – Messages, Calls, Conferences, and Participants
+        url:
+          type:
+          - string
+          - 'null'
+          format: uri
+          description: The URL of this resource.
     bulkexports.v1.export.day-instance:
       type: object
       properties:
@@ -509,38 +584,6 @@ components:
           - 'null'
           format: uri-map
           description: Contains a dictionary of URL links to nested resources of this Export.
-    ListExportCustomJobResponse:
-      type: object
-      properties:
-        jobs:
-          type: array
-          items:
-            $ref: '#/components/schemas/bulkexports.v1.export.export_custom_job'
-        meta:
-          type: object
-          properties:
-            first_page_url:
-              type: string
-              format: uri
-            next_page_url:
-              type:
-              - string
-              - 'null'
-              format: uri
-            page:
-              type: integer
-            page_size:
-              type: integer
-            previous_page_url:
-              type:
-              - string
-              - 'null'
-              format: uri
-            url:
-              type: string
-              format: uri
-            key:
-              type: string
     bulkexports.v1.export.export_custom_job:
       type: object
       properties:
@@ -627,56 +670,13 @@ components:
           - string
           - 'null'
           description: The type of communication – Messages, Calls, Conferences, and Participants
-    UpdateExportConfigurationRequest:
+    ListExportCustomJobResponse:
       type: object
       properties:
-        Enabled:
-          type: boolean
-          description: If true, Twilio will automatically generate every day's file when the day is over.
-        WebhookUrl:
-          type: string
-          format: uri
-          description: Stores the URL destination for the method specified in webhook_method.
-        WebhookMethod:
-          type: string
-          description: Sets whether Twilio should call a webhook URL when the automatic generation is complete, using GET or POST. The actual destination is set in the webhook_url
-    bulkexports.v1.export_configuration:
-      type: object
-      properties:
-        enabled:
-          type:
-          - boolean
-          - 'null'
-          description: If true, Twilio will automatically generate every day's file when the day is over.
-        webhook_url:
-          type:
-          - string
-          - 'null'
-          format: uri
-          description: Stores the URL destination for the method specified in webhook_method.
-        webhook_method:
-          type:
-          - string
-          - 'null'
-          description: Sets whether Twilio should call a webhook URL when the automatic generation is complete, using GET or POST. The actual destination is set in the webhook_url
-        resource_type:
-          type:
-          - string
-          - 'null'
-          description: The type of communication – Messages, Calls, Conferences, and Participants
-        url:
-          type:
-          - string
-          - 'null'
-          format: uri
-          description: The URL of this resource.
-    ListDayResponse:
-      type: object
-      properties:
-        days:
+        jobs:
           type: array
           items:
-            $ref: '#/components/schemas/bulkexports.v1.export.day'
+            $ref: '#/components/schemas/bulkexports.v1.export.export_custom_job'
         meta:
           type: object
           properties:

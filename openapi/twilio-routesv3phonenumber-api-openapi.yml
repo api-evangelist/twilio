@@ -1,0 +1,224 @@
+openapi: 3.2.0
+info:
+  title: Twilio - Routes Routes V3Phone Number API
+  description: This is the public Twilio REST API.
+  termsOfService: https://www.twilio.com/legal/tos
+  contact:
+    name: Twilio Support
+    url: https://support.twilio.com
+    email: support@twilio.com
+  license:
+    name: Apache 2.0
+    url: https://www.apache.org/licenses/LICENSE-2.0.html
+  version: 1.0.0
+  x-twilio:
+    apiStandards: v1.0
+servers:
+- url: https://routes.twilio.com
+security:
+- accountSid_authToken: []
+tags:
+- name: RoutesV3PhoneNumber
+paths:
+  /v3/PhoneNumbers/{phoneNumber}:
+    servers:
+    - url: https://routes.twilio.com
+    description: ''
+    x-twilio:
+      defaultOutputProperties:
+      - friendlyName
+      - dateCreated
+      pathType: instance
+    post:
+      description: Assign an Processing Region to a phone number.
+      summary: Assign an Processing Region to a phone number
+      tags:
+      - RoutesV3PhoneNumber
+      parameters:
+      - name: phoneNumber
+        in: path
+        description: The phone number in E.164 format
+        schema:
+          type: string
+        required: true
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/routes.v3.phone_number'
+              examples:
+                update:
+                  value:
+                    phoneNumber: '+18001234567'
+                    url: https://routes.twilio.com/v3/PhoneNumbers/+18001234567
+                    accountSid: REDACTED_TWILIO_ACCOUNT_SID
+                    friendlyName: friendly_name
+                    voiceRegion: au1
+                    messagingRegion: us1
+                    dateCreated: '2015-07-30T20:00:00Z'
+                    dateUpdated: '2015-07-30T20:00:00Z'
+          headers:
+            Access-Control-Allow-Origin:
+              description: Specify the origin(s) allowed to access the resource
+              schema:
+                type: string
+              example: '*'
+            Access-Control-Allow-Methods:
+              description: Specify the HTTP methods allowed when accessing the resource
+              schema:
+                type: string
+              example: POST, OPTIONS
+            Access-Control-Allow-Headers:
+              description: Specify the headers allowed when accessing the resource
+              schema:
+                type: string
+              example: Content-Type, Authorization
+            Access-Control-Allow-Credentials:
+              description: Indicates whether the browser should include credentials
+              schema:
+                type: boolean
+            Access-Control-Expose-Headers:
+              description: Headers exposed to the client
+              schema:
+                type: string
+                example: X-Custom-Header1, X-Custom-Header2
+          description: OK
+      security:
+      - accountSid_authToken: []
+      operationId: UpdatePhoneNumber
+      requestBody:
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              type: object
+              title: UpdatePhoneNumberRequest
+              properties:
+                voiceRegion:
+                  type: string
+                  description: The Inbound Processing Region used for this phone number for voice
+                messagingRegion:
+                  type: string
+                  description: The Inbound Processing Region used for this phone number for messaging
+                friendlyName:
+                  type: string
+                  description: A human readable description of this resource, up to 64 characters.
+            examples:
+              update:
+                value:
+                  friendlyName: friendly_name
+                  voiceRegion: au1
+                  messagingRegion: us1
+    get:
+      description: Fetch the Processing Region assigned to a phone number.
+      summary: Fetch the Processing Region assigned to a phone number
+      tags:
+      - RoutesV3PhoneNumber
+      parameters:
+      - name: phoneNumber
+        in: path
+        description: The phone number in E.164 format
+        schema:
+          type: string
+        required: true
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/routes.v3.phone_number'
+              examples:
+                fetch:
+                  value:
+                    phoneNumber: '+18001234567'
+                    url: https://routes.twilio.com/v3/PhoneNumbers/+18001234567
+                    accountSid: REDACTED_TWILIO_ACCOUNT_SID
+                    friendlyName: friendly_name
+                    voiceRegion: au1
+                    messagingRegion: us1
+                    dateCreated: '2015-07-30T20:00:00Z'
+                    dateUpdated: '2015-07-30T20:00:00Z'
+          headers:
+            Access-Control-Allow-Origin:
+              description: Specify the origin(s) allowed to access the resource
+              schema:
+                type: string
+              example: '*'
+            Access-Control-Allow-Methods:
+              description: Specify the HTTP methods allowed when accessing the resource
+              schema:
+                type: string
+              example: POST, OPTIONS
+            Access-Control-Allow-Headers:
+              description: Specify the headers allowed when accessing the resource
+              schema:
+                type: string
+              example: Content-Type, Authorization
+            Access-Control-Allow-Credentials:
+              description: Indicates whether the browser should include credentials
+              schema:
+                type: boolean
+            Access-Control-Expose-Headers:
+              description: Headers exposed to the client
+              schema:
+                type: string
+                example: X-Custom-Header1, X-Custom-Header2
+          description: OK
+      security:
+      - accountSid_authToken: []
+      operationId: FetchPhoneNumber
+components:
+  schemas:
+    routes.v3.phone_number:
+      type: object
+      properties:
+        phoneNumber:
+          type:
+          - string
+          - 'null'
+          description: The phone number in E.164 format
+        url:
+          type:
+          - string
+          - 'null'
+          format: uri
+          description: The absolute URL of the resource.
+        accountSid:
+          type:
+          - string
+          - 'null'
+          minLength: 34
+          maxLength: 34
+          pattern: ^AC[0-9a-fA-F]{32}$
+          description: The unique SID identifier of the Account.
+        friendlyName:
+          type:
+          - string
+          - 'null'
+          description: A human readable description of the Inbound Processing Region assignments for this phone number, up to 64 characters.
+        voiceRegion:
+          type:
+          - string
+          - 'null'
+          description: The Inbound Processing Region used for this phone number for voice.
+        messagingRegion:
+          type:
+          - string
+          - 'null'
+          description: The Inbound Processing Region used for this phone number for messaging.
+        dateCreated:
+          type:
+          - string
+          - 'null'
+          format: date-time
+          description: The date that this phone number was assigned an Inbound Processing Region, given in ISO 8601 format.
+        dateUpdated:
+          type:
+          - string
+          - 'null'
+          format: date-time
+          description: The date that the Inbound Processing Region was updated for this phone number, given in ISO 8601 format.
+  securitySchemes:
+    accountSid_authToken:
+      scheme: basic
+      type: http

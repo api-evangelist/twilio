@@ -1,12 +1,14 @@
-generated: '2026-07-17'
+generated: '2026-10-08'
 method: searched
 status: published
 source: https://www.twilio.com/docs/ai/mcp
 description: Twilio publishes two official Model Context Protocol (MCP) servers. A hosted, read-only documentation/discovery
-  server (twilio-docs) that needs no account, and an executing server (@twilio-alpha/mcp / twilio-labs/mcp)
-  that exposes Twilio's full REST API surface (1,800+ endpoints across 30+ products) as MCP tools using
-  your Account SID + API Key credentials. Pair with the official Twilio Agent Skills (skills/) for the
-  "which product / how to build" layer.
+  server at https://mcp.twilio.com/docs (Public Beta) that needs no account and exposes two search-then-retrieve
+  tools over all public Twilio OpenAPI specs (1,800+ endpoints across 30+ products) plus Twilio, SendGrid and
+  Segment docs; and an executing stdio server (@twilio-alpha/mcp from twilio-labs/mcp) that generates one MCP
+  tool per Twilio REST operation from the same OpenAPI specs and calls the API with the user's Account SID +
+  API Key. The docs page lists "Execute-ready, OAuth-authenticated MCP tools that let agents call Twilio APIs
+  directly" as a planned addition, not a shipped one. Pair with the official Twilio Agent Skills (skills/).
 docs:
 - https://www.twilio.com/docs/ai/mcp
 - https://www.twilio.com/en-us/blog/developers/introducing-twilio-mcp-skills
@@ -17,23 +19,38 @@ servers:
   url: https://mcp.twilio.com/docs
   auth: none
   read_only: true
+  beta: true
   description: Remote MCP server indexing Twilio's public API specifications and docs. No Twilio account
-    or API keys required; does not execute API calls.
+    or API keys required; does not execute API calls. Also distributed as a Claude Connector
+    (https://claude.com/connectors/twilio) and in the Cursor marketplace (https://cursor.com/marketplace/twilio).
   install:
     claude: claude mcp add --transport http twilio-docs https://mcp.twilio.com/docs
+  tools_list_probe:
+    method: POST tools/list (JSON-RPC 2.0) with Accept application/json, text/event-stream
+    status: 200
+    content_type: application/json;charset=utf-8
+    checked: '2026-10-08'
+    saved: mcp/twilio-mcp-tools-list.json
   tools:
   - name: twilio__search
-    description: Takes a natural-language query and returns ranked API operations, documentation articles,
-      and IDs.
+    description: Search Twilio documentation and API operations by natural language query. source="docs"
+      for conceptual guides and setup questions, source="api" for finding operations; filterable by product,
+      topics and version.
+    input_properties: [limit, product, query, source, topics, version]
+    annotations: {readOnlyHint: true, destructiveHint: false}
   - name: twilio__retrieve
-    description: Takes one or more API IDs from search results and returns full parameter schemas and
-      response schemas.
-  surface: 1800+ endpoints across 30+ products
+    description: Fetch full parameter schemas and response details for one or more Twilio API operations or
+      documentation articles, using the ids returned by twilio__search.
+    input_properties: [fields, ids]
+    annotations: {readOnlyHint: true, destructiveHint: false}
+  surface: 1800+ endpoints across 30+ products (search index), 2 tools
 - name: twilio-alpha-mcp
   kind: local-npm
   transport: stdio
   package: '@twilio-alpha/mcp'
   registry: npm
+  version: 0.7.0
+  published: '2025-07-07'
   npm: https://www.npmjs.com/package/@twilio-alpha/mcp
   repo: https://github.com/twilio-labs/mcp
   auth: Account SID + API Key SID + API Key Secret
@@ -43,17 +60,24 @@ servers:
     filter to avoid overloading the agent's tool list.
   install: npm i @twilio-alpha/mcp
   run: npx -y @twilio-alpha/mcp --account-sid AC... --api-key SK... --api-secret ...
-  surface: 1400+ API endpoints generated from Twilio OpenAPI specs
+  surface: one tool per Twilio OpenAPI operation (1400+ at the time of the twilio-labs README)
 tool_generation:
   note: The executing server derives one MCP tool per Twilio API operation from the provider's OpenAPI.
     The operations captured in this repo's arazzo/ workflows and skills/ (send-message, lookup, verify
     start/check, create-call, create-conference, create-video-room, sendgrid mail send) are representative
-    of the tool surface.
+    of the tool surface. The hosted server exposes only the two meta-tools above (see mcp/twilio-tool-crosswalk.yml).
+well_known:
+  oauth_protected_resource: 404 at https://mcp.twilio.com/.well-known/oauth-protected-resource (2026-10-08) - the hosted server is unauthenticated
+  oauth_authorization_server: 404 at https://mcp.twilio.com/.well-known/oauth-authorization-server (2026-10-08); Twilio's OAuth 2.0 server metadata lives at https://oauth.twilio.com/.well-known/oauth-authorization-server (200)
+  agent_card: 404 at https://mcp.twilio.com/.well-known/agent-card.json and /.well-known/agent.json (pre-flight 2026-10-08)
 deployment:
-  mode: remote
+  mode: both
   endpoint: https://mcp.twilio.com/docs
+  install: npx -y @twilio-alpha/mcp --account-sid AC... --api-key SK... --api-secret ...
+  package: https://www.npmjs.com/package/@twilio-alpha/mcp
+  auth: none
+  auth_note: the hosted endpoint takes no credentials; the stdio package authenticates to the REST API with an Account SID + API Key
   verified: probed
   probe: live
   tools: 2
-  checked: '2026-08-12'
-  source: catalog MCP census
+  checked: '2026-10-08'

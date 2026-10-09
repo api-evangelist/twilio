@@ -244,6 +244,38 @@ components:
           - string
           - 'null'
           description: 'A bulk update request to change voice dialing country permissions stored as a URL-encoded, JSON array of update objects. For example : `[ { "iso_code": "GB", "low_risk_numbers_enabled": "true", "high_risk_special_numbers_enabled":"true", "high_risk_tollfraud_numbers_enabled": "false" } ]`'
+    ListDialingPermissionsCountryResponse:
+      type: object
+      properties:
+        content:
+          type: array
+          items:
+            $ref: '#/components/schemas/voice.v1.dialing_permissions.dialing_permissions_country'
+        meta:
+          type: object
+          properties:
+            first_page_url:
+              type: string
+              format: uri
+            next_page_url:
+              type:
+              - string
+              - 'null'
+              format: uri
+            page:
+              type: integer
+            page_size:
+              type: integer
+            previous_page_url:
+              type:
+              - string
+              - 'null'
+              format: uri
+            url:
+              type: string
+              format: uri
+            key:
+              type: string
     ListDialingPermissionsHrsPrefixesResponse:
       type: object
       properties:
@@ -276,14 +308,6 @@ components:
               format: uri
             key:
               type: string
-    CreateDialingPermissionsCountryBulkUpdateRequest:
-      type: object
-      required:
-      - UpdateRequest
-      properties:
-        UpdateRequest:
-          type: string
-          description: 'URL encoded JSON array of update objects. example : `[ { "iso_code": "GB", "low_risk_numbers_enabled": "true", "high_risk_special_numbers_enabled":"true", "high_risk_tollfraud_numbers_enabled": "false" } ]`'
     voice.v1.dialing_permissions.dialing_permissions_country-instance:
       type: object
       properties:
@@ -337,38 +361,6 @@ components:
           - 'null'
           format: uri-map
           description: A list of URLs related to this resource.
-    ListDialingPermissionsCountryResponse:
-      type: object
-      properties:
-        content:
-          type: array
-          items:
-            $ref: '#/components/schemas/voice.v1.dialing_permissions.dialing_permissions_country'
-        meta:
-          type: object
-          properties:
-            first_page_url:
-              type: string
-              format: uri
-            next_page_url:
-              type:
-              - string
-              - 'null'
-              format: uri
-            page:
-              type: integer
-            page_size:
-              type: integer
-            previous_page_url:
-              type:
-              - string
-              - 'null'
-              format: uri
-            url:
-              type: string
-              format: uri
-            key:
-              type: string
     voice.v1.dialing_permissions.dialing_permissions_country:
       type: object
       properties:
@@ -422,6 +414,14 @@ components:
           - 'null'
           format: uri-map
           description: A list of URLs related to this resource.
+    CreateDialingPermissionsCountryBulkUpdateRequest:
+      type: object
+      required:
+      - UpdateRequest
+      properties:
+        UpdateRequest:
+          type: string
+          description: 'URL encoded JSON array of update objects. example : `[ { "iso_code": "GB", "low_risk_numbers_enabled": "true", "high_risk_special_numbers_enabled":"true", "high_risk_tollfraud_numbers_enabled": "false" } ]`'
     voice.v1.dialing_permissions.dialing_permissions_country.dialing_permissions_hrs_prefixes:
       type: object
       properties:

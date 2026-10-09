@@ -1,0 +1,42 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/api-evangelist/twilio/main/json-schema/twilio-verify-v2-form-schema.json",
+  "title": "verify.v2.form",
+  "x-generated": "2026-10-08",
+  "x-method": "derived",
+  "x-generator": "derive-json-schema.py",
+  "x-source": "openapi/twilio-forms-api-openapi.yml#/components/schemas/verify.v2.form",
+  "type": "object",
+  "properties": {
+    "form_type": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "$ref": "#/$defs/form_enum_form_types",
+      "description": "The Type of this Form. Currently only `form-push` is supported."
+    },
+    "forms": {
+      "description": "Object that contains the available forms for this type. This available forms are given in the standard [JSON Schema](https://json-schema.org/) format"
+    },
+    "form_meta": {
+      "description": "Additional information for the available forms for this type. E.g. The separator string used for `binding` in a Factor push."
+    },
+    "url": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "format": "uri",
+      "description": "The URL to access the forms for this type."
+    }
+  },
+  "$defs": {
+    "form_enum_form_types": {
+      "type": "string",
+      "enum": [
+        "form-push"
+      ]
+    }
+  }
+}

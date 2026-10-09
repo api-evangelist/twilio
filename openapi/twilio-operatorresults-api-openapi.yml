@@ -1,0 +1,1095 @@
+openapi: 3.2.0
+info:
+  title: Twilio Conversational Intelligence Operator Results API
+  description: The Conversational Intelligence API includes resources to create and manage intelligence configurations, define and run language operators, and retrieve processed conversations and operator results.
+  termsOfService: https://www.twilio.com/legal/tos
+  contact:
+    name: Twilio Support
+    url: https://support.twilio.com
+    email: support@twilio.com
+  license:
+    name: Apache 2.0
+    url: https://www.apache.org/licenses/LICENSE-2.0.html
+  version: v3
+  x-twilio:
+    apiStandards: v1.0
+servers:
+- url: https://intelligence.twilio.com
+  description: Twilio Intelligence API
+security:
+- basic_apikey_or_accountsid: []
+tags:
+- name: OperatorResults
+  description: 'Retrieve results produced by language operators after they run on conversations,
+
+    including associated execution metadata generated at runtime. Use these results to support real-time agent augmentation, workflow automation, and aggregate conversational insights.
+
+
+    Results are generated when Conversations are processed by intelligence configuration rules and can be
+
+    queried independently of the original conversation lifecycle.'
+paths:
+  /v3/OperatorResults:
+    x-twilio:
+      pathType: list
+    get:
+      tags:
+      - OperatorResults
+      security:
+      - basic_apikey_or_accountsid: []
+      summary: Retrieve a list of OperatorResults
+      operationId: ListOperatorResults
+      parameters:
+      - name: conversationId
+        in: query
+        required: false
+        schema:
+          type: string
+          pattern: ^conv_conversation_[0-7][0-9a-z]{25}$
+          description: The `id` of the Conversation attached to the Operator Result.
+          example: conv_conversation_01k1etk2y5f1y9fpe2epfdtvv2
+        description: Filter Operator Results by attached Conversation `id`.
+      - name: intelligenceConfigurationId
+        in: query
+        required: false
+        schema:
+          type: string
+          pattern: ^intelligence_configuration_[0-7][0-9a-z]{25}$
+          description: Unique identifier for a Intelligence Configuration that generated the Operator Result. Assigned by Twilio (TTID).
+          example: intelligence_configuration_01k6fc25s7epm9qtk8rszbv3q5
+        description: Filter Operator Results by Intelligence Configuration `id` used to generate them.
+      - name: operatorId
+        in: query
+        required: false
+        schema:
+          type: string
+          readOnly: true
+          pattern: ^intelligence_operator_[0-7][0-9a-z]{25}$
+          description: The unique identifier for the Language Operator. Assigned by Twilio (TTID).
+          example: intelligence_operator_01k6fc25s7epm9qtk8rszbv3q5
+        description: Filter Operator Results by Language Operator `id`.
+      - name: pageSize
+        in: query
+        description: The maximum number of resources to return
+        required: false
+        schema:
+          type: integer
+          minimum: 1
+          maximum: 1000
+          default: 50
+      - name: pageToken
+        in: query
+        description: Token for pagination
+        required: false
+        schema:
+          type: string
+      responses:
+        '200':
+          description: An array of Operator Results.
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                - items
+                - meta
+                properties:
+                  items:
+                    type: array
+                    description: List of Operator Results matching the query.
+                    items:
+                      $ref: '#/components/schemas/OperatorResultsResponseV1'
+                  meta:
+                    type: object
+                    properties:
+                      key:
+                        description: A key, sibling to the `meta` object that holds the actual list of resources
+                        type: string
+                      pageSize:
+                        description: The actual number of resources returned in the response
+                        type: integer
+                      previousToken:
+                        type: string
+                      nextToken:
+                        type: string
+                    required:
+                    - key
+                    - pageSize
+              examples:
+                operatorResultList:
+                  $ref: '#/components/examples/OperatorResultListExample'
+        '400':
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    description: Twilio-specific error code
+                    type: integer
+                    format: int32
+                  message:
+                    description: A human readable error message
+                    type: string
+                  httpStatusCode:
+                    description: HTTP response status code
+                    type: integer
+                    format: int32
+                  userError:
+                    description: Whether the error is a user error (true) or a system error (false)
+                    type: boolean
+                  params:
+                    description: A map of parameters related to the error, for example, a `params.twilioErrorCodeUrl` might hold a URL or link to additional information
+                    type: object
+                    additionalProperties:
+                      type: string
+                required:
+                - code
+                - message
+                - httpStatusCode
+        '429':
+          description: Too Many requests (rate limit exceeded for request originating from public API)
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    description: Twilio-specific error code
+                    type: integer
+                    format: int32
+                  message:
+                    description: A human readable error message
+                    type: string
+                  httpStatusCode:
+                    description: HTTP response status code
+                    type: integer
+                    format: int32
+                  userError:
+                    description: Whether the error is a user error (true) or a system error (false)
+                    type: boolean
+                  params:
+                    description: A map of parameters related to the error, for example, a `params.twilioErrorCodeUrl` might hold a URL or link to additional information
+                    type: object
+                    additionalProperties:
+                      type: string
+                required:
+                - code
+                - message
+                - httpStatusCode
+          headers:
+            X-RateLimit-Limit:
+              schema:
+                type: string
+            X-RateLimit-Remaining:
+              schema:
+                type: string
+            X-RateLimit-Reset:
+              schema:
+                type: string
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    description: Twilio-specific error code
+                    type: integer
+                    format: int32
+                  message:
+                    description: A human readable error message
+                    type: string
+                  httpStatusCode:
+                    description: HTTP response status code
+                    type: integer
+                    format: int32
+                  userError:
+                    description: Whether the error is a user error (true) or a system error (false)
+                    type: boolean
+                  params:
+                    description: A map of parameters related to the error, for example, a `params.twilioErrorCodeUrl` might hold a URL or link to additional information
+                    type: object
+                    additionalProperties:
+                      type: string
+                required:
+                - code
+                - message
+                - httpStatusCode
+  /v3/OperatorResults/{operatorResultId}:
+    x-twilio:
+      pathType: instance
+    parameters:
+    - name: operatorResultId
+      in: path
+      required: true
+      description: Operator Result id (TTID)
+      schema:
+        type: string
+        pattern: ^intelligence_operatorresult_[0-7][0-9a-z]{25}$
+        description: A unique identifier for the Operator Result. Assigned by Twilio (TTID).
+        example: intelligence_operatorresult_01k6fc25s7epm9qtk8rszbv3q5
+    get:
+      tags:
+      - OperatorResults
+      security:
+      - basic_apikey_or_accountsid: []
+      summary: Retrieve an OperatorResult
+      operationId: FetchOperatorResult
+      responses:
+        '200':
+          description: Operator Result object.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/OperatorResultsResponseV1'
+              examples:
+                operatorResult:
+                  $ref: '#/components/examples/OperatorResultExample'
+        '404':
+          description: Resource not found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    description: Twilio-specific error code
+                    type: integer
+                    format: int32
+                  message:
+                    description: A human readable error message
+                    type: string
+                  httpStatusCode:
+                    description: HTTP response status code
+                    type: integer
+                    format: int32
+                  userError:
+                    description: Whether the error is a user error (true) or a system error (false)
+                    type: boolean
+                  params:
+                    description: A map of parameters related to the error, for example, a `params.twilioErrorCodeUrl` might hold a URL or link to additional information
+                    type: object
+                    additionalProperties:
+                      type: string
+                required:
+                - code
+                - message
+                - httpStatusCode
+        '429':
+          description: Too Many requests (rate limit exceeded for request originating from public API)
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    description: Twilio-specific error code
+                    type: integer
+                    format: int32
+                  message:
+                    description: A human readable error message
+                    type: string
+                  httpStatusCode:
+                    description: HTTP response status code
+                    type: integer
+                    format: int32
+                  userError:
+                    description: Whether the error is a user error (true) or a system error (false)
+                    type: boolean
+                  params:
+                    description: A map of parameters related to the error, for example, a `params.twilioErrorCodeUrl` might hold a URL or link to additional information
+                    type: object
+                    additionalProperties:
+                      type: string
+                required:
+                - code
+                - message
+                - httpStatusCode
+          headers:
+            X-RateLimit-Limit:
+              schema:
+                type: string
+            X-RateLimit-Remaining:
+              schema:
+                type: string
+            X-RateLimit-Reset:
+              schema:
+                type: string
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    description: Twilio-specific error code
+                    type: integer
+                    format: int32
+                  message:
+                    description: A human readable error message
+                    type: string
+                  httpStatusCode:
+                    description: HTTP response status code
+                    type: integer
+                    format: int32
+                  userError:
+                    description: Whether the error is a user error (true) or a system error (false)
+                    type: boolean
+                  params:
+                    description: A map of parameters related to the error, for example, a `params.twilioErrorCodeUrl` might hold a URL or link to additional information
+                    type: object
+                    additionalProperties:
+                      type: string
+                required:
+                - code
+                - message
+                - httpStatusCode
+    delete:
+      tags:
+      - OperatorResults
+      summary: Delete an OperatorResult
+      operationId: DeleteOperatorResult
+      responses:
+        '204':
+          description: Operator result deleted successfully
+        '404':
+          description: Resource not found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    description: Twilio-specific error code
+                    type: integer
+                    format: int32
+                  message:
+                    description: A human readable error message
+                    type: string
+                  httpStatusCode:
+                    description: HTTP response status code
+                    type: integer
+                    format: int32
+                  userError:
+                    description: Whether the error is a user error (true) or a system error (false)
+                    type: boolean
+                  params:
+                    description: A map of parameters related to the error, for example, a `params.twilioErrorCodeUrl` might hold a URL or link to additional information
+                    type: object
+                    additionalProperties:
+                      type: string
+                required:
+                - code
+                - message
+                - httpStatusCode
+        '429':
+          description: Too Many requests (rate limit exceeded for request originating from public API)
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    description: Twilio-specific error code
+                    type: integer
+                    format: int32
+                  message:
+                    description: A human readable error message
+                    type: string
+                  httpStatusCode:
+                    description: HTTP response status code
+                    type: integer
+                    format: int32
+                  userError:
+                    description: Whether the error is a user error (true) or a system error (false)
+                    type: boolean
+                  params:
+                    description: A map of parameters related to the error, for example, a `params.twilioErrorCodeUrl` might hold a URL or link to additional information
+                    type: object
+                    additionalProperties:
+                      type: string
+                required:
+                - code
+                - message
+                - httpStatusCode
+          headers:
+            X-RateLimit-Limit:
+              schema:
+                type: string
+            X-RateLimit-Remaining:
+              schema:
+                type: string
+            X-RateLimit-Reset:
+              schema:
+                type: string
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    description: Twilio-specific error code
+                    type: integer
+                    format: int32
+                  message:
+                    description: A human readable error message
+                    type: string
+                  httpStatusCode:
+                    description: HTTP response status code
+                    type: integer
+                    format: int32
+                  userError:
+                    description: Whether the error is a user error (true) or a system error (false)
+                    type: boolean
+                  params:
+                    description: A map of parameters related to the error, for example, a `params.twilioErrorCodeUrl` might hold a URL or link to additional information
+                    type: object
+                    additionalProperties:
+                      type: string
+                required:
+                - code
+                - message
+                - httpStatusCode
+components:
+  schemas:
+    ExtractionResult:
+      title: Extraction result
+      type: object
+      properties:
+        outputFormat:
+          $ref: '#/components/schemas/OutputFormat'
+        id:
+          type: string
+          pattern: ^intelligence_operatorresult_[0-7][0-9a-z]{25}$
+          description: A unique identifier for the Operator Result. Assigned by Twilio (TTID).
+          example: intelligence_operatorresult_01k6fc25s7epm9qtk8rszbv3q5
+        accountId:
+          type: string
+          description: The ID of the Account that created the Language Operator.
+          pattern: ^AC[a-zA-Z0-9]{32}$
+        intelligenceConfiguration:
+          $ref: '#/components/schemas/IntelligenceConfigurationReference'
+        conversationId:
+          type: string
+          pattern: ^conv_conversation_[0-7][0-9a-z]{25}$
+          description: The `id` of the Conversation attached to the Operator Result.
+          example: conv_conversation_01k1etk2y5f1y9fpe2epfdtvv2
+        operator:
+          $ref: '#/components/schemas/OperatorReference'
+        dateCreated:
+          type: string
+          format: date-time
+          description: Timestamp for when the Operator Result was created.
+        referenceIds:
+          type: array
+          description: The `id`s of objects related to this Operator Result.
+          items:
+            type: string
+            example: CA0fd5fb62ac7e24ce24f071041847aa92
+            maxLength: 97
+        executionDetails:
+          $ref: '#/components/schemas/ExecutionDetails'
+        metadata:
+          type: object
+          properties:
+            system:
+              $ref: '#/components/schemas/SystemMetaData'
+          required:
+          - system
+        result:
+          type: object
+          description: The actual result from executing the Language Operator with `EXTRACTION` output format.
+          required:
+          - entities
+          properties:
+            entities:
+              type: array
+              description: List of extracted entities from the Conversation.
+              items:
+                type: object
+                required:
+                - text
+                - label
+                properties:
+                  text:
+                    type: string
+                    description: The actual text of the extracted entity as it appears in the Conversation.
+                  label:
+                    type: string
+                    description: The label for the extracted entity (e.g., `PERSON`, `LOCATION`).
+      required:
+      - accountId
+      - executionDetails
+      - id
+      - result
+      - operator
+      - metadata
+      - dateCreated
+      - intelligenceConfiguration
+      - referenceIds
+      - conversationId
+      - outputFormat
+    ExecutionDetails:
+      type: object
+      description: Details about the conditions under which the Operator executed.
+      properties:
+        trigger:
+          type: object
+          description: Metadata for the trigger that generated this Operator Result.
+          required:
+          - 'on'
+          - timestamp
+          properties:
+            'on':
+              type: string
+              description: 'The conversational lifecycle event that activated execution of the Rule. Available values are:
+
+                - `COMMUNICATION`: Trigger the Rule on each communication within the Conversation.
+
+                - `CONVERSATION_END`: Trigger the Rule when the Conversation moves to the `closed` state.
+
+                - `CONVERSATION_INACTIVE`: Trigger the Rule when the Conversation moves to the `inactive` state.
+
+                '
+            timestamp:
+              type: string
+              format: date-time
+              description: Timestamp of when the trigger was activated.
+        communications:
+          type: object
+          description: Range of first and last communications in the Conversation that were processed during this Operator execution.
+          required:
+          - first
+          - last
+          properties:
+            first:
+              allOf:
+              - type: string
+                pattern: ^conv_communication_[0-7][0-9a-z]{25}$
+                description: Communication `id` from the attached Conversation.
+                example: conv_communication_01k1etk2y5f1y9fpe2epfdtvv2
+              - description: Starting communication `id` from the attached Conversation.
+            last:
+              allOf:
+              - type: string
+                pattern: ^conv_communication_[0-7][0-9a-z]{25}$
+                description: Communication `id` from the attached Conversation.
+                example: conv_communication_01k1etk2y5f1y9fpe2epfdtvv2
+              - description: Ending communication `id` from the attached Conversation.
+        channels:
+          type: array
+          description: Communication channels included in the Conversation when this Operator was executed.
+          items:
+            type: string
+        participants:
+          type: array
+          description: Metadata for the participants included in the Conversation when this Operator executed.
+          items:
+            type: object
+            required:
+            - id
+            properties:
+              id:
+                type: string
+                pattern: ^conv_participant_[0-7][0-9a-z]{25}$
+                description: The `id` of the Participant in the Conversation.
+                example: conv_participant_01k1etx3jbfx88476ccja0889c
+              profileId:
+                type: string
+                pattern: ^mem_profile_[0-7][0-9a-z]{25}$
+                description: Customer Memory Profile identifier
+                example: mem_profile_00000000000000000000000000
+              type:
+                type: string
+                description: 'Type of participant in the conversation. Available types:
+
+                  - `CUSTOMER`
+
+                  - `HUMAN_AGENT`
+
+                  - `AI_AGENT`
+
+                  - `AGENT`
+
+                  - `UNKNOWN`
+
+                  '
+        resolvedContext:
+          $ref: '#/components/schemas/ResolvedContext'
+      required:
+      - trigger
+      - communications
+      - channels
+      - participants
+    OperatorReference:
+      type: object
+      description: Reference to the Language Operator that generated the Operator Result.
+      required:
+      - id
+      - version
+      - parameters
+      properties:
+        id:
+          type: string
+          description: The `id` of the Language Operator.
+        version:
+          type: integer
+          description: Version of the Language Operator used to generate the Operator Result.
+        parameters:
+          type: object
+          description: Parameter values used for Operator execution, provided by the Rule at runtime. This object contains a dictionary of parameter keys and their corresponding values.
+          additionalProperties: true
+    SystemMetaData:
+      type: object
+      required:
+      - latencyMs
+      - inputCharacters
+      - outputCharacters
+      - inputTruncated
+      properties:
+        resolvedModel:
+          type: string
+          description: The underlying LLM model used for this execution.
+          example: gpt-4.1-nano-2025-04-14
+        latencyMs:
+          type: integer
+          description: Operator execution time in milliseconds.
+        inputCharacters:
+          type: integer
+          description: Number of characters in the input sent to the model. Aligns with the billing unit.
+        outputCharacters:
+          type: integer
+          description: Number of characters in the model's response. Aligns with the billing unit.
+        inputTruncated:
+          type: boolean
+          description: Whether the conversation input was truncated to fit the model's context window.
+    ResolvedContext:
+      type: object
+      description: The context that was actually used by the operator during execution
+      properties:
+        memory:
+          type: object
+          description: 'The customer profile that was accessed. null if no memory was accessed.
+
+
+            Either observations and/or traits from the profile were used by the LLM to generate the result.
+
+            '
+          required:
+          - profileId
+          - memoryStoreId
+          properties:
+            profileId:
+              type: string
+              pattern: ^mem_profile_[0-7][0-9a-z]{25}$
+              description: Customer Memory Profile identifier
+              example: mem_profile_00000000000000000000000000
+            memoryStoreId:
+              type: string
+              description: Customer Memory store identifier
+              pattern: ^mem_(store|service)_[0-7][0-9a-z]{25}$
+              example: mem_store_00000000000000000000000000
+        knowledge:
+          type:
+          - object
+          - 'null'
+          description: 'Knowledge source IDs with their respective knowledge base ID that was accessed and used by the LLM to generate the result.
+
+
+            null if no knowledge was accessed.
+
+            '
+          required:
+          - sources
+          properties:
+            sources:
+              type: array
+              items:
+                type: object
+                required:
+                - baseId
+                - sourceId
+                properties:
+                  baseId:
+                    type: string
+                    description: Knowledge base identifier
+                    pattern: ^know_knowledgebase_[0-7][0-9a-z]{25}$
+                    example: know_knowledgebase_00000000000000000000000000
+                  sourceId:
+                    type: string
+                    description: Knowledge source identifier
+                    pattern: ^know_knowledge_[0-7][0-9a-z]{25}$
+                    example: know_knowledge_00000000000000000000000000
+    TextResult:
+      title: Text result
+      type: object
+      properties:
+        outputFormat:
+          $ref: '#/components/schemas/OutputFormat'
+        id:
+          type: string
+          pattern: ^intelligence_operatorresult_[0-7][0-9a-z]{25}$
+          description: A unique identifier for the Operator Result. Assigned by Twilio (TTID).
+          example: intelligence_operatorresult_01k6fc25s7epm9qtk8rszbv3q5
+        accountId:
+          type: string
+          description: The ID of the Account that created the Language Operator.
+          pattern: ^AC[a-zA-Z0-9]{32}$
+        intelligenceConfiguration:
+          $ref: '#/components/schemas/IntelligenceConfigurationReference'
+        conversationId:
+          type: string
+          pattern: ^conv_conversation_[0-7][0-9a-z]{25}$
+          description: The `id` of the Conversation attached to the Operator Result.
+          example: conv_conversation_01k1etk2y5f1y9fpe2epfdtvv2
+        operator:
+          $ref: '#/components/schemas/OperatorReference'
+        dateCreated:
+          type: string
+          format: date-time
+          description: Timestamp for when the Operator Result was created.
+        referenceIds:
+          type: array
+          description: The `id`s of objects related to this Operator Result.
+          items:
+            type: string
+            example: CA0fd5fb62ac7e24ce24f071041847aa92
+            maxLength: 97
+        executionDetails:
+          $ref: '#/components/schemas/ExecutionDetails'
+        metadata:
+          type: object
+          properties:
+            system:
+              $ref: '#/components/schemas/SystemMetaData'
+          required:
+          - system
+        result:
+          type: object
+          description: The actual result from executing the Language Operator with `TEXT` output format.
+          required:
+          - text
+          properties:
+            text:
+              type: string
+              description: The plaintext result produced by the Language Operator.
+      required:
+      - accountId
+      - executionDetails
+      - id
+      - result
+      - operator
+      - metadata
+      - dateCreated
+      - intelligenceConfiguration
+      - referenceIds
+      - conversationId
+      - outputFormat
+    OutputFormat:
+      type: string
+      title: Output Format
+      description: The output format set on the Operator that generated this result. Determines the structure of the `result` object.
+      pattern: ^(CLASSIFICATION|TEXT|EXTRACTION|JSON)$
+    IntelligenceConfigurationReference:
+      type: object
+      description: Reference to the Intelligence Configuration that generated the Operator Result.
+      required:
+      - id
+      - ruleId
+      - version
+      properties:
+        id:
+          type: string
+          pattern: ^intelligence_configuration_[0-7][0-9a-z]{25}$
+          description: Unique identifier for a Intelligence Configuration that generated the Operator Result. Assigned by Twilio (TTID).
+          example: intelligence_configuration_01k6fc25s7epm9qtk8rszbv3q5
+        ruleId:
+          type: string
+          pattern: ^intelligence_configurationrule_[0-7][0-9a-z]{25}$
+          description: Unique identifier of the rule of the Intelligence Configuration that triggered the result. Assigned by Twilio (TTID).
+          example: intelligence_configurationrule_01k6fc25s7epm9qtk8rszbv3q6
+        version:
+          type: integer
+          description: Version of the Intelligence Configuration used to generate the Operator Result.
+    OperatorResultsResponseV1:
+      type: object
+      title: Operator Results Response V1
+      properties:
+        outputFormat:
+          $ref: '#/components/schemas/OutputFormat'
+      discriminator:
+        propertyName: outputFormat
+        mapping:
+          TEXT: '#/components/schemas/TextResult'
+          JSON: '#/components/schemas/JSONResult'
+          CLASSIFICATION: '#/components/schemas/ClassificationResult'
+          EXTRACTION: '#/components/schemas/ExtractionResult'
+      oneOf:
+      - $ref: '#/components/schemas/TextResult'
+      - $ref: '#/components/schemas/JSONResult'
+      - $ref: '#/components/schemas/ClassificationResult'
+      - $ref: '#/components/schemas/ExtractionResult'
+    JSONResult:
+      title: JSON result
+      type: object
+      properties:
+        outputFormat:
+          $ref: '#/components/schemas/OutputFormat'
+        id:
+          type: string
+          pattern: ^intelligence_operatorresult_[0-7][0-9a-z]{25}$
+          description: A unique identifier for the Operator Result. Assigned by Twilio (TTID).
+          example: intelligence_operatorresult_01k6fc25s7epm9qtk8rszbv3q5
+        accountId:
+          type: string
+          description: The ID of the Account that created the Language Operator.
+          pattern: ^AC[a-zA-Z0-9]{32}$
+        intelligenceConfiguration:
+          $ref: '#/components/schemas/IntelligenceConfigurationReference'
+        conversationId:
+          type: string
+          pattern: ^conv_conversation_[0-7][0-9a-z]{25}$
+          description: The `id` of the Conversation attached to the Operator Result.
+          example: conv_conversation_01k1etk2y5f1y9fpe2epfdtvv2
+        operator:
+          $ref: '#/components/schemas/OperatorReference'
+        dateCreated:
+          type: string
+          format: date-time
+          description: Timestamp for when the Operator Result was created.
+        referenceIds:
+          type: array
+          description: The `id`s of objects related to this Operator Result.
+          items:
+            type: string
+            example: CA0fd5fb62ac7e24ce24f071041847aa92
+            maxLength: 97
+        executionDetails:
+          $ref: '#/components/schemas/ExecutionDetails'
+        metadata:
+          type: object
+          properties:
+            system:
+              $ref: '#/components/schemas/SystemMetaData'
+          required:
+          - system
+        result:
+          type: object
+          description: The actual result from executing the Language Operator with `JSON` output format. Its structure depends on the `outputSchema` defined on the Operator.
+          additionalProperties: true
+      required:
+      - accountId
+      - executionDetails
+      - id
+      - result
+      - operator
+      - metadata
+      - dateCreated
+      - intelligenceConfiguration
+      - referenceIds
+      - conversationId
+      - outputFormat
+    ClassificationResult:
+      title: Classification result
+      type: object
+      properties:
+        outputFormat:
+          $ref: '#/components/schemas/OutputFormat'
+        id:
+          type: string
+          pattern: ^intelligence_operatorresult_[0-7][0-9a-z]{25}$
+          description: A unique identifier for the Operator Result. Assigned by Twilio (TTID).
+          example: intelligence_operatorresult_01k6fc25s7epm9qtk8rszbv3q5
+        accountId:
+          type: string
+          description: The ID of the Account that created the Language Operator.
+          pattern: ^AC[a-zA-Z0-9]{32}$
+        intelligenceConfiguration:
+          $ref: '#/components/schemas/IntelligenceConfigurationReference'
+        conversationId:
+          type: string
+          pattern: ^conv_conversation_[0-7][0-9a-z]{25}$
+          description: The `id` of the Conversation attached to the Operator Result.
+          example: conv_conversation_01k1etk2y5f1y9fpe2epfdtvv2
+        operator:
+          $ref: '#/components/schemas/OperatorReference'
+        dateCreated:
+          type: string
+          format: date-time
+          description: Timestamp for when the Operator Result was created.
+        referenceIds:
+          type: array
+          description: The `id`s of objects related to this Operator Result.
+          items:
+            type: string
+            example: CA0fd5fb62ac7e24ce24f071041847aa92
+            maxLength: 97
+        executionDetails:
+          $ref: '#/components/schemas/ExecutionDetails'
+        metadata:
+          type: object
+          properties:
+            system:
+              $ref: '#/components/schemas/SystemMetaData'
+          required:
+          - system
+        result:
+          type: object
+          description: The actual result from executing the Language Operator with `CLASSIFICATION` output format.
+          required:
+          - label
+          properties:
+            label:
+              type: string
+              description: The predicted label assigned by the Language Operator.
+      required:
+      - accountId
+      - executionDetails
+      - id
+      - result
+      - operator
+      - metadata
+      - dateCreated
+      - intelligenceConfiguration
+      - referenceIds
+      - conversationId
+      - outputFormat
+  examples:
+    OperatorResultExample:
+      summary: Single Operator Result Response
+      value:
+        id: intelligence_operatorresult_01k6fc25s7epm9qtk8rszbv3q5
+        accountId: REDACTED_TWILIO_ACCOUNT_SID
+        outputFormat: JSON
+        intelligenceConfiguration:
+          id: intelligence_configuration_01kermhm82e5mr98nbeh1hpmbn
+          ruleId: intelligence_configurationrule_01kermhm81fwfvy7j0f7h7v5mr
+          version: 1
+        conversationId: conv_conversation_01k1etk2y5f1y9fpe2epfdtvv2
+        operator:
+          id: intelligence_operator_01kcgy1ew0e9x8re6jq542zt8b
+          version: 1
+          parameters:
+            scale: 5
+        dateCreated: '2026-01-15T10:45:30Z'
+        referenceIds:
+        - conv_communication_01k1etk2y5f1y9fpe2epfdtvv2
+        - conv_participant_01k1etx3jbfx88476ccja0889c
+        executionDetails:
+          trigger:
+            'on': CONVERSATION_END
+            timestamp: '2026-01-15T10:45:25Z'
+          communications:
+            first: conv_communication_01k1etk2y5f1y9fpe2epfdtvv2
+            last: conv_communication_01k1etk2y5f1y9fpe2epfdtvv9
+          channels:
+          - VOICE
+          participants:
+          - id: conv_participant_01k1etx3jbfx88476ccja0889c
+            profileId: mem_profile_01k6fbz0v4f4e9qtk8p8z7y3w1
+            type: CUSTOMER
+          - id: conv_participant_01k1etx3jbfx88476ccja0889d
+            type: HUMAN_AGENT
+          resolvedContext:
+            memory:
+              profileId: mem_profile_00000000000000000000000000
+              memoryStoreId: mem_store_00000000000000000000000000
+            knowledge:
+              sources:
+              - baseId: know_knowledgebase_00000000000000000000000000
+                sourceId: know_knowledge_00000000000000000000000000
+        result:
+          score: 5
+          explanation: The agent followed the script closely and addressed all key points effectively.
+    OperatorResultListExample:
+      summary: List of Operator Results Response
+      value:
+        items:
+        - id: intelligence_operatorresult_01k6fc25s7epm9qtk8rszbv3q5
+          accountId: REDACTED_TWILIO_ACCOUNT_SID
+          outputFormat: JSON
+          intelligenceConfiguration:
+            id: intelligence_configuration_01kermhm82e5mr98nbeh1hpmbn
+            ruleId: intelligence_configurationrule_01kermhm81fwfvy7j0f7h7v5mr
+            version: 1
+          conversationId: conv_conversation_01k1etk2y5f1y9fpe2epfdtvv2
+          operator:
+            id: intelligence_operator_01kcgy1ew0e9x8re6jq542zt8b
+            version: 1
+            parameters:
+              scale: 5
+          dateCreated: '2026-01-15T10:45:30Z'
+          referenceIds:
+          - conv_communication_01k1etk2y5f1y9fpe2epfdtvv2
+          executionDetails:
+            trigger:
+              'on': CONVERSATION_END
+              timestamp: '2026-01-15T10:45:25Z'
+            communications:
+              first: conv_communication_01k1etk2y5f1y9fpe2epfdtvv2
+              last: conv_communication_01k1etk2y5f1y9fpe2epfdtvv9
+            channels:
+            - VOICE
+            participants:
+            - id: conv_participant_01k1etx3jbfx88476ccja0889c
+              profileId: mem_profile_01k6fbz0v4f4e9qtk8p8z7y3w1
+              type: CUSTOMER
+            - id: conv_participant_01k1etx3jbfx88476ccja0889d
+              type: HUMAN_AGENT
+            resolvedContext:
+              memory:
+                profileId: mem_profile_00000000000000000000000000
+                memoryStoreId: mem_store_00000000000000000000000000
+              knowledge:
+                sources:
+                - baseId: know_knowledgebase_00000000000000000000000000
+                  sourceId: know_knowledge_00000000000000000000000000
+          result:
+            score: 5
+            explanation: The agent followed the script closely and addressed all key points effectively.
+        - id: intelligence_operatorresult_01k6fc25s7epm9qtk8rszbv3q6
+          accountId: REDACTED_TWILIO_ACCOUNT_SID
+          outputFormat: CLASSIFICATION
+          intelligenceConfiguration:
+            id: intelligence_configuration_01kermhm82e5mr98nbeh1hpmbn
+            ruleId: intelligence_configurationrule_01kermhm81fwfvy7j0f7h7v5mr
+            version: 1
+          conversationId: conv_conversation_01k1etk2y5f1y9fpe2epfdtvv2
+          operator:
+            id: intelligence_operator_01kcgy1ew0e9x8re6jq542zt9c
+            version: 2
+            parameters: {}
+          dateCreated: '2026-01-15T10:45:35Z'
+          referenceIds:
+          - conv_communication_01k1etk2y5f1y9fpe2epfdtvv2
+          executionDetails:
+            trigger:
+              'on': CONVERSATION_END
+              timestamp: '2026-01-15T10:45:25Z'
+            communications:
+              first: conv_communication_01k1etk2y5f1y9fpe2epfdtvv2
+              last: conv_communication_01k1etk2y5f1y9fpe2epfdtvv9
+            channels:
+            - VOICE
+            participants:
+            - id: conv_participant_01k1etx3jbfx88476ccja0889c
+              type: CUSTOMER
+            - id: conv_participant_01k1etx3jbfx88476ccja0889d
+              type: HUMAN_AGENT
+          result:
+            label: POSITIVE
+        meta:
+          key: items
+          pageSize: 2
+          nextToken: next_page_token_example
+  securitySchemes:
+    basic_apikey_or_accountsid:
+      scheme: basic
+      type: http
+      description: This API uses [basic authentication](https://www.twilio.com/docs/glossary/what-is-basic-authentication). Use an [API key](https://www.twilio.com/docs/iam/api-keys) as the username and the API key secret as the password. You can also use your account SID and auth token, but limit their use to local testing.

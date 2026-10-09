@@ -473,37 +473,6 @@ paths:
       x-summary-source: derived
 components:
   schemas:
-    VideoRecordingList:
-      type: object
-      properties:
-        recordings:
-          type: array
-          items:
-            $ref: '#/components/schemas/VideoRecording'
-        meta:
-          $ref: '#/components/schemas/PaginationMeta'
-    RecordingSettings:
-      type: object
-      properties:
-        account_sid:
-          type: string
-          pattern: ^AC[0-9a-fA-F]{32}$
-        friendly_name:
-          type: string
-        aws_credentials_sid:
-          type: string
-        aws_s3_url:
-          type: string
-          format: uri
-        aws_storage_enabled:
-          type: boolean
-        encryption_key_sid:
-          type: string
-        encryption_enabled:
-          type: boolean
-        url:
-          type: string
-          format: uri
     VideoRecording:
       type: object
       properties:
@@ -576,6 +545,28 @@ components:
             media:
               type: string
               format: uri
+    RecordingSettings:
+      type: object
+      properties:
+        account_sid:
+          type: string
+          pattern: ^AC[0-9a-fA-F]{32}$
+        friendly_name:
+          type: string
+        aws_credentials_sid:
+          type: string
+        aws_s3_url:
+          type: string
+          format: uri
+        aws_storage_enabled:
+          type: boolean
+        encryption_key_sid:
+          type: string
+        encryption_enabled:
+          type: boolean
+        url:
+          type: string
+          format: uri
     PaginationMeta:
       type: object
       properties:
@@ -597,6 +588,15 @@ components:
           format: uri
         key:
           type: string
+    VideoRecordingList:
+      type: object
+      properties:
+        recordings:
+          type: array
+          items:
+            $ref: '#/components/schemas/VideoRecording'
+        meta:
+          $ref: '#/components/schemas/PaginationMeta'
     RecordingList:
       type: object
       properties:
@@ -665,18 +665,24 @@ components:
           format: date-time
         uri:
           type: string
+    recording_enum_status:
+      type: string
+      enum:
+      - processing
+      - completed
+      - deleted
+      - failed
+    recording_enum_type:
+      type: string
+      enum:
+      - audio
+      - video
+      - data
     recording_enum_format:
       type: string
       enum:
       - mka
       - mkv
-    recording_enum_codec:
-      type: string
-      enum:
-      - VP8
-      - H264
-      - OPUS
-      - PCMU
     video.v1.recording:
       type: object
       properties:
@@ -799,19 +805,6 @@ components:
           - 'null'
           format: uri-map
           description: The URLs of related resources.
-    recording_enum_type:
-      type: string
-      enum:
-      - audio
-      - video
-      - data
-    recording_enum_status:
-      type: string
-      enum:
-      - processing
-      - completed
-      - deleted
-      - failed
     ListRecordingResponse:
       type: object
       properties:
@@ -844,6 +837,13 @@ components:
               format: uri
             key:
               type: string
+    recording_enum_codec:
+      type: string
+      enum:
+      - VP8
+      - H264
+      - OPUS
+      - PCMU
   parameters:
     RoomSid:
       name: RoomSid
@@ -852,22 +852,6 @@ components:
       description: The SID or unique name of the room
       schema:
         type: string
-    AccountSid:
-      name: AccountSid
-      in: path
-      required: true
-      description: The unique identifier of the Twilio account
-      schema:
-        type: string
-        pattern: ^AC[0-9a-fA-F]{32}$
-    RecordingSid:
-      name: RecordingSid
-      in: path
-      required: true
-      description: The unique identifier of the recording
-      schema:
-        type: string
-        pattern: ^RE[0-9a-fA-F]{32}$
     CallSid:
       name: CallSid
       in: path
@@ -876,6 +860,22 @@ components:
       schema:
         type: string
         pattern: ^CA[0-9a-fA-F]{32}$
+    RecordingSid:
+      name: RecordingSid
+      in: path
+      required: true
+      description: The unique identifier of the recording
+      schema:
+        type: string
+        pattern: ^RE[0-9a-fA-F]{32}$
+    AccountSid:
+      name: AccountSid
+      in: path
+      required: true
+      description: The unique identifier of the Twilio account
+      schema:
+        type: string
+        pattern: ^AC[0-9a-fA-F]{32}$
   securitySchemes:
     accountSid_authToken:
       type: http

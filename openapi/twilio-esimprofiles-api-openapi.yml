@@ -139,38 +139,6 @@ paths:
       x-summary-source: derived
 components:
   schemas:
-    CreateEsimProfileRequest:
-      type: object
-      properties:
-        CallbackUrl:
-          type: string
-          description: The URL we should call using the `callback_method` when the status of the eSIM Profile changes. At this stage of the eSIM Profile pilot, the a request to the URL will only be called when the ESimProfile resource changes from `reserving` to `available`.
-        CallbackMethod:
-          type: string
-          format: http-method
-          enum:
-          - HEAD
-          - GET
-          - POST
-          - PATCH
-          - PUT
-          - DELETE
-          description: 'The HTTP method we should use to call `callback_url`. Can be: `GET` or `POST` and the default is POST.'
-        GenerateMatchingId:
-          type: boolean
-          description: When set to `true`, a value for `Eid` does not need to be provided. Instead, when the eSIM profile is reserved, a matching ID will be generated and returned via the `matching_id` property. This identifies the specific eSIM profile that can be used by any capable device to claim and download the profile.
-        Eid:
-          type: string
-          description: Identifier of the eUICC that will claim the eSIM Profile.
-    esim_profile_enum_status:
-      type: string
-      enum:
-      - new
-      - reserving
-      - available
-      - downloaded
-      - installed
-      - failed
     supersim.v1.esim_profile:
       type: object
       properties:
@@ -294,6 +262,38 @@ components:
               format: uri
             key:
               type: string
+    esim_profile_enum_status:
+      type: string
+      enum:
+      - new
+      - reserving
+      - available
+      - downloaded
+      - installed
+      - failed
+    CreateEsimProfileRequest:
+      type: object
+      properties:
+        CallbackUrl:
+          type: string
+          description: The URL we should call using the `callback_method` when the status of the eSIM Profile changes. At this stage of the eSIM Profile pilot, the a request to the URL will only be called when the ESimProfile resource changes from `reserving` to `available`.
+        CallbackMethod:
+          type: string
+          format: http-method
+          enum:
+          - HEAD
+          - GET
+          - POST
+          - PATCH
+          - PUT
+          - DELETE
+          description: 'The HTTP method we should use to call `callback_url`. Can be: `GET` or `POST` and the default is POST.'
+        GenerateMatchingId:
+          type: boolean
+          description: When set to `true`, a value for `Eid` does not need to be provided. Instead, when the eSIM profile is reserved, a matching ID will be generated and returned via the `matching_id` property. This identifies the specific eSIM profile that can be used by any capable device to claim and download the profile.
+        Eid:
+          type: string
+          description: Identifier of the eUICC that will claim the eSIM Profile.
   securitySchemes:
     accountSid_authToken:
       type: http

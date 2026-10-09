@@ -1,27 +1,43 @@
 generated: '2026-07-17'
 method: probed
 source: live probe of /.well-known/* on Twilio hosts (2026-07-17)
-description: >-
-  Probe of the /.well-known/ discovery surface on Twilio's primary hosts. Twilio
-  does not publish machine-readable discovery documents at these paths — every
-  probed path returned 404. Absence is recorded as valid data; no WellKnown
-  rating pointer is emitted because no catalog was found. Twilio's OAuth/OIDC is
-  product-scoped (not a single authorization server) and it uses HTTP Basic
-  (Account SID + Auth Token / API Key) for the REST API rather than OIDC
-  discovery. Security-contact discovery lives at the pages captured in
-  security/twilio-vulnerability-disclosure.yml, not in /.well-known/security.txt.
+description: Probe of the /.well-known/ discovery surface on Twilio's primary hosts. Twilio does not publish machine-readable discovery documents at these paths —
+  every probed path returned 404. Absence is recorded as valid data; no WellKnown rating pointer is emitted because no catalog was found. Twilio's OAuth/OIDC is product-scoped
+  (not a single authorization server) and it uses HTTP Basic (Account SID + Auth Token / API Key) for the REST API rather than OIDC discovery. Security-contact discovery
+  lives at the pages captured in security/twilio-vulnerability-disclosure.yml, not in /.well-known/security.txt.
 hosts:
-  - host: https://www.twilio.com
-    documents:
-      - {path: /.well-known/security.txt, status: 404}
-      - {path: /.well-known/openid-configuration, status: 404}
-      - {path: /.well-known/oauth-authorization-server, status: 404}
-      - {path: /.well-known/api-catalog, status: 404}
-      - {path: /.well-known/ai-plugin.json, status: 404}
-  - host: https://api.twilio.com
-    documents:
-      - {path: /.well-known/security.txt, status: 404}
-      - {path: /.well-known/openid-configuration, status: 404}
-      - {path: /.well-known/oauth-authorization-server, status: 404}
-      - {path: /.well-known/api-catalog, status: 404}
-      - {path: /.well-known/ai-plugin.json, status: 404}
+- host: https://www.twilio.com
+  documents:
+  - path: /.well-known/security.txt
+    status: 404
+  - path: /.well-known/openid-configuration
+    status: 404
+  - path: /.well-known/oauth-authorization-server
+    status: 404
+  - path: /.well-known/api-catalog
+    status: 404
+  - path: /.well-known/ai-plugin.json
+    status: 404
+- host: https://api.twilio.com
+  documents:
+  - path: /.well-known/security.txt
+    status: 404
+  - path: /.well-known/openid-configuration
+    status: 404
+  - path: /.well-known/oauth-authorization-server
+    status: 404
+  - path: /.well-known/api-catalog
+    status: 404
+  - path: /.well-known/ai-plugin.json
+    status: 404
+- host: oauth.twilio.com
+  probed: '2026-10-08'
+  note: OAuth 2.0 authorization-server metadata (RFC 8414) served live; path also declared in openapi/twilio-oauth-api-openapi.yml
+  documents:
+  - path: /.well-known/oauth-authorization-server
+    status: 200
+    content_type: application/json;charset=utf-8
+    bytes: 389
+    saved: well-known/oauth.twilio.com-oauth-authorization-server.json
+note_2026_10_08: oauth.twilio.com now serves RFC 8414 authorization-server metadata (200, saved verbatim as well-known/oauth.twilio.com-oauth-authorization-server.json)
+  since OAuth for Twilio APIs reached GA on 2026-04-06; the 404s above on www/api hosts still hold.

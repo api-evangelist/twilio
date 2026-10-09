@@ -1,0 +1,253 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/api-evangelist/twilio/main/json-schema/twilio-send-email-request-schema.json",
+  "title": "SendEmailRequest",
+  "x-generated": "2026-10-08",
+  "x-method": "derived",
+  "x-generator": "derive-json-schema.py",
+  "x-source": "openapi/twilio-mail-send-api-openapi.yml#/components/schemas/SendEmailRequest",
+  "type": "object",
+  "required": [
+    "personalizations",
+    "from"
+  ],
+  "properties": {
+    "personalizations": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/Personalization"
+      },
+      "minItems": 1,
+      "maxItems": 1000,
+      "description": "Recipients and per-recipient settings"
+    },
+    "from": {
+      "$ref": "#/$defs/EmailAddress"
+    },
+    "reply_to": {
+      "$ref": "#/$defs/EmailAddress"
+    },
+    "reply_to_list": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/EmailAddress"
+      },
+      "maxItems": 1000
+    },
+    "subject": {
+      "type": "string",
+      "description": "Global subject line"
+    },
+    "content": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "type",
+          "value"
+        ],
+        "properties": {
+          "type": {
+            "type": "string",
+            "description": "MIME type (text/plain or text/html)"
+          },
+          "value": {
+            "type": "string",
+            "description": "Content body"
+          }
+        }
+      }
+    },
+    "attachments": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/Attachment"
+      }
+    },
+    "template_id": {
+      "type": "string",
+      "description": "ID of a dynamic template to use"
+    },
+    "headers": {
+      "type": "object",
+      "additionalProperties": {
+        "type": "string"
+      }
+    },
+    "categories": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "maxItems": 10,
+      "description": "Categories for tracking (max 10)"
+    },
+    "send_at": {
+      "type": "integer",
+      "description": "Unix timestamp for scheduled send (up to 72 hours)"
+    },
+    "batch_id": {
+      "type": "string",
+      "description": "Batch ID for grouping scheduled sends"
+    },
+    "asm": {
+      "type": "object",
+      "properties": {
+        "group_id": {
+          "type": "integer",
+          "description": "Unsubscribe group ID"
+        },
+        "groups_to_display": {
+          "type": "array",
+          "items": {
+            "type": "integer"
+          },
+          "maxItems": 25
+        }
+      }
+    },
+    "ip_pool_name": {
+      "type": "string",
+      "description": "Name of the IP pool for sending"
+    },
+    "tracking_settings": {
+      "type": "object",
+      "properties": {
+        "click_tracking": {
+          "type": "object",
+          "properties": {
+            "enable": {
+              "type": "boolean"
+            },
+            "enable_text": {
+              "type": "boolean"
+            }
+          }
+        },
+        "open_tracking": {
+          "type": "object",
+          "properties": {
+            "enable": {
+              "type": "boolean"
+            },
+            "substitution_tag": {
+              "type": "string"
+            }
+          }
+        },
+        "subscription_tracking": {
+          "type": "object",
+          "properties": {
+            "enable": {
+              "type": "boolean"
+            }
+          }
+        }
+      }
+    }
+  },
+  "$defs": {
+    "Attachment": {
+      "type": "object",
+      "required": [
+        "content",
+        "filename"
+      ],
+      "properties": {
+        "content": {
+          "type": "string",
+          "description": "Base64 encoded attachment content"
+        },
+        "filename": {
+          "type": "string"
+        },
+        "type": {
+          "type": "string",
+          "description": "MIME type of the attachment"
+        },
+        "disposition": {
+          "type": "string",
+          "enum": [
+            "inline",
+            "attachment"
+          ],
+          "default": "attachment"
+        },
+        "content_id": {
+          "type": "string",
+          "description": "Content ID for inline attachments"
+        }
+      }
+    },
+    "EmailAddress": {
+      "type": "object",
+      "required": [
+        "email"
+      ],
+      "properties": {
+        "email": {
+          "type": "string",
+          "format": "email"
+        },
+        "name": {
+          "type": "string"
+        }
+      }
+    },
+    "Personalization": {
+      "type": "object",
+      "required": [
+        "to"
+      ],
+      "properties": {
+        "to": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/EmailAddress"
+          },
+          "minItems": 1
+        },
+        "cc": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/EmailAddress"
+          }
+        },
+        "bcc": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/EmailAddress"
+          }
+        },
+        "subject": {
+          "type": "string"
+        },
+        "headers": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "string"
+          }
+        },
+        "substitutions": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "string"
+          }
+        },
+        "dynamic_template_data": {
+          "type": "object",
+          "description": "Dynamic template handlebars data"
+        },
+        "custom_args": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "string"
+          }
+        },
+        "send_at": {
+          "type": "integer"
+        }
+      }
+    }
+  }
+}

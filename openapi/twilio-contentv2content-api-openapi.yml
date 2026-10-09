@@ -1,0 +1,315 @@
+openapi: 3.2.0
+info:
+  title: Twilio - Content Content V2Content API
+  description: This is the public Twilio REST API.
+  termsOfService: https://www.twilio.com/legal/tos
+  contact:
+    name: Twilio Support
+    url: https://support.twilio.com
+    email: support@twilio.com
+  license:
+    name: Apache 2.0
+    url: https://www.apache.org/licenses/LICENSE-2.0.html
+  version: 1.0.0
+  x-twilio:
+    apiStandards: _DANGEROUS_undefined
+servers:
+- url: https://content.twilio.com
+security:
+- accountSid_authToken: []
+tags:
+- name: ContentV2Content
+paths:
+  /v2/Content:
+    servers:
+    - url: https://content.twilio.com
+    description: A Content resource represents rich messaging content.
+    x-twilio:
+      defaultOutputProperties:
+      - date_created
+      - date_updated
+      - sid
+      - account_sid
+      - friendly_name
+      - language
+      - variables
+      - types
+      dependentProperties:
+        approval_create:
+          mapping:
+            sid: sid
+          resource_url: /v1/Content/{sid}/ApprovalRequests/whatsapp
+        approval_fetch:
+          mapping:
+            sid: sid
+          resource_url: /v1/Content/{sid}/ApprovalRequests
+      mountName: contents
+      pathType: list
+    get:
+      description: Retrieve a list of Contents belonging to the account used to make the request
+      tags:
+      - ContentV2Content
+      parameters:
+      - name: PageSize
+        in: query
+        description: How many resources to return in each list page. The default is 50, and the maximum is 1000.
+        schema:
+          type: integer
+          minimum: 1
+          maximum: 1000
+      - name: Page
+        in: query
+        description: The page index. This value is simply for client state.
+        schema:
+          type: integer
+          minimum: 0
+      - name: PageToken
+        in: query
+        description: The page token. This is provided by the API.
+        schema:
+          type: string
+      - name: SortByDate
+        in: query
+        description: Whether to sort by ascending or descending date updated
+        schema:
+          type: string
+      - name: SortByContentName
+        in: query
+        description: Whether to sort by ascending or descending content name
+        schema:
+          type: string
+      - name: DateCreatedAfter
+        in: query
+        description: Filter by >=[date-time]
+        schema:
+          format: date-time
+          type: string
+      - name: DateCreatedBefore
+        in: query
+        description: Filter by <=[date-time]
+        schema:
+          format: date-time
+          type: string
+      - name: ContentName
+        in: query
+        description: Filter by Regex Pattern in content name
+        schema:
+          type: string
+      - name: Content
+        in: query
+        description: Filter by Regex Pattern in template content
+        schema:
+          type: string
+      - name: Language
+        in: query
+        description: Filter by array of valid language(s)
+        schema:
+          type: array
+          items:
+            type: string
+      - name: ContentType
+        in: query
+        description: Filter by array of contentType(s)
+        schema:
+          type: array
+          items:
+            type: string
+      - name: ChannelEligibility
+        in: query
+        description: Filter by array of ChannelEligibility(s), where ChannelEligibility=<channel>:<status>
+        schema:
+          type: array
+          items:
+            type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: object
+                title: ListContentResponse
+                properties:
+                  contents:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/content.v1.content'
+                  meta:
+                    properties:
+                      first_page_url:
+                        format: uri
+                        type: string
+                      key:
+                        type: string
+                      next_page_url:
+                        format: uri
+                        type:
+                        - string
+                        - 'null'
+                      page:
+                        type: integer
+                      page_size:
+                        type: integer
+                      previous_page_url:
+                        format: uri
+                        type:
+                        - string
+                        - 'null'
+                      url:
+                        format: uri
+                        type: string
+                    type: object
+              examples:
+                readEmpty:
+                  value:
+                    contents: []
+                    meta:
+                      page: 0
+                      page_size: 10
+                      first_page_url: https://content.twilio.com/v2/Content?PageSize=10&Page=0
+                      previous_page_url: null
+                      url: https://content.twilio.com/v2/Content?PageSize=10&Page=0
+                      next_page_url: null
+                      key: contents
+                readResults:
+                  value:
+                    contents:
+                    - sid: HXaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+                      account_sid: REDACTED_TWILIO_ACCOUNT_SID
+                      friendly_name: Some content
+                      language: en
+                      variables:
+                        name: foo
+                      types:
+                        twilio/text:
+                          body: Foo Bar Co is located at 39.7392, 104.9903
+                        twilio/location:
+                          longitude: 104.9903
+                          latitude: 39.7392
+                          label: Foo Bar Co
+                      url: https://content.twilio.com/v1/Content/HXaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+                      date_created: '2015-07-30T19:00:00Z'
+                      date_updated: '2015-07-30T19:00:00Z'
+                      links:
+                        approval_create: https://content.twilio.com/v1/Content/HXaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa/ApprovalRequests/whatsapp
+                        approval_fetch: https://content.twilio.com/v1/Content/HXaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa/ApprovalRequests
+                    - sid: HXaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+                      account_sid: REDACTED_TWILIO_ACCOUNT_SID
+                      friendly_name: Anotha content
+                      language: en
+                      variables:
+                        name: foo
+                      types:
+                        twilio/text:
+                          body: Foo Bar Co is located at 39.7392, 104.9903
+                        twilio/location:
+                          longitude: 104.9903
+                          latitude: 39.7392
+                          label: Foo Bar Co
+                      url: https://content.twilio.com/v1/Content/HXaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+                      date_created: '2015-07-30T19:00:00Z'
+                      date_updated: '2015-07-30T19:00:00Z'
+                      links:
+                        approval_create: https://content.twilio.com/v1/Content/HXaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa/ApprovalRequests/whatsapp
+                        approval_fetch: https://content.twilio.com/v1/Content/HXaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa/ApprovalRequests
+                    - sid: HXaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+                      account_sid: REDACTED_TWILIO_ACCOUNT_SID
+                      friendly_name: Third content
+                      language: en
+                      variables:
+                        name: foo
+                      types:
+                        twilio/text:
+                          body: Foo Bar Co is located at 39.7392, 104.9903
+                        twilio/location:
+                          longitude: 104.9903
+                          latitude: 39.7392
+                          label: Foo Bar Co
+                      url: https://content.twilio.com/v1/Content/HXaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+                      date_created: '2015-07-30T19:00:00Z'
+                      date_updated: '2015-07-30T19:00:00Z'
+                      links:
+                        approval_create: https://content.twilio.com/v1/Content/HXaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa/ApprovalRequests/whatsapp
+                        approval_fetch: https://content.twilio.com/v1/Content/HXaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa/ApprovalRequests
+                    meta:
+                      page: 0
+                      page_size: 20
+                      first_page_url: https://content.twilio.com/v2/Content?PageSize=20&Page=0
+                      previous_page_url: null
+                      url: https://content.twilio.com/v2/Content?PageSize=20&Page=0
+                      next_page_url: null
+                      key: contents
+          description: OK
+      security:
+      - accountSid_authToken: []
+      operationId: ListContent
+      summary: List content
+      x-summary-source: derived
+components:
+  schemas:
+    content.v1.content:
+      type: object
+      properties:
+        date_created:
+          type:
+          - string
+          - 'null'
+          format: date-time
+          description: The date and time in GMT that the resource was created specified in [RFC 2822](https://www.ietf.org/rfc/rfc2822.txt) format.
+        date_updated:
+          type:
+          - string
+          - 'null'
+          format: date-time
+          description: The date and time in GMT that the resource was last updated specified in [RFC 2822](https://www.ietf.org/rfc/rfc2822.txt) format.
+        sid:
+          type:
+          - string
+          - 'null'
+          minLength: 34
+          maxLength: 34
+          pattern: ^HX[0-9a-fA-F]{32}$
+          description: The unique string that that we created to identify the Content resource.
+        account_sid:
+          type:
+          - string
+          - 'null'
+          minLength: 34
+          maxLength: 34
+          pattern: ^AC[0-9a-fA-F]{32}$
+          description: The SID of the [Account](https://www.twilio.com/docs/usage/api/account) that created Content resource.
+        friendly_name:
+          type:
+          - string
+          - 'null'
+          description: A string name used to describe the Content resource. Not visible to the end recipient.
+        language:
+          type:
+          - string
+          - 'null'
+          description: Two-letter (ISO 639-1) language code (e.g., en) identifying the language the Content resource is in.
+        variables:
+          type:
+          - object
+          - 'null'
+          description: 'Defines the default placeholder values for variables included in the Content resource. e.g. {"1": "Customer_Name"}.'
+        types:
+          type:
+          - object
+          - 'null'
+          description: The [Content types](https://www.twilio.com/docs/content/content-types-overview) (e.g. twilio/text) for this Content resource.
+        url:
+          type:
+          - string
+          - 'null'
+          format: uri
+          description: The URL of the resource, relative to `https://content.twilio.com`.
+        links:
+          type:
+          - object
+          - 'null'
+          format: uri-map
+          description: A list of links related to the Content resource, such as approval_fetch and approval_create
+  securitySchemes:
+    accountSid_authToken:
+      scheme: basic
+      type: http

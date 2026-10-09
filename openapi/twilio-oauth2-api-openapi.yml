@@ -1,0 +1,493 @@
+openapi: 3.2.0
+info:
+  title: Twilio - Iam Oauth2 API
+  description: This is the public Twilio REST API.
+  termsOfService: https://www.twilio.com/legal/tos
+  contact:
+    name: Twilio Support
+    url: https://support.twilio.com
+    email: support@twilio.com
+  license:
+    name: Apache 2.0
+    url: https://www.apache.org/licenses/LICENSE-2.0.html
+  version: 1.0.0
+  x-twilio:
+    apiStandards: v0.1
+servers:
+- url: https://iam.twilio.com
+security:
+- accountSid_authToken: []
+tags:
+- name: OAuth2
+paths:
+  /v1/Account/OAuthApps/{sid}:
+    servers:
+    - url: https://iam.twilio.com
+    put:
+      summary: Updates an existing OAuth app for the given OauthAppSid
+      operationId: UpdateOauthAppAccount
+      tags:
+      - OAuth2
+      parameters:
+      - name: sid
+        in: path
+        required: true
+        description: Unique ID (sid) of the OAuth app
+        schema:
+          type: string
+          pattern: ^OQ[a-zA-Z0-9]{32}$
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/iam.v1.account.VendorOauthAppUpdateRequest'
+        required: true
+      responses:
+        '200':
+          description: Returns updated vendor oauthApp
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/iam.v1.account.VendorOauthAppCreateUpdateResponse'
+        '400':
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    description: Twilio-specific error code
+                    type: integer
+                    format: int32
+                  message:
+                    description: Error message
+                    type: string
+                  more_info:
+                    description: Link to Error Code References
+                    type: string
+                  status:
+                    description: HTTP response status code
+                    type: integer
+                    format: int32
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    description: Twilio-specific error code
+                    type: integer
+                    format: int32
+                  message:
+                    description: Error message
+                    type: string
+                  more_info:
+                    description: Link to Error Code References
+                    type: string
+                  status:
+                    description: HTTP response status code
+                    type: integer
+                    format: int32
+        '403':
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    description: Twilio-specific error code
+                    type: integer
+                    format: int32
+                  message:
+                    description: Error message
+                    type: string
+                  more_info:
+                    description: Link to Error Code References
+                    type: string
+                  status:
+                    description: HTTP response status code
+                    type: integer
+                    format: int32
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    description: Twilio-specific error code
+                    type: integer
+                    format: int32
+                  message:
+                    description: Error message
+                    type: string
+                  more_info:
+                    description: Link to Error Code References
+                    type: string
+                  status:
+                    description: HTTP response status code
+                    type: integer
+                    format: int32
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    description: Twilio-specific error code
+                    type: integer
+                    format: int32
+                  message:
+                    description: Error message
+                    type: string
+                  more_info:
+                    description: Link to Error Code References
+                    type: string
+                  status:
+                    description: HTTP response status code
+                    type: integer
+                    format: int32
+    delete:
+      summary: Deletes an oauth app for the given AccountSid
+      operationId: DeleteOauthAppAccount
+      tags:
+      - OAuth2
+      parameters:
+      - name: sid
+        in: path
+        required: true
+        description: Unique ID (sid) of the OAuth app
+        schema:
+          type: string
+          pattern: ^OQ[a-zA-Z0-9]{32}$
+      responses:
+        '204':
+          description: Successfully deleted the OAuth app. No content returned.
+        '400':
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    description: Twilio-specific error code
+                    type: integer
+                    format: int32
+                  message:
+                    description: Error message
+                    type: string
+                  more_info:
+                    description: Link to Error Code References
+                    type: string
+                  status:
+                    description: HTTP response status code
+                    type: integer
+                    format: int32
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    description: Twilio-specific error code
+                    type: integer
+                    format: int32
+                  message:
+                    description: Error message
+                    type: string
+                  more_info:
+                    description: Link to Error Code References
+                    type: string
+                  status:
+                    description: HTTP response status code
+                    type: integer
+                    format: int32
+        '403':
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    description: Twilio-specific error code
+                    type: integer
+                    format: int32
+                  message:
+                    description: Error message
+                    type: string
+                  more_info:
+                    description: Link to Error Code References
+                    type: string
+                  status:
+                    description: HTTP response status code
+                    type: integer
+                    format: int32
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    description: Twilio-specific error code
+                    type: integer
+                    format: int32
+                  message:
+                    description: Error message
+                    type: string
+                  more_info:
+                    description: Link to Error Code References
+                    type: string
+                  status:
+                    description: HTTP response status code
+                    type: integer
+                    format: int32
+  /v1/Account/OAuthApps:
+    servers:
+    - url: https://iam.twilio.com
+    post:
+      summary: Creates an oauth app for the given AccountSid
+      operationId: CreateOauthAppAccount
+      tags:
+      - OAuth2
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/iam.v1.account.VendorOauthAppCreateRequest'
+        required: true
+      responses:
+        '201':
+          description: Returns newly created vendor oauthApp
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/iam.v1.account.VendorOauthAppCreateUpdateResponse'
+        '400':
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    description: Twilio-specific error code
+                    type: integer
+                    format: int32
+                  message:
+                    description: Error message
+                    type: string
+                  more_info:
+                    description: Link to Error Code References
+                    type: string
+                  status:
+                    description: HTTP response status code
+                    type: integer
+                    format: int32
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    description: Twilio-specific error code
+                    type: integer
+                    format: int32
+                  message:
+                    description: Error message
+                    type: string
+                  more_info:
+                    description: Link to Error Code References
+                    type: string
+                  status:
+                    description: HTTP response status code
+                    type: integer
+                    format: int32
+        '403':
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    description: Twilio-specific error code
+                    type: integer
+                    format: int32
+                  message:
+                    description: Error message
+                    type: string
+                  more_info:
+                    description: Link to Error Code References
+                    type: string
+                  status:
+                    description: HTTP response status code
+                    type: integer
+                    format: int32
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    description: Twilio-specific error code
+                    type: integer
+                    format: int32
+                  message:
+                    description: Error message
+                    type: string
+                  more_info:
+                    description: Link to Error Code References
+                    type: string
+                  status:
+                    description: HTTP response status code
+                    type: integer
+                    format: int32
+components:
+  schemas:
+    iam.v1.account.VendorOauthAppCreateRequest:
+      type: object
+      properties:
+        type:
+          type: string
+        friendly_name:
+          type: string
+        owner_sid:
+          type:
+          - string
+          - 'null'
+          minLength: 34
+          maxLength: 34
+          pattern: ^[A-Z]{2}[0-9a-fA-F]{32}$
+        description:
+          type: string
+        client_sid:
+          type:
+          - string
+          - 'null'
+          minLength: 34
+          maxLength: 34
+          pattern: ^OQ[0-9a-fA-F]{32}$
+        token_endpoint_auth_method:
+          type: string
+          enum:
+          - client_secret_basic
+          description: Determines how the client authenticates. Account OAuth apps on v1 only support 'client_secret_basic'. For PKCE (none), use the v2 API.
+        policy:
+          type: object
+          properties:
+            allow:
+              type: array
+              items:
+                type: string
+              description: Set of permissions explicitly allowed
+            deny:
+              type: array
+              items:
+                type: string
+              description: Set of permissions explicitly denied
+        access_token_ttl:
+          type: integer
+    iam.v1.account.VendorOauthAppUpdateRequest:
+      type: object
+      properties:
+        type:
+          type:
+          - string
+          - 'null'
+        friendly_name:
+          type:
+          - string
+          - 'null'
+        description:
+          type:
+          - string
+          - 'null'
+        policy:
+          type:
+          - object
+          - 'null'
+          properties:
+            allow:
+              type: array
+              items:
+                type: string
+              description: Set of permissions explicitly allowed
+            deny:
+              type: array
+              items:
+                type: string
+              description: Set of permissions explicitly denied
+        access_token_ttl:
+          type:
+          - integer
+          - 'null'
+    iam.v1.account.VendorOauthAppCreateUpdateResponse:
+      type: object
+      properties:
+        type:
+          type: string
+        sid:
+          type: string
+          pattern: ^OQ[a-zA-Z0-9]{32}$
+        friendly_name:
+          type: string
+        description:
+          type: string
+        date_created:
+          type: string
+          format: date-time
+        created_by:
+          type: string
+        creator_sid:
+          type: string
+          pattern: ^US[0-9a-fA-F]{32}$
+          description: The unique identifier (SID) of the user who created this OAuth app.
+        secret:
+          type: string
+        status:
+          type: string
+        policy:
+          type: object
+          properties:
+            allow:
+              type: array
+              items:
+                type: string
+              description: Set of permissions explicitly allowed
+            deny:
+              type: array
+              items:
+                type: string
+              description: Set of permissions explicitly denied
+        access_token_ttl:
+          type: integer
+  securitySchemes:
+    accountSid_authToken:
+      scheme: basic
+      type: http
+    access_token_bearer:
+      type: http
+      scheme: bearer
+      bearerFormat: access_token
+    m2mOauth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+      description: M2M Access Token

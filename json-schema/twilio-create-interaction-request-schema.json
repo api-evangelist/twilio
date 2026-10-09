@@ -1,0 +1,73 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/api-evangelist/twilio/main/json-schema/twilio-create-interaction-request-schema.json",
+  "title": "CreateInteractionRequest",
+  "x-generated": "2026-10-08",
+  "x-method": "derived",
+  "x-generator": "derive-json-schema.py",
+  "x-source": "openapi/twilio-interactions-api-openapi.yml#/components/schemas/CreateInteractionRequest",
+  "type": "object",
+  "required": [
+    "channel",
+    "routing"
+  ],
+  "properties": {
+    "channel": {
+      "type": "object",
+      "required": [
+        "type",
+        "initiated_by",
+        "properties"
+      ],
+      "properties": {
+        "type": {
+          "type": "string",
+          "enum": [
+            "sms",
+            "voice",
+            "email",
+            "chat",
+            "whatsapp",
+            "facebook",
+            "gbm"
+          ]
+        },
+        "initiated_by": {
+          "type": "string",
+          "enum": [
+            "agent",
+            "customer"
+          ]
+        },
+        "properties": {
+          "type": "object"
+        }
+      }
+    },
+    "routing": {
+      "type": "object",
+      "required": [
+        "properties"
+      ],
+      "properties": {
+        "properties": {
+          "type": "object",
+          "properties": {
+            "workspace_sid": {
+              "type": "string"
+            },
+            "workflow_sid": {
+              "type": "string"
+            },
+            "task_channel_unique_name": {
+              "type": "string"
+            },
+            "attributes": {
+              "type": "object"
+            }
+          }
+        }
+      }
+    }
+  }
+}

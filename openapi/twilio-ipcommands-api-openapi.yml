@@ -148,11 +148,11 @@ paths:
       x-summary-source: derived
 components:
   schemas:
-    ip_command_enum_payload_type:
+    ip_command_enum_direction:
       type: string
       enum:
-      - text
-      - binary
+      - to_sim
+      - from_sim
     ListIpCommandResponse:
       type: object
       properties:
@@ -185,6 +185,13 @@ components:
               format: uri
             key:
               type: string
+    ip_command_enum_status:
+      type: string
+      enum:
+      - queued
+      - sent
+      - received
+      - failed
     CreateIpCommandRequest:
       type: object
       required:
@@ -220,13 +227,6 @@ components:
           - PUT
           - DELETE
           description: The HTTP method we should use to call `callback_url`. Can be `GET` or `POST`, and the default is `POST`.
-    ip_command_enum_status:
-      type: string
-      enum:
-      - queued
-      - sent
-      - received
-      - failed
     supersim.v1.ip_command:
       type: object
       properties:
@@ -320,11 +320,11 @@ components:
           - 'null'
           format: uri
           description: The absolute URL of the IP Command resource.
-    ip_command_enum_direction:
+    ip_command_enum_payload_type:
       type: string
       enum:
-      - to_sim
-      - from_sim
+      - text
+      - binary
   securitySchemes:
     accountSid_authToken:
       type: http

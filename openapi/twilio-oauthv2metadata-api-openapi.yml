@@ -1,0 +1,88 @@
+openapi: 3.2.0
+info:
+  title: User OAuth OAUTH V2Metadata API
+  description: User OAuth API
+  termsOfService: https://www.twilio.com/legal/tos
+  contact:
+    name: Twilio Support
+    url: https://support.twilio.com
+    email: support@twilio.com
+  license:
+    name: Apache 2.0
+    url: https://www.apache.org/licenses/LICENSE-2.0.html
+  version: 1.0.0
+  x-twilio:
+    apiStandards: v0.1
+servers:
+- url: https://oauth.twilio.com
+security:
+- accountSid_authToken: []
+tags:
+- name: OauthV2Metadata
+paths:
+  /.well-known/oauth-authorization-server:
+    servers:
+    - url: https://oauth.twilio.com
+    description: RFC 8414 OAuth 2.0 Authorization Server Metadata
+    get:
+      operationId: FetchOauth2ServerMetadata
+      description: Returns RFC 8414 Authorization Server Metadata for oauth.twilio.com
+      summary: OAuth 2.0 Authorization Server Metadata
+      security: []
+      tags:
+      - OauthV2Metadata
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  issuer:
+                    type: string
+                    format: uri
+                  authorization_endpoint:
+                    type: string
+                    format: uri
+                  token_endpoint:
+                    type: string
+                    format: uri
+                  response_types_supported:
+                    type: array
+                    items:
+                      type: string
+                      enum:
+                      - code
+                  grant_types_supported:
+                    type: array
+                    items:
+                      type: string
+                      enum:
+                      - authorization_code
+                      - client_credentials
+                      - refresh_token
+                  code_challenge_methods_supported:
+                    type: array
+                    items:
+                      type: string
+                      enum:
+                      - S256
+                  token_endpoint_auth_methods_supported:
+                    type: array
+                    items:
+                      type: string
+                      enum:
+                      - client_secret_post
+                      - none
+components:
+  securitySchemes:
+    accountSid_authToken:
+      scheme: basic
+      type: http
+    v2_oauth2_client_credentials:
+      type: oauth2
+      flows:
+        clientCredentials:
+          tokenUrl: https://oauth.twilio.com/v2/token
+          scopes: {}

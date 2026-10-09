@@ -1,0 +1,283 @@
+openapi: 3.2.0
+info:
+  title: Twilio Conversational Intelligence Rule Executions API
+  description: The Conversational Intelligence API includes resources to create and manage intelligence configurations, define and run language operators, and retrieve processed conversations and operator results.
+  termsOfService: https://www.twilio.com/legal/tos
+  contact:
+    name: Twilio Support
+    url: https://support.twilio.com
+    email: support@twilio.com
+  license:
+    name: Apache 2.0
+    url: https://www.apache.org/licenses/LICENSE-2.0.html
+  version: v3
+  x-twilio:
+    apiStandards: v1.0
+servers:
+- url: https://intelligence.twilio.com
+  description: Twilio Intelligence API
+security:
+- basic_apikey_or_accountsid: []
+tags:
+- name: RuleExecutions
+  description: Manual execution of rules on a conversation.
+paths:
+  /v3/RuleExecutions:
+    x-twilio:
+      pathType: list
+    post:
+      tags:
+      - RuleExecutions
+      summary: On-demand Rule execution
+      description: Resolves the given configuration, rule, and conversation, derives the memoryStoreId from the conversation's configuration. Then executes the rule on the conversation. Optionally, `rule.operators[]` can be provided to override specific operator parameters for this execution only; the stored rule configuration is not modified.
+      operationId: CreateRuleExecution
+      security:
+      - basic_apikey_or_accountsid: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+              - intelligenceConfigurationId
+              - ruleId
+              - conversationId
+              properties:
+                intelligenceConfigurationId:
+                  allOf:
+                  - $ref: '#/components/schemas/IntelligenceConfigurationTtid'
+                  description: The Intelligence Configuration identifier to execute the Rule within.
+                ruleId:
+                  allOf:
+                  - $ref: '#/components/schemas/IntelligenceConfigurationRuleTtid'
+                  description: The rule identifier to execute within the selected Intelligence Configuration.
+                conversationId:
+                  allOf:
+                  - $ref: '#/components/schemas/ConversationTtid'
+                  description: The Conversation identifier to execute the Rule against.
+                rule:
+                  $ref: '#/components/schemas/RuleOverride'
+      responses:
+        '202':
+          description: Rule execution queued.
+        '400':
+          description: 'The request is malformed: the request body fails schema validation (a required field is missing, or a field does not match its expected pattern) or the request body is not valid JSON. For RuleExecutions creation with `rule` overrides: `rule.operators` is missing, an operator `id` in `rule.operators` does not exist in the stored rule, a parameter name is not defined by the operator, a parameter value provided for an operator override is invalid for that parameter, or a required parameter with no default is left blank.
+
+            '
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    description: Twilio-specific error code
+                    type: integer
+                    format: int32
+                  message:
+                    description: A human readable error message
+                    type: string
+                  httpStatusCode:
+                    description: HTTP response status code
+                    type: integer
+                    format: int32
+                  userError:
+                    description: Whether the error is a user error (true) or a system error (false)
+                    type: boolean
+                  params:
+                    description: A map of parameters related to the error, for example, a `params.twilioErrorCodeUrl` might hold a URL or link to additional information
+                    type: object
+                    additionalProperties:
+                      type: string
+                required:
+                - code
+                - message
+                - httpStatusCode
+        '404':
+          description: 'For RuleExecutions creation: the intelligenceConfigurationId does not resolve to an existing Intelligence Configuration, the ruleId does not exist within that configuration, or the conversationId does not resolve to an existing conversation.
+
+            '
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    description: Twilio-specific error code
+                    type: integer
+                    format: int32
+                  message:
+                    description: A human readable error message
+                    type: string
+                  httpStatusCode:
+                    description: HTTP response status code
+                    type: integer
+                    format: int32
+                  userError:
+                    description: Whether the error is a user error (true) or a system error (false)
+                    type: boolean
+                  params:
+                    description: A map of parameters related to the error, for example, a `params.twilioErrorCodeUrl` might hold a URL or link to additional information
+                    type: object
+                    additionalProperties:
+                      type: string
+                required:
+                - code
+                - message
+                - httpStatusCode
+        '422':
+          description: 'The request references valid resources, but the request cannot be processed as given. For RuleExecutions creation: the configuration and conversation resolved successfully, but no memoryStoreId could be derived from the conversation''s configuration, so the rule execution cannot be built.
+
+            '
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    description: Twilio-specific error code
+                    type: integer
+                    format: int32
+                  message:
+                    description: A human readable error message
+                    type: string
+                  httpStatusCode:
+                    description: HTTP response status code
+                    type: integer
+                    format: int32
+                  userError:
+                    description: Whether the error is a user error (true) or a system error (false)
+                    type: boolean
+                  params:
+                    description: A map of parameters related to the error, for example, a `params.twilioErrorCodeUrl` might hold a URL or link to additional information
+                    type: object
+                    additionalProperties:
+                      type: string
+                required:
+                - code
+                - message
+                - httpStatusCode
+        '429':
+          description: 'The Account has exceeded the allowed request rate for this endpoint. The X-RateLimit-Reset header indicates when the rate limit window resets.
+
+            '
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    description: Twilio-specific error code
+                    type: integer
+                    format: int32
+                  message:
+                    description: A human readable error message
+                    type: string
+                  httpStatusCode:
+                    description: HTTP response status code
+                    type: integer
+                    format: int32
+                  userError:
+                    description: Whether the error is a user error (true) or a system error (false)
+                    type: boolean
+                  params:
+                    description: A map of parameters related to the error, for example, a `params.twilioErrorCodeUrl` might hold a URL or link to additional information
+                    type: object
+                    additionalProperties:
+                      type: string
+                required:
+                - code
+                - message
+                - httpStatusCode
+          headers:
+            X-RateLimit-Limit:
+              schema:
+                type: string
+            X-RateLimit-Remaining:
+              schema:
+                type: string
+            X-RateLimit-Reset:
+              schema:
+                type: string
+        '500':
+          description: 'An unexpected error prevented the request from being processed. For RuleExecutions creation, this includes failures resolving the configuration, rule, or conversation that are not classified as not-found errors.
+
+            '
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    description: Twilio-specific error code
+                    type: integer
+                    format: int32
+                  message:
+                    description: A human readable error message
+                    type: string
+                  httpStatusCode:
+                    description: HTTP response status code
+                    type: integer
+                    format: int32
+                  userError:
+                    description: Whether the error is a user error (true) or a system error (false)
+                    type: boolean
+                  params:
+                    description: A map of parameters related to the error, for example, a `params.twilioErrorCodeUrl` might hold a URL or link to additional information
+                    type: object
+                    additionalProperties:
+                      type: string
+                required:
+                - code
+                - message
+                - httpStatusCode
+components:
+  schemas:
+    ConversationTtid:
+      type: string
+      pattern: ^conv_conversation_[0-7][0-9a-z]{25}$
+      description: The `id` of the Conversation attached to the Operator Result.
+      example: conv_conversation_01k1etk2y5f1y9fpe2epfdtvv2
+    IntelligenceConfigurationTtid:
+      type: string
+      pattern: ^intelligence_configuration_[0-7][0-9a-z]{25}$
+      description: Unique identifier for a Intelligence Configuration that generated the Operator Result. Assigned by Twilio (TTID).
+      example: intelligence_configuration_01k6fc25s7epm9qtk8rszbv3q5
+    OperatorOverride:
+      type: object
+      required:
+      - id
+      - parameters
+      properties:
+        id:
+          type: string
+          description: The operator id (as configured in the stored rule) to override.
+        parameters:
+          type: object
+          description: Parameter overrides merged into the stored operator's parameters.
+          additionalProperties: true
+    RuleOverride:
+      type: object
+      description: 'Optional per-execution overrides applied to the stored rule before execution. When omitted, the stored rule executes unchanged. Only operators[].parameters is overridable; any other field is not part of this schema and is ignored.
+
+        '
+      required:
+      - operators
+      properties:
+        operators:
+          type: array
+          description: 'Operator parameter overrides, merged key-by-key into the stored operator''s parameters (override wins on matching keys; unspecified keys retain their stored values). Operators in the stored rule not referenced here execute with their stored parameters unchanged.
+
+            '
+          items:
+            $ref: '#/components/schemas/OperatorOverride'
+    IntelligenceConfigurationRuleTtid:
+      type: string
+      pattern: ^intelligence_configurationrule_[0-7][0-9a-z]{25}$
+      description: Unique identifier of the rule of the Intelligence Configuration that triggered the result. Assigned by Twilio (TTID).
+      example: intelligence_configurationrule_01k6fc25s7epm9qtk8rszbv3q6
+  securitySchemes:
+    basic_apikey_or_accountsid:
+      scheme: basic
+      type: http
+      description: This API uses [basic authentication](https://www.twilio.com/docs/glossary/what-is-basic-authentication). Use an [API key](https://www.twilio.com/docs/iam/api-keys) as the username and the API key secret as the password. You can also use your account SID and auth token, but limit their use to local testing.

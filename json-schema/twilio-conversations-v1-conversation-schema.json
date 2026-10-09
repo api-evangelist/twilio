@@ -1,0 +1,145 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/api-evangelist/twilio/main/json-schema/twilio-conversations-v1-conversation-schema.json",
+  "title": "conversations.v1.conversation",
+  "x-generated": "2026-10-08",
+  "x-method": "derived",
+  "x-generator": "derive-json-schema.py",
+  "x-source": "openapi/twilio-conversations-api-openapi.yml#/components/schemas/conversations.v1.conversation",
+  "type": "object",
+  "properties": {
+    "account_sid": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "minLength": 34,
+      "maxLength": 34,
+      "pattern": "^AC[0-9a-fA-F]{32}$",
+      "description": "The unique ID of the [Account](https://www.twilio.com/docs/iam/api/account) responsible for this conversation."
+    },
+    "chat_service_sid": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "minLength": 34,
+      "maxLength": 34,
+      "pattern": "^IS[0-9a-fA-F]{32}$",
+      "description": "The unique ID of the [Conversation Service](https://www.twilio.com/docs/conversations/api/service-resource) this conversation belongs to."
+    },
+    "messaging_service_sid": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "minLength": 34,
+      "maxLength": 34,
+      "pattern": "^MG[0-9a-fA-F]{32}$",
+      "description": "The unique ID of the [Messaging Service](https://www.twilio.com/docs/messaging/api/service-resource) this conversation belongs to."
+    },
+    "sid": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "minLength": 34,
+      "maxLength": 34,
+      "pattern": "^CH[0-9a-fA-F]{32}$",
+      "description": "A 34 character string that uniquely identifies this resource."
+    },
+    "friendly_name": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "description": "The human-readable name of this conversation, limited to 256 characters. Optional.",
+      "x-twilio": {
+        "pii": {
+          "handling": "standard",
+          "deleteSla": 30
+        }
+      }
+    },
+    "unique_name": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "description": "An application-defined string that uniquely identifies the resource. It can be used to address the resource in place of the resource's `sid` in the URL.",
+      "x-twilio": {
+        "pii": {
+          "handling": "standard",
+          "deleteSla": 30
+        }
+      }
+    },
+    "attributes": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "description": "An optional string metadata field you can use to store any data you wish. The string value must contain structurally valid JSON if specified.  **Note** that if the attributes are not set \"{}\" will be returned.",
+      "x-twilio": {
+        "pii": {
+          "handling": "sensitive",
+          "deleteSla": 30
+        }
+      }
+    },
+    "state": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "$ref": "#/$defs/conversation_enum_state",
+      "description": "Current state of this conversation. Can be either `active`, `inactive` or `closed` and defaults to `active`"
+    },
+    "date_created": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "format": "date-time",
+      "description": "The date that this resource was created."
+    },
+    "date_updated": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "format": "date-time",
+      "description": "The date that this resource was last updated."
+    },
+    "timers": {
+      "description": "Timer date values representing state update for this conversation."
+    },
+    "url": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "format": "uri",
+      "description": "An absolute API resource URL for this conversation."
+    },
+    "links": {
+      "type": [
+        "object",
+        "null"
+      ],
+      "format": "uri-map",
+      "description": "Contains absolute URLs to access the [participants](https://www.twilio.com/docs/conversations/api/conversation-participant-resource), [messages](https://www.twilio.com/docs/conversations/api/conversation-message-resource) and [webhooks](https://www.twilio.com/docs/conversations/api/conversation-scoped-webhook-resource) of this conversation."
+    },
+    "bindings": {}
+  },
+  "$defs": {
+    "conversation_enum_state": {
+      "type": "string",
+      "enum": [
+        "inactive",
+        "active",
+        "closed"
+      ]
+    }
+  }
+}

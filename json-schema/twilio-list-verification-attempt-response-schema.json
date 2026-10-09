@@ -1,0 +1,162 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/api-evangelist/twilio/main/json-schema/twilio-list-verification-attempt-response-schema.json",
+  "title": "ListVerificationAttemptResponse",
+  "x-generated": "2026-10-08",
+  "x-method": "derived",
+  "x-generator": "derive-json-schema.py",
+  "x-source": "openapi/twilio-attempts-api-openapi.yml#/components/schemas/ListVerificationAttemptResponse",
+  "type": "object",
+  "properties": {
+    "attempts": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/verify.v2.verification_attempt"
+      }
+    },
+    "meta": {
+      "type": "object",
+      "properties": {
+        "first_page_url": {
+          "type": "string",
+          "format": "uri"
+        },
+        "next_page_url": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "format": "uri"
+        },
+        "page": {
+          "type": "integer"
+        },
+        "page_size": {
+          "type": "integer"
+        },
+        "previous_page_url": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "format": "uri"
+        },
+        "url": {
+          "type": "string",
+          "format": "uri"
+        },
+        "key": {
+          "type": "string"
+        }
+      }
+    }
+  },
+  "$defs": {
+    "verification_attempt_enum_channels": {
+      "type": "string",
+      "enum": [
+        "sms",
+        "call",
+        "email",
+        "whatsapp"
+      ]
+    },
+    "verification_attempt_enum_conversion_status": {
+      "type": "string",
+      "enum": [
+        "converted",
+        "unconverted"
+      ]
+    },
+    "verify.v2.verification_attempt": {
+      "type": "object",
+      "properties": {
+        "sid": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "minLength": 34,
+          "maxLength": 34,
+          "pattern": "^VL[0-9a-fA-F]{32}$",
+          "description": "The SID that uniquely identifies the verification attempt resource."
+        },
+        "account_sid": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "minLength": 34,
+          "maxLength": 34,
+          "pattern": "^AC[0-9a-fA-F]{32}$",
+          "description": "The SID of the [Account](https://www.twilio.com/docs/iam/api/account) that created the Verification resource."
+        },
+        "service_sid": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "minLength": 34,
+          "maxLength": 34,
+          "pattern": "^VA[0-9a-fA-F]{32}$",
+          "description": "The SID of the [Service](https://www.twilio.com/docs/verify/api/service) used to generate the attempt."
+        },
+        "verification_sid": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "minLength": 34,
+          "maxLength": 34,
+          "pattern": "^VE[0-9a-fA-F]{32}$",
+          "description": "The SID of the [Verification](https://www.twilio.com/docs/verify/api/verification) that generated the attempt."
+        },
+        "date_created": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "format": "date-time",
+          "description": "The date that this Attempt was created, given in [ISO 8601](https://en.wikipedia.org/wiki/ISO_8601) format."
+        },
+        "date_updated": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "format": "date-time",
+          "description": "The date that this Attempt was updated, given in [ISO 8601](https://en.wikipedia.org/wiki/ISO_8601) format."
+        },
+        "conversion_status": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "$ref": "#/$defs/verification_attempt_enum_conversion_status",
+          "description": "A string specifying the conversion status of the verification. A conversion happens when the user is able to provide the correct code. Possible values are `CONVERTED` and `UNCONVERTED`."
+        },
+        "channel": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "$ref": "#/$defs/verification_attempt_enum_channels",
+          "description": "A string specifying the communication channel used for the verification attempt. i.e SMS, CALL, etc."
+        },
+        "price": {
+          "description": "An object containing the charge for this verification attempt related to the channel costs and the currency used. The costs related to the succeeded verifications are not included. May not be immediately available. More information on pricing is available [here](https://www.twilio.com/en-us/verify/pricing)."
+        },
+        "channel_data": {
+          "description": "An object containing the channel specific information for an attempt."
+        },
+        "url": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "format": "uri"
+        }
+      }
+    }
+  }
+}

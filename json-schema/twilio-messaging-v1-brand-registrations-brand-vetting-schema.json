@@ -1,0 +1,103 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/api-evangelist/twilio/main/json-schema/twilio-messaging-v1-brand-registrations-brand-vetting-schema.json",
+  "title": "messaging.v1.brand_registrations.brand_vetting",
+  "x-generated": "2026-10-08",
+  "x-method": "derived",
+  "x-generator": "derive-json-schema.py",
+  "x-source": "openapi/twilio-a2p-api-openapi.yml#/components/schemas/messaging.v1.brand_registrations.brand_vetting",
+  "type": "object",
+  "properties": {
+    "account_sid": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "minLength": 34,
+      "maxLength": 34,
+      "pattern": "^AC[0-9a-fA-F]{32}$",
+      "description": "The SID of the [Account](https://www.twilio.com/docs/iam/api/account) that created the vetting record."
+    },
+    "brand_sid": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "minLength": 34,
+      "maxLength": 34,
+      "pattern": "^BN[0-9a-fA-F]{32}$",
+      "description": "The unique string to identify Brand Registration."
+    },
+    "brand_vetting_sid": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "minLength": 34,
+      "maxLength": 34,
+      "pattern": "^VT[0-9a-fA-F]{32}$",
+      "description": "The Twilio SID of the third-party vetting record."
+    },
+    "date_updated": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "format": "date-time",
+      "description": "The date and time in GMT when the resource was last updated specified in [ISO 8601](https://en.wikipedia.org/wiki/ISO_8601) format."
+    },
+    "date_created": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "format": "date-time",
+      "description": "The date and time in GMT when the resource was created specified in [ISO 8601](https://en.wikipedia.org/wiki/ISO_8601) format."
+    },
+    "vetting_id": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "description": "The unique identifier of the vetting from the third-party provider."
+    },
+    "vetting_class": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "description": "The type of vetting that has been conducted. One of “STANDARD” (Aegis) or “POLITICAL” (Campaign Verify)."
+    },
+    "vetting_status": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "description": "The status of the import vetting attempt. One of “PENDING,” “SUCCESS,” or “FAILED”."
+    },
+    "vetting_provider": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "$ref": "#/$defs/brand_vetting_enum_vetting_provider",
+      "description": "The third-party provider that has conducted the vetting. One of “CampaignVerify” (Campaign Verify tokens) or “AEGIS” (Secondary Vetting)."
+    },
+    "url": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "format": "uri",
+      "description": "The absolute URL of the Brand Vetting resource."
+    }
+  },
+  "$defs": {
+    "brand_vetting_enum_vetting_provider": {
+      "type": "string",
+      "enum": [
+        "campaign-verify"
+      ]
+    }
+  }
+}

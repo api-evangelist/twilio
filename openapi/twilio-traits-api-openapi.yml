@@ -1,0 +1,399 @@
+openapi: 3.2.0
+info:
+  title: Twilio Memory Traits API
+  description: APIs for managing memory stores, profiles, and conversational intelligence capabilities.
+  version: '1.0'
+  termsOfService: https://www.twilio.com/legal/tos
+  contact:
+    name: Twilio Support
+    url: https://support.twilio.com
+    email: support@twilio.com
+  license:
+    name: Apache 2.0
+    url: https://www.apache.org/licenses/LICENSE-2.0.html
+  x-twilio:
+    apiStandards: v1.0
+servers:
+- url: https://memory.twilio.com
+security:
+- accountSid_authToken: []
+tags:
+- name: Traits
+  description: Traits are key value pairs that store facts about a profile such as firstName, lastName, or dietaryRestrictions. Trait values can only be written to a profile if the trait definition already exists and assigned to a Trait Group. Trait names are normalized to lowerCamelCase naming conventions.
+paths:
+  /v1/Stores/{storeId}/Profiles/{profileId}/Traits:
+    servers:
+    - url: https://memory.twilio.com
+    parameters:
+    - $ref: '#/components/parameters/StoreId'
+    - $ref: '#/components/parameters/ProfileId'
+    x-twilio:
+      defaultOutputProperties:
+      - traits
+      pathType: list
+    get:
+      operationId: ListProfileTraits
+      summary: List Profile Traits
+      description: Return a paginated, optionally filtered list of individual traits for a profile (flattened view). This is useful for UIs or tools that need to browse trait metadata (names, groups, timestamps). Use the optional `traitGroups` filter to scope results and the paging parameters to iterate through larger sets.
+      tags:
+      - Traits
+      parameters:
+      - $ref: '#/components/parameters/PageSize'
+      - $ref: '#/components/parameters/PageToken'
+      - $ref: '#/components/parameters/OrderBy'
+      - $ref: '#/components/parameters/TraitGroupsQueryParam'
+      responses:
+        '200':
+          description: A list of traits.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  traits:
+                    type: array
+                    maxItems: 100
+                    items:
+                      $ref: '#/components/schemas/FullTrait'
+                  meta:
+                    allOf:
+                    - $ref: '#/components/schemas/ProfilesMeta'
+                    properties:
+                      key:
+                        example: traits
+                maxProperties: 2
+              examples:
+                All Traits:
+                  summary: All traits for a profile
+                  value:
+                    traits:
+                    - name: firstName
+                      value: Alyssa
+                      traitGroup: Contact
+                      timestamp: '2025-01-01T12:00:00Z'
+                    - name: lastName
+                      value: Mock
+                      traitGroup: Contact
+                      timestamp: '2025-01-01T12:00:00Z'
+                    - name: tier
+                      value: gold
+                      traitGroup: Loyalty
+                      timestamp: '2025-01-01T12:30:00Z'
+                    - name: points
+                      value: '1250'
+                      traitGroup: Loyalty
+                      timestamp: '2025-01-01T12:30:00Z'
+                    meta:
+                      pageSize: 4
+                Filtered by TraitGroup:
+                  summary: Traits filtered by traitGroups=Contact
+                  value:
+                    traits:
+                    - name: firstName
+                      value: Alyssa
+                      traitGroup: Contact
+                      timestamp: '2025-01-01T12:00:00Z'
+                    - name: lastName
+                      value: Mock
+                      traitGroup: Contact
+                      timestamp: '2025-01-01T12:00:00Z'
+                    - name: email
+                      value: alyssa.mock@example.com
+                      traitGroup: Contact
+                      timestamp: '2025-01-01T12:00:00Z'
+                    meta:
+                      pageSize: 3
+          headers:
+            Canonical-Profile-Id:
+              $ref: '#/components/headers/Canonical-Profile-Id'
+        '301':
+          $ref: '#/components/responses/MovedPermanently'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '429':
+          $ref: '#/components/responses/TooManyRequests'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+        '503':
+          $ref: '#/components/responses/ServiceUnavailable'
+components:
+  schemas:
+    FullTrait:
+      type: object
+      title: Full Trait
+      description: Full metadata about a trait, beyond the name value pair.
+      additionalProperties: false
+      maxProperties: 4
+      required:
+      - name
+      - traitGroup
+      properties:
+        name:
+          type: string
+          description: The name of the trait.
+          example: firstName
+          maxLength: 64
+        value:
+          $ref: '#/components/schemas/TraitValue'
+        traitGroup:
+          type: string
+          description: The trait group name to which this trait belongs.
+          example: Contact
+          maxLength: 64
+        timestamp:
+          type: string
+          format: date-time
+          description: The time the trait was created or last updated.
+          example: '2025-01-01T12:00:00Z'
+    TwilioError:
+      type: object
+      additionalProperties: false
+      maxProperties: 10
+      description: A generic error object communicating client and server side API errors.
+      properties:
+        code:
+          type: integer
+          minimum: 100
+          maximum: 999999
+          description: The Twilio error code.
+          format: int32
+        message:
+          type: string
+          maxLength: 1024
+          description: A human readable message describing the error.
+        more_info:
+          type: string
+          description: A URL to a [Twilio error directory](https://www.twilio.com/docs/api/errors) page with more information about the error code.
+        status:
+          type: integer
+          minimum: 100
+          maximum: 599
+          description: The HTTP status code for the error.
+          format: int32
+      example:
+        code: 21614
+        message: The address specified in the request is not a valid phone number.
+        more_info: https://www.twilio.com/docs/api/errors/21614
+        status: 400
+    TraitValue:
+      description: The value of a trait. Can be a string, integer, boolean, or an array of these types (arrays cannot contain nested arrays).
+    ProfilesMeta:
+      type: object
+      maxProperties: 4
+      properties:
+        key:
+          type: string
+          maxLength: 64
+          description: 'The key of the list property contains the actual data items.
+
+            This enables programmatic iteration over paginated results.
+
+            '
+          example: profiles
+        pageSize:
+          type: integer
+          default: 50
+        nextToken:
+          type: string
+          example: eyJlYXN0ZXIiOiJlZ2cifQ
+          maxLength: 4096
+        previousToken:
+          type: string
+          example: eyJlYXN0ZXIiOiJlZ2cifQ
+          maxLength: 4096
+  parameters:
+    TraitGroupsQueryParam:
+      name: traitGroups
+      in: query
+      required: false
+      description: Comma separated list of trait group names to include.
+      schema:
+        type: string
+        minLength: 1
+        maxLength: 256
+        example: Contact
+    StoreId:
+      name: storeId
+      in: path
+      required: true
+      description: A unique Memory Store ID using Twilio Type ID (TTID) format
+      schema:
+        type: string
+        pattern: ^mem_(store|service)_[0-7][0-9a-z]{25}$
+        example: mem_store_00000000000000000000000000
+    ProfileId:
+      name: profileId
+      in: path
+      required: true
+      description: The unique identifier for the profile using Twilio Type ID (TTID) format.
+      schema:
+        type: string
+        pattern: ^mem_profile_[0-7][0-9a-z]{25}$
+        example: mem_profile_00000000000000000000000000
+    PageToken:
+      name: pageToken
+      in: query
+      required: false
+      description: The token for the page of results to retrieve.
+      schema:
+        type: string
+        maxLength: 4096
+    OrderBy:
+      name: orderBy
+      in: query
+      required: false
+      description: Either 'ASC' or 'DESC' to sort results ascending or descending respectively.
+      schema:
+        type: string
+        enum:
+        - ASC
+        - DESC
+        default: DESC
+    PageSize:
+      name: pageSize
+      in: query
+      required: false
+      description: The maximum number of items to return per page, maximum of 1000.
+      schema:
+        type: integer
+        default: 50
+        minimum: 1
+        maximum: 1000
+  responses:
+    InternalServerError:
+      description: Internal Server Error
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/TwilioError'
+          example:
+            code: 20500
+            message: Internal Server Error
+            more_info: https://www.twilio.com/docs/api/errors/20500
+            status: 500
+    Forbidden:
+      description: Forbidden
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/TwilioError'
+          example:
+            code: 403
+            message: Permission to access resource denied
+            more_info: https://www.twilio.com/docs/api/errors/403
+            status: 403
+    NotFound:
+      description: Not Found
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/TwilioError'
+          example:
+            code: 20404
+            message: Not Found
+            more_info: https://www.twilio.com/docs/api/errors/20404
+            status: 404
+    Unauthorized:
+      description: Unauthorized
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/TwilioError'
+          example:
+            code: 20003
+            message: Failed to complete request due to lack of authentication credentials
+            more_info: https://www.twilio.com/docs/api/errors/20003
+            status: 401
+    ServiceUnavailable:
+      description: Service Unavailable
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/TwilioError'
+          example:
+            code: 20503
+            message: Service Unavailable
+            more_info: https://www.twilio.com/docs/api/errors/20503
+            status: 503
+    TooManyRequests:
+      description: This error indicates that you have sent too many requests to the API. You should retry according to the `Retry-After` response header.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/TwilioError'
+          example:
+            code: 20429
+            message: Too many requests. Please retry according to the Retry-After response header.
+            more_info: https://www.twilio.com/docs/api/errors/20429
+            status: 429
+      headers:
+        Retry-After:
+          description: The amount of time in seconds that the customer should wait before issuing a new request towards the API.
+          schema:
+            type: string
+            pattern: ^[0-9]+$
+    MovedPermanently:
+      description: This resource has moved.
+      content:
+        application/json:
+          schema:
+            type: object
+            required:
+            - message
+            - uri
+            properties:
+              message:
+                type: string
+                default: This resource has moved.
+                example: This resource has moved.
+                maxLength: 255
+              uri:
+                type: string
+                example: https://memory.twilio.com/v1/Stores/mem_store_00000000000000000000000000/Profiles/mem_profile_00000000000000000000000000
+                maxLength: 2048
+            maxProperties: 2
+      headers:
+        Canonical-Profile-Id:
+          $ref: '#/components/headers/Canonical-Profile-Id'
+        Location:
+          $ref: '#/components/headers/Location'
+    BadRequest:
+      description: Bad Request
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/TwilioError'
+          example:
+            code: 400
+            message: Failed to complete request due to a bad request
+            more_info: https://www.twilio.com/docs/api/errors/400
+            status: 400
+  headers:
+    Location:
+      description: The URL of the new location for the resource.
+      schema:
+        type: string
+        format: uri
+        example: https:///memory.twilio.com/v1/Stores/mem_store_00000000000000000000000000/Profiles/mem_profile_00000000000000000000000000
+        description: The URL of the new location for the resource.
+    Canonical-Profile-Id:
+      description: The canonical profile ID associated with the requested resource. If provided, this header indicates that the requested profile is merged to the canonical profile ID.
+      schema:
+        type: string
+        pattern: ^mem_profile_[0-7][0-9a-z]{25}$
+        example: mem_profile_00000000000000000000000000
+        description: The canonical profile ID.
+  securitySchemes:
+    basic_apikey_or_accountsid:
+      scheme: basic
+      type: http
+      description: This API uses [basic authentication](https://www.twilio.com/docs/glossary/what-is-basic-authentication). Use an [API key](https://www.twilio.com/docs/iam/api-keys) as the username and the API key secret as the password. You can also use your account SID and auth token, but limit their use to local testing.
+    accountSid_authToken:
+      scheme: basic
+      type: http

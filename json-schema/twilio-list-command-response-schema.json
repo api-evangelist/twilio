@@ -1,0 +1,198 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/api-evangelist/twilio/main/json-schema/twilio-list-command-response-schema.json",
+  "title": "ListCommandResponse",
+  "x-generated": "2026-10-08",
+  "x-method": "derived",
+  "x-generator": "derive-json-schema.py",
+  "x-source": "openapi/twilio-commands-api-openapi.yml#/components/schemas/ListCommandResponse",
+  "type": "object",
+  "properties": {
+    "commands": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/wireless.v1.command"
+      }
+    },
+    "meta": {
+      "type": "object",
+      "properties": {
+        "first_page_url": {
+          "type": "string",
+          "format": "uri"
+        },
+        "next_page_url": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "format": "uri"
+        },
+        "page": {
+          "type": "integer"
+        },
+        "page_size": {
+          "type": "integer"
+        },
+        "previous_page_url": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "format": "uri"
+        },
+        "url": {
+          "type": "string",
+          "format": "uri"
+        },
+        "key": {
+          "type": "string"
+        }
+      }
+    }
+  },
+  "$defs": {
+    "command_enum_command_mode": {
+      "type": "string",
+      "enum": [
+        "text",
+        "binary"
+      ]
+    },
+    "command_enum_direction": {
+      "type": "string",
+      "enum": [
+        "from_sim",
+        "to_sim"
+      ]
+    },
+    "command_enum_status": {
+      "type": "string",
+      "enum": [
+        "queued",
+        "sent",
+        "delivered",
+        "received",
+        "failed"
+      ]
+    },
+    "command_enum_transport": {
+      "type": "string",
+      "enum": [
+        "sms",
+        "ip"
+      ]
+    },
+    "wireless.v1.command": {
+      "type": "object",
+      "properties": {
+        "sid": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "minLength": 34,
+          "maxLength": 34,
+          "pattern": "^DC[0-9a-fA-F]{32}$",
+          "description": "The unique string that we created to identify the Command resource."
+        },
+        "account_sid": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "minLength": 34,
+          "maxLength": 34,
+          "pattern": "^AC[0-9a-fA-F]{32}$",
+          "description": "The SID of the [Account](https://www.twilio.com/docs/iam/api/account) that created the Command resource."
+        },
+        "sim_sid": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "minLength": 34,
+          "maxLength": 34,
+          "pattern": "^DE[0-9a-fA-F]{32}$",
+          "description": "The SID of the [Sim resource](https://www.twilio.com/docs/iot/wireless/api/sim-resource) that the Command was sent to or from."
+        },
+        "command": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "description": "The message being sent to or from the SIM. For text mode messages, this can be up to 160 characters. For binary mode messages, this is a series of up to 140 bytes of data encoded using base64.",
+          "x-twilio": {
+            "pii": {
+              "handling": "standard",
+              "deleteSla": 30
+            }
+          }
+        },
+        "command_mode": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "$ref": "#/$defs/command_enum_command_mode",
+          "description": "The mode used to send the SMS message. Can be: `text` or `binary`. The default SMS mode is `text`."
+        },
+        "transport": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "$ref": "#/$defs/command_enum_transport",
+          "description": "The type of transport used. Can be: `sms` or `ip`."
+        },
+        "delivery_receipt_requested": {
+          "type": [
+            "boolean",
+            "null"
+          ],
+          "description": "Whether to request a delivery receipt."
+        },
+        "status": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "$ref": "#/$defs/command_enum_status",
+          "description": "The status of the Command. Can be: `queued`, `sent`, `delivered`, `received`, or `failed`. See [Status Values](https://www.twilio.com/docs/iot/wireless/api/command-resource#status-values) for a description of each state."
+        },
+        "direction": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "$ref": "#/$defs/command_enum_direction",
+          "description": "The direction of the Command. Can be `to_sim` or `from_sim`. The value of `to_sim` is synonymous with the term `mobile terminated`, and `from_sim` is synonymous with the term `mobile originated`."
+        },
+        "date_created": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "format": "date-time",
+          "description": "The date and time in GMT when the resource was created specified in [ISO 8601](https://www.iso.org/iso-8601-date-and-time-format.html) format."
+        },
+        "date_updated": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "format": "date-time",
+          "description": "The date and time in GMT when the resource was last updated specified in [ISO 8601](https://www.iso.org/iso-8601-date-and-time-format.html) format."
+        },
+        "url": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "format": "uri",
+          "description": "The absolute URL of the resource."
+        }
+      }
+    }
+  }
+}

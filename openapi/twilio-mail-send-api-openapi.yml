@@ -46,16 +46,29 @@ paths:
           description: Rate limit exceeded
 components:
   schemas:
-    EmailAddress:
+    Attachment:
       type: object
       required:
-      - email
+      - content
+      - filename
       properties:
-        email:
+        content:
           type: string
-          format: email
-        name:
+          description: Base64 encoded attachment content
+        filename:
           type: string
+        type:
+          type: string
+          description: MIME type of the attachment
+        disposition:
+          type: string
+          enum:
+          - inline
+          - attachment
+          default: attachment
+        content_id:
+          type: string
+          description: Content ID for inline attachments
     SendEmailRequest:
       type: object
       required:
@@ -154,6 +167,16 @@ components:
               properties:
                 enable:
                   type: boolean
+    EmailAddress:
+      type: object
+      required:
+      - email
+      properties:
+        email:
+          type: string
+          format: email
+        name:
+          type: string
     Personalization:
       type: object
       required:
@@ -191,29 +214,6 @@ components:
             type: string
         send_at:
           type: integer
-    Attachment:
-      type: object
-      required:
-      - content
-      - filename
-      properties:
-        content:
-          type: string
-          description: Base64 encoded attachment content
-        filename:
-          type: string
-        type:
-          type: string
-          description: MIME type of the attachment
-        disposition:
-          type: string
-          enum:
-          - inline
-          - attachment
-          default: attachment
-        content_id:
-          type: string
-          description: Content ID for inline attachments
   securitySchemes:
     bearerAuth:
       type: http

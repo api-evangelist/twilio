@@ -1,0 +1,150 @@
+openapi: 3.2.0
+info:
+  title: Twilio OAUTH V1Token API
+  version: 1.0.0
+  contact:
+    name: Twilio Support
+    url: https://support.twilio.com
+    email: support@twilio.com
+  license:
+    name: Apache 2.0
+    url: https://www.apache.org/licenses/LICENSE-2.0.html
+  x-twilio:
+    apiStandards: v0.1
+  description: 'Operations tagged OauthV1Token across 2 of this provider''s published API definitions: iam-openapi-original.yml, iam-organizations-openapi-original.yml. Each path carries the servers of the definition it was published in.'
+servers:
+- url: https://iam.twilio.com
+- url: https://preview-iam.twilio.com
+tags:
+- name: OauthV1Token
+paths:
+  /v1/token:
+    servers:
+    - url: https://iam.twilio.com
+    x-twilio:
+      defaultOutputProperties: []
+      pathType: list
+    post:
+      security: []
+      tags:
+      - OauthV1Token
+      summary: Issues a new Access token (optionally identity_token & refresh_token) in…
+      operationId: CreateToken
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/oauth.v1.token'
+              examples:
+                create:
+                  value:
+                    access_token: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c
+                    refresh_token: ghjbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c
+                    id_token: eyJhbdGciOiIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c
+                    expires_in: 1438315200000
+                    token_type: bearer
+          description: Created
+      requestBody:
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              type: object
+              title: CreateTokenRequest
+              properties:
+                grant_type:
+                  type: string
+                  description: Grant type is a credential representing resource owner's authorization which can be used by client to obtain access token.
+                client_id:
+                  type: string
+                  description: A 34 character string that uniquely identifies this OAuth App.
+                client_secret:
+                  type: string
+                  description: The credential for confidential OAuth App.
+                code:
+                  type: string
+                  description: JWT token related to the authorization code grant type.
+                redirect_uri:
+                  type: string
+                  description: The redirect uri
+                audience:
+                  type: string
+                  description: The targeted audience uri
+                refresh_token:
+                  type: string
+                  description: JWT token related to refresh access token.
+                scope:
+                  type: string
+                  description: The scope of token
+              required:
+              - grant_type
+              - client_id
+            examples:
+              create:
+                value:
+                  client_id: OQ7cda1a615f05a95634e643aaaf7081d7
+                  client_secret: sUWblrQ4wx_aYkdAWjHXNvHinynkYOgBoiRyEQUeEntpgDEG47qnBFD98yoEzsTh
+                  grant_type: client_credentials
+                  redirect_uri: ''
+                  audience: ''
+                  code: ''
+                  refresh_token: refresh_token
+                  scope: scope
+        required: true
+components:
+  schemas:
+    oauth.v1.token:
+      type: object
+      properties:
+        access_token:
+          type:
+          - string
+          - 'null'
+          description: Token which carries the necessary information to access a Twilio resource directly.
+        refresh_token:
+          type:
+          - string
+          - 'null'
+          description: Token which carries the information necessary to get a new access token.
+        id_token:
+          type:
+          - string
+          - 'null'
+          description: Token which carries the information necessary of user profile.
+        token_type:
+          type:
+          - string
+          - 'null'
+          description: Token type
+        expires_in:
+          type:
+          - integer
+          - 'null'
+          format: int64
+  securitySchemes:
+    accountSid_authToken:
+      scheme: basic
+      type: http
+    access_token_bearer:
+      type: http
+      scheme: bearer
+      bearerFormat: access_token
+    m2mOauth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+      description: M2M Access Token
+    oAuth2ClientCredentials:
+      type: oauth2
+      flows:
+        clientCredentials:
+          tokenUrl: https://preview-iam.twilio.com/v1/token
+          scopes: {}
+x-refined-from:
+- iam-openapi-original.yml
+- iam-organizations-openapi-original.yml
+x-maturity:
+- name: GA
+  description: This product is Generally Available.
+- name: Beta
+  description: PLEASE NOTE that this is a Beta product that is subject to change. Use it with caution.

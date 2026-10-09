@@ -1,0 +1,61 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/api-evangelist/twilio/main/json-schema/twilio-create-ip-command-request-schema.json",
+  "title": "CreateIpCommandRequest",
+  "x-generated": "2026-10-08",
+  "x-method": "derived",
+  "x-generator": "derive-json-schema.py",
+  "x-source": "openapi/twilio-ipcommands-api-openapi.yml#/components/schemas/CreateIpCommandRequest",
+  "type": "object",
+  "required": [
+    "Sim",
+    "Payload",
+    "DevicePort"
+  ],
+  "properties": {
+    "Sim": {
+      "type": "string",
+      "description": "The `sid` or `unique_name` of the [Super SIM](https://www.twilio.com/docs/iot/supersim/api/sim-resource) to send the IP Command to."
+    },
+    "Payload": {
+      "type": "string",
+      "description": "The data that will be sent to the device. The payload cannot exceed 1300 bytes. If the PayloadType is set to text, the payload is encoded in UTF-8. If PayloadType is set to binary, the payload is encoded in Base64."
+    },
+    "DevicePort": {
+      "type": "integer",
+      "description": "The device port to which the IP Command will be sent."
+    },
+    "PayloadType": {
+      "type": "string",
+      "$ref": "#/$defs/ip_command_enum_payload_type",
+      "description": "Indicates how the payload is encoded. Either `text` or `binary`. Defaults to `text`."
+    },
+    "CallbackUrl": {
+      "type": "string",
+      "format": "uri",
+      "description": "The URL we should call using the `callback_method` after we have sent the IP Command."
+    },
+    "CallbackMethod": {
+      "type": "string",
+      "format": "http-method",
+      "enum": [
+        "HEAD",
+        "GET",
+        "POST",
+        "PATCH",
+        "PUT",
+        "DELETE"
+      ],
+      "description": "The HTTP method we should use to call `callback_url`. Can be `GET` or `POST`, and the default is `POST`."
+    }
+  },
+  "$defs": {
+    "ip_command_enum_payload_type": {
+      "type": "string",
+      "enum": [
+        "text",
+        "binary"
+      ]
+    }
+  }
+}

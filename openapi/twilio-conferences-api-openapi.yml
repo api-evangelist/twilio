@@ -498,29 +498,66 @@ paths:
       description: Twilio REST API v1
 components:
   schemas:
-    conference_enum_region:
+    conference_enum_conference_status:
+      type: string
+      enum:
+      - in_progress
+      - not_started
+      - completed
+      - summary_timeout
+    conference_participant_enum_processing_state:
+      type: string
+      enum:
+      - complete
+      - in_progress
+      - timeout
+    ListConferenceParticipantResponse:
+      type: object
+      properties:
+        participants:
+          type: array
+          items:
+            $ref: '#/components/schemas/insights.v1.conference.conference_participant'
+        meta:
+          type: object
+          properties:
+            first_page_url:
+              type: string
+              format: uri
+            next_page_url:
+              type:
+              - string
+              - 'null'
+              format: uri
+            page:
+              type: integer
+            page_size:
+              type: integer
+            previous_page_url:
+              type:
+              - string
+              - 'null'
+              format: uri
+            url:
+              type: string
+              format: uri
+            key:
+              type: string
+    conference_participant_enum_region:
       type: string
       enum:
       - us1
+      - us2
       - au1
       - br1
       - ie1
       - jp1
       - sg1
       - de1
-    conference_enum_conference_end_reason:
-      type: string
-      enum:
-      - last_participant_left
-      - conference_ended_via_api
-      - participant_with_end_conference_on_exit_left
-      - last_participant_kicked
-      - participant_with_end_conference_on_exit_kicked
-    conference_participant_enum_region:
+    conference_enum_region:
       type: string
       enum:
       - us1
-      - us2
       - au1
       - br1
       - ie1
@@ -540,6 +577,16 @@ components:
       - carrier
       - client
       - sip
+    conference_participant_enum_call_status:
+      type: string
+      enum:
+      - answered
+      - completed
+      - busy
+      - fail
+      - noanswer
+      - ringing
+      - canceled
     insights.v1.conference.conference_participant:
       type: object
       properties:
@@ -705,24 +752,27 @@ components:
           - 'null'
           format: uri
           description: The URL of this resource.
-    conference_participant_enum_processing_state:
+    conference_enum_conference_end_reason:
+      type: string
+      enum:
+      - last_participant_left
+      - conference_ended_via_api
+      - participant_with_end_conference_on_exit_left
+      - last_participant_kicked
+      - participant_with_end_conference_on_exit_kicked
+    conference_enum_processing_state:
       type: string
       enum:
       - complete
       - in_progress
       - timeout
-    conference_participant_enum_call_direction:
-      type: string
-      enum:
-      - inbound
-      - outbound
-    ListConferenceParticipantResponse:
+    ListConferenceResponse:
       type: object
       properties:
-        participants:
+        conferences:
           type: array
           items:
-            $ref: '#/components/schemas/insights.v1.conference.conference_participant'
+            $ref: '#/components/schemas/insights.v1.conference'
         meta:
           type: object
           properties:
@@ -748,6 +798,25 @@ components:
               format: uri
             key:
               type: string
+    conference_participant_enum_call_direction:
+      type: string
+      enum:
+      - inbound
+      - outbound
+    conference_enum_tag:
+      type: string
+      enum:
+      - invalid_requested_region
+      - duplicate_identity
+      - start_failure
+      - region_configuration_issues
+      - quality_warnings
+      - participant_behavior_issues
+      - high_packet_loss
+      - high_jitter
+      - high_latency
+      - low_mos
+      - detected_silence
     insights.v1.conference:
       type: object
       properties:
@@ -886,75 +955,45 @@ components:
           - 'null'
           format: uri-map
           description: Contains a dictionary of URL links to nested resources of this Conference.
-    conference_participant_enum_call_status:
-      type: string
-      enum:
-      - answered
-      - completed
-      - busy
-      - fail
-      - noanswer
-      - ringing
-      - canceled
-    conference_enum_tag:
-      type: string
-      enum:
-      - invalid_requested_region
-      - duplicate_identity
-      - start_failure
-      - region_configuration_issues
-      - quality_warnings
-      - participant_behavior_issues
-      - high_packet_loss
-      - high_jitter
-      - high_latency
-      - low_mos
-      - detected_silence
-    conference_enum_processing_state:
-      type: string
-      enum:
-      - complete
-      - in_progress
-      - timeout
-    conference_enum_conference_status:
-      type: string
-      enum:
-      - in_progress
-      - not_started
-      - completed
-      - summary_timeout
-    ListConferenceResponse:
+    Participant:
       type: object
       properties:
-        conferences:
-          type: array
-          items:
-            $ref: '#/components/schemas/insights.v1.conference'
-        meta:
-          type: object
-          properties:
-            first_page_url:
-              type: string
-              format: uri
-            next_page_url:
-              type:
-              - string
-              - 'null'
-              format: uri
-            page:
-              type: integer
-            page_size:
-              type: integer
-            previous_page_url:
-              type:
-              - string
-              - 'null'
-              format: uri
-            url:
-              type: string
-              format: uri
-            key:
-              type: string
+        call_sid:
+          type: string
+          pattern: ^CA[0-9a-fA-F]{32}$
+        conference_sid:
+          type: string
+          pattern: ^CF[0-9a-fA-F]{32}$
+        account_sid:
+          type: string
+          pattern: ^AC[0-9a-fA-F]{32}$
+        muted:
+          type: boolean
+        hold:
+          type: boolean
+        coaching:
+          type: boolean
+        status:
+          type: string
+          enum:
+          - queued
+          - connecting
+          - ringing
+          - connected
+          - complete
+          - failed
+        start_conference_on_enter:
+          type: boolean
+        end_conference_on_exit:
+          type: boolean
+        date_created:
+          type: string
+          format: date-time
+        date_updated:
+          type: string
+          format: date-time
+        uri:
+          type: string
     Conference:
       type: object
       properties:
@@ -1012,45 +1051,6 @@ components:
           type: integer
         page_size:
           type: integer
-    Participant:
-      type: object
-      properties:
-        call_sid:
-          type: string
-          pattern: ^CA[0-9a-fA-F]{32}$
-        conference_sid:
-          type: string
-          pattern: ^CF[0-9a-fA-F]{32}$
-        account_sid:
-          type: string
-          pattern: ^AC[0-9a-fA-F]{32}$
-        muted:
-          type: boolean
-        hold:
-          type: boolean
-        coaching:
-          type: boolean
-        status:
-          type: string
-          enum:
-          - queued
-          - connecting
-          - ringing
-          - connected
-          - complete
-          - failed
-        start_conference_on_enter:
-          type: boolean
-        end_conference_on_exit:
-          type: boolean
-        date_created:
-          type: string
-          format: date-time
-        date_updated:
-          type: string
-          format: date-time
-        uri:
-          type: string
     ParticipantList:
       type: object
       properties:

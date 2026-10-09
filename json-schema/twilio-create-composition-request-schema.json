@@ -1,0 +1,63 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/api-evangelist/twilio/main/json-schema/twilio-create-composition-request-schema.json",
+  "title": "CreateCompositionRequest",
+  "x-generated": "2026-10-08",
+  "x-method": "derived",
+  "x-generator": "derive-json-schema.py",
+  "x-source": "openapi/twilio-compositions-api-openapi.yml#/components/schemas/CreateCompositionRequest",
+  "type": "object",
+  "required": [
+    "RoomSid"
+  ],
+  "properties": {
+    "RoomSid": {
+      "type": "string",
+      "description": "SID of the room to compose",
+      "pattern": "^RM[0-9a-fA-F]{32}$"
+    },
+    "VideoLayout": {
+      "type": "string",
+      "description": "JSON object defining the video layout"
+    },
+    "AudioSources": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "AudioSourcesExcluded": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "Resolution": {
+      "type": "string",
+      "description": "Resolution in WxH format (e.g., 1280x720)"
+    },
+    "Format": {
+      "type": "string",
+      "enum": [
+        "mp4",
+        "webm"
+      ],
+      "default": "webm"
+    },
+    "Trim": {
+      "type": "boolean",
+      "default": true
+    },
+    "StatusCallback": {
+      "type": "string",
+      "format": "uri"
+    },
+    "StatusCallbackMethod": {
+      "type": "string",
+      "enum": [
+        "GET",
+        "POST"
+      ]
+    }
+  }
+}

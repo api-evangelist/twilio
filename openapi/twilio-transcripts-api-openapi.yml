@@ -444,122 +444,6 @@ paths:
       x-summary-source: derived
 components:
   schemas:
-    transcript_enum_status:
-      type: string
-      enum:
-      - queued
-      - in-progress
-      - completed
-      - failed
-      - canceled
-    ListOperatorResultResponse:
-      type: object
-      properties:
-        operator_results:
-          type: array
-          items:
-            $ref: '#/components/schemas/intelligence.v2.transcript.operator_result'
-        meta:
-          type: object
-          properties:
-            first_page_url:
-              type: string
-              format: uri
-            next_page_url:
-              type:
-              - string
-              - 'null'
-              format: uri
-            page:
-              type: integer
-            page_size:
-              type: integer
-            previous_page_url:
-              type:
-              - string
-              - 'null'
-              format: uri
-            url:
-              type: string
-              format: uri
-            key:
-              type: string
-    intelligence.v2.transcript.sentence:
-      type: object
-      properties:
-        media_channel:
-          type:
-          - integer
-          - 'null'
-          description: The channel number.
-        sentence_index:
-          type:
-          - integer
-          - 'null'
-          description: The index of the sentence in the transcript.
-        start_time:
-          type:
-          - number
-          - 'null'
-          description: Offset from the beginning of the transcript when this sentence starts.
-        end_time:
-          type:
-          - number
-          - 'null'
-          description: Offset from the beginning of the transcript when this sentence ends.
-        transcript:
-          type:
-          - string
-          - 'null'
-          description: Transcript text.
-          x-twilio:
-            pii:
-              handling: sensitive
-              deleteSla: 30
-        sid:
-          type:
-          - string
-          - 'null'
-          minLength: 34
-          maxLength: 34
-          pattern: ^GX[0-9a-fA-F]{32}$
-          description: A 34 character string that uniquely identifies this Sentence.
-        confidence:
-          type:
-          - number
-          - 'null'
-    ListTranscriptResponse:
-      type: object
-      properties:
-        transcripts:
-          type: array
-          items:
-            $ref: '#/components/schemas/intelligence.v2.transcript'
-        meta:
-          type: object
-          properties:
-            first_page_url:
-              type: string
-              format: uri
-            next_page_url:
-              type:
-              - string
-              - 'null'
-              format: uri
-            page:
-              type: integer
-            page_size:
-              type: integer
-            previous_page_url:
-              type:
-              - string
-              - 'null'
-              format: uri
-            url:
-              type: string
-              format: uri
-            key:
-              type: string
     intelligence.v2.transcript:
       type: object
       properties:
@@ -650,6 +534,201 @@ components:
           - object
           - 'null'
           format: uri-map
+    transcript_enum_status:
+      type: string
+      enum:
+      - queued
+      - in-progress
+      - completed
+      - failed
+      - canceled
+    ListOperatorResultResponse:
+      type: object
+      properties:
+        operator_results:
+          type: array
+          items:
+            $ref: '#/components/schemas/intelligence.v2.transcript.operator_result'
+        meta:
+          type: object
+          properties:
+            first_page_url:
+              type: string
+              format: uri
+            next_page_url:
+              type:
+              - string
+              - 'null'
+              format: uri
+            page:
+              type: integer
+            page_size:
+              type: integer
+            previous_page_url:
+              type:
+              - string
+              - 'null'
+              format: uri
+            url:
+              type: string
+              format: uri
+            key:
+              type: string
+    intelligence.v2.transcript.media:
+      type: object
+      properties:
+        account_sid:
+          type:
+          - string
+          - 'null'
+          minLength: 34
+          maxLength: 34
+          pattern: ^AC[0-9a-fA-F]{32}$
+          description: The unique SID identifier of the Account.
+        media_url:
+          type:
+          - string
+          - 'null'
+          format: uri
+          description: Downloadable URL for media, if stored in Twilio AI.
+        service_sid:
+          type:
+          - string
+          - 'null'
+          minLength: 34
+          maxLength: 34
+          pattern: ^GA[0-9a-fA-F]{32}$
+          description: The unique SID identifier of the Service.
+        sid:
+          type:
+          - string
+          - 'null'
+          minLength: 34
+          maxLength: 34
+          pattern: ^GT[0-9a-fA-F]{32}$
+          description: The unique SID identifier of the Transcript.
+        url:
+          type:
+          - string
+          - 'null'
+          format: uri
+          description: The URL of this resource.
+    ListTranscriptResponse:
+      type: object
+      properties:
+        transcripts:
+          type: array
+          items:
+            $ref: '#/components/schemas/intelligence.v2.transcript'
+        meta:
+          type: object
+          properties:
+            first_page_url:
+              type: string
+              format: uri
+            next_page_url:
+              type:
+              - string
+              - 'null'
+              format: uri
+            page:
+              type: integer
+            page_size:
+              type: integer
+            previous_page_url:
+              type:
+              - string
+              - 'null'
+              format: uri
+            url:
+              type: string
+              format: uri
+            key:
+              type: string
+    operator_result_enum_operator_type:
+      type: string
+      enum:
+      - conversation_classify
+      - utterance_classify
+      - extract
+      - extract_normalize
+      - pii_extract
+    ListSentenceResponse:
+      type: object
+      properties:
+        sentences:
+          type: array
+          items:
+            $ref: '#/components/schemas/intelligence.v2.transcript.sentence'
+        meta:
+          type: object
+          properties:
+            first_page_url:
+              type: string
+              format: uri
+            next_page_url:
+              type:
+              - string
+              - 'null'
+              format: uri
+            page:
+              type: integer
+            page_size:
+              type: integer
+            previous_page_url:
+              type:
+              - string
+              - 'null'
+              format: uri
+            url:
+              type: string
+              format: uri
+            key:
+              type: string
+    intelligence.v2.transcript.sentence:
+      type: object
+      properties:
+        media_channel:
+          type:
+          - integer
+          - 'null'
+          description: The channel number.
+        sentence_index:
+          type:
+          - integer
+          - 'null'
+          description: The index of the sentence in the transcript.
+        start_time:
+          type:
+          - number
+          - 'null'
+          description: Offset from the beginning of the transcript when this sentence starts.
+        end_time:
+          type:
+          - number
+          - 'null'
+          description: Offset from the beginning of the transcript when this sentence ends.
+        transcript:
+          type:
+          - string
+          - 'null'
+          description: Transcript text.
+          x-twilio:
+            pii:
+              handling: sensitive
+              deleteSla: 30
+        sid:
+          type:
+          - string
+          - 'null'
+          minLength: 34
+          maxLength: 34
+          pattern: ^GX[0-9a-fA-F]{32}$
+          description: A 34 character string that uniquely identifies this Sentence.
+        confidence:
+          type:
+          - number
+          - 'null'
     intelligence.v2.transcript.operator_result:
       type: object
       properties:
@@ -722,85 +801,6 @@ components:
           maxLength: 34
           pattern: ^GT[0-9a-fA-F]{32}$
           description: A 34 character string that uniquely identifies this Transcript.
-        url:
-          type:
-          - string
-          - 'null'
-          format: uri
-          description: The URL of this resource.
-    ListSentenceResponse:
-      type: object
-      properties:
-        sentences:
-          type: array
-          items:
-            $ref: '#/components/schemas/intelligence.v2.transcript.sentence'
-        meta:
-          type: object
-          properties:
-            first_page_url:
-              type: string
-              format: uri
-            next_page_url:
-              type:
-              - string
-              - 'null'
-              format: uri
-            page:
-              type: integer
-            page_size:
-              type: integer
-            previous_page_url:
-              type:
-              - string
-              - 'null'
-              format: uri
-            url:
-              type: string
-              format: uri
-            key:
-              type: string
-    operator_result_enum_operator_type:
-      type: string
-      enum:
-      - conversation_classify
-      - utterance_classify
-      - extract
-      - extract_normalize
-      - pii_extract
-    intelligence.v2.transcript.media:
-      type: object
-      properties:
-        account_sid:
-          type:
-          - string
-          - 'null'
-          minLength: 34
-          maxLength: 34
-          pattern: ^AC[0-9a-fA-F]{32}$
-          description: The unique SID identifier of the Account.
-        media_url:
-          type:
-          - string
-          - 'null'
-          format: uri
-          description: Downloadable URL for media, if stored in Twilio AI.
-        service_sid:
-          type:
-          - string
-          - 'null'
-          minLength: 34
-          maxLength: 34
-          pattern: ^GA[0-9a-fA-F]{32}$
-          description: The unique SID identifier of the Service.
-        sid:
-          type:
-          - string
-          - 'null'
-          minLength: 34
-          maxLength: 34
-          pattern: ^GT[0-9a-fA-F]{32}$
-          description: The unique SID identifier of the Transcript.
         url:
           type:
           - string

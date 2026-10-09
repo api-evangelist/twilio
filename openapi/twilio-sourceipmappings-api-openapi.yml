@@ -260,17 +260,6 @@ components:
               format: uri
             key:
               type: string
-    UpdateSourceIpMappingRequest:
-      type: object
-      required:
-      - SipDomainSid
-      properties:
-        SipDomainSid:
-          type: string
-          minLength: 34
-          maxLength: 34
-          pattern: ^SD[0-9a-fA-F]{32}$
-          description: The SID of the SIP Domain that the IP Record should be mapped to.
     CreateSourceIpMappingRequest:
       type: object
       required:
@@ -283,6 +272,17 @@ components:
           maxLength: 34
           pattern: ^IL[0-9a-fA-F]{32}$
           description: The Twilio-provided string that uniquely identifies the IP Record resource to map from.
+        SipDomainSid:
+          type: string
+          minLength: 34
+          maxLength: 34
+          pattern: ^SD[0-9a-fA-F]{32}$
+          description: The SID of the SIP Domain that the IP Record should be mapped to.
+    UpdateSourceIpMappingRequest:
+      type: object
+      required:
+      - SipDomainSid
+      properties:
         SipDomainSid:
           type: string
           minLength: 34

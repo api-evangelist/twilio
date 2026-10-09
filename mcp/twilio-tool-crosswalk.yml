@@ -1,0 +1,40 @@
+generated: '2026-10-08'
+method: derived
+source: mcp/twilio-mcp-tools-list.json (live tools/list from https://mcp.twilio.com/docs, 2026-10-08) aligned with the operationIds in openapi/*.yml
+description: Binds Twilio's agent-facing MCP tools to the REST operations behind them. The hosted server exposes two META-TOOLS (search and retrieve over the API
+  index); neither invokes a public REST operation, so the crosswalk is empty and both tools are recorded under meta_tools. The stdio package @twilio-alpha/mcp is
+  a generator that mints one tool per OpenAPI operation at run time, so its tool set is the rest surface itself (recorded as a generated_binding rather than enumerated).
+surfaces:
+  openapi: openapi/ (127 refined contracts; 59 verbatim originals under openapi/_original/ from github.com/twilio/twilio-oai)
+  graphql: none
+  mcp:
+    url: https://mcp.twilio.com/docs
+    tools_list: open (200, no auth) - saved verbatim to mcp/twilio-mcp-tools-list.json
+    stdio_package: '@twilio-alpha/mcp (npm, 0.7.0, 2025-07-07) - tools generated from the OpenAPI specs at run time'
+crosswalk: []
+meta_tools:
+- tool: twilio__search
+  kind: index-search
+  reason: Searches the indexed OpenAPI operations and docs by natural-language query (source=docs|api, product, version, topics filters). Returns operation ids such
+    as op::twilio_iam_organizations::FetchOrganizationUser and documentation uris; does not call any Twilio REST operation.
+  live_probed: true
+- tool: twilio__retrieve
+  kind: schema-retrieval
+  reason: Returns the full parameter and response schema for the ids that twilio__search produced. Read-only documentation retrieval, not an API call.
+  live_probed: true
+generated_binding:
+  server: '@twilio-alpha/mcp'
+  rule: one MCP tool per OpenAPI operationId, generated from the twilio-oai specifications when the server starts; the tool's inputSchema is the operation's parameters
+    + requestBody. Scope with --services / --tags.
+  confidence: high
+  note: not enumerated here because the tool list is produced at run time from the same contracts this repo holds.
+rest_only:
+  count: 1120
+  note: every public REST operation (all openapi/*.yml operationIds) is reachable through the hosted server only as documentation, and through the stdio generator
+    as an executing tool.
+coverage:
+  tools_named: 2
+  tools_bound: 0
+  mcp_only: 2
+  rest_ops_with_hosted_tool: 0
+  rest_ops_total: 1120

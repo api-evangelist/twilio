@@ -1,0 +1,398 @@
+openapi: 3.2.0
+info:
+  title: Organization Public Organization Accounts API
+  contact:
+    name: Twilio Support
+    url: https://support.twilio.com
+    email: support@twilio.com
+  license:
+    name: Apache 2.0
+    url: https://www.apache.org/licenses/LICENSE-2.0.html
+  version: 1.0.0
+  x-twilio:
+    apiStandards: v0.1
+servers:
+- url: https://preview-iam.twilio.com
+security:
+- oAuth2ClientCredentials: []
+tags:
+- name: OrganizationAccounts
+paths:
+  /Organizations/{OrganizationSid}/Accounts:
+    servers:
+    - url: https://preview-iam.twilio.com
+    get:
+      tags:
+      - OrganizationAccounts
+      summary: List organization accounts
+      operationId: ListOrganizationAccounts
+      parameters:
+      - name: OrganizationSid
+        in: path
+        required: true
+        schema:
+          pattern: OR[0-9a-f]{32}
+          type: string
+          format: OrganizationSid
+          example: ORa36de9717566c7eb6363671f54b87ba9
+      - name: PageSize
+        in: query
+        schema:
+          maximum: 100
+          minimum: 1
+          type: integer
+          format: int32
+          default: 50
+      - name: PageToken
+        in: query
+        schema:
+          maxLength: 4096
+          minLength: 1
+          type: string
+      responses:
+        '200':
+          description: Organization account list
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PublicApiAccountResponsePage'
+          headers:
+            Access-Control-Allow-Origin:
+              description: Specify the origin(s) allowed to access the resource
+              schema:
+                type: string
+              example: '*'
+            Access-Control-Allow-Methods:
+              description: Specify the HTTP methods allowed when accessing the resource
+              schema:
+                type: string
+              example: POST, OPTIONS
+            Access-Control-Allow-Headers:
+              description: Specify the headers allowed when accessing the resource
+              schema:
+                type: string
+              example: Content-Type, Authorization
+            Access-Control-Allow-Credentials:
+              description: Indicates whether the browser should include credentials
+              schema:
+                type: boolean
+            Access-Control-Expose-Headers:
+              description: Headers exposed to the client
+              schema:
+                type: string
+                example: X-Custom-Header1, X-Custom-Header2
+        '403':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    description: Twilio-specific error code
+                    type: integer
+                    format: int32
+                  message:
+                    description: Error message
+                    type: string
+                  more_info:
+                    description: Link to Error Code References
+                    type: string
+                  status:
+                    description: HTTP response status code
+                    type: integer
+                    format: int32
+          headers:
+            Access-Control-Allow-Origin:
+              description: Specify the origin(s) allowed to access the resource
+              schema:
+                type: string
+              example: '*'
+            Access-Control-Allow-Methods:
+              description: Specify the HTTP methods allowed when accessing the resource
+              schema:
+                type: string
+              example: POST, OPTIONS
+            Access-Control-Allow-Headers:
+              description: Specify the headers allowed when accessing the resource
+              schema:
+                type: string
+              example: Content-Type, Authorization
+            Access-Control-Allow-Credentials:
+              description: Indicates whether the browser should include credentials
+              schema:
+                type: boolean
+            Access-Control-Expose-Headers:
+              description: Headers exposed to the client
+              schema:
+                type: string
+                example: X-Custom-Header1, X-Custom-Header2
+        '404':
+          description: Account not found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    description: Twilio-specific error code
+                    type: integer
+                    format: int32
+                  message:
+                    description: Error message
+                    type: string
+                  more_info:
+                    description: Link to Error Code References
+                    type: string
+                  status:
+                    description: HTTP response status code
+                    type: integer
+                    format: int32
+          headers:
+            Access-Control-Allow-Origin:
+              description: Specify the origin(s) allowed to access the resource
+              schema:
+                type: string
+              example: '*'
+            Access-Control-Allow-Methods:
+              description: Specify the HTTP methods allowed when accessing the resource
+              schema:
+                type: string
+              example: POST, OPTIONS
+            Access-Control-Allow-Headers:
+              description: Specify the headers allowed when accessing the resource
+              schema:
+                type: string
+              example: Content-Type, Authorization
+            Access-Control-Allow-Credentials:
+              description: Indicates whether the browser should include credentials
+              schema:
+                type: boolean
+            Access-Control-Expose-Headers:
+              description: Headers exposed to the client
+              schema:
+                type: string
+                example: X-Custom-Header1, X-Custom-Header2
+  /Organizations/{OrganizationSid}/Accounts/{AccountSid}:
+    servers:
+    - url: https://preview-iam.twilio.com
+    get:
+      tags:
+      - OrganizationAccounts
+      summary: Get details of organization account
+      operationId: FetchOrganizationAccount
+      parameters:
+      - name: OrganizationSid
+        in: path
+        required: true
+        schema:
+          pattern: OR[0-9a-f]{32}
+          type: string
+          format: OrganizationSid
+          example: ORf9618e7f043b4bc13832e4946fde06c9
+      - name: AccountSid
+        in: path
+        required: true
+        schema:
+          pattern: AC[0-9a-f]{32}
+          type: string
+          format: AccountSid
+          example: REDACTED_TWILIO_ACCOUNT_SID
+      responses:
+        '200':
+          description: Get details of organization account
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PublicApiAccountResponse'
+          headers:
+            Access-Control-Allow-Origin:
+              description: Specify the origin(s) allowed to access the resource
+              schema:
+                type: string
+              example: '*'
+            Access-Control-Allow-Methods:
+              description: Specify the HTTP methods allowed when accessing the resource
+              schema:
+                type: string
+              example: POST, OPTIONS
+            Access-Control-Allow-Headers:
+              description: Specify the headers allowed when accessing the resource
+              schema:
+                type: string
+              example: Content-Type, Authorization
+            Access-Control-Allow-Credentials:
+              description: Indicates whether the browser should include credentials
+              schema:
+                type: boolean
+            Access-Control-Expose-Headers:
+              description: Headers exposed to the client
+              schema:
+                type: string
+                example: X-Custom-Header1, X-Custom-Header2
+        '403':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    description: Twilio-specific error code
+                    type: integer
+                    format: int32
+                  message:
+                    description: Error message
+                    type: string
+                  more_info:
+                    description: Link to Error Code References
+                    type: string
+                  status:
+                    description: HTTP response status code
+                    type: integer
+                    format: int32
+          headers:
+            Access-Control-Allow-Origin:
+              description: Specify the origin(s) allowed to access the resource
+              schema:
+                type: string
+              example: '*'
+            Access-Control-Allow-Methods:
+              description: Specify the HTTP methods allowed when accessing the resource
+              schema:
+                type: string
+              example: POST, OPTIONS
+            Access-Control-Allow-Headers:
+              description: Specify the headers allowed when accessing the resource
+              schema:
+                type: string
+              example: Content-Type, Authorization
+            Access-Control-Allow-Credentials:
+              description: Indicates whether the browser should include credentials
+              schema:
+                type: boolean
+            Access-Control-Expose-Headers:
+              description: Headers exposed to the client
+              schema:
+                type: string
+                example: X-Custom-Header1, X-Custom-Header2
+        '404':
+          description: Account does not belong to Organization
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    description: Twilio-specific error code
+                    type: integer
+                    format: int32
+                  message:
+                    description: Error message
+                    type: string
+                  more_info:
+                    description: Link to Error Code References
+                    type: string
+                  status:
+                    description: HTTP response status code
+                    type: integer
+                    format: int32
+          headers:
+            Access-Control-Allow-Origin:
+              description: Specify the origin(s) allowed to access the resource
+              schema:
+                type: string
+              example: '*'
+            Access-Control-Allow-Methods:
+              description: Specify the HTTP methods allowed when accessing the resource
+              schema:
+                type: string
+              example: POST, OPTIONS
+            Access-Control-Allow-Headers:
+              description: Specify the headers allowed when accessing the resource
+              schema:
+                type: string
+              example: Content-Type, Authorization
+            Access-Control-Allow-Credentials:
+              description: Indicates whether the browser should include credentials
+              schema:
+                type: boolean
+            Access-Control-Expose-Headers:
+              description: Headers exposed to the client
+              schema:
+                type: string
+                example: X-Custom-Header1, X-Custom-Header2
+components:
+  schemas:
+    PublicApiAccountResponse:
+      type: object
+      properties:
+        account_sid:
+          pattern: AC[0-9a-f]{32}
+          type: string
+          description: Twilio account sid
+          format: AccountSid
+          example: REDACTED_TWILIO_ACCOUNT_SID
+        friendly_name:
+          type: string
+          description: Account friendly name
+        status:
+          type: string
+          description: Account status
+          example: active
+          enum:
+          - active
+          - suspended
+          - pending_closure
+          - closed
+        owner_sid:
+          pattern: US[0-9a-f]{32}
+          type: string
+          description: Twilio account sid
+          format: UserSid
+          example: US9a6d63d00bdbb50aa1c1889b3066bd30
+        date_created:
+          type: string
+          description: The date and time when the account was created in the system
+          format: date-time
+      description: Page content
+    PublicApiAccountResponsePage:
+      type: object
+      properties:
+        content:
+          type: array
+          description: Page content
+          items:
+            $ref: '#/components/schemas/PublicApiAccountResponse'
+        meta:
+          properties:
+            first_page_url:
+              format: uri
+              type: string
+            key:
+              type: string
+            next_page_url:
+              format: uri
+              type:
+              - string
+              - 'null'
+            page:
+              type: integer
+            page_size:
+              type: integer
+            previous_page_url:
+              format: uri
+              type:
+              - string
+              - 'null'
+            url:
+              format: uri
+              type: string
+          type: object
+  securitySchemes:
+    oAuth2ClientCredentials:
+      type: oauth2
+      flows:
+        clientCredentials:
+          tokenUrl: https://preview-iam.twilio.com/v1/token
+          scopes: {}

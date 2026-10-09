@@ -1,0 +1,76 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/api-evangelist/twilio/main/json-schema/twilio-update-configuration-address-request-schema.json",
+  "title": "UpdateConfigurationAddressRequest",
+  "x-generated": "2026-10-08",
+  "x-method": "derived",
+  "x-generator": "derive-json-schema.py",
+  "x-source": "openapi/twilio-configuration-api-openapi.yml#/components/schemas/UpdateConfigurationAddressRequest",
+  "type": "object",
+  "properties": {
+    "FriendlyName": {
+      "type": "string",
+      "description": "The human-readable name of this configuration, limited to 256 characters. Optional."
+    },
+    "AutoCreation.Enabled": {
+      "type": "boolean",
+      "description": "Enable/Disable auto-creating conversations for messages to this address"
+    },
+    "AutoCreation.Type": {
+      "type": "string",
+      "$ref": "#/$defs/configuration_address_enum_auto_creation_type",
+      "description": "Type of Auto Creation. Value can be one of `webhook`, `studio` or `default`."
+    },
+    "AutoCreation.ConversationServiceSid": {
+      "type": "string",
+      "minLength": 34,
+      "maxLength": 34,
+      "pattern": "^IS[0-9a-fA-F]{32}$",
+      "description": "Conversation Service for the auto-created conversation. If not set, the conversation is created in the default service."
+    },
+    "AutoCreation.WebhookUrl": {
+      "type": "string",
+      "description": "For type `webhook`, the url for the webhook request."
+    },
+    "AutoCreation.WebhookMethod": {
+      "type": "string",
+      "$ref": "#/$defs/configuration_address_enum_method",
+      "description": "For type `webhook`, the HTTP method to be used when sending a webhook request."
+    },
+    "AutoCreation.WebhookFilters": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "description": "The list of events, firing webhook event for this Conversation. Values can be any of the following: `onMessageAdded`, `onMessageUpdated`, `onMessageRemoved`, `onConversationUpdated`, `onConversationStateUpdated`, `onConversationRemoved`, `onParticipantAdded`, `onParticipantUpdated`, `onParticipantRemoved`, `onDeliveryUpdated`"
+    },
+    "AutoCreation.StudioFlowSid": {
+      "type": "string",
+      "minLength": 34,
+      "maxLength": 34,
+      "pattern": "^FW[0-9a-fA-F]{32}$",
+      "description": "For type `studio`, the studio flow SID where the webhook should be sent to."
+    },
+    "AutoCreation.StudioRetryCount": {
+      "type": "integer",
+      "description": "For type `studio`, number of times to retry the webhook request"
+    }
+  },
+  "$defs": {
+    "configuration_address_enum_auto_creation_type": {
+      "type": "string",
+      "enum": [
+        "webhook",
+        "studio",
+        "default"
+      ]
+    },
+    "configuration_address_enum_method": {
+      "type": "string",
+      "enum": [
+        "GET",
+        "POST"
+      ]
+    }
+  }
+}

@@ -1,0 +1,133 @@
+openapi: 3.2.0
+info:
+  title: User OAuth OAUTH V2Authorize API
+  description: User OAuth API
+  termsOfService: https://www.twilio.com/legal/tos
+  contact:
+    name: Twilio Support
+    url: https://support.twilio.com
+    email: support@twilio.com
+  license:
+    name: Apache 2.0
+    url: https://www.apache.org/licenses/LICENSE-2.0.html
+  version: 1.0.0
+  x-twilio:
+    apiStandards: v0.1
+servers:
+- url: https://oauth.twilio.com
+security:
+- accountSid_authToken: []
+tags:
+- name: OauthV2Authorize
+paths:
+  /v2/authorize:
+    x-twilio:
+      defaultOutputProperties:
+      - redirect_to
+      pathType: list
+    get:
+      security: []
+      tags:
+      - OauthV2Authorize
+      summary: Retrieves authorize uri
+      operationId: FetchOauth2Authorize
+      parameters:
+      - name: response_type
+        in: query
+        schema:
+          type: string
+          example: code
+      - name: client_id
+        in: query
+        schema:
+          type: string
+          example: OQ7cda1a615f05a95634e643aaaf7081d7
+      - name: redirect_uri
+        in: query
+        schema:
+          type: string
+          example: www.twilio.com
+      - name: scope
+        in: query
+        schema:
+          type: string
+          example: offline_access
+      - name: state
+        in: query
+        schema:
+          type: string
+          example: xvz
+      - name: code_challenge
+        in: query
+        schema:
+          type: string
+          example: E9Melhoa2OwvFrEMTJguCHaoeK1t8URWbuGJSstw-cM
+      - name: code_challenge_method
+        in: query
+        schema:
+          type: string
+          enum:
+          - S256
+          example: S256
+      responses:
+        '302':
+          description: Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/oauth.v2.authorize'
+        '400':
+          $ref: '#/components/responses/ErrorClientErrorResponse'
+components:
+  schemas:
+    oauth.v2.authorize:
+      type: object
+      properties:
+        redirect_to:
+          type:
+          - string
+          - 'null'
+          format: uri
+          description: The callback URL
+    Error:
+      description: Generic error
+      type: object
+      properties:
+        code:
+          description: Twilio-specific error code
+          type: integer
+          format: int32
+        message:
+          description: Error message
+          type: string
+        more_info:
+          description: Link to Error Code References
+          type: string
+        status:
+          description: HTTP response status code
+          type: integer
+          format: int32
+  responses:
+    ErrorClientErrorResponse:
+      description: Client provided invalid parameters response
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+          examples:
+            client_error:
+              value:
+                code: 400
+                message: bad request
+                more_info: https://www.twilio.com/docs/errors/400
+                status: 400
+  securitySchemes:
+    accountSid_authToken:
+      scheme: basic
+      type: http
+    v2_oauth2_client_credentials:
+      type: oauth2
+      flows:
+        clientCredentials:
+          tokenUrl: https://oauth.twilio.com/v2/token
+          scopes: {}

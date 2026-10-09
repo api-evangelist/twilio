@@ -1,0 +1,87 @@
+generated: '2026-10-08'
+method: searched
+source: openapi/twilio-iam-organizations-api-openapi.yml, openapi/twilio-oauth-api-openapi.yml
+docs: https://www.twilio.com/docs/iam/oauth-apps/org-oauth-apps#scopespermissions-available-for-organization-oauth-apps
+description: OAuth 2.0 scopes for Twilio APIs. OAuth for Twilio APIs reached GA on 2026-04-06 (client credentials, RFC 6749
+  section 4.4) and organization-level client credentials on 2026-07-03. The specs declare the flows but no scope
+  names; the scope/permission table is published on the Organization OAuth apps page. Account-level OAuth apps use
+  the same permission model as Restricted API Keys, published per product as PDFs (listed under account_permissions).
+authorization_server_metadata: https://oauth.twilio.com/.well-known/oauth-authorization-server
+schemes:
+- name: oAuth2ClientCredentials
+  source: openapi/twilio-iam-organizations-api-openapi.yml
+  flows:
+  - flow: clientCredentials
+    tokenUrl: https://preview-iam.twilio.com/v1/token
+- name: v2_oauth2_client_credentials
+  source: openapi/twilio-oauth-api-openapi.yml
+  flows:
+  - flow: clientCredentials
+    tokenUrl: https://oauth.twilio.com/v2/token
+grant_types_supported: [authorization_code, client_credentials, refresh_token]
+code_challenge_methods_supported: [S256]
+token_lifetime_seconds: 3600
+scopes:
+- name: managed-users/read
+  description: GET https://iam.twilio.com/scim/v2/Users/sid<US>
+  docs: https://www.twilio.com/docs/iam/scim/api-reference
+  level: organization
+- name: managed-users/list
+  description: GET https://iam.twilio.com/scim/v2/Users
+  docs: https://www.twilio.com/docs/iam/scim/api-reference
+  level: organization
+- name: managed-users/create
+  description: POST https://iam.twilio.com/scim/v2/Users
+  docs: https://www.twilio.com/docs/iam/scim/api-reference
+  level: organization
+- name: managed-users/update
+  description: PUT https://iam.twilio.com/scim/v2/Users/sid<US>
+  docs: https://www.twilio.com/docs/iam/scim/api-reference
+  level: organization
+- name: managed-users/delete
+  description: DELETE https://iam.twilio.com/scim/v2/Users/sid<US>
+  docs: https://www.twilio.com/docs/iam/scim/api-reference
+  level: organization
+- name: role-assignments/list
+  description: GET https://iam.twilio.com/v2/Organizations/RoleAssignments
+  docs: https://www.twilio.com/docs/iam/access-control/role-assignment-resource
+  level: organization
+- name: role-assignments/create
+  description: POST https://iam.twilio.com/v2/Organizations/RoleAssignments
+  docs: https://www.twilio.com/docs/iam/access-control/role-assignment-resource
+  level: organization
+- name: role-assignments/delete
+  description: DELETE https://iam.twilio.com/v2/Organizations/RoleAssignments/sid<IY>
+  docs: https://www.twilio.com/docs/iam/access-control/role-assignment-resource
+  level: organization
+- name: roles/list
+  description: GET https://iam.twilio.com/v2/Organizations/Roles
+  docs: https://www.twilio.com/docs/iam/access-control/role-resource
+  level: organization
+- name: usage/read
+  description: GET https://billing.twilio.com/v2/Public/Usage/BillingGroups/{billingGroupId}/Records
+  docs: https://www.twilio.com/docs/usage/billing/billing-group#retrieve-usage-data-with-the-api
+  level: organization
+- name: offline_access
+  description: Requested on the authorization-code flow (scope=offline_access in the documented authorize URL) to obtain a refresh token.
+  docs: https://www.twilio.com/docs/iam/oauth-apps/org-oauth-apps
+  level: organization
+account_permissions:
+  docs: https://www.twilio.com/docs/iam/oauth-apps/account-oauth-apps#scopespermissions-available-for-oauth-apps
+  note: Account-level OAuth apps select scopes/permissions from the Restricted API Key permission model (limit of 100 per app); the permission-to-endpoint mapping is published as one PDF per product rather than as a scope list on the page.
+  permission_sets:
+  - {product: Messaging, url: https://docs-resources.prod.twilio.com/documents/Twilio_Restricted_API_Keys_Permissions_-_Messaging_Permissions.pdf}
+  - {product: Phone Numbers, url: https://docs-resources.prod.twilio.com/documents/Twilio_Restricted_API_Keys_Permissions_-_Numbers_Permissions.pdf}
+  - {product: Studio, url: https://docs-resources.prod.twilio.com/documents/Twilio_Restricted_API_Keys_Permissions_-_Studio_Permissons.pdf}
+  - {product: TaskRouter, url: https://docs-resources.prod.twilio.com/documents/Twilio_Restricted_API_Keys_Permissions_-_TaskRouter.pdf}
+  - {product: Voice, url: https://docs-resources.prod.twilio.com/documents/Twilio_Restricted_API_Keys_Permissions_-_Voice_Permissions.pdf}
+  - {product: Lookup, url: https://docs-resources.prod.twilio.com/documents/Twilio_Restricted_API_Keys_Permissions_-_Lookup_Permissions.pdf}
+  - {product: IAM, url: https://docs-resources.prod.twilio.com/documents/Twilio_Restricted_API_Keys_Permissions_-_IAM_Permissons.pdf}
+  - {product: Monitor, url: https://docs-resources.prod.twilio.com/documents/Twilio_Restricted_API_Keys_Permissions_-_Monitor_Permissons.pdf}
+  - {product: Verify, url: https://docs-resources.prod.twilio.com/documents/Twilio_Restricted_API_Keys_Permissions_-_Verify_Permissions.pdf}
+  - {product: Video, url: https://docs-resources.prod.twilio.com/documents/Twilio_Restricted_API_Keys_Permissions_-_Video_Permissions.pdf}
+  - {product: Event Streams, url: https://docs-resources.prod.twilio.com/documents/Twilio_Restricted_API_Keys_Permissions_-_Event_Streams_Permissions.pdf}
+  - {product: Usage Records, url: https://docs-resources.prod.twilio.com/documents/Twilio_Restricted_API_Keys_Permissions_-_Usage_Records_Permissions.pdf}
+  - {product: Serverless, url: https://docs-resources.prod.twilio.com/documents/Twilio_Restricted_API_Keys_Permissions_-_Serverless_Permissions.pdf}
+  - {product: Flex, url: https://docs-resources.prod.twilio.com/documents/Twilio_Restricted_API_Keys_Permissions_-_Flex_Permissions.pdf}
+  - {product: Conversations (classic), url: https://docs-resources.prod.twilio.com/documents/Twilio_Restricted_API_Keys_Permissions_-_Conversations_Classic_Permissions.pdf}
