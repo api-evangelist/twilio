@@ -1,0 +1,342 @@
+# DERIVED by derive-integration-map.py (roadmap#949): each integration workflow, step by step,
+# resolved to spec file -> tag -> business capability (Turbo EA, CC BY 4.0) and the operation's
+# phrasing intent. Read from our own files; an unmapped link says why.
+slug: twilio
+workflows:
+- file: twilio-hubspot.yml
+  title: Log a Twilio SMS as a HubSpot engagement
+  partner: null
+  template: null
+  repos:
+  - twilio
+  - hubspot
+  steps:
+  - step: fetch-twilio-message
+    repo: twilio
+    spec_file: twilio-messaging-openapi.yml
+    operationId: fetchMessage
+    tag: null
+    capability_id: null
+    capability: null
+    capability_l1: null
+    intent: null
+    effect: null
+    unmapped: operation not found in spec
+  - step: get-hubspot-contact
+    repo: hubspot
+    spec_file: hubspot-crm-contacts-api-openapi.yml
+    operationId: getContact
+    tag: null
+    capability_id: null
+    capability: null
+    capability_l1: null
+    intent: null
+    effect: null
+    unmapped: operation not found in spec
+  - step: create-hubspot-note
+    repo: hubspot
+    spec_file: hubspot-engagement-notes-openapi.yml
+    operationId: createNote
+    tag: null
+    capability_id: null
+    capability: null
+    capability_l1: null
+    intent: null
+    effect: null
+    unmapped: operation not found in spec
+  connects:
+    twilio:
+      capabilities: []
+      tags: []
+    hubspot:
+      capabilities: []
+      tags: []
+  intents: []
+- file: twilio-intercom.yml
+  title: Mirror a Twilio message into Intercom
+  partner: null
+  template: null
+  repos:
+  - twilio
+  - intercom
+  steps:
+  - step: fetch-twilio-message
+    repo: twilio
+    spec_file: twilio-messaging-openapi.yml
+    operationId: fetchMessage
+    tag: null
+    capability_id: null
+    capability: null
+    capability_l1: null
+    intent: null
+    effect: null
+    unmapped: operation not found in spec
+  - step: create-intercom-contact
+    repo: intercom
+    spec_file: intercom-openapi.yml
+    operationId: createContact
+    tag: null
+    capability_id: null
+    capability: null
+    capability_l1: null
+    intent: null
+    effect: null
+    unmapped: operation not found in spec
+  - step: create-intercom-conversation
+    repo: intercom
+    spec_file: intercom-openapi.yml
+    operationId: createConversation
+    tag: null
+    capability_id: null
+    capability: null
+    capability_l1: null
+    intent: null
+    effect: null
+    unmapped: operation not found in spec
+  connects:
+    twilio:
+      capabilities: []
+      tags: []
+    intercom:
+      capabilities: []
+      tags: []
+  intents: []
+- file: twilio-salesforce.yml
+  title: Log a Twilio message as a Salesforce activity
+  partner: null
+  template: null
+  repos:
+  - twilio
+  - salesforce
+  steps:
+  - step: fetch-twilio-message
+    repo: twilio
+    spec_file: twilio-messaging-openapi.yml
+    operationId: fetchMessage
+    tag: null
+    capability_id: null
+    capability: null
+    capability_l1: null
+    intent: null
+    effect: null
+    unmapped: operation not found in spec
+  - step: get-salesforce-contact
+    repo: salesforce
+    spec_file: salesforce-rest-api-openapi.yml
+    operationId: getRecord
+    tag: null
+    capability_id: null
+    capability: null
+    capability_l1: null
+    intent: null
+    effect: null
+    unmapped: operation not found in spec
+  - step: create-salesforce-task
+    repo: salesforce
+    spec_file: salesforce-rest-api-openapi.yml
+    operationId: createRecord
+    tag: null
+    capability_id: null
+    capability: null
+    capability_l1: null
+    intent: null
+    effect: null
+    unmapped: operation not found in spec
+  connects:
+    twilio:
+      capabilities: []
+      tags: []
+    salesforce:
+      capabilities: []
+      tags: []
+  intents: []
+- file: twilio-segment.yml
+  title: Track a sent Twilio SMS as a Segment event
+  partner: null
+  template: null
+  repos:
+  - twilio
+  - segment
+  steps:
+  - step: send-twilio-message
+    repo: twilio
+    spec_file: twilio-messaging-openapi.yml
+    operationId: createMessage
+    tag: null
+    capability_id: null
+    capability: null
+    capability_l1: null
+    intent: null
+    effect: null
+    unmapped: operation not found in spec
+  - step: track-segment-event
+    repo: segment
+    spec_file: segment-http-tracking-api-openapi.yml
+    operationId: track
+    tag: null
+    capability_id: null
+    capability: null
+    capability_l1: null
+    intent: null
+    effect: null
+    unmapped: operation not found in spec
+  connects:
+    twilio:
+      capabilities: []
+      tags: []
+    segment:
+      capabilities: []
+      tags: []
+  intents: []
+- file: twilio-sendgrid.yml
+  title: Twilio SMS with a SendGrid email fallback
+  partner: null
+  template: null
+  repos:
+  - twilio
+  - sendgrid
+  steps:
+  - step: send-twilio-sms
+    repo: twilio
+    spec_file: twilio-messaging-openapi.yml
+    operationId: createMessage
+    tag: null
+    capability_id: null
+    capability: null
+    capability_l1: null
+    intent: null
+    effect: null
+    unmapped: operation not found in spec
+  - step: send-sendgrid-email
+    repo: sendgrid
+    spec_file: tsg_mail_v3.yaml
+    operationId: SendMail
+    tag: null
+    capability_id: null
+    capability: null
+    capability_l1: null
+    intent: null
+    effect: null
+    unmapped: operation not found in spec
+  connects:
+    twilio:
+      capabilities: []
+      tags: []
+    sendgrid:
+      capabilities: []
+      tags: []
+  intents: []
+- file: twilio-shopify.yml
+  title: Send a Twilio SMS for a Shopify order
+  partner: null
+  template: null
+  repos:
+  - shopify
+  - twilio
+  steps:
+  - step: get-shopify-order
+    repo: shopify
+    spec_file: shopify-admin-rest-api-openapi.yml
+    operationId: getOrder
+    tag: null
+    capability_id: null
+    capability: null
+    capability_l1: null
+    intent: null
+    effect: null
+    unmapped: operation not found in spec
+  - step: send-twilio-sms
+    repo: twilio
+    spec_file: twilio-messaging-openapi.yml
+    operationId: createMessage
+    tag: null
+    capability_id: null
+    capability: null
+    capability_l1: null
+    intent: null
+    effect: null
+    unmapped: operation not found in spec
+  connects:
+    shopify:
+      capabilities: []
+      tags: []
+    twilio:
+      capabilities: []
+      tags: []
+  intents: []
+- file: twilio-slack.yml
+  title: Post an inbound Twilio message to Slack
+  partner: null
+  template: null
+  repos:
+  - twilio
+  - slack
+  steps:
+  - step: fetch-twilio-message
+    repo: twilio
+    spec_file: twilio-messaging-openapi.yml
+    operationId: fetchMessage
+    tag: null
+    capability_id: null
+    capability: null
+    capability_l1: null
+    intent: null
+    effect: null
+    unmapped: operation not found in spec
+  - step: post-to-slack
+    repo: slack
+    spec_file: slack-chat-openapi.yml
+    operationId: postChatPostmessage
+    tag: null
+    capability_id: null
+    capability: null
+    capability_l1: null
+    intent: null
+    effect: null
+    unmapped: operation not found in spec
+  connects:
+    twilio:
+      capabilities: []
+      tags: []
+    slack:
+      capabilities: []
+      tags: []
+  intents: []
+- file: twilio-zendesk.yml
+  title: Open a Zendesk ticket from an inbound Twilio message
+  partner: null
+  template: null
+  repos:
+  - twilio
+  - zendesk
+  steps:
+  - step: fetch-twilio-message
+    repo: twilio
+    spec_file: twilio-messaging-openapi.yml
+    operationId: fetchMessage
+    tag: null
+    capability_id: null
+    capability: null
+    capability_l1: null
+    intent: null
+    effect: null
+    unmapped: operation not found in spec
+  - step: create-zendesk-ticket
+    repo: zendesk
+    spec_file: tickets-openapi-original.yml
+    operationId: CreateTicket
+    tag: null
+    capability_id: null
+    capability: null
+    capability_l1: null
+    intent: null
+    effect: null
+    unmapped: operation not found in spec
+  connects:
+    twilio:
+      capabilities: []
+      tags: []
+    zendesk:
+      capabilities: []
+      tags: []
+  intents: []
