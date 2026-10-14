@@ -11,10 +11,10 @@ sourceDescriptions:
   url: https://raw.githubusercontent.com/api-evangelist/twilio/refs/heads/main/openapi/twilio-messages-api-openapi.yml
   type: openapi
 - name: hubspotContacts
-  url: https://raw.githubusercontent.com/api-evangelist/hubspot/refs/heads/main/openapi/hubspot-crm-contacts-api-openapi.yml
+  url: https://raw.githubusercontent.com/api-evangelist/hubspot/refs/heads/main/openapi/hubspot-basic-api-openapi.yml
   type: openapi
 - name: hubspotNotes
-  url: https://raw.githubusercontent.com/api-evangelist/hubspot/refs/heads/main/openapi/hubspot-engagement-notes-openapi.yml
+  url: https://raw.githubusercontent.com/api-evangelist/hubspot/refs/heads/main/openapi/hubspot-basic-api-openapi.yml
   type: openapi
 workflows:
 - workflowId: twilio-hubspot-log-sms-as-note
@@ -62,7 +62,7 @@ workflows:
       status: $response.body#/status
   - stepId: get-hubspot-contact
     description: Look up the matching HubSpot contact for this SMS.
-    operationId: $sourceDescriptions.hubspotContacts.getContact
+    operationId: $sourceDescriptions.hubspotContacts.get-/crm/objects/2026-03/contacts/{contactId}_getById
     parameters:
     - name: contactId
       in: path
@@ -71,9 +71,17 @@ workflows:
     - condition: $statusCode == 200
     outputs:
       contactId: $response.body#/id
+    x-remapped-by-meaning:
+      from: $sourceDescriptions.hubspotContacts.getContact
+      to: $sourceDescriptions.hubspotContacts.get-/crm/objects/2026-03/contacts/{contactId}_getById
+      spec: hubspot-basic-api-openapi.yml
+      evidence: GET /crm/objects/2026-03/contacts/{contactId} — summary "Retrieve a contact"; description "Retrieve
+        a contact by its ID (`contactId`) or by a unique property (`idProperty`)." — the only single-contact read
+        in hubspot openapi/
+      date: '2026-10-14'
   - stepId: create-hubspot-note
     description: Create a HubSpot note engagement carrying the SMS body.
-    operationId: $sourceDescriptions.hubspotNotes.createNote
+    operationId: $sourceDescriptions.hubspotNotes.post-/crm/objects/2026-03/notes_create
     requestBody:
       contentType: application/json
       payload:
@@ -85,6 +93,14 @@ workflows:
     outputs:
       noteId: $response.body#/id
       createdAt: $response.body#/createdAt
+    x-remapped-by-meaning:
+      from: $sourceDescriptions.hubspotNotes.createNote
+      to: $sourceDescriptions.hubspotNotes.post-/crm/objects/2026-03/notes_create
+      spec: hubspot-basic-api-openapi.yml
+      evidence: POST /crm/objects/2026-03/notes — summary "Create"; description "Create a note with the given properties
+        and return a copy of the object, including the ID." — the only single-note create (batch/create is the batch
+        form)
+      date: '2026-10-14'
   outputs:
     messageSid: $steps.fetch-twilio-message.outputs.sid
     contactId: $steps.get-hubspot-contact.outputs.contactId
@@ -92,10 +108,16 @@ workflows:
 x-integration:
   guessed_steps:
   - step: get-hubspot-contact
-    cause: partner-contract
+    cause: remapped-by-meaning
     why: getContact is not an operationId in any current hubspot openapi/ file (spec hubspot-crm-contacts-api-openapi.yml
       was renamed/split by refine and the operation was not carried under that id)
+    was_cause: partner-contract
+    remapped: $sourceDescriptions.hubspotContacts.getContact -> get-/crm/objects/2026-03/contacts/{contactId}_getById
+      (hubspot-basic-api-openapi.yml) by meaning, not an exact operationId match
   - step: create-hubspot-note
-    cause: partner-contract
+    cause: remapped-by-meaning
     why: createNote is not an operationId in any current hubspot openapi/ file (spec hubspot-engagement-notes-openapi.yml
       was renamed/split by refine and the operation was not carried under that id)
+    was_cause: partner-contract
+    remapped: $sourceDescriptions.hubspotNotes.createNote -> post-/crm/objects/2026-03/notes_create (hubspot-basic-api-openapi.yml)
+      by meaning, not an exact operationId match
