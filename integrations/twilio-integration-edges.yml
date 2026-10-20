@@ -6,6 +6,7 @@ source:
 checked:
 - genesys/integrations/genesys-integration-edges.yml
 - https://api.nuget.org/v3
+- https://cdn.winget.microsoft.com/cache
 - https://composio.dev/toolkits/twilio
 - https://connectors.airbyte.com/files/registries/v0/cloud_registry.json
 - https://connectors.airbyte.com/files/registries/v0/oss_registry.json
@@ -13,8 +14,12 @@ checked:
 - https://fivetran.com/docs-sitemap.xml
 - https://fivetran.com/docs/connectors/partner-built-program
 - https://focus.finops.org/data-generators/
+- https://formulae.brew.sh/api/cask.json
+- https://formulae.brew.sh/api/formula.json
 - https://github.com/PipedreamHQ/pipedream/tree/94800dd6de6640b942c65ea7ee655f71ac56d438/components/
 - https://github.com/PipedreamHQ/pipedream/tree/d5872355ef27b4efa769f05352f2820c299a456e/components/
+- https://github.com/ScoopInstaller/Extras
+- https://github.com/ScoopInstaller/Main
 - https://github.com/cncf/k8s-conformance
 - https://github.com/cncf/landscape
 - https://github.com/marketplace?type=actions
@@ -1012,6 +1017,36 @@ edges:
   direction: third-party
   category: Productivity
   partner_url: https://www.process.st/
+- partner_name: npm registry
+  partner: npm
+  partner_match: register
+  type: register
+  direction: provider-built
+  category: official CLI (npm registry)
+  evidence: https://www.npmjs.com/package/twilio-cli
+  channel: package-registry
+  relationship: distribution-channel
+  contract_reference:
+    register: npm registry (public package index)
+    spec_file: null
+    packages:
+    - name: twilio-cli
+      version: 7.2.0
+      released: '2026-10-13'
+      released_field: modified
+      lapsed: false
+      page: https://www.npmjs.com/package/twilio-cli
+      cli: bin twilio
+      repo_leg: shared-github-org:twilio
+      publisher_leg: email:twilio.com
+      matched_by: domain
+    current: true
+    signal_note: 'the provider''s own command-line tool on a package manager: distribution, not an integration;
+      lapsed = no release in 24 months or deprecated / disabled by the manager'
+    detected_by: sweep-official-clis.py
+    detected: '2026-10-20'
+  detected_by: sweep-official-clis.py
+  first_seen: '2026-10-20'
 templates:
 - title: Receive new Twilio SMS Messages in your email inbox
   url: https://zapier.com/apps/email/integrations/twilio/26/receive-new-twilio-sms-messages-in-your-email-inbox
