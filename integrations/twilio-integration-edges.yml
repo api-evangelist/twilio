@@ -14,11 +14,13 @@ checked:
 - https://fivetran.com/docs/connectors/partner-built-program
 - https://focus.finops.org/data-generators/
 - https://github.com/PipedreamHQ/pipedream/tree/94800dd6de6640b942c65ea7ee655f71ac56d438/components/
+- https://github.com/PipedreamHQ/pipedream/tree/d5872355ef27b4efa769f05352f2820c299a456e/components/
 - https://github.com/cncf/k8s-conformance
 - https://github.com/cncf/landscape
 - https://github.com/marketplace?type=actions
 - https://github.com/meltano/hub
 - https://github.com/n8n-io/n8n/tree/860f1273ebd73fabbd668cbec2c49ed9b48a286d/packages/nodes-base/nodes/
+- https://github.com/n8n-io/n8n/tree/f73dc337f8dc61a4fd44aebe41c55faafe4f53a4/packages/nodes-base/nodes/
 - https://govramp.org/program-participants
 - https://hightouch.com/docs/destinations/twilio
 - https://monid.ai/tools/twilio
@@ -510,118 +512,6 @@ edges:
     property: components.schemas.NumbersPhoneNumberSlugPatchRequestBodyContentApplicationJsonSchemaProviderName
     detected_by: detect-payment-method-edges.py
     detected: '2026-10-12'
-- partner_name: novu
-  partner: novu
-  partner_match: domain
-  type: contract
-  channel: contract-enum
-  relationship: delivery-provider
-  direction: partner-built
-  evidence: https://github.com/api-evangelist/novu/blob/main/openapi/novu-channel-connections-api-openapi.yml
-  contract_reference:
-    repo: novu
-    spec_file: novu-channel-connections-api-openapi.yml
-    value: twilio
-    property: schemas.GetChannelConnectionResponseDto.providerId
-    matched_domain: twilio.com
-    detected_by: sweep-cpaas.py
-    detected: '2026-10-13'
-- partner_name: FCM
-  partner: google-firebase
-  partner_match: domain
-  type: contract
-  channel: contract-enum
-  relationship: messaging-channel
-  direction: provider-built
-  evidence: https://github.com/api-evangelist/twilio/blob/main/openapi/twilio-services-api-openapi.yml
-  contract_reference:
-    repo: twilio
-    spec_file: twilio-services-api-openapi.yml
-    value: gcm
-    property: components.schemas.binding_enum_binding_type_2
-    matched_domain: google.com
-    detected_by: sweep-cpaas.py
-    detected: '2026-10-13'
-- partner_name: Google Business Messages
-  partner: google-business-messages
-  partner_match: domain
-  type: contract
-  channel: contract-enum
-  relationship: messaging-channel
-  direction: provider-built
-  evidence: https://github.com/api-evangelist/twilio/blob/main/openapi/twilio-interactions-api-openapi.yml
-  contract_reference:
-    repo: twilio
-    spec_file: twilio-interactions-api-openapi.yml
-    value: gbm
-    property: schemas.CreateInteractionRequest.channel
-    matched_domain: google.com
-    detected_by: sweep-cpaas.py
-    detected: '2026-10-13'
-- partner_name: LINE
-  partner: line
-  partner_match: domain
-  type: contract
-  channel: contract-enum
-  relationship: messaging-channel
-  direction: provider-built
-  evidence: https://github.com/api-evangelist/twilio/blob/main/openapi/twilio-flex-flows-api-openapi.yml
-  contract_reference:
-    repo: twilio
-    spec_file: twilio-flex-flows-api-openapi.yml
-    value: line
-    property: schemas.FlexFlow.channel_type
-    matched_domain: line.me
-    detected_by: sweep-cpaas.py
-    detected: '2026-10-13'
-- partner_name: Messenger
-  partner: facebook
-  partner_match: domain
-  type: contract
-  channel: contract-enum
-  relationship: messaging-channel
-  direction: provider-built
-  evidence: https://github.com/api-evangelist/twilio/blob/main/openapi/twilio-flex-flows-api-openapi.yml
-  contract_reference:
-    repo: twilio
-    spec_file: twilio-flex-flows-api-openapi.yml
-    value: facebook
-    property: schemas.FlexFlow.channel_type
-    matched_domain: facebook.com
-    detected_by: sweep-cpaas.py
-    detected: '2026-10-13'
-- partner_name: RCS
-  partner: google
-  partner_match: domain
-  type: contract
-  channel: contract-enum
-  relationship: messaging-channel
-  direction: provider-built
-  evidence: https://github.com/api-evangelist/twilio/blob/main/openapi/twilio-conversations-api-openapi.yml
-  contract_reference:
-    repo: twilio
-    spec_file: twilio-conversations-api-openapi.yml
-    value: RCS
-    property: paths.get.parameters
-    matched_domain: google.com
-    detected_by: sweep-cpaas.py
-    detected: '2026-10-13'
-- partner_name: WhatsApp
-  partner: whatsapp
-  partner_match: domain
-  type: contract
-  channel: contract-enum
-  relationship: messaging-channel
-  direction: provider-built
-  evidence: https://github.com/api-evangelist/twilio/blob/main/openapi/twilio-attempts-api-openapi.yml
-  contract_reference:
-    repo: twilio
-    spec_file: twilio-attempts-api-openapi.yml
-    value: whatsapp
-    property: components.schemas.verification_attempts_summary_enum_channels
-    matched_domain: whatsapp.com
-    detected_by: sweep-cpaas.py
-    detected: '2026-10-13'
 - partner_name: GitHub Marketplace (actions)
   partner: github-actions
   partner_match: aggregator
@@ -639,24 +529,6 @@ edges:
   - Verified creator
   detected_by: sweep-devtools.py
   detected: '2026-10-14'
-- partner_name: Hightouch
-  partner: hightouch
-  partner_match: aggregator
-  marketplace: coverage
-  channel: partner-built
-  direction: partner-built
-  type: coverage
-  relationship: connector-coverage
-  evidence: https://hightouch.com/docs/destinations/twilio
-  coverage_role:
-  - destination
-  cdp_signals:
-    destination:
-      catalog_entries:
-      - twilio
-      status: released
-  detected_by: sweep-cdp.py
-  first_seen: '2026-10-14'
 - partner_name: Stripe (own)
   partner: stripe
   partner_match: mirror
@@ -674,241 +546,6 @@ edges:
   detected: '2026-10-15'
   detected_by: mirror-platform-listings.py
   category: developer_tools
-- partner_name: CNCF (Cloud Native Landscape)
-  partner: cncf
-  partner_match: register
-  type: register
-  direction: partner-built
-  category: Cloud native landscape
-  evidence: https://github.com/cncf/landscape/blob/3a7d378b1824b82e729a453bb03fa6f1e37557e1/landscape.yml
-  channel: standard-directory
-  relationship: standard-participant
-  contract_reference:
-    register: CNCF Cloud Native Landscape (github.com/cncf/landscape landscape.yml @3a7d378b18)
-    spec_file: null
-    standard: Cloud Native (CNCF)
-    role: landscape-listed
-    registered_name: Twilio Functions
-    registered_names:
-    - Twilio Functions
-    website: https://www.twilio.com/docs/serverless/functions-assets/functions
-    matched_domain: twilio.com
-    matched_by: domain
-    member_tier: null
-    joined: null
-    end_user: false
-    cncf_projects: []
-    landscape_categories:
-    - Serverless / Hosted Platform
-    landscape_entries: 1
-    signal_note: 'participation only: a landscape listing is standard-participant evidence, not depth. Entries,
-      categories, tier and projects are CONTEXT, never read (breadth is not credit)'
-    detected_by: sweep-cloud-native.py
-    detected: '2026-10-15'
-  detected_by: sweep-cloud-native.py
-  first_seen: '2026-10-15'
-- partner_name: Zapier
-  partner: zapier
-  partner_match: aggregator
-  type: marketplace
-  marketplace: zapier-directory
-  channel: ipaas-listing
-  relationship: ipaas-bridge
-  direction: third-party
-  evidence: https://zapier.com/apps/twilio/integrations
-  category: null
-  contract_reference:
-    register: Zapier app directory (zapier.com/api/v4/apps)
-    spec_file: null
-    role: ipaas-connector:zapier
-    registered_name: Twilio
-    matched_domain: twilio.com
-    matched_by: domain
-    detected_by: sweep-workflow-automation.py
-    detected: '2026-10-15'
-    signal_note: one edge per (provider, platform); actions, triggers and usage counts are context, never read
-    app_slug: twilio
-    beta: false
-    builder: unknown (not in the directory record)
-  detected_by: sweep-workflow-automation.py
-  first_seen: '2026-10-15'
-- partner_name: n8n
-  partner: n8n
-  partner_match: aggregator
-  type: marketplace
-  marketplace: n8n-nodes-base
-  channel: open-source-node
-  relationship: ipaas-bridge
-  direction: third-party
-  evidence: https://github.com/n8n-io/n8n/tree/860f1273ebd73fabbd668cbec2c49ed9b48a286d/packages/nodes-base/nodes/Twilio
-  category: null
-  contract_reference:
-    register: n8n built-in nodes (n8n-io/n8n packages/nodes-base)
-    spec_file: null
-    role: ipaas-connector:n8n-nodes-base
-    registered_name: Twilio
-    matched_domain: twilio.com
-    matched_by: domain
-    detected_by: sweep-workflow-automation.py
-    detected: '2026-10-15'
-    signal_note: one edge per (provider, platform); actions, triggers and usage counts are context, never read
-    node_path: Twilio
-    trigger: true
-    builder: n8n (built-in node)
-  detected_by: sweep-workflow-automation.py
-  first_seen: '2026-10-15'
-- partner_name: Pipedream
-  partner: pipedream
-  partner_match: aggregator
-  type: marketplace
-  marketplace: pipedream-components
-  channel: open-source-node
-  relationship: ipaas-bridge
-  direction: third-party
-  evidence: https://github.com/PipedreamHQ/pipedream/tree/94800dd6de6640b942c65ea7ee655f71ac56d438/components/twilio
-  category: null
-  contract_reference:
-    register: Pipedream components (PipedreamHQ/pipedream components/)
-    spec_file: null
-    role: ipaas-connector:pipedream
-    registered_name: twilio
-    matched_domain: twilio.com
-    matched_by: domain
-    detected_by: sweep-workflow-automation.py
-    detected: '2026-10-15'
-    signal_note: one edge per (provider, platform); actions, triggers and usage counts are context, never read
-    app_slug: twilio
-    actions: true
-    sources: true
-    builder: Pipedream repo (component)
-  detected_by: sweep-workflow-automation.py
-  first_seen: '2026-10-15'
-- partner_name: GovRAMP
-  partner: null
-  partner_match: register
-  type: register
-  channel: standard-directory
-  relationship: standard-participant
-  direction: partner-built
-  evidence: https://govramp.org/program-participants
-  category: GovRAMP participation
-  contract_reference:
-    register: GovRAMP Program Participants (govramp.org/program-participants)
-    standard: GovRAMP
-    spec_file: null
-    role: govramp-participant
-    registered_name: Twilio, inc
-    register_id: SS24167
-    matched_domain: twilio.com
-    matched_by: domain
-    domain_source: contact-email
-    statuses:
-    - Progressing
-    offerings:
-    - Twilio Core Platform
-    signal_note: certified_products = one entry per AUTHORIZED impact level (Authorized / Provisionally Authorized),
-      never per offering; Progressing / Pending / Ready / Core are participation only
-    detected_by: sweep-gov-cloud.py
-    detected: '2026-10-15'
-  detected_by: sweep-gov-cloud.py
-  first_seen: '2026-10-15'
-- partner_name: Airbyte
-  partner: airbyte
-  partner_match: aggregator
-  type: marketplace
-  marketplace: airbyte-registry
-  channel: elt-connector
-  relationship: ipaas-bridge
-  direction: third-party
-  evidence: https://docs.airbyte.com/integrations/sources/twilio
-  category: null
-  contract_reference:
-    register: Airbyte connector registry (connectors.airbyte.com cloud_registry.json + oss_registry.json)
-    spec_file: null
-    role: elt-connector:airbyte-certified
-    registered_name: Twilio
-    matched_domain: twilio.com
-    matched_by: domain
-    detected_by: sweep-data-integration.py
-    detected: '2026-10-18'
-    signal_note: one edge per (provider, platform); connectors, streams, packages and usage are context, never read
-    connectors:
-    - airbyte/source-twilio
-    - airbyte/source-twilio-taskrouter
-    support_level:
-    - certified
-    - community
-    release_stage:
-    - alpha
-    - generally_available
-    in_cloud: true
-    builder: Airbyte (certified)
-    standard: Airbyte certified connector
-    certified_products:
-    - product: Airbyte certified source
-      type: source
-      lapsed: false
-      cloud: true
-  detected_by: sweep-data-integration.py
-  first_seen: '2026-10-18'
-- partner_name: Fivetran
-  partner: fivetran
-  partner_match: aggregator
-  type: marketplace
-  marketplace: fivetran-connectors
-  channel: elt-connector
-  relationship: ipaas-bridge
-  direction: third-party
-  evidence: https://fivetran.com/docs/connectors/applications/twilio
-  category: null
-  contract_reference:
-    register: Fivetran connectors (fivetran.com/docs/connectors, docs-sitemap.xml + Partner-Built program)
-    spec_file: null
-    role: elt-connector:fivetran
-    registered_name: Twilio
-    matched_domain: twilio.com
-    matched_by: domain
-    detected_by: sweep-data-integration.py
-    detected: '2026-10-18'
-    signal_note: one edge per (provider, platform); connectors, streams, packages and usage are context, never read
-    connector_paths:
-    - connectors/applications/twilio
-    vendor_link: https://www.twilio.com/
-    builder: Fivetran
-  detected_by: sweep-data-integration.py
-  first_seen: '2026-10-18'
-- partner_name: Meltano
-  partner: meltano
-  partner_match: aggregator
-  type: marketplace
-  marketplace: meltano-hub
-  channel: elt-connector
-  relationship: ipaas-bridge
-  direction: third-party
-  evidence: https://hub.meltano.com/extractors/tap-twilio--airbyte
-  category: null
-  contract_reference:
-    register: Meltano Hub (github.com/meltano/hub _data/meltano extractors + loaders)
-    spec_file: null
-    role: elt-connector:meltano-hub
-    registered_name: Twilio
-    matched_domain: twilio.com
-    matched_by: domain
-    detected_by: sweep-data-integration.py
-    detected: '2026-10-18'
-    signal_note: one edge per (provider, platform); connectors, streams, packages and usage are context, never read
-    plugins:
-    - tap-twilio--airbyte
-    - tap-twilio--transferwise
-    maintenance_status:
-    - active
-    - beta
-    quality:
-    - bronze
-    - silver
-    builder: 'community (Meltano Hub variant maintainers: airbyte, transferwise)'
-  detected_by: sweep-data-integration.py
-  first_seen: '2026-10-18'
 - partner_name: Maven Central
   partner: maven-central
   partner_match: register
@@ -1042,6 +679,371 @@ edges:
   detected: '2026-10-19'
   detected_by: mirror-platform-listings.py
   category: Messaging
+- partner_name: Hightouch
+  partner: hightouch
+  partner_match: aggregator
+  marketplace: coverage
+  channel: partner-built
+  direction: partner-built
+  type: coverage
+  relationship: connector-coverage
+  evidence: https://hightouch.com/docs/destinations/twilio
+  coverage_role:
+  - destination
+  cdp_signals:
+    destination:
+      catalog_entries:
+      - twilio
+      status: released
+  detected_by: sweep-cdp.py
+  first_seen: '2026-10-14'
+- partner_name: Airbyte
+  partner: airbyte
+  partner_match: aggregator
+  type: marketplace
+  marketplace: airbyte-registry
+  channel: elt-connector
+  relationship: ipaas-bridge
+  direction: third-party
+  evidence: https://docs.airbyte.com/integrations/sources/twilio
+  category: null
+  contract_reference:
+    register: Airbyte connector registry (connectors.airbyte.com cloud_registry.json + oss_registry.json)
+    spec_file: null
+    role: elt-connector:airbyte-certified
+    registered_name: Twilio
+    matched_domain: twilio.com
+    matched_by: domain
+    detected_by: sweep-data-integration.py
+    detected: '2026-10-18'
+    signal_note: one edge per (provider, platform); connectors, streams, packages and usage are context, never read
+    connectors:
+    - airbyte/source-twilio
+    - airbyte/source-twilio-taskrouter
+    support_level:
+    - certified
+    - community
+    release_stage:
+    - alpha
+    - generally_available
+    in_cloud: true
+    builder: Airbyte (certified)
+    standard: Airbyte certified connector
+    certified_products:
+    - product: Airbyte certified source
+      type: source
+      lapsed: false
+      cloud: true
+  detected_by: sweep-data-integration.py
+  first_seen: '2026-10-18'
+- partner_name: Fivetran
+  partner: fivetran
+  partner_match: aggregator
+  type: marketplace
+  marketplace: fivetran-connectors
+  channel: elt-connector
+  relationship: ipaas-bridge
+  direction: third-party
+  evidence: https://fivetran.com/docs/connectors/applications/twilio
+  category: null
+  contract_reference:
+    register: Fivetran connectors (fivetran.com/docs/connectors, docs-sitemap.xml + Partner-Built program)
+    spec_file: null
+    role: elt-connector:fivetran
+    registered_name: Twilio
+    matched_domain: twilio.com
+    matched_by: domain
+    detected_by: sweep-data-integration.py
+    detected: '2026-10-18'
+    signal_note: one edge per (provider, platform); connectors, streams, packages and usage are context, never read
+    connector_paths:
+    - connectors/applications/twilio
+    vendor_link: https://www.twilio.com/
+    builder: Fivetran
+  detected_by: sweep-data-integration.py
+  first_seen: '2026-10-18'
+- partner_name: Meltano
+  partner: meltano
+  partner_match: aggregator
+  type: marketplace
+  marketplace: meltano-hub
+  channel: elt-connector
+  relationship: ipaas-bridge
+  direction: third-party
+  evidence: https://hub.meltano.com/extractors/tap-twilio--airbyte
+  category: null
+  contract_reference:
+    register: Meltano Hub (github.com/meltano/hub _data/meltano extractors + loaders)
+    spec_file: null
+    role: elt-connector:meltano-hub
+    registered_name: Twilio
+    matched_domain: twilio.com
+    matched_by: domain
+    detected_by: sweep-data-integration.py
+    detected: '2026-10-18'
+    signal_note: one edge per (provider, platform); connectors, streams, packages and usage are context, never read
+    plugins:
+    - tap-twilio--airbyte
+    - tap-twilio--transferwise
+    maintenance_status:
+    - active
+    - beta
+    quality:
+    - bronze
+    - silver
+    builder: 'community (Meltano Hub variant maintainers: airbyte, transferwise)'
+  detected_by: sweep-data-integration.py
+  first_seen: '2026-10-18'
+- partner_name: GovRAMP
+  partner: null
+  partner_match: register
+  type: register
+  channel: standard-directory
+  relationship: standard-participant
+  direction: partner-built
+  evidence: https://govramp.org/program-participants
+  category: GovRAMP participation
+  contract_reference:
+    register: GovRAMP Program Participants (govramp.org/program-participants)
+    standard: GovRAMP
+    spec_file: null
+    role: govramp-participant
+    registered_name: Twilio, inc
+    register_id: SS24167
+    matched_domain: twilio.com
+    matched_by: domain
+    domain_source: contact-email
+    statuses:
+    - Progressing
+    offerings:
+    - Twilio Core Platform
+    signal_note: certified_products = one entry per AUTHORIZED impact level (Authorized / Provisionally Authorized),
+      never per offering; Progressing / Pending / Ready / Core are participation only
+    detected_by: sweep-gov-cloud.py
+    detected: '2026-10-15'
+  detected_by: sweep-gov-cloud.py
+  first_seen: '2026-10-15'
+- partner_name: FCM
+  partner: google-firebase
+  partner_match: domain
+  type: contract
+  channel: contract-enum
+  relationship: messaging-channel
+  direction: provider-built
+  evidence: https://github.com/api-evangelist/twilio/blob/main/openapi/twilio-services-api-openapi.yml
+  contract_reference:
+    repo: twilio
+    spec_file: twilio-services-api-openapi.yml
+    value: fcm
+    property: components.schemas.binding_enum_binding_type_2
+    matched_domain: google.com
+    detected_by: sweep-cpaas.py
+    detected: '2026-10-13'
+- partner_name: Google Business Messages
+  partner: google-business-messages
+  partner_match: domain
+  type: contract
+  channel: contract-enum
+  relationship: messaging-channel
+  direction: provider-built
+  evidence: https://github.com/api-evangelist/twilio/blob/main/openapi/twilio-interactions-api-openapi.yml
+  contract_reference:
+    repo: twilio
+    spec_file: twilio-interactions-api-openapi.yml
+    value: gbm
+    property: schemas.CreateInteractionRequest.channel
+    matched_domain: google.com
+    detected_by: sweep-cpaas.py
+    detected: '2026-10-13'
+- partner_name: LINE
+  partner: line
+  partner_match: domain
+  type: contract
+  channel: contract-enum
+  relationship: messaging-channel
+  direction: provider-built
+  evidence: https://github.com/api-evangelist/twilio/blob/main/openapi/twilio-flex-flows-api-openapi.yml
+  contract_reference:
+    repo: twilio
+    spec_file: twilio-flex-flows-api-openapi.yml
+    value: line
+    property: schemas.FlexFlow.channel_type
+    matched_domain: line.me
+    detected_by: sweep-cpaas.py
+    detected: '2026-10-13'
+- partner_name: Messenger
+  partner: facebook
+  partner_match: domain
+  type: contract
+  channel: contract-enum
+  relationship: messaging-channel
+  direction: provider-built
+  evidence: https://github.com/api-evangelist/twilio/blob/main/openapi/twilio-flex-flows-api-openapi.yml
+  contract_reference:
+    repo: twilio
+    spec_file: twilio-flex-flows-api-openapi.yml
+    value: facebook
+    property: schemas.FlexFlow.channel_type
+    matched_domain: facebook.com
+    detected_by: sweep-cpaas.py
+    detected: '2026-10-13'
+- partner_name: RCS
+  partner: google
+  partner_match: domain
+  type: contract
+  channel: contract-enum
+  relationship: messaging-channel
+  direction: provider-built
+  evidence: https://github.com/api-evangelist/twilio/blob/main/openapi/twilio-conversations-api-openapi.yml
+  contract_reference:
+    repo: twilio
+    spec_file: twilio-conversations-api-openapi.yml
+    value: RCS
+    property: paths.get.parameters
+    matched_domain: google.com
+    detected_by: sweep-cpaas.py
+    detected: '2026-10-13'
+- partner_name: WhatsApp
+  partner: whatsapp
+  partner_match: domain
+  type: contract
+  channel: contract-enum
+  relationship: messaging-channel
+  direction: provider-built
+  evidence: https://github.com/api-evangelist/twilio/blob/main/openapi/twilio-attempts-api-openapi.yml
+  contract_reference:
+    repo: twilio
+    spec_file: twilio-attempts-api-openapi.yml
+    value: whatsapp
+    property: components.schemas.verification_attempts_summary_enum_channels
+    matched_domain: whatsapp.com
+    detected_by: sweep-cpaas.py
+    detected: '2026-10-13'
+- partner_name: novu
+  partner: novu
+  partner_match: domain
+  type: contract
+  channel: contract-enum
+  relationship: delivery-provider
+  direction: partner-built
+  evidence: https://github.com/api-evangelist/novu/blob/main/openapi/novu-channel-connections-api-openapi.yml
+  contract_reference:
+    repo: novu
+    spec_file: novu-channel-connections-api-openapi.yml
+    value: twilio
+    property: schemas.GetChannelConnectionResponseDto.providerId
+    matched_domain: twilio.com
+    detected_by: sweep-cpaas.py
+    detected: '2026-10-13'
+- partner_name: CNCF (Cloud Native Landscape)
+  partner: cncf
+  partner_match: register
+  type: register
+  direction: partner-built
+  category: Cloud native landscape
+  evidence: https://github.com/cncf/landscape/blob/42dd4cd91dad8ec8558ac02467a43f0805b9957a/landscape.yml
+  channel: standard-directory
+  relationship: standard-participant
+  contract_reference:
+    register: CNCF Cloud Native Landscape (github.com/cncf/landscape landscape.yml @42dd4cd91d)
+    spec_file: null
+    standard: Cloud Native (CNCF)
+    role: landscape-listed
+    registered_name: Twilio Functions
+    registered_names:
+    - Twilio Functions
+    website: https://www.twilio.com/docs/serverless/functions-assets/functions
+    matched_domain: twilio.com
+    matched_by: domain
+    member_tier: null
+    joined: null
+    end_user: false
+    cncf_projects: []
+    landscape_categories:
+    - Serverless / Hosted Platform
+    landscape_entries: 1
+    signal_note: 'participation only: a landscape listing is standard-participant evidence, not depth. Entries,
+      categories, tier and projects are CONTEXT, never read (breadth is not credit)'
+    detected_by: sweep-cloud-native.py
+    detected: '2026-10-19'
+  detected_by: sweep-cloud-native.py
+  first_seen: '2026-10-15'
+- partner_name: Zapier
+  partner: zapier
+  partner_match: aggregator
+  type: marketplace
+  marketplace: zapier-directory
+  channel: ipaas-listing
+  relationship: ipaas-bridge
+  direction: third-party
+  evidence: https://zapier.com/apps/twilio/integrations
+  category: null
+  contract_reference:
+    register: Zapier app directory (zapier.com/api/v4/apps)
+    spec_file: null
+    role: ipaas-connector:zapier
+    registered_name: Twilio
+    matched_domain: twilio.com
+    matched_by: domain
+    detected_by: sweep-workflow-automation.py
+    detected: '2026-10-15'
+    signal_note: one edge per (provider, platform); actions, triggers and usage counts are context, never read
+    app_slug: twilio
+    beta: false
+    builder: unknown (not in the directory record)
+  detected_by: sweep-workflow-automation.py
+  first_seen: '2026-10-15'
+- partner_name: n8n
+  partner: n8n
+  partner_match: aggregator
+  type: marketplace
+  marketplace: n8n-nodes-base
+  channel: open-source-node
+  relationship: ipaas-bridge
+  direction: third-party
+  evidence: https://github.com/n8n-io/n8n/tree/f73dc337f8dc61a4fd44aebe41c55faafe4f53a4/packages/nodes-base/nodes/Twilio
+  category: null
+  contract_reference:
+    register: n8n built-in nodes (n8n-io/n8n packages/nodes-base)
+    spec_file: null
+    role: ipaas-connector:n8n-nodes-base
+    registered_name: Twilio
+    matched_domain: twilio.com
+    matched_by: domain
+    detected_by: sweep-workflow-automation.py
+    detected: '2026-10-15'
+    signal_note: one edge per (provider, platform); actions, triggers and usage counts are context, never read
+    node_path: Twilio
+    trigger: true
+    builder: n8n (built-in node)
+  detected_by: sweep-workflow-automation.py
+  first_seen: '2026-10-15'
+- partner_name: Pipedream
+  partner: pipedream
+  partner_match: aggregator
+  type: marketplace
+  marketplace: pipedream-components
+  channel: open-source-node
+  relationship: ipaas-bridge
+  direction: third-party
+  evidence: https://github.com/PipedreamHQ/pipedream/tree/d5872355ef27b4efa769f05352f2820c299a456e/components/twilio
+  category: null
+  contract_reference:
+    register: Pipedream components (PipedreamHQ/pipedream components/)
+    spec_file: null
+    role: ipaas-connector:pipedream
+    registered_name: twilio
+    matched_domain: twilio.com
+    matched_by: domain
+    detected_by: sweep-workflow-automation.py
+    detected: '2026-10-15'
+    signal_note: one edge per (provider, platform); actions, triggers and usage counts are context, never read
+    app_slug: twilio
+    actions: true
+    sources: true
+    builder: Pipedream repo (component)
+  detected_by: sweep-workflow-automation.py
+  first_seen: '2026-10-15'
 templates:
 - title: Receive new Twilio SMS Messages in your email inbox
   url: https://zapier.com/apps/email/integrations/twilio/26/receive-new-twilio-sms-messages-in-your-email-inbox
